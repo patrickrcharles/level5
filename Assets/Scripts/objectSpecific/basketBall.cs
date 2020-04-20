@@ -34,10 +34,10 @@ public class basketBall : MonoBehaviour
     //float point1, point2;
 
     [SerializeField]
-    public bool TwoPoints, ThreePoints, TwoAttempt, ThreeAttempt, dunk,grounded, inAir, facingFront;
+    public bool TwoPoints, ThreePoints, TwoAttempt, ThreeAttempt, FourAttempt, dunk,grounded, inAir, facingFront;
 
-    public int totalPoints, TwoPointerMade, ThreePointerMade,
-        TwoPointerAttempts, ThreePointerAttempts;
+    public int totalPoints, TwoPointerMade, ThreePointerMade, FourPointerMade,
+        TwoPointerAttempts, ThreePointerAttempts, FourPointerAttempts;
 
     //[SerializeField]
     // float distanceOfShot;
@@ -80,30 +80,12 @@ public class basketBall : MonoBehaviour
         playerDunkPos = GameObject.Find("dunk_transform");
         notlocked = true;
 
-        //InitialVelocityY();
-        //timeInAir();
-        //InitialVelocityX();
-        //InitialVelocityD();
-        //LaunchAngle();
     }
 
     // Update is called once per frame
     void Update()
     {
      
-        /*   
-        if (dunk && inAir)
-        {
-            // playerState.Launch();
-            player.transform.position = playerDunkPos.transform.position;
-        }
-        */
-
-        
-
-        //displacement = Vector3.Distance(basketBallTarget.transform.position, basketBallPosition.transform.position);
-        //Zdistance = basketBallTarget.transform.position.z - gameObject.transform.position.z;
-
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
@@ -140,10 +122,10 @@ public class basketBall : MonoBehaviour
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.05f, transform.root.position.z - 0.1f);
         dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
 
-        if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonUp("Fire1") && notlocked)
+        if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1") )
         {
             //Debug.Log("if(playerState.inAir && playerState.hasBasketball && InputManager.GetButtonUp(Fire1))");
-            //Debug.Log("throwSpeed :: " + throwSpeed);
+            Debug.Log("shoot ball");
             playerState.hasBasketball = false;
             playerState.setPlayerAnim("hasBasketball", false);
 
@@ -184,6 +166,8 @@ public class basketBall : MonoBehaviour
             }    
             //launch ball to goal      
             Launch();
+            updateScore(); // updates shotAttemps/ calculates accuracy/score
+            updateScoreText();
         }
     }
     void OnCollisionEnter(Collision other)
@@ -285,7 +269,7 @@ public class basketBall : MonoBehaviour
     void Launch()
     {
         shotAttempt++;
-        updateScore(); // updates shotAttemps/ calculates accuracy/score
+       
 
         // think of it as top-down view of vectors: 
         //   we don't care about the y-component(height) of the initial and target position.
@@ -353,6 +337,23 @@ public class basketBall : MonoBehaviour
     public bool getDunk()
     {
         return dunk;
+    }
+
+    public void updateScoreText()
+    {
+        if (shotAttempt > 0)
+        {
+            float accuracy = ((shotMade / shotAttempt) * 100);
+
+            scoreText.text = "shots attempted : " + shotAttempt + "\n"
+                + "shots made : " + shotMade + "\n"
+                + "accuracy : " + Math.Round(accuracy, 2).ToString("0.00") + "%" + "\n"
+                + "points : " + totalPoints + "\n"
+                + "2 pointers : " + TwoPointerMade + " / " + TwoPointerAttempts + "\n"
+                + "3 pointers : " + ThreePointerMade + " / " + ThreePointerAttempts + "\n"
+                + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
+                + "longest shot distance : " + (Math.Round(longestShot, 2) * 6f).ToString("0.00") + " ft.";
+        }
     }
 
     public void updateScore()

@@ -9,13 +9,13 @@ public class groundcheckBB : MonoBehaviour {
     public float initialHeight, finalHeight;
 
     [SerializeField]
-    BasketBall basketball;
+    basketBall basketball;
     //Rigidbody rigidBody;
 
     void Awake()
     {
         //Debug.Log("groundcheck.cs :: Awake( )");
-        basketball = transform.root.gameObject.GetComponent<BasketBall>();
+        basketball = transform.root.gameObject.GetComponent<basketBall>();
         //rigidBody = basketball.GetComponent<Rigidbody>();
         playerState = gameManager.instance.playerState;
         //Debug.Log("playerState = " + playerState);

@@ -129,11 +129,10 @@ public class playercontrollerscript : MonoBehaviour
     // not affected by framerate
     void FixedUpdate()
     {
-
-        rigidBody.useGravity = false;
-        if (useGravity) {
-            rigidBody.AddForce(0f,gravityModifier,0f);
-        }
+        //rigidBody.useGravity = false;
+        //if (useGravity) {
+        //    rigidBody.AddForce(0f,gravityModifier,0f);
+        //}
 
         //------MOVEMENT---------------------------
         float moveHorizontal = InputManager.GetAxis("Horizontal");
@@ -161,48 +160,9 @@ public class playercontrollerscript : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
-
-        //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump") && grounded)
-            && !(InputManager.GetButtonDown("Fire1")))
-        {
-            rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
-        }
-
-        if (inAir)
-        {
-            anim.SetBool("walking", false);
-        }
-
-        //relativePositioning = bballRimVector.x - rigidBody.position.x;
-
-        // if player is falling
-        if (rigidBody.velocity.y > 0)
-        {
-            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-            finalHeight = transform.position.y;
-            //Debug.Log("intialHeight : " + initialHeight);  
-            //Debug.Log("finalHeight : " + finalHeight);
-        }
-
-        /*
-        if (rigidBody.velocity.y == 0)
-        {
-            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-            //finalHeight = basketball.transform.position.y;
-            //Debug.Log("============ player  peak : rigidBody.velocity.y == 0)");
-            Debug.Log(" ******************** PLAYER PEAK JUMP *************************** time : " + Time.deltaTime);
-            jumpPeakReached = true;
-            Debug.Log(" ******************** jumpPeakReached : " + jumpPeakReached);
-            //Debug.Log("final height:: " + finalHeight);
-            //Debug.Log("finalHeight : " + finalHeight);
-        }
-        if (grounded) { jumpPeakReached = false;  }
-        */
-
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z );
+        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -226,17 +186,34 @@ public class playercontrollerscript : MonoBehaviour
             //Debug.Log("speed ::: moonwalkMovementSpeed");
         }
 
-        //else if (currentState == bWalk)
-        //{
-        //    movementSpeed = basketballRunSpeed;
-        //    //Debug.Log("speed ::: moonwalkMovementSpeed");
-        //}
+        //------------------ jump -----------------------------------
+        if ((InputManager.GetButtonDown("Jump") && grounded)
+            && !(InputManager.GetButtonDown("Fire1")))
+        {
+            Debug.Log("player jumped");
+            rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
 
-        //else if (currentState == knockedDownState)
-        //{
-        //    movementSpeed = 0;
-        //    //Debug.Log("speed ::: 0");
-        //}
+            //rigidBody.AddForce((Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x), ForceMode.VelocityChange);
+            //rigidBody.AddForce(new Vector3(0f, 10f, 0f), ForceMode.VelocityChange);
+        }
+
+        if (inAir)
+        {
+            anim.SetBool("walking", false);
+        }
+
+        //relativePositioning = bballRimVector.x - rigidBody.position.x;
+
+        // if player is falling
+        if (rigidBody.velocity.y > 0)
+        {
+            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
+            finalHeight = transform.position.y;
+            //Debug.Log("intialHeight : " + initialHeight);  
+            //Debug.Log("finalHeight : " + finalHeight);
+        }
+
+
     }
     // =================================== END OF UPDATE() ==============================================================
 
@@ -303,19 +280,6 @@ public class playercontrollerscript : MonoBehaviour
         }
     }
 
-    /* swaps front/back attack targets depending on which way pleyer is facing
-     * this is necessary because the object flips when facing diff direction
-     * which means targets flip and screws up enemy attack queue
-     * ex.   e2 --> t1 <-- player(facing t2) --> t2  <--e1
-     * player turns to t1. 
-     *              t2 <-- player(facing t1) --> t1  
-     *      e2 ------------------------------------->
-     *              <-----------------------------------e1
-     *  enemy 1 and 2 attack targets are no longer in front of them
-     */
-
-    // --------------------Flip()
-    // flips player sprite based on direction facing
     void Flip()
     {
         //Debug.Log("void Flip()");

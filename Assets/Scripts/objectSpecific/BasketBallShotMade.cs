@@ -5,7 +5,7 @@ using UnityEngine;
 public class BasketBallShotMade : MonoBehaviour {
 
     [SerializeField]
-    BasketBall basketBall;
+    basketBall basketBall;
     public AudioClip shotMade;
     //;
     AudioSource audioSource;
@@ -20,7 +20,7 @@ public class BasketBallShotMade : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        basketBall = GameObject.Find("basketball").GetComponent<BasketBall>();
+        basketBall = GameObject.Find("basketball").GetComponent<basketBall>();
         audioSource = GetComponent<AudioSource>();
         anim =  rimSprite.GetComponent<Animator>();
         playerState = gameManager.instance.playerState;
