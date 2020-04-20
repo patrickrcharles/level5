@@ -2733,6 +2733,16 @@ PrefabInstance:
       propertyPath: TextObject
       value: 
       objectReference: {fileID: 1041441234178007}
+    - target: {fileID: 114352399790018318, guid: 9e268ed852386564d9fae045e61e4006,
+        type: 3}
+      propertyPath: threePointDistance
+      value: 3.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114352399790018318, guid: 9e268ed852386564d9fae045e61e4006,
+        type: 3}
+      propertyPath: fourPointDistance
+      value: 5.2
+      objectReference: {fileID: 0}
     - target: {fileID: 23612715215751130, guid: 9e268ed852386564d9fae045e61e4006,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -2760,7 +2770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1048882319, guid: 9e268ed852386564d9fae045e61e4006, type: 3}
       propertyPath: gravity
-      value: -9.81
+      value: -8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e268ed852386564d9fae045e61e4006, type: 3}
@@ -11592,7 +11602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullSpeed: 2
+  pullSpeed: 1.7
   pullDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &1368417065740797
 GameObject:
@@ -12916,7 +12926,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1365176844143530}
   serializedVersion: 2
-  m_Mass: 15
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1

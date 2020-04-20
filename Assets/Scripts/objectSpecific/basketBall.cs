@@ -34,7 +34,7 @@ public class basketBall : MonoBehaviour
     //float point1, point2;
 
     [SerializeField]
-    public bool TwoPoints, ThreePoints, TwoAttempt, ThreeAttempt, FourAttempt, dunk,grounded, inAir, facingFront;
+    public bool TwoPoints, ThreePoints, FourPoints, TwoAttempt, ThreeAttempt, FourAttempt, dunk,grounded, inAir, facingFront;
 
     public int totalPoints, TwoPointerMade, ThreePointerMade, FourPointerMade,
         TwoPointerAttempts, ThreePointerAttempts, FourPointerAttempts;
@@ -58,6 +58,9 @@ public class basketBall : MonoBehaviour
 
     [SerializeField]
     float ballDistanceFromRim;
+
+    [SerializeField]
+    float twoPointDistance, threePointDistance, fourPointDistance;
 
     // Use this for initialization
     void Start()
@@ -83,6 +86,7 @@ public class basketBall : MonoBehaviour
         playerDunkPos = GameObject.Find("dunk_transform");
         notlocked = true;
 
+
     }
 
     // Update is called once per frame
@@ -90,10 +94,21 @@ public class basketBall : MonoBehaviour
     {
 
         ballDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
+        // change this to reduce opacity
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
         }
+
+        if(ballDistanceFromRim < threePointDistance) { TwoPoints = true;}
+        else { TwoPoints = false; }
+
+        if (ballDistanceFromRim > threePointDistance && ballDistanceFromRim < fourPointDistance) { ThreePoints = true; }
+        else { ThreePoints = false; }
+
+        if (ballDistanceFromRim > fourPointDistance) { FourPoints = true; }
+        else { FourPoints = false; }
+
 
         if (playerState.hasBasketball && !thrown)
         {
@@ -168,47 +183,56 @@ public class basketBall : MonoBehaviour
                 ThreeAttempt = true;
                 ThreePointerAttempts++;
                 //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
-            }    
-            //launch ball to goal      
-            Launch();
-            updateScore(); // updates shotAttemps/ calculates accuracy/score
-            updateScoreText();
-        }
-
-        if (!playerState.hasBasketball && InputManager.GetKeyDown(KeyCode.R))
-        {
-
-            notlocked = false;
-            thrown = true;
-            inAir = true;
-
-            Vector3 tempPos = new Vector3(basketBallTarget.transform.position.x,
-                0, basketBallTarget.transform.position.z);
-
-            float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
-
-            lastShotDistance = tempDist;
-
-            // identify is in 2 or 3 point range for stat counters
-            if (TwoPoints)
-            {
-                //Debug.Log(" 2 point attempt");
-                TwoAttempt = true;
-                TwoPointerAttempts++;
-                //Debug.Log("TwoAttempt :: " + TwoAttempt);
             }
-            if (ThreePoints)
+            if (FourPoints)
             {
                 //Debug.Log(" 3 point attempt");
-                ThreeAttempt = true;
-                ThreePointerAttempts++;
+                FourAttempt = true;
+                FourPointerAttempts++;
                 //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
             }
+
+
             //launch ball to goal      
             Launch();
             updateScore(); // updates shotAttemps/ calculates accuracy/score
             updateScoreText();
         }
+
+        //if (!playerState.hasBasketball && InputManager.GetKeyDown(KeyCode.R))
+        //{
+
+        //    notlocked = false;
+        //    thrown = true;
+        //    inAir = true;
+
+        //    Vector3 tempPos = new Vector3(basketBallTarget.transform.position.x,
+        //        0, basketBallTarget.transform.position.z);
+
+        //    float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
+
+        //    lastShotDistance = tempDist;
+
+        //    // identify is in 2 or 3 point range for stat counters
+        //    if (TwoPoints)
+        //    {
+        //        //Debug.Log(" 2 point attempt");
+        //        TwoAttempt = true;
+        //        TwoPointerAttempts++;
+        //        //Debug.Log("TwoAttempt :: " + TwoAttempt);
+        //    }
+        //    if (ThreePoints)
+        //    {
+        //        //Debug.Log(" 3 point attempt");
+        //        ThreeAttempt = true;
+        //        ThreePointerAttempts++;
+        //        //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
+        //    }
+        //    //launch ball to goal      
+        //    Launch();
+        //    updateScore(); // updates shotAttemps/ calculates accuracy/score
+        //    updateScoreText();
+        //}
     }
     void OnCollisionEnter(Collision other)
     {
@@ -308,7 +332,6 @@ public class basketBall : MonoBehaviour
     {
         shotAttempt++;
        
-
         // think of it as top-down view of vectors: 
         //   we don't care about the y-component(height) of the initial and target position.
 

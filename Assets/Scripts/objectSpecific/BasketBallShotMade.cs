@@ -40,7 +40,7 @@ public class BasketBallShotMade : MonoBehaviour {
             if (isColliding) return;
             else { isColliding = true; } 
 
-            audioSource.PlayOneShot(shotMade);
+            audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
             if(basketBall.lastShotDistance > basketBall.longestShot)
             {
                 basketBall.longestShot = basketBall.lastShotDistance;
