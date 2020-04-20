@@ -197,6 +197,7 @@ public class playercontrollerscript : MonoBehaviour
             //rigidBody.AddForce(new Vector3(0f, 10f, 0f), ForceMode.VelocityChange);
         }
 
+
         if (inAir)
         {
             anim.SetBool("walking", false);

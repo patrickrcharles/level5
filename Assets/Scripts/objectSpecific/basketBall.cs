@@ -19,7 +19,7 @@ public class basketBall : MonoBehaviour
     [SerializeField]
     Rigidbody rb;
     [SerializeField]
-    bool thrown, notlocked;
+    public bool thrown, notlocked, canPullBall;
     [SerializeField]
     float throwSpeed;
 
@@ -56,6 +56,9 @@ public class basketBall : MonoBehaviour
     AudioSource audioSource;
     SpriteRenderer spriteRenderer;
 
+    [SerializeField]
+    float ballDistanceFromRim;
+
     // Use this for initialization
     void Start()
     {
@@ -66,7 +69,7 @@ public class basketBall : MonoBehaviour
         // position of basketball infront of player
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         //position to shoot basketball at (middle of rim)
-        basketBallTarget = GameObject.Find("basketBall_Target");
+        basketBallTarget = GameObject.Find("basketBall_target");
         //basketball drop shadow
         dropShadow = transform.Find("drop shadow").gameObject;
         //basketBallSprite = transform.FindChild("basketball_sprite").gameObject;
@@ -85,7 +88,8 @@ public class basketBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
+
+        ballDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
@@ -121,6 +125,7 @@ public class basketBall : MonoBehaviour
 
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.05f, transform.root.position.z - 0.1f);
         dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
+
 
         if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1") )
         {
@@ -169,6 +174,41 @@ public class basketBall : MonoBehaviour
             updateScore(); // updates shotAttemps/ calculates accuracy/score
             updateScoreText();
         }
+
+        if (!playerState.hasBasketball && InputManager.GetKeyDown(KeyCode.R))
+        {
+
+            notlocked = false;
+            thrown = true;
+            inAir = true;
+
+            Vector3 tempPos = new Vector3(basketBallTarget.transform.position.x,
+                0, basketBallTarget.transform.position.z);
+
+            float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
+
+            lastShotDistance = tempDist;
+
+            // identify is in 2 or 3 point range for stat counters
+            if (TwoPoints)
+            {
+                //Debug.Log(" 2 point attempt");
+                TwoAttempt = true;
+                TwoPointerAttempts++;
+                //Debug.Log("TwoAttempt :: " + TwoAttempt);
+            }
+            if (ThreePoints)
+            {
+                //Debug.Log(" 3 point attempt");
+                ThreeAttempt = true;
+                ThreePointerAttempts++;
+                //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
+            }
+            //launch ball to goal      
+            Launch();
+            updateScore(); // updates shotAttemps/ calculates accuracy/score
+            updateScoreText();
+        }
     }
     void OnCollisionEnter(Collision other)
     {
@@ -177,12 +217,22 @@ public class basketBall : MonoBehaviour
         {
             playHitRimSound = false;
             Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
-            audioSource.PlayOneShot(shotMiss);
+            audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
+            canPullBall = true;
         }
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
             inAir = false;
             grounded = true;
+            canPullBall = true;
+        }
+
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence"))
+        {
+            //inAir = false;
+            //grounded = true;
+            audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
+            canPullBall = true;
         }
     }
 
@@ -206,11 +256,9 @@ public class basketBall : MonoBehaviour
         {
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
             playerState.hasBasketball = true;
+            canPullBall = false;
             playerState.turnOffMoonWalkAudio();
 
-            //int currentScore = int.Parse(score.GetComponent<Text>() + 1); //add 1 to the score
-            //score.GetComponent<Text>() = currentScore.ToString();
-            //AudioSource.PlayClipAtPoint(basket, transform.position); //play basket sound
         }
         if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
         {
@@ -221,12 +269,7 @@ public class basketBall : MonoBehaviour
         {
             shotMade++;
         }
-        if (gameObject.name == "basketball" && other.CompareTag("basketballCourt") && !dunk)
-        {
-            //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
-            TwoPoints = true;
-            ThreePoints = false;
-        }
+
         if (gameObject.name == "basketball" && other.name.Contains("dunk_zone"))
         {
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
@@ -247,12 +290,7 @@ public class basketBall : MonoBehaviour
             playerState.hasBasketball = false;
             notlocked = true;
         }
-        if (gameObject.name == "basketball" && other.CompareTag("basketballCourt"))
-        {
-            //Debug.Log("COLLISION EXIT between : " + transform.root.name + " and " + other.name);
-            TwoPoints = false;
-            ThreePoints = true;
-        }
+
         if (gameObject.name == "basketball" && other.name.Contains("dunk_zone"))
         {
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
@@ -325,6 +363,8 @@ public class basketBall : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
 
         rb.velocity = globalVelocity;
+        //rb.AddForce(globalVelocity);
+        //rb.AddForce(globalVelocity, ForceMode.VelocityChange);
         Debug.Log("rb.velocity :: " + rb.velocity);
 
     }

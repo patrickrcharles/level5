@@ -13,10 +13,12 @@ public class callBallToPlayer : MonoBehaviour
     [SerializeField]
     Vector3 pullDirection;
     playercontrollerscript playerState;
+    basketBall basketBall;
 
     private void Start()
     {
         playerState = gameManager.instance.playerState;
+        basketBall = GameObject.Find("basketball").GetComponent<basketBall>();
         basketballRigidBody = GameObject.Find("basketball").GetComponent<Rigidbody>();
     }
 
@@ -33,7 +35,7 @@ public class callBallToPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.GetButtonDown("Fire1") && !playerState.hasBasketball )   
+        if (InputManager.GetButtonDown("Fire1") && !playerState.hasBasketball && basketBall.canPullBall  )   
         {
             pullBallToPlayer();
         }
