@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Override RR_Thom
+  m_Controller: {fileID: 9100000, guid: 1279a297bc12d904784eb4b5ad71f1a2, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: fcb560ef3ae3b1a44955d6b8aea74da1, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fe6ed6ca656faa84488130d7997184a5, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 79ee5f37ad781a245acb4cf9e0a290f7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7d51eed1b037f0949ac307c0ca92e304, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a779bc57bdeceb64b81523cd62b62a3e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 03fe4ba4c1ac4f04caf6c366011b29a0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ad91b060423b3c540a1647e17ce6df98, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 977be257917c6664fa3c30d4afeaae3a, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b0b1d1fbdb73d2c478ebf4252a9cced9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8f9669d082c90634a8c9309b13318269, type: 2}

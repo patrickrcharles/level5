@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1876319663797116}
+  m_IsPrefabAsset: 1
+--- !u!1 &1876319663797116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4580946819648928}
+  - component: {fileID: 114371285081227746}
+  - component: {fileID: 114173134184315144}
+  m_Layer: 0
+  m_Name: start_db_manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4580946819648928
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1876319663797116}
+  m_LocalRotation: {x: 0.11840396, y: -0, z: -0, w: 0.9929655}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114173134184315144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1876319663797116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d39e828247b9204780d6f70e210740e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startScreen: startScreen
+  startScreen_db: startScreen_highscores
+  startScreen_options: startScreen_options
+  level1: level1
+  level1aptExterior: level1_apt_exterior
+  level1InsideRobot: level1_robot
+  level1UnderRobot: level1_under_robot
+  level2: level2
+  level3: level3
+  level4: level4
+  level5: level5
+  level6: level6
+  level7: level7
+  level8: level8
+  miniGame_moonwalk: minigame_moonwalk
+  miniGame_russianRoulette: minigame_russian_roulette
+  levelNames: []
+--- !u!114 &114371285081227746
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1876319663797116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a258dd3438c4b418c474d39343776a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneNames: []
+  sceneIndex: 0
+  YaxisInUse: 0
+  noInputDetected: 0
+  XaxisInUse: 0
+  leftArrowButton: {fileID: 0}
+  rightArrowButton: {fileID: 0}
+  defaultButton: {fileID: 0}
+  currentButton: {fileID: 0}
+  startButton: {fileID: 0}
+  levelSelectButton: {fileID: 0}
+  currentSceneName: 
+  scenesList: {fileID: 0}

@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1232110518807176}
+  m_IsPrefabParent: 1
+--- !u!1 &1232110518807176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4278620437695704}
+  - component: {fileID: 114411093258140302}
+  m_Layer: 0
+  m_Name: level1Manager
+  m_TagString: levelManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4278620437695704
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1232110518807176}
+  m_LocalRotation: {x: 0.11840396, y: -0, z: -0, w: 0.9929655}
+  m_LocalPosition: {x: 2.09, y: 11.53, z: -2.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114411093258140302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1232110518807176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a5c481c7e51b444835ceacf87502b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMinEnemy: -6.84
+  xMaxEnemy: 25
+  zMinEnemy: -7.35
+  zMaxEnemy: 5.28
+  yMinEnemy: 0.632
+  yMaxEnemy: 6
+  xMinPlayer: -10
+  xMaxPlayer: 25
+  zMinPlayer: -4.9
+  zMaxPlayer: 0
+  yMinPlayer: 0.67
+  yMaxPlayer: 18.9
+  navMeshOffset128: 0.272
+  navMeshOffset192: 0.62
+  navMeshOffset256: 0.9
+  navMeshOffset1024: 0
+  lineOfFireRange: 0.3
+  attackRange: 0.5
+  attackShootRange: 2.5
+  bummedOutTime: 1.5
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  levelTimeScale: 0
