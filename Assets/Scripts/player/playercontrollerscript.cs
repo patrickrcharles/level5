@@ -127,7 +127,7 @@ public class playercontrollerscript : MonoBehaviour
         //rigidBody.useGravity = false;
         //if (useGravity)
         //{
-        //    Debug.Log("gravityModifier : " + gravityModifier);
+        //   //Debug.Log("gravityModifier : " + gravityModifier);
         //    //rigidBody.AddForce(0f, gravityModifier, 0f);
         //    rigidBody.AddForce(Vector3.up * gravityModifier * Time.deltaTime);
         //}
@@ -219,7 +219,14 @@ public class playercontrollerscript : MonoBehaviour
 
         if (inAir)
         {
-            setPlayerAnim("walking", true);
+            if (bballRelativePositioning > 0 && !facingRight)
+            {
+                Flip();
+            }
+            if (bballRelativePositioning < 0f && facingRight)
+            {
+                Flip();
+            }
         }
 
         // if player is falling, nto sure what this is useful for. comment out
@@ -234,7 +241,7 @@ public class playercontrollerscript : MonoBehaviour
 
     private void playerJump()
     {
-        Debug.Log("player jumped");
+       //Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
@@ -389,11 +396,11 @@ public class playercontrollerscript : MonoBehaviour
         get { return _jump; }
         set { _jump = value; }
     }
-    //public bool notLocked
-    //{
-    //    get { return _notLocked; }
-    //    set { _notLocked = value; }
-    //}
+    public bool notLocked
+    {
+        get { return _notLocked; }
+        set { _notLocked = value; }
+    }
     public bool facingRight
     {
         get { return _facingRight; }

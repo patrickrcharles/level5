@@ -18,10 +18,10 @@ public class enemyCharge : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("------------------------BEFORE ASSIGNMENT---------------------------------------------");
-        Debug.Log("----------PARENT transform : " + animatorParent.transform.position);
-        Debug.Log("==========ANIMATOR transform : " + animatorObject.transform.position);
-        Debug.Log("==========XchangeInPosition : " + XchangeInPosition);
+       //Debug.Log("------------------------BEFORE ASSIGNMENT---------------------------------------------");
+       //Debug.Log("----------PARENT transform : " + animatorParent.transform.position);
+       //Debug.Log("==========ANIMATOR transform : " + animatorObject.transform.position);
+       //Debug.Log("==========XchangeInPosition : " + XchangeInPosition);
 
         //XchangeInPosition = animatorObject.transform.position.x - animatorParent.transform.position.x;
 
@@ -33,10 +33,10 @@ public class enemyCharge : MonoBehaviour {
                 animatorParent.transform.position.z);
         */
 
-        Debug.Log("------------------------AFTER ASSIGNMENT---------------------------------------------");
-        Debug.Log("----------PARENT transform : " + animatorParent.transform.position);
-        Debug.Log("==========ANIMATOR transform : " + animatorObject.transform.position);
-        Debug.Log("==========XchangeInPosition : " + XchangeInPosition);
+       //Debug.Log("------------------------AFTER ASSIGNMENT---------------------------------------------");
+       //Debug.Log("----------PARENT transform : " + animatorParent.transform.position);
+       //Debug.Log("==========ANIMATOR transform : " + animatorObject.transform.position);
+       //Debug.Log("==========XchangeInPosition : " + XchangeInPosition);
     }
 
     void updateParentTransform()

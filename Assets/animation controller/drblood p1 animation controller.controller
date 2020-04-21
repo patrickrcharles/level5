@@ -296,6 +296,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: hasBasketball
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: basketballShoot
     m_EventTreshold: 0
@@ -530,6 +533,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: basketballShootFront
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: hasBasketball
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102514278404922348}
   m_Solo: 0
@@ -651,7 +657,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: jump
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102755987383976072}
   m_Solo: 0
@@ -920,7 +929,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: jump
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102755987383976072}
   m_Solo: 0

@@ -15,6 +15,8 @@ public class gameManager : MonoBehaviour
     public bool showScore;
     public bool startGame;
 
+    public bool playerMadeShot;
+
     string currentSceneName;
     [SerializeField]
     GameObject startMenuMusicObject;
@@ -92,14 +94,14 @@ public class gameManager : MonoBehaviour
         //// 'press chooseOpponent' screen first load for level
         //if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Cancel")))
         //    {
-        //    Debug.Log("   if ((InputManager.GetButtonDown(Submit))");
+        //   //Debug.Log("   if ((InputManager.GetButtonDown(Submit))");
         //}
 
         if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Jump")) 
             && !startGame)
         {
-            Debug.Log("gameManager.cs :::::");
-            Debug.Log("if (InputManager.GetButtonDown(Submit) && !startGame)");
+            //Debug.Log("gameManager.cs :::::");
+            //Debug.Log("if (InputManager.GetButtonDown(Submit) && !startGame)");
             backgroundFade.SetActive(false);
             startGame = true;
             Time.timeScale = 1;

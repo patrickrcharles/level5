@@ -67,7 +67,7 @@ public class continueGame : MonoBehaviour
 
     IEnumerator PlayerContinue()
     {
-        Debug.Log("+++++++++++++++++++++++  PRESSED ENTER TO CONTINUE ++++++++++++++++++++++++++++++++++++++");
+       //Debug.Log("+++++++++++++++++++++++  PRESSED ENTER TO CONTINUE ++++++++++++++++++++++++++++++++++++++");
         //decrement remaingin lives
 
         guiOn = false;
@@ -93,7 +93,7 @@ public class continueGame : MonoBehaviour
 
 
         //playerState.playerHitbox.SetActive(true);
-        Debug.Log("hitbox enabled in ContinueGame.cs");
+       //Debug.Log("hitbox enabled in ContinueGame.cs");
 
     }
 

@@ -189,9 +189,9 @@ public class basketBall : MonoBehaviour
             if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1"))
         {
             releaseVelocityY = playerState.rigidBodyYVelocity;
-            Debug.Log("releaseVelocityY : " + releaseVelocityY);
+           //Debug.Log("releaseVelocityY : " + releaseVelocityY);
 
-            Debug.Log("shoot ball");
+           //Debug.Log("shoot ball");
             playerState.hasBasketball = false;
             playerState.setPlayerAnim("hasBasketball", false);
 
@@ -349,7 +349,7 @@ public class basketBall : MonoBehaviour
     void Launch()
     {
         shotAttempt++;
-        Debug.Log("shotAttempt++;");
+       //Debug.Log("shotAttempt++;");
 
         // think of it as top-down view of vectors: 
         //   we don't care about the y-component(height) of the initial and target position.
@@ -426,7 +426,7 @@ public class basketBall : MonoBehaviour
         if (ThreePoints) { accuracyModifier = (100 - shooterProfile.accuracy3pt) * 0.01f; }
         if (FourPoints) { accuracyModifier = (100 - shooterProfile.accuracy4pt) * 0.01f; }
 
-        Debug.Log("accuracyModifier : " + accuracyModifier);
+       //Debug.Log("accuracyModifier : " + accuracyModifier);
         return (accuracyModifier / 2) * direction;
     }
 
@@ -440,7 +440,7 @@ public class basketBall : MonoBehaviour
         int shotDirectionModifier = list[finder];
         //Debug.Log("     finder : " + finder);
         //Debug.Log("     list : " + list);
-        Debug.Log("     shotDirectionModifier : " + shotDirectionModifier);
+       //Debug.Log("     shotDirectionModifier : " + shotDirectionModifier);
         return shotDirectionModifier;
     }
 

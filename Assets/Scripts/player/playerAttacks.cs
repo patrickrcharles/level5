@@ -74,9 +74,9 @@
 //        //Debug.Log("IEnumerator Smoking()");
 //        yield return new WaitForSeconds(.3f);
 //        //gameObject.GetComponent<Stats>().health -= Time.deltaTime * player.chargeSpeed;
-//        Debug.Log("player stats 1 :: " + player.getStats().health);
+//       //Debug.Log("player stats 1 :: " + player.getStats().health);
 //        player.getStats().health -= Time.deltaTime * player.chargeSpeed;
-//        Debug.Log("player stats 2 :: " + player.getStats().health);
+//       //Debug.Log("player stats 2 :: " + player.getStats().health);
 //        player.smokingEnabled = false;
 //    }
 
@@ -115,7 +115,7 @@
 //    }
 //    public void  Attack5Melee()
 //    {
-//        Debug.Log("Attack5Melee()");
+//       //Debug.Log("Attack5Melee()");
 //        if (player.currentMelee == "rightPunch")
 //        {
 //            anim.SetBool("attack2", true);
@@ -141,7 +141,7 @@
 //        }
 //        else
 //        {
-//            Debug.Log("else ::::: notLocked = true;");
+//           //Debug.Log("else ::::: notLocked = true;");
 //            notLocked = true;
 //        }
 //    }
@@ -169,15 +169,15 @@
 //        uiInventory.currentWeaponAmmo.text = "x " + weapons.gunAmmoCapacity.ToString();
 //        projectile.GetComponent<projectile>().shooter = "Player";
 
-//        Debug.Log("current weapon = " + player.currentWeapon);
-//        Debug.Log("current ammo = " + weapons.gunAmmoCapacity);
+//       //Debug.Log("current weapon = " + player.currentWeapon);
+//       //Debug.Log("current ammo = " + weapons.gunAmmoCapacity);
 //    }
 
 //    //todo: remove all the convoluted weapon stuff and start implementing system of only
 //    //using available weapons instead of all. need to implement inventory finally
 //    public void  projectileWeapon()
 //    {
-//        Debug.Log("public void  projectileWeapon()");
+//       //Debug.Log("public void  projectileWeapon()");
 //        // check ammo and decrease on fire
 //        if (weapons.gunAmmoCapacity > 0 && notLocked)
 //        {
@@ -232,19 +232,19 @@
 
 //    public void  ShootProjectile()
 //    {
-//        Debug.Log("public void  ShootProjectile()");
+//       //Debug.Log("public void  ShootProjectile()");
 //        //StartCoroutine(WeaponCooldown(weaponCoolDown));
 //        notLocked = false;
 //        if (currentWeapon != "rocketLauncher")
 //        {
 //            Instantiate(projectile, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-//            Debug.Log("Instantiate(" + projectile + ", " + projectileSpawnPoint.position + ", " + projectileSpawnPoint.rotation + ");");
+//           //Debug.Log("Instantiate(" + projectile + ", " + projectileSpawnPoint.position + ", " + projectileSpawnPoint.rotation + ");");
 //        }
 //        else
 //        {
 //            Instantiate(rocket, rocketSpawnPoint.position, rocketSpawnPoint.rotation);
 //            AudioSource.PlayClipAtPoint(SFX.Instance.rocketLauncher, this.transform.position);
-//            Debug.Log("Instantiate(" + rocket + ", " + rocketSpawnPoint.position + ", " + rocketSpawnPoint.rotation + ");");
+//           //Debug.Log("Instantiate(" + rocket + ", " + rocketSpawnPoint.position + ", " + rocketSpawnPoint.rotation + ");");
 //        }
 //        weapons.gunAmmoCapacity -= 1;
 //        uiInventory.currentWeaponAmmo.text = "x " + weapons.gunAmmoCapacity.ToString();
@@ -260,7 +260,7 @@
 //        notLocked = false;
 //        for (int i = 0; i < numProjectiles; i++)
 //        {
-//            Debug.Log("for (int i = 0; i < numProjectiles; i++) : " + currentWeapon + " ammo  = " + gunAmmoCapacity);
+//           //Debug.Log("for (int i = 0; i < numProjectiles; i++) : " + currentWeapon + " ammo  = " + gunAmmoCapacity);
 
 //            if (gunAmmoCapacity > 0 && anim.GetBool("shoot"))
 //            {
@@ -270,9 +270,9 @@
 //                    weapons.gunAmmoCapacity -= 1;
 //                }
 //                uiInventory.currentWeaponAmmo.text = "x " + weapons.gunAmmoCapacity.ToString();
-//                Debug.Log("if (gunAmmoCapacity > 0) : " + currentWeapon + " ammo  = " + gunAmmoCapacity);
+//               //Debug.Log("if (gunAmmoCapacity > 0) : " + currentWeapon + " ammo  = " + gunAmmoCapacity);
 //                projectile.GetComponent<projectile>().shooter = "Player";
-//                Debug.Log("shooter = " + projectile.GetComponent<projectile>().shooter);
+//               //Debug.Log("shooter = " + projectile.GetComponent<projectile>().shooter);
 //                yield return new WaitForSeconds(burstFireWait);
 //            }
 //        }
@@ -336,16 +336,16 @@
 //        //re-enable movement
 //        notLocked = true;
 
-//        Debug.Log("     anim.SetBool(shoot, true); = " + anim.GetBool("shoot"));
+//       //Debug.Log("     anim.SetBool(shoot, true); = " + anim.GetBool("shoot"));
 //    }
 
 //    // -----------------generic wait coroutine ----------------------------
 //    IEnumerator Wait(float seconds)
 //    {
-//        Debug.Log("1 - Wait() : " + Time.time);
+//       //Debug.Log("1 - Wait() : " + Time.time);
 //        yield return new WaitForSecondsRealtime(seconds);
 //        soundPlayed = true;
 //        notLocked = true;
-//        Debug.Log("2 - Wait() : " + Time.time);
+//       //Debug.Log("2 - Wait() : " + Time.time);
 //    }
 //}

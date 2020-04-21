@@ -36,7 +36,7 @@ public class pauseMenu : MonoBehaviour
             || InputManager.GetButtonDown("Cancel") 
             || InputManager.GetKeyDown(KeyCode.Escape)))
         {
-            Debug.Log("pauseMenu.cs :: if (submit, cancel, esc");
+           //Debug.Log("pauseMenu.cs :: if (submit, cancel, esc");
             paused = togglePause();
         }
 
@@ -52,7 +52,7 @@ public class pauseMenu : MonoBehaviour
             foreach (GameObject lvl in lvlmanger)
             {
                 Destroy(lvl);
-                Debug.Log("lvlmanger " + lvl.name);
+               //Debug.Log("lvlmanger " + lvl.name);
             }
 
 
@@ -61,7 +61,7 @@ public class pauseMenu : MonoBehaviour
             foreach (GameObject player in players)
             {
                 Destroy(player);
-                Debug.Log("player " + player.name);
+               //Debug.Log("player " + player.name);
             }
 
             SceneManager.LoadScene("startScreen");
@@ -80,7 +80,7 @@ public class pauseMenu : MonoBehaviour
             foreach (GameObject lvl in lvlmanger)
             {
                 Destroy(lvl);
-                Debug.Log("lvlmanger " + lvl.name);
+               //Debug.Log("lvlmanger " + lvl.name);
             }
             
 
@@ -89,7 +89,7 @@ public class pauseMenu : MonoBehaviour
             foreach (GameObject player in players)
             {
                 Destroy(player);
-                Debug.Log("player " + player.name);
+               //Debug.Log("player " + player.name);
             }
 
             SceneManager.LoadScene("startScreen");
@@ -107,7 +107,7 @@ public class pauseMenu : MonoBehaviour
             //could destroy levelmanager object but i dont think i need to since it's the same level
             //StartCoroutine(Wait(1));
 
-            Debug.Log("reload scene");
+           //Debug.Log("reload scene");
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 

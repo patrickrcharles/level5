@@ -12,7 +12,7 @@ public class groundcheck : MonoBehaviour {
 
     void Awake()
     {
-        Debug.Log("groundcheck.cs :: Awake( )");
+        //Debug.Log("groundcheck.cs :: Awake( )");
         player = gameManager.instance.player;
 
         //Debug.Log("player = "+ player.name);
@@ -40,7 +40,7 @@ public class groundcheck : MonoBehaviour {
         //    //updates "highest point" as long at player still moving upwards ( velcoity > 0)
         //    //finalHeight = basketball.transform.position.y;
         //    //Debug.Log("============ player  peak : rigidBody.velocity.y == 0)");
-        //    Debug.Log("============ player  jump peak : velocity y " + rigidBody.velocity.y);
+        //   //Debug.Log("============ player  jump peak : velocity y " + rigidBody.velocity.y);
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
 
@@ -49,8 +49,8 @@ public class groundcheck : MonoBehaviour {
             //updates "highest point" as long at player still moving upwards ( velcoity > 0)
             //finalHeight = basketball.transform.position.y;
             //Debug.Log("============ player  peak : rigidBody.velocity.y == 0)");
-            Debug.Log(" ******************** PLAYER PEAK JUMP ***************************");
-            Debug.Log("final height:: " + finalHeight);
+           //Debug.Log(" ******************** PLAYER PEAK JUMP ***************************");
+           //Debug.Log("final height:: " + finalHeight);
             //Debug.Log("finalHeight : " + finalHeight);
         }
         */
