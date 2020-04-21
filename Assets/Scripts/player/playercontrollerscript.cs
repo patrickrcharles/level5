@@ -12,8 +12,8 @@ public class playercontrollerscript : MonoBehaviour
     AnimatorStateInfo currentStateInfo;
     GameObject dropShadow;
     AudioSource moonwalkAudio;
-    continueGame continueGame;
-    GUIStyle guiStyle = new GUIStyle();
+    //continueGame continueGame;
+    //GUIStyle guiStyle = new GUIStyle();
     [SerializeField]
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
@@ -34,8 +34,8 @@ public class playercontrollerscript : MonoBehaviour
     public float basketballRunSpeed;
     public float walkMovementSpeed;
     public float attackMovementSpeed;
-    public float attackCooldown;
-    public float chargeSpeed;
+    //public float attackCooldown;
+    //public float chargeSpeed;
 
     /* ::: level boundary clamping
      the only current use for this smokebomb, because of the random direction
@@ -44,29 +44,24 @@ public class playercontrollerscript : MonoBehaviour
     check if the transform is null (nothing is occupying the space)
     */
 
-    [SerializeField]
-    float xMin, xMax, zMin, zMax, yMin, yMax;
+    //[SerializeField]
+    //float xMin, xMax, zMin, zMax, yMin, yMax;
 
     // player state bools
     bool moonwalking, blocking;
     public bool hasBasketball;
-    public bool smokingEnabled = true;
+    //public bool smokingEnabled = true;
     public bool soundPlayed;
-    public bool canMove;
+    public bool canMove; // save this when i cars that can knock player down
 
     [SerializeField]
     Vector3 bballRimVector;
     [SerializeField]
-    float relativePositioning;
+    float bballRelativePositioning;
+    [SerializeField]
+    Vector3 playerRelativePositioning;
 
-    //hitbox (take damage)
     public GameObject playerHitbox;
-
-    // spawn psotions for projectiles
-    public Transform projectileSpawnPoint, rocketSpawnPoint, throwSpawnPoint;
-
-    // projectiles
-    public GameObject projectile, rocket, molotov;
 
     // control movement speed based on state
     static int currentState;
@@ -98,36 +93,32 @@ public class playercontrollerscript : MonoBehaviour
     [SerializeField]
     bool useGravity = true;
 
+    private float _rigidBodyYVelocity;
+    [SerializeField]
+    bool facingFront;
     shooterProfile shooterProfile;
     basketBall basketball;
-    private float _rigidBodyYVelocity;
 
     void Start()
     {
-        // sets player limits from level manager. eventually remove by setting up
-        // collider boundaries
-        //setPlayerBounds(); // can remove once physical colliders finished
-        notLocked = true; // default needs to be true
+        rigidBody = GetComponent<Rigidbody>();
+        moonwalkAudio = GetComponent<AudioSource>();
+        anim = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
         basketball = GameObject.Find("basketball").GetComponent<basketBall>();
-
         shooterProfile = GameObject.Find("basketball").GetComponent<shooterProfile>();
-        setShooterProfileStats();
-
-        dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
-
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        setShooterProfileStats();
+
+        dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;
-        rigidBody = GetComponent<Rigidbody>();
-        moonwalkAudio = GetComponent<AudioSource>();
-        anim = GetComponentInChildren<Animator>();
         //continueGame = gameManager.instance.GetComponentInChildren<continueGame>();
-
     }
 
     // not affected by framerate
@@ -147,7 +138,6 @@ public class playercontrollerscript : MonoBehaviour
         Vector3 movement;
 
         movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
-        //Debug.Log("transform.position + movement :: " + transform.position + movement);
 
         rigidBody.MovePosition(transform.position + movement);
         /*
@@ -175,19 +165,36 @@ public class playercontrollerscript : MonoBehaviour
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
 
-        relativePositioning = bballRimVector.x - rigidBody.position.x;
+        bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
+        playerRelativePositioning =  rigidBody.position - bballRimVector;
 
-        if (rigidBodyYVelocity < 0 && inAir)
-        {
+        //player reaches peak of jump. this will be useful for creating AI with auto shoot
+        if (rigidBodyYVelocity < 0 && inAir) {
             jumpPeakReached = true;
-            //Debug.Log("jump peak reached");
         }
-        else
-        {
+        else{
             jumpPeakReached = false;
         }
-        //Debug.Log("-------------- animation state :: " + currentState);
-        //Debug.Log("-------------- bwalk :: " + bWalk);
+
+        // determine if player animation is shooting from or facing basket
+        if (Math.Abs(playerRelativePositioning.x) < 2 &&
+            Math.Abs(playerRelativePositioning.z) > 2)
+        {
+            facingFront = true;
+        }
+        else{
+            facingFront = false ;
+        }
+
+        // set player shoot anim based on position
+        if (facingFront) // facing straight toward bball goal
+        {
+            setPlayerAnimTrigger("basketballShootFront");
+        }
+        else // side of goal, relative postion
+        {
+            setPlayerAnimTrigger("basketballShoot");
+        }
 
         // ----- control speed based on commands----------
         if (currentState == idleState
@@ -201,56 +208,46 @@ public class playercontrollerscript : MonoBehaviour
         else if (currentState == mWalk)
         {
             movementSpeed = moonwalkMovementSpeed;
-            //Debug.Log("speed ::: moonwalkMovementSpeed");
         }
 
         //------------------ jump -----------------------------------
         if ((InputManager.GetButtonDown("Jump") && grounded)
             && !(InputManager.GetButtonDown("Fire1")))
         {
-
-            Debug.Log("player jumped");
-            if (relativePositioning > 0 && !facingRight)
-            {
-                //Debug.Log("if (moveHorz > 0 && !facingRight && canMove)");     
-                Flip();
-            }
-            if (relativePositioning < 0f && facingRight)
-            {
-                //Debug.Log("if (moveHorz < 0f && facingRight && canMove)");
-                Flip();
-            }
-
-            rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
-
-            //rigidBody.AddForce((Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x), ForceMode.VelocityChange);
-            //rigidBody.AddForce(new Vector3(0f, 10f, 0f), ForceMode.VelocityChange);
+            playerJump();
         }
-
 
         if (inAir)
         {
-            anim.SetBool("walking", false);
+            setPlayerAnim("walking", true);
         }
 
-        //relativePositioning = bballRimVector.x - rigidBody.position.x;
+        // if player is falling, nto sure what this is useful for. comment out
+        //if (rigidBody.velocity.y > 0)
+        //{
+        //    //updates "highest point" as long at player still moving upwards ( velcoity > 0)
+        //    finalHeight = transform.position.y;
+        //    //Debug.Log("intialHeight : " + initialHeight);  
+        //    //Debug.Log("finalHeight : " + finalHeight);
+        //}
+    }
 
-        // if player is falling
-        if (rigidBody.velocity.y > 0)
+    private void playerJump()
+    {
+        Debug.Log("player jumped");
+        if (bballRelativePositioning > 0 && !facingRight)
         {
-            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-            finalHeight = transform.position.y;
-            //Debug.Log("intialHeight : " + initialHeight);  
-            //Debug.Log("finalHeight : " + finalHeight);
+            Flip();
         }
-
-
+        if (bballRelativePositioning < 0f && facingRight)
+        {
+            Flip();
+        }
+        rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         if (other.name.Contains("facingFront"))
         {
             basketball.facingFront = true;
@@ -260,51 +257,39 @@ public class playercontrollerscript : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-
         if (other.name.Contains("facingFront"))
         {
             basketball.facingFront = false;
             setPlayerAnim("basketballFacingFront", false);
         }
-
     }
-
-
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)
     {
-
         // if moving/ not holding item. bool holdingItem set in AtttackCollision.cs
         if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
         {
             if (!inAir) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
-                //walking = true;
-                //Debug.Log("anim.SetBool(walking, true) = " + anim.GetBool("walking"));
             }
         }
         else
         {
             anim.SetBool("walking", false);
-            //walking = false;
-            //Debug.Log("anim.SetBool(walking, true) = " + anim.GetBool("walking"));
         }
 
         if (moveHorz > 0 && !facingRight && canMove)
-        {
-            //Debug.Log("if (moveHorz > 0 && !facingRight && canMove)");     
+        {  
             Flip();
         }
         if (moveHorz < 0f && facingRight && canMove)
         {
-            //Debug.Log("if (moveHorz < 0f && facingRight && canMove)");
             Flip();
         }
         if ((InputManager.GetButton("Run") && canMove && !inAir))
         {
-            //Debug.Log("if ((InputManager.GetButton(Run)");
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);
@@ -333,8 +318,6 @@ public class playercontrollerscript : MonoBehaviour
 
     void Flip()
     {
-        //Debug.Log("void Flip()");
-
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
@@ -355,29 +338,26 @@ public class playercontrollerscript : MonoBehaviour
 
     //-------------------play animation function ------------------------------
     // provide access to what should be private animator
-
     public void playAnim(string animationName)
     {
         anim.Play(animationName);
     }
-
-    // -----------------generic wait coroutine ----------------------------
-    IEnumerator Wait(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        soundPlayed = true;
-        notLocked = true;
-    }
-
-    void setPlayerBounds()
-    {
-        xMin = levelManager.instance.xMinPlayer;
-        xMax = levelManager.instance.xMaxPlayer;
-        yMin = levelManager.instance.yMinPlayer;
-        yMax = levelManager.instance.yMaxPlayer;
-        zMin = levelManager.instance.zMinPlayer;
-        zMax = levelManager.instance.zMaxPlayer;
-    }
+    //// -----------------generic wait coroutine ----------------------------
+    //IEnumerator Wait(float seconds)
+    //{
+    //    yield return new WaitForSecondsRealtime(seconds);
+    //    soundPlayed = true;
+    //    notLocked = true;
+    //}
+    //void setPlayerBounds()
+    //{
+    //    xMin = levelManager.instance.xMinPlayer;
+    //    xMax = levelManager.instance.xMaxPlayer;
+    //    yMin = levelManager.instance.yMinPlayer;
+    //    yMax = levelManager.instance.yMaxPlayer;
+    //    zMin = levelManager.instance.zMinPlayer;
+    //    zMax = levelManager.instance.zMaxPlayer;
+    //}
 
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
@@ -392,7 +372,6 @@ public class playercontrollerscript : MonoBehaviour
         jumpForce = shooterProfile.jumpForce;
         gravityModifier = shooterProfile.hangTime;
         _angle = shooterProfile.shootAngle;
-
     }
     public bool grounded
     {
@@ -410,11 +389,11 @@ public class playercontrollerscript : MonoBehaviour
         get { return _jump; }
         set { _jump = value; }
     }
-    public bool notLocked
-    {
-        get { return _notLocked; }
-        set { _notLocked = value; }
-    }
+    //public bool notLocked
+    //{
+    //    get { return _notLocked; }
+    //    set { _notLocked = value; }
+    //}
     public bool facingRight
     {
         get { return _facingRight; }

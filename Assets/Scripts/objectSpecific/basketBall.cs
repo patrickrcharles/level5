@@ -104,7 +104,7 @@ public class basketBall : MonoBehaviour
         notlocked = true;
         canPullBall = true;
 
-        shootProfileText.text = "distance : " + (Math.Round(ballDistanceFromRim, 2)) + "\n"
+        shootProfileText.text = "ball distance : " + (Math.Round(ballDistanceFromRim, 2)) + "\n"
             + "shot distance : " + (Math.Round(ballDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
             + "shooter : Dr Blood\n"
             + "2 point accuracy : " + ((1 - shooterProfile.accuracy2pt) * 100) + "\n"
@@ -122,7 +122,6 @@ public class basketBall : MonoBehaviour
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
-
         }
 
 
@@ -196,14 +195,14 @@ public class basketBall : MonoBehaviour
             playerState.hasBasketball = false;
             playerState.setPlayerAnim("hasBasketball", false);
 
-            if (facingFront) // facing straight toward bball goal
-            {
-                playerState.setPlayerAnimTrigger("basketballShootFront");
-            }
-            else // side of goal, relative postion
-            {
-                playerState.setPlayerAnimTrigger("basketballShoot");
-            }
+            //if (facingFront) // facing straight toward bball goal
+            //{
+            //    playerState.setPlayerAnimTrigger("basketballShootFront");
+            //}
+            //else // side of goal, relative postion
+            //{
+            //    playerState.setPlayerAnimTrigger("basketballShoot");
+            //}
 
             //launch ball to goal      
             Launch();
