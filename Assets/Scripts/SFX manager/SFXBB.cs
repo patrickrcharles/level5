@@ -10,6 +10,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip basketballHitRim;
     public AudioClip basketballHitFence;
     public AudioClip basketballNetSwish;
+    public AudioClip cameraFlash;
 
     //public List<AudioClip> vanMusicPlayList;
 
@@ -18,13 +19,11 @@ public class SFXBB : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
-        //Debug.Log("flamethrower_idle.length" + flamethrower_idle.length);
     }
 
     private void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
-        //audioSource.volume = 0;
     }
 
 }

@@ -37,12 +37,8 @@ public class BasketBallShotMade : MonoBehaviour {
         //Debug.Log("========================== BasketBall: " + transform.name + " and " + other.gameObject.name);
         if (other.gameObject.name == "basketball" && !playerState.hasBasketball && !isColliding  )
         {
-
             if (isColliding) return;
             else { isColliding = true; }
-
-            //basketBall.shotMade++;
-            Debug.Log("basketBall.shotMade++;");
 
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
             if(basketBall.lastShotDistance > basketBall.longestShot)
@@ -50,7 +46,7 @@ public class BasketBallShotMade : MonoBehaviour {
                 basketBall.longestShot = basketBall.lastShotDistance;
             }
             anim.Play("madeshot");
-            Debug.Log(" made a shot!");
+           Debug.Log(" made a shot!");
             //Debug.Log("two: "+ basketBall.TwoAttempt 
             //    + " three: " + basketBall.ThreeAttempt 
             //    + " four: " + basketBall.FourAttempt  );
@@ -60,7 +56,7 @@ public class BasketBallShotMade : MonoBehaviour {
 
             if (basketBall.TwoAttempt)
             {
-                Debug.Log("2 pointer made");
+               //Debug.Log("2 pointer made");
                 basketBall.totalPoints += 2;
                 basketBall.TwoPointerMade++;
                 basketBall.addToShotMade(1);
@@ -68,22 +64,26 @@ public class BasketBallShotMade : MonoBehaviour {
             }
             if (basketBall.ThreeAttempt)
             {
-                Debug.Log("3 pointer made");
+               //Debug.Log("3 pointer made");
                 basketBall.totalPoints += 3;
                 basketBall.ThreePointerMade++;
                 basketBall.addToShotMade(1);
             }
             if (basketBall.FourAttempt)
             {
-                Debug.Log("4 pointer made");
+               //Debug.Log("4 pointer made");
                 basketBall.totalPoints += 4;
                 basketBall.FourPointerMade++;
                 basketBall.addToShotMade(1);
+
             }
             basketBall.TwoAttempt = false;
             basketBall.ThreeAttempt = false;
             basketBall.FourAttempt = false;
             basketBall.updateScoreText();
+
+            //Jessica might take a photo
+            behavior_jessica.instance.playAnimationTakePhoto();
         }
     }
 }
