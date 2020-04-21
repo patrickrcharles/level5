@@ -34,7 +34,7 @@ public class BasketBallShotMade : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("========================== BasketBall: " + transform.name + " and " + other.gameObject.name);
+        //Debug.Log("========================== BasketBall: " + transform.name + " and " + other.gameObject.name);
         if (other.gameObject.name == "basketball" && !playerState.hasBasketball && !isColliding  )
         {
             if (isColliding) return;
@@ -47,9 +47,9 @@ public class BasketBallShotMade : MonoBehaviour {
             }
             anim.Play("madeshot");
             Debug.Log(" made a shot!");
-            Debug.Log("two: "+ basketBall.TwoAttempt 
-                + " three: " + basketBall.ThreeAttempt 
-                + " four: " + basketBall.FourAttempt  );
+            //Debug.Log("two: "+ basketBall.TwoAttempt 
+            //    + " three: " + basketBall.ThreeAttempt 
+            //    + " four: " + basketBall.FourAttempt  );
             /* trigger net swish animation + sfx
              *  update score
              */

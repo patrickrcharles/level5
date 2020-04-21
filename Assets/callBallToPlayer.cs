@@ -28,8 +28,8 @@ public class callBallToPlayer : MonoBehaviour
         Vector3 tempDirection = basketballRigidBody.transform.position;
         pullDirection = transform.position - tempDirection;
 
-        Debug.Log("pullDirection" + pullDirection);
-        Debug.Log("player Direction" + transform.position);
+        //Debug.Log("pullDirection" + pullDirection);
+        //Debug.Log("player Direction" + transform.position);
         basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
 

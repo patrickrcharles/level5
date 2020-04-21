@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class shooterProfile : MonoBehaviour
 {
-
     public float accuracy2pt;
     public float accuracy3pt;
     public float accuracy4pt;
@@ -12,8 +11,9 @@ public class shooterProfile : MonoBehaviour
     public float jumpForce;
     public float speed;
     public float runSpeed;
-    public float gravity;
-    public float strength;
+    public float hangTime;
+    public float range;
+    public float release;
 
     public float shootAngle;
     public float shootXVariance;
@@ -30,19 +30,6 @@ public class shooterProfile : MonoBehaviour
     public float ShootXVariance { get => shootXVariance; set => shootXVariance = value; }
     public float ShootYVariance { get => shootYVariance; set => shootYVariance = value; }
     public float ShootZVariance { get => shootZVariance; set => shootZVariance = value; }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 
 }

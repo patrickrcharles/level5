@@ -95,9 +95,12 @@ public class playercontrollerscript : MonoBehaviour
     // custom gravity for player from shooterprofile
     public float gravityModifier;
     public bool jumpPeakReached = false;
+    [SerializeField]
     bool useGravity = true;
 
     shooterProfile shooterProfile;
+
+    private float _rigidBodyYVelocity;
 
     void Start()
     {
@@ -130,8 +133,11 @@ public class playercontrollerscript : MonoBehaviour
     void FixedUpdate()
     {
         //rigidBody.useGravity = false;
-        //if (useGravity) {
-        //    rigidBody.AddForce(0f,gravityModifier,0f);
+        //if (useGravity)
+        //{
+        //    Debug.Log("gravityModifier : " + gravityModifier);
+        //    //rigidBody.AddForce(0f, gravityModifier, 0f);
+        //    rigidBody.AddForce(Vector3.up * gravityModifier * Time.deltaTime);
         //}
 
         //------MOVEMENT---------------------------
@@ -340,7 +346,7 @@ public class playercontrollerscript : MonoBehaviour
         walkMovementSpeed = shooterProfile.speed;
         basketballRunSpeed = shooterProfile.runSpeed;
         jumpForce = shooterProfile.jumpForce;
-        gravityModifier = shooterProfile.gravity;
+        gravityModifier = shooterProfile.hangTime;
         _angle = shooterProfile.shootAngle;
 
     }
@@ -369,5 +375,10 @@ public class playercontrollerscript : MonoBehaviour
     {
         get { return _facingRight; }
         set { _facingRight = value; }
+    }
+
+    public float rigidBodyYVelocity
+    {
+        get { return rigidBody.velocity.y; }
     }
 }
