@@ -122,7 +122,10 @@ public class basketBall : MonoBehaviour
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
+
         }
+
+
 
         updateScoreText();
 
@@ -176,8 +179,15 @@ public class basketBall : MonoBehaviour
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.05f, transform.root.position.z - 0.1f);
         dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
 
+        // =========== this is the conditional for auto shooting =============================
+        // this will work great for  playing against CPU
 
-        if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1"))
+        //if (playerState.inAir && playerState.hasBasketball && playerState.jumpPeakReached)
+        //{
+        //}
+
+
+            if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1"))
         {
             releaseVelocityY = playerState.rigidBodyYVelocity;
             Debug.Log("releaseVelocityY : " + releaseVelocityY);
@@ -289,8 +299,8 @@ public class basketBall : MonoBehaviour
         {
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
             playerState.hasBasketball = true;
-            canPullBall = false;
             playerState.turnOffMoonWalkAudio();
+            canPullBall = false;
 
         }
         if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
@@ -298,17 +308,17 @@ public class basketBall : MonoBehaviour
             grounded = true;
         }
 
-        if (gameObject.name.Contains("basketBallMadeShot") && other.gameObject.name == "basketball")
-        {
-            shotMade++;
-        }
+        //if (gameObject.name.Contains("basketBallMadeShot") && other.gameObject.name == "basketball")
+        //{
+        //    shotMade++;
+        //}
 
         if (gameObject.name == "basketball" && other.name.Contains("dunk_zone"))
         {
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
             dunk = true;
         }
-        if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
+        if ( gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
         {
             facingFront = true;
             playerState.setPlayerAnim("basketballFacingFront", true);
@@ -374,16 +384,16 @@ public class basketBall : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        Debug.Log("Vz :: " + Vz);
-        Debug.Log("Vy :: " + Vy);
+        //Debug.Log("Vz :: " + Vz);
+        //Debug.Log("Vy :: " + Vy);
 
-        Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);
+        //Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);
 
         // X accuracy
         float accuracyModifier = getAccuracyModifier();
         // y accuracy
 
-        float xVector = 0 + accuracyModifier;
+        float xVector = 0; // + accuracyModifier;
         float yVector = Vy; //+ (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz; //+ (accuracyModifier * shooterProfile.shootZVariance);
 

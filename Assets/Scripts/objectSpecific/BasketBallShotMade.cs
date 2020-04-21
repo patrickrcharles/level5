@@ -37,8 +37,12 @@ public class BasketBallShotMade : MonoBehaviour {
         //Debug.Log("========================== BasketBall: " + transform.name + " and " + other.gameObject.name);
         if (other.gameObject.name == "basketball" && !playerState.hasBasketball && !isColliding  )
         {
+
             if (isColliding) return;
-            else { isColliding = true; } 
+            else { isColliding = true; }
+
+            //basketBall.shotMade++;
+            Debug.Log("basketBall.shotMade++;");
 
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
             if(basketBall.lastShotDistance > basketBall.longestShot)

@@ -99,7 +99,7 @@ public class playercontrollerscript : MonoBehaviour
     bool useGravity = true;
 
     shooterProfile shooterProfile;
-
+    basketBall basketball;
     private float _rigidBodyYVelocity;
 
     void Start()
@@ -108,6 +108,7 @@ public class playercontrollerscript : MonoBehaviour
         // collider boundaries
         //setPlayerBounds(); // can remove once physical colliders finished
         notLocked = true; // default needs to be true
+        basketball = GameObject.Find("basketball").GetComponent<basketBall>();
 
         shooterProfile = GameObject.Find("basketball").GetComponent<shooterProfile>();
         setShooterProfileStats();
@@ -174,6 +175,17 @@ public class playercontrollerscript : MonoBehaviour
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
 
+        relativePositioning = bballRimVector.x - rigidBody.position.x;
+
+        if (rigidBodyYVelocity < 0 && inAir)
+        {
+            jumpPeakReached = true;
+            //Debug.Log("jump peak reached");
+        }
+        else
+        {
+            jumpPeakReached = false;
+        }
         //Debug.Log("-------------- animation state :: " + currentState);
         //Debug.Log("-------------- bwalk :: " + bWalk);
 
@@ -196,7 +208,19 @@ public class playercontrollerscript : MonoBehaviour
         if ((InputManager.GetButtonDown("Jump") && grounded)
             && !(InputManager.GetButtonDown("Fire1")))
         {
+
             Debug.Log("player jumped");
+            if (relativePositioning > 0 && !facingRight)
+            {
+                //Debug.Log("if (moveHorz > 0 && !facingRight && canMove)");     
+                Flip();
+            }
+            if (relativePositioning < 0f && facingRight)
+            {
+                //Debug.Log("if (moveHorz < 0f && facingRight && canMove)");
+                Flip();
+            }
+
             rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
 
             //rigidBody.AddForce((Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x), ForceMode.VelocityChange);
@@ -222,8 +246,28 @@ public class playercontrollerscript : MonoBehaviour
 
 
     }
-    // =================================== END OF UPDATE() ==============================================================
 
+    private void OnTriggerEnter(Collider other)
+    {
+
+
+        if (other.name.Contains("facingFront"))
+        {
+            basketball.facingFront = true;
+            setPlayerAnim("basketballFacingFront", true);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+
+        if (other.name.Contains("facingFront"))
+        {
+            basketball.facingFront = false;
+            setPlayerAnim("basketballFacingFront", false);
+        }
+
+    }
 
 
 
@@ -324,7 +368,7 @@ public class playercontrollerscript : MonoBehaviour
         soundPlayed = true;
         notLocked = true;
     }
-    
+
     void setPlayerBounds()
     {
         xMin = levelManager.instance.xMinPlayer;
