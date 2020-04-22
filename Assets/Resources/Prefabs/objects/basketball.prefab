@@ -66,8 +66,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 208608407
-  m_SortingLayer: 0
+  m_SortingLayerID: -890595863
+  m_SortingLayer: 1
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300002, guid: 1de1a6a02114f2749813c80f9aa777c4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -176,9 +176,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 208608407
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -890595863
+  m_SortingLayer: 1
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 6c4441f524ef5fe4dbdb91b33a4e1402, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -257,6 +257,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -298,14 +299,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955455928056228}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 48
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &114352399790018318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,14 +327,16 @@ MonoBehaviour:
   dropShadow: {fileID: 0}
   basketBallSprite: {fileID: 1653085462237420}
   playerDunkPos: {fileID: 0}
-  rb: {fileID: 0}
+  rigidbody: {fileID: 0}
   thrown: 0
   notlocked: 0
+  canPullBall: 0
   throwSpeed: 1.5
   displacement: 0
   Zdistance: 0
   TwoPoints: 0
   ThreePoints: 0
+  FourPoints: 0
   TwoAttempt: 0
   ThreeAttempt: 0
   FourAttempt: 0
@@ -349,6 +352,7 @@ MonoBehaviour:
   ThreePointerAttempts: 0
   FourPointerAttempts: 0
   TextObject: {fileID: 0}
+  shootProfile: {fileID: 0}
   shotAttempt: 0
   shotMade: 0
   lastShotDistance: 0
@@ -356,6 +360,13 @@ MonoBehaviour:
   _angle: 56.5
   shotMiss: {fileID: 8300000, guid: 5ddb311c6d7e518499ec7f97fddb52b1, type: 3}
   ballDistanceFromRim: 0
+  twoPointDistance: 0
+  threePointDistance: 3.8
+  fourPointDistance: 5.2
+  accuracy: 0
+  twoAccuracy: 0
+  threeAccuracy: 0
+  fourAccuracy: 0
 --- !u!82 &82993445073127816
 AudioSource:
   m_ObjectHideFlags: 0
@@ -461,9 +472,9 @@ SphereCollider:
   m_GameObject: {fileID: 1955455928056228}
   m_Material: {fileID: 13400000, guid: c61589a2bf0822c4393eecefc37ad397, type: 2}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.22
+  m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1048882319
 MonoBehaviour:
@@ -477,15 +488,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accuracy2pt: 0
-  accuracy3pt: 0
-  accuracy4pt: 0
-  jumpForce: 4.5
+  accuracy2pt: 95
+  accuracy3pt: 80
+  accuracy4pt: 70
+  jumpForce: 5
   speed: 3
   runSpeed: 3.5
-  gravity: -8
-  strength: 0
-  shootAngle: 0
+  hangTime: -8
+  range: 100
+  release: 100
+  shootAngle: 65
   shootXVariance: 0
   shootYVariance: 0
   shootZVariance: 0

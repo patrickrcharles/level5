@@ -369,9 +369,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -890595863
+  m_SortingLayer: 1
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 6c4441f524ef5fe4dbdb91b33a4e1402, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -445,7 +445,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &6505920843671966906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,33 +460,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 0}
   _angle: 60
-  movementSpeed: 1.5
+  movementSpeed: 1
   jumpForce: 10
   moonwalkMovementSpeed: 4.5
-  basketballRunSpeed: 3.5
-  walkMovementSpeed: 1.5
+  basketballRunSpeed: 2.5
+  walkMovementSpeed: 1
   attackMovementSpeed: 0.3
-  attackCooldown: 0
-  chargeSpeed: 10
-  xMin: -30
-  xMax: 40
-  zMin: -10
-  zMax: 20
-  yMin: 0.63
-  yMax: 30
   hasBasketball: 0
-  smokingEnabled: 1
   soundPlayed: 0
   canMove: 1
   bballRimVector: {x: 0, y: 0, z: 0}
-  relativePositioning: 0
+  bballRelativePositioning: 0
+  playerRelativePositioning: {x: 0, y: 0, z: 0}
+  playerDistanceFromRim: 0
   playerHitbox: {fileID: 5018529200743478208}
-  projectileSpawnPoint: {fileID: 0}
-  rocketSpawnPoint: {fileID: 0}
-  throwSpawnPoint: {fileID: 0}
-  projectile: {fileID: 1401161026227342, guid: bfcdc1dae78d6f544aae34d52d597522, type: 3}
-  rocket: {fileID: 1621996757300846, guid: 660074e816e27cd4fb3d362df9653cee, type: 3}
-  molotov: {fileID: 1513847343976210, guid: 4fd963af3c26ef1408601eae5f484e47, type: 3}
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
   _notLocked: 1
@@ -497,6 +484,7 @@ MonoBehaviour:
   gravityModifier: 0
   jumpPeakReached: 0
   useGravity: 1
+  facingFront: 0
 --- !u!82 &3831037889351645140
 AudioSource:
   m_ObjectHideFlags: 0
@@ -634,6 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullSpeed: 2
   pullDirection: {x: 0, y: 0, z: 0}
+  basketBall: {fileID: 0}
 --- !u!1 &8591083425832817818
 GameObject:
   m_ObjectHideFlags: 0
