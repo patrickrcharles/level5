@@ -18,7 +18,7 @@ public class basketBall : MonoBehaviour
 
     playercontrollerscript playerState;
     [SerializeField]
-    Rigidbody rigidbody;
+    new Rigidbody rigidbody;
     [SerializeField]
     public bool thrown, notlocked, canPullBall;
     [SerializeField]
@@ -96,9 +96,14 @@ public class basketBall : MonoBehaviour
 
 
         //displacement = Vector3.Distance(basketBallTarget.transform.position, gameObject.transform.position);
+        //shooterProfile = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
+
+        TextObject = GameObject.Find("shootStatsTextObject");
+        shootProfile = GameObject.Find("shooterProfileTextObject");
 
         shootProfileText = shootProfile.GetComponent<Text>();
         scoreText = TextObject.GetComponent<Text>();
+
         longestShot = 0;
         playerDunkPos = GameObject.Find("dunk_transform");
         notlocked = true;
@@ -207,6 +212,9 @@ public class basketBall : MonoBehaviour
             //launch ball to goal      
             Launch();
 
+            //Jessica might take a photo
+            behavior_jessica.instance.playAnimationTakePhoto();
+
             notlocked = false;
             thrown = true;
             inAir = true;
@@ -312,12 +320,12 @@ public class basketBall : MonoBehaviour
         //    shotMade++;
         //}
 
-        if (gameObject.name == "basketball" && other.name.Contains("dunk_zone"))
+        if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
         {
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
             dunk = true;
         }
-        if ( gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
+        if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
         {
             facingFront = true;
             playerState.setPlayerAnim("basketballFacingFront", true);
@@ -326,14 +334,15 @@ public class basketBall : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (gameObject.name == "basketball" && other.CompareTag("playerHitbox") && thrown)
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") && thrown)
         {
+            Debug.Log("$$$$$$$$$$$$$$$$$$");
             thrown = false;
             playerState.hasBasketball = false;
             notlocked = true;
         }
 
-        if (gameObject.name == "basketball" && other.name.Contains("dunk_zone"))
+        if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
         {
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
             dunk = false;
