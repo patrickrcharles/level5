@@ -8,7 +8,8 @@ public class behavior_jessica : MonoBehaviour
     AudioSource audioSource;
     bool shotMade;
     public float percentChanceOfTakingPhoto;
-
+    public Animator animOnCamera;
+    playercontrollerscript playerState;
     public static behavior_jessica instance;
 
     // Start is called before the first frame update
@@ -17,21 +18,32 @@ public class behavior_jessica : MonoBehaviour
         instance = this;
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
+        animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
+        playerState = gameManager.instance.playerState;
     }
 
 
     public void playAnimationTakePhoto()
     {
-        if (rollForPhotoChance(percentChanceOfTakingPhoto))
+        if (rollForPhotoChance(percentChanceOfTakingPhoto) && playerState.playerDistanceFromRim < 10)
         {
-            StartCoroutine(wait(1));
+           //Debug.Log("percentChanceOfTakingPhoto : " + percentChanceOfTakingPhoto);
+            //StartCoroutine(wait(1));
+            takePhoto();
         }
     }
 
     IEnumerator wait(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
-        Debug.Log("jessica take photo");
+       //Debug.Log("jessica take photo");
+        anim.Play("takePhoto");
+        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
+    }
+
+    private void takePhoto()
+    {
+       //Debug.Log("jessica take photo");
         anim.Play("takePhoto");
         audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
@@ -39,12 +51,16 @@ public class behavior_jessica : MonoBehaviour
     public bool rollForPhotoChance( float maxPercent)
     {
         float percent = Random.Range(1, 100);
-        Debug.Log("jessica random percent : " + percent + " maxPercent : " + maxPercent);
-        if(percent < maxPercent)
+       //Debug.Log("jessica random percent : " + percent + " maxPercent : " + maxPercent);
+        if(percent <= maxPercent)
         {
-            Debug.Log(" take photo");
+           //Debug.Log(" jessica takes a photo");
             return true;
         }
         return false;
+    }
+    private void playAnimationCameraFlash()
+    {
+        animOnCamera.Play("camera_flash");
     }
 }
