@@ -40,76 +40,76 @@ public class pauseMenu : MonoBehaviour
             paused = togglePause();
         }
 
-        if (InputManager.GetButton("Jump") && InputManager.GetButton("Fire3") && paused)
-        {
-            //Debug.Log("pauseMenu.cs :::::::: if (InputManager.GetButton(Jump) && InputManager.GetButton(Fire3) && paused)");
-            //Quit();
-            // reset current score
-            score.instance.setCurrentScore(0);
+        //if (InputManager.GetButton("Jump") && InputManager.GetButton("Fire3") && paused)
+        //{
+        //    //Debug.Log("pauseMenu.cs :::::::: if (InputManager.GetButton(Jump) && InputManager.GetButton(Fire3) && paused)");
+        //    //Quit();
+        //    // reset current score
+        //    //score.instance.setCurrentScore(0);
 
-            //destroy levelmanger because going to chooseOpponent screen
-            GameObject[] lvlmanger = GameObject.FindGameObjectsWithTag("levelManager");
-            foreach (GameObject lvl in lvlmanger)
-            {
-                Destroy(lvl);
-               //Debug.Log("lvlmanger " + lvl.name);
-            }
+        //    //destroy levelmanger because going to chooseOpponent screen
+        //    GameObject[] lvlmanger = GameObject.FindGameObjectsWithTag("levelManager");
+        //    foreach (GameObject lvl in lvlmanger)
+        //    {
+        //        Destroy(lvl);
+        //       //Debug.Log("lvlmanger " + lvl.name);
+        //    }
 
 
-            // destroy player because player bounds needs to be reset for each level
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject player in players)
-            {
-                Destroy(player);
-               //Debug.Log("player " + player.name);
-            }
+        //    // destroy player because player bounds needs to be reset for each level
+        //    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        //    foreach (GameObject player in players)
+        //    {
+        //        Destroy(player);
+        //       //Debug.Log("player " + player.name);
+        //    }
 
-            SceneManager.LoadScene("startScreen");
+        //    SceneManager.LoadScene("startScreen");
 
-            // reset level manager instance
+        //    // reset level manager instance
 
-        }
-        if (InputManager.GetButton("Fire1") && InputManager.GetButton("Fire2") && paused)
-        {
-            //Debug.Log("pauseMenu.cs :::::::: if (InputManager.GetButton(Fire1) && InputManager.GetButton(Fire2) && paused)");
-            // reset current score
-            score.instance.setCurrentScore(0);
+        //}
+        //if (InputManager.GetButton("Fire1") && InputManager.GetButton("Fire2") && paused)
+        //{
+        //    //Debug.Log("pauseMenu.cs :::::::: if (InputManager.GetButton(Fire1) && InputManager.GetButton(Fire2) && paused)");
+        //    // reset current score
+        //    //score.instance.setCurrentScore(0);
 
-            //destroy levelmanger because going to chooseOpponent screen
-            GameObject[] lvlmanger = GameObject.FindGameObjectsWithTag("levelManager");
-            foreach (GameObject lvl in lvlmanger)
-            {
-                Destroy(lvl);
-               //Debug.Log("lvlmanger " + lvl.name);
-            }
+        //    //destroy levelmanger because going to chooseOpponent screen
+        //    GameObject[] lvlmanger = GameObject.FindGameObjectsWithTag("levelManager");
+        //    foreach (GameObject lvl in lvlmanger)
+        //    {
+        //        Destroy(lvl);
+        //       //Debug.Log("lvlmanger " + lvl.name);
+        //    }
             
 
-            // destroy player because player bounds needs to be reset for each level
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject player in players)
-            {
-                Destroy(player);
-               //Debug.Log("player " + player.name);
-            }
+        //    // destroy player because player bounds needs to be reset for each level
+        //    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        //    foreach (GameObject player in players)
+        //    {
+        //        Destroy(player);
+        //       //Debug.Log("player " + player.name);
+        //    }
 
-            SceneManager.LoadScene("startScreen");
-            // reset level manager instance   
-            // add score to DB before restart
-            //timer.GetComponent<countdown>()
+        //    SceneManager.LoadScene("startScreen");
+        //    // reset level manager instance   
+        //    // add score to DB before restart
+        //    //timer.GetComponent<countdown>()
 
-            // reset current score
+        //    // reset current score
 
-            score.instance.setCurrentScore(0);
+        //   // score.instance.setCurrentScore(0);
 
-            //reset scene vars. gameover and showScore in gamemanager. will disable score overlay.
-            gameManager.instance.resetSceneVariables();
+        //    //reset scene vars. gameover and showScore in gamemanager. will disable score overlay.
+        //    gameManager.instance.resetSceneVariables();
 
-            //could destroy levelmanager object but i dont think i need to since it's the same level
-            //StartCoroutine(Wait(1));
+        //    //could destroy levelmanager object but i dont think i need to since it's the same level
+        //    //StartCoroutine(Wait(1));
 
-           //Debug.Log("reload scene");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        //   //Debug.Log("reload scene");
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
 
     
         /*

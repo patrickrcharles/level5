@@ -59,7 +59,7 @@ public class countdown : MonoBehaviour
             gameManager.instance.gameOver = true;
             gameManager.instance.showScore = true;
             displayTimer = false;
-            setScoreTime();
+//            setScoreTime();
             Time.timeScale = 0.01f;
         }
         // Debug.Log(" Mathf.Abs(timeRemaining)" + Mathf.FloorToInt(timeRemaining));
@@ -111,29 +111,29 @@ public class countdown : MonoBehaviour
         */
     }
 
-    public void setScoreTime()
-    {
+    //public void setScoreTime()
+    //{
 
-        if (minutes > 10 && seconds > 9)
-        {
-            score.instance.setTime( minutes + " : " + seconds);
+    //    if (minutes > 10 && seconds > 9)
+    //    {
+    //        score.instance.setTime( minutes + " : " + seconds);
             
-        }
-        if (minutes < 10 && seconds < 10)
-        {
+    //    }
+    //    if (minutes < 10 && seconds < 10)
+    //    {
 
-            score.instance.setTime("0" + minutes + " : 0" + seconds);
-        }
-        if (minutes < 10 && seconds > 9)
-        {
+    //        score.instance.setTime("0" + minutes + " : 0" + seconds);
+    //    }
+    //    if (minutes < 10 && seconds > 9)
+    //    {
 
-            score.instance.setTime("0" + minutes + " : " + seconds);
-        }
-        if (minutes > 9 && seconds < 10)
-        {
-            score.instance.setTime(minutes + " : 0" + seconds);
-        }
+    //        score.instance.setTime("0" + minutes + " : " + seconds);
+    //    }
+    //    if (minutes > 9 && seconds < 10)
+    //    {
+    //        score.instance.setTime(minutes + " : 0" + seconds);
+    //    }
 
-        Debug.Log("score.instance.getTime :" + score.instance.getTime());
-    }
+    //    Debug.Log("score.instance.getTime :" + score.instance.getTime());
+    //}
 }

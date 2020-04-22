@@ -60,7 +60,8 @@ public class playercontrollerscript : MonoBehaviour
     float bballRelativePositioning;
     [SerializeField]
     Vector3 playerRelativePositioning;
-
+    [SerializeField]
+    public float playerDistanceFromRim;
     public GameObject playerHitbox;
 
     // control movement speed based on state
@@ -106,8 +107,8 @@ public class playercontrollerscript : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        basketball = GameObject.Find("basketball").GetComponent<basketBall>();
-        shooterProfile = GameObject.Find("basketball").GetComponent<shooterProfile>();
+        basketball = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        shooterProfile = basketball.GetComponent<shooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
@@ -167,6 +168,9 @@ public class playercontrollerscript : MonoBehaviour
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning =  rigidBody.position - bballRimVector;
+
+        playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
+
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
         if (rigidBodyYVelocity < 0 && inAir) {

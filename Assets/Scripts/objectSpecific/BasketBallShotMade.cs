@@ -20,7 +20,7 @@ public class BasketBallShotMade : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        basketBall = GameObject.Find("basketball").GetComponent<basketBall>();
+        basketBall = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
         audioSource = GetComponent<AudioSource>();
         anim =  rimSprite.GetComponent<Animator>();
         playerState = gameManager.instance.playerState;
@@ -35,7 +35,7 @@ public class BasketBallShotMade : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         //Debug.Log("========================== BasketBall: " + transform.name + " and " + other.gameObject.name);
-        if (other.gameObject.name == "basketball" && !playerState.hasBasketball && !isColliding  )
+        if (other.gameObject.CompareTag("basketball") && !playerState.hasBasketball && !isColliding  )
         {
             if (isColliding) return;
             else { isColliding = true; }
@@ -46,7 +46,7 @@ public class BasketBallShotMade : MonoBehaviour {
                 basketBall.longestShot = basketBall.lastShotDistance;
             }
             anim.Play("madeshot");
-           Debug.Log(" made a shot!");
+          //Debug.Log(" made a shot!");
             //Debug.Log("two: "+ basketBall.TwoAttempt 
             //    + " three: " + basketBall.ThreeAttempt 
             //    + " four: " + basketBall.FourAttempt  );
@@ -82,8 +82,6 @@ public class BasketBallShotMade : MonoBehaviour {
             basketBall.FourAttempt = false;
             basketBall.updateScoreText();
 
-            //Jessica might take a photo
-            behavior_jessica.instance.playAnimationTakePhoto();
         }
     }
 }

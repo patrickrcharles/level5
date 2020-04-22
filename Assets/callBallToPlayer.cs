@@ -13,13 +13,14 @@ public class callBallToPlayer : MonoBehaviour
     [SerializeField]
     Vector3 pullDirection;
     playercontrollerscript playerState;
+    [SerializeField]
     basketBall basketBall;
 
     private void Start()
     {
         playerState = gameManager.instance.playerState;
-        basketBall = GameObject.Find("basketball").GetComponent<basketBall>();
-        basketballRigidBody = GameObject.Find("basketball").GetComponent<Rigidbody>();
+        basketBall = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        basketballRigidBody = basketBall.GetComponent<Rigidbody>();
     }
 
     void pullBallToPlayer()

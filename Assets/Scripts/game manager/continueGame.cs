@@ -40,28 +40,28 @@ public class continueGame : MonoBehaviour
     void Update()
     {
 
-        // if player can continue
-        if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Cancel")) && canContinue)
-        {
-            //Debug.Log("if (InputManager.GetButtonUp(Submit) && canContinue)");
-            // disable pause menu. after pressing chooseOpponent to continue game, Pause script will pick up input and pause the game
-            // need to figure a condition to add or change the button to continue
+        //// if player can continue
+        //if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Cancel")) && canContinue)
+        //{
+        //    //Debug.Log("if (InputManager.GetButtonUp(Submit) && canContinue)");
+        //    // disable pause menu. after pressing chooseOpponent to continue game, Pause script will pick up input and pause the game
+        //    // need to figure a condition to add or change the button to continue
 
-            pauseMenu.SetActive(false);
-            StartCoroutine(PlayerContinue());
-            gameManager.instance.backgroundFade.SetActive(false);
-        }
+        //    pauseMenu.SetActive(false);
+        //    StartCoroutine(PlayerContinue());
+        //    gameManager.instance.backgroundFade.SetActive(false);
+        //}
 
-        // if player cant continue, but game isnt over yet (at 'game over' screen)
-        if (InputManager.GetButtonUp("Submit") && !canContinue && !gameManager.instance.gameOver && gameManager.instance.playerLives == 0)
-        {
-            score.instance.showScore = true;
-        }
-        // if player cant continue, but game is over (at 'current score' screen)
-        if (InputManager.GetButtonUp("Submit") && !canContinue && gameManager.instance.gameOver && gameManager.instance.playerLives == 0)
-        {
-            score.instance.restartLevel = true;
-        }
+        //// if player cant continue, but game isnt over yet (at 'game over' screen)
+        //if (InputManager.GetButtonUp("Submit") && !canContinue && !gameManager.instance.gameOver && gameManager.instance.playerLives == 0)
+        //{
+        //    score.instance.showScore = true;
+        //}
+        //// if player cant continue, but game is over (at 'current score' screen)
+        //if (InputManager.GetButtonUp("Submit") && !canContinue && gameManager.instance.gameOver && gameManager.instance.playerLives == 0)
+        //{
+        //    score.instance.restartLevel = true;
+        //}
         
     }
 
