@@ -75,6 +75,7 @@ public class basketBall : MonoBehaviour
     public float twoAccuracy;
     public float threeAccuracy;
     public float fourAccuracy;
+    public bool addAccuracyModifier;
 
     // Use this for initialization
     void Start()
@@ -108,6 +109,7 @@ public class basketBall : MonoBehaviour
         playerDunkPos = GameObject.Find("dunk_transform");
         notlocked = true;
         canPullBall = true;
+        addAccuracyModifier = false;
 
         shootProfileText.text = "ball distance : " + (Math.Round(ballDistanceFromRim, 2)) + "\n"
             + "shot distance : " + (Math.Round(ballDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
@@ -128,8 +130,6 @@ public class basketBall : MonoBehaviour
         {
             spriteRenderer.enabled = true;
         }
-
-
 
         updateScoreText();
 
@@ -175,9 +175,7 @@ public class basketBall : MonoBehaviour
 
         if (!playerState.hasBasketball)
         {
-
             basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
-
         }
 
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.05f, transform.root.position.z - 0.1f);
@@ -191,23 +189,34 @@ public class basketBall : MonoBehaviour
         //}
 
 
-            if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1"))
+        if (playerState.inAir && playerState.hasBasketball && InputManager.GetButtonDown("Fire1"))
         {
             releaseVelocityY = playerState.rigidBodyYVelocity;
-           //Debug.Log("releaseVelocityY : " + releaseVelocityY);
-
-           //Debug.Log("shoot ball");
+            //Debug.Log("releaseVelocityY : " + releaseVelocityY);
+            //Debug.Log("$$$$$$$$$$$$$$$$$$$ shoot : addAccuracyModifier : " + addAccuracyModifier);
+            //Debug.Log("shoot ball");
             playerState.hasBasketball = false;
             playerState.setPlayerAnim("hasBasketball", false);
-
-            //if (facingFront) // facing straight toward bball goal
+            // set player shoot anim based on position
+            //if (playerState.facingFront) // facing straight toward bball goal
             //{
-            //    playerState.setPlayerAnimTrigger("basketballShootFront");
+            //    //setPlayerAnimTrigger("basketballShootFront");
+            //    playerState.setPlayerAnim("basketballShootFront", true);
             //}
             //else // side of goal, relative postion
             //{
-            //    playerState.setPlayerAnimTrigger("basketballShoot");
+            //    // setPlayerAnimTrigger("basketballShoot");
+            //    playerState.setPlayerAnim("basketballShoot", false);
             //}
+
+            if (playerState.facingFront) // facing straight toward bball goal
+            {
+                playerState.setPlayerAnimTrigger("basketballShootFront");
+            }
+            else // side of goal, relative postion
+            {
+                playerState.setPlayerAnimTrigger("basketballShoot");
+            }
 
             //launch ball to goal      
             Launch();
@@ -269,6 +278,7 @@ public class basketBall : MonoBehaviour
         }
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
+            //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
             inAir = false;
             grounded = true;
             canPullBall = true;
@@ -296,6 +306,7 @@ public class basketBall : MonoBehaviour
         }
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
+            //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
             grounded = false;
         }
     }
@@ -325,18 +336,18 @@ public class basketBall : MonoBehaviour
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
             dunk = true;
         }
-        if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
-        {
-            facingFront = true;
-            playerState.setPlayerAnim("basketballFacingFront", true);
-        }
+        //if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
+        //{
+        //    facingFront = true;
+        //    playerState.setPlayerAnim("basketballFacingFront", true);
+        //}
     }
 
     void OnTriggerExit(Collider other)
     {
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") && thrown)
         {
-            Debug.Log("$$$$$$$$$$$$$$$$$$");
+            //Debug.Log("$$$$$$$$$$$$$$$$$$");
             thrown = false;
             playerState.hasBasketball = false;
             notlocked = true;
@@ -347,19 +358,19 @@ public class basketBall : MonoBehaviour
             //Debug.Log("COLLISION between : " + transform.root.name + " and " + other.name);
             dunk = false;
         }
-        if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
-        {
-            facingFront = false;
-            playerState.setPlayerAnim("basketballFacingFront", false);
-        }
+        //if (gameObject.CompareTag("basketball") && other.name.Contains("facingFront"))
+        //{
+        //    facingFront = false;
+        //    playerState.setPlayerAnim("basketballFacingFront", false);
+        //}
 
     }
 
     void Launch()
     {
         shotAttempt++;
-       //Debug.Log("shotAttempt++;");
-
+       //Debug.Log("Launch()");
+       //Debug.Log("Launch() : addAccuracyModifier : " + addAccuracyModifier);
         // think of it as top-down view of vectors: 
         //   we don't care about the y-component(height) of the initial and target position.
 
@@ -397,36 +408,52 @@ public class basketBall : MonoBehaviour
 
         //Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);
 
-        // X accuracy
-        float accuracyModifier = getAccuracyModifier();
-        // y accuracy
+        float accuracyModifierX = 0;
+        if (rollForCriticalShotChance( shooterProfile.criticalPercent))
+        {
+            accuracyModifierX = 0;
+        }
+        else
+        {
+            accuracyModifierX = getAccuracyModifier();
+        }
 
-        float xVector = 0; // + accuracyModifier;
-        float yVector = Vy; //+ (accuracyModifier * shooterProfile.shootYVariance);
-        float zVector = Vz; //+ (accuracyModifier * shooterProfile.shootZVariance);
-
-        //Debug.Log("new x : " + xVector + " y : " + yVector + " z : " + zVector);
+        float xVector = 0  + accuracyModifierX;
+        float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float zVector = Vz; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
-        Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
+        Vector3 localVelocity = localVelocity = new Vector3(0, Vy, Vz);
+        //Debug.Log("addAccuracyModifier : " + addAccuracyModifier);
+
+
+        // turn on/off accuracy modifier
+        if (addAccuracyModifier)
+        {
+            //Debug.Log("addAccuracyModifier On");
+            localVelocity = new Vector3(xVector, yVector, zVector);
+        }
+
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
-
-        //Debug.Log("localVelocity :: " + localVelocity);
-        //Debug.Log("globalVelocity :: " + globalVelocity);
-
-        //Vector3 playerLocalVelocity = new Vector3(0f, VyPlayer, VzPlayer);
-        //Vector3 playerGlobalVelocity = transform.TransformDirection(playerLocalVelocity);
-
         // launch the object by setting its initial velocity and flipping its state
-
         rigidbody.velocity = globalVelocity;
-        //rb.AddForce(globalVelocity);
-        //rb.AddForce(globalVelocity, ForceMode.VelocityChange);
-        //Debug.Log("rb.velocity :: " + rb.velocity);
 
     }
 
+    bool rollForCriticalShotChance(float maxPercent)
+    {
+        Random random = new Random();
+        float percent = random.Next(1, 100);
+        //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
+        if (percent <= shooterProfile.criticalPercent)
+        {
+            //Debug.Log("critical shot rolled");
+            return true;
+        }
+        return false;
+
+    }
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegtaive();
@@ -436,8 +463,10 @@ public class basketBall : MonoBehaviour
         if (FourPoints) { accuracyModifier = (100 - shooterProfile.accuracy4pt) * 0.01f; }
 
        //Debug.Log("accuracyModifier : " + accuracyModifier);
-        return (accuracyModifier / 2) * direction;
+        return (accuracyModifier/1.2f)  * direction;
     }
+
+
 
     private int getRandomPositiveOrNegtaive()
     {
@@ -460,6 +489,29 @@ public class basketBall : MonoBehaviour
     public bool getDunk()
     {
         return dunk;
+    }
+
+
+    public void toggleAddAccuracyModifier()
+    {
+        //Debug.Log("toggleAddAccuracyModifier()");
+        //if (addAccuracyModifier == true)
+        //{
+        //    Debug.Log("$$$$$$$$$$$$$$$$ FALSE");
+        //    addAccuracyModifier = false;
+        //}
+        //else
+        //{
+        //    Debug.Log("$$$$$$$$$$$$$$$$ TRUE");
+        //    addAccuracyModifier = true;
+        //}
+
+        addAccuracyModifier = !addAccuracyModifier;
+        //Debug.Log("toggleAddAccuracyModifier() : addAccuracyModifier : " + addAccuracyModifier);
+
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "accuracy modifier = " + addAccuracyModifier;
+        //messageLog.instance.toggleMessageDisplay();
     }
 
     public void updateScoreText()

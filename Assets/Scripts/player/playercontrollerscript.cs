@@ -96,7 +96,7 @@ public class playercontrollerscript : MonoBehaviour
 
     private float _rigidBodyYVelocity;
     [SerializeField]
-    bool facingFront;
+    public bool facingFront;
     shooterProfile shooterProfile;
     basketBall basketball;
 
@@ -181,23 +181,25 @@ public class playercontrollerscript : MonoBehaviour
         }
 
         // determine if player animation is shooting from or facing basket
-        if (Math.Abs(playerRelativePositioning.x) < 2 &&
-            Math.Abs(playerRelativePositioning.z) > 2)
+        if (Math.Abs(playerRelativePositioning.x) > 2 &&
+            Math.Abs(playerRelativePositioning.z) < 2)
         {
-            facingFront = true;
+            facingFront = false;
         }
         else{
-            facingFront = false ;
+            facingFront = true ;
         }
 
         // set player shoot anim based on position
         if (facingFront) // facing straight toward bball goal
         {
-            setPlayerAnimTrigger("basketballShootFront");
+            //setPlayerAnimTrigger("basketballShootFront");
+            setPlayerAnim("basketballFacingFront", true);
         }
         else // side of goal, relative postion
         {
-            setPlayerAnimTrigger("basketballShoot");
+           // setPlayerAnimTrigger("basketballShoot");
+            setPlayerAnim("basketballFacingFront", false);
         }
 
         // ----- control speed based on commands----------
@@ -257,23 +259,23 @@ public class playercontrollerscript : MonoBehaviour
         rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.name.Contains("facingFront"))
-        {
-            basketball.facingFront = true;
-            setPlayerAnim("basketballFacingFront", true);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.name.Contains("facingFront"))
+    //    {
+    //        basketball.facingFront = true;
+    //        setPlayerAnim("basketballFacingFront", true);
+    //    }
+    //}
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.name.Contains("facingFront"))
-        {
-            basketball.facingFront = false;
-            setPlayerAnim("basketballFacingFront", false);
-        }
-    }
+    //void OnTriggerExit(Collider other)
+    //{
+    //    if (other.name.Contains("facingFront"))
+    //    {
+    //        basketball.facingFront = false;
+    //        setPlayerAnim("basketballFacingFront", false);
+    //    }
+    //}
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)

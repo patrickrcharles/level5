@@ -15,6 +15,8 @@ public class shooterProfile : MonoBehaviour
     public float range;
     public float release;
 
+    public float criticalPercent;
+
     public float shootAngle;
     public float shootXVariance;
     public float shootYVariance;

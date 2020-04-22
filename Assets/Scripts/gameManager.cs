@@ -26,7 +26,6 @@ public class gameManager : MonoBehaviour
 
     public bool playerIsEnemy;
     public Text displayPlayerLives;
-    //public highScoreManager highScoreManger;
     public GameObject backgroundFade;
     public GameObject pauseObject;
 
@@ -52,22 +51,16 @@ public class gameManager : MonoBehaviour
         get { return _anim; }
     }
 
-    //[SerializeField]
-    //private playerAttacks _playerAttacks;
-    //public playerAttacks playerAttacks
-    //{
-    //    get { return _playerAttacks; }
-    //}
-
-    // player ammo, guns, etc.
     public static gameManager instance;
-
     public bool paused = false;
 
     private AudioSource[] allAudioSources;
 
     public GameObject basketball;
+    public basketBall basketballState;
     public GameObject basketballSpawnLocation;
+
+    public bool locked;
 
 
     private void Awake()
@@ -75,19 +68,10 @@ public class gameManager : MonoBehaviour
         // initialize game manger player references
         instance = this;
         allAudioSources = FindObjectsOfType<AudioSource>();
-        //// get player lives
-        //if (gameOptions.instance != null)
-        //{
-        //    playerLives = gameOptions.instance.getOptionNumberOfLives();
-        //}
-        //else
-        //{
-        //    playerLives = 3;
-        //}
 
         //Application.targetFrameRate = 60;
         if (!getCurrentSceneName().StartsWith("start")) { initializePlayer(); }
-
+        basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
     }
 
@@ -95,50 +79,38 @@ public class gameManager : MonoBehaviour
     {
         pauseObject.SetActive(false);
         pauseMenu.instance.enabled = false;
+        locked = false;
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
     }
 
     private void Update()
     {
-        // this can be moved from update() and left on after each update of the text
-        //displayPlayerLives.text = "x " + (playerLives).ToString();
-
-        //// 'press chooseOpponent' screen first load for level
-        //if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Cancel")))
-        //    {
-        //   //Debug.Log("   if ((InputManager.GetButtonDown(Submit))");
-        //}
-
-        //if ((InputManager.GetButtonDown("Submit") || InputManager.GetButtonDown("Jump"))
-        //    && !startGame)
-        //{
-        //    //Debug.Log("gameManager.cs :::::");
-        //    //Debug.Log("if (InputManager.GetButtonDown(Submit) && !startGame)");
-        //    backgroundFade.SetActive(false);
-        //    startGame = true;
-        //    Time.timeScale = 1;
-        //    pauseMenu.instance.enabled = true;
-        //}
-
-        if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift) && InputManager.GetKeyDown(KeyCode.P))
-        && !startGame)
+        if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
+            && InputManager.GetKeyDown(KeyCode.P))
         {
-            Application.Quit();
+            Quit();
         }
-
-        if ((InputManager.GetButtonDown("Submit")
-    || InputManager.GetButtonDown("Cancel")
-    || InputManager.GetKeyDown(KeyCode.Escape)))
+        if (InputManager.GetButtonDown("Submit")
+            || InputManager.GetButtonDown("Cancel")
+            || InputManager.GetKeyDown(KeyCode.Escape))
         {
-            //Debug.Log("pauseMenu.cs :: if (submit, cancel, esc");
             paused = togglePause();
         }
-
         if (InputManager.GetKey(KeyCode.Alpha4)
             && InputManager.GetKey(KeyCode.Alpha2)
-             && InputManager.GetKey(KeyCode.Alpha0))
+            && InputManager.GetKey(KeyCode.Alpha0)
+            && !locked)
         {
-            Destroy(basketball);
-            Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        if (InputManager.GetKey(KeyCode.Alpha6)
+            && InputManager.GetKeyDown(KeyCode.Alpha9)
+            && !locked)
+        {
+            locked = true;
+            basketballState.toggleAddAccuracyModifier();
+            locked = false;
         }
     }
 
@@ -147,36 +119,22 @@ public class gameManager : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = player.GetComponent<playercontrollerscript>();
         _anim = _player.GetComponent<Animator>();
-        //_playerAttacks = _player.GetComponent<playerAttacks>();
-        /*
-        startMenuMusicObject = GameObject.Find("start_menu_music");
-        currentSceneName = getCurrentSceneName().ToLower();
-        
-        // if not a start screen scene, disable music
-        if (!currentSceneName.StartsWith("start")
-            && GameObject.Find("start_menu_music") != null)
-        {
-            Destroy(GameObject.Find("start_menu_music"));
-        }
-        */
     }
 
     public void resetSceneVariables()
     {
-        //Debug.Log("============ reset gamemanger vars");
         gameOver = false;
         showScore = false;
-        //GetComponent<enemyAttackQueue>().setEnemiesCount(0);
     }
-    public void disableEnemyUI()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemyHealthUI");
+    //public void disableEnemyUI()
+    //{
+    //    GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemyHealthUI");
 
-        foreach (GameObject enemy in enemySpawner.instance.enemies)
-        {
-            enemy.SetActive(false);
-        }
-    }
+    //    foreach (GameObject enemy in enemySpawner.instance.enemies)
+    //    {
+    //        enemy.SetActive(false);
+    //    }
+    //}
 
     private string getCurrentSceneName()
     {
@@ -193,8 +151,6 @@ public class gameManager : MonoBehaviour
         if (Time.timeScale == 0f)
         {
             gameManager.instance.backgroundFade.SetActive(false);
-
-            //controlsText.SetActive(false);
             Time.timeScale = 1f;
             resumeAllAudio();
             return (false);
@@ -202,14 +158,11 @@ public class gameManager : MonoBehaviour
         else
         {
             gameManager.instance.backgroundFade.SetActive(true);
-            //controlsText.SetActive(true);
             Time.timeScale = 0f;
             pauseAllAudio();
             return (true);
         }
     }
-
-
 
     void pauseAllAudio()
     {

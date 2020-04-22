@@ -15,12 +15,14 @@ public class callBallToPlayer : MonoBehaviour
     playercontrollerscript playerState;
     [SerializeField]
     basketBall basketBall;
+    bool locked;
 
     private void Start()
     {
         playerState = gameManager.instance.playerState;
         basketBall = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
+        locked = false;
     }
 
     void pullBallToPlayer()
@@ -36,9 +38,15 @@ public class callBallToPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.GetButtonDown("Fire1") && !playerState.hasBasketball && basketBall.canPullBall  )   
+        if (InputManager.GetButtonDown("Fire1") 
+            && !playerState.hasBasketball 
+            && basketBall.canPullBall 
+            && !locked)   
         {
+            //Debug.Log("callBallToPlayer : pullBallToPlayer");
+            locked = true;
             pullBallToPlayer();
+            locked = false;
         }
     }
 }
