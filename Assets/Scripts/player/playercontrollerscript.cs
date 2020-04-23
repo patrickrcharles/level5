@@ -99,7 +99,7 @@ public class playercontrollerscript : MonoBehaviour
     [SerializeField]
     public bool facingFront;
     shooterProfile shooterProfile;
-    basketBall basketball;
+    BasketBall basketball;
 
     void Start()
     {
@@ -110,7 +110,7 @@ public class playercontrollerscript : MonoBehaviour
         anim = gameManager.instance.anim;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        basketball = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         shooterProfile = gameManager.instance.player.GetComponent<shooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;

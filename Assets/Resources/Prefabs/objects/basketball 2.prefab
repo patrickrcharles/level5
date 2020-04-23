@@ -209,55 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: {fileID: 0}
-  basket: {fileID: 0}
-  basketBallPosition: {fileID: 0}
-  basketBallTarget: {fileID: 0}
-  player: {fileID: 0}
-  dropShadow: {fileID: 0}
-  basketBallSprite: {fileID: 5145829355769795785}
-  playerDunkPos: {fileID: 0}
-  rigidbody: {fileID: 0}
-  thrown: 0
-  notlocked: 0
-  canPullBall: 0
-  throwSpeed: 1.5
-  displacement: 0
-  Zdistance: 0
-  TwoPoints: 0
-  ThreePoints: 0
-  FourPoints: 0
-  TwoAttempt: 0
-  ThreeAttempt: 0
-  FourAttempt: 0
-  dunk: 0
-  grounded: 0
-  inAir: 0
-  facingFront: 0
-  totalPoints: 0
-  TwoPointerMade: 0
-  ThreePointerMade: 0
-  FourPointerMade: 0
-  TwoPointerAttempts: 0
-  ThreePointerAttempts: 0
-  FourPointerAttempts: 0
-  TextObject: {fileID: 0}
-  shootProfile: {fileID: 0}
-  shotAttempt: 0
-  shotMade: 0
-  lastShotDistance: 0
-  longestShot: 0
-  _angle: 56.5
-  shotMiss: {fileID: 8300000, guid: 5ddb311c6d7e518499ec7f97fddb52b1, type: 3}
-  ballDistanceFromRim: 0
-  twoPointDistance: 0
-  threePointDistance: 3.8
-  fourPointDistance: 5.2
-  accuracy: 0
-  twoAccuracy: 0
-  threeAccuracy: 0
-  fourAccuracy: 0
-  addAccuracyModifier: 0
 --- !u!82 &5065051946212658605
 AudioSource:
   m_ObjectHideFlags: 0

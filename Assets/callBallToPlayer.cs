@@ -5,22 +5,23 @@ using UnityEngine;
 
 public class callBallToPlayer : MonoBehaviour
 {
-
+    [SerializeField]
     Rigidbody basketballRigidBody;
-
     [SerializeField]
     float pullSpeed;
     [SerializeField]
     Vector3 pullDirection;
+
     playercontrollerscript playerState;
-    [SerializeField]
-    basketBall basketBall;
+    BasketBall basketBall;
+    BasketballState basketballState;
     bool locked;
 
     private void Start()
     {
         playerState = gameManager.instance.playerState;
-        basketBall = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        basketBall = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketballState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
     }
@@ -40,10 +41,10 @@ public class callBallToPlayer : MonoBehaviour
     {
         if (InputManager.GetButtonDown("Fire1") 
             && !playerState.hasBasketball 
-            && basketBall.canPullBall 
+            && basketballState.CanPullBall 
             && !locked)   
         {
-            //Debug.Log("callBallToPlayer : pullBallToPlayer");
+            Debug.Log("callBallToPlayer : pullBallToPlayer");
             locked = true;
             pullBallToPlayer();
             locked = false;

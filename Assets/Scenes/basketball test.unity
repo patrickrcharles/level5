@@ -5073,6 +5073,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &219243894 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4470068075885664449, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6491999565997524172}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &219243896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219243894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &219810601
 GameObject:
   m_ObjectHideFlags: 0
@@ -10196,6 +10214,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1139392210}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &469550539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5145829355769795785, guid: 9467a9402dd247c44a2d0ea108b0507a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1501535022381858745}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &469550542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469550539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &480045588
 GameObject:
   m_ObjectHideFlags: 0
@@ -15204,72 +15240,6 @@ Transform:
   - {fileID: 174867620}
   m_Father: {fileID: 989904821}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &742757123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 742757126}
-  - component: {fileID: 742757125}
-  - component: {fileID: 742757124}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &742757124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742757123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &742757125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742757123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &742757126
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742757123}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &746488775
 GameObject:
@@ -24673,8 +24643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9424b762fd63b48a93849bfebc0eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basketball: {fileID: 0}
-  playerHitbox: {fileID: 0}
 --- !u!1 &1261278864
 GameObject:
   m_ObjectHideFlags: 0
@@ -39892,9 +39860,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullSpeed: 2
+  basketballRigidBody: {fileID: 0}
+  pullSpeed: 0
   pullDirection: {x: 0, y: 0, z: 0}
-  basketBall: {fileID: 0}
 --- !u!1 &1433470757840186
 GameObject:
   m_ObjectHideFlags: 0
@@ -42473,7 +42441,18 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6505920843671966906, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: _angle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314316447998047308, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: pullSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8236256272430847344, guid: d0db6b29c0cd25b43b61dc65ef451bf4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d0db6b29c0cd25b43b61dc65ef451bf4, type: 3}
 --- !u!1001 &6689885967679824824
 PrefabInstance:

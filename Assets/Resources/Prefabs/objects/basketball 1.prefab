@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2758759533200459288}
   m_LocalRotation: {x: 0.6184084, y: 0, z: 0, w: 0.7858569}
-  m_LocalPosition: {x: 0, y: -0.524, z: 0}
-  m_LocalScale: {x: 2.8, y: 11.28, z: 5}
+  m_LocalPosition: {x: 0, y: -0.5, z: -0.1}
+  m_LocalScale: {x: 2.5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 2756557861648610878}
   m_RootOrder: 1
@@ -93,9 +93,11 @@ GameObject:
   - component: {fileID: 2746131031769865058}
   - component: {fileID: 2859455014378434652}
   - component: {fileID: 2778681408981558682}
-  - component: {fileID: 2871492104121308086}
   - component: {fileID: 2839816593142895920}
   - component: {fileID: 2859642144006615130}
+  - component: {fileID: 6172001656908732724}
+  - component: {fileID: 5915542694526683963}
+  - component: {fileID: 9097991527344725526}
   m_Layer: 0
   m_Name: basketball 1
   m_TagString: basketball
@@ -111,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2758778329069315356}
   m_LocalRotation: {x: 0.11840396, y: 0, z: 0, w: 0.9929655}
-  m_LocalPosition: {x: 0.31, y: 0.14, z: -5.51}
+  m_LocalPosition: {x: 0.31, y: 0.14, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 2756366156342753540}
@@ -196,67 +198,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &2871492104121308086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2758778329069315356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: {fileID: 0}
-  basket: {fileID: 0}
-  basketBallPosition: {fileID: 0}
-  basketBallTarget: {fileID: 0}
-  player: {fileID: 0}
-  dropShadow: {fileID: 0}
-  basketBallSprite: {fileID: 2759030112464489556}
-  playerDunkPos: {fileID: 0}
-  rigidbody: {fileID: 0}
-  thrown: 0
-  notlocked: 0
-  canPullBall: 0
-  throwSpeed: 1.5
-  displacement: 0
-  Zdistance: 0
-  TwoPoints: 0
-  ThreePoints: 0
-  FourPoints: 0
-  TwoAttempt: 0
-  ThreeAttempt: 0
-  FourAttempt: 0
-  dunk: 0
-  grounded: 0
-  inAir: 0
-  facingFront: 0
-  totalPoints: 0
-  TwoPointerMade: 0
-  ThreePointerMade: 0
-  FourPointerMade: 0
-  TwoPointerAttempts: 0
-  ThreePointerAttempts: 0
-  FourPointerAttempts: 0
-  TextObject: {fileID: 0}
-  shootProfile: {fileID: 0}
-  shotAttempt: 0
-  shotMade: 0
-  lastShotDistance: 0
-  longestShot: 0
-  _angle: 56.5
-  shotMiss: {fileID: 8300000, guid: 5ddb311c6d7e518499ec7f97fddb52b1, type: 3}
-  ballDistanceFromRim: 0
-  twoPointDistance: 0
-  threePointDistance: 3.8
-  fourPointDistance: 5.2
-  accuracy: 0
-  twoAccuracy: 0
-  threeAccuracy: 0
-  fourAccuracy: 0
-  addAccuracyModifier: 1
 --- !u!82 &2839816593142895920
 AudioSource:
   m_ObjectHideFlags: 0
@@ -366,6 +307,65 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6172001656908732724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758778329069315356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropShadowPosition: {x: 0, y: 0, z: 0}
+  displacement: 0
+  Zdistance: 0
+  TextObject: {fileID: 0}
+  shootProfile: {fileID: 0}
+  _angle: 60
+  shotMiss: {fileID: 0}
+  accuracy: 0
+  twoAccuracy: 0
+  threeAccuracy: 0
+  fourAccuracy: 0
+  addAccuracyModifier: 0
+--- !u!114 &5915542694526683963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758778329069315356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _twoPoints: 0
+  _threePoints: 0
+  _fourPoints: 0
+  _locked: 0
+  _canPullBall: 0
+  _BallDistanceFromRim: 0
+  _twoPointDistance: 0
+  _threePointDistance: 0
+  _FourPointDistance: 0
+  basketBallPosition: {fileID: 0}
+  basketBallTarget: {fileID: 0}
+--- !u!114 &9097991527344725526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758778329069315356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179c8393904979c4faea16cf0061a011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2758825671516104102
 GameObject:
   m_ObjectHideFlags: 0
