@@ -8,6 +8,7 @@ using System;
 public class playercontrollerscript : MonoBehaviour
 {
     // components 
+    [SerializeField]
     Animator anim;
     AnimatorStateInfo currentStateInfo;
     GameObject dropShadow;
@@ -102,9 +103,11 @@ public class playercontrollerscript : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("playercontrollerscript : start");
+
         rigidBody = GetComponent<Rigidbody>();
         moonwalkAudio = GetComponent<AudioSource>();
-        anim = GetComponentInChildren<Animator>();
+        anim = gameManager.instance.anim;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         basketball = GameObject.FindWithTag("basketball").GetComponent<basketBall>();

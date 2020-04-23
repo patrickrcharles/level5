@@ -8,12 +8,12 @@ using TeamUtility.IO;
 public class gameManager : MonoBehaviour
 {
     //public int playerLives;
-    public Vector3 previousPlayerPosition;
-    public Quaternion previousPlayerRotation;
-    public bool gameOver;
-    public bool reloadLevel;
-    public bool showScore;
-    public bool startGame;
+    Vector3 previousPlayerPosition;
+    Quaternion previousPlayerRotation;
+    bool gameOver;
+    bool reloadLevel;
+    bool showScore;
+    bool startGame;
 
     //public bool playerMadeShot;
 
@@ -26,8 +26,8 @@ public class gameManager : MonoBehaviour
 
     //public bool playerIsEnemy;
     //public Text displayPlayerLives;
-    public GameObject backgroundFade;
-    public GameObject pauseObject;
+    //public GameObject backgroundFade;
+    //public GameObject pauseObject;
 
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
@@ -52,36 +52,59 @@ public class gameManager : MonoBehaviour
     }
 
     public static gameManager instance;
-    public bool paused = false;
+    bool paused = false;
 
     //private AudioSource[] allAudioSources;
 
     //basketBall objects
-    public GameObject basketball;
-    public basketBall basketballState;
-    public GameObject basketballSpawnLocation;
+    GameObject basketball;
+    basketBall basketballState;
+    [SerializeField]
+    GameObject basketballSpawnLocation;
 
-    public bool locked;
+    //player spawn location
+    [SerializeField]
+    GameObject playerSpawnLocation;
+    //[SerializeField]
+    //GameObject player_spawn;
 
+
+    bool locked;
 
     private void Awake()
     {
+        Debug.Log("gm : awake()");
         // initialize game manger player references
         instance = this;
         //allAudioSources = FindObjectsOfType<AudioSource>();
 
         //Application.targetFrameRate = 60;
         if (!getCurrentSceneName().StartsWith("start")) { initializePlayer(); }
+
+                // player + ball spawn locations
+        playerSpawnLocation = GameObject.Find("player_spawn_location");
+        basketballSpawnLocation = GameObject.Find("ball_spawn_location");
+
+        //Debug.Log("initialize player");
+        //initializePlayer();
+        //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
+        //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
+        //_playerState = player.GetComponent<playercontrollerscript
+
         //load and spawn basketbll prefab
         basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
     }
 
     private void Start()
     {
-        pauseObject.SetActive(false);
+        Debug.Log("gm : start()");
+        //pauseObject.SetActive(false);
         //pauseMenu.instance.enabled = false;
         locked = false;
+        _playerState = player.GetComponent<playercontrollerscript>();
+        _anim = player.GetComponentInChildren<Animator>();
         basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
     }
 
@@ -118,9 +141,12 @@ public class gameManager : MonoBehaviour
 
     public void initializePlayer()
     {
+        Debug.Log("initialize player");
+        //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
+        //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
+
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = player.GetComponent<playercontrollerscript>();
-        //_anim = _player.GetComponent<Animator>();
+        _anim = _player.GetComponent<Animator>();
     }
 
     public void resetSceneVariables()
@@ -152,14 +178,14 @@ public class gameManager : MonoBehaviour
     {
         if (Time.timeScale == 0f)
         {
-            gameManager.instance.backgroundFade.SetActive(false);
+            //gameManager.instance.backgroundFade.SetActive(false);
             Time.timeScale = 1f;
             //resumeAllAudio();
             return (false);
         }
         else
         {
-            gameManager.instance.backgroundFade.SetActive(true);
+            //gameManager.instance.backgroundFade.SetActive(true);
             Time.timeScale = 0f;
             //pauseAllAudio();
             return (true);

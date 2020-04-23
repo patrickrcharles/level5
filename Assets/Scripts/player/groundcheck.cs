@@ -10,14 +10,14 @@ public class groundcheck : MonoBehaviour {
     public float initialHeight, finalHeight;
     Rigidbody rigidBody;
 
-    void Awake()
+    void Start()
     {
         //Debug.Log("groundcheck.cs :: Awake( )");
         player = gameManager.instance.player;
 
         //Debug.Log("player = "+ player.name);
         playerState = gameManager.instance.playerState;
-        rigidBody = player.GetComponent<Rigidbody>();
+        //rigidBody = player.GetComponent<Rigidbody>();
 
         //Debug.Log("playerState = " + playerState);
     }
