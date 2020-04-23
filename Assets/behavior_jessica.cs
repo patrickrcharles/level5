@@ -13,7 +13,7 @@ public class behavior_jessica : MonoBehaviour
     public static behavior_jessica instance;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         instance = this;
         audioSource = GetComponent<AudioSource>();
