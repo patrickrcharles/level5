@@ -113,12 +113,12 @@ public class BasketBall : MonoBehaviour
         basketballState.CanPullBall = true;
         addAccuracyModifier = false;
 
-        //shootProfileText.text = "ball distance : " + (Math.Round(ballDistanceFromRim, 2)) + "\n"
-        //                        + "shot distance : " + (Math.Round(ballDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-        //                        + "shooter : Dr Blood\n"
-        //                        + "2 point accuracy : " + ((1 - shooterProfile.accuracy2pt) * 100) + "\n"
-        //                        + "3 point accuracy : " + ((1 - shooterProfile.accuracy3pt) * 100) + "\n"
-        //                        + "4 point accuracy : " + ((1 - shooterProfile.accuracy4pt) * 100);
+        shootProfileText.text = "ball distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
+                                + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+                                + "shooter : Dr Blood\n"
+                                + "2 point accuracy : " + ((1 - shooterProfile.accuracy2pt) * 100) + "\n"
+                                + "3 point accuracy : " + ((1 - shooterProfile.accuracy3pt) * 100) + "\n"
+                                + "4 point accuracy : " + ((1 - shooterProfile.accuracy4pt) * 100);
 
     }
 
@@ -130,7 +130,7 @@ public class BasketBall : MonoBehaviour
         dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
         //dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
 
-        //ballDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
+        //basketballState.BallDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
         // change this to reduce opacity
         if (!playerState.hasBasketball)
         {
@@ -140,12 +140,12 @@ public class BasketBall : MonoBehaviour
 
         updateScoreText();
 
-        //shootProfileText.text = "distance : " + (Math.Round(ballDistanceFromRim, 2)) + "\n"
-        //                        + "shot distance : " + (Math.Round(ballDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-        //                        + "shooter : Dr Blood\n"
-        //                        + "2 point accuracy : " + shooterProfile.accuracy2pt + "\n"
-        //                        + "3 point accuracy : " + shooterProfile.accuracy3pt + "\n"
-        //                        + "4 point accuracy : " + shooterProfile.accuracy4pt;
+        shootProfileText.text = "distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
+                                + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+                                + "shooter : Dr Blood\n"
+                                + "2 point accuracy : " + shooterProfile.accuracy2pt + "\n"
+                                + "3 point accuracy : " + shooterProfile.accuracy3pt + "\n"
+                                + "4 point accuracy : " + shooterProfile.accuracy4pt;
 
 
 
@@ -205,6 +205,29 @@ public class BasketBall : MonoBehaviour
             else // side of goal, relative postion
             {
                 playerState.setPlayerAnimTrigger("basketballShoot");
+            }
+
+            // identify is in 2 or 3 point range for stat counters
+            if (basketballState.TwoPoints)
+            {
+                //Debug.Log(" 2 point attempt");
+                basketballState.TwoAttempt = true;
+                basketBallStats.TwoPointerAttempts++;
+                //Debug.Log("TwoAttempt :: " + TwoAttempt);
+            }
+            if (basketballState.ThreePoints)
+            {
+                //Debug.Log(" 3 point attempt");
+                basketballState.ThreeAttempt = true;
+                basketBallStats.ThreePointerAttempts++;
+                //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
+            }
+            if (basketballState.FourPoints)
+            {
+                //Debug.Log(" 3 point attempt");
+                basketballState.FourAttempt = true;
+                basketBallStats.FourPointerAttempts++;
+                //Debug.Log("ThreeAttempt :: "+ ThreeAttempt);
             }
 
             //launch ball to goal      
