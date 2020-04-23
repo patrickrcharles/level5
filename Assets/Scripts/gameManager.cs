@@ -56,9 +56,9 @@ public class gameManager : MonoBehaviour
 
     //private AudioSource[] allAudioSources;
 
-    //basketBall objects
+    //BasketBall objects
     GameObject basketball;
-    basketBall basketballState;
+    BasketBall basketballState;
     [SerializeField]
     GameObject basketballSpawnLocation;
 
@@ -94,7 +94,7 @@ public class gameManager : MonoBehaviour
         //load and spawn basketbll prefab
         basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
 
     private void Start()
@@ -105,7 +105,7 @@ public class gameManager : MonoBehaviour
         locked = false;
         _playerState = player.GetComponent<playercontrollerscript>();
         _anim = player.GetComponentInChildren<Animator>();
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
 
     private void Update()
