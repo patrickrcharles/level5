@@ -7,7 +7,7 @@ using TeamUtility.IO;
 
 public class gameManager : MonoBehaviour
 {
-    public int playerLives;
+    //public int playerLives;
     public Vector3 previousPlayerPosition;
     public Quaternion previousPlayerRotation;
     public bool gameOver;
@@ -15,17 +15,17 @@ public class gameManager : MonoBehaviour
     public bool showScore;
     public bool startGame;
 
-    public bool playerMadeShot;
+    //public bool playerMadeShot;
 
     string currentSceneName;
-    [SerializeField]
-    GameObject startMenuMusicObject;
+    //[SerializeField]
+    //GameObject startMenuMusicObject;
 
-    [SerializeField]
-    float totalMoney;
+    //[SerializeField]
+    //float totalMoney;
 
-    public bool playerIsEnemy;
-    public Text displayPlayerLives;
+    //public bool playerIsEnemy;
+    //public Text displayPlayerLives;
     public GameObject backgroundFade;
     public GameObject pauseObject;
 
@@ -54,8 +54,9 @@ public class gameManager : MonoBehaviour
     public static gameManager instance;
     public bool paused = false;
 
-    private AudioSource[] allAudioSources;
+    //private AudioSource[] allAudioSources;
 
+    //basketBall objects
     public GameObject basketball;
     public basketBall basketballState;
     public GameObject basketballSpawnLocation;
@@ -67,10 +68,11 @@ public class gameManager : MonoBehaviour
     {
         // initialize game manger player references
         instance = this;
-        allAudioSources = FindObjectsOfType<AudioSource>();
+        //allAudioSources = FindObjectsOfType<AudioSource>();
 
         //Application.targetFrameRate = 60;
         if (!getCurrentSceneName().StartsWith("start")) { initializePlayer(); }
+        //load and spawn basketbll prefab
         basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
     }
@@ -78,7 +80,7 @@ public class gameManager : MonoBehaviour
     private void Start()
     {
         pauseObject.SetActive(false);
-        pauseMenu.instance.enabled = false;
+        //pauseMenu.instance.enabled = false;
         locked = false;
         basketballState = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
     }
@@ -118,7 +120,7 @@ public class gameManager : MonoBehaviour
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = player.GetComponent<playercontrollerscript>();
-        _anim = _player.GetComponent<Animator>();
+        //_anim = _player.GetComponent<Animator>();
     }
 
     public void resetSceneVariables()
@@ -140,10 +142,10 @@ public class gameManager : MonoBehaviour
     {
         return SceneManager.GetActiveScene().name;
     }
-    public void updatePlayerLives()
-    {
-        displayPlayerLives.text = "x " + (playerLives).ToString();
-    }
+    //public void updatePlayerLives()
+    //{
+    //    displayPlayerLives.text = "x " + (playerLives).ToString();
+    //}
 
 
     bool togglePause()
@@ -152,35 +154,35 @@ public class gameManager : MonoBehaviour
         {
             gameManager.instance.backgroundFade.SetActive(false);
             Time.timeScale = 1f;
-            resumeAllAudio();
+            //resumeAllAudio();
             return (false);
         }
         else
         {
             gameManager.instance.backgroundFade.SetActive(true);
             Time.timeScale = 0f;
-            pauseAllAudio();
+            //pauseAllAudio();
             return (true);
         }
     }
 
-    void pauseAllAudio()
-    {
-        foreach (AudioSource audioS in allAudioSources)
-        {
-            //audioS.Stop();
-            audioS.Pause();
-        }
-    }
+    //void pauseAllAudio()
+    //{
+    //    foreach (AudioSource audioS in allAudioSources)
+    //    {
+    //        //audioS.Stop();
+    //        audioS.Pause();
+    //    }
+    //}
 
-    void resumeAllAudio()
-    {
-        foreach (AudioSource audioS in allAudioSources)
-        {
-            //audioS.Stop();
-            audioS.UnPause();
-        }
-    }
+    //void resumeAllAudio()
+    //{
+    //    foreach (AudioSource audioS in allAudioSources)
+    //    {
+    //        //audioS.Stop();
+    //        audioS.UnPause();
+    //    }
+    //}
 
     private void Quit()
     {

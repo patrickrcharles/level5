@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 2871492104121308086}
   - component: {fileID: 2839816593142895920}
   - component: {fileID: 2859642144006615130}
-  - component: {fileID: 2760658451826438199}
   m_Layer: 0
   m_Name: basketball 1
   m_TagString: basketball
@@ -367,32 +366,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2760658451826438199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2758778329069315356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accuracy2pt: 95
-  accuracy3pt: 80
-  accuracy4pt: 70
-  jumpForce: 5.3
-  speed: 2.5
-  runSpeed: 3.5
-  hangTime: -8
-  range: 100
-  release: 100
-  criticalPercent: 37
-  shootAngle: 65
-  shootXVariance: 0
-  shootYVariance: 0
-  shootZVariance: 0
 --- !u!1 &2758825671516104102
 GameObject:
   m_ObjectHideFlags: 0

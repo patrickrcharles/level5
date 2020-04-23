@@ -394,10 +394,11 @@ GameObject:
   - component: {fileID: 696308604074243338}
   - component: {fileID: 8589007593542418027}
   - component: {fileID: 6505920843671966906}
+  - component: {fileID: 6314316447998047308}
   - component: {fileID: 3831037889351645140}
   - component: {fileID: 8339881130020610223}
   - component: {fileID: 6478677999031961211}
-  - component: {fileID: 6314316447998047308}
+  - component: {fileID: 3534781131062367853}
   m_Layer: 0
   m_Name: Player_aba
   m_TagString: Player
@@ -485,6 +486,21 @@ MonoBehaviour:
   jumpPeakReached: 0
   useGravity: 1
   facingFront: 0
+--- !u!114 &6314316447998047308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7779290808199882577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pullSpeed: 2
+  pullDirection: {x: 0, y: 0, z: 0}
+  basketBall: {fileID: 0}
 --- !u!82 &3831037889351645140
 AudioSource:
   m_ObjectHideFlags: 0
@@ -497,7 +513,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e70aa8ea9bd5bd44a95dde05c6e1354e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.15
+  m_Volume: 0.503
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -608,7 +624,7 @@ CapsuleCollider:
   m_Height: 0.91
   m_Direction: 1
   m_Center: {x: 0, y: -0.18, z: 0}
---- !u!114 &6314316447998047308
+--- !u!114 &3534781131062367853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -617,12 +633,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7779290808199882577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
+  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullSpeed: 2
-  pullDirection: {x: 0, y: 0, z: 0}
-  basketBall: {fileID: 0}
+  accuracy2pt: 90
+  accuracy3pt: 80
+  accuracy4pt: 75
+  jumpForce: 5.2
+  speed: 2
+  runSpeed: 3
+  hangTime: 0
+  range: 100
+  release: 100
+  criticalPercent: 35
+  shootAngle: 65
+  shootXVariance: 0
+  shootYVariance: 0
+  shootZVariance: 0
 --- !u!1 &8591083425832817818
 GameObject:
   m_ObjectHideFlags: 0

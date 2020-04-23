@@ -388,6 +388,7 @@ MonoBehaviour:
   hangTime: -8
   range: 100
   release: 100
+  criticalPercent: 0
   shootAngle: 65
   shootXVariance: 0
   shootYVariance: 0

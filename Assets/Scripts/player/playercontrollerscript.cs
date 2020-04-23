@@ -108,7 +108,7 @@ public class playercontrollerscript : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         basketball = GameObject.FindWithTag("basketball").GetComponent<basketBall>();
-        shooterProfile = basketball.GetComponent<shooterProfile>();
+        shooterProfile = gameManager.instance.player.GetComponent<shooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 

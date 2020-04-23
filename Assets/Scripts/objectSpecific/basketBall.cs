@@ -93,7 +93,7 @@ public class basketBall : MonoBehaviour
         //basketBallSprite = transform.FindChild("basketball_sprite").gameObject;
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = basketBallSprite.GetComponent<SpriteRenderer>();
-        shooterProfile = transform.GetComponent<shooterProfile>();
+        shooterProfile =  gameManager.instance.player.GetComponent<shooterProfile>();
 
 
         //displacement = Vector3.Distance(basketBallTarget.transform.position, gameObject.transform.position);
@@ -470,15 +470,11 @@ public class basketBall : MonoBehaviour
 
     private int getRandomPositiveOrNegtaive()
     {
-
         var Random = new Random();
         List<int> list = new List<int> { 1, -1 };
         int finder = Random.Next(list.Count); //Then you just use this; nameDisplayString = names[finder];
-        //Debug.Log("     0: " + list[0] + " 1 : " + list[1]);
         int shotDirectionModifier = list[finder];
-        //Debug.Log("     finder : " + finder);
-        //Debug.Log("     list : " + list);
-       //Debug.Log("     shotDirectionModifier : " + shotDirectionModifier);
+
         return shotDirectionModifier;
     }
 
