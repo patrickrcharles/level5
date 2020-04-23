@@ -56,8 +56,8 @@ public class countdown : MonoBehaviour
         {
             //GUI.Label(new Rect(100, 100, 200, 100), "Time's Up");
 
-            gameManager.instance.gameOver = true;
-            gameManager.instance.showScore = true;
+            //gameManager.instance.gameOver = true;
+            //gameManager.instance.showScore = true;
             displayTimer = false;
 //            setScoreTime();
             Time.timeScale = 0.01f;

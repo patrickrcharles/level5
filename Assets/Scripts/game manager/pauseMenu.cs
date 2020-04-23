@@ -9,7 +9,7 @@ public class pauseMenu : MonoBehaviour
     public bool paused = false;
     private AudioSource[] allAudioSources;
     private GUIStyle guiStyle = new GUIStyle();  //create a new variable
-    public continueGame continueGame;
+    //public continueGame continueGame;
 
     public static pauseMenu instance;
     public GameObject controlsText;
@@ -137,7 +137,7 @@ public class pauseMenu : MonoBehaviour
     {
         if (Time.timeScale == 0f)
         {
-            gameManager.instance.backgroundFade.SetActive(false);
+            //gameManager.instance.backgroundFade.SetActive(false);
 
             //controlsText.SetActive(false);
             Time.timeScale = 1f;
@@ -146,7 +146,7 @@ public class pauseMenu : MonoBehaviour
         }
         else
         {
-            gameManager.instance.backgroundFade.SetActive(true);
+            //gameManager.instance.backgroundFade.SetActive(true);
             //controlsText.SetActive(true);
             Time.timeScale = 0f;
             pauseAllAudio();
