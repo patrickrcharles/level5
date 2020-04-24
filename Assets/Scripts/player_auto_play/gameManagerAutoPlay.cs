@@ -135,7 +135,7 @@ public class gameManagerAutoPlay : MonoBehaviour
     // game manager provides read only links to player object and player states
     public void InitializePlayer()
     {
-        Debug.Log("initialize player");
+        //Debug.Log("initialize player");
         //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
         //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
 

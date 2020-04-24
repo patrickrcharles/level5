@@ -193,6 +193,10 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
 
     protected bool pathComplete()
     {
+        //Debug.Log("$$$$$$$$$$$$ path complete");
+        //Debug.Log("     navmeshAgent.destination : " + navmeshAgent.destination);
+        //Debug.Log("     navmeshAgent.transform.position : " + navmeshAgent.transform.position);
+        //Debug.Log("     navmeshAgent.stoppingDistance : " + navmeshAgent.stoppingDistance);
         if (Vector3.Distance(navmeshAgent.destination, navmeshAgent.transform.position) <= navmeshAgent.stoppingDistance)
         {
             if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)

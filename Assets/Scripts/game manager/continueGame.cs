@@ -83,7 +83,7 @@
 //        playerState.setPlayerAnim("waiting", false);
 //        playerState.canMove = true;
 //        player.GetComponent<Rigidbody>().isKinematic = false;
-//        playerState.notLocked = true;
+//        playerState.locked = true;
 
 //        yield return new WaitForSecondsRealtime(3);
 

@@ -23,7 +23,7 @@ public class BasketBallShotMadeAutoPlay : MonoBehaviour
     void Start()
     {
         rimSprite = GameObject.Find("rim_sprite");
-        Debug.Log(" shot made script start()");
+        //Debug.Log(" shot made script start()");
         //basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBallAutoPlay>();
         basketball = gameManagerAutoPlay.instance.Basketball.GetComponent<BasketBallAutoPlay>();
         basketballState = basketball.GetComponent<BasketballStateAutoPlay>();
@@ -55,9 +55,9 @@ public class BasketBallShotMadeAutoPlay : MonoBehaviour
             anim.Play("madeshot");
 
             Debug.Log(" made a shot!");
-            Debug.Log("two: " + basketballState.TwoAttempt
-                + " three: " + basketballState.ThreeAttempt
-                + " four: " + basketballState.FourAttempt);
+            //Debug.Log("two: " + basketballState.TwoAttempt
+            //    + " three: " + basketballState.ThreeAttempt
+            //    + " four: " + basketballState.FourAttempt);
             /* trigger net swish animation + sfx
          *  update score
          */
@@ -90,7 +90,7 @@ public class BasketBallShotMadeAutoPlay : MonoBehaviour
             basketballState.FourAttempt = false;
         }
         // update onscreen ui stats
-        basketball.updateScoreText();
+        //basketball.updateScoreText();
     }
 }
 

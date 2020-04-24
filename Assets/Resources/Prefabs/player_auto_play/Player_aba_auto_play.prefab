@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2950065458497200917
 Transform:
   m_ObjectHideFlags: 0
@@ -169,8 +169,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.48
-  m_Height: 0.45
+  m_Radius: 0.41
+  m_Height: 1.77
   m_Direction: 1
   m_Center: {x: 0, y: -0.31, z: 0}
 --- !u!1 &2800903032938169430
@@ -321,8 +321,9 @@ GameObject:
   - component: {fileID: 7263727881128716056}
   - component: {fileID: 2475382338872569955}
   - component: {fileID: 580830197728319159}
-  - component: {fileID: 6983242549840512673}
   - component: {fileID: 5462403134315739823}
+  - component: {fileID: 6983242549840512673}
+  - component: {fileID: 3597708645132067743}
   m_Layer: 0
   m_Name: Player_aba_auto_play
   m_TagString: Player
@@ -533,8 +534,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.35
+  m_Center: {x: 0, y: -0.24, z: 0}
 --- !u!136 &580830197728319159
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -549,32 +550,6 @@ CapsuleCollider:
   m_Height: 0.91
   m_Direction: 1
   m_Center: {x: 0, y: -0.18, z: 0}
---- !u!114 &6983242549840512673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4184672442610743197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accuracy2pt: 90
-  accuracy3pt: 80
-  accuracy4pt: 75
-  jumpForce: 4.5
-  speed: 2
-  runSpeed: 3
-  hangTime: 0
-  range: 100
-  release: 100
-  criticalPercent: 35
-  shootAngle: 60
-  shootXVariance: 0
-  shootYVariance: 0
-  shootZVariance: 0
 --- !u!114 &5462403134315739823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,7 +566,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   _angle: 60
   movementSpeed: 3
-  jumpForce: 5
+  jumpForce: 10
   moonwalkMovementSpeed: 5
   basketballRunSpeed: 4
   walkMovementSpeed: 3
@@ -605,15 +580,67 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _notLocked: 0
+  _facingRight: 0
+  _locked: 0
   _inAir: 0
-  _grounded: 0
+  _grounded: 1
   initialHeight: 0
   finalHeight: 0
   gravityModifier: 0
   jumpPeakReached: 0
   useGravity: 1
   facingFront: 0
+  basketball: {fileID: 0}
+  basketballPosition: {x: 0, y: 0, z: 0}
+  moveToNewPosition: 0
+--- !u!114 &6983242549840512673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184672442610743197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accuracy2pt: 90
+  accuracy3pt: 80
+  accuracy4pt: 75
+  jumpForce: 5
+  speed: 5
+  runSpeed: 5
+  hangTime: 0
+  range: 100
+  release: 100
+  criticalPercent: 50
+  shootAngle: 60
+  shootXVariance: 0
+  shootYVariance: 0
+  shootZVariance: 0
+--- !u!195 &3597708645132067743
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184672442610743197}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.15
+  m_Speed: 3
+  m_Acceleration: 5
+  avoidancePriority: 50
+  m_AngularSpeed: 100
+  m_StoppingDistance: 0.4
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.25
+  m_BaseOffset: 0.63
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4689389150970343327
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4689389150970343327}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.626, z: 0}
+  m_LocalPosition: {x: 0, y: -0.644, z: 0}
   m_LocalScale: {x: 1.24, y: 0.27, z: 0.2}
   m_Children: []
   m_Father: {fileID: 6363214983081125318}

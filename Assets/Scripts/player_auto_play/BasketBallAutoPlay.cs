@@ -10,11 +10,10 @@ public class BasketBallAutoPlay : MonoBehaviour
 {
     //GameObject score; //reference to the ScoreText gameobject, set in editor
     AudioClip basket; //reference to the basket sound
+    GameObject player; // , dropShadow;
 
-    GameObject player, dropShadow;
 
-    [SerializeField]
-    Vector3 dropShadowPosition;
+    //Vector3 dropShadowPosition;
     GameObject basketBallSprite, playerDunkPos;
 
     playercontrollerscriptAutoPlay playerState;
@@ -43,7 +42,6 @@ public class BasketBallAutoPlay : MonoBehaviour
 
     public float longestShot { get; set; }
     public float lastShotDistance { get; set; }
-
 
     public GameObject shootProfile;
     Text shootProfileText;
@@ -89,8 +87,8 @@ public class BasketBallAutoPlay : MonoBehaviour
 
 
         //basketball drop shadow
-        dropShadow = transform.root.Find("drop shadow").gameObject;
-        dropShadowPosition = dropShadow.transform.position;
+        //dropShadow = transform.root.Find("drop shadow").gameObject;
+        //dropShadowPosition = dropShadow.transform.position;
         audioSource = GetComponent<AudioSource>();
         basketBallSprite = GameObject.Find("basketball_sprite");
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -101,51 +99,45 @@ public class BasketBallAutoPlay : MonoBehaviour
         //shooterProfile = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
 
 
-        TextObject = GameObject.Find("shootStatsTextObject");
-        shootProfile = GameObject.Find("shooterProfileTextObject");
-
-        shootProfileText = shootProfile.GetComponent<Text>();
-        scoreText = TextObject.GetComponent<Text>();
-
         longestShot = 0;
         playerDunkPos = GameObject.Find("dunk_transform");
         basketballState.Locked = false;
         basketballState.CanPullBall = true;
         addAccuracyModifier = false;
 
-        shootProfileText.text = "ball distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
-                                + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-                                + "shooter : Dr Blood\n"
-                                + "2 point accuracy : " + ((1 - shooterProfile.accuracy2pt) * 100) + "\n"
-                                + "3 point accuracy : " + ((1 - shooterProfile.accuracy3pt) * 100) + "\n"
-                                + "4 point accuracy : " + ((1 - shooterProfile.accuracy4pt) * 100);
+        //shootProfileText.text = "ball distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
+        //                        + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+        //                        + "shooter : Dr Blood\n"
+        //                        + "2 point accuracy : " + ((1 - shooterProfile.accuracy2pt) * 100) + "\n"
+        //                        + "3 point accuracy : " + ((1 - shooterProfile.accuracy3pt) * 100) + "\n"
+        //                        + "4 point accuracy : " + ((1 - shooterProfile.accuracy4pt) * 100);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        dropShadowPosition = dropShadow.transform.position;
-        //dropShadow.transform.position = new Vector3(transform.position.x, 0.01f, transform.root.position.z);
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
-        //dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
+        //dropShadowPosition = dropShadow.transform.position;
+        ////dropShadow.transform.position = new Vector3(transform.position.x, 0.01f, transform.root.position.z);
+        //dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
+        ////dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
 
         //basketballState.BallDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
         // change this to reduce opacity
         if (!playerState.hasBasketball)
         {
             spriteRenderer.enabled = true;
-            dropShadow.SetActive(true);
+            //dropShadow.SetActive(true);
         }
 
-        updateScoreText();
+        //updateScoreText();
 
-        shootProfileText.text = "distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
-                                + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-                                + "shooter : Dr Blood\n"
-                                + "2 point accuracy : " + shooterProfile.accuracy2pt + "\n"
-                                + "3 point accuracy : " + shooterProfile.accuracy3pt + "\n"
-                                + "4 point accuracy : " + shooterProfile.accuracy4pt;
+        //shootProfileText.text = "distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
+        //                        + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+        //                        + "shooter : Dr Blood\n"
+        //                        + "2 point accuracy : " + shooterProfile.accuracy2pt + "\n"
+        //                        + "3 point accuracy : " + shooterProfile.accuracy3pt + "\n"
+        //                        + "4 point accuracy : " + shooterProfile.accuracy4pt;
 
 
 
@@ -159,24 +151,29 @@ public class BasketBallAutoPlay : MonoBehaviour
         //}
         if (playerState.hasBasketball && !basketballState.Thrown)
         {
-            //Debug.Log("if (playerState.hasBasketball && !basketballState.Thrown)");
+            Debug.Log("if (playerState.hasBasketball && !basketballState.Thrown)");
             transform.position = new Vector3(basketballState.BasketBallPosition.transform.position.x,
                 basketballState.BasketBallPosition.transform.position.y,
                 basketballState.BasketBallPosition.transform.position.z);
             //Debug.Log("playerState.grounded" + playerState.grounded);
-            if (playerState.grounded)
-            {
-                spriteRenderer.enabled = false;
-                dropShadow.SetActive(false);
-                playerState.setPlayerAnim("hasBasketball", true);
-                //playerState.setPlayerAnim("walking", false);
-                playerState.setPlayerAnim("moonwalking", false);
-            }
-            else
-            {
-                //basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
-                //playerState.setPlayerAnim("hasBasketball", false);
-            }
+            spriteRenderer.enabled = false;
+            //dropShadow.SetActive(false);
+            playerState.setPlayerAnim("hasBasketball", true);
+            //playerState.setPlayerAnim("walking", false);
+            playerState.setPlayerAnim("moonwalking", false);
+            //if (playerState.grounded)
+            //{
+            //    spriteRenderer.enabled = false;
+            //    dropShadow.SetActive(false);
+            //    playerState.setPlayerAnim("hasBasketball", true);
+            //    //playerState.setPlayerAnim("walking", false);
+            //    playerState.setPlayerAnim("moonwalking", false);
+            //}
+            //else
+            //{
+            //    //basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
+            //    //playerState.setPlayerAnim("hasBasketball", false);
+            //}
         }
 
         if (!playerState.hasBasketball)
@@ -186,16 +183,18 @@ public class BasketBallAutoPlay : MonoBehaviour
 
 
         if (playerState.inAir 
-            && playerState.hasBasketball 
-            && InputManager.GetButtonDown("Fire1")
+            && playerState.hasBasketball
+            && playerState.jumpPeakReached
             && !basketballState.Locked)
         {
             basketballState.Locked = true;
+            Debug.Log(" shoot");
             releaseVelocityY = playerState.rigidBodyYVelocity;
-           //Debug.log("shoot button pressed : " + releaseVelocityY);
-            //Debug.Log("$$$$$$$$$$$$$$$$$$$ shoot : addAccuracyModifier : " + addAccuracyModifier);
-            //Debug.Log("shoot ball");
-            playerState.hasBasketball = false;
+            Debug.Log("releaseVelocityY : " + releaseVelocityY);
+
+            Launch();
+
+            //playerState.hasBasketball = false;
             playerState.setPlayerAnim("hasBasketball", false);
 
             if (playerState.facingFront) // facing straight toward bball goal
@@ -231,7 +230,6 @@ public class BasketBallAutoPlay : MonoBehaviour
             }
 
             //launch ball to goal      
-            Launch();
 
             //Jessica might take a photo
             //behavior_jessica.instance.playAnimationTakePhoto();
@@ -244,9 +242,6 @@ public class BasketBallAutoPlay : MonoBehaviour
 
             basketballState.Thrown = true;
             basketballState.InAir = true;
-            basketballState.Locked = false;
-
-
         }
 
     }
@@ -265,17 +260,20 @@ public class BasketBallAutoPlay : MonoBehaviour
         {
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
             basketballState.InAir = false;
-            basketballState.Grounded = true;
+            //basketballState.Grounded = true;
             basketballState.CanPullBall = true;
+            basketballState.Locked = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
+
         }
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence"))
         {
             //Debug.Log("$$$$$$$$$$$$$$$$$");
             //Debug.Log("Collision Enter : " + transform.name + " other.name : " + other.gameObject.name);
-            //inAir = false;
+            basketballState.InAir = false;
             //Grounded = true;
+            basketballState.Locked = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
             basketballState.CanPullBall = true;
         }
@@ -298,18 +296,19 @@ public class BasketBallAutoPlay : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
-        if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
-        {
-            //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
-            playerState.hasBasketball = true;
-            playerState.turnOffMoonWalkAudio();
-            basketballState.CanPullBall = false;
+        ////Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
+        //if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
+        //{
+        //    Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
+        //    //playerState.hasBasketball = true;
+        //    playerState.turnOffMoonWalkAudio();
+        //    basketballState.CanPullBall = false;
 
-        }
+        //}
         if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
         {
             basketballState.Grounded = true;
+            basketballState.Thrown = false;
         }
 
         //if (gameObject.name.Contains("basketBallMadeShot") && other.gameObject.name == "basketball")
@@ -334,7 +333,6 @@ public class BasketBallAutoPlay : MonoBehaviour
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("Player") && basketballState.Thrown)
         {
             //Debug.Log("$$$$$$$$$$$$$$$$$$");
-            basketballState.Thrown = false;
             playerState.hasBasketball = false;
             basketballState.Locked = false;
         }
@@ -355,7 +353,7 @@ public class BasketBallAutoPlay : MonoBehaviour
     void Launch()
     {
         basketBallStats.ShotAttempt++;
-       //Debug.log("Launch()");
+       Debug.Log("Launch()");
 
         //Debug.Log("Launch() : addAccuracyModifier : " + addAccuracyModifier);
         // think of it as top-down view of vectors: 
@@ -367,8 +365,10 @@ public class BasketBallAutoPlay : MonoBehaviour
             basketballState.BasketBallTarget.transform.position.y,
             basketballState.BasketBallTarget.transform.position.z);
 
-       //Debug.log("projectileXZPos :: " + projectileXZPos);
-       //Debug.log("targetXZPos :: " + targetXZPos);
+       //Debug.Log("projectileXZPos :: " + projectileXZPos);
+       Debug.Log("ball position" + transform.position);
+       // Debug.Log("targetXZPos :: " + targetXZPos);
+       //Debug.Log("target position"+ basketballState.BasketBallTarget.transform.position);
 
         // rotate the object to face the target
         transform.LookAt(targetXZPos);
@@ -381,46 +381,45 @@ public class BasketBallAutoPlay : MonoBehaviour
         float H = basketballState.BasketBallTarget.transform.position.y - transform.position.y;
         //float Hplayer = basketBallTarget.transform.position.y - player.transform.position.y;
 
-
         //Debug.Log("R :: " + R);
         //Debug.Log("G :: " + G);
         //Debug.Log("tanAlpha :: " + tanAlpha);
         //Debug.Log("H :: " + H);
-        //Debug.Log("_angle :: " + _angle);
+       //Debug.Log("_angle :: " + _angle);
 
         // calculate the local space components of the velocity 
         // required to land the projectile on the target object 
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        //Debug.Log("Vz :: " + Vz);
-        //Debug.Log("Vy :: " + Vy);
+       //Debug.Log("Vz :: " + Vz);
+       //Debug.Log("Vy :: " + Vy);
 
-        //Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);
+        //Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);;
 
-        float accuracyModifierX = 0;
-        if (rollForCriticalShotChance(shooterProfile.criticalPercent))
-        {
-            accuracyModifierX = 0;
-        }
-        else
-        {
-            accuracyModifierX = getAccuracyModifier();
-        }
+        //float accuracyModifierX = 0;
+        //if (rollForCriticalShotChance(shooterProfile.criticalPercent))
+        //{
+        //    accuracyModifierX = 0;
+        //}
+        //else
+        //{
+        //    accuracyModifierX = getAccuracyModifier();
+        //}
 
-        float xVector = 0 + accuracyModifierX;
+        float xVector = 0 ;
         float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(0, Vy, Vz);
 
-        // turn on/off accuracy modifier
-        if (addAccuracyModifier)
-        {
-            //Debug.Log("addAccuracyModifier On");
-            localVelocity = new Vector3(xVector, yVector, zVector);
-        }
+        //// turn on/off accuracy modifier
+        //if (addAccuracyModifier)
+        //{
+        //    //Debug.Log("addAccuracyModifier On");
+        //    localVelocity = new Vector3(xVector, yVector, zVector);
+        //}
 
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
@@ -451,7 +450,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         if (basketballState.FourPoints) { accuracyModifier = (100 - shooterProfile.accuracy4pt) * 0.01f; }
 
         //Debug.Log("accuracyModifier : " + accuracyModifier);
-        return (accuracyModifier / 1.2f) * direction;
+        return (accuracyModifier ) * direction;
     }
 
 

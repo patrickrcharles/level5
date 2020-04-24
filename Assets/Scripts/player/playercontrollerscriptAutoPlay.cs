@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TeamUtility.IO;
 using System;
+using UnityEditorInternal;
+using UnityEngine.AI;
 
 public class playercontrollerscriptAutoPlay : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     [SerializeField]
     Animator anim;
     AnimatorStateInfo currentStateInfo;
-    GameObject dropShadow;
+    //GameObject dropShadow;
     AudioSource moonwalkAudio;
     //continueGame continueGame;
     //GUIStyle guiStyle = new GUIStyle();
@@ -79,9 +81,10 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     bool triggerLeftAxisInUse, triggerRightAxisInUse;
 
     // get/set for following at bottom of class
+    [SerializeField]
     private bool _facingRight;
     [SerializeField]
-    private bool _notLocked;
+    private bool _locked;
     private bool _jump;
     [SerializeField]
     private bool _inAir;
@@ -99,29 +102,40 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     [SerializeField]
     public bool facingFront;
     shooterProfile shooterProfile;
-    BasketBall basketball;
+    [SerializeField]
+    GameObject basketball;
+    [SerializeField]
+    private Vector3 basketballPosition;
+
+    private NavMeshAgent navmeshAgent;
+    [SerializeField] private bool moveToNewPosition;
+    private Vector3 newVector;
+
+    private float timer =0.0f;
+    private int seconds;
 
     void Start()
     {
         //Debug.Log("playercontrollerscript : start");
-
+        navmeshAgent = GetComponent<NavMeshAgent>();
         rigidBody = GetComponent<Rigidbody>();
         moonwalkAudio = GetComponent<AudioSource>();
         anim = gameManagerAutoPlay.instance.anim;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
-        basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+        basketball = GameObject.FindWithTag("basketball");
+        basketballPosition = gameManagerAutoPlay.instance.Basketball.transform.position;
         shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<shooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
         setShooterProfileStats();
 
-        dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
+        //dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         //playerHitbox.SetActive(true);
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;
+
     }
 
     // not affected by framerate
@@ -141,19 +155,12 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         Vector3 movement;
 
         movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
-
         rigidBody.MovePosition(transform.position + movement);
-        /*
-        //set limits for player movement
-        rigidBody.transform.position = new Vector3(
-           Mathf.Clamp(rigidBody.position.x, xMin, xMax),
-           Mathf.Clamp(rigidBody.position.y, yMin, yMax),
-           Mathf.Clamp(rigidBody.position.z, zMin, zMax)
-           );
-           */
+
         //check if walking
         //  function will flip sprite if needed
-        isWalking(moveHorizontal, moveVertical);
+        isWalking(navmeshAgent.velocity.magnitude);
+        //isWalking(moveHorizontal, moveVertical);
 
     }
 
@@ -162,7 +169,12 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     {
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
+        //dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
+
+        timer += Time.deltaTime;
+        seconds = (int)(timer % 60);
+
+        Debug.Log("seconds : " + seconds);
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -170,17 +182,66 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning =  rigidBody.position - bballRimVector;
-
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
-
-        //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        if (rigidBodyYVelocity < 0 && inAir) {
+        basketballPosition = basketball.transform.position;
+        //Debug.Log("rigidBodyYVelocity : " +  rigidBodyYVelocity);
+        if (rigidBody.velocity.y <= 0 && inAir) {
             jumpPeakReached = true;
+            rigidBodyYVelocity = rigidBody.velocity.y;
         }
         else{
             jumpPeakReached = false;
         }
+
+        if (!hasBasketball
+            && !pathComplete()
+            && grounded
+            && !locked)
+        {
+            locked = true;
+            navmeshAgent.enabled = true;
+            goToBall();
+        }
+        // ================= State machine ================================
+
+        // have basketball. can shoot or move
+        if (hasBasketball 
+            && grounded
+            && !locked)
+        {
+            //navmeshAgent.enabled = true;
+            //go to a new destination 
+            //locked = true;
+            //move to new position
+            //moveToNewPosition = true;
+            if (navmeshAgent.enabled)
+            {
+                locked = true;
+
+                newVector = getRandomTransformFromPlayerPosition();
+                //Vector3 oldVector = transform.position;
+                //navmeshAgent.SetDestination(newVector);
+
+                navmeshAgent.SetDestination(newVector);
+                navmeshAgent.updateRotation = false;
+                Debug.Log("pathComplete() : " + pathComplete());
+                //Debug.Log("hasball-notmoving ::  navmeshAgent Mesh destination : " + navmeshAgent.destination);
+            }
+        }
+
+        if (navmeshAgent.enabled 
+            && pathComplete() 
+            && !locked
+            && boundaryCheck(transform.position.x, transform.position.y))
+        {
+
+            playerJump();
+        }
+
+
+
+        // ================= State machine ================================
 
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
@@ -203,7 +264,6 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
            // setPlayerAnimTrigger("basketballShoot");
             setPlayerAnim("basketballFacingFront", false);
         }
-
         // ----- control speed based on commands----------
         if (currentState == idleState
             || currentState == walkState
@@ -217,39 +277,12 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         {
             movementSpeed = moonwalkMovementSpeed;
         }
-
-        //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump") && grounded)
-            && !(InputManager.GetButtonDown("Fire1")))
-        {
-            playerJump();
-        }
-
-        if (inAir)
-        {
-            if (bballRelativePositioning > 0 && !facingRight)
-            {
-                Flip();
-            }
-            if (bballRelativePositioning < 0f && facingRight)
-            {
-                Flip();
-            }
-        }
-
-        // if player is falling, nto sure what this is useful for. comment out
-        //if (rigidBody.velocity.y > 0)
-        //{
-        //    //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-        //    finalHeight = transform.position.y;
-        //    //Debug.Log("intialHeight : " + initialHeight);  
-        //    //Debug.Log("finalHeight : " + finalHeight);
-        //}
     }
 
     private void playerJump()
     {
-       Debug.Log("player jumped");
+        navmeshAgent.enabled = false;
+        rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
@@ -258,76 +291,74 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         {
             Flip();
         }
-        rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
+        //rigidBody.isKinematic = false;
+        locked = false;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.name.Contains("facingFront"))
-    //    {
-    //        basketball.facingFront = true;
-    //        setPlayerAnim("basketballFacingFront", true);
-    //    }
-    //}
+    private void goToBall()
+    {
+        // ball shot
+        // new destination to ball
 
-    //void OnTriggerExit(Collider other)
-    //{
-    //    if (other.name.Contains("facingFront"))
-    //    {
-    //        basketball.facingFront = false;
-    //        setPlayerAnim("basketballFacingFront", false);
-    //    }
-    //}
+        //movingToTarget = true;
+
+        //Vector3 newVector = getRandomTransformFromPlayerPosition();
+        //Vector3 oldVector = transform.position;
+        //Vector3 relativePosition = newVector - oldVector;
+
+        // new = bball transform
+        Vector3 newVector = basketballPosition;
+        Vector3 oldVector = transform.position;
+        //Vector3 relativePosition = newVector - oldVector;
+
+        navmeshAgent.SetDestination(newVector);
+
+        //Debug.Log("gotoball ::: navmeshAgent Mesh destination : " + navmeshAgent.destination);
+        //disable rotation
+        navmeshAgent.updateRotation = false;
+        locked = false;
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        Debug.Log("========================== collion enter: " + transform.gameObject.tag + " and " + other.gameObject.tag);
+        if (gameObject.CompareTag("Player") && other.CompareTag("basketball") && !hasBasketball)
+        {
+            hasBasketball = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //Debug.Log("========================== collision exit: " + transform.gameObject.tag + " and " + other.gameObject.tag);
+        if (gameObject.CompareTag("Player") && other.CompareTag("basketball") && hasBasketball)
+        {
+            hasBasketball = false;
+        }
+    }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
-    void isWalking(float moveHorz, float moveVert)
+     void isWalking(float speed)
     {
-        // if moving/ not holding item. bool holdingItem set in AtttackCollision.cs
-        if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
+        if (speed > 0)
         {
-            if (!inAir) // dont want walking animation playing while inAir
-            {
-                anim.SetBool("walking", true);
-            }
+            anim.SetBool("walking", true);
         }
         else
         {
             anim.SetBool("walking", false);
         }
 
-        if (moveHorz > 0 && !facingRight && canMove)
-        {  
-            Flip();
-        }
-        if (moveHorz < 0f && facingRight && canMove)
+        if (navmeshAgent.velocity.x > 0 && !facingRight)
         {
             Flip();
         }
-        if ((InputManager.GetButton("Run") && canMove && !inAir))
+
+        if (navmeshAgent.velocity.x < 0 && facingRight)
         {
-            if (!hasBasketball)
-            {
-                anim.SetBool("moonwalking", true);
-                if (anim.GetBool("moonwalking"))
-                {
-                    moonwalking = true;
-                    moonwalkAudio.enabled = true;
-                }
-            }
-            if (hasBasketball)
-            {
-                movementSpeed = basketballRunSpeed;
-            }
-            else
-            {
-                movementSpeed = moonwalkMovementSpeed;
-            }
-        }
-        else
-        {
-            anim.SetBool("moonwalking", false);
-            moonwalking = false;
-            moonwalkAudio.enabled = false;
+            Flip();
         }
     }
 
@@ -337,6 +368,108 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
+    }
+
+
+    Vector3 getRandomTransformFromPlayerPosition()
+    {
+        int randomX = RandomNumber(1, 2);
+        int randomZ = RandomNumber(1, 2);
+        bool isInBounds = boundaryCheck(randomX, randomZ);
+
+        Vector3 newTransform = new Vector3(transform.position.x + randomX * getRandomPositiveOrNegtaive(),
+            transform.position.y,
+            transform.position.z + randomZ * getRandomPositiveOrNegtaive());
+        //Debug.Log("generate new transform : " + newTransform);
+
+        if (isInBounds)
+        {
+            //anim.Play("smokeBomb");
+            //yield return new WaitForSecondsRealtime(playerAnimations.Instance.smokeBomb.length);
+            //transform.position = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+            //anim.Play("smokeBombSpawn");
+            ////playerHitbox.SetActive(true);
+            return newTransform;
+        }
+        else
+        {
+            getRandomTransformFromPlayerPosition();
+        }
+
+        return newTransform;
+    }
+
+    // -------------- boundary check for Throw smokebomb ---------------------------------------------------------
+    bool boundaryCheck(int x, int z)
+    {
+        //Debug.Log("boundary check");
+        if ((transform.position.x + x) < 8.5f
+            && (transform.position.x + x) > -5
+            && (transform.position.z + z) < -4
+            && (transform.position.z + z) > -9)
+        {
+            //Debug.Log("pos + x : " + (transform.position.x+x) + "  pos + z : " + (transform.position.z + z));
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool boundaryCheck(float x, float z)
+    {
+        //Debug.Log("boundary check");
+        if ((transform.position.x + x) < 8.5f
+            && (transform.position.x + x) > -5
+            && (transform.position.z + z) < -4
+            && (transform.position.z + z) > -9)
+        {
+            //Debug.Log("pos + x : " + (transform.position.x+x) + "  pos + z : " + (transform.position.z + z));
+            return true;
+        }
+        else
+            return false;
+    }
+
+    int RandomNumber(int min, int max)
+    {
+        System.Random rnd = new System.Random();
+        int randNum = rnd.Next(-4, 4);
+        //Debug.Log("generate randNum : " + randNum);
+        return randNum;
+    }
+    private int getRandomPositiveOrNegtaive()
+    {
+        System.Random random = new System.Random();
+        List<int> list = new List<int> { 1, -1 };
+        int finder = random.Next(list.Count); //Then you just use this; nameDisplayString = names[finder];
+        int shotDirectionModifier = list[finder];
+
+        return shotDirectionModifier;
+    }
+
+    bool pathComplete()
+    {
+        //Debug.Log("path complete");
+        //Debug.Log("     basketballPosition : " + basketballPosition);
+        //Debug.Log("     navmeshAgent.transform.position : " + navmeshAgent.transform.position);
+        //Debug.Log("     navmeshAgent.stoppingDistance : " + navmeshAgent.stoppingDistance);
+        //Debug.Log("     Vector3.Distance(navmeshAgent.destination, navmeshAgent.transform.position) : " + Vector3.Distance(basketballPosition, navmeshAgent.transform.position));
+        //Debug.Log("     navmeshAgent.destination : " + navmeshAgent.destination);
+
+        if (Vector3.Distance(basketballPosition, navmeshAgent.transform.position) <= navmeshAgent.stoppingDistance
+        && !inAir)
+        {
+            //Debug.Log("!navmeshAgent.hasPath : " + !navmeshAgent.hasPath);
+            //Debug.Log("navmeshAgent.velocity.sqrMagnitude : " + navmeshAgent.velocity.sqrMagnitude);
+
+            if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)
+            {
+                locked = false;
+                Debug.Log("pathcomplete()");
+                return true;
+            }
+        }
+        return false;
     }
 
     //------------------------- set animator parameters -----------------------
@@ -357,22 +490,6 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     {
         anim.Play(animationName);
     }
-    //// -----------------generic wait coroutine ----------------------------
-    //IEnumerator Wait(float seconds)
-    //{
-    //    yield return new WaitForSecondsRealtime(seconds);
-    //    soundPlayed = true;
-    //    notLocked = true;
-    //}
-    //void setPlayerBounds()
-    //{
-    //    xMin = levelManager.instance.xMinPlayer;
-    //    xMax = levelManager.instance.xMaxPlayer;
-    //    yMin = levelManager.instance.yMinPlayer;
-    //    yMax = levelManager.instance.yMaxPlayer;
-    //    zMin = levelManager.instance.zMinPlayer;
-    //    zMax = levelManager.instance.zMaxPlayer;
-    //}
 
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
@@ -380,7 +497,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         moonwalkAudio.enabled = false;
     }
 
-    void setShooterProfileStats()
+    public void setShooterProfileStats()
     {
         walkMovementSpeed = shooterProfile.speed;
         basketballRunSpeed = shooterProfile.runSpeed;
@@ -404,10 +521,10 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         get { return _jump; }
         set { _jump = value; }
     }
-    public bool notLocked
+    public bool locked
     {
-        get { return _notLocked; }
-        set { _notLocked = value; }
+        get { return _locked; }
+        set { _locked = value; }
     }
     public bool facingRight
     {
@@ -417,6 +534,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
 
     public float rigidBodyYVelocity
     {
-        get { return rigidBody.velocity.y; }
+        get { return _rigidBodyYVelocity; }
+        set { _rigidBodyYVelocity = value; }
     }
 }

@@ -18,6 +18,7 @@ public class BasketballStateAutoPlay : MonoBehaviour
     private bool _threeAttempt;
     private bool _fourAttempt;
     private bool _dunk;
+    [SerializeField]
     private bool _inAir;
     private bool _facingFront;
     [SerializeField]

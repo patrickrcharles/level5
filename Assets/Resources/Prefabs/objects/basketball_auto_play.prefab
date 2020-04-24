@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8298547145280152132
 Transform:
   m_ObjectHideFlags: 0
@@ -192,12 +192,12 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!82 &8222448527795822510
 AudioSource:
   m_ObjectHideFlags: 0
@@ -319,7 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915cb5fba59e3b4489bed972d2e18d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropShadowPosition: {x: 0, y: 0, z: 0}
   displacement: 0
   Zdistance: 0
   TextObject: {fileID: 0}
@@ -347,6 +346,7 @@ MonoBehaviour:
   _twoPoints: 0
   _threePoints: 0
   _fourPoints: 0
+  _inAir: 0
   _thrown: 0
   _locked: 0
   _canPullBall: 0
