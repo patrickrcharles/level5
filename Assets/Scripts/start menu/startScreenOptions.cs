@@ -14,7 +14,7 @@ public class startScreenOptions : MonoBehaviour
     public Text weapons_text;
     public Text lives_text;
 
-    // current slected object/button/selectable
+    // current slected object/button/Button
     [SerializeField]
     GameObject currentObject;
 
@@ -41,7 +41,7 @@ public class startScreenOptions : MonoBehaviour
 
     string currentSceneName;
     // buttons in scene
-    Selectable headerSelectable, leftArrowSelectable, rightArrowSelectable;
+    Button headerButton, leftArrowButton, rightArrowButton;
 
     int index; //var to get index
     [SerializeField]
@@ -315,15 +315,15 @@ public class startScreenOptions : MonoBehaviour
     {
         if (GameObject.Find(optionArrowLeft) != null)
         {
-            leftArrowSelectable = GameObject.Find(optionArrowLeft).GetComponent<Selectable>();
+            leftArrowButton = GameObject.Find(optionArrowLeft).GetComponent<Button>();
         }
         if (GameObject.Find(optionArrowRight) != null)
         {
-            rightArrowSelectable = GameObject.Find(optionArrowRight).GetComponent<Selectable>();
+            rightArrowButton = GameObject.Find(optionArrowRight).GetComponent<Button>();
         }
         if (GameObject.Find(optionHeader) != null)
         {
-            headerSelectable = GameObject.Find(optionHeader).GetComponent<Selectable>();
+            headerButton = GameObject.Find(optionHeader).GetComponent<Button>();
         }
     }
     private string getCurrentSceneName()
