@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class shooterProfile : MonoBehaviour
 {
+
+
     public float accuracy2pt;
     public float accuracy3pt;
     public float accuracy4pt;
@@ -33,5 +35,6 @@ public class shooterProfile : MonoBehaviour
     public float ShootYVariance { get => shootYVariance; set => shootYVariance = value; }
     public float ShootZVariance { get => shootZVariance; set => shootZVariance = value; }
 
+    // need to eventually hard code stats for each shooter and load stats from file
 
 }

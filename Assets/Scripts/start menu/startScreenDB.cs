@@ -35,9 +35,9 @@ public class startScreenDB : MonoBehaviour
     GameObject currentObject;
 
     [SerializeField]
-    Selectable leftArrowButton;
+    Button leftArrowButton;
     [SerializeField]
-    Selectable rightArrowButton;
+    Button rightArrowButton;
     [SerializeField]
     Button defaultButton;
     [SerializeField]
@@ -78,7 +78,7 @@ public class startScreenDB : MonoBehaviour
         {
             Debug.Log("Left/Right direction pressed");
 
-            // if 'left' is pressed, cycle through selectable levels list
+            // if 'left' is pressed, cycle through Button levels list
             if (InputManager.GetAxis("Horizontal") < 0)
             {
                 XaxisInUse = true;
@@ -86,7 +86,7 @@ public class startScreenDB : MonoBehaviour
             }
             else
             {
-                // if 'right' is pressed, cycle through selectable levels list
+                // if 'right' is pressed, cycle through Button levels list
                 if (InputManager.GetAxis("Horizontal") > 0)
                 {
                     XaxisInUse = true;
@@ -153,11 +153,11 @@ public class startScreenDB : MonoBehaviour
     {
         if (GameObject.Find("left_arrow") != null)
         {
-            leftArrowButton = GameObject.Find("left_arrow").GetComponent<Selectable>();
+            leftArrowButton = GameObject.Find("left_arrow").GetComponent<Button>();
         }
         if (GameObject.Find("right_arrow") != null)
         {
-            rightArrowButton = GameObject.Find("right_arrow").GetComponent<Selectable>();
+            rightArrowButton = GameObject.Find("right_arrow").GetComponent<Button>();
         }
     }
     private string getCurrentSceneName()

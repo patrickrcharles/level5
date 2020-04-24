@@ -42336,6 +42336,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_aba
       objectReference: {fileID: 0}
+    - target: {fileID: 7779290808199882577, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 696308604074243338, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -42399,7 +42404,7 @@ PrefabInstance:
     - target: {fileID: 696308604074243338, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.661
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: 696308604074243338, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
         type: 3}
@@ -42441,15 +42446,40 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8589007593542418027, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589007593542418027, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6505920843671966906, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
         type: 3}
       propertyPath: _angle
-      value: 45
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6505920843671966906, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: jumpForce
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6314316447998047308, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
         type: 3}
       propertyPath: pullSpeed
-      value: 1.5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3534781131062367853, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: shootAngle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3534781131062367853, guid: d0db6b29c0cd25b43b61dc65ef451bf4,
+        type: 3}
+      propertyPath: jumpForce
+      value: 4.5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8236256272430847344, guid: d0db6b29c0cd25b43b61dc65ef451bf4, type: 3}

@@ -7,15 +7,21 @@ using TeamUtility.IO;
 
 public class gameManager : MonoBehaviour
 {
-    //public int playerLives;
+    // this is to keep a reference to player in game manager 
+    // that can be retrieved across all scripts
+    private GameObject _player;
+    private playercontrollerscript _playerState;
+    private Animator _anim;
+
     Vector3 previousPlayerPosition;
     Quaternion previousPlayerRotation;
-    bool gameOver;
-    bool reloadLevel;
-    bool showScore;
-    bool startGame;
 
-    //public bool playerMadeShot;
+    bool gameOver;
+    bool startGame;
+    bool locked;
+    bool paused;
+    //bool reloadLevel;
+    //bool showScore;
 
     string currentSceneName;
     //[SerializeField]
@@ -29,59 +35,34 @@ public class gameManager : MonoBehaviour
     //public GameObject backgroundFade;
     //public GameObject pauseObject;
 
-    // this is to keep a reference to player in game manager 
-    // that can be retrieved across all scripts
-    [SerializeField]
-    private GameObject _player;
-    public GameObject player
-    {
-        get { return _player; }
-    }
-    [SerializeField]
-    private playercontrollerscript _playerState;
-    public playercontrollerscript playerState
-    {
-        get { return _playerState; }
-    }
-
-    [SerializeField]
-    private Animator _anim;
-    public Animator anim
-    {
-        get { return _anim; }
-    }
-
-    public static gameManager instance;
-    bool paused = false;
-
     //private AudioSource[] allAudioSources;
 
     //BasketBall objects
-    GameObject basketball;
     BasketBall basketballState;
-    [SerializeField]
-    GameObject basketballSpawnLocation;
+    GameObject basketball;
 
-    //player spawn location
-    [SerializeField]
+    //spawn locations
+    GameObject basketballSpawnLocation;
     GameObject playerSpawnLocation;
     //[SerializeField]
     //GameObject player_spawn;
 
 
-    bool locked;
+
+    public static gameManager instance;
 
     private void Awake()
     {
         Debug.Log("gm : awake()");
         // initialize game manger player references
         instance = this;
+
         //allAudioSources = FindObjectsOfType<AudioSource>();
-
         //Application.targetFrameRate = 60;
-        if (!getCurrentSceneName().StartsWith("start")) { initializePlayer(); }
 
-                // player + ball spawn locations
+
+        if (!getCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
+        // player + ball spawn locations
         playerSpawnLocation = GameObject.Find("player_spawn_location");
         basketballSpawnLocation = GameObject.Find("ball_spawn_location");
 
@@ -99,28 +80,30 @@ public class gameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("gm : start()");
-        //pauseObject.SetActive(false);
-        //pauseMenu.instance.enabled = false;
+        //Debug.Log("gm : start()");
+
         locked = false;
-        _playerState = player.GetComponent<playercontrollerscript>();
-        _anim = player.GetComponentInChildren<Animator>();
+        InitializePlayer();
+
         basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
 
     private void Update()
     {
+        //close app
         if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
             && InputManager.GetKeyDown(KeyCode.P))
         {
             Quit();
         }
+        //pause
         if (InputManager.GetButtonDown("Submit")
             || InputManager.GetButtonDown("Cancel")
             || InputManager.GetKeyDown(KeyCode.Escape))
         {
-            paused = togglePause();
+            paused = TogglePause();
         }
+        // reload scene
         if (InputManager.GetKey(KeyCode.Alpha4)
             && InputManager.GetKey(KeyCode.Alpha2)
             && InputManager.GetKey(KeyCode.Alpha0)
@@ -128,7 +111,7 @@ public class gameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-
+        //turn off accuracy modifer
         if (InputManager.GetKey(KeyCode.Alpha6)
             && InputManager.GetKeyDown(KeyCode.Alpha9)
             && !locked)
@@ -139,21 +122,24 @@ public class gameManager : MonoBehaviour
         }
     }
 
-    public void initializePlayer()
+    // set up player references that other scripts use
+    // game manager provides read only links to player object and player states
+    public void InitializePlayer()
     {
         Debug.Log("initialize player");
         //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
         //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
 
         _player = GameObject.FindGameObjectWithTag("Player");
-        _anim = _player.GetComponent<Animator>();
+        _playerState = player.GetComponent<playercontrollerscript>();
+        _anim = player.GetComponentInChildren<Animator>();
     }
 
-    public void resetSceneVariables()
-    {
-        gameOver = false;
-        showScore = false;
-    }
+    //public void resetSceneVariables()
+    //{
+    //    gameOver = false;
+    //    showScore = false;
+    //}
     //public void disableEnemyUI()
     //{
     //    GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemyHealthUI");
@@ -168,13 +154,8 @@ public class gameManager : MonoBehaviour
     {
         return SceneManager.GetActiveScene().name;
     }
-    //public void updatePlayerLives()
-    //{
-    //    displayPlayerLives.text = "x " + (playerLives).ToString();
-    //}
 
-
-    bool togglePause()
+    bool TogglePause()
     {
         if (Time.timeScale == 0f)
         {
@@ -213,5 +194,18 @@ public class gameManager : MonoBehaviour
     private void Quit()
     {
         Application.Quit();
+    }
+
+    public GameObject player
+    {
+        get { return _player; }
+    }
+    public playercontrollerscript playerState
+    {
+        get { return _playerState; }
+    }
+    public Animator anim
+    {
+        get { return _anim; }
     }
 }

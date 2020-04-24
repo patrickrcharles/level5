@@ -250,7 +250,7 @@ public class playercontrollerscript : MonoBehaviour
 
     private void playerJump()
     {
-       //Debug.Log("player jumped");
+       Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
