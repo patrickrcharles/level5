@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TeamUtility.IO;
 
-public class gameManager : MonoBehaviour
+public class gameManagerAutoPlay : MonoBehaviour
 {
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
+    [SerializeField]
     private GameObject _player;
-    private playercontrollerscript _playerState;
+    [SerializeField]
+    private playercontrollerscriptAutoPlay _playerState;
     private Animator _anim;
 
     Vector3 previousPlayerPosition;
@@ -38,8 +40,14 @@ public class gameManager : MonoBehaviour
     //private AudioSource[] allAudioSources;
 
     //BasketBall objects
-    BasketBall basketballState;
+    BasketBallAutoPlay basketballState;
     GameObject basketball;
+
+    public GameObject Basketball
+    {
+        get => basketball;
+        set => basketball = value;
+    }
 
     //spawn locations
     GameObject basketballSpawnLocation;
@@ -49,7 +57,7 @@ public class gameManager : MonoBehaviour
 
 
 
-    public static gameManager instance;
+    public static gameManagerAutoPlay instance;
 
     private void Awake()
     {
@@ -60,22 +68,14 @@ public class gameManager : MonoBehaviour
         //allAudioSources = FindObjectsOfType<AudioSource>();
         //Application.targetFrameRate = 60;
 
-
-        if (!getCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
-        // player + ball spawn locations
+        InitializePlayer();
+        //load and spawn basketbll prefab
         playerSpawnLocation = GameObject.Find("player_spawn_location");
         basketballSpawnLocation = GameObject.Find("ball_spawn_location");
-
-        //Debug.Log("initialize player");
-        //initializePlayer();
-        //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
-        //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
-        //_playerState = player.GetComponent<playercontrollerscript
-
-        //load and spawn basketbll prefab
-        basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
+        basketball = Resources.Load("Prefabs/objects/basketball_auto_play") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+
+        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBallAutoPlay>();
     }
 
     private void Start()
@@ -83,9 +83,18 @@ public class gameManager : MonoBehaviour
         //Debug.Log("gm : start()");
 
         locked = false;
-        InitializePlayer();
+        //if (!getCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
+        // player + ball spawn 
 
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+        //Debug.Log("initialize player");
+        //initializePlayer();
+        //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
+        //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
+        //_playerState = player.GetComponent<playercontrollerscript
+
+        
+
+        //basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
 
     private void Update()
@@ -131,7 +140,7 @@ public class gameManager : MonoBehaviour
         //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
 
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = player.GetComponent<playercontrollerscript>();
+        _playerState = player.GetComponent<playercontrollerscriptAutoPlay>();
         _anim = player.GetComponentInChildren<Animator>();
     }
 
@@ -200,7 +209,7 @@ public class gameManager : MonoBehaviour
     {
         get { return _player; }
     }
-    public playercontrollerscript playerState
+    public playercontrollerscriptAutoPlay playerState
     {
         get { return _playerState; }
     }

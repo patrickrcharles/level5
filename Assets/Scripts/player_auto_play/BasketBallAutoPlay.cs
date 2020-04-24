@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Random = System.Random;
 
 
-public class BasketBall : MonoBehaviour
+public class BasketBallAutoPlay : MonoBehaviour
 {
     //GameObject score; //reference to the ScoreText gameobject, set in editor
     AudioClip basket; //reference to the basket sound
@@ -17,10 +17,10 @@ public class BasketBall : MonoBehaviour
     Vector3 dropShadowPosition;
     GameObject basketBallSprite, playerDunkPos;
 
-    playercontrollerscript playerState;
+    playercontrollerscriptAutoPlay playerState;
     new Rigidbody rigidbody;
 
-    private BasketballState basketballState;
+    private BasketballStateAutoPlay basketballState;
     private BasketBallStats basketBallStats;
 
 
@@ -80,12 +80,12 @@ public class BasketBall : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = gameManager.instance.player;
-        playerState = gameManager.instance.playerState;
+        player = gameManagerAutoPlay.instance.player;
+        playerState = gameManagerAutoPlay.instance.playerState;
         rigidbody = GetComponent<Rigidbody>();
 
         basketBallStats = GetComponent<BasketBallStats>();
-        basketballState = GetComponent<BasketballState>();
+        basketballState = GetComponent<BasketballStateAutoPlay>();
 
 
         //basketball drop shadow
@@ -94,7 +94,7 @@ public class BasketBall : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         basketBallSprite = GameObject.Find("basketball_sprite");
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        shooterProfile = gameManager.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<shooterProfile>();
 
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         //displacement = Vector3.Distance(basketBallTarget.transform.position, gameObject.transform.position);
@@ -234,7 +234,7 @@ public class BasketBall : MonoBehaviour
             Launch();
 
             //Jessica might take a photo
-            behavior_jessica.instance.playAnimationTakePhoto();
+            //behavior_jessica.instance.playAnimationTakePhoto();
 
             //calculate shot distance 
             Vector3 tempPos = new Vector3(basketballState.BasketBallTarget.transform.position.x,
@@ -298,7 +298,8 @@ public class BasketBall : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag("basketball") && other.CompareTag("playerHitbox"))
+        Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
+        if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
         {
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
             playerState.hasBasketball = true;
@@ -330,7 +331,7 @@ public class BasketBall : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") && basketballState.Thrown)
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("Player") && basketballState.Thrown)
         {
             //Debug.Log("$$$$$$$$$$$$$$$$$$");
             basketballState.Thrown = false;
