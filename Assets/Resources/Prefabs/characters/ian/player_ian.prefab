@@ -635,17 +635,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accuracy2pt: 25
-  accuracy3pt: 25
-  accuracy4pt: 25
+  accuracy2pt: 70
+  accuracy3pt: 60
+  accuracy4pt: 60
   jumpForce: 5
   speed: 2
   runSpeed: 3
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 25
-  shootAngle: 60
+  criticalPercent: 20
+  shootAngle: 45
   shootXVariance: 0
   shootYVariance: 0
   shootZVariance: 0
