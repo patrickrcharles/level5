@@ -1,7 +1,8 @@
 ﻿
  using UnityEngine;
  using System.Collections;
- 
+ using UnityEngine.Experimental.PlayerLoop;
+
  public class cameraUpdater : MonoBehaviour
 {
 
@@ -47,6 +48,7 @@
         //relCameraPos = player.position - transform.position;
 
     }
+    
 
     void Update()
     {
@@ -63,15 +65,38 @@
         //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
         distanceRimFromPlayer = rimPos.z - playerPos.z;
 
+        //if ((player != null))
+        //{
+        //    transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
+        //                                   //cam.transform.position.y,
+        //                                   player.transform.position.y + 1.2f,
+        //                                    cam.transform.position.z);
+        //}
+
+        //if (distanceRimFromPlayer > startZoomDistance 
+        //    && !cameraZoomedOut)
+        //    //&& cam.transform.position.z > zMin)
+        //{
+        //    zoomOut();
+        //}
+        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
+        //{
+        //    zoomIn();
+        //}
+
+    }
+
+    void FixedUpdate()
+    {
         if ((player != null))
         {
             transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
-                                           //cam.transform.position.y,
-                                           player.transform.position.y + 1.2f,
-                                            cam.transform.position.z);
+                //cam.transform.position.y,
+                player.transform.position.y + 1.2f,
+                cam.transform.position.z);
         }
 
-        if (distanceRimFromPlayer > startZoomDistance 
+        if (distanceRimFromPlayer > startZoomDistance
             && !cameraZoomedOut)
             //&& cam.transform.position.z > zMin)
         {
@@ -81,7 +106,6 @@
         {
             zoomIn();
         }
-
     }
 
     private void zoomOut()
