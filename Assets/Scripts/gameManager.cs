@@ -73,7 +73,7 @@ public class gameManager : MonoBehaviour
         //_playerState = player.GetComponent<playercontrollerscript
 
         //load and spawn basketbll prefab
-        basketball = Resources.Load("Prefabs/objects/basketball 1") as GameObject;
+        basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
         Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
         basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
