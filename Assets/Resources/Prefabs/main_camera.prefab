@@ -402,7 +402,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 212939627241228352, guid: 4e20b9e5be3383546bf4d354ca981255,
+    - target: {fileID: 212252508425058928, guid: 4e20b9e5be3383546bf4d354ca981255,
         type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -412,12 +412,12 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 212252508425058928, guid: 4e20b9e5be3383546bf4d354ca981255,
+    - target: {fileID: 212809020044379278, guid: 4e20b9e5be3383546bf4d354ca981255,
         type: 3}
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 212809020044379278, guid: 4e20b9e5be3383546bf4d354ca981255,
+    - target: {fileID: 212939627241228352, guid: 4e20b9e5be3383546bf4d354ca981255,
         type: 3}
       propertyPath: m_SortingOrder
       value: 0

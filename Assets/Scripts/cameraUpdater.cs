@@ -28,6 +28,11 @@
 
     public float startZoomDistance;
 
+    private bool camera128px;
+    private bool camera192px;
+
+    private float addToCameraPosY;
+
 
 
     void Start()
@@ -46,6 +51,19 @@
 
         player = gameManager.instance.player.transform;
         //relCameraPos = player.position - transform.position;
+
+        if (cam.name.Contains("192"))
+        {
+            camera128px = false;
+            camera192px = true;
+            addToCameraPosY = 1.835f;
+        }
+        else
+        {
+            camera128px = true;
+            camera192px = false;
+            addToCameraPosY = 1.2f;
+        }
 
     }
     
@@ -92,7 +110,7 @@
         {
             transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
                 //cam.transform.position.y,
-                player.transform.position.y + 1.2f,
+                player.transform.position.y + addToCameraPosY,
                 cam.transform.position.z);
         }
 
