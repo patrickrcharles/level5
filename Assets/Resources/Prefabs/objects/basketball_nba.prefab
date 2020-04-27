@@ -344,18 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _twoPoints: 0
-  _threePoints: 0
-  _fourPoints: 0
-  _thrown: 0
-  _locked: 0
-  _canPullBall: 0
-  _BallDistanceFromRim: 0
-  _twoPointDistance: 0
-  _threePointDistance: 0
-  _FourPointDistance: 0
-  basketBallPosition: {fileID: 0}
-  basketBallTarget: {fileID: 0}
 --- !u!114 &7602424222822588030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +381,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3569848962387920496}
   m_LocalRotation: {x: 0.6184084, y: 0, z: 0, w: 0.7858569}
-  m_LocalPosition: {x: 0, y: -0.5, z: -0.1}
+  m_LocalPosition: {x: 0, y: -0.44, z: 0.13}
   m_LocalScale: {x: 2.5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 3567679246626141782}
