@@ -4,39 +4,28 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - vehicleHealthSlider
-  - enemyHealthUI
   - vehicle
-  - vehicleAttackbox
   - enemyHitbox
-  - enemyGroundAttackHitbox
-  - enemyAttackbox
   - companion
-  - enemyHealthSlider
   - projectile
-  - enemyFrontHitbox
   - backTarget
   - Enemy
   - frontTarget
   - debugText
   - playerHitbox
-  - rocket
-  - thrownItemExplosive
   - dallasDustCloud
   - groundCheck
   - flasher
-  - levelManager
   - platform
   - ground
-  - pickupItem
   - basketballrim
   - basketballCourt
   - basketball
-  - ladder
   - rightBoundary
   - leftBoundary
   - fence
   - mode_description
+  - enemyBystander
   layers:
   - Default
   - TransparentFX
