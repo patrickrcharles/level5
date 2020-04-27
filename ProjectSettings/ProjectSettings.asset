@@ -82,7 +82,7 @@ PlayerSettings:
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
   resizableWindow: 0
-  useMacAppStoreValidation: 0
+  useMacAppStoreValidation: 1
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 1
   graphicsJobs: 0
@@ -163,7 +163,8 @@ PlayerSettings:
   resolutionScalingMode: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.level5.basketballminigame
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
