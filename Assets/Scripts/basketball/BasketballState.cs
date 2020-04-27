@@ -8,38 +8,27 @@ using Random = System.Random;
 
 public class BasketballState : MonoBehaviour
 {
-    [SerializeField]
     private bool _twoPoints;
-    [SerializeField]
     private bool _threePoints;
-    [SerializeField]
     private bool _fourPoints;
     private bool _twoAttempt;
     private bool _threeAttempt;
     private bool _fourAttempt;
     private bool _dunk;
     private bool _inAir;
-    private bool _facingFront;
-    [SerializeField]
+    //private bool _facingFront;
     private bool _thrown;
-    [SerializeField]
     private bool _locked;
-    [SerializeField]
     private bool _canPullBall;
     private bool _grounded;
-    [SerializeField]
-    private float _BallDistanceFromRim;
-    //private float _lastShotDistance;
-    //private float _longestShot;
-    [SerializeField]
-    private float _twoPointDistance;
-    [SerializeField]
-    private float _threePointDistance;
-    [SerializeField]
-    private float _FourPointDistance;
-    [SerializeField]
+    private bool _isTarget; // is ball a target for a player already
+
+    private float _ballDistanceFromRim;
+    //private float _twoPointDistance;
+    private float _threePointDistance = 3.8f;
+    private float _fourPointDistance = 5.2f;
+
     private GameObject basketBallPosition;
-    [SerializeField]
     private GameObject basketBallTarget;
 
 
@@ -50,16 +39,14 @@ public class BasketballState : MonoBehaviour
     {
         player = gameManager.instance.player;
         playerState = gameManager.instance.playerState;
+
         // position of basketball infront of player
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
-
         //position to shoot basketball at (middle of rim)
         basketBallTarget = GameObject.Find("basketBall_target");
 
-        ThreePointDistance = 3.8f;
-        FourPointDistance = 5.2f;
+        IsTarget = false;
 
-        //LongestShot = 0;
     }
 
     // Update is called once per frame
@@ -67,8 +54,6 @@ public class BasketballState : MonoBehaviour
     {
 
         BallDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
-
-        //Debug.Log("shot distance : " + (Math.Round(BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.");
 
         if (BallDistanceFromRim < ThreePointDistance)
         {
@@ -98,6 +83,11 @@ public class BasketballState : MonoBehaviour
         }
     }
 
+    public bool IsTarget
+    {
+        get => _isTarget;
+        set => _isTarget = value;
+    }
 
     public bool TwoPoints
     {
@@ -147,11 +137,11 @@ public class BasketballState : MonoBehaviour
         set => _inAir = value;
     }
 
-    public bool FacingFront
-    {
-        get => _facingFront;
-        set => _facingFront = value;
-    }
+    //public bool FacingFront
+    //{
+    //    get => _facingFront;
+    //    set => _facingFront = value;
+    //}
 
     public bool Thrown
     {
@@ -178,8 +168,8 @@ public class BasketballState : MonoBehaviour
     }
     public float BallDistanceFromRim
     {
-        get => _BallDistanceFromRim;
-        set => _BallDistanceFromRim = value;
+        get => _ballDistanceFromRim;
+        set => _ballDistanceFromRim = value;
     }
 
     //public float LastShotDistance
@@ -194,11 +184,11 @@ public class BasketballState : MonoBehaviour
     //    set => _longestShot = value;
     //}
 
-    public float TwoPointDistance
-    {
-        get => _twoPointDistance;
-        set => _twoPointDistance = value;
-    }
+    //public float TwoPointDistance
+    //{
+    //    get => _twoPointDistance;
+    //    set => _twoPointDistance = value;
+    //}
 
     public float ThreePointDistance
     {
@@ -208,21 +198,21 @@ public class BasketballState : MonoBehaviour
 
     public float FourPointDistance
     {
-        get => _FourPointDistance;
-        set => _FourPointDistance = value;
+        get => _fourPointDistance;
+        set => _fourPointDistance = value;
     }
 
 
     public float BallDistanceFromRim1
     {
-        get => _BallDistanceFromRim;
-        set => _BallDistanceFromRim = value;
+        get => _ballDistanceFromRim;
+        set => _ballDistanceFromRim = value;
     }
 
     public float FourPointDistance1
     {
-        get => _FourPointDistance;
-        set => _FourPointDistance = value;
+        get => _fourPointDistance;
+        set => _fourPointDistance = value;
     }
 
     public GameObject BasketBallPosition
