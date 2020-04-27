@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: idle2
+  m_Name: basketball_dribbling 2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,25 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 8280663977718776272, guid: bdac9d539f8d4b7468c6e6dd3627218a,
+      value: {fileID: 7608213664640212940, guid: d21f7883176724e41963cdbd7be53c80,
+        type: 3}
+    - time: 0.25
+      value: {fileID: -9217111919130760982, guid: d21f7883176724e41963cdbd7be53c80,
+        type: 3}
+    - time: 0.5
+      value: {fileID: 2864109319973150376, guid: d21f7883176724e41963cdbd7be53c80,
+        type: 3}
+    - time: 0.75
+      value: {fileID: -296948442521194810, guid: d21f7883176724e41963cdbd7be53c80,
+        type: 3}
+    - time: 1
+      value: {fileID: -8385268919857618142, guid: d21f7883176724e41963cdbd7be53c80,
         type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 1
+  m_SampleRate: 4
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -41,13 +53,17 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 8280663977718776272, guid: bdac9d539f8d4b7468c6e6dd3627218a, type: 3}
+    - {fileID: 7608213664640212940, guid: d21f7883176724e41963cdbd7be53c80, type: 3}
+    - {fileID: -9217111919130760982, guid: d21f7883176724e41963cdbd7be53c80, type: 3}
+    - {fileID: 2864109319973150376, guid: d21f7883176724e41963cdbd7be53c80, type: 3}
+    - {fileID: -296948442521194810, guid: d21f7883176724e41963cdbd7be53c80, type: 3}
+    - {fileID: -8385268919857618142, guid: d21f7883176724e41963cdbd7be53c80, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1
+    m_StopTime: 1.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -66,4 +82,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.25
+    functionName: playSFfxBasketballDribbling
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.75
+    functionName: playSFfxBasketballDribbling
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
