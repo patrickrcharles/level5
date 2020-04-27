@@ -1,54 +1,144 @@
 fileFormatVersion: 2
 guid: e7f332dc581fb7a4c9638ded35e6cf69
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: stonecold-drblood2_0
-    21300002: stonecold-drblood2_1
-    21300004: stonecold-drblood2_2
-    21300006: stonecold-drblood2_3
-    21300008: stonecold-drblood2_4
-    21300010: stonecold-drblood2_5
-    21300012: stonecold-drblood2_6
-    21300014: stonecold-drblood2_7
-    21300016: stonecold-drblood2_8
-    21300018: stonecold-drblood2_9
-    21300020: stonecold-drblood2_10
-    21300022: stonecold-drblood2_11
-    21300024: stonecold-drblood2_12
-    21300026: stonecold-drblood2_13
-    21300028: stonecold-drblood2_14
-    21300030: stonecold-drblood2_15
-    21300032: stonecold-drblood2_16
-    21300034: stonecold-drblood2_17
-    21300036: stonecold-drblood2_18
-    21300038: stonecold-drblood2_19
-    21300040: stonecold-drblood2_20
-    21300042: stonecold-drblood2_21
-    21300044: stonecold-drblood2_22
-    21300046: stonecold-drblood2_23
-    21300048: stonecold-drblood2_24
-    21300050: stonecold-drblood2_25
-    21300052: stonecold-drblood2_26
-    21300054: stonecold-drblood2_27
-    21300056: stonecold-drblood2_28
-    21300058: stonecold-drblood2_29
-    21300060: stonecold-drblood2_30
-    21300062: stonecold-drblood2_31
-    21300064: stonecold-drblood2_32
-    21300066: stonecold-drblood2_33
-    21300068: stonecold-drblood2_34
-    21300070: stonecold-drblood2_35
-    21300072: stonecold-drblood2_36
-    21300074: stonecold-drblood2_37
-    21300076: stonecold-drblood2_38
-    21300078: stonecold-drblood2_39
-    21300080: stonecold-drblood2_40
-    21300082: stonecold-drblood2_41
-    21300084: stonecold-drblood2_42
-    21300086: stonecold-drblood2_43
-    21300088: stonecold-drblood2_44
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: stonecold-drblood2_0
+  - first:
+      213: 21300002
+    second: stonecold-drblood2_1
+  - first:
+      213: 21300004
+    second: stonecold-drblood2_2
+  - first:
+      213: 21300006
+    second: stonecold-drblood2_3
+  - first:
+      213: 21300008
+    second: stonecold-drblood2_4
+  - first:
+      213: 21300010
+    second: stonecold-drblood2_5
+  - first:
+      213: 21300012
+    second: stonecold-drblood2_6
+  - first:
+      213: 21300014
+    second: stonecold-drblood2_7
+  - first:
+      213: 21300016
+    second: stonecold-drblood2_8
+  - first:
+      213: 21300018
+    second: stonecold-drblood2_9
+  - first:
+      213: 21300020
+    second: stonecold-drblood2_10
+  - first:
+      213: 21300022
+    second: stonecold-drblood2_11
+  - first:
+      213: 21300024
+    second: stonecold-drblood2_12
+  - first:
+      213: 21300026
+    second: stonecold-drblood2_13
+  - first:
+      213: 21300028
+    second: stonecold-drblood2_14
+  - first:
+      213: 21300030
+    second: stonecold-drblood2_15
+  - first:
+      213: 21300032
+    second: stonecold-drblood2_16
+  - first:
+      213: 21300034
+    second: stonecold-drblood2_17
+  - first:
+      213: 21300036
+    second: stonecold-drblood2_18
+  - first:
+      213: 21300038
+    second: stonecold-drblood2_19
+  - first:
+      213: 21300040
+    second: stonecold-drblood2_20
+  - first:
+      213: 21300042
+    second: stonecold-drblood2_21
+  - first:
+      213: 21300044
+    second: stonecold-drblood2_22
+  - first:
+      213: 21300046
+    second: stonecold-drblood2_23
+  - first:
+      213: 21300048
+    second: stonecold-drblood2_24
+  - first:
+      213: 21300050
+    second: stonecold-drblood2_25
+  - first:
+      213: 21300052
+    second: stonecold-drblood2_26
+  - first:
+      213: 21300054
+    second: stonecold-drblood2_27
+  - first:
+      213: 21300056
+    second: stonecold-drblood2_28
+  - first:
+      213: 21300058
+    second: stonecold-drblood2_29
+  - first:
+      213: 21300060
+    second: stonecold-drblood2_30
+  - first:
+      213: 21300062
+    second: stonecold-drblood2_31
+  - first:
+      213: 21300064
+    second: stonecold-drblood2_32
+  - first:
+      213: 21300066
+    second: stonecold-drblood2_33
+  - first:
+      213: 21300068
+    second: stonecold-drblood2_34
+  - first:
+      213: 21300070
+    second: stonecold-drblood2_35
+  - first:
+      213: 21300072
+    second: stonecold-drblood2_36
+  - first:
+      213: 21300074
+    second: stonecold-drblood2_37
+  - first:
+      213: 21300076
+    second: stonecold-drblood2_38
+  - first:
+      213: 21300078
+    second: stonecold-drblood2_39
+  - first:
+      213: 21300080
+    second: stonecold-drblood2_40
+  - first:
+      213: 21300082
+    second: stonecold-drblood2_41
+  - first:
+      213: 21300084
+    second: stonecold-drblood2_42
+  - first:
+      213: 21300086
+    second: stonecold-drblood2_43
+  - first:
+      213: 21300088
+    second: stonecold-drblood2_44
   externalObjects: {}
-  serializedVersion: 5
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -66,6 +156,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -76,7 +168,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -101,7 +193,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -112,7 +204,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -123,7 +216,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -134,65 +228,27 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
-    - serializedVersion: 2
-      name: stonecold-drblood2_0
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 1920
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dc55d5c1848966745824a8b09bd38cae
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_1
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 1920
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f97367c25014d4647ae0d385b42fcbf6
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     - serializedVersion: 2
       name: stonecold-drblood2_2
       rect:
         serializedVersion: 2
         x: 0
         y: 1792
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cd1d7636cba2cd4ea9b9e828ea503c1
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -203,76 +259,17 @@ TextureImporter:
         serializedVersion: 2
         x: 512
         y: 1792
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc3a63f78dc8c3e44bdcfa2651e5df13
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 1664
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2a81ebcb1a477334ca986b263fe3a33d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_5
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 1664
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e2f4343a6e9dded48bb2ce91b8e16cb3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_6
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 1664
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: adc847aeab558d443a63ed9b4bcac79f
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -283,16 +280,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 1536
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 31e45719e4f586b4f84aae6b5bd2afd8
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -303,56 +301,17 @@ TextureImporter:
         serializedVersion: 2
         x: 512
         y: 1536
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa45d5b66eb2a7f498a9b693fbb6fb17
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_9
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 1408
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 72890c13226f4eb4fbc860e1746206cd
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_10
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 1408
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b261a57d64199ad49bed18a1bc7e48a9
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
       vertices: []
       indices: 
       edges: []
@@ -363,16 +322,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e231e59230c365249af3e6d3d28692ea
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
       vertices: []
       indices: 
       edges: []
@@ -383,36 +343,17 @@ TextureImporter:
         serializedVersion: 2
         x: 512
         y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 072c9285c12b819419d4696811ef3f20
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_13
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f33126f801be3184298ea9b3e2a9e36b
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
       vertices: []
       indices: 
       edges: []
@@ -422,37 +363,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1024
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 1019
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.125, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ccd56167e137da046a9369eff9793511
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_15
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 1024
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 042eef008811d9846bbff3ad5602718c
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
       vertices: []
       indices: 
       edges: []
@@ -461,38 +383,19 @@ TextureImporter:
       name: stonecold-drblood2_16
       rect:
         serializedVersion: 2
-        x: 896
-        y: 1024
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 512
+        y: 1026
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.875, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 825030597739a9a44a54cf1b1d93c936
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_17
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a5606e65bf1b86943bf22dd47fbd12d0
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
       vertices: []
       indices: 
       edges: []
@@ -501,38 +404,19 @@ TextureImporter:
       name: stonecold-drblood2_18
       rect:
         serializedVersion: 2
-        x: 384
+        x: 0
         y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.875, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4d7a7183ed2c514e831fca78f20d5c0
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: stonecold-drblood2_19
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 81c81bc6fe485cd4ba1745c069033566
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
       vertices: []
       indices: 
       edges: []
@@ -541,18 +425,19 @@ TextureImporter:
       name: stonecold-drblood2_20
       rect:
         serializedVersion: 2
-        x: 896
+        x: 512
         y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 512
+        height: 256
+      alignment: 9
+      pivot: {x: 0.875, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13aeb1f3460cafb40a645c2c347fbf66
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
       vertices: []
       indices: 
       edges: []
@@ -565,14 +450,15 @@ TextureImporter:
         y: 512
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: faf14001e42d8f044bd03891b4fefd39
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
       vertices: []
       indices: 
       edges: []
@@ -585,14 +471,15 @@ TextureImporter:
         y: 512
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b17748a6b1b79e14297daee0e5060aa9
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
       vertices: []
       indices: 
       edges: []
@@ -605,14 +492,15 @@ TextureImporter:
         y: 512
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54ab199ea3ea90a42b3e6ef5af1bdfb3
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
       vertices: []
       indices: 
       edges: []
@@ -625,14 +513,15 @@ TextureImporter:
         y: 512
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0069274fffbf674b9c1813f6be17d43
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
       vertices: []
       indices: 
       edges: []
@@ -645,14 +534,15 @@ TextureImporter:
         y: 512
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01c693ed6a5e83c47996f3c739009e69
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
       vertices: []
       indices: 
       edges: []
@@ -665,14 +555,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 862443390825242439dc2eb98101d8d5
+      spriteID: 45305410000000000800000000000000
+      internalID: 21300052
       vertices: []
       indices: 
       edges: []
@@ -685,14 +576,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34ec3edb3c1d9ec4785142b14d72b47f
+      spriteID: 65305410000000000800000000000000
+      internalID: 21300054
       vertices: []
       indices: 
       edges: []
@@ -705,14 +597,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ba433919a3c18764fbdd957027afdcb4
+      spriteID: 85305410000000000800000000000000
+      internalID: 21300056
       vertices: []
       indices: 
       edges: []
@@ -725,14 +618,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc0f7c00af5f7444eaa9f6f35a871f32
+      spriteID: a5305410000000000800000000000000
+      internalID: 21300058
       vertices: []
       indices: 
       edges: []
@@ -745,14 +639,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5f60726d3458e742acb6bd33d946310
+      spriteID: c5305410000000000800000000000000
+      internalID: 21300060
       vertices: []
       indices: 
       edges: []
@@ -765,14 +660,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec3759c25f4c26c48ae87831fbf16613
+      spriteID: e5305410000000000800000000000000
+      internalID: 21300062
       vertices: []
       indices: 
       edges: []
@@ -785,14 +681,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8375722ec44a9174a8a8110fe34b39c6
+      spriteID: 06305410000000000800000000000000
+      internalID: 21300064
       vertices: []
       indices: 
       edges: []
@@ -805,14 +702,15 @@ TextureImporter:
         y: 384
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e79f5f2f96da1b46a60191181a27816
+      spriteID: 26305410000000000800000000000000
+      internalID: 21300066
       vertices: []
       indices: 
       edges: []
@@ -825,14 +723,15 @@ TextureImporter:
         y: 256
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 11c48928c3e41004d95e265bc598d6a8
+      spriteID: 46305410000000000800000000000000
+      internalID: 21300068
       vertices: []
       indices: 
       edges: []
@@ -845,14 +744,15 @@ TextureImporter:
         y: 256
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38fd721e838a2404ea7a64f33626f666
+      spriteID: 66305410000000000800000000000000
+      internalID: 21300070
       vertices: []
       indices: 
       edges: []
@@ -865,14 +765,15 @@ TextureImporter:
         y: 256
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55c92a03415f8ad448a2220492803ef7
+      spriteID: 86305410000000000800000000000000
+      internalID: 21300072
       vertices: []
       indices: 
       edges: []
@@ -885,14 +786,15 @@ TextureImporter:
         y: 256
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc29e5bc09d2b41459983b8aa01fab4d
+      spriteID: a6305410000000000800000000000000
+      internalID: 21300074
       vertices: []
       indices: 
       edges: []
@@ -906,13 +808,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0fcfd3806f190a74ba3e8655bdb37779
+      spriteID: c6305410000000000800000000000000
+      internalID: 21300076
       vertices: []
       indices: 
       edges: []
@@ -926,13 +829,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d0333a65e0fca9459934c8ba1ac6e2d
+      spriteID: e6305410000000000800000000000000
+      internalID: 21300078
       vertices: []
       indices: 
       edges: []
@@ -946,13 +850,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04a7a8cf979356b40a29c822228c3936
+      spriteID: 07305410000000000800000000000000
+      internalID: 21300080
       vertices: []
       indices: 
       edges: []
@@ -966,13 +871,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27e69bba927645e4d84580bc332928fb
+      spriteID: 27305410000000000800000000000000
+      internalID: 21300082
       vertices: []
       indices: 
       edges: []
@@ -986,13 +892,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2df5d07d992fc74c9652d690770be74
+      spriteID: 47305410000000000800000000000000
+      internalID: 21300084
       vertices: []
       indices: 
       edges: []
@@ -1006,13 +913,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed9c9fc79c4cbd5429f815de95d51f3e
+      spriteID: 67305410000000000800000000000000
+      internalID: 21300086
       vertices: []
       indices: 
       edges: []
@@ -1026,13 +934,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f76df452ebb7a854b86f3004f175f97c
+      spriteID: 87305410000000000800000000000000
+      internalID: 21300088
       vertices: []
       indices: 
       edges: []
@@ -1040,12 +949,16 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 94fa5d52b7597f54bbb5f452ba2533b2
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

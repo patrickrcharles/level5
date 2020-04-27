@@ -1,38 +1,174 @@
 fileFormatVersion: 2
 guid: f3a1e83b0a2131344bdd49abc1100913
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: dr blood_russian_roulette_0
-    21300002: dr blood_russian_roulette_1
-    21300004: dr blood_russian_roulette_2
-    21300006: dr blood_russian_roulette_3
-    21300008: dr blood_russian_roulette_4
-    21300010: dr blood_russian_roulette_5
-    21300012: dr blood_russian_roulette_6
-    21300014: dr blood_russian_roulette_7
-    21300016: dr blood_russian_roulette_8
-    21300018: dr blood_russian_roulette_9
-    21300020: dr blood_russian_roulette_10
-    21300022: dr blood_russian_roulette_11
-    21300024: dr blood_russian_roulette_12
-    21300026: dr blood_russian_roulette_13
-    21300028: dr blood_russian_roulette_14
-    21300030: dr blood_russian_roulette_15
-    21300032: dr blood_russian_roulette_16
-    21300034: dr blood_russian_roulette_17
-    21300036: dr blood_russian_roulette_18
-    21300038: dr blood_russian_roulette_19
-    21300040: dr blood_russian_roulette_20
-    21300042: dr blood_russian_roulette_21
-    21300044: dr blood_russian_roulette_22
-    21300046: dr blood_russian_roulette_23
-    21300048: dr blood_russian_roulette_24
-    21300050: dr blood_russian_roulette_25
-    21300052: dr blood_russian_roulette_26
-    21300054: dr blood_russian_roulette_27
-    21300056: dr blood_russian_roulette_28
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: dr blood_russian_roulette_0
+  - first:
+      213: 21300002
+    second: dr blood_russian_roulette_1
+  - first:
+      213: 21300004
+    second: dr blood_russian_roulette_2
+  - first:
+      213: 21300006
+    second: dr blood_russian_roulette_3
+  - first:
+      213: 21300008
+    second: dr blood_russian_roulette_4
+  - first:
+      213: 21300010
+    second: dr blood_russian_roulette_5
+  - first:
+      213: 21300012
+    second: dr blood_russian_roulette_6
+  - first:
+      213: 21300014
+    second: dr blood_russian_roulette_7
+  - first:
+      213: 21300016
+    second: dr blood_russian_roulette_8
+  - first:
+      213: 21300018
+    second: dr blood_russian_roulette_9
+  - first:
+      213: 21300020
+    second: dr blood_russian_roulette_10
+  - first:
+      213: 21300022
+    second: dr blood_russian_roulette_11
+  - first:
+      213: 21300024
+    second: dr blood_russian_roulette_12
+  - first:
+      213: 21300026
+    second: dr blood_russian_roulette_13
+  - first:
+      213: 21300028
+    second: dr blood_russian_roulette_14
+  - first:
+      213: 21300030
+    second: dr blood_russian_roulette_15
+  - first:
+      213: 21300032
+    second: dr blood_russian_roulette_16
+  - first:
+      213: 21300034
+    second: dr blood_russian_roulette_17
+  - first:
+      213: 21300036
+    second: dr blood_russian_roulette_18
+  - first:
+      213: 21300038
+    second: dr blood_russian_roulette_19
+  - first:
+      213: 21300040
+    second: dr blood_russian_roulette_20
+  - first:
+      213: 21300042
+    second: dr blood_russian_roulette_21
+  - first:
+      213: 21300044
+    second: dr blood_russian_roulette_22
+  - first:
+      213: 21300046
+    second: dr blood_russian_roulette_23
+  - first:
+      213: 21300048
+    second: dr blood_russian_roulette_24
+  - first:
+      213: 21300050
+    second: dr blood_russian_roulette_25
+  - first:
+      213: 21300052
+    second: dr blood_russian_roulette_26
+  - first:
+      213: 21300054
+    second: dr blood_russian_roulette_27
+  - first:
+      213: 21300056
+    second: dr blood_russian_roulette_28
+  - first:
+      213: -3395099839328334925
+    second: dr blood_russian_roulette_29
+  - first:
+      213: -5053482965572515159
+    second: dr blood_russian_roulette_30
+  - first:
+      213: -2542615631111100477
+    second: dr blood_russian_roulette_31
+  - first:
+      213: -1305463322844034396
+    second: dr blood_russian_roulette_32
+  - first:
+      213: -6917376166090938170
+    second: dr blood_russian_roulette_33
+  - first:
+      213: -3766040585743073379
+    second: dr blood_russian_roulette_34
+  - first:
+      213: 2934808687914657712
+    second: dr blood_russian_roulette_35
+  - first:
+      213: 4462646362891727078
+    second: dr blood_russian_roulette_36
+  - first:
+      213: -2294848106447273746
+    second: dr blood_russian_roulette_37
+  - first:
+      213: 3517995408355107845
+    second: dr blood_russian_roulette_38
+  - first:
+      213: -6558589600834199993
+    second: dr blood_russian_roulette_39
+  - first:
+      213: 7526353737556002212
+    second: dr blood_russian_roulette_40
+  - first:
+      213: 2981911686516355810
+    second: dr blood_russian_roulette_41
+  - first:
+      213: 6378970158036627054
+    second: dr blood_russian_roulette_42
+  - first:
+      213: 1906948207356526016
+    second: dr blood_russian_roulette_43
+  - first:
+      213: 292906537131512653
+    second: dr blood_russian_roulette_44
+  - first:
+      213: 6406401013538665674
+    second: dr blood_russian_roulette_45
+  - first:
+      213: 1009867255302152714
+    second: dr blood_russian_roulette_46
+  - first:
+      213: 4304321855677079089
+    second: dr blood_russian_roulette_47
+  - first:
+      213: 670226733012431921
+    second: dr blood_russian_roulette_48
+  - first:
+      213: 1102842219682035920
+    second: dr blood_russian_roulette_49
+  - first:
+      213: 4740286791615396034
+    second: dr blood_russian_roulette_50
+  - first:
+      213: -2576468504906118641
+    second: dr blood_russian_roulette_51
+  - first:
+      213: -1532773089703294329
+    second: dr blood_russian_roulette_52
+  - first:
+      213: 8619414894365156036
+    second: dr blood_russian_roulette_53
+  - first:
+      213: 5819410828572231394
+    second: dr blood_russian_roulette_54
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -87,7 +223,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -98,7 +234,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -109,7 +246,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -120,6 +258,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -128,17 +267,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 960
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 698821ef1da66e743a849ebf6c7621cc
+      spriteID: 1ac16ee0e08a2324f9a4a6fa5025e7e2
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -147,18 +287,19 @@ TextureImporter:
       name: dr blood_russian_roulette_1
       rect:
         serializedVersion: 2
-        x: 192
-        y: 960
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 128
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73e9657e57f7faa4292b392a25ba198d
+      spriteID: 27a0df3c5a46fcc40bc07cc5ee06c429
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -167,18 +308,19 @@ TextureImporter:
       name: dr blood_russian_roulette_2
       rect:
         serializedVersion: 2
-        x: 384
-        y: 960
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 256
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9882a7f6f79e444596f9b283f4beb0f
+      spriteID: 4f7683cf67fb27c47acee95e0ca31619
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -187,18 +329,19 @@ TextureImporter:
       name: dr blood_russian_roulette_3
       rect:
         serializedVersion: 2
-        x: 576
-        y: 960
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 384
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8eebf6b4a7f4d7340ac8949f04ef5d7a
+      spriteID: 711d3df40989c264fa5d47d20aef7c25
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -207,18 +350,19 @@ TextureImporter:
       name: dr blood_russian_roulette_4
       rect:
         serializedVersion: 2
-        x: 768
-        y: 960
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 512
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4bfc13b1bd79a847a23cc6356648262
+      spriteID: 34b123276e8c3fe4099e042693142e99
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -227,18 +371,19 @@ TextureImporter:
       name: dr blood_russian_roulette_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 768
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 640
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 219f5ce0c743cfc4da5d228b4bde87bb
+      spriteID: e9ae1a78b09de354eb92d3a0b4c71b3f
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -247,18 +392,19 @@ TextureImporter:
       name: dr blood_russian_roulette_6
       rect:
         serializedVersion: 2
-        x: 192
-        y: 768
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 768
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb3f5dd6d3b21ae4780b59419b98fd1e
+      spriteID: fca89af84a290e94d91f3a349eecb77a
+      internalID: 21300012
       vertices: []
       indices: 
       edges: []
@@ -267,18 +413,19 @@ TextureImporter:
       name: dr blood_russian_roulette_7
       rect:
         serializedVersion: 2
-        x: 384
-        y: 768
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 0
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21b3d824a819f314686542919b0fb99f
+      spriteID: 33cef7d7cd1bf8242acb8b3aa3d62a92
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -287,18 +434,19 @@ TextureImporter:
       name: dr blood_russian_roulette_8
       rect:
         serializedVersion: 2
-        x: 576
-        y: 768
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 256
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e599e9257518af1458c36a56200dd990
+      spriteID: bf38bfdd37a293245a0f6dc2d8116529
+      internalID: 21300016
       vertices: []
       indices: 
       edges: []
@@ -307,18 +455,19 @@ TextureImporter:
       name: dr blood_russian_roulette_9
       rect:
         serializedVersion: 2
-        x: 768
-        y: 768
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 384
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 114d464652010204790905b5ff8149ed
+      spriteID: 60ab23c67b83bef458947f84777d0243
+      internalID: 21300018
       vertices: []
       indices: 
       edges: []
@@ -327,18 +476,19 @@ TextureImporter:
       name: dr blood_russian_roulette_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 512
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0ca6901d3b389e4ca231f0e16edd813
+      spriteID: 94fcea08f480ada44ac7513c9e4c6539
+      internalID: 21300020
       vertices: []
       indices: 
       edges: []
@@ -347,18 +497,19 @@ TextureImporter:
       name: dr blood_russian_roulette_11
       rect:
         serializedVersion: 2
-        x: 192
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 640
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25eb1d79f79390c47994816f0f1e0d39
+      spriteID: ce7d02b04e6cdc44cbae905d14d0ae0b
+      internalID: 21300022
       vertices: []
       indices: 
       edges: []
@@ -367,18 +518,19 @@ TextureImporter:
       name: dr blood_russian_roulette_12
       rect:
         serializedVersion: 2
-        x: 384
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 768
+        y: 896
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72f74698ac3f4db4c9175489afcad2b7
+      spriteID: cfb02e8885e09ed4497b76bedabb1884
+      internalID: 21300024
       vertices: []
       indices: 
       edges: []
@@ -387,18 +539,19 @@ TextureImporter:
       name: dr blood_russian_roulette_13
       rect:
         serializedVersion: 2
-        x: 576
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 0
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e0ca49d0dafd674aaae2502098d9324
+      spriteID: 8d1471f49665da646ad3e5fbbe25c49e
+      internalID: 21300026
       vertices: []
       indices: 
       edges: []
@@ -407,18 +560,19 @@ TextureImporter:
       name: dr blood_russian_roulette_14
       rect:
         serializedVersion: 2
-        x: 768
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 128
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a468e5b9e35cb564d8b1ba7ef9265519
+      spriteID: 9bbea441a3924df44a7725f2dc0bec0e
+      internalID: 21300028
       vertices: []
       indices: 
       edges: []
@@ -427,18 +581,19 @@ TextureImporter:
       name: dr blood_russian_roulette_15
       rect:
         serializedVersion: 2
-        x: 0
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 256
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbb895c0e8538124cb6d3b1a594790e5
+      spriteID: 8de409a7865d5d049bb2056d4fa6142b
+      internalID: 21300030
       vertices: []
       indices: 
       edges: []
@@ -447,18 +602,19 @@ TextureImporter:
       name: dr blood_russian_roulette_16
       rect:
         serializedVersion: 2
-        x: 192
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 384
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d8b5ee02c25b204483f5751e4724c9a
+      spriteID: b376afa2a1505f04b9c03543f5a45954
+      internalID: 21300032
       vertices: []
       indices: 
       edges: []
@@ -467,18 +623,19 @@ TextureImporter:
       name: dr blood_russian_roulette_17
       rect:
         serializedVersion: 2
-        x: 384
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 512
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6704590498290ea42a4d762996a3acac
+      spriteID: 19a517a2e1d3d28469fbc2d77354a037
+      internalID: 21300034
       vertices: []
       indices: 
       edges: []
@@ -487,18 +644,19 @@ TextureImporter:
       name: dr blood_russian_roulette_18
       rect:
         serializedVersion: 2
-        x: 576
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 640
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a34ecd547d4fac84abc756311050d7e2
+      spriteID: f64f0aa222c1a764c8fa59b4329fc759
+      internalID: 21300036
       vertices: []
       indices: 
       edges: []
@@ -508,17 +666,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        y: 768
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54633ae310dd48745bf1292a594a3f12
+      spriteID: 135842a718d89504fa0d596c1f2758c7
+      internalID: 21300038
       vertices: []
       indices: 
       edges: []
@@ -528,17 +687,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5378539350b1ee47be73ba22341e65d
+      spriteID: 09050db3dd1727a42b4536ca72e220fa
+      internalID: 21300040
       vertices: []
       indices: 
       edges: []
@@ -547,18 +707,19 @@ TextureImporter:
       name: dr blood_russian_roulette_21
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 128
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ebafb9ba556a53b48bbe52d1d0c53522
+      spriteID: f8c8838ae84714d4e987d138f11a107d
+      internalID: 21300042
       vertices: []
       indices: 
       edges: []
@@ -567,18 +728,19 @@ TextureImporter:
       name: dr blood_russian_roulette_22
       rect:
         serializedVersion: 2
-        x: 384
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 256
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb0a51ff6e29f684f8538f59778109f2
+      spriteID: babfcb6d7d4828543b6baef173a4757f
+      internalID: 21300044
       vertices: []
       indices: 
       edges: []
@@ -587,18 +749,19 @@ TextureImporter:
       name: dr blood_russian_roulette_23
       rect:
         serializedVersion: 2
-        x: 576
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 384
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb3e3bfa8c958c64b8cb88fbcc4366b0
+      spriteID: 7986260bd362adb4288b89cfaad72bce
+      internalID: 21300046
       vertices: []
       indices: 
       edges: []
@@ -607,18 +770,19 @@ TextureImporter:
       name: dr blood_russian_roulette_24
       rect:
         serializedVersion: 2
-        x: 768
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 512
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e82cf74f24b462645826140d2416774c
+      spriteID: bbb083a1d9923d346b399453381afbbb
+      internalID: 21300048
       vertices: []
       indices: 
       edges: []
@@ -627,18 +791,19 @@ TextureImporter:
       name: dr blood_russian_roulette_25
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 640
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bdbc9fc450a680940871f8f6d7dc3eb3
+      spriteID: f11ac7b1d6031134b883574190c789ea
+      internalID: 21300050
       vertices: []
       indices: 
       edges: []
@@ -647,18 +812,19 @@ TextureImporter:
       name: dr blood_russian_roulette_26
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 768
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddef46633b6d1134b89147c56ca48f1a
+      spriteID: 84b970b2a54245b4c98e179b5e4b38f2
+      internalID: 21300052
       vertices: []
       indices: 
       edges: []
@@ -667,18 +833,19 @@ TextureImporter:
       name: dr blood_russian_roulette_27
       rect:
         serializedVersion: 2
-        x: 384
-        y: 0
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 0
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e8a9b50ff22e254cb3b3d1fb7ff1cb4
+      spriteID: 9d14ed20ff726f4479582b4ea553841b
+      internalID: 21300054
       vertices: []
       indices: 
       edges: []
@@ -687,18 +854,565 @@ TextureImporter:
       name: dr blood_russian_roulette_28
       rect:
         serializedVersion: 2
-        x: 576
-        y: 0
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.3333}
+        x: 128
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ff1f1368e2138f4181591f68cb5cb3e
+      spriteID: a77fc13042d21ba40afde8c4bc4c4891
+      internalID: 21300056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_29
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 342968f41cd2b2448906ede9c6df013a
+      internalID: -3395099839328334925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_30
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cf0f204e26ea8749b10b352a0c463cb
+      internalID: -5053482965572515159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_31
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 101ef96f82e7d8e4fb60b4594a37ae5d
+      internalID: -2542615631111100477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_32
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 888885aade32ef040883adeae0c64e1e
+      internalID: -1305463322844034396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_33
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a4de5a09bce7fb40820e238080aceee
+      internalID: -6917376166090938170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_34
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d0899fd33bf5fe4a9281572c7a93395
+      internalID: -3766040585743073379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_35
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e14c3f462ef9b50499acbd0508a1996a
+      internalID: 2934808687914657712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_36
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e14982ee70b3ad34f9ffaeb874f8f6b1
+      internalID: 4462646362891727078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_37
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24b077b2793a1bc43b8ec5d5b5ad86f2
+      internalID: -2294848106447273746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_38
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada024a5d2ed8c243a128f5393e8e802
+      internalID: 3517995408355107845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_39
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 232bfbb3774ac134bb431a31d90f2349
+      internalID: -6558589600834199993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 754d7f5a44be85a4da0a5fec30e6ac0e
+      internalID: 7526353737556002212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_41
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7261497af1b1d994684915211cb90565
+      internalID: 2981911686516355810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_42
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a35cca34ff7f4f408f259d6b0da1192
+      internalID: 6378970158036627054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_43
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88b4b9a22fcdb154091ac83146be6d76
+      internalID: 1906948207356526016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_44
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8d211113de31c04dad05f19d1c1c461
+      internalID: 292906537131512653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73fab1e7e009328469a3b43558856caa
+      internalID: 6406401013538665674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_46
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0fc241f81dc96a4caa4093d102b0483
+      internalID: 1009867255302152714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_47
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b0cdbb5084326a4e8b7648df4402282
+      internalID: 4304321855677079089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_48
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90da471fac2556f428f078c1a05648cc
+      internalID: 670226733012431921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_49
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24733987c53c02f4fb0d44bf4f025783
+      internalID: 1102842219682035920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b73c7b076a198f41a0b10ca5d519481
+      internalID: 4740286791615396034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_51
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e43b49a396a99e44eb88e93071b3ce26
+      internalID: -2576468504906118641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_52
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7454720cabc0cbe4b8891537a0ea7a3c
+      internalID: -1532773089703294329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_53
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac581b91eff0e2e42af2ac7a50ecf78b
+      internalID: 8619414894365156036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dr blood_russian_roulette_54
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e867d927b59a900488e08aa4cb3b96cf
+      internalID: 5819410828572231394
       vertices: []
       indices: 
       edges: []
@@ -707,10 +1421,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 87e5e22fc11a75e4e8270c874f12c47c
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,20 +1,81 @@
 fileFormatVersion: 2
 guid: 43f04d15b575bd542894ad1b73f66b7b
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: dragon punch_0
-    21300002: dragon punch_1
-    21300004: dragon punch_2
-    21300006: dragon punch_3
-    21300008: dragon punch_4
-    21300010: dragon punch_5
-    21300012: dragon punch_6
-    21300014: dragon punch_7
-    21300016: dragon punch_8
-    21300018: dragon punch_9
-    21300020: dragon punch_10
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: dragon punch_0
+  - first:
+      213: 21300002
+    second: dragon punch_1
+  - first:
+      213: 21300004
+    second: dragon punch_2
+  - first:
+      213: 21300006
+    second: dragon punch_3
+  - first:
+      213: 21300008
+    second: dragon punch_4
+  - first:
+      213: 21300010
+    second: dragon punch_5
+  - first:
+      213: 21300012
+    second: dragon punch_6
+  - first:
+      213: 21300014
+    second: dragon punch_7
+  - first:
+      213: 21300016
+    second: dragon punch_8
+  - first:
+      213: 21300018
+    second: dragon punch_9
+  - first:
+      213: 21300020
+    second: dragon punch_10
+  - first:
+      213: 6067411410660314376
+    second: dragon punch_11
+  - first:
+      213: -7948177552757145814
+    second: dragon punch_12
+  - first:
+      213: 2787681989750008318
+    second: dragon punch_13
+  - first:
+      213: -8116745892069633468
+    second: dragon punch_14
+  - first:
+      213: -9036053089876972245
+    second: dragon punch_15
+  - first:
+      213: -7714117695530910975
+    second: dragon punch_16
+  - first:
+      213: -8202316450655208442
+    second: dragon punch_17
+  - first:
+      213: 5699617239177331788
+    second: dragon punch_18
+  - first:
+      213: 3313969557830358286
+    second: dragon punch_19
+  - first:
+      213: 7950184482514913124
+    second: dragon punch_20
+  - first:
+      213: -6467409388355052528
+    second: dragon punch_21
+  - first:
+      213: 6118044540878888727
+    second: dragon punch_22
+  - first:
+      213: 7682541187408804399
+    second: dragon punch_23
   externalObjects: {}
-  serializedVersion: 5
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -32,6 +93,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -42,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -53,7 +116,7 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 7
-  spritePivot: {x: 0.5, y: 0.5}
+  spritePivot: {x: 0.5, y: 0}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -67,7 +130,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -78,7 +141,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -89,7 +153,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -100,6 +165,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -108,17 +174,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ad20b43aff628048aa42db8c165ffb2
+      spriteID: 16bdeaedc8b930344a019a0f06522d3d
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -127,18 +194,19 @@ TextureImporter:
       name: dragon punch_1
       rect:
         serializedVersion: 2
-        x: 192
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 128
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: afb3775865a9f794c8fd1fe335c6455e
+      spriteID: 5351696b85ab1cd4cab63ad775e1586a
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -147,18 +215,19 @@ TextureImporter:
       name: dragon punch_2
       rect:
         serializedVersion: 2
-        x: 384
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 256
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fee2ad2251d09ce45a4fa2106bd6befc
+      spriteID: bc602d1d5158a244a9fbab6bff152fd1
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -167,18 +236,19 @@ TextureImporter:
       name: dragon punch_3
       rect:
         serializedVersion: 2
-        x: 576
-        y: 576
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 384
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72c882f7e81a86841980b71c251ba895
+      spriteID: 157f38b5964fb9d4387537ce676040eb
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -187,18 +257,19 @@ TextureImporter:
       name: dragon punch_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 512
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 148ca80128e8e234db284912c6001df5
+      spriteID: 5e12509ddf76aca4ca304135396c066c
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -207,18 +278,19 @@ TextureImporter:
       name: dragon punch_5
       rect:
         serializedVersion: 2
-        x: 192
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 640
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f96c3abbc564e9489948a9a5dbdb59e
+      spriteID: 2dd2e9abc0af6d94bbe558f96a699143
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -227,18 +299,19 @@ TextureImporter:
       name: dragon punch_6
       rect:
         serializedVersion: 2
-        x: 384
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 0
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53508361e443ae54e90d445c44f00dfb
+      spriteID: 0239d7f3f05556647814b76db2eb6aa7
+      internalID: 21300012
       vertices: []
       indices: 
       edges: []
@@ -247,18 +320,19 @@ TextureImporter:
       name: dragon punch_7
       rect:
         serializedVersion: 2
-        x: 576
-        y: 384
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 128
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7311559ef82b8584dbb971dc4bb0bb7f
+      spriteID: 244dd4281a8780542be4fce54115d63b
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -267,18 +341,19 @@ TextureImporter:
       name: dragon punch_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 256
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3c46780bc407644e83d39007c645aed
+      spriteID: 8196d4ce9108e0948b901659f0d5d42b
+      internalID: 21300016
       vertices: []
       indices: 
       edges: []
@@ -287,18 +362,19 @@ TextureImporter:
       name: dragon punch_9
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 384
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 645deb6a3fe7ecf44bce912ea1367a2a
+      spriteID: 792d2da4786efc545ba4bea1d4e48668
+      internalID: 21300018
       vertices: []
       indices: 
       edges: []
@@ -307,18 +383,292 @@ TextureImporter:
       name: dragon punch_10
       rect:
         serializedVersion: 2
-        x: 384
-        y: 192
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.3333}
+        x: 512
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f67ea4890bcc1bd40b9392a0df461904
+      spriteID: c32afd9aad4e8d04db675449ff7262ae
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_11
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96fc8e7820bdb3a4ead3c561aa105732
+      internalID: 6067411410660314376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03a58d76d6a04ce409870abf1804e81b
+      internalID: -7948177552757145814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5f9669176a4fc04db4576174c35cca8
+      internalID: 2787681989750008318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_14
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f435fe02b6fcb004a8b8b9afc57bb3b5
+      internalID: -8116745892069633468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_15
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e90cd3dcd989fd45b7f794817eda13b
+      internalID: -9036053089876972245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ee33e7df2fc54b488f5212f79c16c28
+      internalID: -7714117695530910975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bed0425e0b3a4048b5dd2435e326a95
+      internalID: -8202316450655208442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_18
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad2dd1a63f21fef4c84bae9a8421f94b
+      internalID: 5699617239177331788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_19
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29dea62112f24af42a0f18795dc73e59
+      internalID: 3313969557830358286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64dbb559de2c71649b2ce3485d9a3eae
+      internalID: 7950184482514913124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_21
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ed8c2b6a0d932e48aecfedb574f5942
+      internalID: -6467409388355052528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_22
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02a29f779bf1802479d1143b16ba592e
+      internalID: 6118044540878888727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dragon punch_23
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e860c5879521d864cac1bb028062e490
+      internalID: 7682541187408804399
       vertices: []
       indices: 
       edges: []
@@ -326,12 +676,16 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: df0b5baf92f76e24bb8143c1f95d1137
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

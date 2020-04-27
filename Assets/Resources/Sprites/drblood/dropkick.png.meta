@@ -1,16 +1,42 @@
 fileFormatVersion: 2
 guid: 723fdc22dd271e94ea725276215e33e3
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: dropkick_0
-    21300002: dropkick_1
-    21300004: dropkick_2
-    21300006: dropkick_3
-    21300008: dropkick_4
-    21300010: dropkick_5
-    21300012: dropkick_6
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: dropkick_0
+  - first:
+      213: 21300002
+    second: dropkick_1
+  - first:
+      213: 21300004
+    second: dropkick_2
+  - first:
+      213: 21300006
+    second: dropkick_3
+  - first:
+      213: 21300008
+    second: dropkick_4
+  - first:
+      213: 21300010
+    second: dropkick_5
+  - first:
+      213: 21300012
+    second: dropkick_6
+  - first:
+      213: -4150186080027567153
+    second: dropkick_7
+  - first:
+      213: 8124585866871017538
+    second: dropkick_8
+  - first:
+      213: 534039453228844805
+    second: dropkick_9
+  - first:
+      213: 599609364015719984
+    second: dropkick_10
   externalObjects: {}
-  serializedVersion: 5
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -28,6 +54,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -38,7 +66,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -63,7 +91,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -74,7 +102,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -85,7 +114,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -96,6 +126,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -105,16 +136,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 384
-        width: 192
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4656da0470c35b24583a619a845ac73a
+      spriteID: 3658a324c8e0b5d438f484e5a1221861
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -123,18 +155,19 @@ TextureImporter:
       name: dropkick_1
       rect:
         serializedVersion: 2
-        x: 192
+        x: 128
         y: 384
-        width: 192
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd7a0362105dc244ea5ebe051f8f329d
+      spriteID: b28aeb10769d73649a4da71ea03287a5
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -143,18 +176,19 @@ TextureImporter:
       name: dropkick_2
       rect:
         serializedVersion: 2
-        x: 384
+        x: 256
         y: 384
-        width: 192
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0572d03ce20702c429b828fe0ef9d819
+      spriteID: 69901f225ee28e240a273a08b100bb00
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -163,18 +197,19 @@ TextureImporter:
       name: dropkick_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 256
-        width: 192
+        x: 384
+        y: 384
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a903f6e7ca234a4eadf094caa3f4de0
+      spriteID: 888db68231c18ca40a7045084a49467d
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -183,18 +218,19 @@ TextureImporter:
       name: dropkick_4
       rect:
         serializedVersion: 2
-        x: 192
-        y: 256
-        width: 192
+        x: 512
+        y: 384
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 610b81ac609df584984f80fedd64e7cc
+      spriteID: 7de38acb6a2a37c4fbca6ea519671bcd
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -203,18 +239,19 @@ TextureImporter:
       name: dropkick_5
       rect:
         serializedVersion: 2
-        x: 384
+        x: 0
         y: 256
-        width: 192
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 50a83b2cdd33ba64f8ba427b0a021690
+      spriteID: ec61a29cff682b742bbc6e317414e7b5
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -223,18 +260,103 @@ TextureImporter:
       name: dropkick_6
       rect:
         serializedVersion: 2
-        x: 576
+        x: 128
         y: 256
-        width: 192
+        width: 128
         height: 128
-      alignment: 9
-      pivot: {x: 0.3333, y: 0.5}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c1874f6cfb81c34a80617ee8d97c736
+      spriteID: cef72f257a4fb314d952a36551a9b0f0
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropkick_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 824d428c902f7af4697ed975cff422fc
+      internalID: -4150186080027567153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropkick_8
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2730d250e982344e82a9d253077270f
+      internalID: 8124585866871017538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropkick_9
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 721d27050891886458d053d5d2641fd8
+      internalID: 534039453228844805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropkick_10
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a22df1a529881a4fa4087504e8d7fa1
+      internalID: 599609364015719984
       vertices: []
       indices: 
       edges: []
@@ -242,12 +364,16 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2c886924defad4a4e80f2b0e17326bd8
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
