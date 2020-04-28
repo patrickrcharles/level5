@@ -27,16 +27,17 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<shooterProfile> playerSelectedData;
 
-    private Text playerSelectText;
-    private Image playerSelectImage;
-    private Text playerSelectStatsText;
+    private Text playerSelectOptionText;
+    private Image playerSelectOptionImage;
+    private Text playerSelectOptionStatsText;
 
     private Text levelSelectText;
 
     //private Image levelSelectImage;
 
     private const string startButtonName = "press_start";
-    private const string playerSelectButtonName = "player_selected_name";
+    private const string playerSelectOptionButtonName = "player_selected_name";
+    private const string playerSelectButtonName = "player_select";
     //private const string levelSelectObjectName = "level_selected_name";
 
     private int playerSelectedIndex;
@@ -73,15 +74,16 @@ public class StartManager : MonoBehaviour
 
     private void initiazePlayerText()
     {
-        playerSelectText = GameObject.Find("player_selected_name").GetComponent<Text>();
-        playerSelectStatsText = GameObject.Find("player_selected_stats_numbers").GetComponent<Text>();
-        playerSelectImage = GameObject.Find("player_selected_image").GetComponent<Image>();
+
+        playerSelectOptionText = GameObject.Find("player_selected_name").GetComponent<Text>();
+        playerSelectOptionStatsText = GameObject.Find("player_selected_stats_numbers").GetComponent<Text>();
+        playerSelectOptionImage = GameObject.Find("player_selected_image").GetComponent<Image>();
 
         levelSelectText = GameObject.Find("level_selected_name").GetComponent<Text>();
 
-        playerSelectText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-        playerSelectImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
-        playerSelectStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
+        playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+        playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
@@ -120,6 +122,7 @@ public class StartManager : MonoBehaviour
         //        createFirstModeDescription();
         //    }
         //}
+
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         //Debug.Log("current : "+ currentHighlightedButton);
 
@@ -129,16 +132,52 @@ public class StartManager : MonoBehaviour
             Debug.Log("pressed enter");
             loadScene();
         }
+        // up arrow navigation
+        if (InputManager.GetKeyDown(KeyCode.UpArrow)
+            && !currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        {
+            Debug.Log("up : !player select");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnUp().gameObject);
+        }
 
-        if ((InputManager.GetKeyDown(KeyCode.W))
+        // down arrow navigation
+        if (InputManager.GetKeyDown(KeyCode.DownArrow)
+            && !currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        {
+            Debug.Log("down : !player select");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnDown().gameObject);
+        }
+
+
+        // right arrow on player select
+        if (InputManager.GetKeyDown(KeyCode.RightArrow)
             && currentHighlightedButton.Equals(playerSelectButtonName))
         {
+            Debug.Log("right : player select");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnRight().gameObject);
+        }
+
+        // left arrow navigation on player options
+        if (InputManager.GetKeyDown(KeyCode.LeftArrow)
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        {
+            Debug.Log("left : player select");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnLeft().gameObject);
+        }
+
+        // up/down arrow on player options
+        if ((InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        {
+            Debug.Log("up : player option");
             changeSelectedPlayerUp();
             initiazePlayerText();
         }
-        if ((InputManager.GetKeyDown(KeyCode.S))
-            && currentHighlightedButton.Equals(playerSelectButtonName))
+
+        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
         {
+            Debug.Log("down : player option");
             changeSelectedPlayerDown();
             initiazePlayerText();
         }
