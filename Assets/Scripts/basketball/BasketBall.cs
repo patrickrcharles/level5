@@ -103,29 +103,15 @@ public class BasketBall : MonoBehaviour
 
         shooterProfile = GameLevelManager.instance.player.GetComponent<shooterProfile>();
         shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
-        //shootProfileText.text = "test string";
-        //shootProfileText.text = "test profile";
-
-        Debug.Log(shootProfileText.text);
 
         TextObject = GameObject.Find("shootStatsTextObject");
         scoreText = TextObject.GetComponent<Text>();
-        scoreText.text = "test score";
-        Debug.Log(scoreText.text);
-
-
-        //Debug.Log(shootProfile);
-
-        //shootProfileText = shootProfile.GetComponent<Text>();
-        //Debug.Log(shootProfileText.text);
-
-       
 
         longestShot = 0;
         playerDunkPos = GameObject.Find("dunk_transform");
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
-        addAccuracyModifier = false;
+        addAccuracyModifier = true;
 
         shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
                                 + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
@@ -154,12 +140,12 @@ public class BasketBall : MonoBehaviour
 
         updateScoreText();
 
-        //shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-        //                        + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-        //                        + "shooter : Dr Blood\n"
-        //                        + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
-        //                        + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
-        //                        + "4 point accuracy : " + shooterProfile.Accuracy4Pt;
+        shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                                + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+                                + "shooter : " + shooterProfile.PlayerDisplayName+ "\n"
+                                + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
+                                + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
+                                + "4 point accuracy : " + shooterProfile.Accuracy4Pt;
 
 
 

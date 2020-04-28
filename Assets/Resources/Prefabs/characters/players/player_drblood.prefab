@@ -877,12 +877,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDisplayName: 
-  playerObjectName: 
+  playerDisplayName: Dr Blood
+  playerObjectName: drblood
   playerPortrait: {fileID: 0}
   shooterProfileObject: {fileID: 0}
-  jumpStatFloor: 0
-  jumpStatCeiling: 0
+  jumpStatFloor: 3.5
+  jumpStatCeiling: 6
   accuracy2pt: 90
   accuracy3pt: 83
   accuracy4pt: 77
