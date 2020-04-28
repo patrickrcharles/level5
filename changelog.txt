@@ -7,4 +7,13 @@ change log
 ------------------
 
 1.0
-work in progress demo
+- work in progress demo
+
+2.0.
+- added start screen menu
+- added player select screen with player image and shooting stats
+- added 4 new characters : 
+	Ian, Woody, Marion, and Flash
+- added quit to start menu command. press left or right shift + P
+- changed quit game command to left or right sift + Q
+
