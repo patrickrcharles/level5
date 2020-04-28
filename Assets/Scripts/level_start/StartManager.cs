@@ -158,7 +158,6 @@ public class StartManager : MonoBehaviour
         }
         GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         Debug.Log("player selected : " + GameOptions.playerSelected);
-        Debug.Log("player selected : " + GameOptions.playerSelected);
     }
     private void changeSelectedPlayerDown()
     {

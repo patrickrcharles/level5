@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TeamUtility.IO;
+using UnityEditor;
 
 public class GameLevelManager : MonoBehaviour
 {
@@ -59,29 +60,24 @@ public class GameLevelManager : MonoBehaviour
 
     private GameObject playerClone;
 
+    List<string> scenes = new List<string>();
+
+    [SerializeField]
+    private GameObject flashObject;
+
     void Awake()
     {
         Debug.Log("gm : awake()");
         // initialize game manger player references
         instance = this;
 
-        string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString();
-        Debug.Log("playerPrefabPath : " + playerPrefabPath);
+        // if player selected is not null / player not selecetd
+        if(!string.IsNullOrEmpty( GameOptions.playerSelected)){
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString();
+            playerClone = Resources.Load("Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString()) as GameObject;
+        }
         //allAudioSources = FindObjectsOfType<AudioSource>();
         //Application.targetFrameRate = 60;
-
-
-        playerClone = Resources.Load("Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString() ) as GameObject;
-        basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-
-        Debug.Log("$$$$$$$$$$$$$$ temp : " + playerClone);
-
-
-        //string playerPrefabPath = "Prefabs/characters/player_" + GameOptions.playerSelected;
-        //Debug.Log("playerPrefabPath : " + playerPrefabPath);
-        ////allAudioSources = FindObjectsOfType<AudioSource>();
-        ////Application.targetFrameRate = 60;
-
 
         if (!getCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
         // player + ball spawn locations
@@ -89,83 +85,80 @@ public class GameLevelManager : MonoBehaviour
         playerSpawnLocation = GameObject.Find("player_spawn_location");
         basketballSpawnLocation = GameObject.Find("ball_spawn_location");
 
-        Instantiate(playerClone, playerSpawnLocation.transform.position, Quaternion.identity);
-        Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
+        if (GameObject.FindWithTag("Player") == null)
+        {
+            Instantiate(playerClone, playerSpawnLocation.transform.position, Quaternion.identity);
+        }
+        if(GameObject.FindWithTag("basketball") == null)
+        {
+            basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+            Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
+        }
 
-        //string playerPrefabPath = "Prefabs/characters/player"+ GameOptions.playerSelected;
-        //Debug.Log("playerPrefabPath : " + playerPrefabPath);
 
-        //player = Resources.Load(playerPrefabPath) as GameObject;
-        //Instantiate(player, playerSpawnLocation.transform.position, Quaternion.identity);
-
-        //Debug.Log("$$$$$$$$$$$$$$ temp : " + player);
-
-        ////Debug.Log("initialize player");
-        ////initializePlayer();
-        ////_player = Resources.Load("Prefabs/Player_aba") as GameObject;
-        ////Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
-        ////_playerState = player.GetComponent<playercontrollerscript
-
-        ////load and spawn basketbll prefab
-        //basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-        //Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
-        //basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
     }
 
     void Start()
     {
-        Debug.Log("gm : start()");
-
-
-        //string playerPrefabPath = "Prefabs/characters/player_" + GameOptions.playerSelected;
-        //Debug.Log("playerPrefabPath : " + playerPrefabPath);
-        //allAudioSources = FindObjectsOfType<AudioSource>();
-        //Application.targetFrameRate = 60;
-
-        //Debug.Log("initialize player");
-        //initializePlayer();
-        //_player = Resources.Load("Prefabs/Player_aba") as GameObject;
-        //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
-        //_playerState = player.GetComponent<playercontrollerscript
-
-        //Instantiate(player, playerSpawnLocation.transform.position, Quaternion.identity);
-
-
-        //load and spawn basketbll prefab
-        // basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-        //Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
-
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = player.GetComponent<playercontrollerscript>();
         _anim = player.GetComponentInChildren<Animator>();
 
         basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-
         locked = false;
-        //basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
 
-        //test gameoptions passed
-        GameOptions.printCurrentValues();
-        Debug.Log("end start()");
+        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (scene.enabled)
+            {
+                scenes.Add(scene.path);
+            }
+        }
+
+        foreach (var scene in scenes)
+        {
+            Debug.Log(scene);
+        }
+
         InitializePlayer();
+
+        flashObject = GameObject.Find("flash_auto_play");
+        Debug.Log("=================================== selcted player : " + GameOptions.playerSelected );
+        Debug.Log("=================================== flashObject : " + flashObject);
+        if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
+            &&GameOptions.playerSelected.Contains("flash") 
+            && flashObject != null )
+        {
+            flashObject.SetActive(false);
+        }
+
     }
+
 
     void Update()
     {
         //close app
         if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
-            && InputManager.GetKeyDown(KeyCode.P))
+            && InputManager.GetKeyDown(KeyCode.Q))
         {
             Quit();
         }
-        //pause
+
+        //reload start
+        if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift))
+            && InputManager.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene("level_start");
+        }
+
+        //pause ESC, submit, cancel
         if (InputManager.GetButtonDown("Submit")
             || InputManager.GetButtonDown("Cancel")
             || InputManager.GetKeyDown(KeyCode.Escape))
         {
             paused = TogglePause();
         }
-        // reload scene
+        // reload scene 4+2+0
         if (InputManager.GetKey(KeyCode.Alpha4)
             && InputManager.GetKey(KeyCode.Alpha2)
             && InputManager.GetKey(KeyCode.Alpha0)
@@ -173,7 +166,8 @@ public class GameLevelManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        //turn off accuracy modifer
+
+        //turn off accuracy modifer 6+9
         if (InputManager.GetKey(KeyCode.Alpha6)
             && InputManager.GetKeyDown(KeyCode.Alpha9)
             && !locked)
@@ -194,20 +188,6 @@ public class GameLevelManager : MonoBehaviour
         //_anim = player.GetComponentInChildren<Animator>();
     }
 
-    //public void resetSceneVariables()
-    //{
-    //    gameOver = false;
-    //    showScore = false;
-    //}
-    //public void disableEnemyUI()
-    //{
-    //    GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemyHealthUI");
-
-    //    foreach (GameObject enemy in enemySpawner.instance.enemies)
-    //    {
-    //        enemy.SetActive(false);
-    //    }
-    //}
 
     private string getCurrentSceneName()
     {

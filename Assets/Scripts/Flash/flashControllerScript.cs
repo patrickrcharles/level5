@@ -148,7 +148,7 @@ public class flashControllerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.name == "Flash" && ( other.CompareTag("Player") || other.CompareTag("basketball"))
+        if (gameObject.name.Contains("flash") && ( other.CompareTag("Player") || other.CompareTag("basketball"))
             && !ignoreCollision && !movingToTarget)
         {
             movingToTarget = true;
