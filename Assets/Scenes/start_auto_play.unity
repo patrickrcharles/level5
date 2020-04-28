@@ -6943,6 +6943,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_ian_aba_auto_play
       objectReference: {fileID: 0}
+    - target: {fileID: 5673890153046336543, guid: a43b99407773dd04aa7f6a88a47dee12,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3234123508539356740, guid: a43b99407773dd04aa7f6a88a47dee12,
         type: 3}
       propertyPath: m_LocalPosition.x

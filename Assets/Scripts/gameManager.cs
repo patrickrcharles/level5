@@ -47,6 +47,10 @@ public class gameManager : MonoBehaviour
     //[SerializeField]
     //GameObject player_spawn;
 
+    [SerializeField]
+    private int playerCount;
+
+    [SerializeField] private int basketballCount;
 
 
     public static gameManager instance;
@@ -84,8 +88,10 @@ public class gameManager : MonoBehaviour
 
         locked = false;
         InitializePlayer();
-
         basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+
+        //test gameoptions passed
+        GameOptions.printCurrentValues();
     }
 
     private void Update()
