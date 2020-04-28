@@ -887,7 +887,7 @@ MonoBehaviour:
   accuracy3pt: 83
   accuracy4pt: 77
   shooterProfilePrefabName: 
-  jumpForce: 4.8
+  jumpForce: 5.5
   speed: 2
   runSpeed: 3
   hangTime: 0
