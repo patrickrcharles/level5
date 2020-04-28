@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1786739938969625871}
-  - component: {fileID: 1786739938969625868}
+  - component: {fileID: 1678026533}
   m_Layer: 0
   m_Name: player_selected_ian
   m_TagString: Untagged
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchoredPosition: {x: 383.00006, y: 835.1011}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1786739938969625868
+--- !u!114 &1678026533
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +45,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786739938969625869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67abe5a26584b1b40ba5037721b360db, type: 3}
+  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerDisplayName: Ian
   playerObjectName: ian
   playerPortrait: {fileID: 21300012, guid: e94887cfd41a16f4ba97185518f23737, type: 3}
+  shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
+  accuracy2pt: 90
+  accuracy3pt: 80
+  accuracy4pt: 70
+  shooterProfilePrefabName: 
+  jumpForce: 5.1
+  speed: 2
+  runSpeed: 3
+  hangTime: 0
+  range: 99
+  release: 0
   criticalPercent: 35
+  shootAngle: 60

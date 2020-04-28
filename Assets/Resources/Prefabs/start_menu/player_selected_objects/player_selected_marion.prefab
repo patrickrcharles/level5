@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 267861401630864429}
-  - component: {fileID: 267861401630864428}
+  - component: {fileID: 719680254}
   m_Layer: 0
   m_Name: player_selected_marion
   m_TagString: Untagged
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchoredPosition: {x: 383.00006, y: 835.1011}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &267861401630864428
+--- !u!114 &719680254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +45,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 267861401630864427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67abe5a26584b1b40ba5037721b360db, type: 3}
+  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerDisplayName: Marion
   playerObjectName: marion
   playerPortrait: {fileID: 21300010, guid: 59f298745adaf6b4d8834fda20e1a0b7, type: 3}
+  shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
+  accuracy2pt: 90
+  accuracy3pt: 80
+  accuracy4pt: 70
+  shooterProfilePrefabName: 
+  jumpForce: 3.8
+  speed: 2
+  runSpeed: 3
+  hangTime: 0
+  range: 99
+  release: 0
   criticalPercent: 35
+  shootAngle: 60

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3400360205296921898}
-  - component: {fileID: 3400360205296921901}
+  - component: {fileID: 277743548}
   m_Layer: 0
   m_Name: player_selected_flash
   m_TagString: Untagged
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchoredPosition: {x: 383.00006, y: 835.1011}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3400360205296921901
+--- !u!114 &277743548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,13 +45,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3400360205296921900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67abe5a26584b1b40ba5037721b360db, type: 3}
+  m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerDisplayName: Flash
   playerObjectName: flash
   playerPortrait: {fileID: 8280663977718776272, guid: bdac9d539f8d4b7468c6e6dd3627218a,
     type: 3}
+  shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
-  criticalPercent: 45
+  accuracy2pt: 90
+  accuracy3pt: 85
+  accuracy4pt: 80
+  shooterProfilePrefabName: 
+  jumpForce: 6
+  speed: 3
+  runSpeed: 4.5
+  hangTime: 0
+  range: 99
+  release: 0
+  criticalPercent: 35
+  shootAngle: 60
