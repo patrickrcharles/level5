@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/start_auto_play.unity
-    guid: 6f5f45bb5d156324eb4807dc9eeb279b
+    path: Assets/Scenes/level_start.unity
+    guid: c504a5a8d7a7ff9438509ac522c82403
   - enabled: 1
     path: Assets/Scenes/basketball test.unity
     guid: eec0e7592c963d349b51bd7dac306b35
