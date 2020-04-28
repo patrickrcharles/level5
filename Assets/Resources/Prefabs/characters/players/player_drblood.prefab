@@ -639,7 +639,7 @@ GameObject:
   - component: {fileID: 4881404290225261413}
   - component: {fileID: 3123467015696178035}
   m_Layer: 0
-  m_Name: player_drblood_nba
+  m_Name: player_drblood
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -685,7 +685,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 3
+  m_CollisionDetection: 1
 --- !u!114 &4620539903697033636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,8 +698,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  anim: {fileID: 1167174751104759039}
+  spriteRenderer: {fileID: 6341861002161863533}
+  rigidBody: {fileID: 7882584539614933877}
   _angle: 60
   movementSpeed: 1
   jumpForce: 5
@@ -707,7 +708,7 @@ MonoBehaviour:
   basketballRunSpeed: 2.5
   walkMovementSpeed: 1
   attackMovementSpeed: 0.3
-  hasBasketball: 0
+  hasBasketball: 1
   soundPlayed: 0
   canMove: 1
   bballRimVector: {x: 0, y: 0, z: 0}
@@ -879,7 +880,7 @@ MonoBehaviour:
   accuracy2pt: 90
   accuracy3pt: 80
   accuracy4pt: 75
-  jumpForce: 4.5
+  jumpForce: 4.8
   speed: 2
   runSpeed: 3
   hangTime: 0

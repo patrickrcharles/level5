@@ -218,7 +218,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3234123508539356740}
   - component: {fileID: 5943179378499566885}
-  - component: {fileID: 9151752356713355252}
   - component: {fileID: 8280104947782694658}
   - component: {fileID: 1180706609882674330}
   - component: {fileID: 6265940282966172641}
@@ -274,46 +273,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
---- !u!114 &9151752356713355252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5673890153046336543}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  _angle: 60
-  movementSpeed: 1
-  jumpForce: 5
-  moonwalkMovementSpeed: 4.5
-  basketballRunSpeed: 2.5
-  walkMovementSpeed: 1
-  attackMovementSpeed: 0.3
-  hasBasketball: 0
-  soundPlayed: 0
-  canMove: 1
-  bballRimVector: {x: 0, y: 0, z: 0}
-  bballRelativePositioning: 0
-  playerRelativePositioning: {x: 0, y: 0, z: 0}
-  playerDistanceFromRim: 0
-  playerHitbox: {fileID: 6984317170610319502}
-  triggerLeftAxisInUse: 0
-  triggerRightAxisInUse: 0
-  _notLocked: 1
-  _inAir: 0
-  _grounded: 1
-  initialHeight: 0
-  finalHeight: 0
-  gravityModifier: 0
-  jumpPeakReached: 0
-  useGravity: 1
-  facingFront: 0
 --- !u!114 &8280104947782694658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,7 +475,7 @@ MonoBehaviour:
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 50
+  criticalPercent: 35
   shootAngle: 60
   shootXVariance: 0
   shootYVariance: 0
