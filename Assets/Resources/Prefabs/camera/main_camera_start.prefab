@@ -437,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5967585117723133528}
   - component: {fileID: 2618756605539618267}
+  - component: {fileID: 2618756606963563929}
   m_Layer: 0
   m_Name: start
   m_TagString: Untagged
@@ -480,6 +481,18 @@ MonoBehaviour:
   gameModeNamesList: []
   currentHighlightedButton: 
   cloneDescription: {fileID: 0}
+--- !u!114 &2618756606963563929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967585117723133529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b050d289ae259fc47be5887ea83380a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5967585118083147330
 GameObject:
   m_ObjectHideFlags: 0
