@@ -2600,7 +2600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Accuracy modifer off by default. Turn on accuracy modifer by holding 6
+  m_Text: "Accuracy modifer ON by default. Turn OFF accuracy modifer by holding 6
     and pressing 9\n\t"
 --- !u!222 &3273584401413768029
 CanvasRenderer:
