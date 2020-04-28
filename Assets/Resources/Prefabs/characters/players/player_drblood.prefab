@@ -485,10 +485,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.48
-  m_Height: 0.45
+  m_Radius: 1.07
+  m_Height: 1.64
   m_Direction: 1
-  m_Center: {x: 0, y: -0.31, z: 0}
+  m_Center: {x: 0, y: 0.73, z: 0}
 --- !u!1 &7885645570814204292
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basketballRigidBody: {fileID: 0}
-  pullSpeed: 2
+  pullSpeed: 2.3
   pullDirection: {x: 0, y: 0, z: 0}
 --- !u!82 &3421694135598086858
 AudioSource:
@@ -849,8 +849,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 1.3
-  m_Center: {x: 0, y: 0.35, z: 0}
+  m_Radius: 0.64
+  m_Center: {x: 0, y: 0.49, z: 0}
 --- !u!136 &4881404290225261413
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -877,9 +877,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDisplayName: 
+  playerObjectName: 
+  playerPortrait: {fileID: 0}
+  shooterProfileObject: {fileID: 0}
+  jumpStatFloor: 0
+  jumpStatCeiling: 0
   accuracy2pt: 90
-  accuracy3pt: 80
-  accuracy4pt: 75
+  accuracy3pt: 83
+  accuracy4pt: 77
+  shooterProfilePrefabName: 
   jumpForce: 4.8
   speed: 2
   runSpeed: 3
@@ -888,6 +895,3 @@ MonoBehaviour:
   release: 100
   criticalPercent: 35
   shootAngle: 60
-  shootXVariance: 0
-  shootYVariance: 0
-  shootZVariance: 0

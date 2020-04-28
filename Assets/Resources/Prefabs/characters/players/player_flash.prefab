@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basketballRigidBody: {fileID: 0}
-  pullSpeed: 2
+  pullSpeed: 2.3
   pullDirection: {x: 0, y: 0, z: 0}
 --- !u!82 &5634749164339789329
 AudioSource:
@@ -372,9 +372,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDisplayName: 
+  playerObjectName: 
+  playerPortrait: {fileID: 0}
+  shooterProfileObject: {fileID: 0}
+  jumpStatFloor: 0
+  jumpStatCeiling: 0
   accuracy2pt: 90
-  accuracy3pt: 90
-  accuracy4pt: 90
+  accuracy3pt: 85
+  accuracy4pt: 80
+  shooterProfilePrefabName: 
   jumpForce: 6
   speed: 3
   runSpeed: 4
@@ -383,9 +390,6 @@ MonoBehaviour:
   release: 100
   criticalPercent: 45
   shootAngle: 60
-  shootXVariance: 0
-  shootYVariance: 0
-  shootZVariance: 0
 --- !u!1 &6123458180369103978
 GameObject:
   m_ObjectHideFlags: 0

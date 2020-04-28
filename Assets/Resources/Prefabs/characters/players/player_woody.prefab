@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basketballRigidBody: {fileID: 0}
-  pullSpeed: 2
+  pullSpeed: 2.3
   pullDirection: {x: 0, y: 0, z: 0}
 --- !u!82 &7564325044947534012
 AudioSource:
@@ -359,7 +359,7 @@ CapsuleCollider:
   m_Radius: 0.06
   m_Height: 0.91
   m_Direction: 1
-  m_Center: {x: 0, y: -0.18, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!114 &4285487697881171478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,20 +372,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accuracy2pt: 70
-  accuracy3pt: 60
-  accuracy4pt: 60
+  playerDisplayName: 
+  playerObjectName: 
+  playerPortrait: {fileID: 0}
+  shooterProfileObject: {fileID: 0}
+  jumpStatFloor: 0
+  jumpStatCeiling: 0
+  accuracy2pt: 90
+  accuracy3pt: 83
+  accuracy4pt: 77
+  shooterProfilePrefabName: 
   jumpForce: 5.2
   speed: 2
   runSpeed: 3
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 35
+  criticalPercent: 40
   shootAngle: 45
-  shootXVariance: 0
-  shootYVariance: 0
-  shootZVariance: 0
 --- !u!1 &4704057943004090548
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4704057943004090548}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: -0.613, z: -0.05}
+  m_LocalPosition: {x: -0, y: 0, z: 0.081}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 4316879966801490548}
@@ -555,10 +559,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.48
-  m_Height: 0.45
+  m_Radius: 1.12
+  m_Height: 1.42
   m_Direction: 1
-  m_Center: {x: 0, y: -0.31, z: 0}
+  m_Center: {x: 0, y: 0.72, z: 0}
 --- !u!1 &6129896483946636891
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +587,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6129896483946636891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4316879966801490548}
@@ -615,7 +619,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8228538083277701831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.626, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.24, y: 0.27, z: 0.2}
   m_Children: []
   m_Father: {fileID: 4316879966801490548}

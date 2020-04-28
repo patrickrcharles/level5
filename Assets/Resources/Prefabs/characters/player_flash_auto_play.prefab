@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 2373214122728568943}
   - component: {fileID: 2373214122728568940}
   m_Layer: 0
-  m_Name: flash
+  m_Name: player_flash_auto_play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
