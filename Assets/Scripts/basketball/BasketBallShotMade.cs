@@ -4,7 +4,7 @@
 public class BasketBallShotMade : MonoBehaviour
 {
     BasketBall basketball;
-    BasketballState basketballState;
+    BasketBallState _basketBallState;
     private BasketBallStats basketBallStats;
 
     public AudioClip shotMade;
@@ -22,11 +22,11 @@ public class BasketBallShotMade : MonoBehaviour
     void Start()
     {
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        basketballState = basketball.GetComponent<BasketballState>();
+        _basketBallState = basketball.GetComponent<BasketBallState>();
         basketBallStats = basketball.GetComponent<BasketBallStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
-        playerState = gameManager.instance.playerState;
+        playerState = GameLevelManager.instance.playerState;
     }
 
     // Update is called once per frame
@@ -51,14 +51,14 @@ public class BasketBallShotMade : MonoBehaviour
             anim.Play("madeshot");
 
             Debug.Log(" made a shot!");
-            Debug.Log("two: " + basketballState.TwoAttempt
-                + " three: " + basketballState.ThreeAttempt
-                + " four: " + basketballState.FourAttempt);
+            Debug.Log("two: " + _basketBallState.TwoAttempt
+                + " three: " + _basketBallState.ThreeAttempt
+                + " four: " + _basketBallState.FourAttempt);
             /* trigger net swish animation + sfx
          *  update score
          */
 
-            if (basketballState.TwoAttempt)
+            if (_basketBallState.TwoAttempt)
             {
                 //Debug.Log("2 pointer made");
                 basketBallStats.TotalPoints += 2;
@@ -66,14 +66,14 @@ public class BasketBallShotMade : MonoBehaviour
                 basketBallStats.ShotMade++;
 
             }
-            if (basketballState.ThreeAttempt)
+            if (_basketBallState.ThreeAttempt)
             {
                 //Debug.Log("3 pointer made");
                 basketBallStats.TotalPoints += 3;
                 basketBallStats.ThreePointerMade++;
                 basketBallStats.ShotMade++;
             }
-            if (basketballState.FourAttempt)
+            if (_basketBallState.FourAttempt)
             {
                 //Debug.Log("4 pointer made");
                 basketBallStats.TotalPoints += 4;
@@ -81,9 +81,9 @@ public class BasketBallShotMade : MonoBehaviour
                 basketBallStats.ShotMade++;
 
             }
-            basketballState.TwoAttempt = false;
-            basketballState.ThreeAttempt = false;
-            basketballState.FourAttempt = false;
+            _basketBallState.TwoAttempt = false;
+            _basketBallState.ThreeAttempt = false;
+            _basketBallState.FourAttempt = false;
         }
         // update onscreen ui stats
         basketball.updateScoreText();

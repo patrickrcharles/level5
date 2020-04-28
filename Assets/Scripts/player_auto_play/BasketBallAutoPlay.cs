@@ -151,7 +151,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         //}
         if (playerState.hasBasketball && !basketballState.Thrown)
         {
-            Debug.Log("if (playerState.hasBasketball && !basketballState.Thrown)");
+            //Debug.Log("if (playerState.hasBasketball && !basketballState.Thrown)");
             transform.position = new Vector3(basketballState.BasketBallPosition.transform.position.x,
                 basketballState.BasketBallPosition.transform.position.y,
                 basketballState.BasketBallPosition.transform.position.z);
@@ -433,7 +433,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         Random random = new Random();
         float percent = random.Next(1, 100);
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
-        if (percent <= shooterProfile.criticalPercent)
+        if (percent <= shooterProfile.CriticalPercent)
         {
             //Debug.Log("critical shot rolled");
             return true;
@@ -445,9 +445,9 @@ public class BasketBallAutoPlay : MonoBehaviour
     {
         int direction = getRandomPositiveOrNegtaive();
         float accuracyModifier = 1;
-        if (basketballState.TwoPoints) { accuracyModifier = (100 - shooterProfile.accuracy2pt) * 0.01f; }
-        if (basketballState.ThreePoints) { accuracyModifier = (100 - shooterProfile.accuracy3pt) * 0.01f; }
-        if (basketballState.FourPoints) { accuracyModifier = (100 - shooterProfile.accuracy4pt) * 0.01f; }
+        if (basketballState.TwoPoints) { accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f; }
+        if (basketballState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
+        if (basketballState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
 
         //Debug.Log("accuracyModifier : " + accuracyModifier);
         return (accuracyModifier ) * direction;

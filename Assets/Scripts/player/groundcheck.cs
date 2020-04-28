@@ -13,10 +13,10 @@ public class groundcheck : MonoBehaviour {
     void Start()
     {
         //Debug.Log("groundcheck.cs :: Awake( )");
-        player = gameManager.instance.player;
+        player = GameLevelManager.instance.player;
 
         //Debug.Log("player = "+ player.name);
-        playerState = gameManager.instance.playerState;
+        playerState = GameLevelManager.instance.playerState;
         //rigidBody = player.GetComponent<Rigidbody>();
 
         //Debug.Log("playerState = " + playerState);

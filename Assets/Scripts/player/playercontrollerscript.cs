@@ -17,6 +17,7 @@ public class playercontrollerscript : MonoBehaviour
     //GUIStyle guiStyle = new GUIStyle();
     [SerializeField]
     SpriteRenderer spriteRenderer;
+    [SerializeField]
     private Rigidbody rigidBody;
     [Range(20f, 90f)]
     public float _angle; // for bball mini game trajectory
@@ -105,13 +106,14 @@ public class playercontrollerscript : MonoBehaviour
     {
         Debug.Log("playercontrollerscript : start");
 
-        rigidBody = GetComponent<Rigidbody>();
+        //rigidBody = GetComponent<Rigidbody>();
         moonwalkAudio = GetComponent<AudioSource>();
-        anim = gameManager.instance.anim;
+        anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        shooterProfile = gameManager.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = GameLevelManager.instance.player.GetComponent<shooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
@@ -312,7 +314,7 @@ public class playercontrollerscript : MonoBehaviour
                 if (anim.GetBool("moonwalking"))
                 {
                     moonwalking = true;
-                    moonwalkAudio.enabled = true;
+                    //moonwalkAudio.enabled = true;
                 }
             }
             if (hasBasketball)
@@ -378,16 +380,16 @@ public class playercontrollerscript : MonoBehaviour
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
     {
-        moonwalkAudio.enabled = false;
+       // moonwalkAudio.enabled = false;
     }
 
     void setShooterProfileStats()
     {
-        walkMovementSpeed = shooterProfile.speed;
-        basketballRunSpeed = shooterProfile.runSpeed;
-        jumpForce = shooterProfile.jumpForce;
-        gravityModifier = shooterProfile.hangTime;
-        _angle = shooterProfile.shootAngle;
+        walkMovementSpeed = shooterProfile.Speed;
+        basketballRunSpeed = shooterProfile.RunSpeed;
+        jumpForce = shooterProfile.JumpForce;
+        gravityModifier = shooterProfile.HangTime;
+        _angle = shooterProfile.ShootAngle;
     }
     public bool grounded
     {

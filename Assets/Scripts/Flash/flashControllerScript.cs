@@ -60,7 +60,7 @@ public class flashControllerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = gameManager.instance.player;
+        player = GameLevelManager.instance.player;
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;

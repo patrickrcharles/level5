@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ public class StartManager : MonoBehaviour
     private string currentHighlightedButton;
 
     [SerializeField]
-    private List<StartScreenPlayerSelected> playerSelectedData;
+    private List<shooterProfile> playerSelectedData;
 
     private Text playerSelectText;
     private Image playerSelectImage;
@@ -34,11 +35,17 @@ public class StartManager : MonoBehaviour
 
     //private Image levelSelectImage;
 
-    private const string startObjectName = "press_start";
+    private const string startButtonName = "press_start";
+    private const string playerSelectButtonName = "player_selected_name";
+    //private const string levelSelectObjectName = "level_selected_name";
+
+    private int playerSelectedIndex;
 
     //private Text gameModeSelectText;
     void Awake()
     {
+        //default index for player selected
+        playerSelectedIndex = 0;
         loadPlayerSelectDataList();
 
     }
@@ -47,7 +54,7 @@ public class StartManager : MonoBehaviour
     void Start()
     {
         initiazePlayerText();
-        GameOptions.playerSelected = playerSelectedData[0].PlayerObjectName;
+        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         GameOptions.levelSected = levelSelectText.text;
 
         //string gamesModeNamesPath = "Prefabs/start_menu/mode_names";
@@ -72,14 +79,14 @@ public class StartManager : MonoBehaviour
 
         levelSelectText = GameObject.Find("level_selected_name").GetComponent<Text>();
 
-        playerSelectText.text = playerSelectedData[0].PlayerName;
-        playerSelectImage.sprite = playerSelectedData[0].PlayerPortrait;
-        playerSelectStatsText.text = playerSelectedData[0].Accuracy2Pt.ToString() + "\n"
-            + playerSelectedData[0].Accuracy3Pt.ToString() + "\n"
-            + playerSelectedData[0].Accuracy4Pt.ToString() + "\n"
-            + playerSelectedData[0].calculateJumpValueToPercent().ToString() + "\n"
-            + playerSelectedData[0].Range.ToString() + "\n"
-            + playerSelectedData[0].CriticalPercent.ToString();
+        playerSelectText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        playerSelectImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+        playerSelectStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
 
         //levelSelectText.text 
     }
@@ -93,7 +100,7 @@ public class StartManager : MonoBehaviour
 
         foreach (GameObject obj in objects)
         {
-            StartScreenPlayerSelected temp = obj.GetComponent<StartScreenPlayerSelected>();
+            shooterProfile temp = obj.GetComponent<shooterProfile>();
             playerSelectedData.Add(temp);
         }
     }
@@ -117,11 +124,56 @@ public class StartManager : MonoBehaviour
         //Debug.Log("current : "+ currentHighlightedButton);
 
         if ( (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space) ) 
-            && currentHighlightedButton.Equals(startObjectName) )
+            && currentHighlightedButton.Equals(startButtonName) )
         {
             Debug.Log("pressed enter");
             loadScene();
         }
+
+        if ((InputManager.GetKeyDown(KeyCode.W))
+            && currentHighlightedButton.Equals(playerSelectButtonName))
+        {
+            changeSelectedPlayerUp();
+            initiazePlayerText();
+        }
+        if ((InputManager.GetKeyDown(KeyCode.S))
+            && currentHighlightedButton.Equals(playerSelectButtonName))
+        {
+            changeSelectedPlayerDown();
+            initiazePlayerText();
+        }
+    }
+
+    private void changeSelectedPlayerUp()
+    {
+        // if default index (first in list), go to end of list
+        if (playerSelectedIndex == 0)
+        {
+            playerSelectedIndex = playerSelectedData.Count - 1;
+        }
+        else
+        {
+            // if not first index, decrement
+            playerSelectedIndex--;
+        }
+        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        Debug.Log("player selected : " + GameOptions.playerSelected);
+        Debug.Log("player selected : " + GameOptions.playerSelected);
+    }
+    private void changeSelectedPlayerDown()
+    {
+        // if default index (first in list
+        if (playerSelectedIndex == playerSelectedData.Count-1)
+        {
+            playerSelectedIndex = 0;
+        }
+        else
+        {
+            //if not first index, increment
+            playerSelectedIndex++;
+        }
+        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
 

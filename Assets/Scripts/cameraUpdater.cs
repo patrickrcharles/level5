@@ -37,6 +37,8 @@
 
     void Start()
     {
+
+        Debug.Log(("camera updater Start()"));
         basketBallRim = GameObject.Find("rim");
 
         cam = GetComponent<Camera>();
@@ -49,7 +51,7 @@
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = gameManager.instance.player.transform;
+        player = GameLevelManager.instance.player.transform;
         //relCameraPos = player.position - transform.position;
 
         if (cam.name.Contains("192"))

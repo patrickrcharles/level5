@@ -4,37 +4,178 @@ using UnityEngine;
 
 public class shooterProfile : MonoBehaviour
 {
+    [SerializeField] private string playerDisplayName;
+    [SerializeField] private string playerObjectName;
+    [SerializeField] private Sprite playerPortrait;
+    [SerializeField] private GameObject shooterProfileObject;
+
+    [SerializeField] private float jumpStatFloor;
+    [SerializeField] private float jumpStatCeiling;
+    [SerializeField] private float accuracy2pt;
+    [SerializeField] private float accuracy3pt;
+    [SerializeField] private float accuracy4pt;
+
+    [SerializeField] private string shooterProfilePrefabName;
+
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float speed;
+    [SerializeField] private float runSpeed;
+    [SerializeField] private float hangTime;
+    [SerializeField] private float range;
+    [SerializeField] private float release;
+    [SerializeField] private float criticalPercent;
+
+    [SerializeField] private float shootAngle;
 
 
-    public float accuracy2pt;
-    public float accuracy3pt;
-    public float accuracy4pt;
+    //private float shootXVariance;
+    //private float shootYVariance;
+    //private float shootZVariance;
 
-    public float jumpForce;
-    public float speed;
-    public float runSpeed;
-    public float hangTime;
-    public float range;
-    public float release;
+    void Awake()
+    {
+        //Debug.Log("StartScreenPlayerSelected");
+        //shooterProfilePrefabName = "player" + playerDisplayName;
 
-    public float criticalPercent;
+        //Debug.Log(shooterProfilePrefabName);
+        //shooterProfileObject = Resources.Load("Prefabs /characters/players/" + shooterProfilePrefabName) as GameObject;
+        //Instantiate(shooterProfileObject);
 
-    public float shootAngle;
-    public float shootXVariance;
-    public float shootYVariance;
-    public float shootZVariance;
+        ////basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+       // intializeShooterStatsFromProfile();
+    }
 
-    public float Accuracy2pt { get => accuracy2pt; set => accuracy2pt = value; }
-    public float Accuracy3pt { get => accuracy3pt; set => accuracy3pt = value; }
-    public float Accuracy4pt { get => accuracy4pt; set => accuracy4pt = value; }
-    public float JumpForce { get => jumpForce; set => jumpForce = value; }
-    public float Speed { get => speed; set => speed = value; }
-    public float RunSpeed { get => runSpeed; set => runSpeed = value; }
-    public float ShootAngle { get => shootAngle; set => shootAngle = value; }
-    public float ShootXVariance { get => shootXVariance; set => shootXVariance = value; }
-    public float ShootYVariance { get => shootYVariance; set => shootYVariance = value; }
-    public float ShootZVariance { get => shootZVariance; set => shootZVariance = value; }
+    //private void intializeShooterStatsFromProfile()
+    //{
+    //    Debug.Log("initializeStats()");
+    //    Accuracy2Pt = shooterProfile.Accuracy2pt;
+    //    Accuracy3Pt = shooterProfile.Accuracy3pt;
+    //    Accuracy4Pt = shooterProfile.Accuracy4pt;
+    //    JumpForce = shooterProfile.JumpForce;
+    //    Debug.Log(shooterProfile.JumpForce);
+    //    CriticalPercent = shooterProfile.criticalPercent;
 
-    // need to eventually hard code stats for each shooter and load stats from file
+    //}
 
+    public float calculateJumpValueToPercent()
+    {
+
+        //modifier
+        float modifier = 100 / ((jumpStatCeiling - jumpStatFloor) * 10);
+        // percent
+        float percent = (JumpForce - jumpStatFloor) * modifier * 10;
+
+        //Debug.Log(jumpStatCeiling - jumpStatFloor);
+        //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
+
+        return percent;
+    }
+
+    public string PlayerDisplayName
+    {
+        get => playerDisplayName;
+        set => playerDisplayName = value;
+    }
+
+    public string PlayerObjectName
+    {
+        get => playerObjectName;
+        set => playerObjectName = value;
+    }
+
+    public Sprite PlayerPortrait
+    {
+        get => playerPortrait;
+        set => playerPortrait = value;
+    }
+
+    public GameObject ShooterProfileObject
+    {
+        get => shooterProfileObject;
+        set => shooterProfileObject = value;
+    }
+
+    public float JumpStatFloor
+    {
+        get => jumpStatFloor;
+        set => jumpStatFloor = value;
+    }
+
+    public float JumpStatCeiling
+    {
+        get => jumpStatCeiling;
+        set => jumpStatCeiling = value;
+    }
+
+    public float Accuracy2Pt
+    {
+        get => accuracy2pt;
+        set => accuracy2pt = value;
+    }
+
+    public float Accuracy3Pt
+    {
+        get => accuracy3pt;
+        set => accuracy3pt = value;
+    }
+
+    public float Accuracy4Pt
+    {
+        get => accuracy4pt;
+        set => accuracy4pt = value;
+    }
+
+    public string ShooterProfilePrefabName
+    {
+        get => shooterProfilePrefabName;
+        set => shooterProfilePrefabName = value;
+    }
+
+    public float JumpForce
+    {
+        get => jumpForce;
+        set => jumpForce = value;
+    }
+
+    public float Speed
+    {
+        get => speed;
+        set => speed = value;
+    }
+
+    public float RunSpeed
+    {
+        get => runSpeed;
+        set => runSpeed = value;
+    }
+
+    public float HangTime
+    {
+        get => hangTime;
+        set => hangTime = value;
+    }
+
+    public float Range
+    {
+        get => range;
+        set => range = value;
+    }
+
+    public float Release
+    {
+        get => release;
+        set => release = value;
+    }
+
+    public float CriticalPercent
+    {
+        get => criticalPercent;
+        set => criticalPercent = value;
+    }
+
+    public float ShootAngle
+    {
+        get => shootAngle;
+        set => shootAngle = value;
+    }
 }

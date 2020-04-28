@@ -174,7 +174,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         timer += Time.deltaTime;
         seconds = (int)(timer % 60);
 
-        Debug.Log("seconds : " + seconds);
+        //Debug.Log("seconds : " + seconds);
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -499,11 +499,11 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
 
     public void setShooterProfileStats()
     {
-        walkMovementSpeed = shooterProfile.speed;
-        basketballRunSpeed = shooterProfile.runSpeed;
-        jumpForce = shooterProfile.jumpForce;
-        gravityModifier = shooterProfile.hangTime;
-        _angle = shooterProfile.shootAngle;
+        walkMovementSpeed = shooterProfile.Speed;
+        basketballRunSpeed = shooterProfile.RunSpeed;
+        jumpForce = shooterProfile.JumpForce;
+        gravityModifier = shooterProfile.HangTime;
+        _angle = shooterProfile.ShootAngle;
     }
     public bool grounded
     {

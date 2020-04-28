@@ -14,14 +14,14 @@ public class callBallToPlayer : MonoBehaviour
 
     playercontrollerscript playerState;
     BasketBall basketBall;
-    BasketballState basketballState;
+    BasketBallState _basketBallState;
     bool locked;
 
     private void Start()
     {
-        playerState = gameManager.instance.playerState;
+        playerState = GameLevelManager.instance.playerState;
         basketBall = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketballState>();
+        _basketBallState = GameObject.FindWithTag("basketball").GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
     }
@@ -41,7 +41,7 @@ public class callBallToPlayer : MonoBehaviour
     {
         if (InputManager.GetButtonDown("Fire1") 
             && !playerState.hasBasketball 
-            && basketballState.CanPullBall 
+            && _basketBallState.CanPullBall 
             && !locked)   
         {
             Debug.Log("callBallToPlayer : pullBallToPlayer");

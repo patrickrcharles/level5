@@ -1,118 +1,156 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class StartScreenPlayerSelected : MonoBehaviour
-{
-    [SerializeField]
-    public string playerDisplayName;
-    [SerializeField]
-    public string playerObjectName;
+//public class StartScreenPlayerSelected : MonoBehaviour
+//{
+//    [SerializeField]
+//    public string playerDisplayName;
+//    [SerializeField]
+//    public string playerObjectName;
 
-    [SerializeField]
-    private Sprite playerPortrait;
+//    [SerializeField]
+//    private Sprite playerPortrait;
 
-    float accuracy2pt;
-    float accuracy3pt;
-    float accuracy4pt;
+//    float accuracy2pt;
+//    float accuracy3pt;
+//    float accuracy4pt;
+//    [SerializeField]
+//    float jumpForce;
+//    float speed;
+//    float runSpeed;
+//    float hangTime;
+//    [SerializeField]
+//    float range;
+//    float release;
 
-    float jumpForce;
-    float speed;
-    float runSpeed;
-    float hangTime;
+//    [SerializeField]
+//    public float jumpStatFloor;
+//    [SerializeField]
+//    public float jumpStatCeiling;
 
-    float range;
-    float release;
+//    public float criticalPercent;
+//    [SerializeField]
+//    private shooterProfile shooterProfile;
+//    [SerializeField]
+//    private GameObject shooterProfileObject;
+//    private string shooterProfilePrefabName;
 
-    public float jumpStatFloor;
-    public float jumpStatCeiling;
+//    void Awake()
+//    {
+//        Debug.Log("StartScreenPlayerSelected");
+//        shooterProfilePrefabName = "player"  + playerDisplayName;
 
-    public float criticalPercent;
+//        Debug.Log(shooterProfilePrefabName);
+//        shooterProfileObject = Resources.Load("Prefabs /characters/"+shooterProfilePrefabName) as GameObject;
+//        Instantiate(shooterProfileObject);
 
-    public float  calculateJumpValueToPercent()
-    {
-        // ex, 4.5  - 3 = 1.5
-        float modifier = 100/ (jumpStatCeiling - jumpStatFloor);
-        float percent = (jumpStatCeiling - JumpForce) * modifier;
-        return percent;
-    }
+//        //basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+//        intializeShooterStatsFromProfile();
+//    }
 
-    public string PlayerObjectName
-    {
-        get => playerObjectName;
-        set => playerObjectName = value;
-    }
+//    private void intializeShooterStatsFromProfile()
+//    {
+//        Debug.Log("initializeStats()");
+//        Accuracy2Pt = shooterProfile.Accuracy2pt;
+//        Accuracy3Pt = shooterProfile.Accuracy3pt;
+//        Accuracy4Pt = shooterProfile.Accuracy4pt;
+//        JumpForce = shooterProfile.JumpForce;
+//        Debug.Log(shooterProfile.JumpForce);
+//        CriticalPercent = shooterProfile.criticalPercent;
 
-    public string PlayerName
-    {
-        get => playerDisplayName;
-        set => playerDisplayName = value;
-    }
+//    }
 
-    public Sprite PlayerPortrait
-    {
-        get => playerPortrait;
-        set => playerPortrait = value;
-    }
+//    public float  calculateJumpValueToPercent()
+//    {
 
-    public float Accuracy2Pt
-    {
-        get => accuracy2pt;
-        set => accuracy2pt = value;
-    }
+//        //modifier
+//        float modifier = 100 /((jumpStatCeiling - jumpStatFloor) * 10);
+//        // percent
+//        float percent = (JumpForce - jumpStatFloor) * modifier *10;
 
-    public float Accuracy3Pt
-    {
-        get => accuracy3pt;
-        set => accuracy3pt = value;
-    }
+//        //Debug.Log(jumpStatCeiling - jumpStatFloor);
+//        //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
 
-    public float Accuracy4Pt
-    {
-        get => accuracy4pt;
-        set => accuracy4pt = value;
-    }
+//        return percent;
+//    }
 
-    public float JumpForce
-    {
-        get => jumpForce;
-        set => jumpForce = value;
-    }
+//    public string PlayerObjectName
+//    {
+//        get => playerObjectName;
+//        set => playerObjectName = value;
+//    }
 
-    public float Speed
-    {
-        get => speed;
-        set => speed = value;
-    }
+//    public string PlayerName
+//    {
+//        get => playerDisplayName;
+//        set => playerDisplayName = value;
+//    }
 
-    public float RunSpeed
-    {
-        get => runSpeed;
-        set => runSpeed = value;
-    }
+//    public Sprite PlayerPortrait
+//    {
+//        get => playerPortrait;
+//        set => playerPortrait = value;
+//    }
 
-    public float HangTime
-    {
-        get => hangTime;
-        set => hangTime = value;
-    }
+//    public float Accuracy2Pt
+//    {
+//        get => accuracy2pt;
+//        set => accuracy2pt = value;
+//    }
 
-    public float Range
-    {
-        get => range;
-        set => range = value;
-    }
+//    public float Accuracy3Pt
+//    {
+//        get => accuracy3pt;
+//        set => accuracy3pt = value;
+//    }
 
-    public float Release
-    {
-        get => release;
-        set => release = value;
-    }
+//    public float Accuracy4Pt
+//    {
+//        get => accuracy4pt;
+//        set => accuracy4pt = value;
+//    }
 
-    public float CriticalPercent
-    {
-        get => criticalPercent;
-        set => criticalPercent = value;
-    }
-}
+//    public float JumpForce
+//    {
+//        get => jumpForce;
+//        set => jumpForce = value;
+//    }
+
+//    public float Speed
+//    {
+//        get => speed;
+//        set => speed = value;
+//    }
+
+//    public float RunSpeed
+//    {
+//        get => runSpeed;
+//        set => runSpeed = value;
+//    }
+
+//    public float HangTime
+//    {
+//        get => hangTime;
+//        set => hangTime = value;
+//    }
+
+//    public float Range
+//    {
+//        get => range;
+//        set => range = value;
+//    }
+
+//    public float Release
+//    {
+//        get => release;
+//        set => release = value;
+//    }
+
+//    public float CriticalPercent
+//    {
+//        get => criticalPercent;
+//        set => criticalPercent = value;
+//    }
+//}
