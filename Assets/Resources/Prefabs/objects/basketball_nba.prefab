@@ -97,8 +97,8 @@ GameObject:
   - component: {fileID: 3506823889378727256}
   - component: {fileID: 3489391390474842162}
   - component: {fileID: 4784205251377224028}
-  - component: {fileID: 5033767810273413971}
   - component: {fileID: -3620328289021908805}
+  - component: {fileID: 9066808747724891423}
   m_Layer: 0
   m_Name: basketball_nba
   m_TagString: basketball
@@ -321,30 +321,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropShadowPosition: {x: 0, y: 0, z: 0}
+  basketBallState: {fileID: 0}
   displacement: 0
   Zdistance: 0
   TextObject: {fileID: 0}
   shootProfile: {fileID: 0}
+  shootProfileText: {fileID: 0}
   _angle: 60
   shotMiss: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 3710610803190580600}
   accuracy: 0
   twoAccuracy: 0
   threeAccuracy: 0
   fourAccuracy: 0
   addAccuracyModifier: 0
---- !u!114 &5033767810273413971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3569830428581291380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-3620328289021908805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,6 +347,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c8393904979c4faea16cf0061a011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9066808747724891423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569830428581291380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canPullBall: 0
+  _ballDistanceFromRim: 0
 --- !u!1 &3569848962387920496
 GameObject:
   m_ObjectHideFlags: 0

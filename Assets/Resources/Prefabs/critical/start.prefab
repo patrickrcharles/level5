@@ -3337,17 +3337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9960867c0d9514486c30fd3c6b1a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode1Button: {fileID: 1325763978}
-  mode2Button: {fileID: 1978283224}
-  mode3Button: {fileID: 408345383}
-  mode4Button: {fileID: 894492325}
-  mode5Button: {fileID: 204897572}
-  mode6Button: {fileID: 1317884430}
-  mode7Button: {fileID: 865026378}
-  mode8Button: {fileID: 998316644}
-  mode9Button: {fileID: 439253088}
-  mode10Button: {fileID: 709812473}
-  mode11Button: {fileID: 310330215}
+  currentHighlightedButton: 
+  playerSelectedData: []
 --- !u!1 &8540705393459438091
 GameObject:
   m_ObjectHideFlags: 0
