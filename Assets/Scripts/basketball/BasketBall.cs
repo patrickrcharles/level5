@@ -122,13 +122,18 @@ public class BasketBall : MonoBehaviour
 
     }
 
+    void FixedUpdate()
+    {
+        //Quaternion rot = Quaternion.Euler(0, rigidbody.rotation.eulerAngles.y, 0);
+        //rigidbody.rotation = rot;
+    }
+
     // Update is called once per frame
     void Update()
     {
         dropShadowPosition = dropShadow.transform.position;
         //dropShadow.transform.position = new Vector3(transform.position.x, 0.01f, transform.root.position.z);
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
-        //dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
+        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
 
         //basketballState.BallDistanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
         // change this to reduce opacity
@@ -265,6 +270,9 @@ public class BasketBall : MonoBehaviour
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
+            //reset rotation
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
             basketBallState.CanPullBall = true;
             audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
         }
