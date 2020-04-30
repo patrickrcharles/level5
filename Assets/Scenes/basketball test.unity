@@ -4075,6 +4075,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_drblood
       objectReference: {fileID: 0}
+    - target: {fileID: 8188476234929711695, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1440889072488101908, guid: 8bbcf66f791500b469e31ff0f1f71718,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4180,12 +4185,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7632455355797941681, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 849796fa8de6b6d49833b7e0d1d516ff,
-        type: 2}
     - target: {fileID: 7293220425333525689, guid: 8bbcf66f791500b469e31ff0f1f71718,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -4201,6 +4200,12 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7632455355797941681, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 849796fa8de6b6d49833b7e0d1d516ff,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bbcf66f791500b469e31ff0f1f71718, type: 3}
 --- !u!1 &174867619
