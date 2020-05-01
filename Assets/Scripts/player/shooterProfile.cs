@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class shooterProfile : MonoBehaviour
 {
+    [SerializeField] private int playerId;
+
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
@@ -26,6 +28,10 @@ public class shooterProfile : MonoBehaviour
     [SerializeField] private float criticalPercent;
 
     [SerializeField] private float shootAngle;
+
+    [SerializeField] private int level;
+    [SerializeField] private int experience;
+    [SerializeField] private decimal money;
 
 
     //private float shootXVariance;
@@ -69,6 +75,24 @@ public class shooterProfile : MonoBehaviour
         //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
 
         return percent;
+    }
+
+    public int PlayerId
+    {
+        get => playerId;
+        set => playerId = value;
+    }
+
+    public int Level
+    {
+        get => level;
+        set => level = value;
+    }
+
+    public int Experience
+    {
+        get => experience;
+        set => experience = value;
     }
 
     public string PlayerDisplayName

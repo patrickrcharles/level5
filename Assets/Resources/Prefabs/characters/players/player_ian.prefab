@@ -260,9 +260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48af77e4d1c73a94da342786c291ce99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   initialHeight: 0.62588716
   finalHeight: 0
+  _player: {fileID: 0}
 --- !u!1 &5221952720152258736
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,6 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 2
   playerDisplayName: Ian
   playerObjectName: ian
   playerPortrait: {fileID: 0}
@@ -654,3 +655,5 @@ MonoBehaviour:
   release: 100
   criticalPercent: 35
   shootAngle: 55
+  level: 0
+  experience: 0

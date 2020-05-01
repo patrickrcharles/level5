@@ -4,32 +4,41 @@ using UnityEngine;
 
 public class BasketBallStats : MonoBehaviour
 {
+   
 
-    private float _totalPoints;
-    private float _twoPointerMade;
-    private float _threePointerMade;
+    public int _playerId;
+    public string _playerName;
 
-    private float _fourPointerMade;
-    private float _twoPointerAttempts;
-    private float _threePointerAttempts;
-    private float _fourPointerAttempts;
+    public float _totalPoints;
+    public float _twoPointerMade;
+    public float _threePointerMade;
 
-    private float shotAttempt;
-    private float shotMade;
+    public float _fourPointerMade;
+    public float _twoPointerAttempts;
+    public float _threePointerAttempts;
+    public float _fourPointerAttempts;
 
+    public float shotAttempt;
+    public float shotMade;
+    public float longestShotMade;
 
-    // Start is called before the first frame update
-    void Start()
+    public float LongestShotMade
     {
-
+        get => longestShotMade;
+        set => longestShotMade = value;
     }
 
-    // Update is called once per frame
-    void Update()
+    public int PlayerId
     {
-
+        get => _playerId;
+        set => _playerId = value;
     }
 
+    public string PlayerName
+    {
+        get => _playerName;
+        set => _playerName = value;
+    }
 
     public float TotalPoints
     {
@@ -84,5 +93,4 @@ public class BasketBallStats : MonoBehaviour
         get => shotMade;
         set => shotMade = value;
     }
-
 }

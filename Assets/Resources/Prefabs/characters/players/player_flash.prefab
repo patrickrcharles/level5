@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 1
   playerDisplayName: Flash
   playerObjectName: flash
   playerPortrait: {fileID: 0}
@@ -390,6 +391,8 @@ MonoBehaviour:
   release: 100
   criticalPercent: 45
   shootAngle: 60
+  level: 0
+  experience: 0
 --- !u!1 &6123458180369103978
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,9 +450,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48af77e4d1c73a94da342786c291ce99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   initialHeight: 0.62588716
   finalHeight: 0
+  _player: {fileID: 0}
 --- !u!1 &7458925020023860761
 GameObject:
   m_ObjectHideFlags: 0

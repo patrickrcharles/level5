@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class BasketBall : MonoBehaviour
 {
     AudioClip basket; //reference to the basket sound
     GameObject player, dropShadow;
-
+    [SerializeField]
     shooterProfile shooterProfile;
     [SerializeField]
     SpriteRenderer spriteRenderer;
@@ -70,6 +71,12 @@ public class BasketBall : MonoBehaviour
 
     private bool locked;
 
+    //public BasketballTestStats testStats;
+    public BasketBallTestStatsConclusions testConclusions;
+    public int currentTestStatsIndex = 0;
+
+    public BasketBallShotMade basketBallShotMade;
+
     // Use this for initialization
     void Start()
     {
@@ -104,12 +111,20 @@ public class BasketBall : MonoBehaviour
         basketBallState.CanPullBall = true;
         addAccuracyModifier = true;
 
+        basketBallStats.PlayerName = shooterProfile.PlayerObjectName;
+        basketBallStats.PlayerId = shooterProfile.PlayerId;
+
         shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
                                 + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
                                 + "shooter : Dr Blood\n"
                                 + "2 point accuracy : " + ((1 - shooterProfile.Accuracy2Pt) * 100) + "\n"
                                 + "3 point accuracy : " + ((1 - shooterProfile.Accuracy3Pt) * 100) + "\n"
                                 + "4 point accuracy : " + ((1 - shooterProfile.Accuracy4Pt) * 100);
+
+        // for test data
+        //testStats = GetComponent<BasketballTestStats>();
+        testConclusions = GetComponent<BasketBallTestStatsConclusions>();
+        basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
 
     }
 
@@ -207,6 +222,7 @@ public class BasketBall : MonoBehaviour
 
             //launch ball to goal      
             Launch();
+
 
             //Jessica might take a photo
             behavior_jessica.instance.playAnimationTakePhoto();
@@ -348,6 +364,35 @@ public class BasketBall : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
 
+
+        // ================================== for SHOT TEST STATS ====================================
+
+        BasketballTestStats testStats = new BasketballTestStats();
+
+        testStats.AccuracyModifier = accuracyModifierX;
+        testStats.Distance = lastShotDistance;
+        testStats.LocalVelocity = localVelocity;
+        testStats.GlobalVelocity = globalVelocity;
+        testStats.ReleaseVelocity = releaseVelocityY;
+        if (basketBallState.TwoPoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy2Pt;
+            testStats.Two = true;
+        }
+        if (basketBallState.ThreePoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy3Pt;
+            testStats.Three = true;
+        }
+        if (basketBallState.FourPoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy4Pt;
+            testStats.Four = true;
+        }
+
+        testConclusions.shotStats.Add(testStats);
+        currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
+        basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
     }
 
     bool rollForCriticalShotChance(float maxPercent)
@@ -357,7 +402,7 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
         if (percent <= shooterProfile.CriticalPercent)
         {
-            //Debug.Log("critical shot rolled");
+            Debug.Log("********************** critical shot rolled");
             return true;
         }
         return false;
@@ -371,8 +416,9 @@ public class BasketBall : MonoBehaviour
         if (basketBallState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
         if (basketBallState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
 
-        //Debug.Log("accuracyModifier : " + accuracyModifier);
-        return (accuracyModifier / 1.2f) * direction;
+        Debug.Log("accuracyModifier : " + (accuracyModifier / 1.5f) * direction);
+
+        return (accuracyModifier / 1.6f) * direction;
     }
 
     private int getRandomPositiveOrNegtaive()

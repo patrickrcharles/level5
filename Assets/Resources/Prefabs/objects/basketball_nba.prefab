@@ -99,6 +99,8 @@ GameObject:
   - component: {fileID: -3620328289021908805}
   - component: {fileID: 9066808747724891423}
   - component: {fileID: 8774527814808929745}
+  - component: {fileID: -7722800963859835398}
+  - component: {fileID: -7445416647571546651}
   m_Layer: 0
   m_Name: basketball_nba
   m_TagString: basketball
@@ -304,6 +306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 3710610803190580600}
+  shotMiss: {fileID: 0}
   dropShadowPosition: {x: 0, y: 0, z: 0}
   basketBallState: {fileID: 0}
   displacement: 0
@@ -312,13 +316,13 @@ MonoBehaviour:
   shootProfile: {fileID: 0}
   shootProfileText: {fileID: 0}
   _angle: 60
-  shotMiss: {fileID: 0}
-  spriteRenderer: {fileID: 3710610803190580600}
   accuracy: 0
   twoAccuracy: 0
   threeAccuracy: 0
   fourAccuracy: 0
   addAccuracyModifier: 0
+  testStats: {fileID: 0}
+  testConclusions: {fileID: 0}
 --- !u!114 &-3620328289021908805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +365,54 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &-7722800963859835398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569830428581291380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711a4adddeb7c2b4ca1ca9b9172fc0b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7445416647571546651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569830428581291380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115c8cbe87d7a3a4dafb30764a540cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotStats: []
+  two: 0
+  three: 0
+  four: 0
+  twoAttempt: 0
+  threeAttempt: 0
+  fourAttempt: 0
+  made: 0
+  miss: 0
+  attempt: 0
+  avgReleaseVelocity: 0
+  avgAccuracyModifier: 0
+  avgReleaseVelocityTwoMade: 0
+  avgReleaseVelocityTwoMiss: 0
+  avgReleaseVelocityThreeMade: 0
+  avgReleaseVelocityThreeMiss: 0
+  avgReleaseVelocityFourMade: 0
+  avgReleaseVelocityFourMiss: 0
+  avgAccuracyModifier2made: 0
+  avgAccuracyModifier3made: 0
+  avgAccuracyModifier4made: 0
+  avgAccuracyModifier2miss: 0
+  avgAccuracyModifier3miss: 0
+  avgAccuracyModifier4miss: 0
 --- !u!1 &3569848962387920496
 GameObject:
   m_ObjectHideFlags: 0
