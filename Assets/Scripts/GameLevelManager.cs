@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TeamUtility.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class GameLevelManager : MonoBehaviour
 {
@@ -60,7 +62,7 @@ public class GameLevelManager : MonoBehaviour
 
     private GameObject playerClone;
 
-    List<string> scenes = new List<string>();
+    //List<string> scenes = new List<string>();
 
     [SerializeField]
     private GameObject flashObject;
@@ -107,24 +109,24 @@ public class GameLevelManager : MonoBehaviour
         basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         locked = false;
 
-        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-        {
-            if (scene.enabled)
-            {
-                scenes.Add(scene.path);
-            }
-        }
+        //foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        //{
+        //    if (scene.enabled)
+        //    {
+        //        scenes.Add(scene.path);
+        //    }
+        //}
 
-        foreach (var scene in scenes)
-        {
-            Debug.Log(scene);
-        }
+        //foreach (var scene in scenes)
+        //{
+        //    Debug.Log(scene);
+        //}
 
         InitializePlayer();
 
         flashObject = GameObject.Find("flash_auto_play");
-        Debug.Log("=================================== selcted player : " + GameOptions.playerSelected );
-        Debug.Log("=================================== flashObject : " + flashObject);
+        //Debug.Log("=================================== selcted player : " + GameOptions.playerSelected );
+        //Debug.Log("=================================== flashObject : " + flashObject);
         if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
             &&GameOptions.playerSelected.Contains("flash") 
             && flashObject != null )
@@ -174,6 +176,17 @@ public class GameLevelManager : MonoBehaviour
         {
             locked = true;
             basketballState.toggleAddAccuracyModifier();
+            locked = false;
+        }
+
+        //turn off accuracy modifer 6+9
+        if (InputManager.GetKey(KeyCode.LeftShift)
+            && InputManager.GetKeyDown(KeyCode.Alpha0)
+            && !locked)
+        {
+            locked = true;
+            basketballState.testConclusions.getDataFromList();
+            basketballState.testConclusions.printConclusions();
             locked = false;
         }
     }

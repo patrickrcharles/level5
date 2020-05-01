@@ -26,7 +26,6 @@ public class BasketBallState : MonoBehaviour
 
     [SerializeField]
     private float _ballDistanceFromRim;
-    //private float _twoPointDistance;
     private float _threePointDistance = 3.8f;
     private float _fourPointDistance = 5.2f;
 
@@ -48,7 +47,6 @@ public class BasketBallState : MonoBehaviour
         basketBallTarget = GameObject.Find("basketBall_target");
 
         IsTarget = false;
-
     }
 
     // Update is called once per frame

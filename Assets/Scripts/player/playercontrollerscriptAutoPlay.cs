@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TeamUtility.IO;
 using System;
-using UnityEditorInternal;
 using UnityEngine.AI;
 
 public class playercontrollerscriptAutoPlay : MonoBehaviour
@@ -232,8 +229,8 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
 
         if (navmeshAgent.enabled 
             && pathComplete() 
-            && !locked
-            && boundaryCheck(transform.position.x, transform.position.y))
+            && !locked)
+            //&& boundaryCheck(transform.position.x, transform.position.y))
         {
 
             playerJump();
@@ -323,7 +320,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("========================== collion enter: " + transform.gameObject.tag + " and " + other.gameObject.tag);
+        //Debug.Log("========================== collion enter: " + transform.gameObject.tag + " and " + other.gameObject.tag);
         if (gameObject.CompareTag("Player") && other.CompareTag("basketball") && !hasBasketball)
         {
             hasBasketball = true;
@@ -382,19 +379,19 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
             transform.position.z + randomZ * getRandomPositiveOrNegtaive());
         //Debug.Log("generate new transform : " + newTransform);
 
-        if (isInBounds)
-        {
-            //anim.Play("smokeBomb");
-            //yield return new WaitForSecondsRealtime(playerAnimations.Instance.smokeBomb.length);
-            //transform.position = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-            //anim.Play("smokeBombSpawn");
-            ////playerHitbox.SetActive(true);
-            return newTransform;
-        }
-        else
-        {
-            getRandomTransformFromPlayerPosition();
-        }
+        //if (isInBounds)
+        //{
+        //    //anim.Play("smokeBomb");
+        //    //yield return new WaitForSecondsRealtime(playerAnimations.Instance.smokeBomb.length);
+        //    //transform.position = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        //    //anim.Play("smokeBombSpawn");
+        //    ////playerHitbox.SetActive(true);
+        //    return newTransform;
+        //}
+        //else
+        //{
+        //    getRandomTransformFromPlayerPosition();
+        //}
 
         return newTransform;
     }
@@ -403,9 +400,9 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     bool boundaryCheck(int x, int z)
     {
         //Debug.Log("boundary check");
-        if ((transform.position.x + x) < 8.5f
+        if ((transform.position.x + x) < 13f
             && (transform.position.x + x) > -5
-            && (transform.position.z + z) < -4
+            && (transform.position.z + z) < 0
             && (transform.position.z + z) > -9)
         {
             //Debug.Log("pos + x : " + (transform.position.x+x) + "  pos + z : " + (transform.position.z + z));
@@ -420,7 +417,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         //Debug.Log("boundary check");
         if ((transform.position.x + x) < 8.5f
             && (transform.position.x + x) > -5
-            && (transform.position.z + z) < -4
+            && (transform.position.z + z) < 0
             && (transform.position.z + z) > -9)
         {
             //Debug.Log("pos + x : " + (transform.position.x+x) + "  pos + z : " + (transform.position.z + z));
@@ -466,6 +463,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
             {
                 locked = false;
                 Debug.Log("pathcomplete()");
+                //navmeshAgent.ResetPath();
                 return true;
             }
         }

@@ -95,7 +95,7 @@ public class StartManager : MonoBehaviour
 
     private void loadPlayerSelectDataList()
     {
-        Debug.Log("loadPlayerSelectDataList()");
+        //Debug.Log("loadPlayerSelectDataList()");
 
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];

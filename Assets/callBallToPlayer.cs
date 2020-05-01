@@ -44,7 +44,7 @@ public class callBallToPlayer : MonoBehaviour
             && _basketBallState.CanPullBall 
             && !locked)   
         {
-            Debug.Log("callBallToPlayer : pullBallToPlayer");
+           // Debug.Log("callBallToPlayer : pullBallToPlayer");
             locked = true;
             pullBallToPlayer();
             locked = false;

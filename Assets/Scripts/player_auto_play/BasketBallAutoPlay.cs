@@ -103,7 +103,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         playerDunkPos = GameObject.Find("dunk_transform");
         basketballState.Locked = false;
         basketballState.CanPullBall = true;
-        addAccuracyModifier = false;
+        addAccuracyModifier = true;
 
         //shootProfileText.text = "ball distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2)) + "\n"
         //                        + "shot distance : " + (Math.Round(basketballState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
@@ -296,15 +296,15 @@ public class BasketBallAutoPlay : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        ////Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
-        //if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
-        //{
-        //    Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
-        //    //playerState.hasBasketball = true;
-        //    playerState.turnOffMoonWalkAudio();
-        //    basketballState.CanPullBall = false;
+        //Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
+        if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
+        {
+            Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
+            //playerState.hasBasketball = true;
+            playerState.turnOffMoonWalkAudio();
+            basketballState.CanPullBall = false;
 
-        //}
+        }
         if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
         {
             basketballState.Grounded = true;
@@ -392,35 +392,34 @@ public class BasketBallAutoPlay : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-       //Debug.Log("Vz :: " + Vz);
-       //Debug.Log("Vy :: " + Vy);
+        //Debug.Log("Vz :: " + Vz);
+        //Debug.Log("Vy :: " + Vy);
 
         //Debug.Log("old x : " + 0 + " y : " + Vy + " z : " + Vz);;
 
-        //float accuracyModifierX = 0;
-        //if (rollForCriticalShotChance(shooterProfile.criticalPercent))
-        //{
-        //    accuracyModifierX = 0;
-        //}
-        //else
-        //{
-        //    accuracyModifierX = getAccuracyModifier();
-        //}
+        float accuracyModifierX = 0;
+        if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
+        {
+            accuracyModifierX = 0;
+        }
+        else
+        {
+            accuracyModifierX = getAccuracyModifier();
+        }
 
-        float xVector = 0 ;
+        float xVector = 0 + accuracyModifierX;
         float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(0, Vy, Vz);
 
-        //// turn on/off accuracy modifier
-        //if (addAccuracyModifier)
-        //{
-        //    //Debug.Log("addAccuracyModifier On");
-        //    localVelocity = new Vector3(xVector, yVector, zVector);
-        //}
-
+        // turn on/off accuracy modifier
+        if (addAccuracyModifier)
+        {
+            //Debug.Log("addAccuracyModifier On");
+            localVelocity = new Vector3(xVector, yVector, zVector);
+        }
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
@@ -449,7 +448,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         if (basketballState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
         if (basketballState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
 
-        //Debug.Log("accuracyModifier : " + accuracyModifier);
+        Debug.Log("accuracyModifier : " + accuracyModifier);
         return (accuracyModifier ) * direction;
     }
 

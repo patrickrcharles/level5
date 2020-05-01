@@ -1,108 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class groundcheck : MonoBehaviour {
-
-    [SerializeField]
-    GameObject player;
-    playercontrollerscript playerState;
+public class groundcheck : MonoBehaviour
+{
     public float initialHeight, finalHeight;
-    Rigidbody rigidBody;
 
-    void Start()
+    [SerializeField] private GameObject _player;
+
+    private playercontrollerscript _playerState;
+
+
+    // ReSharper disable once UnusedMember.Local
+    private void Start()
     {
-        //Debug.Log("groundcheck.cs :: Awake( )");
-        player = GameLevelManager.instance.player;
-
-        //Debug.Log("player = "+ player.name);
-        playerState = GameLevelManager.instance.playerState;
-        //rigidBody = player.GetComponent<Rigidbody>();
-
-        //Debug.Log("playerState = " + playerState);
+        _player = GameLevelManager.instance.player;
+        _playerState = GameLevelManager.instance.playerState;
     }
-    
-    void Update()
-    {
-        /*
-        // if player is falling
-        if (rigidBody.velocity.y > 0)
-        {
-            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-            finalHeight = player.transform.position.y;
-            //Debug.Log("intialHeight : " + initialHeight);  
-            //Debug.Log("finalHeight : " + finalHeight);
-            
-        }
 
-        //if (rigidBody.velocity.y < 0.1f && rigidBody.velocity.y > -0.1f)
-        //{
-        //    //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-        //    //finalHeight = basketball.transform.position.y;
-        //    //Debug.Log("============ player  peak : rigidBody.velocity.y == 0)");
-        //   //Debug.Log("============ player  jump peak : velocity y " + rigidBody.velocity.y);
-        //    //Debug.Log("finalHeight : " + finalHeight);
-        //}
-
-        if (rigidBody.velocity.y == 0)
-        {
-            //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-            //finalHeight = basketball.transform.position.y;
-            //Debug.Log("============ player  peak : rigidBody.velocity.y == 0)");
-           //Debug.Log(" ******************** PLAYER PEAK JUMP ***************************");
-           //Debug.Log("final height:: " + finalHeight);
-            //Debug.Log("finalHeight : " + finalHeight);
-        }
-        */
-    }
 
     public void OnTriggerStay(Collider other)
     {
         // later 11 is ground/terrain
-        if ( other.gameObject.layer == 11 )
+        if (other.gameObject.layer == 11)
         {
-            //Debug.Log("----------------- other.gameobject: " + other.gameObject );
-            //Debug.Log("----------------- if (other.gameObject.layer == 11)");
-            //finalHeight = player.transform.position.y;
-            initialHeight = player.transform.position.y;
-            if ((finalHeight - initialHeight) > 1)
+            initialHeight = _player.transform.position.y;
+            if (finalHeight - initialHeight > 1)
             {
                 //Debug.Log("fall distance : " + (finalHeight - initialHeight));
             }
 
-            playerState.grounded = true;
-            playerState.inAir = false;
+            _playerState.grounded = true;
+            _playerState.inAir = false;
             //playerState.jump = false;
-            playerState.setPlayerAnim("jump", false);
-
-            //Debug.Log("::::: groundcheck.cs :: OnTriggerStay");
-            //Debug.Log("     gameobject : " + gameObject.transform.name + "   other : " + other.transform.name);
-            //Debug.Log("----------------- grounded : " + playerState.grounded);
-            //Debug.Log("intialHeight : " + initialHeight);
-
-            //Debug.Log("----------------- if (!playerState.dead) grounded : " + playerState.grounded);
+            _playerState.setPlayerAnim("jump", false);
         }
-        
     }
-    
+
     public void OnTriggerExit(Collider other)
     {
-        //Debug.Log("     gameobject: " + gameObject + " layer : " + other.gameObject.layer);
-
-        if ( other.gameObject.layer == 11) //ground layer
+        if (other.gameObject.layer == 11) //ground layer
         {
-
             // height when player exits ground (fall/jump etc.)
             //initialHeight = player.transform.position.y;
-            playerState.grounded = false;
-            playerState.inAir = true;
-            playerState.setPlayerAnim("jump", true);
-            //Debug.Log("intialHeight : " + initialHeight);
-            //Debug.Log("::::: groundcheck.cs :: OnTriggerExit");
-            //Debug.Log("     gameobject : "+ gameObject.transform.name+"   other : "+other.transform.name);
-            //Debug.Log("----------------- grounded : " + playerState.grounded);
-            
+            _playerState.grounded = false;
+            _playerState.inAir = true;
+            _playerState.setPlayerAnim("jump", true);
         }
-        
     }
 }

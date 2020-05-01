@@ -104,16 +104,13 @@ public class playercontrollerscript : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("playercontrollerscript : start");
 
-        //rigidBody = GetComponent<Rigidbody>();
         moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
-
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         shooterProfile = GameLevelManager.instance.player.GetComponent<shooterProfile>();
+
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
@@ -124,20 +121,11 @@ public class playercontrollerscript : MonoBehaviour
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;
-        //continueGame = gameManager.instance.GetComponentInChildren<continueGame>();
     }
 
     // not affected by framerate
     void FixedUpdate()
     {
-        //rigidBody.useGravity = false;
-        //if (useGravity)
-        //{
-        //   //Debug.Log("gravityModifier : " + gravityModifier);
-        //    //rigidBody.AddForce(0f, gravityModifier, 0f);
-        //    rigidBody.AddForce(Vector3.up * gravityModifier * Time.deltaTime);
-        //}
-
         //------MOVEMENT---------------------------
         float moveHorizontal = InputManager.GetAxis("Horizontal");
         float moveVertical = InputManager.GetAxis("Vertical");
@@ -157,7 +145,6 @@ public class playercontrollerscript : MonoBehaviour
         //check if walking
         //  function will flip sprite if needed
         isWalking(moveHorizontal, moveVertical);
-
     }
 
     // Update :: once once per frame
@@ -252,7 +239,7 @@ public class playercontrollerscript : MonoBehaviour
 
     private void playerJump()
     {
-       Debug.Log("player jumped");
+       //Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
@@ -263,24 +250,6 @@ public class playercontrollerscript : MonoBehaviour
         }
         rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.name.Contains("facingFront"))
-    //    {
-    //        basketball.facingFront = true;
-    //        setPlayerAnim("basketballFacingFront", true);
-    //    }
-    //}
-
-    //void OnTriggerExit(Collider other)
-    //{
-    //    if (other.name.Contains("facingFront"))
-    //    {
-    //        basketball.facingFront = false;
-    //        setPlayerAnim("basketballFacingFront", false);
-    //    }
-    //}
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)
@@ -297,7 +266,6 @@ public class playercontrollerscript : MonoBehaviour
         {
             anim.SetBool("walking", false);
         }
-
         if (moveHorz > 0 && !facingRight && canMove)
         {  
             Flip();
@@ -360,22 +328,6 @@ public class playercontrollerscript : MonoBehaviour
     {
         anim.Play(animationName);
     }
-    //// -----------------generic wait coroutine ----------------------------
-    //IEnumerator Wait(float seconds)
-    //{
-    //    yield return new WaitForSecondsRealtime(seconds);
-    //    soundPlayed = true;
-    //    notLocked = true;
-    //}
-    //void setPlayerBounds()
-    //{
-    //    xMin = levelManager.instance.xMinPlayer;
-    //    xMax = levelManager.instance.xMaxPlayer;
-    //    yMin = levelManager.instance.yMinPlayer;
-    //    yMax = levelManager.instance.yMaxPlayer;
-    //    zMin = levelManager.instance.zMinPlayer;
-    //    zMax = levelManager.instance.zMaxPlayer;
-    //}
 
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
@@ -383,6 +335,7 @@ public class playercontrollerscript : MonoBehaviour
        // moonwalkAudio.enabled = false;
     }
 
+    //*** need to update this
     void setShooterProfileStats()
     {
         walkMovementSpeed = shooterProfile.Speed;
