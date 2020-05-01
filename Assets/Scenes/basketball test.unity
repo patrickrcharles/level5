@@ -4200,6 +4200,26 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: criticalPercent
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: accuracy3pt
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: accuracy4pt
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617727460697569618, guid: 8bbcf66f791500b469e31ff0f1f71718,
+        type: 3}
+      propertyPath: pullSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7632455355797941681, guid: 8bbcf66f791500b469e31ff0f1f71718,
         type: 3}
       propertyPath: m_Material
