@@ -26,7 +26,7 @@ public class StartManager : MonoBehaviour
 
     //list of all shooter profiles with player data
     [SerializeField]
-    private List<shooterProfile> playerSelectedData;
+    private List<ShooterProfile> playerSelectedData;
 
     //list of all scenes in build
     //private List<string> scenes;
@@ -264,7 +264,7 @@ public class StartManager : MonoBehaviour
         Debug.Log("obects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
-            shooterProfile temp = obj.GetComponent<shooterProfile>();
+            ShooterProfile temp = obj.GetComponent<ShooterProfile>();
             playerSelectedData.Add(temp);
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class flashControllerScript : MonoBehaviour
+public class BehaviorFlash : MonoBehaviour
 {
 
     AudioSource moonwalkAudio;

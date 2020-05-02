@@ -16,7 +16,7 @@ public class GameLevelManager : MonoBehaviour
 
     [SerializeField]
     GameObject _player;
-    private playercontrollerscript _playerState;
+    private PlayerController _playerState;
     private Animator _anim;
 
     Vector3 previousPlayerPosition;
@@ -108,7 +108,7 @@ public class GameLevelManager : MonoBehaviour
         //set up player/basketball read only references for use in other classes
 
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = Player.GetComponent<playercontrollerscript>();
+        _playerState = Player.GetComponent<PlayerController>();
         _anim = Player.GetComponentInChildren<Animator>();
         _basketball = GameObject.FindWithTag("basketball");
         _basketballState = _basketball.GetComponent<BasketBall>();
@@ -241,7 +241,7 @@ public class GameLevelManager : MonoBehaviour
     {
         get { return _player; }
     }
-    public playercontrollerscript PlayerState
+    public PlayerController PlayerState
     {
         get { return _playerState; }
     }

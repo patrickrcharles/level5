@@ -4,7 +4,7 @@ using TeamUtility.IO;
 using System;
 using UnityEngine.AI;
 
-public class playercontrollerscriptAutoPlay : MonoBehaviour
+public class PlayerControllerAutoPlay : MonoBehaviour
 {
     // components 
     [SerializeField]
@@ -98,7 +98,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
     private float _rigidBodyYVelocity;
     [SerializeField]
     public bool facingFront;
-    shooterProfile shooterProfile;
+    ShooterProfile shooterProfile;
     [SerializeField]
     GameObject basketball;
     [SerializeField]
@@ -121,7 +121,7 @@ public class playercontrollerscriptAutoPlay : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameObject.FindWithTag("basketball");
         basketballPosition = gameManagerAutoPlay.instance.Basketball.transform.position;
-        shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<ShooterProfile>();
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 

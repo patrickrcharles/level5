@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TeamUtility.IO;
 using System;
 
-public class playercontrollerscript : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     // components 
     Animator anim;
@@ -14,7 +14,7 @@ public class playercontrollerscript : MonoBehaviour
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
-    shooterProfile shooterProfile;
+    ShooterProfile shooterProfile;
     BasketBall basketball;
 
     [Range(20f, 90f)]
@@ -100,7 +100,7 @@ public class playercontrollerscript : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<shooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
 
         // bball rim vector, used for relative positioning

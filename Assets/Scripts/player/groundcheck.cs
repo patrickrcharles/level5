@@ -6,7 +6,7 @@ public class groundcheck : MonoBehaviour
 
     [SerializeField] private GameObject _player;
 
-    private playercontrollerscript _playerState;
+    private PlayerController _playerState;
 
 
     // ReSharper disable once UnusedMember.Local

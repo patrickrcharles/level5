@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class flashControllerScriptAutoPlay : MonoBehaviour
+public class BehaviorPrimo : MonoBehaviour
 {
 
     AudioSource moonwalkAudio;
@@ -20,13 +21,17 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
 
     public GameObject pos1, pos2, pos3;
 
+    [SerializeField]
     float distanceFromStartPos;
+    [SerializeField]
     bool locked;
     GameObject player;
 
     private float movementSpeed;
     private Rigidbody rigidBody;
+    [SerializeField]
     private NavMeshAgent navmeshAgent;
+    [SerializeField]
     public SpriteRenderer currentSprite;
 
     public GameObject playerHitbox;
@@ -39,7 +44,9 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
     static int idleState2 = Animator.StringToHash("base.idle2");
     static int walkState = Animator.StringToHash("base.walk");
     static int runState = Animator.StringToHash("base.run");
+    [SerializeField]
     Vector3 playerRelativePosition;
+    [SerializeField]
     bool waiting;
 
     public bool ignoreCollision;
@@ -50,13 +57,17 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
     public bool movingToTarget;
 
     public float maxDistance;
+    private bool reachedDestination;
+    private bool isSleeping;
+    private bool followPlayer;
 
     // Use this for initialization
     void Start()
     {
-        player = gameManagerAutoPlay.instance.player;
+        player = GameLevelManager.instance.Player;
         facingRight = true;
         canMove = true;
+        followPlayer = false;
         movementSpeed = walkMovementSpeed;
         currentSprite = transform.Find("sprite").GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody>();
@@ -77,7 +88,7 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
         //Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
 
-        if(distanceFromStartPos >= maxDistance && movingToTarget )
+        if(distanceFromStartPos >= maxDistance  )
         {
             outsideRange = true;
             insideRange = false;
@@ -92,20 +103,28 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
         }
 
         // navmesh has no target and inside range
-        if (pathComplete())
+        if (pathComplete() && !outsideRange && !reachedDestination )
         {
+           //Debug.Log("       if (pathComplete() && !outsideRange )");
+            reachedDestination = true;
             movingToTarget = false;
             ignoreCollision = false;
         }
 
+        if (reachedDestination && !isSleeping)
+        {
+            locked = true;
+            StartCoroutine(PrimoSleepInRandomXSeconds());
+        }
+
         // if outside area
-        if (outsideRange && !movingToTarget && !locked )
+        if (outsideRange && !movingToTarget && !locked && followPlayer )
         {
             locked = true;
             ignoreCollision = true;
             movingToTarget = true;
 
-            StartCoroutine( waitOutsideRangeForXSeconds( 5));
+            StartCoroutine( waitOutsideRangeForXSeconds( 1));
         }
 
 
@@ -133,48 +152,61 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
         //   Mathf.Clamp(rigidBody.position.z, zMin, zMax)
         //   );
 
-        anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
+        //anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
 
         ////check if walking
         ////  function will flip sprite if needed
         isWalking(navmeshAgent.velocity.magnitude);
     }
 
+    IEnumerator PrimoSleepInRandomXSeconds()
+    {
+        int randomTimeToSleep = RandomNumber(7, 20);
+        yield  return new WaitForSecondsRealtime(randomTimeToSleep);
+        isSleeping = true;
+        anim.SetBool("sleep", true);
+        locked = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("========================== Flash: " + transform.name + " and " + other.gameObject.tag);
-        if (gameObject.name.Contains("Flash") && ( other.CompareTag("Player") || other.CompareTag("basketball"))
-            && !ignoreCollision && !movingToTarget)
+        // if collsion, wake primo
+        //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
+
+        if (gameObject.name == "primo" 
+            && (other.name.Contains("Player") || other.CompareTag("basketball") || other.name.Contains("flash"))
+            && !movingToTarget
+            && followPlayer)
         {
-            movingToTarget = true;
+           //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
+            anim.SetBool("sleep", false);
+            isSleeping = false;
 
-            Vector3 newVector = getRandomTransformFromPlayerPosition();
-            Vector3 oldVector = transform.position;
-            Vector3 relativePosition = newVector - oldVector;
-
-            if (relativePosition.x < 0 && facingRight)
-            {     
-                Flip();
-            }
-            if (relativePosition.x > 0 && !facingRight)
-            {
-                Flip();
-            }
-            navmeshAgent.SetDestination(newVector);
-            //disable rotation
-            navmeshAgent.updateRotation = false;
+            //movingToTarget = true;
         }
+        if (gameObject.name == "primo"
+            && (other.name.Contains("Player") 
+            && !movingToTarget
+            && !followPlayer))
+        {
+            followPlayer = true;
+
+           //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
+            anim.SetBool("sleep", false);
+            isSleeping = false;
+        }
+
     }
 
     IEnumerator waitOutsideRangeForXSeconds(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
 
-        List<GameObject> list = new List<GameObject> { pos1, pos2, pos3 };
-        int finder = Random.Range(0, list.Capacity - 1); //Then you just use this; nameDisplayString = names[finder];
-        GameObject randPos = list[finder];
+        //List<GameObject> list = new List<GameObject> { pos1, pos2, pos3 };
+        //int finder = Random.Range(0, list.Capacity - 1); //Then you just use this; nameDisplayString = names[finder];
+        //GameObject randPos = list[finder];
 
-        Vector3 relativePosition = randPos.transform.position - transform.position;
+        Vector3 relativePosition = pos1.transform.position - transform.position;
 
         if (relativePosition.x < 0 && facingRight)
         {
@@ -186,17 +218,13 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
             Flip();
         }
 
-        navmeshAgent.SetDestination(randPos.transform.position);
+        navmeshAgent.SetDestination(pos1.transform.position);
         navmeshAgent.updateRotation = false;
         locked = false;
     }
 
     protected bool pathComplete()
     {
-        //Debug.Log("$$$$$$$$$$$$ path complete");
-        //Debug.Log("     navmeshAgent.destination : " + navmeshAgent.destination);
-        //Debug.Log("     navmeshAgent.transform.position : " + navmeshAgent.transform.position);
-        //Debug.Log("     navmeshAgent.stoppingDistance : " + navmeshAgent.stoppingDistance);
         if (Vector3.Distance(navmeshAgent.destination, navmeshAgent.transform.position) <= navmeshAgent.stoppingDistance)
         {
             if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)
@@ -212,11 +240,11 @@ public class flashControllerScriptAutoPlay : MonoBehaviour
         // if moving
         if (speed > 0)
         {
-            anim.SetBool("run", true);
+            anim.SetBool("walking", true);
         }
         else
         {
-            anim.SetBool("run", false);
+            anim.SetBool("walking", false);
         }
     }
 

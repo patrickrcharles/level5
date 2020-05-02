@@ -12,7 +12,7 @@ public class callBallToPlayer : MonoBehaviour
     [SerializeField]
     Vector3 pullDirection;
 
-    playercontrollerscript playerState;
+    PlayerController playerState;
     BasketBall basketBall;
     BasketBallState _basketBallState;
     bool locked;

@@ -45,7 +45,7 @@ public class BasketballStateAutoPlay : MonoBehaviour
 
 
     private GameObject player;
-    private playercontrollerscriptAutoPlay playerState;
+    private PlayerControllerAutoPlay playerState;
 
     void Start()
     {

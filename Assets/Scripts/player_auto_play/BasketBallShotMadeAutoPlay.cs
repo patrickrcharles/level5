@@ -14,7 +14,7 @@ public class BasketBallShotMadeAutoPlay : MonoBehaviour
     //SpriteRenderer spriteRenderer;
     public GameObject rimSprite;
     Animator anim;
-    playercontrollerscriptAutoPlay playerState;
+    PlayerControllerAutoPlay playerState;
     bool isColliding;
 
     //public AudioClip shotMissed;

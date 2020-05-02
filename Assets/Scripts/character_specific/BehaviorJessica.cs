@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class behavior_jessica : MonoBehaviour
+public class BehaviorJessica : MonoBehaviour
 {
     Animator anim;
     AudioSource audioSource;
     bool shotMade;
     public float percentChanceOfTakingPhoto;
     public Animator animOnCamera;
-    playercontrollerscript playerState;
-    public static behavior_jessica instance;
+    PlayerController playerState;
+    public static BehaviorJessica instance;
 
     // Start is called before the first frame update
     void Start()

@@ -11,7 +11,7 @@ public class BasketBall : MonoBehaviour
 {
 
     SpriteRenderer spriteRenderer;
-    playercontrollerscript playerState;
+    PlayerController playerState;
     new Rigidbody rigidbody;
     AudioSource audioSource;
 
@@ -26,7 +26,7 @@ public class BasketBall : MonoBehaviour
     GameObject player;
     GameObject dropShadow;
 
-    shooterProfile shooterProfile;
+    ShooterProfile shooterProfile;
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
 
@@ -83,7 +83,7 @@ public class BasketBall : MonoBehaviour
 
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
 
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<shooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
         shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
 
         TextObject = GameObject.Find("shootStatsTextObject");
@@ -208,7 +208,7 @@ public class BasketBall : MonoBehaviour
 
 
             //Jessica might take a photo
-            behavior_jessica.instance.playAnimationTakePhoto();
+            BehaviorJessica.instance.playAnimationTakePhoto();
 
             //calculate shot distance 
             Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,

@@ -35,7 +35,7 @@ public class BasketBallState : MonoBehaviour
     private GameObject basketBallTarget;
 
     private GameObject player;
-    private playercontrollerscript playerState;
+    private PlayerController playerState;
 
     void Start()
     {

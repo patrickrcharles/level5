@@ -12,7 +12,7 @@ public class gameManagerAutoPlay : MonoBehaviour
     [SerializeField]
     private GameObject _player;
     [SerializeField]
-    private playercontrollerscriptAutoPlay _playerState;
+    private PlayerControllerAutoPlay _playerState;
     private Animator _anim;
 
     Vector3 previousPlayerPosition;
@@ -140,7 +140,7 @@ public class gameManagerAutoPlay : MonoBehaviour
         //Instantiate(_player, playerSpawnLocation.transform.position, Quaternion.identity);
 
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = player.GetComponent<playercontrollerscriptAutoPlay>();
+        _playerState = player.GetComponent<PlayerControllerAutoPlay>();
         _anim = player.GetComponentInChildren<Animator>();
     }
 
@@ -209,7 +209,7 @@ public class gameManagerAutoPlay : MonoBehaviour
     {
         get { return _player; }
     }
-    public playercontrollerscriptAutoPlay playerState
+    public PlayerControllerAutoPlay playerState
     {
         get { return _playerState; }
     }

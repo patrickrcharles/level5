@@ -7,7 +7,7 @@ public class groundcheckAutoPlay : MonoBehaviour {
 
     [SerializeField]
     GameObject player;
-    playercontrollerscriptAutoPlay playerState;
+    PlayerControllerAutoPlay playerState;
     private NavMeshAgent navMeshAgent;
 
     public float initialHeight, finalHeight;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class shooterProfile : MonoBehaviour
+public class ShooterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
 

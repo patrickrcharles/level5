@@ -14,7 +14,7 @@ public class BasketBallShotMade : MonoBehaviour
     //SpriteRenderer spriteRenderer;
     public GameObject rimSprite;
     Animator anim;
-    playercontrollerscript playerState;
+    PlayerController playerState;
     bool isColliding;
 
     //public AudioClip shotMissed;

@@ -16,7 +16,7 @@ public class BasketBallAutoPlay : MonoBehaviour
     //Vector3 dropShadowPosition;
     GameObject basketBallSprite, playerDunkPos;
 
-    playercontrollerscriptAutoPlay playerState;
+    PlayerControllerAutoPlay playerState;
     new Rigidbody rigidbody;
 
     private BasketballStateAutoPlay basketballState;
@@ -62,7 +62,7 @@ public class BasketBallAutoPlay : MonoBehaviour
     GameObject basketBallTarget;
 
 
-    shooterProfile shooterProfile;
+    ShooterProfile shooterProfile;
     float releaseVelocityY;
 
     private float _playerRigidBody;
@@ -92,7 +92,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         basketBallSprite = GameObject.Find("basketball_sprite");
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = gameManagerAutoPlay.instance.player.GetComponent<ShooterProfile>();
 
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         //displacement = Vector3.Distance(basketBallTarget.transform.position, gameObject.transform.position);
