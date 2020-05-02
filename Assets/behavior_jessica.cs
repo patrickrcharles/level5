@@ -19,7 +19,7 @@ public class behavior_jessica : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
-        playerState = GameLevelManager.instance.playerState;
+        playerState = GameLevelManager.instance.PlayerState;
     }
 
 
