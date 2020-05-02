@@ -100,9 +100,9 @@ public class StartManager : MonoBehaviour
     private void setInitialGameOptions()
     {
         GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
-        GameOptions.levelSelected = levelSelectOptionText.text;
-        GameOptions.gameModeSelectedName = modeSelectOptionText.text;
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
+        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
     }
 
     // Update is called once per frame

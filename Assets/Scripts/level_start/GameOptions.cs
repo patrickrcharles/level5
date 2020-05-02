@@ -11,8 +11,9 @@ public  class GameOptions : MonoBehaviour
     static public String levelSelected;
     [SerializeField]
     static public String levelSelectedName;
-    static public int gameModeSelected;
     static public String gameModeSelectedName;
+
+    static public int gameModeSelected;
 
 
     static public void printCurrentValues()
@@ -20,5 +21,6 @@ public  class GameOptions : MonoBehaviour
         Debug.Log("playerSelected : "+ playerSelected );
         Debug.Log("levelSected : " + levelSelected);
         Debug.Log("gameModeSelected : " + gameModeSelected);
+        Debug.Log("gameModeSelected : " + gameModeSelectedName);
     }
 }

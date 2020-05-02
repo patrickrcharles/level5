@@ -7,18 +7,13 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField]
     float timeRemaining = 0;
-    [SerializeField]
     private float currentTime;
-
-    [SerializeField]
     float timeStart;
-    [SerializeField]
     int minutes = 0;
-    [SerializeField]
     int seconds = 0;
     bool displayTimer = true;
+
     Text timerText;
 
     private void Awake()
@@ -46,5 +41,17 @@ public class Timer : MonoBehaviour
         {
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00");
         }
+    }
+
+    public float TimeStart
+    {
+        get => timeStart;
+        set => timeStart = value;
+    }
+
+    public bool DisplayTimer
+    {
+        get => displayTimer;
+        set => displayTimer = value;
     }
 }

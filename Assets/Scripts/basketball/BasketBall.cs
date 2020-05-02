@@ -28,8 +28,12 @@ public class BasketBall : MonoBehaviour
 
     ShooterProfile shooterProfile;
     BasketBallState basketBallState;
-    BasketBallStats basketBallStats;
 
+    BasketBallStats basketBallStats;
+    public BasketBallStats BasketBallStats
+    {
+        get => basketBallStats;
+    }
     // text objects
     public GameObject TextObject;
     Text scoreText;
@@ -430,7 +434,7 @@ public class BasketBall : MonoBehaviour
     public void updateScoreText()
     {
         scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "\n"
-                         + "accuracy : " + getTotalPointAccuracy() + "%\n"
+                         + "accuracy : " +  getTotalPointAccuracy() + "%\n"
                          + "points : " + basketBallStats.TotalPoints + "\n"
                          + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "\n" //+ " accuracy : " + getTwoPointAccuracy() + "%\n"
                          + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "\n"// +" accuracy : " + getThreePointAccuracy() + "%\n"
