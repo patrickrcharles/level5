@@ -27,36 +27,64 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<shooterProfile> playerSelectedData;
 
+    //list of all scenes in build
+    [SerializeField]
+    private List<string> scenes;
+
+    [SerializeField]
+    private List<StartScreenLevelSelected> levelSelectedData;
+
+    //player selected display
     private Text playerSelectOptionText;
     private Image playerSelectOptionImage;
     private Text playerSelectOptionStatsText;
 
-    private Text levelSelectText;
+    private Text levelSelectOptionText;
+    //private Image levelSelectOptionImage;
 
-    //private Image levelSelectImage;
-
+    //player objects
     private const string startButtonName = "press_start";
-    private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectButtonName = "player_select";
-    //private const string levelSelectObjectName = "level_selected_name";
+    [SerializeField]
+    private const string playerSelectOptionButtonName = "player_selected_name";
+    private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
+    private const string playerSelectImageObjectName = "player_selected_image";
+
+    //level objects
+    private const string levelSelectButtonName = "level_select";
+    private const string levelSelectOptionButtonName = "level_selected_name";
+    private const string levelSelectImageObectName = "level_selected_image";
 
     private int playerSelectedIndex;
+    private int levelselectedIndex;
+
 
     //private Text gameModeSelectText;
     void Awake()
     {
         //default index for player selected
         playerSelectedIndex = 0;
+        levelselectedIndex = 0;
         loadPlayerSelectDataList();
+        loadLevelSelectDataList();
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        initiazePlayerText();
+        initializePlayerDisplay();
+        initializeLevelDisplay();
+
         GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
-        GameOptions.levelSected = levelSelectText.text;
+        GameOptions.levelSelected = levelSelectOptionText.text;
+
+        scenes = new List<string>();
+        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (scene.enabled)
+                scenes.Add(scene.path);
+        }
 
         //string gamesModeNamesPath = "Prefabs/start_menu/mode_names";
         //gameModeNamesList =Resources.LoadAll<GameObject>(gamesModeNamesPath);
@@ -70,41 +98,6 @@ public class StartManager : MonoBehaviour
         //gameModeDescriptionsObject = GameObject.Find("game_mode_descriptions");
         //gameModeDescriptionSpawnPoint = gameModeDescriptionsObject.transform.position;
         //gameModeNameObject = GameObject.Find("game_mode_name");
-    }
-
-    private void initiazePlayerText()
-    {
-
-        playerSelectOptionText = GameObject.Find("player_selected_name").GetComponent<Text>();
-        playerSelectOptionStatsText = GameObject.Find("player_selected_stats_numbers").GetComponent<Text>();
-        playerSelectOptionImage = GameObject.Find("player_selected_image").GetComponent<Image>();
-
-        levelSelectText = GameObject.Find("level_selected_name").GetComponent<Text>();
-
-        playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-        playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
-        playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
-
-        //levelSelectText.text 
-    }
-
-    private void loadPlayerSelectDataList()
-    {
-        //Debug.Log("loadPlayerSelectDataList()");
-
-        string path = "Prefabs/start_menu/player_selected_objects";
-        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-
-        foreach (GameObject obj in objects)
-        {
-            shooterProfile temp = obj.GetComponent<shooterProfile>();
-            playerSelectedData.Add(temp);
-        }
     }
 
     // Update is called once per frame
@@ -126,60 +119,157 @@ public class StartManager : MonoBehaviour
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         //Debug.Log("current : "+ currentHighlightedButton);
 
-        if ( (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space) ) 
-            && currentHighlightedButton.Equals(startButtonName) )
+        // start game
+        if ((InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space))
+            && currentHighlightedButton.Equals(startButtonName))
         {
             Debug.Log("pressed enter");
             loadScene();
         }
         // up arrow navigation
         if (InputManager.GetKeyDown(KeyCode.UpArrow)
-            && !currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(levelSelectOptionButtonName))
         {
-            Debug.Log("up : !player select");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnUp().gameObject);
+            Debug.Log("up : Arrow !player/level Options");
+            if (!currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnUp().gameObject);
+            }
         }
 
         // down arrow navigation
         if (InputManager.GetKeyDown(KeyCode.DownArrow)
-            && !currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(levelSelectOptionButtonName))
         {
-            Debug.Log("down : !player select");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnDown().gameObject);
+
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                .GetComponent<Button>().FindSelectableOnDown().gameObject);
+
         }
 
 
         // right arrow on player select
-        if (InputManager.GetKeyDown(KeyCode.RightArrow)
-            && currentHighlightedButton.Equals(playerSelectButtonName))
+        if (InputManager.GetKeyDown(KeyCode.RightArrow))
         {
             Debug.Log("right : player select");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnRight().gameObject);
+            if (currentHighlightedButton.Equals(playerSelectButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+            }
+            Debug.Log("right : level select");
+            if (currentHighlightedButton.Equals(levelSelectButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+            }
         }
 
         // left arrow navigation on player options
-        if (InputManager.GetKeyDown(KeyCode.LeftArrow)
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        if (InputManager.GetKeyDown(KeyCode.LeftArrow))
         {
             Debug.Log("left : player select");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
+            Debug.Log("left : level select");
+            if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
         }
 
         // up/down arrow on player options
-        if ((InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow))
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        if ((InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow)))
         {
             Debug.Log("up : player option");
-            changeSelectedPlayerUp();
-            initiazePlayerText();
+            if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            {
+                changeSelectedPlayerUp();
+                initializePlayerDisplay();
+            }
+            Debug.Log("up : level option");
+            if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            {
+                changeSelectedLevelUp();
+                initializeLevelDisplay();
+            }
         }
 
-        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow))
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
         {
             Debug.Log("down : player option");
-            changeSelectedPlayerDown();
-            initiazePlayerText();
+            if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            {
+                changeSelectedPlayerDown();
+                initializePlayerDisplay();
+            }
+            Debug.Log("down : level option");
+            if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            {
+                changeSelectedLevelDown();
+                initializeLevelDisplay();
+            }
+        }
+    }
+
+
+    private void initializeLevelDisplay()
+    {
+        levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
+        levelSelectOptionText.text = levelSelectedData[levelselectedIndex].LevelDisplayName;
+        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
+    }
+
+    private void initializePlayerDisplay()
+    {
+
+        playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
+        playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
+        playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
+
+        playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+        playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
+
+        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+    }
+
+    private void loadPlayerSelectDataList()
+    {
+        Debug.Log("loadPlayerSelectDataList()");
+
+        string path = "Prefabs/start_menu/player_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            shooterProfile temp = obj.GetComponent<shooterProfile>();
+            playerSelectedData.Add(temp);
+        }
+    }
+    private void loadLevelSelectDataList()
+    {
+        Debug.Log("loadPlayerSelectDataList()");
+
+        string path = "Prefabs/start_menu/level_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
+            levelSelectedData.Add(temp);
         }
     }
 
@@ -201,7 +291,7 @@ public class StartManager : MonoBehaviour
     private void changeSelectedPlayerDown()
     {
         // if default index (first in list
-        if (playerSelectedIndex == playerSelectedData.Count-1)
+        if (playerSelectedIndex == playerSelectedData.Count - 1)
         {
             playerSelectedIndex = 0;
         }
@@ -212,6 +302,37 @@ public class StartManager : MonoBehaviour
         }
         GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         Debug.Log("player selected : " + GameOptions.playerSelected);
+    }
+
+    private void changeSelectedLevelUp()
+    {
+        // if default index (first in list), go to end of list
+        if (levelselectedIndex == 0)
+        {
+            levelselectedIndex = levelSelectedData.Count - 1;
+        }
+        else
+        {
+            // if not first index, decrement
+            levelselectedIndex--;
+        }
+        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
+        Debug.Log("level selected : " + GameOptions.levelSelected);
+    }
+    private void changeSelectedLevelDown()
+    {
+        // if default index (first in list
+        if (levelselectedIndex == levelSelectedData.Count - 1)
+        {
+            levelselectedIndex = 0;
+        }
+        else
+        {
+            //if not first index, increment
+            levelselectedIndex++;
+        }
+        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
+        Debug.Log("level selected : " + GameOptions.levelSelected);
     }
 
 
@@ -247,8 +368,11 @@ public class StartManager : MonoBehaviour
 
     public void loadScene()
     {
-        SceneManager.LoadScene("basketball test");
+        // i create the string this way so that i can have a description of the level so i know what im opening
+        string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelselectedIndex].LevelDescription;
+        Debug.Log("player : " + GameOptions.playerSelected);
+        Debug.Log("level : " + GameOptions.levelSelected);
+        Debug.Log("scene name : " + sceneName);
+        SceneManager.LoadScene(sceneName);
     }
-
-
 }
