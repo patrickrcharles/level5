@@ -51,7 +51,7 @@
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = GameLevelManager.instance.player.transform;
+        player = GameLevelManager.instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
         if (cam.name.Contains("192"))

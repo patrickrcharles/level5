@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class BasketBallShotMade : MonoBehaviour
 {
-    BasketBall basketball;
+
     BasketBallState _basketBallState;
-    private BasketBallStats basketBallStats;
+    BasketBallStats _basketBallStats;
 
-    public int currentShotTestIndex;
+    int currentShotTestIndex;
 
-    public AudioClip shotMade;
-    //;
     AudioSource audioSource;
     //SpriteRenderer spriteRenderer;
     public GameObject rimSprite;
@@ -24,12 +22,11 @@ public class BasketBallShotMade : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        _basketBallState = basketball.GetComponent<BasketBallState>();
-        basketBallStats = basketball.GetComponent<BasketBallStats>();
+        _basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
+        _basketBallStats = BasketBall.instance.GetComponent<BasketBallStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
-        playerState = GameLevelManager.instance.playerState;
+        playerState = GameLevelManager.instance.PlayerState;
     }
 
     // Update is called once per frame
@@ -46,44 +43,31 @@ public class BasketBallShotMade : MonoBehaviour
             else { isColliding = true; }
 
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
-            if (basketball.lastShotDistance > basketball.longestShot)
+            // is this the longest shot made?
+            if (BasketBall.instance.LastShotDistance > _basketBallStats.LongestShotMade)
             {
-                basketball.longestShot = basketball.lastShotDistance;
-                basketBallStats.LongestShotMade = basketball.longestShot * 6f;
-                Debug.Log("basketBallStats.LongestShotMade : " + basketball.longestShot * 6f);
-                Debug.Log("basketball.longestShot : " + basketball.lastShotDistance);
+                _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6f;
             }
             anim.Play("madeshot");
 
-            //Debug.Log(" made a shot!");
-            //Debug.Log("two: " + _basketBallState.TwoAttempt
-            //    + " three: " + _basketBallState.ThreeAttempt
-            //    + " four: " + _basketBallState.FourAttempt);
-            /* trigger net swish animation + sfx
-         *  update score
-         */
-
             if (_basketBallState.TwoAttempt)
             {
-                //Debug.Log("2 pointer made");
-                basketBallStats.TotalPoints += 2;
-                basketBallStats.TwoPointerMade++;
-                basketBallStats.ShotMade++;
+                _basketBallStats.TotalPoints += 2;
+                _basketBallStats.TwoPointerMade++;
+                _basketBallStats.ShotMade++;
 
             }
             if (_basketBallState.ThreeAttempt)
             {
-                //Debug.Log("3 pointer made");
-                basketBallStats.TotalPoints += 3;
-                basketBallStats.ThreePointerMade++;
-                basketBallStats.ShotMade++;
+                _basketBallStats.TotalPoints += 3;
+                _basketBallStats.ThreePointerMade++;
+                _basketBallStats.ShotMade++;
             }
             if (_basketBallState.FourAttempt)
             {
-                //Debug.Log("4 pointer made");
-                basketBallStats.TotalPoints += 4;
-                basketBallStats.FourPointerMade++;
-                basketBallStats.ShotMade++;
+                _basketBallStats.TotalPoints += 4;
+                _basketBallStats.FourPointerMade++;
+                _basketBallStats.ShotMade++;
 
             }
             _basketBallState.TwoAttempt = false;
@@ -91,11 +75,10 @@ public class BasketBallShotMade : MonoBehaviour
             _basketBallState.FourAttempt = false;
         }
         // update onscreen ui stats
-        basketball.updateScoreText();
+        BasketBall.instance.updateScoreText();
 
-        // object test shot data in list
-        basketball.testConclusions.shotStats[currentShotTestIndex].made = true;
-
+        //// object test shot data in list
+        //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
     }
 }
 

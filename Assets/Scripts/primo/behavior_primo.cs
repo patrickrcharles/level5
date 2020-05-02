@@ -64,7 +64,7 @@ public class behavior_primo : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameLevelManager.instance.player;
+        player = GameLevelManager.instance.Player;
         facingRight = true;
         canMove = true;
         followPlayer = false;

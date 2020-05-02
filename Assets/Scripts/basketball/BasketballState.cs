@@ -8,6 +8,10 @@ using Random = System.Random;
 
 public class BasketBallState : MonoBehaviour
 {
+    // constant values that have to be hardcoded
+    const float _threePointDistance = 3.8f;
+    const float _fourPointDistance = 5.2f;
+
     private bool _twoPoints;
     private bool _threePoints;
     private bool _fourPoints;
@@ -26,27 +30,23 @@ public class BasketBallState : MonoBehaviour
 
     [SerializeField]
     private float _ballDistanceFromRim;
-    private float _threePointDistance = 3.8f;
-    private float _fourPointDistance = 5.2f;
 
     private GameObject basketBallPosition;
     private GameObject basketBallTarget;
-
 
     private GameObject player;
     private playercontrollerscript playerState;
 
     void Start()
     {
-        player = GameLevelManager.instance.player;
-        playerState = GameLevelManager.instance.playerState;
+        //player = GameLevelManager.instance.Player;
+        //playerState = GameLevelManager.instance.PlayerState;
 
         // position of basketball infront of player
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         //position to shoot basketball at (middle of rim)
         basketBallTarget = GameObject.Find("basketBall_target");
-
-        IsTarget = false;
+        //IsTarget = false;
     }
 
     // Update is called once per frame
@@ -176,13 +176,11 @@ public class BasketBallState : MonoBehaviour
     public float ThreePointDistance
     {
         get => _threePointDistance;
-        set => _threePointDistance = value;
     }
 
     public float FourPointDistance
     {
         get => _fourPointDistance;
-        set => _fourPointDistance = value;
     }
 
 

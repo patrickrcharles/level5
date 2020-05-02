@@ -8,17 +8,15 @@ using System;
 public class playercontrollerscript : MonoBehaviour
 {
     // components 
-    [SerializeField]
     Animator anim;
     AnimatorStateInfo currentStateInfo;
     GameObject dropShadow;
     AudioSource moonwalkAudio;
-    //continueGame continueGame;
-    //GUIStyle guiStyle = new GUIStyle();
-    [SerializeField]
     SpriteRenderer spriteRenderer;
-    [SerializeField]
     private Rigidbody rigidBody;
+    shooterProfile shooterProfile;
+    BasketBall basketball;
+
     [Range(20f, 90f)]
     public float _angle; // for bball mini game trajectory
 
@@ -29,9 +27,6 @@ public class playercontrollerscript : MonoBehaviour
     // jump vars 
     [SerializeField]
     float jumpForce;
-    float groundcheckRadius = 0.2f;
-    //public float fallMuliplier = 2.5f;
-    //public float lowJumpMuliplier = 2f;
     public float moonwalkMovementSpeed;
     public float basketballRunSpeed;
     public float walkMovementSpeed;
@@ -50,13 +45,12 @@ public class playercontrollerscript : MonoBehaviour
     //float xMin, xMax, zMin, zMax, yMin, yMax;
 
     // player state bools
-    bool moonwalking, blocking;
+    private bool moonwalking;
     public bool hasBasketball;
     //public bool smokingEnabled = true;
-    public bool soundPlayed;
+    //public bool soundPlayed;
     public bool canMove; // save this when i cars that can knock player down
 
-    [SerializeField]
     Vector3 bballRimVector;
     [SerializeField]
     float bballRelativePositioning;
@@ -81,26 +75,23 @@ public class playercontrollerscript : MonoBehaviour
 
     // get/set for following at bottom of class
     private bool _facingRight;
-    [SerializeField]
+    private bool _facingFront;
     private bool _notLocked;
     private bool _jump;
-    [SerializeField]
     private bool _inAir;
-    [SerializeField]
     private bool _grounded;
 
     public float initialHeight, finalHeight;
     // custom gravity for player from shooterprofile
-    public float gravityModifier;
+    //public float gravityModifier;
     public bool jumpPeakReached = false;
-    [SerializeField]
-    bool useGravity = true;
+    //[SerializeField]
+    //bool useGravity = true;
 
     private float _rigidBodyYVelocity;
     [SerializeField]
-    public bool facingFront;
-    shooterProfile shooterProfile;
-    BasketBall basketball;
+    //public bool facingFront;
+
 
     void Start()
     {
@@ -109,7 +100,7 @@ public class playercontrollerscript : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        shooterProfile = GameLevelManager.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<shooterProfile>();
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
@@ -341,7 +332,7 @@ public class playercontrollerscript : MonoBehaviour
         walkMovementSpeed = shooterProfile.Speed;
         basketballRunSpeed = shooterProfile.RunSpeed;
         jumpForce = shooterProfile.JumpForce;
-        gravityModifier = shooterProfile.HangTime;
+        //gravityModifier = shooterProfile.HangTime;
         _angle = shooterProfile.ShootAngle;
     }
     public bool grounded
@@ -374,5 +365,10 @@ public class playercontrollerscript : MonoBehaviour
     public float rigidBodyYVelocity
     {
         get { return rigidBody.velocity.y; }
+    }
+    public bool facingFront
+    {
+        get => _facingFront;
+        set => _facingFront = value;
     }
 }

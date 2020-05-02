@@ -12,8 +12,8 @@ public class groundcheck : MonoBehaviour
     // ReSharper disable once UnusedMember.Local
     private void Start()
     {
-        _player = GameLevelManager.instance.player;
-        _playerState = GameLevelManager.instance.playerState;
+        _player = GameLevelManager.instance.Player;
+        _playerState = GameLevelManager.instance.PlayerState;
     }
 
 

@@ -9,103 +9,86 @@ using Random = System.Random;
 
 public class BasketBall : MonoBehaviour
 {
-    AudioClip basket; //reference to the basket sound
-    GameObject player, dropShadow;
-    [SerializeField]
-    shooterProfile shooterProfile;
-    [SerializeField]
-    SpriteRenderer spriteRenderer;
 
+    SpriteRenderer spriteRenderer;
     playercontrollerscript playerState;
     new Rigidbody rigidbody;
-
-    bool playHitRimSound;
-    public AudioClip shotMiss;
     AudioSource audioSource;
 
-    [SerializeField]
     Vector3 dropShadowPosition;
-    GameObject basketBallSprite, playerDunkPos;
 
+    GameObject basketBallSprite;
+    GameObject playerDunkPos;
+    GameObject bplayerDunkPos;
+    GameObject basketBallPosition;
+    GameObject basketBallTarget;
 
-    [SerializeField]
+    GameObject player;
+    GameObject dropShadow;
+
+    shooterProfile shooterProfile;
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
 
-    //Physics variables
-    float velocityFinal;
-    float velocityInitialY, velocityInitialX, velocityInitialD;
-    [SerializeField]
-    float displacement, Zdistance;
-    float acceleration = -9.8f;
-    float time;
-    float launchAngle;
-
+    // text objects
     public GameObject TextObject;
     Text scoreText;
 
-    public float longestShot { get; set; }
-    public float lastShotDistance { get; set; }
-
-    [SerializeField]
     public GameObject shootProfile;
-    [SerializeField]
     Text shootProfileText;
+
 
     [Range(20f, 70f)]
     public float _angle;
 
-
-    GameObject basketBallPosition;
-    GameObject basketBallTarget;
-
     float releaseVelocityY;
+    float _playerRigidBody;
+    float accuracy;
+    float twoAccuracy;
+    float threeAccuracy;
+    float fourAccuracy;
 
-    private float _playerRigidBody;
+    private float lastShotDistance;
 
-    public float accuracy;
-    public float twoAccuracy;
-    public float threeAccuracy;
-    public float fourAccuracy;
-    public bool addAccuracyModifier;
-
-    private bool locked;
+    bool addAccuracyModifier;
+    bool playHitRimSound;
+    bool locked;
 
     //public BasketballTestStats testStats;
     public BasketBallTestStatsConclusions testConclusions;
     public int currentTestStatsIndex = 0;
-
     public BasketBallShotMade basketBallShotMade;
+
+    public static BasketBall instance;
 
     // Use this for initialization
     void Start()
     {
-        player = GameLevelManager.instance.player;
-        playerState = GameLevelManager.instance.playerState;
+        instance = this;
+
+        player = GameLevelManager.instance.Player;
+        playerState = GameLevelManager.instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
 
         basketBallStats = GetComponent<BasketBallStats>();
         basketBallState = GetComponent<BasketBallState>();
 
-        Debug.Log(basketBallState);
-
         //basketball drop shadow
         dropShadow = transform.root.Find("drop shadow").gameObject;
         dropShadowPosition = dropShadow.transform.position;
+
         audioSource = GetComponent<AudioSource>();
         basketBallSprite = GameObject.Find("basketball_sprite");
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
 
-        shooterProfile = GameLevelManager.instance.player.GetComponent<shooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<shooterProfile>();
         shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
 
         TextObject = GameObject.Find("shootStatsTextObject");
         scoreText = TextObject.GetComponent<Text>();
 
-        longestShot = 0;
         playerDunkPos = GameObject.Find("dunk_transform");
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
@@ -314,6 +297,7 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    // =================================== Launch ball function =======================================
     void Launch()
     {
         // shot attempted
@@ -367,33 +351,35 @@ public class BasketBall : MonoBehaviour
 
         // ================================== for SHOT TEST STATS ====================================
 
-        BasketballTestStats testStats = new BasketballTestStats();
+        //BasketballTestStats testStats = new BasketballTestStats();
 
-        testStats.AccuracyModifier = accuracyModifierX;
-        testStats.Distance = lastShotDistance;
-        testStats.LocalVelocity = localVelocity;
-        testStats.GlobalVelocity = globalVelocity;
-        testStats.ReleaseVelocity = releaseVelocityY;
-        if (basketBallState.TwoPoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy2Pt;
-            testStats.Two = true;
-        }
-        if (basketBallState.ThreePoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy3Pt;
-            testStats.Three = true;
-        }
-        if (basketBallState.FourPoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy4Pt;
-            testStats.Four = true;
-        }
+        //testStats.AccuracyModifier = accuracyModifierX;
+        //testStats.Distance = lastShotDistance;
+        //testStats.LocalVelocity = localVelocity;
+        //testStats.GlobalVelocity = globalVelocity;
+        //testStats.ReleaseVelocity = releaseVelocityY;
+        //if (basketBallState.TwoPoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy2Pt;
+        //    testStats.Two = true;
+        //}
+        //if (basketBallState.ThreePoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy3Pt;
+        //    testStats.Three = true;
+        //}
+        //if (basketBallState.FourPoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy4Pt;
+        //    testStats.Four = true;
+        //}
 
-        testConclusions.shotStats.Add(testStats);
-        currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
-        basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
+        //testConclusions.shotStats.Add(testStats);
+        //currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
+        //basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
     }
+
+    // ================================================================================================
 
     bool rollForCriticalShotChance(float maxPercent)
     {
@@ -415,8 +401,6 @@ public class BasketBall : MonoBehaviour
         if (basketBallState.TwoPoints) { accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f; }
         if (basketBallState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
         if (basketBallState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
-
-        Debug.Log("accuracyModifier : " + (accuracyModifier / 1.5f) * direction);
 
         return (accuracyModifier / 1.6f) * direction;
     }
@@ -452,7 +436,7 @@ public class BasketBall : MonoBehaviour
                          + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "\n"// +" accuracy : " + getThreePointAccuracy() + "%\n"
                          + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "\n"// + " accuracy : " + getFourPointAccuracy() + "%\n"
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
-                         + "longest shot distance : " + (Math.Round(longestShot, 2) * 6f).ToString("0.00") + " ft.";
+                         + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
     }
 
     public float getTotalPointAccuracy()
@@ -507,6 +491,11 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    public float LastShotDistance
+    {
+        get => lastShotDistance;
+        set => lastShotDistance = value;
+    }
 }
 
 

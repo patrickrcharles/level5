@@ -44,8 +44,10 @@ public class GameLevelManager : MonoBehaviour
     //private AudioSource[] allAudioSources;
 
     //BasketBall objects
-    BasketBall basketballState;
-    GameObject basketball;
+    BasketBall _basketballState;
+    GameObject _basketball;
+    GameObject basketballPrefab;
+
 
     //spawn locations
     GameObject basketballSpawnLocation;
@@ -69,7 +71,6 @@ public class GameLevelManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("gm : awake()");
         // initialize game manger player references
         instance = this;
 
@@ -93,8 +94,8 @@ public class GameLevelManager : MonoBehaviour
         }
         if(GameObject.FindWithTag("basketball") == null)
         {
-            basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-            Instantiate(basketball, basketballSpawnLocation.transform.position, Quaternion.identity);
+            basketballPrefab = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+            Instantiate(basketballPrefab, basketballSpawnLocation.transform.position, Quaternion.identity);
         }
 
 
@@ -102,38 +103,26 @@ public class GameLevelManager : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = player.GetComponent<playercontrollerscript>();
-        _anim = player.GetComponentInChildren<Animator>();
-
-        basketballState = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         locked = false;
 
-        //foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-        //{
-        //    if (scene.enabled)
-        //    {
-        //        scenes.Add(scene.path);
-        //    }
-        //}
+        //set up player/basketball read only references for use in other classes
 
-        //foreach (var scene in scenes)
-        //{
-        //    Debug.Log(scene);
-        //}
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _playerState = Player.GetComponent<playercontrollerscript>();
+        _anim = Player.GetComponentInChildren<Animator>();
+        _basketball = GameObject.FindWithTag("basketball");
+        _basketballState = _basketball.GetComponent<BasketBall>();
 
         InitializePlayer();
 
+        // if flash is selected player, disable flash auto player
         flashObject = GameObject.Find("flash_auto_play");
-        //Debug.Log("=================================== selcted player : " + GameOptions.playerSelected );
-        //Debug.Log("=================================== flashObject : " + flashObject);
         if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
-            &&GameOptions.playerSelected.Contains("flash") 
-            && flashObject != null )
+             &&GameOptions.playerSelected.Contains("flash") 
+             && flashObject != null )
         {
             flashObject.SetActive(false);
         }
-
     }
 
 
@@ -175,7 +164,7 @@ public class GameLevelManager : MonoBehaviour
             && !locked)
         {
             locked = true;
-            basketballState.toggleAddAccuracyModifier();
+            _basketballState.toggleAddAccuracyModifier();
             locked = false;
         }
 
@@ -185,8 +174,8 @@ public class GameLevelManager : MonoBehaviour
             && !locked)
         {
             locked = true;
-            basketballState.testConclusions.getDataFromList();
-            basketballState.testConclusions.printConclusions();
+            _basketballState.testConclusions.getDataFromList();
+            _basketballState.testConclusions.printConclusions();
             locked = false;
         }
     }
@@ -248,16 +237,26 @@ public class GameLevelManager : MonoBehaviour
         Application.Quit();
     }
 
-    public GameObject player
+    public GameObject Player
     {
         get { return _player; }
     }
-    public playercontrollerscript playerState
+    public playercontrollerscript PlayerState
     {
         get { return _playerState; }
     }
-    public Animator anim
+    public Animator Anim
     {
         get { return _anim; }
+    }
+
+    public BasketBall BasketballState
+    {
+        get => _basketballState;
+    }
+
+    public GameObject Basketball
+    {
+        get => _basketball;
     }
 }
