@@ -6,7 +6,7 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: dblood_nba Animator Override Controller
+  m_Name: dblood_ animator_override
   m_Controller: {fileID: 9100000, guid: 4161aa6b918f33145b360478250e20de, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: eb51dbff81d32d94d82a30d8c3344d48, type: 2}
