@@ -12,6 +12,8 @@ public  class GameOptions : MonoBehaviour
     [SerializeField]
     static public String levelSelectedName;
     static public int gameModeSelected;
+    static public String gameModeSelectedName;
+
 
     static public void printCurrentValues()
     {

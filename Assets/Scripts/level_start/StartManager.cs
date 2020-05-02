@@ -24,15 +24,19 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private string currentHighlightedButton;
 
+    //list of all shooter profiles with player data
     [SerializeField]
     private List<shooterProfile> playerSelectedData;
 
     //list of all scenes in build
-    [SerializeField]
-    private List<string> scenes;
+    //private List<string> scenes;
 
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
+
+    //mode selected objects
+    [SerializeField]
+    private List<StartScreenModeSelected> modeSelectedData;
 
     //player selected display
     private Text playerSelectOptionText;
@@ -42,10 +46,13 @@ public class StartManager : MonoBehaviour
     private Text levelSelectOptionText;
     //private Image levelSelectOptionImage;
 
+    //player selected display
+    private Text modeSelectOptionText;
+    private Text ModeSelectOptionDescriptionText;
+
     //player objects
     private const string startButtonName = "press_start";
     private const string playerSelectButtonName = "player_select";
-    [SerializeField]
     private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
@@ -55,8 +62,14 @@ public class StartManager : MonoBehaviour
     private const string levelSelectOptionButtonName = "level_selected_name";
     private const string levelSelectImageObectName = "level_selected_image";
 
+    //mode objects
+    private const string modeSelectButtonName = "mode_select";
+    private const string modeSelectOptionButtonName = "mode_selected_name";
+    private const string modeSelectDescriptionObjectName = "mode_selected_description";
+
     private int playerSelectedIndex;
-    private int levelselectedIndex;
+    private int levelSelectedIndex;
+    private int modeSelectedIndex;
 
 
     //private Text gameModeSelectText;
@@ -64,9 +77,12 @@ public class StartManager : MonoBehaviour
     {
         //default index for player selected
         playerSelectedIndex = 0;
-        levelselectedIndex = 0;
+        levelSelectedIndex = 0;
+        modeSelectedIndex = 0;
+
         loadPlayerSelectDataList();
         loadLevelSelectDataList();
+        loadModeSelectDataList();
 
     }
 
@@ -75,46 +91,23 @@ public class StartManager : MonoBehaviour
     {
         initializePlayerDisplay();
         initializeLevelDisplay();
+        intializeModeDisplay();
 
+        setInitialGameOptions();
+
+    }
+
+    private void setInitialGameOptions()
+    {
         GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         GameOptions.levelSelected = levelSelectOptionText.text;
-
-        scenes = new List<string>();
-        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-        {
-            if (scene.enabled)
-                scenes.Add(scene.path);
-        }
-
-        //string gamesModeNamesPath = "Prefabs/start_menu/mode_names";
-        //gameModeNamesList =Resources.LoadAll<GameObject>(gamesModeNamesPath);
-
-        ////temp = GameObject.Find("mode_5_description");
-        //gameModeDescriptionsObject = GameObject.Find("game_mode_descriptions");
-        //gameModeDescriptionSpawnPoint = gameModeDescriptionsObject.transform.position;
-        //gameModeNameObject = GameObject.Find("game_mode_name");        //gameModeNamesList =Resources.LoadAll<GameObject>(gamesModeNamesPath);
-
-        ////temp = GameObject.Find("mode_5_description");
-        //gameModeDescriptionsObject = GameObject.Find("game_mode_descriptions");
-        //gameModeDescriptionSpawnPoint = gameModeDescriptionsObject.transform.position;
-        //gameModeNameObject = GameObject.Find("game_mode_name");
+        GameOptions.gameModeSelectedName = modeSelectOptionText.text;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //// detect if highlighted object changes
-        //if (EventSystem.current.currentSelectedGameObject.name != currentHighlightedButton)
-        //{
-        //    if (cloneDescription != null)
-        //    {
-        //        getNextModeDecription();
-        //    }
-        //    else
-        //    {
-        //        createFirstModeDescription();
-        //    }
-        //}
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         //Debug.Log("current : "+ currentHighlightedButton);
@@ -129,25 +122,21 @@ public class StartManager : MonoBehaviour
         // up arrow navigation
         if (InputManager.GetKeyDown(KeyCode.UpArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
         {
-            Debug.Log("up : Arrow !player/level Options");
-            if (!currentHighlightedButton.Equals(playerSelectOptionButtonName))
-            {
-                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-                    .GetComponent<Button>().FindSelectableOnUp().gameObject);
-            }
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                .GetComponent<Button>().FindSelectableOnUp().gameObject);
         }
 
         // down arrow navigation
         if (InputManager.GetKeyDown(KeyCode.DownArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
         {
-
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnDown().gameObject);
-
         }
 
 
@@ -200,6 +189,12 @@ public class StartManager : MonoBehaviour
                 changeSelectedLevelUp();
                 initializeLevelDisplay();
             }
+            Debug.Log("up : level option");
+            if (currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            {
+                changeSelectedModeUp();
+                intializeModeDisplay();
+            }
         }
 
         if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
@@ -216,15 +211,28 @@ public class StartManager : MonoBehaviour
                 changeSelectedLevelDown();
                 initializeLevelDisplay();
             }
+            if (currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            {
+                changeSelectedModeDown();
+                intializeModeDisplay();
+            }
         }
     }
-
 
     private void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
-        levelSelectOptionText.text = levelSelectedData[levelselectedIndex].LevelDisplayName;
-        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
+        levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+    }
+
+    private void intializeModeDisplay()
+    {
+        modeSelectOptionText = GameObject.Find(modeSelectOptionButtonName).GetComponent<Text>();
+        modeSelectOptionText.text = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+
+        ModeSelectOptionDescriptionText = GameObject.Find(modeSelectDescriptionObjectName).GetComponent<Text>();
+        ModeSelectOptionDescriptionText.text = modeSelectedData[modeSelectedIndex].ModeDescription;
     }
 
     private void initializePlayerDisplay()
@@ -253,6 +261,7 @@ public class StartManager : MonoBehaviour
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
+        Debug.Log("obects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             shooterProfile temp = obj.GetComponent<shooterProfile>();
@@ -270,6 +279,20 @@ public class StartManager : MonoBehaviour
         {
             StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
             levelSelectedData.Add(temp);
+        }
+    }
+
+    private void loadModeSelectDataList()
+    {
+        Debug.Log("loadModeSelectDataList()");
+
+        string path = "Prefabs/start_menu/mode_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
+            modeSelectedData.Add(temp);
         }
     }
 
@@ -307,69 +330,69 @@ public class StartManager : MonoBehaviour
     private void changeSelectedLevelUp()
     {
         // if default index (first in list), go to end of list
-        if (levelselectedIndex == 0)
+        if (levelSelectedIndex == 0)
         {
-            levelselectedIndex = levelSelectedData.Count - 1;
+            levelSelectedIndex = levelSelectedData.Count - 1;
         }
         else
         {
             // if not first index, decrement
-            levelselectedIndex--;
+            levelSelectedIndex--;
         }
-        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
-        Debug.Log("level selected : " + GameOptions.levelSelected);
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
     private void changeSelectedLevelDown()
     {
         // if default index (first in list
-        if (levelselectedIndex == levelSelectedData.Count - 1)
+        if (levelSelectedIndex == levelSelectedData.Count - 1)
         {
-            levelselectedIndex = 0;
+            levelSelectedIndex = 0;
         }
         else
         {
             //if not first index, increment
-            levelselectedIndex++;
+            levelSelectedIndex++;
         }
-        GameOptions.levelSelected = levelSelectedData[levelselectedIndex].LevelObjectName;
-        Debug.Log("level selected : " + GameOptions.levelSelected);
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+    }
+    private void changeSelectedModeUp()
+    {
+        // if default index (first in list), go to end of list
+        if (modeSelectedIndex == 0)
+        {
+            modeSelectedIndex = modeSelectedData.Count - 1;
+        }
+        else
+        {
+            // if not first index, decrement
+            modeSelectedIndex--;
+        }
+        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
     }
 
+    private void changeSelectedModeDown()
+    {
+        // if default index (first in list
+        if (modeSelectedIndex == modeSelectedData.Count - 1)
+        {
+            modeSelectedIndex = 0;
+        }
+        else
+        {
+            //if not first index, increment
+            modeSelectedIndex++;
+        }
 
+        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+    }
 
-    //private void createFirstModeDescription()
-    //{
-
-    //    //Debug.Log("description created");
-    //    string tempString = EventSystem.current.currentSelectedGameObject.name + "_description";
-
-    //    //Debug.Log("tempString : " + tempString);
-    //    string tempPath = "Prefabs/start_menu/mode_descriptions/" + tempString;
-    //    //string tempPath = "Prefabs/start_menu/mode_descriptions/mode_10_description";
-
-    //    cloneDescription = Resources.Load(tempPath) as GameObject;
-    //    Instantiate(cloneDescription, gameModeDescriptionSpawnPoint, Quaternion.identity, gameModeDescriptionsObject.transform);
-    //}
-
-    //private void getNextModeDecription()
-    //{
-    //    GameObject tempClone = GameObject.FindWithTag("mode_description");
-    //    Destroy(tempClone);
-    //    //Debug.Log("highlight changed");
-    //    string tempString = EventSystem.current.currentSelectedGameObject.name + "_description";
-
-    //    //Debug.Log("tempString : " + tempString);
-    //    string tempPath = "Prefabs/start_menu/mode_descriptions/" + tempString;
-    //    //string tempPath = "Prefabs/start_menu/mode_descriptions/mode_10_description";
-
-    //    cloneDescription = Resources.Load(tempPath) as GameObject;
-    //    Instantiate(cloneDescription, gameModeDescriptionSpawnPoint, Quaternion.identity, gameModeDescriptionsObject.transform);
-    //}
 
     public void loadScene()
     {
         // i create the string this way so that i can have a description of the level so i know what im opening
-        string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelselectedIndex].LevelDescription;
+        string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
         Debug.Log("player : " + GameOptions.playerSelected);
         Debug.Log("level : " + GameOptions.levelSelected);
         Debug.Log("scene name : " + sceneName);
