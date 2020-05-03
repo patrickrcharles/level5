@@ -44,6 +44,7 @@ public class GameRules : MonoBehaviour
 
     void Start()
     {
+        gameOver = false;
         gameModeId = 1;
         //gameModeId = GameOptions.gameModeSelected;
         timer = GameObject.Find("timer").GetComponent<Timer>();
@@ -80,6 +81,7 @@ public class GameRules : MonoBehaviour
             Pause.instance.TogglePause();
             //setBackgroundFade(true);
             displayScore(GameRules.instance.GameModeId);
+            GameLevelManager.instance.GameOver = true;
         }
     }
 

@@ -23,6 +23,7 @@ public class GameLevelManager : MonoBehaviour
     Quaternion previousPlayerRotation;
 
     bool gameOver;
+
     bool startGame;
     bool locked;
     bool paused;
@@ -68,6 +69,7 @@ public class GameLevelManager : MonoBehaviour
 
     [SerializeField]
     private GameObject flashObject;
+
 
     void Awake()
     {
@@ -259,5 +261,12 @@ public class GameLevelManager : MonoBehaviour
     public GameObject Basketball
     {
         get => _basketball;
+    }
+
+
+    public bool GameOver
+    {
+        get => gameOver;
+        set => gameOver = value;
     }
 }
