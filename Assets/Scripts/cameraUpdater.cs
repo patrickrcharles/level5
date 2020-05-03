@@ -38,7 +38,7 @@
     void Start()
     {
 
-        Debug.Log(("camera updater Start()"));
+        //Debug.Log(("camera updater Start()"));
         basketBallRim = GameObject.Find("rim");
 
         cam = GetComponent<Camera>();

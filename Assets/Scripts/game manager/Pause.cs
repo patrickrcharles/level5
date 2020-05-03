@@ -63,7 +63,7 @@ public class Pause : MonoBehaviour
         //if (GameLevelManager.instance.GameOver)
         //{
         //    currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        //    //Debug.Log("current : "+ currentHighlightedButton);
+        //    ////Debug.Log("current : "+ currentHighlightedButton);
         //}
         //pause ESC, submit, cancel
         if (InputManager.GetButtonDown("Submit")
@@ -77,12 +77,12 @@ public class Pause : MonoBehaviour
         // ===== pause checks to catch bugs ==============
         if (Time.timeScale == 0 && !paused)
         {
-            Debug.Log("timescale = 0");
+            //Debug.Log("timescale = 0");
             TogglePause();
         }
         if (Time.timeScale == 1 && paused)
         {
-            Debug.Log("timescale = 0");
+            //Debug.Log("timescale = 0");
             TogglePause();
         }
         //===============================================
@@ -123,7 +123,7 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
             && (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space)))
             {
-                Debug.Log("trail3");
+                //Debug.Log("trail3");
                 Quit();
             }
         }
@@ -154,13 +154,13 @@ public class Pause : MonoBehaviour
     //// right arrow on player select
     //if (InputManager.GetKeyDown(KeyCode.RightArrow))
     //{
-    //    Debug.Log("right : player select");
+    //    //Debug.Log("right : player select");
     //    if (currentHighlightedButton.Equals(playerSelectButtonName))
     //    {
     //        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
     //            .GetComponent<Button>().FindSelectableOnRight().gameObject);
     //    }
-    //    Debug.Log("right : level select");
+    //    //Debug.Log("right : level select");
     //    if (currentHighlightedButton.Equals(levelSelectButtonName))
     //    {
     //        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -171,13 +171,13 @@ public class Pause : MonoBehaviour
     //// left arrow navigation on player options
     //if (InputManager.GetKeyDown(KeyCode.LeftArrow))
     //{
-    //    Debug.Log("left : player select");
+    //    //Debug.Log("left : player select");
     //    if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
     //    {
     //        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
     //            .GetComponent<Button>().FindSelectableOnLeft().gameObject);
     //    }
-    //    Debug.Log("left : level select");
+    //    //Debug.Log("left : level select");
     //    if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
     //    {
     //        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -188,19 +188,19 @@ public class Pause : MonoBehaviour
     //// up/down arrow on player options
     //if ((InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow)))
     //{
-    ////    Debug.Log("up : player option");
+    ////    //Debug.Log("up : player option");
     ////    if (currentHighlightedButton.Equals(loadSceneButton))
     ////    {
 
     ////    }
 
-    ////    Debug.Log("up : level option");
+    ////    //Debug.Log("up : level option");
     ////    if (currentHighlightedButton.Equals(loadStartScreenButton))
     ////    {
 
     ////    }
 
-    ////    Debug.Log("up : level option");
+    ////    //Debug.Log("up : level option");
     ////    if (currentHighlightedButton.Equals(quitGameButton))
     ////    {
 
@@ -209,14 +209,14 @@ public class Pause : MonoBehaviour
 
     //if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
     //{
-    //    Debug.Log("down : player option");
+    //    //Debug.Log("down : player option");
     //    if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
     //    {
     //        changeSelectedPlayerDown();
     //        initializePlayerDisplay();
     //    }
 
-    //    Debug.Log("down : level option");
+    //    //Debug.Log("down : level option");
     //    if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
     //    {
     //        changeSelectedLevelDown();
@@ -243,8 +243,8 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
-        Debug.Log("togglepause");
-        //Debug.Log("timescale : "+ Time.timeScale);
+        //Debug.Log("togglepause");
+        ////Debug.Log("timescale : "+ Time.timeScale);
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
@@ -254,7 +254,7 @@ public class Pause : MonoBehaviour
             setPauseScreen(false);
             //resumeAllAudio();
 
-            Debug.Log("timescale : " + Time.timeScale);
+            //Debug.Log("timescale : " + Time.timeScale);
             return (false);
         }
         else
@@ -267,7 +267,7 @@ public class Pause : MonoBehaviour
             setBackgroundFade(true);
             setPauseScreen(true);
 
-            Debug.Log("timescale : " + Time.timeScale);
+            //Debug.Log("timescale : " + Time.timeScale);
             return (true);
         }
 

@@ -182,7 +182,7 @@ public class GameLevelManager : MonoBehaviour
     // game manager provides read only links to player object and player states
     public void InitializePlayer()
     {
-        Debug.Log("initialize player");
+        //Debug.Log("initialize player");
         //_player = GameObject.FindGameObjectWithTag("Player");
         //_playerState = player.GetComponent<playercontrollerscript>();
         //_anim = player.GetComponentInChildren<Animator>();

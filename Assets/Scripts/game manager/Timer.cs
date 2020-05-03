@@ -39,7 +39,7 @@ public class Timer : MonoBehaviour
             // ball is in the air, let the shot go before pausing 
             if (!BasketBall.instance.BasketBallState.InAir)
             {
-                Debug.Log("timer ended");
+                //Debug.Log("timer ended");
                 GameRules.instance.GameOver = true;
                 //Pause.instance.Paused = true;
                 //Time.timeScale = 0f;
