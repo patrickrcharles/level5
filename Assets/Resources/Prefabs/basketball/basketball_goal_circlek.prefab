@@ -1185,7 +1185,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 6aaf95d4aae0c3243a61f519b31bd752, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b0528c9e8f397b94eb2c63d5a6a8505c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1371,7 +1371,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c87ab732a2e067b4799460ba2b387ae9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7fb534e3e22fdc94f9b90b36218c750d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1571,7 +1571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902673323287654158}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02699995, y: 0.093, z: 0.299}
+  m_LocalPosition: {x: -0.02699995, y: 0.093, z: 0.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3908368373629176344}
@@ -1758,7 +1758,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902894785870118904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.083, z: 0.8291422}
+  m_LocalPosition: {x: 0, y: 0.174, z: 0.423}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3901007377547390530}
@@ -1880,7 +1880,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1887191191932628615, guid: 6b6a9e857a5d51a46af8998bd3689aab,
+  m_Sprite: {fileID: -6233645015677314825, guid: 6b6a9e857a5d51a46af8998bd3689aab,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1902,7 +1902,7 @@ Animator:
   m_GameObject: {fileID: 3903010627977152754}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7f25f6d1af9d61f4fa4673de24246dc3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 395b002dcbc3670408d9c251c11001cd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2331,7 +2331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fcf57ae7484169409620e1c24e0fe71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotMade: {fileID: 8300000, guid: 547f1fa8d0ff7ee4796187bae13fb2a0, type: 3}
   rimSprite: {fileID: 3903010627977152754}
 --- !u!1 &4442954069768627066
 GameObject:
