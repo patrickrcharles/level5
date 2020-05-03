@@ -32,15 +32,17 @@ public class Timer : MonoBehaviour
         seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
 
         // time's up, pause and reset timer text
-        if (timeRemaining <= 0 )
+        if (timeRemaining <= 0 && !GameRules.instance.GameOver)
         {
             displayTimer = false;
             timerText.text = "";
             // ball is in the air, let the shot go before pausing 
             if (!BasketBall.instance.BasketBallState.InAir)
             {
+                Debug.Log("timer ended");
                 GameRules.instance.GameOver = true;
-                Time.timeScale = 0f;
+                //Pause.instance.Paused = true;
+                //Time.timeScale = 0f;
             }
         }
 

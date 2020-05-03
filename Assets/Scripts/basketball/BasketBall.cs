@@ -116,6 +116,7 @@ public class BasketBall : MonoBehaviour
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
         addAccuracyModifier = true;
+        playHitRimSound = true;
 
         basketBallStats.PlayerName = shooterProfile.PlayerObjectName;
         basketBallStats.PlayerId = shooterProfile.PlayerId;

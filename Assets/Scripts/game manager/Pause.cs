@@ -26,7 +26,7 @@ public class Pause : MonoBehaviour
     private Button quitGameButton;
 
     [SerializeField]
-    private string currentHighlightedButton;
+    private GameObject currentHighlightedButton;
 
 
     void Awake()
@@ -46,6 +46,8 @@ public class Pause : MonoBehaviour
             setBackgroundFade(false);
             setPauseScreen(false);
         }
+
+        currentHighlightedButton = EventSystem.current.firstSelectedGameObject;
     }
 
     void Start()
@@ -72,30 +74,56 @@ public class Pause : MonoBehaviour
             paused = TogglePause();
         }
 
-        if (Time.timeScale == 0)
+        // ===== pause checks to catch bugs ==============
+        if (Time.timeScale == 0 && !paused)
         {
-            paused = true;
+            Debug.Log("timescale = 0");
+            TogglePause();
         }
+        if (Time.timeScale == 1 && paused)
+        {
+            Debug.Log("timescale = 0");
+            TogglePause();
+        }
+        //===============================================
 
+        // if paused, show pause menu
         if (paused)
         {
-            currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
+            // if no button is selected (null). this happens with mouse clicks on the screen.
+            // reset to default button
+            currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
 
-            if (currentHighlightedButton.Equals(loadSceneButton.name)
-            && (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space)))
+            if (currentHighlightedButton == null)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+                currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
             }
 
-            if (currentHighlightedButton.Equals(loadStartScreenButton.name)
+            // ================== pause menu options ==============================================================
+
+            // reload scene
+            if (currentHighlightedButton.name.Equals(loadSceneButton.name)
+                && (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space)))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                if (paused)
+                {
+                    TogglePause();
+                }
+            }
+
+            //load start screen
+            if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
             && (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space)))
             {
                 SceneManager.LoadScene("level_00_start");
             }
-
-            if (currentHighlightedButton.Equals(quitGameButton.name)
+            // quit
+            if (currentHighlightedButton.name.Equals(quitGameButton.name)
             && (InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space)))
             {
+                Debug.Log("trail3");
                 Quit();
             }
         }
@@ -215,24 +243,39 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
+        Debug.Log("togglepause");
+        //Debug.Log("timescale : "+ Time.timeScale);
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
+            paused = false;
             Time.timeScale = 1f;
             setBackgroundFade(false);
             setPauseScreen(false);
             //resumeAllAudio();
+
+            Debug.Log("timescale : " + Time.timeScale);
             return (false);
         }
         else
         {
+            
             //gameManager.instance.backgroundFade.SetActive(true);
+            paused = true;
             Time.timeScale = 0f;
             //pauseAllAudio();
             setBackgroundFade(true);
             setPauseScreen(true);
+
+            Debug.Log("timescale : " + Time.timeScale);
             return (true);
         }
+
+    }
+
+    public void setTimeScaleToActive()
+    {
+        Time.timeScale = 1f;
     }
 
     public void setBackgroundFade(bool value)
@@ -240,7 +283,7 @@ public class Pause : MonoBehaviour
         fadeTexture.enabled = value;
     }
 
-    public object Paused
+    public bool Paused
     {
         get => paused;
     }

@@ -68,18 +68,18 @@ public class GameRules : MonoBehaviour
         //    displayScore(gameModeId);
         //}
         displayCurrentScoreText.text = "points : " + BasketBall.instance.BasketBallStats._totalPoints;
-        //turn off accuracy modifer 6+9
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha7))
-        {
-            displayScore(gameModeId);
-        }
 
-        if (GameOver)
+        ////game stats test
+        //if (InputManager.GetKey(KeyCode.LeftShift)
+        //    && InputManager.GetKeyDown(KeyCode.Alpha7))
+        //{
+        //    displayScore(gameModeId);
+        //}
+
+        if (GameOver && !Pause.instance.Paused)
         {
             displayCurrentScoreText.text = "";
             Pause.instance.TogglePause();
-            //setBackgroundFade(true);
             displayScore(GameRules.instance.GameModeId);
             GameLevelManager.instance.GameOver = true;
         }
@@ -87,6 +87,7 @@ public class GameRules : MonoBehaviour
 
     public void displayScore(int modeId)
     {
+        Debug.Log("displayScore(int modeId) ");
         displayScoreText.text = getDisplayText(modeId);
         if (gameOver)
         {

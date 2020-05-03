@@ -22,6 +22,7 @@ public class GameLevelManager : MonoBehaviour
     Vector3 previousPlayerPosition;
     Quaternion previousPlayerRotation;
 
+    [SerializeField]
     bool gameOver;
 
     bool startGame;
@@ -131,19 +132,19 @@ public class GameLevelManager : MonoBehaviour
 
     void Update()
     {
-        //close app
-        if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
-            && InputManager.GetKeyDown(KeyCode.Q))
-        {
-            Quit();
-        }
+        ////close app
+        //if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
+        //    && InputManager.GetKeyDown(KeyCode.Q))
+        //{
+        //    Quit();
+        //}
 
-        //reload start
-        if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift))
-            && InputManager.GetKeyDown(KeyCode.P))
-        {
-            SceneManager.LoadScene("level_00_start");
-        }
+        ////reload start
+        //if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift))
+        //    && InputManager.GetKeyDown(KeyCode.P))
+        //{
+        //    SceneManager.LoadScene("level_00_start");
+        //}
 
         ////pause ESC, submit, cancel
         //if (InputManager.GetButtonDown("Submit")
@@ -153,13 +154,7 @@ public class GameLevelManager : MonoBehaviour
         //    paused = TogglePause();
         //}
         // reload scene 4+2+0
-        if (InputManager.GetKey(KeyCode.Alpha4)
-            && InputManager.GetKey(KeyCode.Alpha2)
-            && InputManager.GetKey(KeyCode.Alpha0)
-            && !locked)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+
 
         //turn off accuracy modifer 6+9
         if (InputManager.GetKey(KeyCode.Alpha6)
@@ -171,7 +166,7 @@ public class GameLevelManager : MonoBehaviour
             locked = false;
         }
 
-        //turn off accuracy modifer 6+9
+        //run stat analysis
         if (InputManager.GetKey(KeyCode.LeftShift)
             && InputManager.GetKeyDown(KeyCode.Alpha0)
             && !locked)
