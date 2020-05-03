@@ -18,7 +18,7 @@ public  class GameOptions : MonoBehaviour
 
     static public void printCurrentValues()
     {
-        Debug.Log("playerSelected : "+ playerSelected );
+        Debug.Log("playerSelected : " + playerSelected);
         Debug.Log("levelSected : " + levelSelected);
         Debug.Log("gameModeSelected : " + gameModeSelected);
         Debug.Log("gameModeSelected : " + gameModeSelectedName);
