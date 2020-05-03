@@ -18,14 +18,33 @@ public class BasketBallStats : MonoBehaviour
     public float _threePointerAttempts;
     public float _fourPointerAttempts;
 
-    public float shotAttempt;
-    public float shotMade;
-    public float longestShotMade;
+    public float _shotAttempt;
+    public float _shotMade;
+    public float _longestShotMade;
+    public float _totalDistance;
+
+    public float ShotAttempt
+    {
+        get => _shotAttempt;
+        set => _shotAttempt = value;
+    }
+
+    public float ShotMade
+    {
+        get => _shotMade;
+        set => _shotMade = value;
+    }
 
     public float LongestShotMade
     {
-        get => longestShotMade;
-        set => longestShotMade = value;
+        get => _longestShotMade;
+        set => _longestShotMade = value;
+    }
+
+    public float TotalDistance
+    {
+        get => _totalDistance;
+        set => _totalDistance = value;
     }
 
     public int PlayerId
@@ -80,17 +99,5 @@ public class BasketBallStats : MonoBehaviour
     {
         get => _fourPointerAttempts;
         set => _fourPointerAttempts = value;
-    }
-
-    public float ShotAttempt
-    {
-        get => shotAttempt;
-        set => shotAttempt = value;
-    }
-
-    public float ShotMade
-    {
-        get => shotMade;
-        set => shotMade = value;
     }
 }

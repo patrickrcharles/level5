@@ -57,6 +57,8 @@ public class BasketBall : MonoBehaviour
     bool addAccuracyModifier;
     bool playHitRimSound;
     bool locked;
+    [SerializeField]
+    private bool uiStatsEnabled;
 
     //public BasketballTestStats testStats;
     public BasketBallTestStatsConclusions testConclusions;
@@ -88,10 +90,27 @@ public class BasketBall : MonoBehaviour
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
 
         shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
-        shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
 
-        TextObject = GameObject.Find("shootStatsTextObject");
-        scoreText = TextObject.GetComponent<Text>();
+        // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
+        if (GameObject.Find("ui_stats") != null)
+        {
+            uiStatsEnabled = true;
+            shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
+
+            TextObject = GameObject.Find("shootStatsTextObject");
+            scoreText = TextObject.GetComponent<Text>();
+
+            shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                                    + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
+                                    + "shooter : Dr Blood\n"
+                                    + "2 point accuracy : " + ((1 - shooterProfile.Accuracy2Pt) * 100) + "\n"
+                                    + "3 point accuracy : " + ((1 - shooterProfile.Accuracy3Pt) * 100) + "\n"
+                                    + "4 point accuracy : " + ((1 - shooterProfile.Accuracy4Pt) * 100);
+        }
+        else
+        {
+            uiStatsEnabled = false;
+        }
 
         playerDunkPos = GameObject.Find("dunk_transform");
         basketBallState.Locked = false;
@@ -100,13 +119,6 @@ public class BasketBall : MonoBehaviour
 
         basketBallStats.PlayerName = shooterProfile.PlayerObjectName;
         basketBallStats.PlayerId = shooterProfile.PlayerId;
-
-        shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-                                + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-                                + "shooter : Dr Blood\n"
-                                + "2 point accuracy : " + ((1 - shooterProfile.Accuracy2Pt) * 100) + "\n"
-                                + "3 point accuracy : " + ((1 - shooterProfile.Accuracy3Pt) * 100) + "\n"
-                                + "4 point accuracy : " + ((1 - shooterProfile.Accuracy4Pt) * 100);
 
         // for test data
         //testStats = GetComponent<BasketballTestStats>();
@@ -130,13 +142,19 @@ public class BasketBall : MonoBehaviour
             dropShadow.SetActive(true);
         }
 
-        updateScoreText();
-        shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-                                + "shot distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") + " ft.\n"
-                                + "shooter : " + shooterProfile.PlayerDisplayName+ "\n"
-                                + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
-                                + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
-                                + "4 point accuracy : " + shooterProfile.Accuracy4Pt;
+        
+        if (uiStatsEnabled)
+        {
+            updateScoreText();
+            shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                                    + "shot distance : " +
+                                    (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
+                                    " ft.\n"
+                                    + "shooter : " + shooterProfile.PlayerDisplayName + "\n"
+                                    + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
+                                    + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
+                                    + "4 point accuracy : " + shooterProfile.Accuracy4Pt;
+        }
 
         // =========== this is the conditional for auto shooting =============================
         // this will work great for  playing against CPU
@@ -486,7 +504,7 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.FourPointerAttempts > 0)
         {
-            twoAccuracy = basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
+            fourAccuracy = basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
             return (fourAccuracy * 100);
         }
         else
@@ -500,6 +518,12 @@ public class BasketBall : MonoBehaviour
         get => lastShotDistance;
         set => lastShotDistance = value;
     }
+
+    public bool UiStatsEnabled
+    {
+        get => uiStatsEnabled;
+    }
+    public BasketBallState BasketBallState => basketBallState;
 }
 
 
