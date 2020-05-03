@@ -143,13 +143,13 @@ public class GameLevelManager : MonoBehaviour
             SceneManager.LoadScene("level_00_start");
         }
 
-        //pause ESC, submit, cancel
-        if (InputManager.GetButtonDown("Submit")
-            || InputManager.GetButtonDown("Cancel")
-            || InputManager.GetKeyDown(KeyCode.Escape))
-        {
-            paused = TogglePause();
-        }
+        ////pause ESC, submit, cancel
+        //if (InputManager.GetButtonDown("Submit")
+        //    || InputManager.GetButtonDown("Cancel")
+        //    || InputManager.GetKeyDown(KeyCode.Escape))
+        //{
+        //    paused = TogglePause();
+        //}
         // reload scene 4+2+0
         if (InputManager.GetKey(KeyCode.Alpha4)
             && InputManager.GetKey(KeyCode.Alpha2)
@@ -197,23 +197,23 @@ public class GameLevelManager : MonoBehaviour
         return SceneManager.GetActiveScene().name;
     }
 
-    bool TogglePause()
-    {
-        if (Time.timeScale == 0f)
-        {
-            //gameManager.instance.backgroundFade.SetActive(false);
-            Time.timeScale = 1f;
-            //resumeAllAudio();
-            return (false);
-        }
-        else
-        {
-            //gameManager.instance.backgroundFade.SetActive(true);
-            Time.timeScale = 0f;
-            //pauseAllAudio();
-            return (true);
-        }
-    }
+    //bool TogglePause()
+    //{
+    //    if (Time.timeScale == 0f)
+    //    {
+    //        //gameManager.instance.backgroundFade.SetActive(false);
+    //        Time.timeScale = 1f;
+    //        //resumeAllAudio();
+    //        return (false);
+    //    }
+    //    else
+    //    {
+    //        //gameManager.instance.backgroundFade.SetActive(true);
+    //        Time.timeScale = 0f;
+    //        //pauseAllAudio();
+    //        return (true);
+    //    }
+    //}
 
     //void pauseAllAudio()
     //{

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,8 @@ public class Timer : MonoBehaviour
     int seconds = 0;
     bool displayTimer = true;
 
-    Text timerText;
+    //Text timerText;
+    private Text timerText;
 
     private void Awake()
     {
@@ -29,12 +31,17 @@ public class Timer : MonoBehaviour
         minutes = Mathf.FloorToInt(timeRemaining / 60);
         seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
 
-        // time's up, pause and reste timer text
-        if (timeRemaining <= 0)
+        // time's up, pause and reset timer text
+        if (timeRemaining <= 0 )
         {
             displayTimer = false;
             timerText.text = "";
-            Time.timeScale = 0f;
+            // ball is in the air, let the shot go before pausing 
+            if (!BasketBall.instance.BasketBallState.InAir)
+            {
+                GameRules.instance.GameOver = true;
+                Time.timeScale = 0f;
+            }
         }
 
         if (displayTimer)
