@@ -145,3 +145,4 @@ MonoBehaviour:
   basketballHitFence: {fileID: 8300000, guid: ddea450a3d0e80440a7c23bc5edbbd5e, type: 3}
   basketballNetSwish: {fileID: 8300000, guid: 547f1fa8d0ff7ee4796187bae13fb2a0, type: 3}
   cameraFlash: {fileID: 8300000, guid: ba3f1e98376f94d42a5b742c4614c292, type: 3}
+  alien_walk: {fileID: 8300000, guid: 074beb67cd0b3ae4486ef067e5f8b9a8, type: 3}
