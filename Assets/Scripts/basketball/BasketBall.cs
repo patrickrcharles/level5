@@ -115,7 +115,7 @@ public class BasketBall : MonoBehaviour
         playerDunkPos = GameObject.Find("dunk_transform");
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
-        addAccuracyModifier = true;
+        addAccuracyModifier = false;
         playHitRimSound = true;
 
         basketBallStats.PlayerName = shooterProfile.PlayerObjectName;

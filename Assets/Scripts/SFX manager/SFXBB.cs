@@ -11,6 +11,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip basketballHitFence;
     public AudioClip basketballNetSwish;
     public AudioClip cameraFlash;
+    public AudioClip alien_walk;
 
     //public List<AudioClip> vanMusicPlayList;
 
