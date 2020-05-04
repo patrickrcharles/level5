@@ -132,9 +132,8 @@ public class BasketBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dropShadowPosition = dropShadow.transform.position;
-        //dropShadow.transform.position = new Vector3(transform.position.x, 0.01f, transform.root.position.z);
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
+
+        dropShadow.transform.position = new Vector3(transform.root.position.x, 0.02f, transform.root.position.z);
 
         // change this to reduce opacity
         if (!playerState.hasBasketball)
