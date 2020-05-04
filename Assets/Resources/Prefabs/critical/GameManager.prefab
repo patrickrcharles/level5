@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameModeId: 0
-  timeStart: 10
+  timeStart: 120
   basketBallStats: {fileID: 0}
 --- !u!1 &2626216200384811591
 GameObject:

@@ -764,7 +764,7 @@ Transform:
   m_GameObject: {fileID: 2894550862698043477}
   m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
   m_LocalPosition: {x: -0.02699995, y: 0.093, z: 0.065}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children:
   - {fileID: 2891427799102374527}
   - {fileID: 2900254722119646531}
@@ -1112,7 +1112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2895107841806107475}
   m_LocalRotation: {x: -0.11840396, y: 0, z: 0, w: 0.9929655}
-  m_LocalPosition: {x: 0, y: 0.077, z: 0.178}
+  m_LocalPosition: {x: 0, y: 0.117, z: 0.342}
   m_LocalScale: {x: 1.52, y: 1, z: 1.37}
   m_Children: []
   m_Father: {fileID: 2891379403393532027}
@@ -1239,7 +1239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fcf57ae7484169409620e1c24e0fe71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotMade: {fileID: 8300000, guid: 547f1fa8d0ff7ee4796187bae13fb2a0, type: 3}
   rimSprite: {fileID: 2893792992655179689}
 --- !u!1 &2895422687630524165
 GameObject:

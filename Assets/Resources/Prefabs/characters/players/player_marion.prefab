@@ -338,9 +338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 1435436915919056596}
-  spriteRenderer: {fileID: 6314891725102581112}
-  rigidBody: {fileID: 4913027158231136986}
   _angle: 60
   movementSpeed: 1
   jumpForce: 5
@@ -349,24 +346,16 @@ MonoBehaviour:
   walkMovementSpeed: 1
   attackMovementSpeed: 0.3
   hasBasketball: 0
-  soundPlayed: 0
   canMove: 1
-  bballRimVector: {x: 0, y: 0, z: 0}
   bballRelativePositioning: 0
   playerRelativePositioning: {x: 0, y: 0, z: 0}
   playerDistanceFromRim: 0
   playerHitbox: {fileID: 3292790863164195047}
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _notLocked: 1
-  _inAir: 0
-  _grounded: 1
   initialHeight: 0
   finalHeight: 0
-  gravityModifier: 0
   jumpPeakReached: 0
-  useGravity: 1
-  facingFront: 0
 --- !u!114 &6665326606686637652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,7 +363,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7911843558496966748}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
