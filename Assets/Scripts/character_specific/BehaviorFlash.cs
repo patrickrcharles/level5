@@ -20,21 +20,16 @@ public class BehaviorFlash : MonoBehaviour
 
     public GameObject pos1, pos2, pos3;
 
-    [SerializeField]
     float distanceFromStartPos;
-    [SerializeField]
     bool locked;
     GameObject player;
 
     private float movementSpeed;
     private Rigidbody rigidBody;
-    [SerializeField]
     private NavMeshAgent navmeshAgent;
-    [SerializeField]
     public SpriteRenderer currentSprite;
 
-    public GameObject playerHitbox;
-    [SerializeField]
+    //public GameObject playerHitbox;
     Animator anim;
     AnimatorStateInfo currentStateInfo;
 
@@ -57,6 +52,8 @@ public class BehaviorFlash : MonoBehaviour
 
     public float maxDistance;
 
+    private GameObject[] returnPositions;
+
     // Use this for initialization
     void Start()
     {
@@ -68,6 +65,13 @@ public class BehaviorFlash : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         navmeshAgent = GetComponent<NavMeshAgent>();
         anim = transform.Find("sprite").GetComponent<Animator>();
+
+        // positions flash will retreat to
+        returnPositions = GameObject.FindGameObjectsWithTag("flash_return_position");
+        pos1 = returnPositions[0];
+        pos2 = returnPositions[1];
+        pos3 = returnPositions[2];
+
         locked = false;
     }
 
