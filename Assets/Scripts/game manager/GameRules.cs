@@ -120,12 +120,14 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 4)
         {
-            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00");
+            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
+                +"\ncurrent distance : "+ (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
         }
         if (gameModeId == 5)
         {
-            displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance * 6).ToString("0.00");
+            displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance * 6).ToString("0.00")
+            +"\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
         }
     }
