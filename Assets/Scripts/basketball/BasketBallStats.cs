@@ -12,11 +12,13 @@ public class BasketBallStats : MonoBehaviour
     public float _totalPoints;
     public float _twoPointerMade;
     public float _threePointerMade;
-
     public float _fourPointerMade;
+    public float _sevenPointerMade;
+
     public float _twoPointerAttempts;
     public float _threePointerAttempts;
     public float _fourPointerAttempts;
+    public float _sevenPointerAttempts;
 
     public float _shotAttempt;
     public float _shotMade;
@@ -99,5 +101,16 @@ public class BasketBallStats : MonoBehaviour
     {
         get => _fourPointerAttempts;
         set => _fourPointerAttempts = value;
+    }
+    public float SevenPointerMade
+    {
+        get => _sevenPointerMade;
+        set => _sevenPointerMade = value;
+    }
+
+    public float SevenPointerAttempts
+    {
+        get => _sevenPointerAttempts;
+        set => _sevenPointerAttempts = value;
     }
 }

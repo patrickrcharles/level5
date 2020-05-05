@@ -105,17 +105,20 @@ public class GameRules : MonoBehaviour
     {
         if (gameModeId == 1)
         {
-            displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats._totalPoints;
+            displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats._totalPoints
+                + "\ncurrent shot : "+ BasketBall.instance.BasketBallState.CurrentShotType;
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPoints;
         }
         if (gameModeId == 2)
         {
-            displayCurrentScoreText.text = "3s made : " + BasketBall.instance.BasketBallStats.ThreePointerMade;
+            displayCurrentScoreText.text = "3s made : " + BasketBall.instance.BasketBallStats.ThreePointerMade
+                + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
             displayHighScoreText.text = "high score : " + PlayerData.instance.ThreePointerMade;
         }
         if (gameModeId == 3)
         {
-            displayCurrentScoreText.text = "4s made : " + BasketBall.instance.BasketBallStats.FourPointerMade;
+            displayCurrentScoreText.text = "4s made : " + BasketBall.instance.BasketBallStats.FourPointerMade 
+                + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
             displayHighScoreText.text = "high score : " + PlayerData.instance.FourPointerMade;
         }
         if (gameModeId == 4)
@@ -176,6 +179,8 @@ public class GameRules : MonoBehaviour
                          + BasketBall.instance.getThreePointAccuracy().ToString("00.0") + "%\n"
                          + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "    "
                          + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
+                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
+                         + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.\n"
                          + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2) * 6f).ToString("0.00") + " ft.";
 

@@ -70,7 +70,12 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 4;
                 _basketBallStats.FourPointerMade++;
                 _basketBallStats.ShotMade++;
-
+            }
+            if (_basketBallState.SevenAttempt)
+            {
+                _basketBallStats.TotalPoints += 7;
+                _basketBallStats.SevenPointerMade++;
+                _basketBallStats.ShotMade++;
             }
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;

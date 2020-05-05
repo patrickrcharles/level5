@@ -11,13 +11,16 @@ public class BasketBallState : MonoBehaviour
     // constant values that have to be hardcoded
     const float _threePointDistance = 3.8f;
     const float _fourPointDistance = 5.2f;
+    const float _sevenPointDistance = 16.7f;
 
     private bool _twoPoints;
     private bool _threePoints;
     private bool _fourPoints;
+    private bool _sevenPoints;
     private bool _twoAttempt;
     private bool _threeAttempt;
     private bool _fourAttempt;
+    private bool _sevenAttempt;
     private bool _dunk;
     private bool _inAir;
     //private bool _facingFront;
@@ -36,6 +39,10 @@ public class BasketBallState : MonoBehaviour
 
     private GameObject player;
     private PlayerController playerState;
+
+    private int _currentShotType;
+    public int CurrentShotType => _currentShotType;
+
 
     void Start()
     {
@@ -58,6 +65,7 @@ public class BasketBallState : MonoBehaviour
         if (BallDistanceFromRim < ThreePointDistance)
         {
             TwoPoints = true;
+            _currentShotType = 2;
         }
         else
         {
@@ -67,27 +75,35 @@ public class BasketBallState : MonoBehaviour
         if (BallDistanceFromRim > ThreePointDistance && BallDistanceFromRim < FourPointDistance)
         {
             ThreePoints = true;
+            _currentShotType = 3;
         }
         else
         {
             ThreePoints = false;
         }
 
-        if (BallDistanceFromRim > FourPointDistance)
+        if (BallDistanceFromRim > FourPointDistance && BallDistanceFromRim < SevenPointDistance)
         {
             FourPoints = true;
+            _currentShotType = 4;
         }
         else
         {
             FourPoints = false;
         }
+
+        if (BallDistanceFromRim > SevenPointDistance)
+        {
+            SevenPoints = true;
+            _currentShotType = 7;
+        }
+        else
+        {
+            SevenPoints = false;
+        }
     }
 
-    public bool IsTarget
-    {
-        get => _isTarget;
-        set => _isTarget = value;
-    }
+
 
     public bool TwoPoints
     {
@@ -107,6 +123,12 @@ public class BasketBallState : MonoBehaviour
         set => _fourPoints = value;
     }
 
+    public bool SevenPoints
+    {
+        get => _sevenPoints;
+        set => _sevenPoints = value;
+    }
+
     public bool TwoAttempt
     {
         get => _twoAttempt;
@@ -123,6 +145,12 @@ public class BasketBallState : MonoBehaviour
     {
         get => _fourAttempt;
         set => _fourAttempt = value;
+    }
+
+    public bool SevenAttempt
+    {
+        get => _sevenAttempt;
+        set => _sevenAttempt = value;
     }
 
     public bool Dunk
@@ -181,6 +209,11 @@ public class BasketBallState : MonoBehaviour
     public float FourPointDistance
     {
         get => _fourPointDistance;
+    }
+
+    public float SevenPointDistance
+    {
+        get => _sevenPointDistance;
     }
 
 

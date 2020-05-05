@@ -51,6 +51,7 @@ public class BasketBall : MonoBehaviour
     float twoAccuracy;
     float threeAccuracy;
     float fourAccuracy;
+    float sevenAccuracy;
 
     private float lastShotDistance;
 
@@ -223,6 +224,11 @@ public class BasketBall : MonoBehaviour
             {
                 basketBallState.FourAttempt = true;
                 basketBallStats.FourPointerAttempts++;
+            }
+            if (basketBallState.SevenPoints)
+            {
+                basketBallState.SevenAttempt = true;
+                basketBallStats.SevenPointerAttempts++;
             }
 
             //launch ball to goal      
@@ -456,6 +462,7 @@ public class BasketBall : MonoBehaviour
                          + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "\n" //+ " accuracy : " + getTwoPointAccuracy() + "%\n"
                          + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "\n"// +" accuracy : " + getThreePointAccuracy() + "%\n"
                          + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "\n"// + " accuracy : " + getFourPointAccuracy() + "%\n"
+                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "\n"// + " accuracy : " + getFourPointAccuracy() + "%\n"
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
     }
@@ -505,6 +512,19 @@ public class BasketBall : MonoBehaviour
         {
             fourAccuracy = basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
             return (fourAccuracy * 100);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public float getSevenPointAccuracy()
+    {
+        if (basketBallStats.FourPointerAttempts > 0)
+        {
+            sevenAccuracy = basketBallStats.SevenPointerMade / basketBallStats.SevenPointerAttempts;
+            return (sevenAccuracy * 100);
         }
         else
         {
