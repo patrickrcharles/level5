@@ -793,47 +793,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7293220425333525689, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.033
-      objectReference: {fileID: 0}
-    - target: {fileID: 7882584539614933877, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: jumpForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: criticalPercent
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: accuracy3pt
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 3123467015696178035, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: accuracy4pt
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5617727460697569618, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: pullSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7632455355797941681, guid: 8bbcf66f791500b469e31ff0f1f71718,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 849796fa8de6b6d49833b7e0d1d516ff,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bbcf66f791500b469e31ff0f1f71718, type: 3}
 --- !u!1001 &179381178
