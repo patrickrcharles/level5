@@ -229,9 +229,6 @@ public class BasketBall : MonoBehaviour
             Launch();
 
 
-            //Jessica might take a photo
-            BehaviorJessica.instance.playAnimationTakePhoto();
-
             //calculate shot distance 
             Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
                 0, basketBallState.BasketBallTarget.transform.position.z);
@@ -346,6 +343,8 @@ public class BasketBall : MonoBehaviour
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
         {
             accuracyModifierX = 0;
+            //Jessica might take a photo
+            BehaviorJessica.instance.playAnimationTakePhoto();
         }
         else
         {

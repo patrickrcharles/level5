@@ -23,7 +23,7 @@ public class BehaviorJessica : MonoBehaviour
     }
 
 
-    public void playAnimationTakePhoto()
+    public void rollForTakePhoto()
     {
         if (rollForPhotoChance(percentChanceOfTakingPhoto) && playerState.playerDistanceFromRim < 10)
         {
@@ -31,6 +31,11 @@ public class BehaviorJessica : MonoBehaviour
             //StartCoroutine(wait(1));
             takePhoto();
         }
+    }
+
+    public void playAnimationTakePhoto()
+    {
+        takePhoto();
     }
 
     IEnumerator wait(float seconds)
