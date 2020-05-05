@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShooterProfile : MonoBehaviour
 {
@@ -48,20 +49,25 @@ public class ShooterProfile : MonoBehaviour
         //Instantiate(shooterProfileObject);
 
         ////basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-       // intializeShooterStatsFromProfile();
+
+        // if this isnt the start screen
+        if (!SceneManager.GetActiveScene().name.Equals("level_00_start"))
+        {
+            intializeShooterStatsFromProfile();
+        }
     }
 
-    //private void intializeShooterStatsFromProfile()
-    //{
-    //    Debug.Log("initializeStats()");
-    //    Accuracy2Pt = shooterProfile.Accuracy2pt;
-    //    Accuracy3Pt = shooterProfile.Accuracy3pt;
-    //    Accuracy4Pt = shooterProfile.Accuracy4pt;
-    //    JumpForce = shooterProfile.JumpForce;
-    //    Debug.Log(shooterProfile.JumpForce);
-    //    CriticalPercent = shooterProfile.criticalPercent;
-
-    //}
+    private void intializeShooterStatsFromProfile()
+    {
+        Debug.Log("initializeStats()");
+        Accuracy2Pt = GameOptions.accuracy2pt;
+        Accuracy3Pt = GameOptions.accuracy3pt;
+        Accuracy4Pt = GameOptions.accuracy4pt;
+        JumpForce = GameOptions.jumpForce;
+        CriticalPercent = GameOptions.criticalPercent;
+        RunSpeed = GameOptions.runSpeed;
+        Speed = GameOptions.speed;
+    }
 
     public float calculateJumpValueToPercent()
     {

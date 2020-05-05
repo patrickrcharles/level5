@@ -391,11 +391,23 @@ public class StartManager : MonoBehaviour
 
     public void loadScene()
     {
+        // apply selected player stats to game options, which will be loaded into Player on spawn
+        setPlayerProfileStats();
+
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        ////Debug.Log("player : " + GameOptions.playerSelected);
-        ////Debug.Log("level : " + GameOptions.levelSelected);
-        ////Debug.Log("scene name : " + sceneName);
         SceneManager.LoadScene(sceneName);
+    }
+
+    private void setPlayerProfileStats()
+    {
+        GameOptions.accuracy2pt = playerSelectedData[playerSelectedIndex].Accuracy2Pt;
+        GameOptions.accuracy3pt = playerSelectedData[playerSelectedIndex].Accuracy3Pt;
+        GameOptions.accuracy4pt = playerSelectedData[playerSelectedIndex].Accuracy4Pt;
+        GameOptions.criticalPercent = playerSelectedData[playerSelectedIndex].CriticalPercent;
+        GameOptions.jumpForce = playerSelectedData[playerSelectedIndex].JumpForce;
+        GameOptions.speed = playerSelectedData[playerSelectedIndex].Speed;
+        GameOptions.runSpeed = playerSelectedData[playerSelectedIndex].RunSpeed;
+        GameOptions.shootAngle = playerSelectedData[playerSelectedIndex].ShootAngle;
     }
 }
