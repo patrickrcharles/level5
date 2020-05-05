@@ -69,7 +69,7 @@ public class GameLevelManager : MonoBehaviour
     //List<string> scenes = new List<string>();
 
     [SerializeField]
-    private GameObject flashObject;
+    private GameObject npcObject;
 
 
     void Awake()
@@ -100,8 +100,6 @@ public class GameLevelManager : MonoBehaviour
             basketballPrefab = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
             Instantiate(basketballPrefab, basketballSpawnLocation.transform.position, Quaternion.identity);
         }
-
-
     }
 
     void Start()
@@ -118,13 +116,15 @@ public class GameLevelManager : MonoBehaviour
 
         InitializePlayer();
 
-        // if flash is selected player, disable flash auto player
-        flashObject = GameObject.Find("flash_auto_play");
+        // if an npc is in scene, disable the npc if it is the player selected
+        //* this is specific to flash right now
+        npcObject = GameObject.FindGameObjectWithTag("auto_npc");
+
         if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
-             &&GameOptions.playerSelected.Contains("flash") 
-             && flashObject != null )
+             && GameOptions.playerSelected.Contains("flash") 
+             && npcObject != null )
         {
-            flashObject.SetActive(false);
+            npcObject.SetActive(false);
         }
         GameOptions.printCurrentValues();
     }
