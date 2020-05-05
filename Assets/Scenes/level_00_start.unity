@@ -847,8 +847,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 0.000030517578}
-  m_SizeDelta: {x: 100, y: 400}
+  m_AnchoredPosition: {x: -30, y: 0}
+  m_SizeDelta: {x: 150, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100726092
 MonoBehaviour:
@@ -1466,8 +1466,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1279, y: -292}
-  m_SizeDelta: {x: 600, y: 400}
+  m_AnchoredPosition: {x: 1279, y: -263}
+  m_SizeDelta: {x: 600, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1862415348
 MonoBehaviour:
@@ -1517,7 +1517,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2 pt \n3 pt \n4 pt \njump \nrange \nluck "
+  m_Text: "2 pt \n3 pt \n4 pt \n7 pt\nspeed\njump \nrange \nluck "
 --- !u!222 &1862415350
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -55,9 +55,12 @@ MonoBehaviour:
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
+  speedStatFloor: 2
+  speedStatCeiling: 6
   accuracy2pt: 90
   accuracy3pt: 85
   accuracy4pt: 80
+  accuracy7pt: 75
   shooterProfilePrefabName: 
   jumpForce: 3.8
   speed: 2
@@ -67,3 +70,5 @@ MonoBehaviour:
   release: 0
   criticalPercent: 40
   shootAngle: 60
+  level: 0
+  experience: 0

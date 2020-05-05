@@ -14,9 +14,14 @@ public class ShooterProfile : MonoBehaviour
 
     [SerializeField] private float jumpStatFloor;
     [SerializeField] private float jumpStatCeiling;
+
+    [SerializeField] private float speedStatFloor;
+    [SerializeField] private float speedStatCeiling;
+
     [SerializeField] private float accuracy2pt;
     [SerializeField] private float accuracy3pt;
     [SerializeField] private float accuracy4pt;
+    [SerializeField] private float accuracy7pt;
 
     [SerializeField] private string shooterProfilePrefabName;
 
@@ -80,6 +85,21 @@ public class ShooterProfile : MonoBehaviour
 
         //Debug.Log(jumpStatCeiling - jumpStatFloor);
         //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
+
+        return percent;
+    }
+
+    public float calculateSpeedToPercent()
+    {
+
+        //modifier
+        float modifier = 100 / ((speedStatCeiling - speedStatFloor) * 10);
+        // percent
+        float percent = (runSpeed - speedStatFloor) * modifier * 10;
+
+        //Debug.Log(jumpStatCeiling - jumpStatFloor);
+        //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
+
 
         return percent;
     }
@@ -154,6 +174,12 @@ public class ShooterProfile : MonoBehaviour
     {
         get => accuracy4pt;
         set => accuracy4pt = value;
+    }
+
+    public float Accuracy7Pt
+    {
+        get => accuracy7pt;
+        set => accuracy7pt = value;
     }
 
     public string ShooterProfilePrefabName

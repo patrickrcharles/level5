@@ -20,6 +20,7 @@ public  class GameOptions : MonoBehaviour
     static public float accuracy2pt;
     static public float accuracy3pt;
     static public float accuracy4pt;
+    static public float accuracy7pt;
 
     static public float jumpForce;
     static public float speed;

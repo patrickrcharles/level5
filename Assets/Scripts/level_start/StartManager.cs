@@ -247,6 +247,8 @@ public class StartManager : MonoBehaviour
         playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
+            + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
@@ -404,6 +406,7 @@ public class StartManager : MonoBehaviour
         GameOptions.accuracy2pt = playerSelectedData[playerSelectedIndex].Accuracy2Pt;
         GameOptions.accuracy3pt = playerSelectedData[playerSelectedIndex].Accuracy3Pt;
         GameOptions.accuracy4pt = playerSelectedData[playerSelectedIndex].Accuracy4Pt;
+        GameOptions.accuracy7pt = playerSelectedData[playerSelectedIndex].Accuracy7Pt;
         GameOptions.criticalPercent = playerSelectedData[playerSelectedIndex].CriticalPercent;
         GameOptions.jumpForce = playerSelectedData[playerSelectedIndex].JumpForce;
         GameOptions.speed = playerSelectedData[playerSelectedIndex].Speed;
