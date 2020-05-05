@@ -50,8 +50,9 @@ public class ShooterProfile : MonoBehaviour
 
         ////basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
 
-        // if this isnt the start screen
-        if (!SceneManager.GetActiveScene().name.Equals("level_00_start"))
+        // only init if level 1 or 2. other levels still for testing
+        if (GameOptions.levelSelectedBuildIndex == 1
+            || GameOptions.levelSelectedBuildIndex ==2)
         {
             intializeShooterStatsFromProfile();
         }

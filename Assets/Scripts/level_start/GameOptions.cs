@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public  class GameOptions : MonoBehaviour
 {
     static public String playerSelected;
     [SerializeField]
     static public String levelSelected;
+    static public int levelSelectedRootCount;
+    static public int levelSelectedBuildIndex;
     [SerializeField]
     static public String levelSelectedName;
     static public String gameModeSelectedName;
@@ -32,6 +35,16 @@ public  class GameOptions : MonoBehaviour
     //static public int experience;
     //static public decimal money;
 
+    void Awake()
+    {
+        levelSelectedRootCount = SceneManager.GetActiveScene().rootCount;
+        levelSelectedName = SceneManager.GetActiveScene().name;
+        levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
+
+        Debug.Log("levelSected : " + levelSelected);
+        Debug.Log("levelSectedName : " + levelSelectedName);
+        Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
+    }
 
     static public void printCurrentValues()
     {
