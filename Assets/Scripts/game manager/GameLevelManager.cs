@@ -164,18 +164,27 @@ public class GameLevelManager : MonoBehaviour
             locked = true;
             _basketballState.toggleAddAccuracyModifier();
             locked = false;
-        }
-
-        //run stat analysis
+        } 
+        //turn on : toggle run
         if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha0)
+            && InputManager.GetKeyDown(KeyCode.Alpha1)
             && !locked)
         {
             locked = true;
-            _basketballState.testConclusions.getDataFromList();
-            _basketballState.testConclusions.printConclusions();
+            PlayerState.toggleRun();
             locked = false;
         }
+
+        ////run stat analysis
+        //if (InputManager.GetKey(KeyCode.LeftShift)
+        //    && InputManager.GetKeyDown(KeyCode.Alpha0)
+        //    && !locked)
+        //{
+        //    locked = true;
+        //    _basketballState.testConclusions.getDataFromList();
+        //    _basketballState.testConclusions.printConclusions();
+        //    locked = false;
+        //}
     }
 
     // set up player references that other scripts use

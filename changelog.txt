@@ -17,3 +17,12 @@ change log
 - added quit to start menu command. press left or right shift + P
 - changed quit game command to left or right sift + Q
 
+2.0.1
+- fixed marion animation
+- fixed woody animation
+- fixed drop shadow position
+- added new character Hollywood
+- fixed issue with basketball going over the fence on the scrapyard
+- Jessica now take a photo on each ctiical roll as a notifier
+- updated Circle K level boundaries
+-added toggle run ON/OFF switch

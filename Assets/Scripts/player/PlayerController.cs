@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     // jump vars 
     [SerializeField]
     float jumpForce;
-    public float moonwalkMovementSpeed;
+    public float runMovementSpeed;
     public float basketballRunSpeed;
     public float walkMovementSpeed;
     public float attackMovementSpeed;
@@ -45,7 +45,10 @@ public class PlayerController : MonoBehaviour
     //float xMin, xMax, zMin, zMax, yMin, yMax;
 
     // player state bools
-    private bool moonwalking;
+    [SerializeField]
+    private bool running;
+    [SerializeField]
+    private bool runningToggle;
     public bool hasBasketball;
     //public bool smokingEnabled = true;
     //public bool soundPlayed;
@@ -151,16 +154,28 @@ public class PlayerController : MonoBehaviour
         currentState = currentStateInfo.fullPathHash;
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
-        playerRelativePositioning =  rigidBody.position - bballRimVector;
+        playerRelativePositioning = rigidBody.position - bballRimVector;
 
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
+        if ((InputManager.GetButton("Run") && canMove && !inAir))
+        {
+            running = true;
+        }
+        else
+        {
+            anim.SetBool("moonwalking", false);
+            running = false;
+            moonwalkAudio.enabled = false;
+        }
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        if (rigidBodyYVelocity < 0 && inAir) {
+        if (rigidBodyYVelocity < 0 && inAir)
+        {
             jumpPeakReached = true;
         }
-        else{
+        else
+        {
             jumpPeakReached = false;
         }
 
@@ -170,8 +185,9 @@ public class PlayerController : MonoBehaviour
         {
             facingFront = false;
         }
-        else{
-            facingFront = true ;
+        else
+        {
+            facingFront = true;
         }
 
         // set player shoot anim based on position
@@ -182,7 +198,7 @@ public class PlayerController : MonoBehaviour
         }
         else // side of goal, relative postion
         {
-           // setPlayerAnimTrigger("basketballShoot");
+            // setPlayerAnimTrigger("basketballShoot");
             setPlayerAnim("basketballFacingFront", false);
         }
 
@@ -192,12 +208,19 @@ public class PlayerController : MonoBehaviour
             || inAir
             || currentState == bIdle)
         {
-            movementSpeed = walkMovementSpeed;
+            if (runningToggle)
+            {
+                movementSpeed = runMovementSpeed;
+            }
+            else
+            {
+                movementSpeed = walkMovementSpeed;
+            }
         }
 
         else if (currentState == mWalk)
         {
-            movementSpeed = moonwalkMovementSpeed;
+            movementSpeed = runMovementSpeed;
         }
 
         //------------------ jump -----------------------------------
@@ -231,7 +254,7 @@ public class PlayerController : MonoBehaviour
 
     private void playerJump()
     {
-       //Debug.Log("player jumped");
+        //Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
@@ -259,38 +282,46 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("walking", false);
         }
         if (moveHorz > 0 && !facingRight && canMove)
-        {  
+        {
             Flip();
         }
         if (moveHorz < 0f && facingRight && canMove)
         {
             Flip();
         }
-        if ((InputManager.GetButton("Run") && canMove && !inAir))
+
+        // if running enabled
+        if (runningToggle && canMove && !inAir)
         {
+            Debug.Log("if (runningToggle && canMove && !inAir)");
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);
-                if (anim.GetBool("moonwalking"))
-                {
-                    moonwalking = true;
-                    //moonwalkAudio.enabled = true;
-                }
+                movementSpeed = runMovementSpeed;
             }
+
             if (hasBasketball)
             {
                 movementSpeed = basketballRunSpeed;
             }
-            else
-            {
-                movementSpeed = moonwalkMovementSpeed;
-            }
+            //else
+            //{
+            //    movementSpeed = runMovementSpeed;
+            //}
         }
-        else
+
+        if (running && canMove && !inAir)
         {
-            anim.SetBool("moonwalking", false);
-            moonwalking = false;
-            moonwalkAudio.enabled = false;
+            if (!hasBasketball)
+            {
+                anim.SetBool("moonwalking", true);
+                movementSpeed = runMovementSpeed;
+            }
+
+            if (hasBasketball)
+            {
+                movementSpeed = basketballRunSpeed;
+            }
         }
     }
 
@@ -324,7 +355,7 @@ public class PlayerController : MonoBehaviour
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
     {
-       // moonwalkAudio.enabled = false;
+        // moonwalkAudio.enabled = false;
     }
 
     //*** need to update this
@@ -371,5 +402,12 @@ public class PlayerController : MonoBehaviour
     {
         get => _facingFront;
         set => _facingFront = value;
+    }
+
+    public void toggleRun()
+    {
+        runningToggle = !runningToggle;
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "running = " + running;
     }
 }
