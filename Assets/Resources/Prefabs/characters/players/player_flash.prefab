@@ -30,7 +30,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0.056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2099773068089314521}
+  m_Father: {fileID: 4379450272380598676}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 13.6, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -126,7 +126,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2099773068089314521}
+  - component: {fileID: 4379450272380598676}
   - component: {fileID: 2147443945148577092}
   - component: {fileID: 6689865231676494119}
   - component: {fileID: 404246391382475210}
@@ -141,16 +141,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2099773068089314521
-RectTransform:
+--- !u!4 &4379450272380598676
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3760319889797994434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -6.874}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.17, y: 0.71, z: -6.874}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 22232705613168078}
   - {fileID: 5720844626189642068}
@@ -160,11 +160,6 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.17, y: 0.71}
-  m_SizeDelta: {x: 1.28, y: 1.28}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!54 &2147443945148577092
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,12 +189,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _angle: 60
-  movementSpeed: 1
+  movementSpeed: 2
   jumpForce: 5
-  moonwalkMovementSpeed: 4.5
-  basketballRunSpeed: 2.5
-  walkMovementSpeed: 1
+  runMovementSpeed: 4
+  basketballRunSpeed: 3.5
+  walkMovementSpeed: 2
   attackMovementSpeed: 0.3
+  running: 0
+  runningToggle: 0
   hasBasketball: 0
   canMove: 1
   bballRelativePositioning: 0
@@ -218,7 +215,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3760319889797994434}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
@@ -411,7 +408,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.0043, z: 0.105}
   m_LocalScale: {x: 1.24, y: 0.27, z: 0.2}
   m_Children: []
-  m_Father: {fileID: 2099773068089314521}
+  m_Father: {fileID: 4379450272380598676}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4185493349338736985
@@ -470,7 +467,7 @@ Transform:
   m_LocalPosition: {x: -0.11, y: 0.029999997, z: 0.09700012}
   m_LocalScale: {x: 1, y: 2.38, z: 1}
   m_Children: []
-  m_Father: {fileID: 2099773068089314521}
+  m_Father: {fileID: 4379450272380598676}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1743208263222108623
@@ -549,7 +546,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.321, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2099773068089314521}
+  m_Father: {fileID: 4379450272380598676}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8381624488019595129
@@ -582,7 +579,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.318, z: 0.002}
   m_LocalScale: {x: 0.4962482, y: 0.9166185, z: 0.25}
   m_Children: []
-  m_Father: {fileID: 2099773068089314521}
+  m_Father: {fileID: 4379450272380598676}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3256214575272927844

@@ -699,13 +699,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _angle: 60
-  movementSpeed: 1
+  movementSpeed: 2
   jumpForce: 5
-  moonwalkMovementSpeed: 4.5
-  basketballRunSpeed: 2.5
-  walkMovementSpeed: 1
+  runMovementSpeed: 4
+  basketballRunSpeed: 3.5
+  walkMovementSpeed: 2
   attackMovementSpeed: 0.3
-  hasBasketball: 1
+  running: 0
+  runningToggle: 0
+  hasBasketball: 0
   canMove: 1
   bballRelativePositioning: 0
   playerRelativePositioning: {x: 0, y: 0, z: 0}
