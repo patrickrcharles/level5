@@ -14,11 +14,15 @@ public class PlayerData : MonoBehaviour
     public  float _totalPoints;
     public  float _twoPointerMade;
     public  float _threePointerMade;
+    public  float _sevenPointerMade;
+
 
     public  float _fourPointerMade;
     public  float _twoPointerAttempts;
     public  float _threePointerAttempts;
     public  float _fourPointerAttempts;
+    public  float _sevenPointerAttempts;
+
 
     public  float _shotAttempt;
     public  float _shotMade;
@@ -83,10 +87,10 @@ public class PlayerData : MonoBehaviour
         Debug.Log("saveData");
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
-        if (IsCheating && GameOptions.gameModeSelected != 6)
+        if (IsCheating && GameOptions.gameModeSelected != 7)
         {
-            Debug.Log("dont save");
-            Debug.Log("ischeating : "+IsCheating + " mode : "+ GameOptions.gameModeSelected);
+            //Debug.Log("dont save");
+            //Debug.Log("ischeating : "+IsCheating + " mode : "+ GameOptions.gameModeSelected);
             return;
             //if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 6)
             //{
@@ -171,21 +175,27 @@ public class PlayerData : MonoBehaviour
             _fourPointerMade = 0;
             loadStats();
         }
+        if (_sevenPointerMade < basketBallStats.SevenPointerMade && GameOptions.gameModeSelected == 4)
+        {
+            PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_fourPointersMade", (int)(basketBallStats.FourPointerMade));
+            _fourPointerMade = 0;
+            loadStats();
+        }
         // save mode 4 (long shot)
-        if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 4)
+        if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 5)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMade", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
             _longestShotMade = 0;
             loadStats();
         }
         // save mode 5 (total shot distance made)
-        if (_totalDistance < (basketBallStats.TotalDistance * 6) && GameOptions.gameModeSelected == 5)
+        if (_totalDistance < (basketBallStats.TotalDistance * 6) && GameOptions.gameModeSelected == 6)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_totalDistance", (float)Math.Round(basketBallStats.TotalDistance * 6, 4));
             _totalDistance = 0;
             loadStats();
         }
-        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 6)
+        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 7)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
             _longestShotMadeFreePlay = 0;
@@ -233,6 +243,7 @@ public class PlayerData : MonoBehaviour
 
         _threePointerMade = PlayerPrefs.GetInt("mode_" + 2 + "_threePointersMade");
         _fourPointerMade = PlayerPrefs.GetInt("mode_" + 3 + "_fourPointersMade");
+        _sevenPointerMade = PlayerPrefs.GetInt("mode_" + 4 + "_sevenPointersMade");
 
         //_twoPointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_twoPointersAttempt");
         //_threePointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_threePointersAttempt");
@@ -284,6 +295,10 @@ public class PlayerData : MonoBehaviour
         PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
     }
 
+    public float SevenPointerAttempts
+    {
+        get => _sevenPointerAttempts;
+    }
     public float LongestShotMadeFreePlay => _longestShotMadeFreePlay;
 
     public int PlayerId => _playerId;
@@ -313,5 +328,10 @@ public class PlayerData : MonoBehaviour
     public float TotalDistance => _totalDistance;
 
     public static PlayerData Instance => instance;
+
+    public float SevenPointerMade
+    {
+        get => _sevenPointerMade;
+    }
 
 }

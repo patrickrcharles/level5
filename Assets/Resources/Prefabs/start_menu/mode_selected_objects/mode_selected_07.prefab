@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5648804619900406356}
   - component: {fileID: 5648804619900406355}
   m_Layer: 0
-  m_Name: mode_selected_07
+  m_Name: mode_selected_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 4
-  modelDisplayName: Total 7 pointers
-  modeObjectName: mode_04
-  modeDescription: Make the most 7 pointers you can in 2 minutes
+  modeId: 7
+  modelDisplayName: Free Play
+  modeObjectName: mode_07
+  modeDescription: Free play

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5648804619900406356}
   - component: {fileID: 5648804619900406355}
   m_Layer: 0
-  m_Name: mode_selected_06
+  m_Name: mode_selected_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeId: 6
-  modelDisplayName: Free Play
+  modelDisplayName: 'Total Distance '
   modeObjectName: mode_06
-  modeDescription: Free play
+  modeDescription: Get the highest total distance of all shots made you can

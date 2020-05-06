@@ -118,17 +118,23 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 4)
         {
+            displayCurrentScoreText.text = "7s made : " + BasketBall.instance.BasketBallStats.SevenPointerMade
+                                                        + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.SevenPointerMade;
+        }
+        if (gameModeId == 5)
+        {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
                 +"\ncurrent distance : "+ (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
         }
-        if (gameModeId == 5)
+        if (gameModeId == 6)
         {
             displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance * 6).ToString("0.00")
             +"\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
         }
-        if (gameModeId == 6)
+        if (gameModeId == 7)
         {
             //Debug.Log("gamerules");
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
@@ -164,9 +170,13 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 4)
         {
-            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade * 6).ToString("0.00") + " ft.\n\n"+ getStatsTotals();
+            displayText = "You made " + basketBallStats.SevenPointerMade + " total 4 pointers\n\n" + getStatsTotals();
         }
         if (gameModeId == 5)
+        {
+            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade * 6).ToString("0.00") + " ft.\n\n"+ getStatsTotals();
+        }
+        if (gameModeId == 6)
         {
             displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00")+ " ft.\n\n"+ getStatsTotals();
         }
