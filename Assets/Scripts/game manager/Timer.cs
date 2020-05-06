@@ -35,7 +35,7 @@ public class Timer : MonoBehaviour
         // timer is 2 minutes
         timeStart = 120;
         // mode 6 is free play. this turns off timer
-        if (GameOptions.gameModeSelected != 6)
+        if (GameOptions.gameModeSelected != 7)
         {
             timerEnabled = true;
         }
