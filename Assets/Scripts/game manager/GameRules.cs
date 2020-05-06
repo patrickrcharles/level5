@@ -20,7 +20,8 @@ public class GameRules : MonoBehaviour
 
     private bool gameOver;
     private bool gameStart;
-    private bool summaryDisplay;
+    [SerializeField]
+    private bool gameRulesEnabled;
 
     [SerializeField]
     private float timeStart;
@@ -75,7 +76,11 @@ public class GameRules : MonoBehaviour
         //}
 
         // update current score
-        setScoreDisplayText();
+        if (gameRulesEnabled)
+        {
+            setScoreDisplayText();
+        }
+
         if (gameOver)
         {
             displayCurrentScoreText.text = "";
@@ -88,7 +93,6 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "";
 
             Pause.instance.TogglePause();
-            summaryDisplay = true;
             displayScoreText.text = getDisplayText(GameModeId);
             //save
             PlayerData.instance.saveStats();

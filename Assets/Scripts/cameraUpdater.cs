@@ -1,9 +1,9 @@
 ﻿
- using UnityEngine;
- using System.Collections;
- using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine;
+using System.Collections;
+using UnityEngine.Experimental.PlayerLoop;
 
- public class cameraUpdater : MonoBehaviour
+public class cameraUpdater : MonoBehaviour
 {
 
     public Transform player;
@@ -54,21 +54,9 @@
         player = GameLevelManager.instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
-        if (cam.name.Contains("192"))
-        {
-            camera128px = false;
-            camera192px = true;
-            addToCameraPosY = 1.835f;
-        }
-        else
-        {
-            camera128px = true;
-            camera192px = false;
-            addToCameraPosY = 1.2f;
-        }
-
+        addToCameraPosY = 1.835f;
     }
-    
+
 
     void Update()
     {
@@ -118,7 +106,7 @@
 
         if (distanceRimFromPlayer > startZoomDistance
             && !cameraZoomedOut)
-            //&& cam.transform.position.z > zMin)
+        //&& cam.transform.position.z > zMin)
         {
             zoomOut();
         }
@@ -130,7 +118,7 @@
 
     private void zoomOut()
     {
-        if( ZoomAmount == -20)
+        if (ZoomAmount == -20)
         {
             cameraZoomedOut = true;
         }
@@ -148,7 +136,7 @@
     }
     private void zoomIn()
     {
-        if(ZoomAmount == 0.5f)
+        if (ZoomAmount == 0.5f)
         {
             cameraZoomedOut = false;
         }

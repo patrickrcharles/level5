@@ -293,7 +293,7 @@ public class PlayerController : MonoBehaviour
         // if running enabled
         if (runningToggle && canMove && !inAir)
         {
-            Debug.Log("if (runningToggle && canMove && !inAir)");
+            //Debug.Log("if (runningToggle && canMove && !inAir)");
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);

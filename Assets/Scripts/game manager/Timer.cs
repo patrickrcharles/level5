@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,8 +14,11 @@ public class Timer : MonoBehaviour
     float timeStart;
     int minutes = 0;
     int seconds = 0;
+
+    [SerializeField]
     bool displayTimer = true;
 
+    [SerializeField] private bool timerEnabled = false;
     //Text timerText;
     private Text timerText;
 
@@ -32,7 +36,7 @@ public class Timer : MonoBehaviour
         seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
 
         // time's up, pause and reset timer text
-        if (timeRemaining <= 0 && !GameRules.instance.GameOver)
+        if (timeRemaining <= 0 && !GameRules.instance.GameOver && timerEnabled)
         {
             displayTimer = false;
             timerText.text = "";
@@ -46,7 +50,7 @@ public class Timer : MonoBehaviour
             }
         }
 
-        if (displayTimer)
+        if (displayTimer && timerEnabled)
         {
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00");
         }
