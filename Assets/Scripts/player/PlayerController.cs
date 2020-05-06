@@ -409,5 +409,8 @@ public class PlayerController : MonoBehaviour
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "running = " + running;
+
+        // turn off text display after 5 seconds
+        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(5));
     }
 }

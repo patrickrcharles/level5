@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using TeamUtility.IO;
@@ -459,6 +460,9 @@ public class BasketBall : MonoBehaviour
         addAccuracyModifier = !addAccuracyModifier;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "accuracy modifier = " + addAccuracyModifier;
+
+        // turn off text display after 5 seconds
+        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
     }
 
     public void toggleUiStats()
@@ -466,6 +470,16 @@ public class BasketBall : MonoBehaviour
         uiStatsEnabled = !uiStatsEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "ui stats = " + uiStatsEnabled;
+
+        // turn off text display after 5 seconds
+        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+    }
+
+    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "";
     }
 
     public void updateScoreText()
