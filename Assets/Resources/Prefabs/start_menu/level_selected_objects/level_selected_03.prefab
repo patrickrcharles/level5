@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelId: 3
-  levelDisplayName: Practice
+  levelDisplayName: Snow
   levelObjectName: level_03
-  levelDescription: practice
+  levelDescription: snow
   levelImage: {fileID: 0}
