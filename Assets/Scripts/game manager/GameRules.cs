@@ -152,7 +152,7 @@ public class GameRules : MonoBehaviour
 
     private string getDisplayText(int modeId)
     {
-        Debug.Log("display data  mode: "+ GameModeId);
+       //Debug.Log("display data  mode: "+ GameModeId);
 
         string displayText = "";
 
@@ -187,7 +187,7 @@ public class GameRules : MonoBehaviour
 
     string getStatsTotals()
     {
-        Debug.Log("getStatsTotals()");
+       //Debug.Log("getStatsTotals()");
         string scoreText = "";
         scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
                          + "points : " + basketBallStats.TotalPoints + "\n"
@@ -202,7 +202,7 @@ public class GameRules : MonoBehaviour
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.\n"
                          + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2) * 6f).ToString("0.00") + " ft.";
 
-        Debug.Log("scoreText : " + scoreText);
+       //Debug.Log("scoreText : " + scoreText);
 
         return scoreText;
     }

@@ -57,7 +57,7 @@ public class callBallToPlayer : MonoBehaviour
             && canBallToPlayerEnabled
             && !locked)
         {
-            // Debug.Log("callBallToPlayer : pullBallToPlayer");
+            ////Debug.Log("callBallToPlayer : pullBallToPlayer");
             locked = true;
             pullBallToPlayer();
             locked = false;

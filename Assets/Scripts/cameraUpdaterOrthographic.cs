@@ -47,7 +47,7 @@
         player = GameLevelManager.instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
-        Debug.Log("camera Y : " + cam.transform.position.y);
+       //Debug.Log("camera Y : " + cam.transform.position.y);
 
     }
     
@@ -122,7 +122,7 @@
             cameraZoomedOut = false;
         }
 
-        Debug.Log("zoom out camera");
+       //Debug.Log("zoom out camera");
         ZoomAmount -= .5f;
         //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
         ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
@@ -135,7 +135,7 @@
         {
             cameraZoomedOut = false;
         }
-        Debug.Log("zoom in camera");
+       //Debug.Log("zoom in camera");
         ZoomAmount += .5f;
         //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
         ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);

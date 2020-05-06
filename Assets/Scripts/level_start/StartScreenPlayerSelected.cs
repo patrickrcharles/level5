@@ -39,10 +39,10 @@
 
 //    void Awake()
 //    {
-//        Debug.Log("StartScreenPlayerSelected");
+//       //Debug.Log("StartScreenPlayerSelected");
 //        shooterProfilePrefabName = "player"  + playerDisplayName;
 
-//        Debug.Log(shooterProfilePrefabName);
+//       //Debug.Log(shooterProfilePrefabName);
 //        shooterProfileObject = Resources.Load("Prefabs /characters/"+shooterProfilePrefabName) as GameObject;
 //        Instantiate(shooterProfileObject);
 
@@ -52,12 +52,12 @@
 
 //    private void intializeShooterStatsFromProfile()
 //    {
-//        Debug.Log("initializeStats()");
+//       //Debug.Log("initializeStats()");
 //        Accuracy2Pt = shooterProfile.Accuracy2pt;
 //        Accuracy3Pt = shooterProfile.Accuracy3pt;
 //        Accuracy4Pt = shooterProfile.Accuracy4pt;
 //        JumpForce = shooterProfile.JumpForce;
-//        Debug.Log(shooterProfile.JumpForce);
+//       //Debug.Log(shooterProfile.JumpForce);
 //        CriticalPercent = shooterProfile.criticalPercent;
 
 //    }

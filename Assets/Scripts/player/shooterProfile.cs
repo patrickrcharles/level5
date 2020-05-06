@@ -65,7 +65,7 @@ public class ShooterProfile : MonoBehaviour
 
     private void intializeShooterStatsFromProfile()
     {
-        Debug.Log("initializeStats()");
+       //Debug.Log("initializeStats()");
         Accuracy2Pt = GameOptions.accuracy2pt;
         Accuracy3Pt = GameOptions.accuracy3pt;
         Accuracy4Pt = GameOptions.accuracy4pt;

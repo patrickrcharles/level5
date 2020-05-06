@@ -433,7 +433,7 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
         if (percent <= shooterProfile.CriticalPercent)
         {
-            Debug.Log("********************** critical shot rolled");
+           //Debug.Log("********************** critical shot rolled");
             return true;
         }
         return false;

@@ -42,16 +42,16 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
-        Debug.Log("levelSected : " + levelSelected);
-        Debug.Log("levelSectedName : " + levelSelectedName);
-        Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
+       //Debug.Log("levelSected : " + levelSelected);
+       //Debug.Log("levelSectedName : " + levelSelectedName);
+       //Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
     }
 
     static public void printCurrentValues()
     {
-        Debug.Log("playerSelected : " + playerSelected);
-        Debug.Log("levelSected : " + levelSelectedName);
-        Debug.Log("gameModeSelected : " + gameModeSelected);
-        Debug.Log("gameModeSelected : " + gameModeSelectedName);
+       //Debug.Log("playerSelected : " + playerSelected);
+       //Debug.Log("levelSected : " + levelSelectedName);
+       //Debug.Log("gameModeSelected : " + gameModeSelected);
+       //Debug.Log("gameModeSelected : " + gameModeSelectedName);
     }
 }

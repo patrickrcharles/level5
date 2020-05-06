@@ -188,9 +188,9 @@ public class BasketBallAutoPlay : MonoBehaviour
             && !basketballState.Locked)
         {
             basketballState.Locked = true;
-            Debug.Log(" shoot");
+           //Debug.Log(" shoot");
             releaseVelocityY = playerState.rigidBodyYVelocity;
-            Debug.Log("releaseVelocityY : " + releaseVelocityY);
+           //Debug.Log("releaseVelocityY : " + releaseVelocityY);
 
             Launch();
 
@@ -299,7 +299,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         //Debug.Log("COLLISION between : " + transform.root.name + " and name: " + other.name+ "| tag: "+other.tag);
         if (gameObject.CompareTag("basketball") && other.CompareTag("Player"))
         {
-            Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
+           //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.name);
             //playerState.hasBasketball = true;
             playerState.turnOffMoonWalkAudio();
             basketballState.CanPullBall = false;
@@ -353,7 +353,7 @@ public class BasketBallAutoPlay : MonoBehaviour
     void Launch()
     {
         basketBallStats.ShotAttempt++;
-       Debug.Log("Launch()");
+      //Debug.Log("Launch()");
 
         //Debug.Log("Launch() : addAccuracyModifier : " + addAccuracyModifier);
         // think of it as top-down view of vectors: 
@@ -366,8 +366,8 @@ public class BasketBallAutoPlay : MonoBehaviour
             basketballState.BasketBallTarget.transform.position.z);
 
        //Debug.Log("projectileXZPos :: " + projectileXZPos);
-       Debug.Log("ball position" + transform.position);
-       // Debug.Log("targetXZPos :: " + targetXZPos);
+      //Debug.Log("ball position" + transform.position);
+       ////Debug.Log("targetXZPos :: " + targetXZPos);
        //Debug.Log("target position"+ basketballState.BasketBallTarget.transform.position);
 
         // rotate the object to face the target
@@ -448,7 +448,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         if (basketballState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
         if (basketballState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
 
-        Debug.Log("accuracyModifier : " + accuracyModifier);
+       //Debug.Log("accuracyModifier : " + accuracyModifier);
         return (accuracyModifier ) * direction;
     }
 

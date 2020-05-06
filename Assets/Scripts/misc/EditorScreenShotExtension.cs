@@ -39,6 +39,6 @@
 //        // Refresh the AssetsDatabase so the file actually appears in Unity
 //        AssetDatabase.Refresh();
 
-//        Debug.Log("New Screenshot taken");
+//       //Debug.Log("New Screenshot taken");
 //    }
 //}

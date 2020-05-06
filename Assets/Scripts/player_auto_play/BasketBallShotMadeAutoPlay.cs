@@ -54,7 +54,7 @@ public class BasketBallShotMadeAutoPlay : MonoBehaviour
             }
             anim.Play("madeshot");
 
-            Debug.Log(" made a shot!");
+           //Debug.Log(" made a shot!");
             //Debug.Log("two: " + basketballState.TwoAttempt
             //    + " three: " + basketballState.ThreeAttempt
             //    + " four: " + basketballState.FourAttempt);

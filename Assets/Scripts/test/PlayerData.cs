@@ -71,20 +71,20 @@ public class PlayerData : MonoBehaviour
         //    && InputManager.GetKeyDown(KeyCode.Alpha8))
         //{
         //    save(basketBallStats);
-        //    Debug.Log("save stats");
+        //   //Debug.Log("save stats");
         //}
         ////turn off accuracy modifer 6+9
         //if (InputManager.GetKey(KeyCode.LeftShift)
         //    && InputManager.GetKeyDown(KeyCode.Alpha9))
         //{
         //    load(basketBallStats);
-        //    Debug.Log("load stats");
+        //   //Debug.Log("load stats");
         //}
     }
 
     public void saveStats()
     {
-        Debug.Log("saveData");
+       //Debug.Log("saveData");
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
         if (IsCheating && GameOptions.gameModeSelected != 7)
@@ -206,7 +206,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStats()
     {
-        Debug.Log("load()");
+       //Debug.Log("load()");
         //only call at beginning of a game
 
         //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
