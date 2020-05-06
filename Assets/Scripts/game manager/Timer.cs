@@ -16,15 +16,30 @@ public class Timer : MonoBehaviour
     int seconds = 0;
 
     [SerializeField]
-    bool displayTimer = true;
-
-    [SerializeField] private bool timerEnabled = false;
+    bool displayTimer = false;
+    [SerializeField]
+    private bool timerEnabled = false;
     //Text timerText;
     private Text timerText;
 
     private void Awake()
     {
         timerText = GetComponent<Text>();
+        timerText.text = "";
+
+    }
+
+    void Start()
+    {
+        // mode 6 is free play. this turns off timer
+        if (GameOptions.gameModeSelected != 6)
+        {
+            timerEnabled = true;
+        }
+        else
+        {
+            timerEnabled = false;
+        }
     }
 
     void Update()

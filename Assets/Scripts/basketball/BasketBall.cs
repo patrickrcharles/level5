@@ -153,7 +153,7 @@ public class BasketBall : MonoBehaviour
 
         if (!addAccuracyModifier)
         {
-            isCheating = true;
+            PlayerData.instance.IsCheating = true;
         }
 
         if (uiStatsEnabled)
@@ -470,7 +470,7 @@ public class BasketBall : MonoBehaviour
     {
         addAccuracyModifier = !addAccuracyModifier;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "accuracy modifier = " + addAccuracyModifier + " :  high score saving disabled";
+        messageText.text = "accuracy modifier = " + addAccuracyModifier + "\nhigh score saving disabled";
 
         // turn off text display after 5 seconds
         StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));

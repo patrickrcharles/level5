@@ -183,6 +183,16 @@ public class GameLevelManager : MonoBehaviour
             locked = true;
             BasketBall.instance.toggleUiStats(); 
             locked = false;
+        }       
+        
+        //toggle pull ball to player, shift + 4
+        if (InputManager.GetKey(KeyCode.LeftShift)
+            && InputManager.GetKeyDown(KeyCode.Alpha4)
+            && !locked)
+        {
+            locked = true;
+            callBallToPlayer.instance.toggleCallBallToPlayer(); 
+            locked = false;
         }
 
         ////run stat analysis

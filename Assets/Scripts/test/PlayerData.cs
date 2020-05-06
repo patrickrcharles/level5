@@ -25,6 +25,14 @@ public class PlayerData : MonoBehaviour
     public  float _longestShotMade;
     public  float _totalDistance;
 
+    private bool _isCheating;
+
+    public bool IsCheating
+    {
+        get => _isCheating;
+        set => _isCheating = value;
+    }
+
     public static PlayerData instance;
 
     static bool created = false;
@@ -74,7 +82,7 @@ public class PlayerData : MonoBehaviour
         Debug.Log("saveData");
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
-        if (BasketBall.instance.IsCheating)
+        if (IsCheating)
         {
             return;
         }

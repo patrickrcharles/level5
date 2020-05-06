@@ -60,6 +60,13 @@ public class GameRules : MonoBehaviour
         displayHighScoreText = GameObject.Find(displayHighScoreObjectName).GetComponent<Text>();
 
         displayScoreText.text = "";
+        displayCurrentScoreText.text = "";
+        displayHighScoreText.text = "";
+
+        if (gameModeId == 6)
+        {
+            gameRulesEnabled = false;
+        }
 
 
         //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
@@ -68,12 +75,6 @@ public class GameRules : MonoBehaviour
 
     void Update()
     {
-        // if game is over,
-        // get stats for display
-        //if (gameOver)
-        //{
-        //    displayScore(gameModeId);
-        //}
 
         // update current score
         if (gameRulesEnabled)
@@ -81,13 +82,13 @@ public class GameRules : MonoBehaviour
             setScoreDisplayText();
         }
 
-        if (gameOver)
+        if (gameOver && gameRulesEnabled)
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
         }
 
-        if (GameOver && !Pause.instance.Paused)
+        if (GameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
