@@ -151,7 +151,7 @@ public class BasketBall : MonoBehaviour
             dropShadow.SetActive(true);
         }
 
-        if (!addAccuracyModifier)
+        if (!addAccuracyModifier && PlayerData.instance !=null)
         {
             PlayerData.instance.IsCheating = true;
         }

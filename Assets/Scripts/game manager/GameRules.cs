@@ -119,7 +119,7 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 4)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
-                +"\ncurrent distance : "+ (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+                +"\ncurrent distance : "+ (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
         }
         if (gameModeId == 5)
@@ -132,7 +132,7 @@ public class GameRules : MonoBehaviour
         {
             Debug.Log("gamerules");
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
-                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
 
                 Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
@@ -179,7 +179,7 @@ public class GameRules : MonoBehaviour
     {
         Debug.Log("getStatsTotals()");
         string scoreText = "";
-        scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy() + "%\n"
+        scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
                          + "points : " + basketBallStats.TotalPoints + "\n"
                          + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    " 
                          + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
