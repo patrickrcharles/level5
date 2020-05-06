@@ -249,10 +249,10 @@ public class PlayerData : MonoBehaviour
         //_threePointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_threePointersAttempt");
         //_fourPointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_fourPointersAttempt");
 
-        _longestShotMade = PlayerPrefs.GetFloat("mode_" + 4 + "_longestShotMade");
-        _totalDistance = PlayerPrefs.GetFloat("mode_" + 5 + "_totalDistance");
+        _longestShotMade = PlayerPrefs.GetFloat("mode_" + 5 + "_longestShotMade");
+        _totalDistance = PlayerPrefs.GetFloat("mode_" + 6 + "_totalDistance");
 
-        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 6 + "_longestShotMadeFreePlay");
+        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 7 + "_longestShotMadeFreePlay");
 
 
     }
