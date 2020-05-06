@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_02_circlek.unity
     guid: 664ec7ab783d8f64b83178524372eaa4
+  - enabled: 1
+    path: Assets/Scenes/level_03_practice.unity
+    guid: d46944fd1d418794b8a9ab1afc4ff705
   m_configObjects: {}
