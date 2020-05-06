@@ -31,15 +31,15 @@ public class callBallToPlayer : MonoBehaviour
         _basketBallState = GameObject.FindWithTag("basketball").GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
-        if (SceneManager.GetActiveScene().name.Equals("level_03_practice"))
-        {
-            canBallToPlayerEnabled = true;
-            PlayerData.instance.IsCheating = true;
-        }
-        else
-        {
-            canBallToPlayerEnabled = false;
-        }
+        //if (SceneManager.GetActiveScene().name.Equals("level_03_practice"))
+        //{
+        //    canBallToPlayerEnabled = true;
+        //    PlayerData.instance.IsCheating = true;
+        //}
+        //else
+        //{
+        //    canBallToPlayerEnabled = false;
+        //}
     }
 
     void pullBallToPlayer()

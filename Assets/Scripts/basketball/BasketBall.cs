@@ -123,7 +123,7 @@ public class BasketBall : MonoBehaviour
             scoreText = TextObject.GetComponent<Text>();
             if (uiStatsEnabled)
             {
-                shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)).ToString("0.00") + "\n"
                                         + "shot distance : " +
                                         (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
                                         " ft.\n"
@@ -495,15 +495,14 @@ public class BasketBall : MonoBehaviour
 
     public void updateScoreText()
     {
-        scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "\n"
-                         + "accuracy : " +  getTotalPointAccuracy() + "%\n"
-                         + "points : " + basketBallStats.TotalPoints + "\n"
-                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "\n" //+ " accuracy : " + getTwoPointAccuracy() + "%\n"
-                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "\n"// +" accuracy : " + getThreePointAccuracy() + "%\n"
-                         + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "\n"// + " accuracy : " + getFourPointAccuracy() + "%\n"
-                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "\n"// + " accuracy : " + getFourPointAccuracy() + "%\n"
-                         + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
-                         + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
+        scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "  " + getTotalPointAccuracy().ToString("0.00") + "\n"
+            + "points : " + basketBallStats.TotalPoints + "\n"
+            + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "  " + getTwoPointAccuracy().ToString("0.00") + "%\n"
+            + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "  " + getThreePointAccuracy().ToString("0.00") + "%\n"
+            + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
+            + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "  " + getFourPointAccuracy().ToString("0.00") + "%\n"
+            + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
+            + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
     }
 
     public float getTotalPointAccuracy()

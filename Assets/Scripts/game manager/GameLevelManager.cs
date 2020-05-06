@@ -164,10 +164,18 @@ public class GameLevelManager : MonoBehaviour
             PlayerState.toggleRun();
             locked = false;
         }
-
-        //turn off accuracy shift +2
+        //toggle pull ball to player, shift + 4
         if (InputManager.GetKey(KeyCode.LeftShift)
             && InputManager.GetKeyDown(KeyCode.Alpha2)
+            && !locked)
+        {
+            locked = true;
+            callBallToPlayer.instance.toggleCallBallToPlayer(); 
+            locked = false;
+        }
+        //turn off accuracy shift +2
+        if (InputManager.GetKey(KeyCode.LeftShift)
+            && InputManager.GetKeyDown(KeyCode.Alpha3)
             && !locked)
         {
             locked = true;
@@ -177,7 +185,7 @@ public class GameLevelManager : MonoBehaviour
         
         //turn off stats, shift +3
         if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha3)
+            && InputManager.GetKeyDown(KeyCode.Alpha4)
             && !locked)
         {
             locked = true;
@@ -185,15 +193,7 @@ public class GameLevelManager : MonoBehaviour
             locked = false;
         }       
         
-        //toggle pull ball to player, shift + 4
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha4)
-            && !locked)
-        {
-            locked = true;
-            callBallToPlayer.instance.toggleCallBallToPlayer(); 
-            locked = false;
-        }
+
 
         ////run stat analysis
         //if (InputManager.GetKey(KeyCode.LeftShift)

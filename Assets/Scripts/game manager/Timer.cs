@@ -11,7 +11,8 @@ public class Timer : MonoBehaviour
 {
     float timeRemaining = 0;
     private float currentTime;
-    float timeStart;
+
+    private float timeStart;
     int minutes = 0;
     int seconds = 0;
 
@@ -31,6 +32,8 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
+        // timer is 2 minutes
+        timeStart = 120;
         // mode 6 is free play. this turns off timer
         if (GameOptions.gameModeSelected != 6)
         {

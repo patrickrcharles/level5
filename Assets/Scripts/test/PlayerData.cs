@@ -23,10 +23,11 @@ public class PlayerData : MonoBehaviour
     public  float _shotAttempt;
     public  float _shotMade;
     public  float _longestShotMade;
+    public  float _longestShotMadeFreePlay;
     public  float _totalDistance;
 
+    [SerializeField]
     private bool _isCheating;
-
     public bool IsCheating
     {
         get => _isCheating;
@@ -82,9 +83,16 @@ public class PlayerData : MonoBehaviour
         Debug.Log("saveData");
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
-        if (IsCheating)
+        if (IsCheating && GameOptions.gameModeSelected != 6)
         {
+            Debug.Log("dont save");
+            Debug.Log("ischeating : "+IsCheating + " mode : "+ GameOptions.gameModeSelected);
             return;
+            //if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 6)
+            //{
+            //    PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
+            //    _longestShotMadeFreePlay = 0;
+            //    loadStats();
         }
         // save can be called whenever as long as load isnt called as well.
         // if you call load, you need to reset the local variables
@@ -177,6 +185,12 @@ public class PlayerData : MonoBehaviour
             _totalDistance = 0;
             loadStats();
         }
+        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 6)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
+            _longestShotMadeFreePlay = 0;
+            loadStats();
+        }
         // after save, data zeroed. can reload
     }
 
@@ -227,6 +241,8 @@ public class PlayerData : MonoBehaviour
         _longestShotMade = PlayerPrefs.GetFloat("mode_" + 4 + "_longestShotMade");
         _totalDistance = PlayerPrefs.GetFloat("mode_" + 5 + "_totalDistance");
 
+        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 6 + "_longestShotMadeFreePlay");
+
 
     }
 
@@ -267,6 +283,8 @@ public class PlayerData : MonoBehaviour
         PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_longestShotMade");
         PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
     }
+
+    public float LongestShotMadeFreePlay => _longestShotMadeFreePlay;
 
     public int PlayerId => _playerId;
 
