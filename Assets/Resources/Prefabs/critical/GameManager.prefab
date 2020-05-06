@@ -726,8 +726,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameModeId: 0
   gameRulesEnabled: 1
-  timeStart: 30
-  basketBallStats: {fileID: 0}
 --- !u!1 &2626216200384811591
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +805,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'display scorefasfasf display scorefasfasfdisplay '
+  m_Text: "display scorefasfasf display \nscorefasfasfdisplay "
 --- !u!114 &2626216200384811593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,8 +891,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: -134.99994}
-  m_SizeDelta: {x: 300, y: 100}
+  m_AnchoredPosition: {x: -215, y: -125}
+  m_SizeDelta: {x: 300, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4174852508353556445
 CanvasRenderer:
@@ -931,7 +929,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1147,10 +1145,10 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 1
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
@@ -1230,8 +1228,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 375, y: -242}
-  m_SizeDelta: {x: 500, y: 500}
+  m_AnchoredPosition: {x: 301, y: -119}
+  m_SizeDelta: {x: 384.5, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9201004802244946739
 CanvasRenderer:
@@ -1274,7 +1272,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "shots attempted : \nshots made : \naccuracy : %"
+  m_Text: 'p
+
+    s
+
+    2
+
+    3
+
+    4
+
+    7
+
+    l
+
+    di'
 --- !u!114 &2596132412881684396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1540,8 +1552,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 187, y: -135}
-  m_SizeDelta: {x: 350, y: 100}
+  m_AnchoredPosition: {x: 187, y: -125}
+  m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8408471259313366470
 CanvasRenderer:
@@ -1578,13 +1590,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 5
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'total points : 0000'
+  m_Text: 'total points : 0000
+
+    total points : 0000'
 --- !u!114 &8408471259313366464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1699,8 +1713,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 936, y: -133}
-  m_SizeDelta: {x: 350, y: 300}
+  m_AnchoredPosition: {x: 878, y: -91}
+  m_SizeDelta: {x: 256.87, y: 187.23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &289432557678187753
 CanvasRenderer:
@@ -1743,7 +1757,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "shooter : \n2 pt accuracy:\n3 pt accuracy:\n4 pt accuracy:"
+  m_Text: "distance 4353453453\ndistnace 324242342342\nshooter : \n2 pt accuracy:\n3
+    pt accuracy:\n4 pt accuracy:\n7"
 --- !u!114 &6944042940543423165
 MonoBehaviour:
   m_ObjectHideFlags: 0
