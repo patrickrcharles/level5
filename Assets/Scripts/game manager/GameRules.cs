@@ -130,15 +130,15 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 6)
         {
-            Debug.Log("gamerules");
+            //Debug.Log("gamerules");
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
 
-                Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
+                //Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
             if ((BasketBall.instance.BasketBallStats.LongestShotMade *6) > PlayerData.instance.LongestShotMadeFreePlay)
                 {
-                    Debug.Log("long > prev long : "+ BasketBall.instance.BasketBallStats.LongestShotMade + " > "+ PlayerData.instance.LongestShotMadeFreePlay);
+                    //Debug.Log("long > prev long : "+ BasketBall.instance.BasketBallStats.LongestShotMade + " > "+ PlayerData.instance.LongestShotMadeFreePlay);
                     PlayerData.instance.saveStats();
                 }
         }

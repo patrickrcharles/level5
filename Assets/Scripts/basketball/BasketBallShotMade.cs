@@ -11,7 +11,6 @@ public class BasketBallShotMade : MonoBehaviour
     int currentShotTestIndex;
 
     AudioSource audioSource;
-    //SpriteRenderer spriteRenderer;
     public GameObject rimSprite;
     Animator anim;
     PlayerController playerState;
@@ -80,6 +79,7 @@ public class BasketBallShotMade : MonoBehaviour
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;
             _basketBallState.FourAttempt = false;
+            _basketBallState.SevenAttempt = false;
         }
         // update onscreen ui stats
         if (BasketBall.instance.UiStatsEnabled)

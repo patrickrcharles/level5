@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;
+
+        runningToggle = true;
     }
 
     // not affected by framerate
