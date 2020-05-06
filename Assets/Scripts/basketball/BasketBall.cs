@@ -57,6 +57,12 @@ public class BasketBall : MonoBehaviour
     private float lastShotDistance;
 
     bool addAccuracyModifier;
+
+    bool isCheating;
+    public bool IsCheating => isCheating;
+
+
+
     bool playHitRimSound;
     bool locked;
     [SerializeField]
@@ -143,6 +149,11 @@ public class BasketBall : MonoBehaviour
         {
             spriteRenderer.enabled = true;
             dropShadow.SetActive(true);
+        }
+
+        if (!addAccuracyModifier)
+        {
+            isCheating = true;
         }
 
         if (uiStatsEnabled)
@@ -459,7 +470,7 @@ public class BasketBall : MonoBehaviour
     {
         addAccuracyModifier = !addAccuracyModifier;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "accuracy modifier = " + addAccuracyModifier;
+        messageText.text = "accuracy modifier = " + addAccuracyModifier + " :  high score saving disabled";
 
         // turn off text display after 5 seconds
         StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));

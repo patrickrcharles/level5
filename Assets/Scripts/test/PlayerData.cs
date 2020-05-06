@@ -74,6 +74,10 @@ public class PlayerData : MonoBehaviour
         Debug.Log("saveData");
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
+        if (BasketBall.instance.IsCheating)
+        {
+            return;
+        }
         // save can be called whenever as long as load isnt called as well.
         // if you call load, you need to reset the local variables
         // example load, totalpoint = 100, make 50, save totalpoint = 150.
