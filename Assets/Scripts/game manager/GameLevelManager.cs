@@ -155,23 +155,33 @@ public class GameLevelManager : MonoBehaviour
         //}
         // reload scene 4+2+0
 
-
-        //turn off accuracy modifer 6+9
-        if (InputManager.GetKey(KeyCode.Alpha6)
-            && InputManager.GetKeyDown(KeyCode.Alpha9)
-            && !locked)
-        {
-            locked = true;
-            _basketballState.toggleAddAccuracyModifier();
-            locked = false;
-        } 
-        //turn on : toggle run
+        //turn on : toggle run, shift +1
         if (InputManager.GetKey(KeyCode.LeftShift)
             && InputManager.GetKeyDown(KeyCode.Alpha1)
             && !locked)
         {
             locked = true;
             PlayerState.toggleRun();
+            locked = false;
+        }
+
+        //turn off accuracy shift +2
+        if (InputManager.GetKey(KeyCode.LeftShift)
+            && InputManager.GetKeyDown(KeyCode.Alpha2)
+            && !locked)
+        {
+            locked = true;
+            _basketballState.toggleAddAccuracyModifier();
+            locked = false;
+        }
+        
+        //turn off stats, shift +3
+        if (InputManager.GetKey(KeyCode.LeftShift)
+            && InputManager.GetKeyDown(KeyCode.Alpha3)
+            && !locked)
+        {
+            locked = true;
+            BasketBall.instance.toggleUiStats(); 
             locked = false;
         }
 
