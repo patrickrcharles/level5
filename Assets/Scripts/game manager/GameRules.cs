@@ -9,13 +9,11 @@ public class GameRules : MonoBehaviour
 {
     private int playerId;
     private int levelId;
-    [SerializeField]
     private int gameModeId;
     private float timerStart;
 
     private bool gameOver;
     private bool gameStart;
-    [SerializeField]
     private bool gameRulesEnabled;
 
     //private float timeStart;
@@ -34,16 +32,15 @@ public class GameRules : MonoBehaviour
     private Text displayHighScoreText;
 
 
-    void Awake()
+    private void Awake()
     {
         instance = this;
     }
 
-    void Start()
+    private void Start()
     {
         gameOver = false;
         gameModeId = GameOptions.gameModeSelected;
-        //gameModeId = GameOptions.gameModeSelected;
         timer = GameObject.Find("timer").GetComponent<Timer>();
         //setTimer(timeStart);
 
@@ -58,8 +55,6 @@ public class GameRules : MonoBehaviour
 
         gameRulesEnabled = true;
 
-
-        //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
     }
 
 
@@ -71,7 +66,6 @@ public class GameRules : MonoBehaviour
         {
             setScoreDisplayText();
         }
-
         if (gameOver && gameRulesEnabled)
         {
             displayCurrentScoreText.text = "";
@@ -82,20 +76,20 @@ public class GameRules : MonoBehaviour
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
-
+            //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
             //save
-            PlayerData.instance.saveStats();
+            if (GameObject.Find("PlayerData") != null)
+            {
+                PlayerData.instance.saveStats();
+            }
+
             // alert game manager
-            GameLevelManager.instance.GameOver = true;
+            GameLevelManager.Instance.GameOver = true;
         }
     }
 
-    //public void displayScore(int modeId)
-    //{
-    //    displayScoreText.text = getDisplayText(modeId);
-    //}
     private void setScoreDisplayText()
     {
         if (gameModeId == 1)
@@ -136,17 +130,17 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 7)
         {
-            //Debug.Log("gamerules");
+            Debug.Log("gamerules");
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
 
-                //Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
+            Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
             if ((BasketBall.instance.BasketBallStats.LongestShotMade *6) > PlayerData.instance.LongestShotMadeFreePlay)
-                {
-                    //Debug.Log("long > prev long : "+ BasketBall.instance.BasketBallStats.LongestShotMade + " > "+ PlayerData.instance.LongestShotMadeFreePlay);
-                    PlayerData.instance.saveStats();
-                }
+            {
+                Debug.Log("save");
+                PlayerData.instance.saveStats();
+            }
         }
     }
 
@@ -180,7 +174,6 @@ public class GameRules : MonoBehaviour
         {
             displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00")+ " ft.\n\n"+ getStatsTotals();
         }
-        //string temp = displayText + "\n" + "current high score is : "+ displayHighScoreText.text;
 
         return displayText;
     }
@@ -201,8 +194,6 @@ public class GameRules : MonoBehaviour
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.\n"
                          + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2) * 6f).ToString("0.00") + " ft.";
-
-       //Debug.Log("scoreText : " + scoreText);
 
         return scoreText;
     }

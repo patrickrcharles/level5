@@ -258,7 +258,6 @@ public class StartManager : MonoBehaviour
 
     private void loadPlayerSelectDataList()
     {
-        //Debug.Log("loadPlayerSelectDataList()");
 
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
@@ -393,6 +392,9 @@ public class StartManager : MonoBehaviour
 
     public void loadScene()
     {
+        // for testing sceneswihtout loading from start screen
+        GameOptions.gameModeHasBeenSelected = true;
+
         // apply selected player stats to game options, which will be loaded into Player on spawn
         setPlayerProfileStats();
 

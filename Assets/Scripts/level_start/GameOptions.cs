@@ -13,7 +13,9 @@ public  class GameOptions : MonoBehaviour
     static public int levelSelectedBuildIndex;
     [SerializeField]
     static public String levelSelectedName;
+    [SerializeField]
     static public String gameModeSelectedName;
+    [SerializeField]
     static public int gameModeSelected;
 
     //player stats
@@ -32,6 +34,8 @@ public  class GameOptions : MonoBehaviour
 
     static public float shootAngle;
 
+    static public bool gameModeHasBeenSelected;
+
     //static public int level;
     //static public int experience;
     //static public decimal money;
@@ -49,9 +53,10 @@ public  class GameOptions : MonoBehaviour
 
     static public void printCurrentValues()
     {
-       //Debug.Log("playerSelected : " + playerSelected);
-       //Debug.Log("levelSected : " + levelSelectedName);
-       //Debug.Log("gameModeSelected : " + gameModeSelected);
-       //Debug.Log("gameModeSelected : " + gameModeSelectedName);
+        Debug.Log("playerSelected : " + playerSelected);
+        Debug.Log("levelSected : " + levelSelectedName);
+        Debug.Log("gameModeSelected : " + gameModeSelected);
+        Debug.Log("gameModeSelected : " + gameModeSelectedName);
+        Debug.Log("gameModeSelected : " + gameModeHasBeenSelected);
     }
 }
