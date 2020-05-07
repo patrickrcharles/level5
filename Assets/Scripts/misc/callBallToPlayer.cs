@@ -26,7 +26,7 @@ public class callBallToPlayer : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.Instance.PlayerState;
         basketBall = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         _basketBallState = GameObject.FindWithTag("basketball").GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();

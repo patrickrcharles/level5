@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
+// ReSharper disable InconsistentNaming
+// ReSharper disable All
 
 
 public class BasketBall : MonoBehaviour
@@ -16,7 +17,7 @@ public class BasketBall : MonoBehaviour
     new Rigidbody rigidbody;
     AudioSource audioSource;
 
-    Vector3 dropShadowPosition;
+    private Vector3 dropShadowPosition;
 
     GameObject basketBallSprite;
     GameObject playerDunkPos;
@@ -58,10 +59,8 @@ public class BasketBall : MonoBehaviour
 
     bool addAccuracyModifier;
 
-    bool isCheating;
+    private bool isCheating = false;
     public bool IsCheating => isCheating;
-
-
 
     bool playHitRimSound;
     bool locked;
@@ -80,8 +79,8 @@ public class BasketBall : MonoBehaviour
     {
         instance = this;
 
-        player = GameLevelManager.instance.Player;
-        playerState = GameLevelManager.instance.PlayerState;
+        player = GameLevelManager.Instance.Player;
+        playerState = GameLevelManager.Instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
 
         basketBallStats = GetComponent<BasketBallStats>();
@@ -97,7 +96,7 @@ public class BasketBall : MonoBehaviour
 
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
 
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
+        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
 
         playerDunkPos = GameObject.Find("dunk_transform");
         basketBallState.Locked = false;
@@ -134,20 +133,20 @@ public class BasketBall : MonoBehaviour
                                         + "7 point accuracy : " + ((1 - shooterProfile.Accuracy7Pt) * 100);
             }
         }
-
     }
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        // drop shadow lock to bball transform on the ground
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.02f, transform.root.position.z);
 
         // change this to reduce opacity
         if (!playerState.hasBasketball)
         {
-            spriteRenderer.enabled = true;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
+            //spriteRenderer.enabled = true;
             dropShadow.SetActive(true);
         }
 
@@ -187,7 +186,8 @@ public class BasketBall : MonoBehaviour
             // if grounded
             if (playerState.grounded)
             {
-                spriteRenderer.enabled = false;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+                //spriteRenderer.enabled = false;
                 dropShadow.SetActive(false);
                 playerState.setPlayerAnim("hasBasketball", true);
                 //playerState.setPlayerAnim("walking", false);
@@ -266,7 +266,8 @@ public class BasketBall : MonoBehaviour
         }
 
     }
-    void OnCollisionEnter(Collision other)
+
+    private void OnCollisionEnter(Collision other)
     {
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && playHitRimSound)
         {
@@ -292,7 +293,7 @@ public class BasketBall : MonoBehaviour
         }
     }
 
-    void OnCollisionExit(Collision other)
+    private void OnCollisionExit(Collision other)
     {
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && !playHitRimSound)
@@ -305,8 +306,9 @@ public class BasketBall : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
+        // ReSharper disable once StringLiteralTypo
         if (gameObject.CompareTag("basketball") && other.CompareTag("playerHitbox"))
         {
             playerState.hasBasketball = true;
@@ -325,8 +327,9 @@ public class BasketBall : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
+        // ReSharper disable once StringLiteralTypo
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") && basketBallState.Thrown)
         {
             basketBallState.Thrown = false;
@@ -362,8 +365,8 @@ public class BasketBall : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        // accuracy modifier clogic
-        float accuracyModifierX = 0;
+        // accuracy modifier logic
+        float accuracyModifierX;
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
         {
             accuracyModifierX = 0;
@@ -431,7 +434,7 @@ public class BasketBall : MonoBehaviour
         Random random = new Random();
         float percent = random.Next(1, 100);
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
-        if (percent <= shooterProfile.CriticalPercent)
+        if (percent <= maxPercent)
         {
            //Debug.Log("********************** critical shot rolled");
             return true;
@@ -441,7 +444,7 @@ public class BasketBall : MonoBehaviour
     }
     private float getAccuracyModifier()
     {
-        int direction = getRandomPositiveOrNegtaive();
+        int direction = getRandomPositiveOrNegative();
         float accuracyModifier = 1;
         if (basketBallState.TwoPoints) { accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f; }
         if (basketBallState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
@@ -451,7 +454,7 @@ public class BasketBall : MonoBehaviour
         return (accuracyModifier / 1.6f) * direction;
     }
 
-    private int getRandomPositiveOrNegtaive()
+    private int getRandomPositiveOrNegative()
     {
         var Random = new Random();
         List<int> list = new List<int> { 1, -1 };
@@ -461,10 +464,10 @@ public class BasketBall : MonoBehaviour
         return shotDirectionModifier;
     }
 
-    public bool getDunk()
-    {
-        return basketBallState.Dunk;
-    }
+    //public bool getDunk()
+    //{
+    //    return basketBallState.Dunk;
+    //}
 
     public void toggleAddAccuracyModifier()
     {
@@ -576,10 +579,7 @@ public class BasketBall : MonoBehaviour
         set => lastShotDistance = value;
     }
 
-    public bool UiStatsEnabled
-    {
-        get => uiStatsEnabled;
-    }
+    public bool UiStatsEnabled => uiStatsEnabled;
     public BasketBallState BasketBallState => basketBallState;
 }
 

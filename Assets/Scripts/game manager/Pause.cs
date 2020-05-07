@@ -69,7 +69,7 @@ public class Pause : MonoBehaviour
         if (InputManager.GetButtonDown("Submit")
             || InputManager.GetButtonDown("Cancel")
             || InputManager.GetKeyDown(KeyCode.Escape)
-            && !GameLevelManager.instance.GameOver)
+            && !GameLevelManager.Instance.GameOver)
         {
             paused = TogglePause();
         }

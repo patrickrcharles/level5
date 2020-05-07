@@ -44,7 +44,7 @@
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = GameLevelManager.instance.Player.transform;
+        player = GameLevelManager.Instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
        //Debug.Log("camera Y : " + cam.transform.position.y);

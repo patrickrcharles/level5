@@ -25,7 +25,7 @@ public class BasketBallShotMade : MonoBehaviour
         _basketBallStats = BasketBall.instance.GetComponent<BasketBallStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.Instance.PlayerState;
     }
 
     // Update is called once per frame

@@ -51,7 +51,7 @@ public class cameraUpdater : MonoBehaviour
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = GameLevelManager.instance.Player.transform;
+        player = GameLevelManager.Instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
         addToCameraPosY = 1.835f;
