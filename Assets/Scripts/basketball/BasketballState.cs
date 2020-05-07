@@ -29,6 +29,12 @@ public class BasketBallState : MonoBehaviour
     private bool _grounded;
 
     [SerializeField]
+    private bool _playerOnMarker;
+    [SerializeField]
+    private int _currentShotMarkerId;
+
+
+    [SerializeField]
     private float _ballDistanceFromRim;
 
     private GameObject _basketBallPosition;
@@ -36,6 +42,11 @@ public class BasketBallState : MonoBehaviour
 
     private int _currentShotType;
     public int CurrentShotType => _currentShotType;
+
+    [SerializeField]
+    private GameObject[] basketBallShotMarkerObjects;
+    [SerializeField]
+    private List<BasketBallShotMarker> _basketBallShotMarkersList;
 
 
     void Start()
@@ -46,6 +57,15 @@ public class BasketBallState : MonoBehaviour
 
         //position to shoot basketball at (middle of rim)
         _basketBallTarget = GameObject.Find("basketBall_target");
+
+        // get all shot position marker objects
+        basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
+        //load them into list
+        foreach (var marker in basketBallShotMarkerObjects)
+        {
+            BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
+            _basketBallShotMarkersList.Add(temp);
+        }
     }
 
     // Update is called once per frame
@@ -53,6 +73,8 @@ public class BasketBallState : MonoBehaviour
     {
 
         BallDistanceFromRim = Vector3.Distance(transform.position, _basketBallTarget.transform.position);
+
+        PlayerOnMarker = BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
 
         if (BallDistanceFromRim < ThreePointDistance)
         {
@@ -95,10 +117,28 @@ public class BasketBallState : MonoBehaviour
         }
     }
 
+
     public float ThreePointDistance => _threePointDistance;
     public float FourPointDistance => _fourPointDistance;
     public float SevenPointDistance => _sevenPointDistance;
 
+    public List<BasketBallShotMarker> BasketBallShotMarkersList
+    {
+        get => _basketBallShotMarkersList;
+        set => _basketBallShotMarkersList = value;
+    }
+
+    public bool PlayerOnMarker
+    {
+        get => _playerOnMarker;
+        set => _playerOnMarker = value;
+    }
+
+    public int CurrentShotMarkerId
+    {
+        get => _currentShotMarkerId;
+        set => _currentShotMarkerId = value;
+    }
     public bool TwoPoints
     {
         get => _twoPoints;

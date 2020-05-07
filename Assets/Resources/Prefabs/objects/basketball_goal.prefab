@@ -9,11 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 103020890}
-  - component: {fileID: 103020891}
   - component: {fileID: 103020892}
+  - component: {fileID: 103020893}
+  - component: {fileID: 7237608833166297597}
   m_Layer: 8
   m_Name: top_key
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,19 +33,6 @@ Transform:
   m_Father: {fileID: 136313270}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &103020891
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103020889}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &103020892
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -94,6 +82,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &103020893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103020889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 2
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 1
+  shotTypeFour: 0
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &7237608833166297597
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103020889}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &136313269
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,17 +140,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136313269}
-  m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
-  m_LocalPosition: {x: -2.31, y: -1.4000856, z: -0.5563812}
-  m_LocalScale: {x: 1.3, y: 1.3000001, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.422709, y: -2.0750368, z: -1.123338}
+  m_LocalScale: {x: 1.3, y: 1.3000002, z: 1}
   m_Children:
   - {fileID: 623277524}
   - {fileID: 1566844639}
   - {fileID: 103020890}
   - {fileID: 1371912149}
   - {fileID: 167425615}
-  m_Father: {fileID: 2891379403393532027}
-  m_RootOrder: 7
+  m_Father: {fileID: 8910092925976645562}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &167425614
 GameObject:
@@ -138,11 +161,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 167425615}
-  - component: {fileID: 167425616}
   - component: {fileID: 167425617}
+  - component: {fileID: 167425618}
+  - component: {fileID: 4745340726671321944}
   m_Layer: 8
   m_Name: right_corner
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,19 +185,6 @@ Transform:
   m_Father: {fileID: 136313270}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &167425616
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 167425614}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &167425617
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -223,6 +234,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &167425618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167425614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 4
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 1
+  shotTypeFour: 0
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &4745340726671321944
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167425614}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &259046665
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,11 +278,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 259046666}
-  - component: {fileID: 259046667}
   - component: {fileID: 259046668}
+  - component: {fileID: 7165696540774006336}
+  - component: {fileID: 3059182271126730420}
   m_Layer: 8
   m_Name: right_corner
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -255,19 +302,6 @@ Transform:
   m_Father: {fileID: 1244039674}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &259046667
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259046665}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &259046668
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -317,6 +351,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7165696540774006336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259046665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 9
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 0
+  shotTypeFour: 1
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &3059182271126730420
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259046665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &623277523
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,11 +395,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 623277524}
-  - component: {fileID: 623277525}
   - component: {fileID: 623277526}
+  - component: {fileID: 623277527}
+  - component: {fileID: 1596174148552655321}
   m_Layer: 8
   m_Name: left_corner
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -349,19 +419,6 @@ Transform:
   m_Father: {fileID: 136313270}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &623277525
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623277523}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &623277526
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -411,6 +468,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &623277527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623277523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 0
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 1
+  shotTypeFour: 0
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &1596174148552655321
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623277523}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &749597839
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,11 +512,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 749597840}
-  - component: {fileID: 749597841}
   - component: {fileID: 749597842}
+  - component: {fileID: 4158121181710538425}
+  - component: {fileID: 944993744733098147}
   m_Layer: 8
   m_Name: top_key
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -443,19 +536,6 @@ Transform:
   m_Father: {fileID: 1244039674}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &749597841
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749597839}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &749597842
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -505,6 +585,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4158121181710538425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749597839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 7
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 0
+  shotTypeFour: 1
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &944993744733098147
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749597839}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &1244039673
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,17 +643,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244039673}
-  m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
-  m_LocalPosition: {x: -2.31, y: -1.4584032, z: -0.5422727}
-  m_LocalScale: {x: 1.3, y: 1.3000001, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.422709, y: -2.135037, z: -1.123338}
+  m_LocalScale: {x: 1.3, y: 1.3000002, z: 1}
   m_Children:
   - {fileID: 1919263394}
   - {fileID: 1806128123}
   - {fileID: 749597840}
   - {fileID: 1637686327}
   - {fileID: 259046666}
-  m_Father: {fileID: 2891379403393532027}
-  m_RootOrder: 8
+  m_Father: {fileID: 8910092925976645562}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1371912148
 GameObject:
@@ -549,11 +664,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1371912149}
-  - component: {fileID: 1371912150}
   - component: {fileID: 1371912151}
+  - component: {fileID: 1371912152}
+  - component: {fileID: 3613373147412282220}
   m_Layer: 8
   m_Name: right_wing
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -572,19 +688,6 @@ Transform:
   m_Father: {fileID: 136313270}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &1371912150
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371912148}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1371912151
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -634,6 +737,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1371912152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371912148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 3
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 1
+  shotTypeFour: 0
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &3613373147412282220
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371912148}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &1566844638
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,11 +781,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1566844639}
-  - component: {fileID: 1566844640}
   - component: {fileID: 1566844641}
+  - component: {fileID: 1566844642}
+  - component: {fileID: 5367053149314693171}
   m_Layer: 8
   m_Name: left_wing
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -666,19 +805,6 @@ Transform:
   m_Father: {fileID: 136313270}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &1566844640
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566844638}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1566844641
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -728,6 +854,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1566844642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566844638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 1
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 1
+  shotTypeFour: 0
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &5367053149314693171
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566844638}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &1637686326
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,11 +898,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637686327}
-  - component: {fileID: 1637686328}
   - component: {fileID: 1637686329}
+  - component: {fileID: 7408780916567383061}
+  - component: {fileID: 8699325812607288901}
   m_Layer: 8
   m_Name: right_wing
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -760,19 +922,6 @@ Transform:
   m_Father: {fileID: 1244039674}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &1637686328
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637686326}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1637686329
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -822,6 +971,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7408780916567383061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637686326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 8
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 0
+  shotTypeFour: 1
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &8699325812607288901
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637686326}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &1806128122
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,11 +1015,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1806128123}
-  - component: {fileID: 1806128124}
   - component: {fileID: 1806128125}
+  - component: {fileID: 2539090353785982492}
+  - component: {fileID: 1263131077037480070}
   m_Layer: 8
   m_Name: left_wing
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,19 +1039,6 @@ Transform:
   m_Father: {fileID: 1244039674}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &1806128124
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806128122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1806128125
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -916,6 +1088,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2539090353785982492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806128122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 6
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 0
+  shotTypeFour: 1
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &1263131077037480070
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806128122}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
 --- !u!1 &1919263393
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,11 +1132,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1919263394}
-  - component: {fileID: 1919263395}
   - component: {fileID: 1919263396}
+  - component: {fileID: 7457973565797079843}
+  - component: {fileID: 2878006397738143451}
   m_Layer: 8
   m_Name: left_corner
-  m_TagString: Untagged
+  m_TagString: shot_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -948,19 +1156,6 @@ Transform:
   m_Father: {fileID: 1244039674}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!135 &1919263395
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919263393}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1919263396
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1010,6 +1205,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7457973565797079843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919263393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c8234708763134ab8297cd7a175b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionMarkerId: 5
+  _shotMade: 0
+  _shotAttempt: 0
+  maxShotAttempt: 0
+  maxShotMade: 5
+  shotTypeThree: 0
+  shotTypeFour: 1
+  spriteRenderer: {fileID: 0}
+  markerEnabled: 0
+--- !u!136 &2878006397738143451
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919263393}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.16
+  m_Height: 1.97
+  m_Direction: 2
+  m_Center: {x: -0.07877652, y: 0.0000010373072, z: 0.4657868}
+--- !u!1 &916774304271490977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5287877136904036905}
+  m_Layer: 0
+  m_Name: shot_marker_positons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5287877136904036905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916774304271490977}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2895422687630524166}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1284272717900514532
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,8 +1927,7 @@ Transform:
   - {fileID: 2899875000757416259}
   - {fileID: 2900054237386241567}
   - {fileID: 2895422687630524166}
-  - {fileID: 136313270}
-  - {fileID: 1244039674}
+  - {fileID: 8910092925976645562}
   - {fileID: 2900190915171320651}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1815,7 +2074,7 @@ Transform:
   m_LocalScale: {x: 1.1, y: 4.4, z: 1}
   m_Children: []
   m_Father: {fileID: 2891379403393532027}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 76.4, y: 0, z: 0}
 --- !u!212 &3088712295294537151
 SpriteRenderer:
@@ -2198,7 +2457,8 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.6184084, z: -0.78585684, w: 0}
   m_LocalPosition: {x: -0.03, y: -1.98, z: -2.68}
   m_LocalScale: {x: 3.1, y: 3.1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5287877136904036905}
   m_Father: {fileID: 2891379403393532027}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
@@ -2357,3 +2617,49 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &9026225260447088664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8910092925976645562}
+  - component: {fileID: 4330905053488224609}
+  m_Layer: 0
+  m_Name: shot_marker_positions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8910092925976645562
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9026225260447088664}
+  m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
+  m_LocalPosition: {x: 0, y: 0, z: 0.047530994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 136313270}
+  - {fileID: 1244039674}
+  m_Father: {fileID: 2891379403393532027}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.112709045, y: 0.88091344}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4330905053488224609
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9026225260447088664}
+  m_CullTransparentMesh: 0

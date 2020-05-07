@@ -8,7 +8,7 @@ public class BasketBallShotMade : MonoBehaviour
     BasketBallState _basketBallState;
     BasketBallStats _basketBallStats;
 
-    int currentShotTestIndex;
+    //int currentShotTestIndex;
 
     AudioSource audioSource;
     public GameObject rimSprite;
@@ -42,13 +42,16 @@ public class BasketBallShotMade : MonoBehaviour
             else { isColliding = true; }
 
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
+
             // add to total shot distance made total
             _basketBallStats.TotalDistance += BasketBall.instance.LastShotDistance;
+
             // is this the longest shot made?
             if (BasketBall.instance.LastShotDistance > _basketBallStats.LongestShotMade)
             {
                 _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance;
             }
+
             anim.Play("madeshot");
 
             if (_basketBallState.TwoAttempt)
@@ -75,6 +78,11 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 7;
                 _basketBallStats.SevenPointerMade++;
                 _basketBallStats.ShotMade++;
+            }
+
+            if (_basketBallState.PlayerOnMarker)
+            {
+                _basketBallState.BasketBallShotMarkersList[_basketBallState.CurrentShotMarkerId].ShotMade++;
             }
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;

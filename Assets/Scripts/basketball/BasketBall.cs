@@ -112,6 +112,7 @@ public class BasketBall : MonoBehaviour
         testConclusions = GetComponent<BasketBallTestStatsConclusions>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
 
+
         uiStatsEnabled = false;
 
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
@@ -251,6 +252,12 @@ public class BasketBall : MonoBehaviour
                 basketBallState.SevenAttempt = true;
                 basketBallStats.SevenPointerAttempts++;
             }
+            if (basketBallState.PlayerOnMarker)
+            {
+                Debug.Log("marker id: "+ basketBallState.CurrentShotMarkerId);
+                basketBallState.BasketBallShotMarkersList[basketBallState.CurrentShotMarkerId].ShotAttempt++;
+                Debug.Log("shotattempt: " + basketBallState.BasketBallShotMarkersList[basketBallState.CurrentShotMarkerId].ShotAttempt);
+            }
 
             //launch ball to goal      
             Launch();
@@ -280,6 +287,7 @@ public class BasketBall : MonoBehaviour
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
+            basketBallState.PlayerOnMarker = false; // this needs to be reset for next shot
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
             //reset rotation
@@ -441,6 +449,7 @@ public class BasketBall : MonoBehaviour
         if (percent <= maxPercent)
         {
             //Debug.Log("********************** critical shot rolled");
+            BasketBallStats.CriticalRolled++;
             return true;
         }
 
@@ -528,11 +537,25 @@ public class BasketBall : MonoBehaviour
                          + "4 pointers : " + basketBallStats.FourPointerMade + " / " +
                          basketBallStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " +
-                         basketBallStats.SevenPointerAttempts + "  " + getFourPointAccuracy().ToString("0.00") + "%\n"
+                         basketBallStats.SevenPointerAttempts + "  " + getSevenPointAccuracy().ToString("0.00") + "%\n"
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." +
                          "\n"
                          + "longest shot distance : " +
-                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
+                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft."+"\n" +
+                         "criticals rolled : "+ basketBallStats.CriticalRolled+ " / "+ basketBallStats.ShotAttempt+ "  "+ getCriticalPercentage().ToString("0.00")+"%";
+    }
+
+    public float getCriticalPercentage()
+    {
+        if (basketBallStats.CriticalRolled > 0)
+        {
+            accuracy = basketBallStats.CriticalRolled / basketBallStats.ShotAttempt;
+            return (accuracy * 100);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public float getTotalPointAccuracy()

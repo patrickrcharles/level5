@@ -25,6 +25,14 @@ public class BasketBallStats : MonoBehaviour
     public float _longestShotMade;
     public float _totalDistance;
 
+    public float _criticalRolled;
+
+    public float CriticalRolled
+    {
+        get => _criticalRolled;
+        set => _criticalRolled = value;
+    }
+
     public float ShotAttempt
     {
         get => _shotAttempt;
