@@ -1,136 +1,113 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using TeamUtility.IO;
+using static TeamUtility.IO.InputManager;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 public class GameLevelManager : MonoBehaviour
 {
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
-
-    [SerializeField]
-    GameObject _player;
+    [SerializeField] private GameObject _player;
     private PlayerController _playerState;
-    private Animator _anim;
-
-    Vector3 previousPlayerPosition;
-    Quaternion previousPlayerRotation;
-
-    [SerializeField]
-    bool gameOver;
-
-    bool startGame;
-    bool locked;
-    bool paused;
-    //bool reloadLevel;
-    //bool showScore;
-
-    string currentSceneName;
-    //[SerializeField]
-    //GameObject startMenuMusicObject;
-
-    //[SerializeField]
-    //float totalMoney;
-
-    //public bool playerIsEnemy;
-    //public Text displayPlayerLives;
-    //public GameObject backgroundFade;
-    //public GameObject pauseObject;
 
     //private AudioSource[] allAudioSources;
 
-    //BasketBall objects
-    BasketBall _basketballState;
-    GameObject _basketball;
-    GameObject basketballPrefab;
+    private Vector3 _previousPlayerPosition;
+    private Quaternion _previousPlayerRotation;
 
+    private bool _startGame;
+    private bool _locked;
+    private bool _paused;
+
+    private string _currentSceneName;
+    //private AudioSource[] allAudioSources;
+
+    //BasketBall objects
+    private GameObject _basketballPrefab;
 
     //spawn locations
-    GameObject basketballSpawnLocation;
-    GameObject playerSpawnLocation;
+    private GameObject _basketballSpawnLocation;
+
+    private GameObject _playerSpawnLocation;
     //[SerializeField]
     //GameObject player_spawn;
 
     [SerializeField]
-    private int playerCount;
+    private int _playerCount;
 
-    [SerializeField] private int basketballCount;
+    [SerializeField] private int _basketballCount;
 
-    public static GameLevelManager instance;
+    public static GameLevelManager Instance;
 
-    private GameObject playerClone;
+    private GameObject _playerClone;
 
     //List<string> scenes = new List<string>();
 
     [SerializeField]
-    private GameObject npcObject;
+    private GameObject _npcObject;
 
 
-    void Awake()
+    private void Awake()
     {
         // initialize game manger player references
-        instance = this;
+        Instance = this;
 
-        // if player selected is not null / player not selecetd
+        // if player selected is not null / player not selected
         if(!string.IsNullOrEmpty( GameOptions.playerSelected)){
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString();
-            playerClone = Resources.Load("Prefabs/characters/players/player_" + GameOptions.playerSelected.ToString()) as GameObject;
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerSelected;
+            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
         //allAudioSources = FindObjectsOfType<AudioSource>();
         //Application.targetFrameRate = 60;
 
-        if (!getCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
+        if (!GetCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
         // player + ball spawn locations
 
-        playerSpawnLocation = GameObject.Find("player_spawn_location");
-        basketballSpawnLocation = GameObject.Find("ball_spawn_location");
+        _playerSpawnLocation = GameObject.Find("player_spawn_location");
+        _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
 
         if (GameObject.FindWithTag("Player") == null)
         {
-            Instantiate(playerClone, playerSpawnLocation.transform.position, Quaternion.identity);
+            Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
         }
         if(GameObject.FindWithTag("basketball") == null)
         {
-            basketballPrefab = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-            Instantiate(basketballPrefab, basketballSpawnLocation.transform.position, Quaternion.identity);
+            _basketballPrefab = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+            Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
     }
 
-    void Start()
+    private void Start()
     {
-        locked = false;
+        _locked = false;
 
         //set up player/basketball read only references for use in other classes
 
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = Player.GetComponent<PlayerController>();
-        _anim = Player.GetComponentInChildren<Animator>();
-        _basketball = GameObject.FindWithTag("basketball");
-        _basketballState = _basketball.GetComponent<BasketBall>();
+        Anim = Player.GetComponentInChildren<Animator>();
+        Basketball = GameObject.FindWithTag("basketball");
+        BasketballState = Basketball.GetComponent<BasketBall>();
 
         InitializePlayer();
 
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
-        npcObject = GameObject.FindGameObjectWithTag("auto_npc");
+        _npcObject = GameObject.FindGameObjectWithTag("auto_npc");
 
         if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
              && GameOptions.playerSelected.Contains("flash") 
-             && npcObject != null )
+             && _npcObject != null )
         {
-            npcObject.SetActive(false);
+            _npcObject.SetActive(false);
         }
+
         GameOptions.printCurrentValues();
     }
 
 
-    void Update()
+    private void Update()
     {
         ////close app
         //if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
@@ -156,45 +133,43 @@ public class GameLevelManager : MonoBehaviour
         // reload scene 4+2+0
 
         //turn on : toggle run, shift +1
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha1)
-            && !locked)
+        if (GetKey(KeyCode.LeftShift)
+            && GetKeyDown(KeyCode.Alpha1)
+            && !_locked)
         {
-            locked = true;
+            _locked = true;
             PlayerState.toggleRun();
-            locked = false;
+            _locked = false;
         }
         //toggle pull ball to player, shift + 4
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha2)
-            && !locked)
+        if (GetKey(KeyCode.LeftShift)
+            && GetKeyDown(KeyCode.Alpha2)
+            && !_locked)
         {
-            locked = true;
+            _locked = true;
             callBallToPlayer.instance.toggleCallBallToPlayer(); 
-            locked = false;
+            _locked = false;
         }
         //turn off accuracy shift +2
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha3)
-            && !locked)
+        if (GetKey(KeyCode.LeftShift)
+            && GetKeyDown(KeyCode.Alpha3)
+            && !_locked)
         {
-            locked = true;
-            _basketballState.toggleAddAccuracyModifier();
-            locked = false;
+            _locked = true;
+            BasketballState.toggleAddAccuracyModifier();
+            _locked = false;
         }
         
         //turn off stats, shift +3
-        if (InputManager.GetKey(KeyCode.LeftShift)
-            && InputManager.GetKeyDown(KeyCode.Alpha4)
-            && !locked)
+        if (GetKey(KeyCode.LeftShift)
+            && GetKeyDown(KeyCode.Alpha4)
+            && !_locked)
         {
-            locked = true;
+            _locked = true;
             BasketBall.instance.toggleUiStats(); 
-            locked = false;
+            _locked = false;
         }       
         
-
-
         ////run stat analysis
         //if (InputManager.GetKey(KeyCode.LeftShift)
         //    && InputManager.GetKeyDown(KeyCode.Alpha0)
@@ -217,8 +192,7 @@ public class GameLevelManager : MonoBehaviour
         //_anim = player.GetComponentInChildren<Animator>();
     }
 
-
-    private string getCurrentSceneName()
+    private string GetCurrentSceneName()
     {
         return SceneManager.GetActiveScene().name;
     }
@@ -264,33 +238,15 @@ public class GameLevelManager : MonoBehaviour
         Application.Quit();
     }
 
-    public GameObject Player
-    {
-        get { return _player; }
-    }
-    public PlayerController PlayerState
-    {
-        get { return _playerState; }
-    }
-    public Animator Anim
-    {
-        get { return _anim; }
-    }
+    public GameObject Player => _player;
 
-    public BasketBall BasketballState
-    {
-        get => _basketballState;
-    }
+    public PlayerController PlayerState => _playerState;
 
-    public GameObject Basketball
-    {
-        get => _basketball;
-    }
+    public Animator Anim { get; private set; }
 
+    public BasketBall BasketballState { get; private set; }
 
-    public bool GameOver
-    {
-        get => gameOver;
-        set => gameOver = value;
-    }
+    public GameObject Basketball { get; private set; }
+
+    public bool GameOver { get; set; }
 }
