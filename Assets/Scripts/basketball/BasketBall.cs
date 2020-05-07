@@ -5,13 +5,13 @@ using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable All
 
 
 public class BasketBall : MonoBehaviour
 {
-
     SpriteRenderer spriteRenderer;
     PlayerController playerState;
     new Rigidbody rigidbody;
@@ -32,10 +32,12 @@ public class BasketBall : MonoBehaviour
     BasketBallState basketBallState;
 
     BasketBallStats basketBallStats;
+
     public BasketBallStats BasketBallStats
     {
         get => basketBallStats;
     }
+
     // text objects
     public GameObject TextObject;
     Text scoreText;
@@ -44,8 +46,7 @@ public class BasketBall : MonoBehaviour
     Text shootProfileText;
 
 
-    [Range(20f, 70f)]
-    public float _angle;
+    [Range(20f, 70f)] public float _angle;
 
     float releaseVelocityY;
     float _playerRigidBody;
@@ -64,8 +65,7 @@ public class BasketBall : MonoBehaviour
 
     bool playHitRimSound;
     bool locked;
-    [SerializeField]
-    private bool uiStatsEnabled;
+    [SerializeField] private bool uiStatsEnabled;
 
     //public BasketballTestStats testStats;
     public BasketBallTestStatsConclusions testConclusions;
@@ -122,7 +122,8 @@ public class BasketBall : MonoBehaviour
             scoreText = TextObject.GetComponent<Text>();
             if (uiStatsEnabled)
             {
-                shootProfileText.text = "ball distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)).ToString("0.00") + "\n"
+                shootProfileText.text = "ball distance : " +
+                                        (Math.Round(basketBallState.BallDistanceFromRim, 2)).ToString("0.00") + "\n"
                                         + "shot distance : " +
                                         (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
                                         " ft.\n"
@@ -134,7 +135,6 @@ public class BasketBall : MonoBehaviour
             }
         }
     }
-
 
     // Update is called once per frame
     private void Update()
@@ -150,7 +150,7 @@ public class BasketBall : MonoBehaviour
             dropShadow.SetActive(true);
         }
 
-        if (!addAccuracyModifier && PlayerData.instance !=null)
+        if (!addAccuracyModifier && PlayerData.instance != null)
         {
             PlayerData.instance.IsCheating = true;
         }
@@ -176,7 +176,7 @@ public class BasketBall : MonoBehaviour
 
         // =========== this is the conditional for auto shooting =============================
         // this will work great for  playing against CPU
-        
+
         //if player has ball and hasnt shot
         if (playerState.hasBasketball && !basketBallState.Thrown)
         {
@@ -207,8 +207,8 @@ public class BasketBall : MonoBehaviour
         }
 
         // if has ball, is in air, and pressed shoot button.
-        if (playerState.inAir 
-            && playerState.hasBasketball 
+        if (playerState.inAir
+            && playerState.hasBasketball
             && InputManager.GetButtonDown("Fire1")
             && !basketBallState.Locked)
         {
@@ -233,16 +233,19 @@ public class BasketBall : MonoBehaviour
                 basketBallState.TwoAttempt = true;
                 basketBallStats.TwoPointerAttempts++;
             }
+
             if (basketBallState.ThreePoints)
             {
                 basketBallState.ThreeAttempt = true;
                 basketBallStats.ThreePointerAttempts++;
             }
+
             if (basketBallState.FourPoints)
             {
                 basketBallState.FourAttempt = true;
                 basketBallStats.FourPointerAttempts++;
             }
+
             if (basketBallState.SevenPoints)
             {
                 basketBallState.SevenAttempt = true;
@@ -264,7 +267,6 @@ public class BasketBall : MonoBehaviour
             basketBallState.InAir = true;
             basketBallState.Locked = false;
         }
-
     }
 
     private void OnCollisionEnter(Collision other)
@@ -275,6 +277,7 @@ public class BasketBall : MonoBehaviour
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
             basketBallState.CanPullBall = true;
         }
+
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
             basketBallState.InAir = false;
@@ -295,11 +298,11 @@ public class BasketBall : MonoBehaviour
 
     private void OnCollisionExit(Collision other)
     {
-
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && !playHitRimSound)
         {
             playHitRimSound = true;
         }
+
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
             basketBallState.Grounded = false;
@@ -330,7 +333,8 @@ public class BasketBall : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // ReSharper disable once StringLiteralTypo
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") && basketBallState.Thrown)
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
+            basketBallState.Thrown)
         {
             basketBallState.Thrown = false;
             playerState.hasBasketball = false;
@@ -436,20 +440,36 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
         if (percent <= maxPercent)
         {
-           //Debug.Log("********************** critical shot rolled");
+            //Debug.Log("********************** critical shot rolled");
             return true;
         }
-        return false;
 
+        return false;
     }
+
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegative();
         float accuracyModifier = 1;
-        if (basketBallState.TwoPoints) { accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f; }
-        if (basketBallState.ThreePoints) { accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f; }
-        if (basketBallState.FourPoints) { accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f; }
-        if (basketBallState.SevenPoints) { accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f; }
+        if (basketBallState.TwoPoints)
+        {
+            accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
+        }
+
+        if (basketBallState.ThreePoints)
+        {
+            accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
+        }
+
+        if (basketBallState.FourPoints)
+        {
+            accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
+        }
+
+        if (basketBallState.SevenPoints)
+        {
+            accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
+        }
 
         return (accuracyModifier / 1.6f) * direction;
     }
@@ -457,7 +477,7 @@ public class BasketBall : MonoBehaviour
     private int getRandomPositiveOrNegative()
     {
         var Random = new Random();
-        List<int> list = new List<int> { 1, -1 };
+        List<int> list = new List<int> {1, -1};
         int finder = Random.Next(list.Count); //Then you just use this; nameDisplayString = names[finder];
         int shotDirectionModifier = list[finder];
 
@@ -498,14 +518,21 @@ public class BasketBall : MonoBehaviour
 
     public void updateScoreText()
     {
-        scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "  " + getTotalPointAccuracy().ToString("0.00") + "\n"
-            + "points : " + basketBallStats.TotalPoints + "\n"
-            + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "  " + getTwoPointAccuracy().ToString("0.00") + "%\n"
-            + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "  " + getThreePointAccuracy().ToString("0.00") + "%\n"
-            + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
-            + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "  " + getFourPointAccuracy().ToString("0.00") + "%\n"
-            + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." + "\n"
-            + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
+        scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "  " +
+                         getTotalPointAccuracy().ToString("0.00") + "\n"
+                         + "points : " + basketBallStats.TotalPoints + "\n"
+                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " +
+                         basketBallStats.TwoPointerAttempts + "  " + getTwoPointAccuracy().ToString("0.00") + "%\n"
+                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " +
+                         basketBallStats.ThreePointerAttempts + "  " + getThreePointAccuracy().ToString("0.00") + "%\n"
+                         + "4 pointers : " + basketBallStats.FourPointerMade + " / " +
+                         basketBallStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
+                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " +
+                         basketBallStats.SevenPointerAttempts + "  " + getFourPointAccuracy().ToString("0.00") + "%\n"
+                         + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." +
+                         "\n"
+                         + "longest shot distance : " +
+                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.";
     }
 
     public float getTotalPointAccuracy()
@@ -582,6 +609,3 @@ public class BasketBall : MonoBehaviour
     public bool UiStatsEnabled => uiStatsEnabled;
     public BasketBallState BasketBallState => basketBallState;
 }
-
-
-

@@ -5,23 +5,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class callBallToPlayer : MonoBehaviour
+public class CallBallToPlayer : MonoBehaviour
 {
-    [SerializeField]
-    Rigidbody basketballRigidBody;
-    [SerializeField]
-    float pullSpeed;
-    [SerializeField]
-    Vector3 pullDirection;
+    [SerializeField] internal float pullSpeed;
+    private Rigidbody basketballRigidBody;
+    private Vector3 pullDirection;
 
-    PlayerController playerState;
-    BasketBall basketBall;
-    BasketBallState _basketBallState;
-    bool locked;
+    private PlayerController playerState;
+    private BasketBall basketBall;
+    private BasketBallState _basketBallState;
 
+    private bool locked;
     private bool canBallToPlayerEnabled;
 
-    static public callBallToPlayer instance;
+    public static CallBallToPlayer instance;
 
     private void Start()
     {
@@ -31,18 +28,9 @@ public class callBallToPlayer : MonoBehaviour
         _basketBallState = GameObject.FindWithTag("basketball").GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
-        //if (SceneManager.GetActiveScene().name.Equals("level_03_practice"))
-        //{
-        //    canBallToPlayerEnabled = true;
-        //    PlayerData.instance.IsCheating = true;
-        //}
-        //else
-        //{
-        //    canBallToPlayerEnabled = false;
-        //}
     }
 
-    void pullBallToPlayer()
+    private void pullBallToPlayer()
     {
         Vector3 tempDirection = basketballRigidBody.transform.position;
         pullDirection = transform.position - tempDirection;
@@ -57,7 +45,6 @@ public class callBallToPlayer : MonoBehaviour
             && canBallToPlayerEnabled
             && !locked)
         {
-            ////Debug.Log("callBallToPlayer : pullBallToPlayer");
             locked = true;
             pullBallToPlayer();
             locked = false;
@@ -66,7 +53,6 @@ public class callBallToPlayer : MonoBehaviour
 
     public void toggleCallBallToPlayer()
     {
-
         canBallToPlayerEnabled = !canBallToPlayerEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "call ball to player = " + canBallToPlayerEnabled + "\nhigh score saving disabled";

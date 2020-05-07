@@ -147,7 +147,7 @@ public class GameLevelManager : MonoBehaviour
             && !_locked)
         {
             _locked = true;
-            callBallToPlayer.instance.toggleCallBallToPlayer(); 
+            CallBallToPlayer.instance.toggleCallBallToPlayer(); 
             _locked = false;
         }
         //turn off accuracy shift +2
