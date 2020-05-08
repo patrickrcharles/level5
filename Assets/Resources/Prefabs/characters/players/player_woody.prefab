@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 3133135654869299923}
   - component: {fileID: 4335230696680439515}
   - component: {fileID: 4285487697881171478}
+  - component: {fileID: 904804546433258722}
   m_Layer: 0
   m_Name: player_woody
   m_TagString: Player
@@ -379,6 +380,21 @@ MonoBehaviour:
   shootAngle: 45
   level: 0
   experience: 0
+--- !u!114 &904804546433258722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361230629192624495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a215fc91b23f9574fa89bf961cf9a25a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerId: 0
+  experience: 0
+  level: 0
 --- !u!1 &4704057943004090548
 GameObject:
   m_ObjectHideFlags: 0

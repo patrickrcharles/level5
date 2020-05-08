@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 2865052691206528723}
   - component: {fileID: 3499368517784670939}
   - component: {fileID: 4017360547463801366}
+  - component: {fileID: 1798224080801594467}
   m_Layer: 0
   m_Name: player_thom
   m_TagString: Player
@@ -381,6 +382,21 @@ MonoBehaviour:
   shootAngle: 55
   level: 0
   experience: 0
+--- !u!114 &1798224080801594467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188050621579674991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a215fc91b23f9574fa89bf961cf9a25a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerId: 0
+  experience: 0
+  level: 0
 --- !u!1 &5616481040456563892
 GameObject:
   m_ObjectHideFlags: 0

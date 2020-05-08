@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 986399682245610622}
   - component: {fileID: 1937271690880286838}
   - component: {fileID: 2139873192894085307}
+  - component: {fileID: -208470134653182654}
   m_Layer: 0
   m_Name: player_flash
   m_TagString: Player
@@ -374,6 +375,21 @@ MonoBehaviour:
   shootAngle: 60
   level: 0
   experience: 0
+--- !u!114 &-208470134653182654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760319889797994434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a215fc91b23f9574fa89bf961cf9a25a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerId: 0
+  experience: 0
+  level: 0
 --- !u!1 &6123458180369103978
 GameObject:
   m_ObjectHideFlags: 0
