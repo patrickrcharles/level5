@@ -99,7 +99,7 @@ public class StartManager : MonoBehaviour
 
     private void setInitialGameOptions()
     {
-        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
         GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
@@ -253,7 +253,7 @@ public class StartManager : MonoBehaviour
             + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
 
-        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
 
     private void loadPlayerSelectDataList()
@@ -309,7 +309,7 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             playerSelectedIndex--;
         }
-        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
     private void changeSelectedPlayerDown()
@@ -324,7 +324,7 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             playerSelectedIndex++;
         }
-        GameOptions.playerSelected = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
@@ -405,14 +405,21 @@ public class StartManager : MonoBehaviour
 
     private void setPlayerProfileStats()
     {
+        // need object name and playerid
+        GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
+
         GameOptions.accuracy2pt = playerSelectedData[playerSelectedIndex].Accuracy2Pt;
         GameOptions.accuracy3pt = playerSelectedData[playerSelectedIndex].Accuracy3Pt;
         GameOptions.accuracy4pt = playerSelectedData[playerSelectedIndex].Accuracy4Pt;
         GameOptions.accuracy7pt = playerSelectedData[playerSelectedIndex].Accuracy7Pt;
+
         GameOptions.criticalPercent = playerSelectedData[playerSelectedIndex].CriticalPercent;
         GameOptions.jumpForce = playerSelectedData[playerSelectedIndex].JumpForce;
         GameOptions.speed = playerSelectedData[playerSelectedIndex].Speed;
         GameOptions.runSpeed = playerSelectedData[playerSelectedIndex].RunSpeed;
+        GameOptions.runSpeedHasBall = playerSelectedData[playerSelectedIndex].RunSpeedHasBall;
         GameOptions.shootAngle = playerSelectedData[playerSelectedIndex].ShootAngle;
     }
 }

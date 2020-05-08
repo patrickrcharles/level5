@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
+    [SerializeField]
     ShooterProfile shooterProfile;
     BasketBall basketball;
 
@@ -25,24 +26,11 @@ public class PlayerController : MonoBehaviour
     private float movementSpeed;
 
     // jump vars 
-    [SerializeField]
-    float jumpForce;
+    //float jumpForce;
     //public float runMovementSpeed;
     //public float basketballRunSpeed;
     //public float walkMovementSpeed;
-    public float attackMovementSpeed;
-    //public float attackCooldown;
-    //public float chargeSpeed;
-
-    /* ::: level boundary clamping
-     the only current use for this smokebomb, because of the random direction
-     you reappear in, can cause player to teleport out of level area
-    TODO: reevaluate how this works, ex. when random direction selected, 
-    check if the transform is null (nothing is occupying the space)
-    */
-
-    //[SerializeField]
-    //float xMin, xMax, zMin, zMax, yMin, yMax;
+    //public float attackMovementSpeed;
 
     // player state bools
     [SerializeField]
@@ -55,12 +43,10 @@ public class PlayerController : MonoBehaviour
     public bool canMove; // save this when i cars that can knock player down
 
     Vector3 bballRimVector;
-    [SerializeField]
     float bballRelativePositioning;
-    [SerializeField]
     Vector3 playerRelativePositioning;
-    [SerializeField]
     public float playerDistanceFromRim;
+
     public GameObject playerHitbox;
 
     // control movement speed based on state
@@ -103,7 +89,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
+        shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
 
         // bball rim vector, used for relative positioning
@@ -111,9 +97,12 @@ public class PlayerController : MonoBehaviour
 
         if (GameOptions.gameModeHasBeenSelected)
         {
+            Debug.Log(" set shoot profile");
             setShooterProfileStats();
         }
 
+        //Debug.Log(" initial shooter profile stats =====================================================================================");
+        //printShooterProfileStats();
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
@@ -150,6 +139,10 @@ public class PlayerController : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
+
+        //Debug.Log(" update() shoot profile stats ==================================================================================");
+        //printShooterProfileStats();
+
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
         dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
@@ -268,7 +261,7 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
-        rigidBody.velocity = (Vector3.up * jumpForce) + (Vector3.forward * rigidBody.velocity.x);
+        rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce) + (Vector3.forward * rigidBody.velocity.x);
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
@@ -376,6 +369,24 @@ public class PlayerController : MonoBehaviour
         shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
         shooterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
         shooterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
+
+        //gravityModifier = shooterProfile.HangTime;
+        //_angle = shooterProfile.ShootAngle;
+    } 
+    
+    //*** need to update this
+    void printShooterProfileStats()
+    {
+        Debug.Log(shooterProfile.Speed);
+        Debug.Log(shooterProfile.RunSpeed);
+        Debug.Log(shooterProfile.RunSpeed);
+        Debug.Log(shooterProfile.JumpForce);
+        Debug.Log(shooterProfile.CriticalPercent);
+        Debug.Log(shooterProfile.ShootAngle);
+        Debug.Log(shooterProfile.Accuracy2Pt);
+        Debug.Log(shooterProfile.Accuracy3Pt);
+        Debug.Log(shooterProfile.Accuracy4Pt);
+        Debug.Log(shooterProfile.Accuracy7Pt);
 
         //gravityModifier = shooterProfile.HangTime;
         //_angle = shooterProfile.ShootAngle;

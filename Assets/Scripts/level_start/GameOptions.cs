@@ -6,17 +6,18 @@ using UnityEngine.SceneManagement;
 
 public  class GameOptions : MonoBehaviour
 {
-    static public String playerSelected;
-    [SerializeField]
+    static public String playerDisplayName;
+    static public int playerId;
     static public String levelSelected;
+   static public int gameModeSelected;
+
+    static public String playerObjectName;
+    static public String levelSelectedName;
+    static public String gameModeSelectedName;
+
     static public int levelSelectedRootCount;
     static public int levelSelectedBuildIndex;
-    [SerializeField]
-    static public String levelSelectedName;
-    [SerializeField]
-    static public String gameModeSelectedName;
-    [SerializeField]
-    static public int gameModeSelected;
+
 
     //player stats
     static public float accuracy2pt;
@@ -32,9 +33,9 @@ public  class GameOptions : MonoBehaviour
    // static public float range;
    // static public float release;
     static public float criticalPercent;
-
     static public float shootAngle;
 
+    // for testing scenes. True if scene loaded from start screen
     static public bool gameModeHasBeenSelected;
 
     //static public int level;
@@ -54,10 +55,10 @@ public  class GameOptions : MonoBehaviour
 
     static public void printCurrentValues()
     {
-        Debug.Log("playerSelected : " + playerSelected);
+        Debug.Log("playerSelected : " + playerId);
         Debug.Log("levelSected : " + levelSelectedName);
         Debug.Log("gameModeSelected : " + gameModeSelected);
-        Debug.Log("gameModeSelected : " + gameModeSelectedName);
-        Debug.Log("gameModeSelected : " + gameModeHasBeenSelected);
+        Debug.Log("gameModeSelectedName : " + gameModeSelectedName);
+        Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
     }
 }

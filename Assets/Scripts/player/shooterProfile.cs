@@ -59,7 +59,8 @@ public class ShooterProfile : MonoBehaviour
 
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.levelSelectedBuildIndex == 1
-            || GameOptions.levelSelectedBuildIndex ==2)
+            || GameOptions.levelSelectedBuildIndex ==2
+            || GameOptions.levelSelectedBuildIndex ==3)
         {
             intializeShooterStatsFromProfile();
         }
@@ -67,10 +68,19 @@ public class ShooterProfile : MonoBehaviour
 
     private void intializeShooterStatsFromProfile()
     {
-       //Debug.Log("initializeStats()");
+        //Debug.Log("initializeStats()");
+
+        playerObjectName = GameOptions.playerObjectName;
+        playerDisplayName = GameOptions.playerDisplayName;
+        playerId = GameOptions.playerId;
+
+        runSpeedHasBall = GameOptions.runSpeedHasBall;
+
         Accuracy2Pt = GameOptions.accuracy2pt;
         Accuracy3Pt = GameOptions.accuracy3pt;
         Accuracy4Pt = GameOptions.accuracy4pt;
+        Accuracy7Pt = GameOptions.accuracy7pt;
+
         JumpForce = GameOptions.jumpForce;
         CriticalPercent = GameOptions.criticalPercent;
         RunSpeed = GameOptions.runSpeed;
