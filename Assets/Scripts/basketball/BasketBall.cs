@@ -73,6 +73,7 @@ public class BasketBall : MonoBehaviour
     [SerializeField]
     float accuracyModifierX;
 
+    // =========================================================== Start() ========================================================
     // Use this for initialization
     void Start()
     {
@@ -81,41 +82,34 @@ public class BasketBall : MonoBehaviour
         player = GameLevelManager.Instance.Player;
         playerState = GameLevelManager.Instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
-
         basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
         basketBallState = GameLevelManager.Instance.Basketball.GetComponent<BasketBallState>();
-
-        Debug.Log("bstate : " + basketBallState == null);
+        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
 
         //basketball drop shadow
         dropShadow = transform.root.Find("drop shadow").gameObject;
         dropShadowPosition = dropShadow.transform.position;
 
-        audioSource = GetComponent<AudioSource>();
-        basketBallSprite = GameObject.Find("basketball_sprite");
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
+        //objects
+        basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
+        //playerDunkPos = GameObject.Find("dunk_transform"); //not used yet
 
-        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
-
-        playerDunkPos = GameObject.Find("dunk_transform");
+        //bool flags
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
         addAccuracyModifier = true;
         playHitRimSound = true;
 
-        basketBallStats.PlayerName = shooterProfile.PlayerObjectName;
-        basketBallStats.PlayerId = shooterProfile.PlayerId;
-
         // for test data
         //testStats = GetComponent<BasketballTestStats>();
         testConclusions = GetComponent<BasketBallTestStatsConclusions>();
-        basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
 
-
+        //todo: move to game manager
         uiStatsEnabled = false;
-
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
         if (GameObject.Find("ui_stats") != null)
         {
@@ -137,6 +131,8 @@ public class BasketBall : MonoBehaviour
             }
         }
     }
+
+    // =========================================================== Update() ========================================================
 
     // Update is called once per frame
     private void Update()
@@ -176,9 +172,6 @@ public class BasketBall : MonoBehaviour
             shootProfileText.text = "";
         }
 
-        // =========== this is the conditional for auto shooting =============================
-        // this will work great for  playing against CPU
-
         //if player has ball and hasnt shot
         if (playerState.hasBasketball && !basketBallState.Thrown)
         {
@@ -189,7 +182,6 @@ public class BasketBall : MonoBehaviour
             if (playerState.grounded)
             {
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-                //spriteRenderer.enabled = false;
                 dropShadow.SetActive(false);
                 playerState.setPlayerAnim("hasBasketball", true);
                 //playerState.setPlayerAnim("walking", false);
@@ -256,9 +248,11 @@ public class BasketBall : MonoBehaviour
             }
             if (basketBallState.PlayerOnMarker)
             {
-                Debug.Log("marker id: "+ basketBallState.CurrentShotMarkerId);
-                basketBallState.BasketBallShotMarkersList[basketBallState.CurrentShotMarkerId].ShotAttempt++;
-                Debug.Log("shotattempt: " + basketBallState.BasketBallShotMarkersList[basketBallState.CurrentShotMarkerId].ShotAttempt);
+                // on shoot. 
+                basketBallState.PlayerOnMarkerOnShoot = true;
+                basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
+                // update shot attempt stat for marker position shot from
+                basketBallState.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
             }
 
             //launch ball to goal      
@@ -278,6 +272,8 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    // =========================================================== Collisions ========================================================
+
     private void OnCollisionEnter(Collision other)
     {
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && playHitRimSound)
@@ -289,7 +285,6 @@ public class BasketBall : MonoBehaviour
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
-            //basketBallState.PlayerOnMarker = false; // this needs to be reset for next shot
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
             //reset rotation
@@ -321,7 +316,6 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ReSharper disable once StringLiteralTypo
         if (gameObject.CompareTag("basketball") && other.CompareTag("playerHitbox"))
         {
             playerState.hasBasketball = true;
@@ -342,7 +336,6 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // ReSharper disable once StringLiteralTypo
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
             basketBallState.Thrown)
         {
@@ -437,11 +430,15 @@ public class BasketBall : MonoBehaviour
         }
 
         testConclusions.shotStats.Add(testStats);
-        currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
+        currentTestStatsIndex = (testConclusions.shotStats.Count) - 1;
         basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
+
+        // ================================================================================================
     }
 
-    // ================================================================================================
+    // =========================================================== Functions and Properties ========================================================
+    public bool UiStatsEnabled => uiStatsEnabled;
+    public BasketBallState BasketBallState => basketBallState;
 
     bool rollForCriticalShotChance(float maxPercent)
     {
@@ -489,7 +486,7 @@ public class BasketBall : MonoBehaviour
     private int getRandomPositiveOrNegative()
     {
         var Random = new Random();
-        List<int> list = new List<int> {1, -1};
+        List<int> list = new List<int> { 1, -1 };
         int finder = Random.Next(list.Count); //Then you just use this; nameDisplayString = names[finder];
         int shotDirectionModifier = list[finder];
 
@@ -544,8 +541,8 @@ public class BasketBall : MonoBehaviour
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." +
                          "\n"
                          + "longest shot distance : " +
-                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft."+"\n" +
-                         "criticals rolled : "+ basketBallStats.CriticalRolled+ " / "+ basketBallStats.ShotAttempt+ "  "+ getCriticalPercentage().ToString("0.00")+"%";
+                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft." + "\n" +
+                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt + "  " + getCriticalPercentage().ToString("0.00") + "%";
     }
 
     public float getCriticalPercentage()
@@ -636,7 +633,4 @@ public class BasketBall : MonoBehaviour
     {
         get => basketBallStats;
     }
-
-    public bool UiStatsEnabled => uiStatsEnabled;
-    public BasketBallState BasketBallState => basketBallState;
 }

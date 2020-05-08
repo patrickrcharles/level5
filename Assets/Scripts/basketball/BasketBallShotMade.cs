@@ -80,14 +80,16 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.ShotMade++;
             }
 
-            if (_basketBallState.PlayerOnMarker)
+            if (_basketBallState.PlayerOnMarkerOnShoot)
             {
-                _basketBallState.BasketBallShotMarkersList[_basketBallState.CurrentShotMarkerId].ShotMade++;
+                Debug.Log("_id  : "+ _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
+                _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;
             _basketBallState.FourAttempt = false;
             _basketBallState.SevenAttempt = false;
+
         }
         // update onscreen ui stats
         if (BasketBall.instance.UiStatsEnabled)

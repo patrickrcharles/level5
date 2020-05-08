@@ -31,8 +31,11 @@ public class BasketBallState : MonoBehaviour
     [SerializeField]
     private bool _playerOnMarker;
     [SerializeField]
-    private int _currentShotMarkerId;
+    private bool _playerOnMarkerOnShoot;
 
+    [SerializeField]
+    private int _currentShotMarkerId;
+    private int _onShootShotMarkerId;
 
     [SerializeField]
     private float _ballDistanceFromRim;
@@ -133,11 +136,23 @@ public class BasketBallState : MonoBehaviour
         get => _playerOnMarker;
         set => _playerOnMarker = value;
     }
+    public bool PlayerOnMarkerOnShoot
+    {
+        get => _playerOnMarkerOnShoot;
+        set => _playerOnMarkerOnShoot = value;
+    }
+
 
     public int CurrentShotMarkerId
     {
         get => _currentShotMarkerId;
         set => _currentShotMarkerId = value;
+    }
+
+    public int OnShootShotMarkerId
+    {
+        get => _onShootShotMarkerId;
+        set => _onShootShotMarkerId = value;
     }
     public bool TwoPoints
     {

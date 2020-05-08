@@ -27,6 +27,15 @@ public class BasketBallStats : MonoBehaviour
 
     public float _criticalRolled;
 
+    //init from game options
+    void Start()
+    {
+        // for saving character specific info
+        // id and name use to construct key that will be stored
+        PlayerId = GameOptions.playerId;
+        PlayerName = GameOptions.playerObjectName;
+    }
+
     public float CriticalRolled
     {
         get => _criticalRolled;
