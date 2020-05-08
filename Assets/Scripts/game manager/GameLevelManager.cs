@@ -47,6 +47,8 @@ public class GameLevelManager : MonoBehaviour
     [SerializeField]
     private GameObject _npcObject;
 
+    const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
+
 
     private void Awake()
     {
@@ -73,7 +75,7 @@ public class GameLevelManager : MonoBehaviour
         }
         if(GameObject.FindWithTag("basketball") == null)
         {
-            _basketballPrefab = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
+            _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
             Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
     }

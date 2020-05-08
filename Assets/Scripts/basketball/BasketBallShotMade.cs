@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = System.Random;
 
 
 public class BasketBallShotMade : MonoBehaviour
@@ -16,6 +17,10 @@ public class BasketBallShotMade : MonoBehaviour
     PlayerController playerState;
     bool isColliding;
 
+    const string moneyPrefabPath = "Prefabs/objects/money";
+    [SerializeField]
+    private GameObject moneyClone;
+
     //public AudioClip shotMissed;
 
     // Use this for initialization
@@ -26,6 +31,9 @@ public class BasketBallShotMade : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
         playerState = GameLevelManager.Instance.PlayerState;
+
+        // path to money prfab
+        moneyClone = Resources.Load(moneyPrefabPath) as GameObject;
     }
 
     // Update is called once per frame
@@ -59,6 +67,7 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 2;
                 _basketBallStats.TwoPointerMade++;
                 _basketBallStats.ShotMade++;
+                instantiateMoney(0);
 
             }
             if (_basketBallState.ThreeAttempt)
@@ -66,23 +75,26 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 3;
                 _basketBallStats.ThreePointerMade++;
                 _basketBallStats.ShotMade++;
+                instantiateMoney(0.5f);
             }
             if (_basketBallState.FourAttempt)
             {
                 _basketBallStats.TotalPoints += 4;
                 _basketBallStats.FourPointerMade++;
                 _basketBallStats.ShotMade++;
+                instantiateMoney(1f);
             }
             if (_basketBallState.SevenAttempt)
             {
                 _basketBallStats.TotalPoints += 7;
                 _basketBallStats.SevenPointerMade++;
                 _basketBallStats.ShotMade++;
+                instantiateMoney(2f);
             }
 
             if (_basketBallState.PlayerOnMarkerOnShoot)
             {
-                Debug.Log("_id  : "+ _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
+                Debug.Log("_id  : " + _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
                 _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
             _basketBallState.TwoAttempt = false;
@@ -96,9 +108,19 @@ public class BasketBallShotMade : MonoBehaviour
         {
             BasketBall.instance.updateScoreText();
         }
-
         //// object test shot data in list
         //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
+    }
+
+    void instantiateMoney(float value)
+    {
+        // set value of shot
+        moneyClone.GetComponent<PickupObject>().updateMoneyValue(value);
+        Random random = new Random();
+        float distance = (float)(random.NextDouble());
+        Debug.Log("distance : "+ distance);
+        Vector3 tempPos = new Vector3(transform.position.x + distance, 0, transform.position.z - 2);
+        Instantiate(moneyClone, tempPos, Quaternion.identity);
     }
 }
 

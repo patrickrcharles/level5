@@ -30,6 +30,7 @@ TagManager:
   - auto_npc
   - flash_return_position
   - shot_marker
+  - money
   layers:
   - Default
   - TransparentFX
