@@ -27,6 +27,8 @@ public class ShooterProfile : MonoBehaviour
 
     [SerializeField] private float jumpForce;
     [SerializeField] private float speed;
+    [SerializeField] private float runSpeedHasBall;
+
     [SerializeField] private float runSpeed;
     [SerializeField] private float hangTime;
     [SerializeField] private float range;
@@ -102,6 +104,12 @@ public class ShooterProfile : MonoBehaviour
 
 
         return percent;
+    }
+
+    public float RunSpeedHasBall
+    {
+        get => runSpeedHasBall;
+        set => runSpeedHasBall = value;
     }
 
     public int PlayerId

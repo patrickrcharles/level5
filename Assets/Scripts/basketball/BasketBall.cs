@@ -27,16 +27,12 @@ public class BasketBall : MonoBehaviour
 
     GameObject player;
     GameObject dropShadow;
-
+    [SerializeField]
     ShooterProfile shooterProfile;
+    [SerializeField]
     BasketBallState basketBallState;
-
+    [SerializeField]
     BasketBallStats basketBallStats;
-
-    public BasketBallStats BasketBallStats
-    {
-        get => basketBallStats;
-    }
 
     // text objects
     public GameObject TextObject;
@@ -67,12 +63,15 @@ public class BasketBall : MonoBehaviour
     bool locked;
     [SerializeField] private bool uiStatsEnabled;
 
-    //public BasketballTestStats testStats;
+    public BasketballTestStats testStats;
     public BasketBallTestStatsConclusions testConclusions;
     public int currentTestStatsIndex = 0;
     public BasketBallShotMade basketBallShotMade;
 
     public static BasketBall instance;
+
+    [SerializeField]
+    float accuracyModifierX;
 
     // Use this for initialization
     void Start()
@@ -83,8 +82,10 @@ public class BasketBall : MonoBehaviour
         playerState = GameLevelManager.Instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
 
-        basketBallStats = GetComponent<BasketBallStats>();
-        basketBallState = GetComponent<BasketBallState>();
+        basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
+        basketBallState = GameLevelManager.Instance.Basketball.GetComponent<BasketBallState>();
+
+        Debug.Log("bstate : " + basketBallState == null);
 
         //basketball drop shadow
         dropShadow = transform.root.Find("drop shadow").gameObject;
@@ -211,6 +212,7 @@ public class BasketBall : MonoBehaviour
         if (playerState.inAir
             && playerState.hasBasketball
             && InputManager.GetButtonDown("Fire1")
+            //&& playerState.jumpPeakReached
             && !basketBallState.Locked)
         {
             basketBallState.Locked = true;
@@ -287,7 +289,7 @@ public class BasketBall : MonoBehaviour
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
         {
-            basketBallState.PlayerOnMarker = false; // this needs to be reset for next shot
+            //basketBallState.PlayerOnMarker = false; // this needs to be reset for next shot
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
             //reset rotation
@@ -372,23 +374,23 @@ public class BasketBall : MonoBehaviour
         // shorthands for the formula
         float R = Vector3.Distance(projectileXZPos, targetXZPos);
         float G = Physics.gravity.y;
-        float tanAlpha = Mathf.Tan(_angle * Mathf.Deg2Rad);
+        float tanAlpha = Mathf.Tan(shooterProfile.ShootAngle * Mathf.Deg2Rad);
         float H = basketBallState.BasketBallTarget.transform.position.y - transform.position.y;
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
         // accuracy modifier logic
-        float accuracyModifierX;
-        if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
-        {
-            accuracyModifierX = 0;
-            //Jessica might take a photo
-            BehaviorJessica.instance.playAnimationTakePhoto();
-        }
-        else
-        {
-            accuracyModifierX = getAccuracyModifier();
-        }
+        //accuracyModifierX;
+        //if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
+        //{
+        //    accuracyModifierX = 0;
+        //    //Jessica might take a photo
+        //    BehaviorJessica.instance.playAnimationTakePhoto();
+        //}
+        //else
+        //{
+        //    accuracyModifierX = getAccuracyModifier();
+        //}
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -411,32 +413,32 @@ public class BasketBall : MonoBehaviour
 
         // ================================== for SHOT TEST STATS ====================================
 
-        //BasketballTestStats testStats = new BasketballTestStats();
+        BasketballTestStats testStats = gameObject.GetComponent<BasketballTestStats>();
 
-        //testStats.AccuracyModifier = accuracyModifierX;
-        //testStats.Distance = lastShotDistance;
-        //testStats.LocalVelocity = localVelocity;
-        //testStats.GlobalVelocity = globalVelocity;
-        //testStats.ReleaseVelocity = releaseVelocityY;
-        //if (basketBallState.TwoPoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy2Pt;
-        //    testStats.Two = true;
-        //}
-        //if (basketBallState.ThreePoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy3Pt;
-        //    testStats.Three = true;
-        //}
-        //if (basketBallState.FourPoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy4Pt;
-        //    testStats.Four = true;
-        //}
+        testStats.AccuracyModifier = accuracyModifierX;
+        testStats.Distance = lastShotDistance;
+        testStats.LocalVelocity = localVelocity;
+        testStats.GlobalVelocity = globalVelocity;
+        testStats.ReleaseVelocity = releaseVelocityY;
+        if (basketBallState.TwoPoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy2Pt;
+            testStats.Two = true;
+        }
+        if (basketBallState.ThreePoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy3Pt;
+            testStats.Three = true;
+        }
+        if (basketBallState.FourPoints)
+        {
+            testStats.Accuracy = shooterProfile.Accuracy4Pt;
+            testStats.Four = true;
+        }
 
-        //testConclusions.shotStats.Add(testStats);
-        //currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
-        //basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
+        testConclusions.shotStats.Add(testStats);
+        currentTestStatsIndex = (testConclusions.shotStats.Count)-1;
+        basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
     }
 
     // ================================================================================================
@@ -458,7 +460,8 @@ public class BasketBall : MonoBehaviour
 
     private float getAccuracyModifier()
     {
-        int direction = getRandomPositiveOrNegative();
+        //int direction = getRandomPositiveOrNegative();
+        int direction = 1; //for testing to do stat analysis
         float accuracyModifier = 1;
         if (basketBallState.TwoPoints)
         {
@@ -480,7 +483,7 @@ public class BasketBall : MonoBehaviour
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
         }
 
-        return (accuracyModifier / 1.6f) * direction;
+        return (accuracyModifier) * direction;
     }
 
     private int getRandomPositiveOrNegative()
@@ -627,6 +630,11 @@ public class BasketBall : MonoBehaviour
     {
         get => lastShotDistance;
         set => lastShotDistance = value;
+    }
+
+    public BasketBallStats BasketBallStats
+    {
+        get => basketBallStats;
     }
 
     public bool UiStatsEnabled => uiStatsEnabled;

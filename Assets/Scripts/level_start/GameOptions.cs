@@ -27,6 +27,7 @@ public  class GameOptions : MonoBehaviour
     static public float jumpForce;
     static public float speed;
     static public float runSpeed;
+    static public float runSpeedHasBall;
     //static public float hangTime;
    // static public float range;
    // static public float release;

@@ -68,16 +68,23 @@ public class BasketBallShotMarker : MonoBehaviour
         {
             markerEnabled = false;
             spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // is about 100 % transparent
+            displayCurrentMarkerStats.text = " current marker : \n"
+                                             + " made : \n"
+                                             + " remaining : ";
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         //Debug.Log("on trigger : " + other.gameObject.tag + "  this : "+ gameObject.tag);
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker"))
         {
             _playerOnMarker = true;
         }
+        //else
+        //{
+        //    _playerOnMarker = false;
+        //}
     }
 
     private void OnTriggerExit(Collider other)
@@ -89,6 +96,7 @@ public class BasketBallShotMarker : MonoBehaviour
                                              + " made : \n"
                                              + " remaining : ";
         }
+        _playerOnMarker = false;
     }
 
     public int ShotMade

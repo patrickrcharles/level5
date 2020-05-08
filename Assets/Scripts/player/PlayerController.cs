@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     ShooterProfile shooterProfile;
     BasketBall basketball;
 
-    [Range(20f, 90f)]
-    public float _angle; // for bball mini game trajectory
+    //[Range(20f, 90f)]
+    //public float _angle; // for bball mini game trajectory
 
     // walk speed
     [SerializeField]
@@ -27,9 +27,9 @@ public class PlayerController : MonoBehaviour
     // jump vars 
     [SerializeField]
     float jumpForce;
-    public float runMovementSpeed;
-    public float basketballRunSpeed;
-    public float walkMovementSpeed;
+    //public float runMovementSpeed;
+    //public float basketballRunSpeed;
+    //public float walkMovementSpeed;
     public float attackMovementSpeed;
     //public float attackCooldown;
     //public float chargeSpeed;
@@ -109,13 +109,16 @@ public class PlayerController : MonoBehaviour
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
-        setShooterProfileStats();
+        if (GameOptions.gameModeHasBeenSelected)
+        {
+            setShooterProfileStats();
+        }
 
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
         canMove = true;
-        movementSpeed = walkMovementSpeed;
+        movementSpeed = shooterProfile.Speed;
 
         runningToggle = true;
     }
@@ -212,17 +215,17 @@ public class PlayerController : MonoBehaviour
         {
             if (runningToggle)
             {
-                movementSpeed = runMovementSpeed;
+                movementSpeed = shooterProfile.RunSpeed;
             }
             else
             {
-                movementSpeed = walkMovementSpeed;
+                movementSpeed = shooterProfile.Speed;
             }
         }
 
         else if (currentState == mWalk)
         {
-            movementSpeed = runMovementSpeed;
+            movementSpeed = shooterProfile.RunSpeed; ;
         }
 
         //------------------ jump -----------------------------------
@@ -299,12 +302,12 @@ public class PlayerController : MonoBehaviour
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);
-                movementSpeed = runMovementSpeed;
+                movementSpeed = shooterProfile.RunSpeed; 
             }
 
             if (hasBasketball)
             {
-                movementSpeed = basketballRunSpeed;
+                movementSpeed = shooterProfile.RunSpeedHasBall; ;
             }
             //else
             //{
@@ -317,12 +320,12 @@ public class PlayerController : MonoBehaviour
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);
-                movementSpeed = runMovementSpeed;
+                movementSpeed = shooterProfile.RunSpeed;
             }
 
             if (hasBasketball)
             {
-                movementSpeed = basketballRunSpeed;
+                movementSpeed = shooterProfile.RunSpeedHasBall;
             }
         }
     }
@@ -363,11 +366,19 @@ public class PlayerController : MonoBehaviour
     //*** need to update this
     void setShooterProfileStats()
     {
-        walkMovementSpeed = shooterProfile.Speed;
-        basketballRunSpeed = shooterProfile.RunSpeed;
-        jumpForce = shooterProfile.JumpForce;
+        shooterProfile.Speed = GameOptions.speed;
+        shooterProfile.RunSpeed = GameOptions.runSpeed;
+        shooterProfile.RunSpeed = GameOptions.runSpeedHasBall;
+        shooterProfile.JumpForce = GameOptions.jumpForce;
+        shooterProfile.CriticalPercent = GameOptions.criticalPercent;
+        shooterProfile.ShootAngle = GameOptions.shootAngle;
+        shooterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
+        shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
+        shooterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
+        shooterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
+
         //gravityModifier = shooterProfile.HangTime;
-        _angle = shooterProfile.ShootAngle;
+        //_angle = shooterProfile.ShootAngle;
     }
     public bool grounded
     {

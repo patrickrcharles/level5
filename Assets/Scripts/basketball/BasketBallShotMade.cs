@@ -8,7 +8,7 @@ public class BasketBallShotMade : MonoBehaviour
     BasketBallState _basketBallState;
     BasketBallStats _basketBallStats;
 
-    //int currentShotTestIndex;
+    public int currentShotTestIndex;
 
     AudioSource audioSource;
     public GameObject rimSprite;
