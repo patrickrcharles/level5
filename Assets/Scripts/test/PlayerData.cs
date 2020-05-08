@@ -282,17 +282,17 @@ public class PlayerData : MonoBehaviour
         //    PlayerPrefs.SetFloat(stats.PlayerId + "_" + stats.PlayerName + "_longestShotMade",  stats.LongestShotMade);
         //}
 
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalPoints");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalShotMade");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalShotAttempt");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_twoPointersMade");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_threePointersMade");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_fourPointersMade");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_twoPointersAttempt");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_threePointersAttempt");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_fourPointersAttempt");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_longestShotMade");
-        PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalPoints");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalShotMade");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalShotAttempt");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_twoPointersMade");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_threePointersMade");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_fourPointersMade");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_twoPointersAttempt");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_threePointersAttempt");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_fourPointersAttempt");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_longestShotMade");
+        //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
     }
 
     public float SevenPointerAttempts
