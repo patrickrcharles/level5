@@ -87,8 +87,8 @@ public class GameLevelManager : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = Player.GetComponent<PlayerController>();
         Anim = Player.GetComponentInChildren<Animator>();
-        Basketball = GameObject.FindWithTag("basketball");
-        BasketballState = Basketball.GetComponent<BasketBall>();
+        BasketballObject = GameObject.FindWithTag("basketball");
+        Basketball = BasketballObject.GetComponent<BasketBall>();
 
         InitializePlayer();
 
@@ -156,7 +156,7 @@ public class GameLevelManager : MonoBehaviour
             && !_locked)
         {
             _locked = true;
-            BasketballState.toggleAddAccuracyModifier();
+            Basketball.toggleAddAccuracyModifier();
             _locked = false;
         }
         
@@ -244,9 +244,9 @@ public class GameLevelManager : MonoBehaviour
 
     public Animator Anim { get; private set; }
 
-    public BasketBall BasketballState { get; private set; }
+    public BasketBall Basketball { get; private set; }
 
-    public GameObject Basketball { get; private set; }
+    public GameObject BasketballObject { get; private set; }
 
     public bool GameOver { get; set; }
 }
