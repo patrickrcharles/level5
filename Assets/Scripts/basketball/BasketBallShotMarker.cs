@@ -55,6 +55,10 @@ public class BasketBallShotMarker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            displayCurrentMarkerStats.text = "";
+        }
         // this needs to be turned off if ball hits ground
         if (PlayerOnMarker)
         {
