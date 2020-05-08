@@ -47,3 +47,5 @@ MonoBehaviour:
   modelDisplayName: Total 4 ptrs
   modeObjectName: mode_03
   modeDescription: Make the most 4 pointers you can in 2 minutes
+  modeRequiresCounter: 0
+  modeRequiresCountDown: 1

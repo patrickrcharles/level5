@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5648804619900406356}
   - component: {fileID: 5648804619900406355}
   m_Layer: 0
-  m_Name: mode_selected_06
+  m_Name: mode_selected_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,3 +47,5 @@ MonoBehaviour:
   modelDisplayName: Free Play
   modeObjectName: mode_07
   modeDescription: Free play
+  modeRequiresCounter: 0
+  modeRequiresCountDown: 0
