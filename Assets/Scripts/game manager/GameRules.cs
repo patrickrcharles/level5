@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,9 @@ public class GameRules : MonoBehaviour
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
+
+    private bool modeRequiresCounter;
+    private bool modeRequiresCountDown;
 
     //private float timeStart;
     private Timer timer;
@@ -30,6 +34,8 @@ public class GameRules : MonoBehaviour
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
+
+    private float timeCompleted;
 
 
     private void Awake()
@@ -130,12 +136,10 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 7)
         {
-            Debug.Log("gamerules");
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
-                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
+                                                             + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
-
-            Debug.Log("long > prev long : " + BasketBall.instance.BasketBallStats.LongestShotMade + " > " + PlayerData.instance.LongestShotMadeFreePlay);
+            // if longest shot > saved longest shot
             if ((BasketBall.instance.BasketBallStats.LongestShotMade *6) > PlayerData.instance.LongestShotMadeFreePlay)
             {
                 Debug.Log("save");

@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
 
     private float timeStart;
     int minutes = 0;
-    int seconds = 0;
+    float seconds = 0;
 
     [SerializeField]
     bool displayTimer = false;
@@ -22,22 +22,30 @@ public class Timer : MonoBehaviour
     private bool timerEnabled = false;
     //Text timerText;
     private Text timerText;
+    [SerializeField]
+    private bool modeRequiresCountDown;
+    [SerializeField]
+    private bool modeRequiresCounter;
 
     private void Awake()
     {
         timerText = GetComponent<Text>();
         timerText.text = "";
-
     }
 
     void Start()
     {
         // timer is 2 minutes
         timeStart = 120;
-        // mode 6 is free play. this turns off timer
-        if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
+        // mode 7 is free play. this turns off timer
+        //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
+        //{
+        //    timerEnabled = true;
+        //}
+        if (modeRequiresCounter || modeRequiresCountDown)
         {
             timerEnabled = true;
+            displayTimer = true;
         }
         else
         {
@@ -49,12 +57,27 @@ public class Timer : MonoBehaviour
     {
         // countdown timer
         currentTime += Time.deltaTime;
-        timeRemaining = timeStart - currentTime;
-        minutes = Mathf.FloorToInt(timeRemaining / 60);
-        seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
+
+        if (modeRequiresCountDown)
+        {
+            timeRemaining = timeStart - currentTime;
+            minutes = Mathf.FloorToInt(timeRemaining / 60);
+            seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
+        }
+
+        if (modeRequiresCounter)
+        {
+            //minutes = Mathf.FloorToInt(currentTime / 60);
+            //seconds = Mathf.FloorToInt(currentTime - (minutes * 60));
+            minutes = Mathf.FloorToInt(currentTime / 60);
+            seconds = (currentTime - (minutes * 60));
+        }
 
         // time's up, pause and reset timer text
-        if (timeRemaining <= 0 && !GameRules.instance.GameOver && timerEnabled)
+        if (timeRemaining <= 0 
+            && !GameRules.instance.GameOver 
+            && !modeRequiresCounter
+            && timerEnabled)
         {
             displayTimer = false;
             timerText.text = "";
@@ -68,9 +91,14 @@ public class Timer : MonoBehaviour
             }
         }
 
-        if (displayTimer && timerEnabled)
+        if (displayTimer && timerEnabled && modeRequiresCountDown)
         {
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00");
+            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+        }
+
+        if (displayTimer && timerEnabled && modeRequiresCounter)
+        {
+            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }
     }
 
