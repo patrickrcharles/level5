@@ -27,6 +27,9 @@ TagManager:
   - mode_description
   - enemyBystander
   - ladder
+  - auto_npc
+  - flash_return_position
+  - shot_marker
   layers:
   - Default
   - TransparentFX
