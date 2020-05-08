@@ -54,8 +54,8 @@ public class GameLevelManager : MonoBehaviour
         Instance = this;
 
         // if player selected is not null / player not selected
-        if(!string.IsNullOrEmpty( GameOptions.playerSelected)){
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerSelected;
+        if(!string.IsNullOrEmpty( GameOptions.playerObjectName)){
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
         //allAudioSources = FindObjectsOfType<AudioSource>();
@@ -96,8 +96,8 @@ public class GameLevelManager : MonoBehaviour
         //* this is specific to flash right now
         _npcObject = GameObject.FindGameObjectWithTag("auto_npc");
 
-        if ( !string.IsNullOrEmpty(GameOptions.playerSelected) 
-             && GameOptions.playerSelected.Contains("flash") 
+        if ( !string.IsNullOrEmpty(GameOptions.playerObjectName) 
+             && GameOptions.playerObjectName.Contains("flash") 
              && _npcObject != null )
         {
             _npcObject.SetActive(false);
