@@ -60,7 +60,8 @@ public class ShooterProfile : MonoBehaviour
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.levelSelectedBuildIndex == 1
             || GameOptions.levelSelectedBuildIndex ==2
-            || GameOptions.levelSelectedBuildIndex ==3)
+            || GameOptions.levelSelectedBuildIndex ==3
+             && GameOptions.gameModeHasBeenSelected)
         {
             intializeShooterStatsFromProfile();
         }

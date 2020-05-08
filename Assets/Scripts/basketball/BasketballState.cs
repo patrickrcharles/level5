@@ -51,6 +51,7 @@ public class BasketBallState : MonoBehaviour
     [SerializeField]
     private List<BasketBallShotMarker> _basketBallShotMarkersList;
 
+    private int markersRemaining;
 
     void Start()
     {
@@ -69,6 +70,8 @@ public class BasketBallState : MonoBehaviour
             BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
             _basketBallShotMarkersList.Add(temp);
         }
+
+        markersRemaining = BasketBallShotMarkersList.Count;
     }
 
     // Update is called once per frame
@@ -130,6 +133,13 @@ public class BasketBallState : MonoBehaviour
         get => _basketBallShotMarkersList;
         set => _basketBallShotMarkersList = value;
     }
+
+    public int MarkersRemaining
+    {
+        get => markersRemaining;
+        set => markersRemaining = value;
+    }
+
 
     public bool PlayerOnMarker
     {

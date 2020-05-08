@@ -41,6 +41,7 @@ public class CallBallToPlayer : MonoBehaviour
     {
         if (InputManager.GetButtonDown("Fire1")
             && !playerState.hasBasketball
+            && !playerState.inAir
             && _basketBallState.CanPullBall
             && canBallToPlayerEnabled
             && !locked)

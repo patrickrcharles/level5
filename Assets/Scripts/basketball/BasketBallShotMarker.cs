@@ -42,9 +42,10 @@ public class BasketBallShotMarker : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        displayCurrentMarkerStats.text = " current marker : " + positionMarkerId + "\n"
-                                         + " made : " + ShotMade + " / " + ShotAttempt + "\n"
-                                         + " remaining : " + (maxShotMade - ShotMade);
+        displayCurrentMarkerStats.text = "markers remaining : " + basketBallState.MarkersRemaining + "\n"
+                                         + "current marker : " + positionMarkerId + "\n"
+                                         + "made : " + ShotMade + " / " + ShotAttempt + "\n"
+                                         + "remaining : " + (maxShotMade - ShotMade);
         markerEnabled = true;
 
         // set what type of shot marker is based on distance from rim
@@ -62,19 +63,24 @@ public class BasketBallShotMarker : MonoBehaviour
 
             if (markerEnabled)
             {
-                displayCurrentMarkerStats.text = " current marker : " + positionMarkerId + "\n"
-                                                 + " made : " + ShotMade + " / " + ShotAttempt + "\n"
-                                                 + " remaining : " + (maxShotMade - ShotMade);
+                displayCurrentMarkerStats.text = "markers remaining : " + basketBallState.MarkersRemaining + "\n"
+                                                 + "current marker : " + positionMarkerId + "\n"
+                                                 + "made : " + ShotMade + " / " + ShotAttempt + "\n"
+                                                 + "remaining : " + (maxShotMade - ShotMade);
             }
         }
 
         if (_shotMade >= maxShotMade && markerEnabled)
         {
             markerEnabled = false;
+            // decrease markers remaining
+            basketBallState.MarkersRemaining--;
+
             spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // is about 100 % transparent
-            displayCurrentMarkerStats.text = " current marker : \n"
-                                             + " made : \n"
-                                             + " remaining : ";
+            displayCurrentMarkerStats.text = "markers remaining : " + basketBallState.MarkersRemaining + "\n"
+                                             + "current marker : \n"
+                                             + "made : \n"
+                                             + "remaining : ";
         }
     }
 
@@ -97,9 +103,10 @@ public class BasketBallShotMarker : MonoBehaviour
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker"))
         {
             _playerOnMarker = false;
-            displayCurrentMarkerStats.text = " current marker : \n"
-                                             + " made : \n"
-                                             + " remaining : ";
+            displayCurrentMarkerStats.text = "markers remaining : " + basketBallState.MarkersRemaining + "\n"
+                                             + "current marker : \n"
+                                             + "made : \n"
+                                             + "remaining : ";
         }
 
         _playerOnMarker = false;
