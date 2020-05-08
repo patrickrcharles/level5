@@ -226,9 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basketballRigidBody: {fileID: 0}
   pullSpeed: 2.3
-  pullDirection: {x: 0, y: 0, z: 0}
 --- !u!82 &7223903493571767484
 AudioSource:
   m_ObjectHideFlags: 0
@@ -526,7 +524,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6783353865752616404}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.206, z: 0.002}
+  m_LocalPosition: {x: 0, y: 0.49, z: 0.002}
   m_LocalScale: {x: 0.4962482, y: 0.9166185, z: 0.25}
   m_Children: []
   m_Father: {fileID: 3986027670425034356}
@@ -588,10 +586,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 1.49
+  m_Radius: 0.73
+  m_Height: 2.28
   m_Direction: 1
-  m_Center: {x: 0, y: 0.36, z: 0}
+  m_Center: {x: -0.030286837, y: 0.12685245, z: 0}
 --- !u!1 &9117598689114107591
 GameObject:
   m_ObjectHideFlags: 0

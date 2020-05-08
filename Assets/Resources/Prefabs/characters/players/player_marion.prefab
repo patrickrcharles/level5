@@ -179,10 +179,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.48
-  m_Height: 0.45
+  m_Radius: 0.73
+  m_Height: 2.28
   m_Direction: 1
-  m_Center: {x: 0, y: -0.31, z: 0}
+  m_Center: {x: -0.030286837, y: 0.12685245, z: 0}
 --- !u!1 &4494794743076217223
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _angle: 60
+  _angle: 45
   movementSpeed: 2
   jumpForce: 5
   runMovementSpeed: 4
@@ -370,9 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basketballRigidBody: {fileID: 0}
   pullSpeed: 2.3
-  pullDirection: {x: 0, y: 0, z: 0}
 --- !u!82 &1716278598336557455
 AudioSource:
   m_ObjectHideFlags: 0
@@ -528,8 +526,8 @@ MonoBehaviour:
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 40
-  shootAngle: 60
+  criticalPercent: 35
+  shootAngle: 45
   level: 0
   experience: 0
 --- !u!1 &9043821920853312769

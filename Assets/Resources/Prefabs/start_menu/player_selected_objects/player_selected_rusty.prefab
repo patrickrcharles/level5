@@ -64,12 +64,13 @@ MonoBehaviour:
   accuracy7pt: 70
   shooterProfilePrefabName: 
   jumpForce: 5.5
-  speed: 3.4
+  speed: 3.5
+  runSpeedHasBall: 4
   runSpeed: 4.5
   hangTime: 0
   range: 99
   release: 0
   criticalPercent: 40
-  shootAngle: 60
+  shootAngle: 50
   level: 0
   experience: 0
