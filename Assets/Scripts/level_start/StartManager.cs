@@ -103,6 +103,9 @@ public class StartManager : MonoBehaviour
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
         GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+
+        GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
+        GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
     }
 
     // Update is called once per frame

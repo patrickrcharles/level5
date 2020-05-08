@@ -9,6 +9,20 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private string modelDisplayName;
     [SerializeField] private string modeObjectName;
     [SerializeField] private string modeDescription;
+    [SerializeField] private bool modeRequiresCounter;
+    [SerializeField] private bool modeRequiresCountDown;
+
+    public bool ModeRequiresCounter
+    {
+        get => modeRequiresCounter;
+        set => modeRequiresCounter = value;
+    }
+
+    public bool ModeRequiresCountDown
+    {
+        get => modeRequiresCountDown;
+        set => modeRequiresCountDown = value;
+    }
 
     public int ModeId
     {

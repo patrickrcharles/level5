@@ -42,6 +42,9 @@ public class Timer : MonoBehaviour
         //{
         //    timerEnabled = true;
         //}
+        modeRequiresCounter = GameOptions.gameModeRequiresCounter;
+        modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
+
         if (modeRequiresCounter || modeRequiresCountDown)
         {
             timerEnabled = true;
@@ -62,7 +65,8 @@ public class Timer : MonoBehaviour
         {
             timeRemaining = timeStart - currentTime;
             minutes = Mathf.FloorToInt(timeRemaining / 60);
-            seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
+            //seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
+            seconds = (currentTime - (minutes * 60));
         }
 
         if (modeRequiresCounter)

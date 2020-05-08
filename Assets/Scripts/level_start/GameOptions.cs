@@ -37,6 +37,8 @@ public  class GameOptions : MonoBehaviour
 
     // for testing scenes. True if scene loaded from start screen
     static public bool gameModeHasBeenSelected;
+    static public bool gameModeRequiresCounter;
+    static public bool gameModeRequiresCountDown;
 
     //static public int level;
     //static public int experience;
