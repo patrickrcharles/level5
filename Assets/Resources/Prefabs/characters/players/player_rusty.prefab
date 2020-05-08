@@ -457,19 +457,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _angle: 60
+  shooterProfile: {fileID: 0}
   movementSpeed: 2
-  jumpForce: 5
-  runMovementSpeed: 4
-  basketballRunSpeed: 3.5
-  walkMovementSpeed: 2
-  attackMovementSpeed: 0.3
   running: 0
   runningToggle: 0
   hasBasketball: 0
   canMove: 1
-  bballRelativePositioning: 0
-  playerRelativePositioning: {x: 0, y: 0, z: 0}
   playerDistanceFromRim: 0
   playerHitbox: {fileID: 2223626289379244944}
   triggerLeftAxisInUse: 0
@@ -641,6 +634,7 @@ MonoBehaviour:
   shooterProfilePrefabName: 
   jumpForce: 5.2
   speed: 2
+  runSpeedHasBall: 3
   runSpeed: 3
   hangTime: 0
   range: 100
