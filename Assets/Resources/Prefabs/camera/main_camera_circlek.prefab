@@ -689,7 +689,7 @@ MonoBehaviour:
   ZoomAmount: 0.1
   MaxToClamp: 20
   ROTSpeed: 0.05
-  startZoomDistance: 5
+  startZoomDistance: 4
   addToCameraPosY: 1.835
 --- !u!1 &6412983701336694622
 GameObject:
