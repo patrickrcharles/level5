@@ -52,7 +52,7 @@ public class cameraUpdater : MonoBehaviour
         player = GameLevelManager.Instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
-        //addToCameraPosY = 1.835f;
+        addToCameraPosY = 1.835f;
     }
 
 
