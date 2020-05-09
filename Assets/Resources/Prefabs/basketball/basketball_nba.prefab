@@ -44,6 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711a4adddeb7c2b4ca1ca9b9172fc0b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  two: 0
+  three: 0
+  four: 0
+  made: 0
+  miss: 0
+  attempt: 0
+  distance: 0
+  releaseVelocity: 0
+  localVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
+  accuracyModifier: 0
+  accuracy: 0
 --- !u!114 &2652237544654685421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,23 +415,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 3710610803190580600}
-  shotMiss: {fileID: 0}
-  dropShadowPosition: {x: 0, y: 0, z: 0}
+  shooterProfile: {fileID: 0}
   basketBallState: {fileID: 0}
-  displacement: 0
-  Zdistance: 0
+  basketBallStats: {fileID: 0}
   TextObject: {fileID: 0}
   shootProfile: {fileID: 0}
-  shootProfileText: {fileID: 0}
   _angle: 60
-  accuracy: 0
-  twoAccuracy: 0
-  threeAccuracy: 0
-  fourAccuracy: 0
-  addAccuracyModifier: 0
+  uiStatsEnabled: 0
   testStats: {fileID: 0}
   testConclusions: {fileID: 0}
+  currentTestStatsIndex: 0
+  basketBallShotMade: {fileID: 0}
+  accuracyModifierX: 0
 --- !u!114 &-3620328289021908805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +439,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c8393904979c4faea16cf0061a011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerId: 0
+  _playerName: 
+  _totalPoints: 0
+  _twoPointerMade: 0
+  _threePointerMade: 0
+  _fourPointerMade: 0
+  _sevenPointerMade: 0
+  _twoPointerAttempts: 0
+  _threePointerAttempts: 0
+  _fourPointerAttempts: 0
+  _sevenPointerAttempts: 0
+  _shotAttempt: 0
+  _shotMade: 0
+  _longestShotMade: 0
+  _totalDistance: 0
+  _criticalRolled: 0
 --- !u!114 &9066808747724891423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,8 +467,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canPullBall: 0
+  _playerOnMarker: 0
+  _playerOnMarkerOnShoot: 0
+  _currentShotMarkerId: 0
   _ballDistanceFromRim: 0
+  basketBallShotMarkerObjects: []
+  _basketBallShotMarkersList: []
 --- !u!114 &-2793604112486115060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,6 +485,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711a4adddeb7c2b4ca1ca9b9172fc0b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  two: 0
+  three: 0
+  four: 0
+  made: 0
+  miss: 0
+  attempt: 0
+  distance: 0
+  releaseVelocity: 0
+  localVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
+  accuracyModifier: 0
+  accuracy: 0
 --- !u!114 &1879968598676544693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,7 +601,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6c4441f524ef5fe4dbdb91b33a4e1402, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
