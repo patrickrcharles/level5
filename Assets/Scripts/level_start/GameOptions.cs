@@ -40,6 +40,9 @@ public  class GameOptions : MonoBehaviour
     static public bool gameModeRequiresCounter;
     static public bool gameModeRequiresCountDown;
 
+    static public bool  gameModeRequiresShotMarkers3s;
+    static public bool gameModeRequiresShotMarkers4s;
+
     //static public int level;
     //static public int experience;
     //static public decimal money;
@@ -50,9 +53,13 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
-       //Debug.Log("levelSected : " + levelSelected);
-       //Debug.Log("levelSectedName : " + levelSelectedName);
-       //Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
+        //gameModeSelected = 8;
+        //gameModeRequiresShotMarkers3s = true;
+        //gameModeRequiresShotMarkers4s = true;
+
+        //Debug.Log("levelSected : " + levelSelected);
+        //Debug.Log("levelSectedName : " + levelSelectedName);
+        //Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
     }
 
     static public void printCurrentValues()
@@ -62,5 +69,7 @@ public  class GameOptions : MonoBehaviour
         Debug.Log("gameModeSelected : " + gameModeSelected);
         Debug.Log("gameModeSelectedName : " + gameModeSelectedName);
         Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
+        Debug.Log("3s : " + gameModeRequiresShotMarkers3s);
+        Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
     }
 }

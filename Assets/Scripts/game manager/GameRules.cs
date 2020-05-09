@@ -5,6 +5,7 @@ using TeamUtility.IO;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameRules : MonoBehaviour
 {
@@ -37,6 +38,14 @@ public class GameRules : MonoBehaviour
 
     private float timeCompleted;
 
+    [SerializeField]
+    private GameObject[] basketBallShotMarkerObjects;
+    [SerializeField]
+    private List<BasketBallShotMarker> _basketBallShotMarkersList;
+    private int markersRemaining;
+
+    private bool positionMarkersRequired;
+
 
     private void Awake()
     {
@@ -61,6 +70,44 @@ public class GameRules : MonoBehaviour
 
         gameRulesEnabled = true;
 
+        //===================================================== Position markers set up ====================================================
+        // * move to method after testing
+
+        // if mode requires 3s or 4s
+        // enable 3s or 4s
+
+        // after testing insert this
+        /*
+         * if( game options. mode requires position markers)
+         */
+
+        //testing line
+        positionMarkersRequired = GameOptions.gameModeSelected == 8;
+        // get all shot position marker objects
+        basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
+        //load them into list
+        foreach (var marker in basketBallShotMarkerObjects)
+        {
+            BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
+            _basketBallShotMarkersList.Add(temp);
+        }
+
+        if (positionMarkersRequired) 
+        {
+            Debug.Log("        if (positionMarkersRequired) ");
+            markersRemaining = BasketBallShotMarkersList.Count;
+        }
+        else
+        {
+            Debug.Log(" else :: disable marker ::::::::::::::::::");
+            foreach (var marker in BasketBallShotMarkersList)
+            {
+                // 
+                marker.enabled = false;
+            }
+        }
+
+        //===================================================== Position markers set up ====================================================
     }
 
 
@@ -101,7 +148,7 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 1)
         {
             displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats._totalPoints
-                + "\ncurrent shot : "+ BasketBall.instance.BasketBallState.CurrentShotType;
+                + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPoints;
         }
         if (gameModeId == 2)
@@ -112,7 +159,7 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 3)
         {
-            displayCurrentScoreText.text = "4s made : " + BasketBall.instance.BasketBallStats.FourPointerMade 
+            displayCurrentScoreText.text = "4s made : " + BasketBall.instance.BasketBallStats.FourPointerMade
                 + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
             displayHighScoreText.text = "high score : " + PlayerData.instance.FourPointerMade;
         }
@@ -125,22 +172,22 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 5)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
-                +"\ncurrent distance : "+ (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
+                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
         }
         if (gameModeId == 6)
         {
             displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance * 6).ToString("0.00")
-            +"\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
         }
         if (gameModeId == 7)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
                                                              + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
-                displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
             // if longest shot > saved longest shot
-            if ((BasketBall.instance.BasketBallStats.LongestShotMade *6) > PlayerData.instance.LongestShotMadeFreePlay)
+            if ((BasketBall.instance.BasketBallStats.LongestShotMade * 6) > PlayerData.instance.LongestShotMadeFreePlay)
             {
                 Debug.Log("save");
                 PlayerData.instance.saveStats();
@@ -150,7 +197,7 @@ public class GameRules : MonoBehaviour
 
     private string getDisplayText(int modeId)
     {
-       //Debug.Log("display data  mode: "+ GameModeId);
+        //Debug.Log("display data  mode: "+ GameModeId);
 
         string displayText = "";
 
@@ -160,7 +207,7 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 2)
         {
-            displayText = "You made " + basketBallStats.ThreePointerMade + " total 3 pointers\n\n"+ getStatsTotals();
+            displayText = "You made " + basketBallStats.ThreePointerMade + " total 3 pointers\n\n" + getStatsTotals();
         }
         if (gameModeId == 3)
         {
@@ -172,11 +219,11 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 5)
         {
-            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade * 6).ToString("0.00") + " ft.\n\n"+ getStatsTotals();
+            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
         if (gameModeId == 6)
         {
-            displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00")+ " ft.\n\n"+ getStatsTotals();
+            displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
 
         return displayText;
@@ -184,13 +231,13 @@ public class GameRules : MonoBehaviour
 
     string getStatsTotals()
     {
-       //Debug.Log("getStatsTotals()");
+        //Debug.Log("getStatsTotals()");
         string scoreText = "";
         scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
                          + "points : " + basketBallStats.TotalPoints + "\n"
-                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    " 
+                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    "
                          + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
-                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "    " 
+                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "    "
                          + BasketBall.instance.getThreePointAccuracy().ToString("00.0") + "%\n"
                          + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "    "
                          + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
@@ -217,5 +264,17 @@ public class GameRules : MonoBehaviour
     {
         get => gameOver;
         set => gameOver = value;
+    }
+
+    public List<BasketBallShotMarker> BasketBallShotMarkersList
+    {
+        get => _basketBallShotMarkersList;
+        set => _basketBallShotMarkersList = value;
+    }
+
+    public int MarkersRemaining
+    {
+        get => markersRemaining;
+        set => markersRemaining = value;
     }
 }

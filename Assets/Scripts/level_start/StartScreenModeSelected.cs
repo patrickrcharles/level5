@@ -12,6 +12,22 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool modeRequiresCounter;
     [SerializeField] private bool modeRequiresCountDown;
 
+    [SerializeField] private bool modeRequiresShotMarkers3s;
+    [SerializeField] private bool modeRequiresShotMarkers4s;
+
+    public bool ModeRequiresShotMarkers3S
+    {
+        get => modeRequiresShotMarkers3s;
+        set => modeRequiresShotMarkers3s = value;
+    }
+
+    public bool ModeRequiresShotMarkers4S
+    {
+        get => modeRequiresShotMarkers4s;
+        set => modeRequiresShotMarkers4s = value;
+    }
+
+
     public bool ModeRequiresCounter
     {
         get => modeRequiresCounter;
