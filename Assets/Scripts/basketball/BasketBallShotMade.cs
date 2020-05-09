@@ -94,8 +94,8 @@ public class BasketBallShotMade : MonoBehaviour
 
             if (_basketBallState.PlayerOnMarkerOnShoot)
             {
-                Debug.Log("_id  : " + _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
-                _basketBallState.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
+                Debug.Log("_id  : " + GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
+                GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;

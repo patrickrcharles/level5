@@ -252,7 +252,7 @@ public class BasketBall : MonoBehaviour
                 basketBallState.PlayerOnMarkerOnShoot = true;
                 basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
                 // update shot attempt stat for marker position shot from
-                basketBallState.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
+                GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
             }
 
             //launch ball to goal      

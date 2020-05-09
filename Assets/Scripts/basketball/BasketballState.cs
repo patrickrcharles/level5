@@ -46,13 +46,6 @@ public class BasketBallState : MonoBehaviour
     private int _currentShotType;
     public int CurrentShotType => _currentShotType;
 
-    [SerializeField]
-    private GameObject[] basketBallShotMarkerObjects;
-    [SerializeField]
-    private List<BasketBallShotMarker> _basketBallShotMarkersList;
-
-    private int markersRemaining;
-
     void Start()
     {
 
@@ -62,16 +55,6 @@ public class BasketBallState : MonoBehaviour
         //position to shoot basketball at (middle of rim)
         _basketBallTarget = GameObject.Find("basketBall_target");
 
-        // get all shot position marker objects
-        basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
-        //load them into list
-        foreach (var marker in basketBallShotMarkerObjects)
-        {
-            BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
-            _basketBallShotMarkersList.Add(temp);
-        }
-
-        markersRemaining = BasketBallShotMarkersList.Count;
     }
 
     // Update is called once per frame
@@ -80,7 +63,7 @@ public class BasketBallState : MonoBehaviour
 
         BallDistanceFromRim = Vector3.Distance(transform.position, _basketBallTarget.transform.position);
 
-        PlayerOnMarker = BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
+        PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
 
         if (BallDistanceFromRim < ThreePointDistance)
         {
@@ -127,18 +110,6 @@ public class BasketBallState : MonoBehaviour
     public float ThreePointDistance => _threePointDistance;
     public float FourPointDistance => _fourPointDistance;
     public float SevenPointDistance => _sevenPointDistance;
-
-    public List<BasketBallShotMarker> BasketBallShotMarkersList
-    {
-        get => _basketBallShotMarkersList;
-        set => _basketBallShotMarkersList = value;
-    }
-
-    public int MarkersRemaining
-    {
-        get => markersRemaining;
-        set => markersRemaining = value;
-    }
 
 
     public bool PlayerOnMarker
