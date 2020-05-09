@@ -67,7 +67,7 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 2;
                 _basketBallStats.TwoPointerMade++;
                 _basketBallStats.ShotMade++;
-                instantiateMoney(0);
+                //instantiateMoney(0);
 
             }
             if (_basketBallState.ThreeAttempt)
@@ -75,21 +75,21 @@ public class BasketBallShotMade : MonoBehaviour
                 _basketBallStats.TotalPoints += 3;
                 _basketBallStats.ThreePointerMade++;
                 _basketBallStats.ShotMade++;
-                instantiateMoney(0.5f);
+                //instantiateMoney(0.5f);
             }
             if (_basketBallState.FourAttempt)
             {
                 _basketBallStats.TotalPoints += 4;
                 _basketBallStats.FourPointerMade++;
                 _basketBallStats.ShotMade++;
-                instantiateMoney(1f);
+                //instantiateMoney(1f);
             }
             if (_basketBallState.SevenAttempt)
             {
                 _basketBallStats.TotalPoints += 7;
                 _basketBallStats.SevenPointerMade++;
                 _basketBallStats.ShotMade++;
-                instantiateMoney(2f);
+                //instantiateMoney(2f);
             }
 
             if (_basketBallState.PlayerOnMarkerOnShoot)
