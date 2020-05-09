@@ -28,9 +28,7 @@ public class cameraUpdater : MonoBehaviour
 
     public float startZoomDistance;
 
-    private bool camera128px;
-    private bool camera192px;
-
+    [SerializeField]
     private float addToCameraPosY;
 
 
@@ -54,7 +52,7 @@ public class cameraUpdater : MonoBehaviour
         player = GameLevelManager.Instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
-        addToCameraPosY = 1.835f;
+        //addToCameraPosY = 1.835f;
     }
 
 
