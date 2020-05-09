@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3385613773810780004}
   m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
-  m_LocalPosition: {x: -3.54, y: 6.94, z: 14.2}
+  m_LocalPosition: {x: -3.54, y: 6.1, z: 10.5}
   m_LocalScale: {x: 2.2022, y: 1.316482, z: 1}
   m_Children: []
   m_Father: {fileID: 7007869385498931179}
@@ -299,11 +299,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   cam: {fileID: 0}
-  xMin: -40
-  xMax: 110
+  xMin: -50
+  xMax: 150
   zMin: -11.5
   zMax: 10
-  yMin: 2.2
+  yMin: 3
   yMax: 7
   distanceCamFromPlayer: 0
   distanceRimFromPlayer: 0
