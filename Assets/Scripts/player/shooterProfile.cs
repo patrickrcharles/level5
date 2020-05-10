@@ -46,7 +46,7 @@ public class ShooterProfile : MonoBehaviour
     //private float shootYVariance;
     //private float shootZVariance;
 
-    void Awake()
+    void Start()
     {
         //Debug.Log("StartScreenPlayerSelected");
         //shooterProfilePrefabName = "player" + playerDisplayName;
@@ -58,11 +58,9 @@ public class ShooterProfile : MonoBehaviour
         ////basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
 
         // only init if level 1 or 2. other levels still for testing
-        if (GameOptions.levelSelectedBuildIndex == 1
-            || GameOptions.levelSelectedBuildIndex ==2
-            || GameOptions.levelSelectedBuildIndex ==3
-             && GameOptions.gameModeHasBeenSelected)
+        if (GameOptions.gameModeHasBeenSelected)
         {
+            Debug.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
     }

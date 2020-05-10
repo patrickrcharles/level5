@@ -21,6 +21,9 @@ public class GameRules : MonoBehaviour
     private bool modeRequiresCounter;
     private bool modeRequiresCountDown;
 
+    bool gameModeRequiresShotMarkers3s;
+    bool gameModeRequiresShotMarkers4s;
+
     //private float timeStart;
     private Timer timer;
     private BasketBallStats basketBallStats;
@@ -74,6 +77,9 @@ public class GameRules : MonoBehaviour
 
         gameRulesEnabled = true;
 
+        gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
+        gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+
         //===================================================== Position markers set up ====================================================
         // * move to method after testing
 
@@ -96,7 +102,7 @@ public class GameRules : MonoBehaviour
             _basketBallShotMarkersList.Add(temp);
         }
 
-        if (positionMarkersRequired) 
+        if (positionMarkersRequired)
         {
             Debug.Log("        if (positionMarkersRequired) ");
             markersRemaining = BasketBallShotMarkersList.Count;
@@ -107,7 +113,6 @@ public class GameRules : MonoBehaviour
             Debug.Log(" else :: disable marker ::::::::::::::::::");
             foreach (var marker in BasketBallShotMarkersList)
             {
-                // 
                 marker.enabled = false;
             }
         }
@@ -247,7 +252,7 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 8)
         {
-            displayText = "Your time to complete all shots was " + (counterTime ).ToString("0.00") + "\n\n" + getStatsTotals();
+            displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
         }
 
         return displayText;
@@ -275,7 +280,7 @@ public class GameRules : MonoBehaviour
 
     public bool isGameOver()
     {
-        Debug.Log("isGameOver : markers "+ MarkersRemaining);
+        Debug.Log("isGameOver : markers " + MarkersRemaining);
         if (MarkersRemaining <= 0)
         {
             Debug.Log("if");

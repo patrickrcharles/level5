@@ -28,8 +28,13 @@ public class GameLevelManager : MonoBehaviour
 
     //spawn locations
     private GameObject _basketballSpawnLocation;
-
     private GameObject _playerSpawnLocation;
+
+    [SerializeField]
+    public BasketBall Basketball;
+    [SerializeField]
+    public GameObject BasketballObject;
+
     //[SerializeField]
     //GameObject player_spawn;
 
@@ -78,6 +83,9 @@ public class GameLevelManager : MonoBehaviour
             _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
             Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
+
+        BasketballObject = GameObject.FindWithTag("basketball");
+        Basketball = BasketballObject.GetComponent<BasketBall>();
     }
 
     private void Start()
@@ -89,8 +97,6 @@ public class GameLevelManager : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = Player.GetComponent<PlayerController>();
         Anim = Player.GetComponentInChildren<Animator>();
-        BasketballObject = GameObject.FindWithTag("basketball");
-        Basketball = BasketballObject.GetComponent<BasketBall>();
 
         InitializePlayer();
 
@@ -246,9 +252,6 @@ public class GameLevelManager : MonoBehaviour
 
     public Animator Anim { get; private set; }
 
-    public BasketBall Basketball { get; private set; }
-
-    public GameObject BasketballObject { get; private set; }
 
     public bool GameOver { get; set; }
 }
