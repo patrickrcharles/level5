@@ -11,6 +11,7 @@ public class Timer : MonoBehaviour
 {
     float timeRemaining = 0;
     private float currentTime;
+    public float CurrentTime => currentTime;
 
     private float timeStart;
     int minutes = 0;
@@ -27,8 +28,11 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private bool modeRequiresCounter;
 
+    public static  Timer instance;
+
     private void Awake()
     {
+        instance = this;
         timerText = GetComponent<Text>();
         timerText.text = "";
     }

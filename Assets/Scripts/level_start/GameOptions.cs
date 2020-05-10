@@ -40,7 +40,7 @@ public  class GameOptions : MonoBehaviour
     static public bool gameModeRequiresCounter;
     static public bool gameModeRequiresCountDown;
 
-    static public bool  gameModeRequiresShotMarkers3s;
+    static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
 
     //static public int level;
@@ -53,9 +53,12 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
-        //gameModeSelected = 8;
-        //gameModeRequiresShotMarkers3s = true;
-        //gameModeRequiresShotMarkers4s = true;
+        gameModeSelected = 8;
+
+        gameModeRequiresCounter = true;
+
+        gameModeRequiresShotMarkers3s = true;
+        gameModeRequiresShotMarkers4s = true;
 
         //Debug.Log("levelSected : " + levelSelected);
         //Debug.Log("levelSectedName : " + levelSelectedName);

@@ -42,9 +42,13 @@ public class GameRules : MonoBehaviour
     private GameObject[] basketBallShotMarkerObjects;
     [SerializeField]
     private List<BasketBallShotMarker> _basketBallShotMarkersList;
+    [SerializeField]
     private int markersRemaining;
+    //private int maxShotMarkers;
 
     private bool positionMarkersRequired;
+
+    private float counterTime;
 
 
     private void Awake()
@@ -96,6 +100,7 @@ public class GameRules : MonoBehaviour
         {
             Debug.Log("        if (positionMarkersRequired) ");
             markersRemaining = BasketBallShotMarkersList.Count;
+            //maxShotMarkers = MarkersRemaining;
         }
         else
         {
@@ -113,6 +118,15 @@ public class GameRules : MonoBehaviour
 
     void Update()
     {
+        //if (MarkersRemaining >= maxShotMarkers)
+        //{
+        //    marker
+        //}
+
+        //if (MarkersRemaining >= maxShotMarkers)
+        //{
+        //    gameOver = true;
+        //}
 
         // update current score
         if (gameRulesEnabled)
@@ -193,6 +207,12 @@ public class GameRules : MonoBehaviour
                 PlayerData.instance.saveStats();
             }
         }
+        if (gameModeId == 8)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
+        }
     }
 
     private string getDisplayText(int modeId)
@@ -225,6 +245,10 @@ public class GameRules : MonoBehaviour
         {
             displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
+        if (gameModeId == 8)
+        {
+            displayText = "Your time to complete all shots was " + (counterTime ).ToString("0.00") + "\n\n" + getStatsTotals();
+        }
 
         return displayText;
     }
@@ -247,6 +271,27 @@ public class GameRules : MonoBehaviour
                          + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2) * 6f).ToString("0.00") + " ft.";
 
         return scoreText;
+    }
+
+    public bool isGameOver()
+    {
+        Debug.Log("isGameOver : markers "+ MarkersRemaining);
+        if (MarkersRemaining <= 0)
+        {
+            Debug.Log("if");
+            return true;
+        }
+        else
+        {
+            Debug.Log("else");
+            return false;
+        }
+    }
+
+    public float CounterTime
+    {
+        get => counterTime;
+        set => counterTime = value;
     }
 
     private void setTimer(float seconds)

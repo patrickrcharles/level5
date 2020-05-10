@@ -90,6 +90,7 @@ public class BasketBallShotMarker : MonoBehaviour
             }
         }
 
+        // if made # of shots required at shot marker
         if (_shotMade >= maxShotMade && markerEnabled)
         {
             markerEnabled = false;
@@ -97,6 +98,13 @@ public class BasketBallShotMarker : MonoBehaviour
             GameRules.instance.MarkersRemaining--;
             spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // opacity to 0
             setDisplayText();
+
+            // check if last remaining shot marker
+            if (GameRules.instance.isGameOver())
+            {
+                GameRules.instance.CounterTime = Timer.instance.CurrentTime;
+                GameRules.instance.GameOver = true;
+            }
         }
     }
 
@@ -104,7 +112,7 @@ public class BasketBallShotMarker : MonoBehaviour
     {
         //Debug.Log("ontrigger : this.enabled" + this.enabled);
 
-        Debug.Log("on trigger : " + other.gameObject.tag + "  this : "+ gameObject.tag + " detect collsions : "+ detectCollisions);
+        //Debug.Log("on trigger : " + other.gameObject.tag + "  this : "+ gameObject.tag + " detect collsions : "+ detectCollisions);
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker")
             && detectCollisions)
         {

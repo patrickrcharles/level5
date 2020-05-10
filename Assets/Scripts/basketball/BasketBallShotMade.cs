@@ -97,6 +97,7 @@ public class BasketBallShotMade : MonoBehaviour
                 Debug.Log("_id  : " + GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
+
             _basketBallState.TwoAttempt = false;
             _basketBallState.ThreeAttempt = false;
             _basketBallState.FourAttempt = false;

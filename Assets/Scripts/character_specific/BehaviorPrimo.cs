@@ -11,11 +11,6 @@ public class BehaviorPrimo : MonoBehaviour
 
     public float walkMovementSpeed;
     public float runMovementSpeed;
-    public float attackMovementSpeed;
-    public float punchCooldown;
-    public float chargeSpeed;
-
-    public float xMin, xMax, zMin, zMax, yMin, yMax;
     public bool facingRight, walking;
     public bool canMove;
 
@@ -54,11 +49,13 @@ public class BehaviorPrimo : MonoBehaviour
     public bool moving;
     public bool outsideRange;
     public bool insideRange;
+    [SerializeField]
     public bool movingToTarget;
 
     public float maxDistance;
     private bool reachedDestination;
     private bool isSleeping;
+    [SerializeField]
     private bool followPlayer;
 
     // Use this for initialization
@@ -171,10 +168,10 @@ public class BehaviorPrimo : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if collsion, wake primo
-        //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
+        Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.tag);
 
         if (gameObject.name == "primo" 
-            && (other.name.Contains("Player") || other.CompareTag("basketball") || other.name.Contains("flash"))
+            && (other.CompareTag("Player") || other.CompareTag("basketball") || other.name.Contains("flash"))
             && !movingToTarget
             && followPlayer)
         {
@@ -185,7 +182,7 @@ public class BehaviorPrimo : MonoBehaviour
             //movingToTarget = true;
         }
         if (gameObject.name == "primo"
-            && (other.name.Contains("Player") 
+            && (other.CompareTag("Player") 
             && !movingToTarget
             && !followPlayer))
         {
