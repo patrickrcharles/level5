@@ -204,6 +204,12 @@ public class BasketBallShotMarker : MonoBehaviour
     }
 
     public bool PlayerOnMarker => _playerOnMarker;
+
+    public bool ShotTypeThree => shotTypeThree;
+
+    public bool ShotTypeFour => shotTypeFour;
+
+    public bool ShotTypeSeven => shotTypeSeven;
 }
 
 
