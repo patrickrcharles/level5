@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
+    [SerializeField]
     private BasketBallStats basketBallStats;
 
     public  int _playerId;
@@ -16,13 +17,11 @@ public class PlayerData : MonoBehaviour
     public  float _threePointerMade;
     public  float _sevenPointerMade;
 
-
     public  float _fourPointerMade;
     public  float _twoPointerAttempts;
     public  float _threePointerAttempts;
     public  float _fourPointerAttempts;
     public  float _sevenPointerAttempts;
-
 
     public  float _shotAttempt;
     public  float _shotMade;
@@ -30,74 +29,55 @@ public class PlayerData : MonoBehaviour
     public  float _longestShotMadeFreePlay;
     public  float _totalDistance;
 
-    [SerializeField]
+    public  float _makeThreePointersLowTime;
+    public  float _makeFourPointersLowTime;
+
+    public  float _makeAllPointersLowTime;
+
     private bool _isCheating;
-    public bool IsCheating
-    {
-        get => _isCheating;
-        set => _isCheating = value;
-    }
 
+    static bool _created = false;
     public static PlayerData instance;
-
-    static bool created = false;
 
     void Awake()
     {
         instance = this;
-        if (!created)
+        // only create player data once
+        if (!_created)
         {
             DontDestroyOnLoad(this.gameObject);
-            created = true;
+            _created = true;
         }
         else
         {
             Destroy(this.gameObject);
         }
+        // load stats wake
         loadStats();
     }
 
     void Start()
     {
 
-        // forcing this for testing purpose
-        //GameOptions.gameModeSelected = 2;
     }
     // Update is called once per frame
     void Update()
     {
-        ////turn off accuracy modifer 6+9
-        //if (InputManager.GetKey(KeyCode.LeftShift)
-        //    && InputManager.GetKeyDown(KeyCode.Alpha8))
-        //{
-        //    save(basketBallStats);
-        //   //Debug.Log("save stats");
-        //}
-        ////turn off accuracy modifer 6+9
-        //if (InputManager.GetKey(KeyCode.LeftShift)
-        //    && InputManager.GetKeyDown(KeyCode.Alpha9))
-        //{
-        //    load(basketBallStats);
-        //   //Debug.Log("load stats");
-        //}
+
     }
 
     public void saveStats()
     {
-       //Debug.Log("saveData");
+        // get stats object
         basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
 
-        if (IsCheating && GameOptions.gameModeSelected != 7)
+        // not cheating and game mode name doesnt contain 'free' as in, Free Play mode
+        if (IsCheating && !GameOptions.gameModeSelectedName.ToLower().Contains("free"))
         {
-            //Debug.Log("dont save");
-            //Debug.Log("ischeating : "+IsCheating + " mode : "+ GameOptions.gameModeSelected);
+            // no save for you
             return;
-            //if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 6)
-            //{
-            //    PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
-            //    _longestShotMadeFreePlay = 0;
-            //    loadStats();
         }
+
         // save can be called whenever as long as load isnt called as well.
         // if you call load, you need to reset the local variables
         // example load, totalpoint = 100, make 50, save totalpoint = 150.
@@ -175,27 +155,51 @@ public class PlayerData : MonoBehaviour
             _fourPointerMade = 0;
             loadStats();
         }
+        // save mode 3 (7s)
         if (_sevenPointerMade < basketBallStats.SevenPointerMade && GameOptions.gameModeSelected == 4)
         {
             PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_fourPointersMade", (int)(basketBallStats.FourPointerMade));
             _fourPointerMade = 0;
             loadStats();
         }
-        // save mode 4 (long shot)
+        // save mode 5 (long shot)
         if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 5)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMade", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
             _longestShotMade = 0;
             loadStats();
         }
-        // save mode 5 (total shot distance made)
+        // save mode 6 (total shot distance made)
         if (_totalDistance < (basketBallStats.TotalDistance * 6) && GameOptions.gameModeSelected == 6)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_totalDistance", (float)Math.Round(basketBallStats.TotalDistance * 6, 4));
             _totalDistance = 0;
             loadStats();
         }
-        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 7)
+        // save mode 7 low time 3s
+        if (_makeThreePointersLowTime > basketBallStats.MakeThreePointersLowTime && GameOptions.gameModeSelected == 7)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTime", (float)Math.Round(basketBallStats.MakeThreePointersLowTime, 4));
+            _makeThreePointersLowTime = 0;
+            loadStats();
+        }
+        // save mode 8 low time 4s
+        if (_makeFourPointersLowTime > basketBallStats.MakeFourPointersLowTime && GameOptions.gameModeSelected == 8)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTime", (float)Math.Round(basketBallStats.MakeFourPointersLowTime, 4));
+            _makeFourPointersLowTime = 0;
+            loadStats();
+        }
+        // save mode 9 low time 3s + 4s
+        if (_makeAllPointersLowTime > basketBallStats.MakeAllPointersLowTime && GameOptions.gameModeSelected == 9)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTime", (float)Math.Round(basketBallStats.MakeAllPointersLowTime, 4));
+            _makeAllPointersLowTime = 0;
+            loadStats();
+        }
+
+        // save mode 10 (longest shot in free play)
+        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 10)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
             _longestShotMadeFreePlay = 0;
@@ -206,7 +210,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStats()
     {
-       //Debug.Log("load()");
+       Debug.Log("load()");
         //only call at beginning of a game
 
         //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
@@ -252,8 +256,11 @@ public class PlayerData : MonoBehaviour
         _longestShotMade = PlayerPrefs.GetFloat("mode_" + 5 + "_longestShotMade");
         _totalDistance = PlayerPrefs.GetFloat("mode_" + 6 + "_totalDistance");
 
-        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 7 + "_longestShotMadeFreePlay");
+        _makeThreePointersLowTime = PlayerPrefs.GetFloat("mode_" + 7 + "_lowThreeTime");
+        _makeFourPointersLowTime = PlayerPrefs.GetFloat("mode_" + 8 + "_lowFourTime");
+        _makeAllPointersLowTime = PlayerPrefs.GetFloat("mode_" + 9 + "_lowAllTime");
 
+        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 10 + "_longestShotMadeFreePlay");
 
     }
 
@@ -295,10 +302,14 @@ public class PlayerData : MonoBehaviour
         //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
     }
 
-    public float SevenPointerAttempts
+    public bool IsCheating
     {
-        get => _sevenPointerAttempts;
+        get => _isCheating;
+        set => _isCheating = value;
     }
+
+    public float SevenPointerAttempts =>_sevenPointerAttempts;
+    
     public float LongestShotMadeFreePlay => _longestShotMadeFreePlay;
 
     public int PlayerId => _playerId;
@@ -319,6 +330,8 @@ public class PlayerData : MonoBehaviour
 
     public float FourPointerAttempts => _fourPointerAttempts;
 
+    public float SevenPointerMade => _sevenPointerMade;
+
     public float ShotAttempt => _shotAttempt;
 
     public float ShotMade => _shotMade;
@@ -328,10 +341,5 @@ public class PlayerData : MonoBehaviour
     public float TotalDistance => _totalDistance;
 
     public static PlayerData Instance => instance;
-
-    public float SevenPointerMade
-    {
-        get => _sevenPointerMade;
-    }
 
 }

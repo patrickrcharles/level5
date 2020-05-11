@@ -19,6 +19,13 @@ public class BasketBallShotMarker : MonoBehaviour
     private GameObject basketBallTarget;
 
     [SerializeField] private int positionMarkerId;
+
+    public int PositionMarkerId
+    {
+        get => positionMarkerId;
+        set => positionMarkerId = value;
+    }
+
     [SerializeField] private int _shotMade;
     [SerializeField] private int _shotAttempt;
     [SerializeField] private int maxShotAttempt;
@@ -46,6 +53,11 @@ public class BasketBallShotMarker : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        setDisplayText();
+        // set what type of shot marker is based on distance from rim
+        // using basketball state
+        setMarkerShotType();
+
         if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s)
         {
             markerEnabled = true;
@@ -62,14 +74,7 @@ public class BasketBallShotMarker : MonoBehaviour
         }
         // if script disabled, disable collisions flag.
         // collisions/colliders still detected if script disabled
-        if (!this.enabled)
-        {
-            detectCollisions = false;
-        }
-        else
-        {
-            detectCollisions = true;
-        }
+        detectCollisions = this.enabled;
     }
 
     // Update is called once per frame
@@ -102,7 +107,7 @@ public class BasketBallShotMarker : MonoBehaviour
             // check if last remaining shot marker
             if (GameRules.instance.isGameOver())
             {
-                GameRules.instance.CounterTime = Timer.instance.CurrentTime;
+                //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                 GameRules.instance.GameOver = true;
             }
         }
@@ -141,7 +146,7 @@ public class BasketBallShotMarker : MonoBehaviour
         if (PlayerOnMarker && markerEnabled)
         {
             displayCurrentMarkerStats.text = "markers remaining : " + GameRules.instance.MarkersRemaining + "\n"
-                                             + "current marker : " + positionMarkerId + "\n"
+                                            // + "current marker : " + positionMarkerId + "\n"
                                              + "made : " + ShotMade + " / " + ShotAttempt + "\n"
                                              + "remaining : " + (maxShotMade - ShotMade);
         }
@@ -149,7 +154,7 @@ public class BasketBallShotMarker : MonoBehaviour
         if (!PlayerOnMarker || !markerEnabled)//&& markerEnabled)
         {
             displayCurrentMarkerStats.text = "markers remaining : " + GameRules.instance.MarkersRemaining + "\n"
-                                             + "current marker : \n"
+                                          //   + "current marker : \n"
                                              + "made : \n"
                                              + "remaining : ";
         }

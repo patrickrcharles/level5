@@ -4,28 +4,33 @@ using UnityEngine;
 
 public class BasketBallStats : MonoBehaviour
 {
-   
+    private int _playerId;
+    private string _playerName;
 
-    public int _playerId;
-    public string _playerName;
+    private float _totalPoints;
+    private float _twoPointerMade;
+    private float _threePointerMade;
+    private float _fourPointerMade;
+    private float _sevenPointerMade;
 
-    public float _totalPoints;
-    public float _twoPointerMade;
-    public float _threePointerMade;
-    public float _fourPointerMade;
-    public float _sevenPointerMade;
+    private float _twoPointerAttempts;
+    private float _threePointerAttempts;
+    private float _fourPointerAttempts;
+    private float _sevenPointerAttempts;
 
-    public float _twoPointerAttempts;
-    public float _threePointerAttempts;
-    public float _fourPointerAttempts;
-    public float _sevenPointerAttempts;
+    private float _shotAttempt;
+    private float _shotMade;
+    private float _longestShotMade;
+    private float _totalDistance;
 
-    public float _shotAttempt;
-    public float _shotMade;
-    public float _longestShotMade;
-    public float _totalDistance;
+    [SerializeField]
+    private float _makeThreePointersLowTime;
+    [SerializeField]
+    private float _makeFourPointersLowTime;
+    [SerializeField]
+    private float _makeAllPointersLowTime;
 
-    public float _criticalRolled;
+    private float _criticalRolled;
 
     //init from game options
     void Start()
@@ -34,6 +39,24 @@ public class BasketBallStats : MonoBehaviour
         // id and name use to construct key that will be stored
         PlayerId = GameOptions.playerId;
         PlayerName = GameOptions.playerObjectName;
+    }
+
+    public float MakeThreePointersLowTime
+    {
+        get => _makeThreePointersLowTime;
+        set => _makeThreePointersLowTime = value;
+    }
+
+    public float MakeFourPointersLowTime
+    {
+        get => _makeFourPointersLowTime;
+        set => _makeFourPointersLowTime = value;
+    }
+
+    public float MakeAllPointersLowTime
+    {
+        get => _makeAllPointersLowTime;
+        set => _makeAllPointersLowTime = value;
     }
 
     public float CriticalRolled
