@@ -100,7 +100,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
   shotTypeSeven: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
   shotTypeSeven: 0
@@ -371,7 +371,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
   shotTypeSeven: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
   shotTypeSeven: 0
@@ -607,7 +607,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
   shotTypeSeven: 0
