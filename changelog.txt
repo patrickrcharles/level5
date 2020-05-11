@@ -17,12 +17,33 @@ change log
 - added quit to start menu command. press left or right shift + P
 - changed quit game command to left or right sift + Q
 
-2.0.1
+2.1.0
+- added new game mode: make most 7 pointers
+- added new character: Hollywood
+- Jessica now take a photo on each ctiical roll as a notifier
+- added new Free play mode no time limit, no conditions
+- added new level, Snow area
+
 - fixed marion animation
 - fixed woody animation
 - fixed drop shadow position
-- added new character Hollywood
 - fixed issue with basketball going over the fence on the scrapyard
-- Jessica now take a photo on each ctiical roll as a notifier
 - updated Circle K level boundaries
--added toggle run ON/OFF switch
+- added stat summary of all shots on game end
+- repositioned pause screen buttons
+- added 7 point shots for shots greater than 100ft
+- updated start UI with more stats display
+- minor attempts at player balancing
+
+- added toggle run ON/OFF switch (Left shift + 1) Default : ON
+- added toggle accuracy modifer (Left shift + 2)  Default : ON
+  (disables high score saving)
+- added toggle pull ball to player during game (Left shift + 3, to use : press shoot button) 
+  (disables high score saving) Default : OFF
+- added toggle stats display during game (Left shift + 4) Default : OFF
+
+2.2.0
+
+- added 2 new game mode:  make 5 shot from 5 different positons ( 3 point and 4 point ) 
+- added ghost character
+- added minor leveling system
