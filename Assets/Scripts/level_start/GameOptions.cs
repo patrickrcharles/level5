@@ -53,12 +53,12 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
-        gameModeSelected = 8;
+        //gameModeSelected = 8;
 
-        gameModeRequiresCounter = true;
+        //gameModeRequiresCounter = true;
 
-        gameModeRequiresShotMarkers3s = true;
-        gameModeRequiresShotMarkers4s = true;
+        //gameModeRequiresShotMarkers3s = true;
+        //gameModeRequiresShotMarkers4s = true;
 
         //Debug.Log("levelSected : " + levelSelected);
         //Debug.Log("levelSectedName : " + levelSelectedName);

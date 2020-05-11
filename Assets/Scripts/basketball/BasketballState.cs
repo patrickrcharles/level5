@@ -64,8 +64,10 @@ public class BasketBallState : MonoBehaviour
         BallDistanceFromRim = Vector3.Distance(transform.position, _basketBallTarget.transform.position);
 
         // is player on  marker  +  is marker required for game mode
-        PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
-
+        if (GameRules.instance.PositionMarkersRequired)
+        {
+            PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
+        }
 
         if (BallDistanceFromRim < ThreePointDistance)
         {

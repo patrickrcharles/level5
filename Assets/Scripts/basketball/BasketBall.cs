@@ -63,8 +63,8 @@ public class BasketBall : MonoBehaviour
     bool locked;
     [SerializeField] private bool uiStatsEnabled;
 
-    public BasketballTestStats testStats;
-    public BasketBallTestStatsConclusions testConclusions;
+    //public BasketballTestStats testStats;
+    //public BasketBallTestStatsConclusions testConclusions;
     public int currentTestStatsIndex = 0;
     public BasketBallShotMade basketBallShotMade;
 
@@ -106,7 +106,7 @@ public class BasketBall : MonoBehaviour
 
         // for test data
         //testStats = GetComponent<BasketballTestStats>();
-        testConclusions = GetComponent<BasketBallTestStatsConclusions>();
+        //testConclusions = GetComponent<BasketBallTestStatsConclusions>();
 
         //todo: move to game manager
         uiStatsEnabled = false;
@@ -406,32 +406,32 @@ public class BasketBall : MonoBehaviour
 
         // ================================== for SHOT TEST STATS ====================================
 
-        BasketballTestStats testStats = gameObject.GetComponent<BasketballTestStats>();
+        //BasketballTestStats testStats = gameObject.GetComponent<BasketballTestStats>();
 
-        testStats.AccuracyModifier = accuracyModifierX;
-        testStats.Distance = lastShotDistance;
-        testStats.LocalVelocity = localVelocity;
-        testStats.GlobalVelocity = globalVelocity;
-        testStats.ReleaseVelocity = releaseVelocityY;
-        if (basketBallState.TwoPoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy2Pt;
-            testStats.Two = true;
-        }
-        if (basketBallState.ThreePoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy3Pt;
-            testStats.Three = true;
-        }
-        if (basketBallState.FourPoints)
-        {
-            testStats.Accuracy = shooterProfile.Accuracy4Pt;
-            testStats.Four = true;
-        }
+        //testStats.AccuracyModifier = accuracyModifierX;
+        //testStats.Distance = lastShotDistance;
+        //testStats.LocalVelocity = localVelocity;
+        //testStats.GlobalVelocity = globalVelocity;
+        //testStats.ReleaseVelocity = releaseVelocityY;
+        //if (basketBallState.TwoPoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy2Pt;
+        //    testStats.Two = true;
+        //}
+        //if (basketBallState.ThreePoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy3Pt;
+        //    testStats.Three = true;
+        //}
+        //if (basketBallState.FourPoints)
+        //{
+        //    testStats.Accuracy = shooterProfile.Accuracy4Pt;
+        //    testStats.Four = true;
+        //}
 
-        testConclusions.shotStats.Add(testStats);
-        currentTestStatsIndex = (testConclusions.shotStats.Count) - 1;
-        basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
+        //testConclusions.shotStats.Add(testStats);
+        //currentTestStatsIndex = (testConclusions.shotStats.Count) - 1;
+        //basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
 
         // ================================================================================================
     }
