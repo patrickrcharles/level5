@@ -1,97 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &273871765064349797
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 729941199990717661}
-  - component: {fileID: 642367097595345234}
-  - component: {fileID: 2652237544654685421}
-  m_Layer: 0
-  m_Name: test_stats
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &729941199990717661
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273871765064349797}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3567679246626141782}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &642367097595345234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273871765064349797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 711a4adddeb7c2b4ca1ca9b9172fc0b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  two: 0
-  three: 0
-  four: 0
-  made: 0
-  miss: 0
-  attempt: 0
-  distance: 0
-  releaseVelocity: 0
-  localVelocity: {x: 0, y: 0, z: 0}
-  globalVelocity: {x: 0, y: 0, z: 0}
-  accuracyModifier: 0
-  accuracy: 0
---- !u!114 &2652237544654685421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273871765064349797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115c8cbe87d7a3a4dafb30764a540cc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotStats: []
-  two: 0
-  three: 0
-  four: 0
-  twoAttempt: 0
-  threeAttempt: 0
-  fourAttempt: 0
-  made: 0
-  miss: 0
-  attempt: 0
-  avgReleaseVelocity: 0
-  avgAccuracyModifier: 0
-  avgReleaseVelocityTwoMade: 0
-  avgReleaseVelocityTwoMiss: 0
-  avgReleaseVelocityThreeMade: 0
-  avgReleaseVelocityThreeMiss: 0
-  avgReleaseVelocityFourMade: 0
-  avgReleaseVelocityFourMiss: 0
-  avgAccuracyModifier2made: 0
-  avgAccuracyModifier3made: 0
-  avgAccuracyModifier4made: 0
-  avgAccuracyModifier2miss: 0
-  avgAccuracyModifier3miss: 0
-  avgAccuracyModifier4miss: 0
 --- !u!1 &3569587445836172348
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,9 +98,7 @@ GameObject:
   - component: {fileID: 3489391390474842162}
   - component: {fileID: 4784205251377224028}
   - component: {fileID: -3620328289021908805}
-  - component: {fileID: 9066808747724891423}
-  - component: {fileID: -2793604112486115060}
-  - component: {fileID: 1879968598676544693}
+  - component: {fileID: 4332793979592524497}
   m_Layer: 0
   m_Name: basketball_nba
   m_TagString: basketball
@@ -214,7 +120,6 @@ Transform:
   - {fileID: 3567739242467096940}
   - {fileID: 3574978809456273586}
   - {fileID: 3567744020026090148}
-  - {fileID: 729941199990717661}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -422,8 +327,6 @@ MonoBehaviour:
   shootProfile: {fileID: 0}
   _angle: 60
   uiStatsEnabled: 0
-  testStats: {fileID: 0}
-  testConclusions: {fileID: 0}
   currentTestStatsIndex: 0
   basketBallShotMade: {fileID: 0}
   accuracyModifierX: 0
@@ -439,23 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c8393904979c4faea16cf0061a011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerId: 0
-  _playerName: 
-  _totalPoints: 0
-  _twoPointerMade: 0
-  _threePointerMade: 0
-  _fourPointerMade: 0
-  _sevenPointerMade: 0
-  _twoPointerAttempts: 0
-  _threePointerAttempts: 0
-  _fourPointerAttempts: 0
-  _sevenPointerAttempts: 0
-  _shotAttempt: 0
-  _shotMade: 0
-  _longestShotMade: 0
-  _totalDistance: 0
-  _criticalRolled: 0
---- !u!114 &9066808747724891423
+  _makeThreePointersLowTime: 0
+  _makeFourPointersLowTime: 0
+  _makeAllPointersLowTime: 0
+--- !u!114 &4332793979592524497
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -471,68 +361,6 @@ MonoBehaviour:
   _playerOnMarkerOnShoot: 0
   _currentShotMarkerId: 0
   _ballDistanceFromRim: 0
-  basketBallShotMarkerObjects: []
-  _basketBallShotMarkersList: []
---- !u!114 &-2793604112486115060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3569830428581291380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 711a4adddeb7c2b4ca1ca9b9172fc0b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  two: 0
-  three: 0
-  four: 0
-  made: 0
-  miss: 0
-  attempt: 0
-  distance: 0
-  releaseVelocity: 0
-  localVelocity: {x: 0, y: 0, z: 0}
-  globalVelocity: {x: 0, y: 0, z: 0}
-  accuracyModifier: 0
-  accuracy: 0
---- !u!114 &1879968598676544693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3569830428581291380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115c8cbe87d7a3a4dafb30764a540cc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotStats: []
-  two: 0
-  three: 0
-  four: 0
-  twoAttempt: 0
-  threeAttempt: 0
-  fourAttempt: 0
-  made: 0
-  miss: 0
-  attempt: 0
-  avgReleaseVelocity: 0
-  avgAccuracyModifier: 0
-  avgReleaseVelocityTwoMade: 0
-  avgReleaseVelocityTwoMiss: 0
-  avgReleaseVelocityThreeMade: 0
-  avgReleaseVelocityThreeMiss: 0
-  avgReleaseVelocityFourMade: 0
-  avgReleaseVelocityFourMiss: 0
-  avgAccuracyModifier2made: 0
-  avgAccuracyModifier3made: 0
-  avgAccuracyModifier4made: 0
-  avgAccuracyModifier2miss: 0
-  avgAccuracyModifier3miss: 0
-  avgAccuracyModifier4miss: 0
 --- !u!1 &3569848962387920496
 GameObject:
   m_ObjectHideFlags: 0
