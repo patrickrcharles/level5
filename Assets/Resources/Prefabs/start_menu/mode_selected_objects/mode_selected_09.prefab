@@ -43,11 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 8
-  modelDisplayName: Spot up some 4s
-  modeObjectName: mode_08
-  modeDescription: Make 5 4s from each position marker
+  modeId: 9
+  modelDisplayName: Spot up All
+  modeObjectName: mode_9
+  modeDescription: Make 5 shots from each position marker
   modeRequiresCounter: 1
   modeRequiresCountDown: 0
-  modeRequiresShotMarkers3s: 0
+  modeRequiresShotMarkers3s: 1
   modeRequiresShotMarkers4s: 1
