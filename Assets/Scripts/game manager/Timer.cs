@@ -70,7 +70,7 @@ public class Timer : MonoBehaviour
             timeRemaining = timeStart - currentTime;
             minutes = Mathf.FloorToInt(timeRemaining / 60);
             //seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
-            seconds = (currentTime - (minutes * 60));
+            seconds = (timeRemaining - (minutes * 60));
         }
 
         if (modeRequiresCounter)
@@ -80,6 +80,12 @@ public class Timer : MonoBehaviour
             minutes = Mathf.FloorToInt(currentTime / 60);
             seconds = (currentTime - (minutes * 60));
         }
+        // gameover, disable timer display and set text to empty
+        if (GameRules.instance.GameOver)
+        {
+            displayTimer = false;
+            timerText.text = "";
+        }
 
         // time's up, pause and reset timer text
         if (timeRemaining <= 0 
@@ -87,8 +93,6 @@ public class Timer : MonoBehaviour
             && !modeRequiresCounter
             && timerEnabled)
         {
-            displayTimer = false;
-            timerText.text = "";
             // ball is in the air, let the shot go before pausing 
             if (!BasketBall.instance.BasketBallState.InAir)
             {

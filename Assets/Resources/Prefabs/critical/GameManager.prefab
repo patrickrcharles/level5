@@ -524,7 +524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: -151.9}
+  m_AnchoredPosition: {x: 248.8, y: -152}
   m_SizeDelta: {x: 300, y: 129.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1763041277
@@ -819,6 +819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128a5f39f69aa344825e318f9b99d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameModeRequiresShotMarkers3s: 0
+  gameModeRequiresShotMarkers4s: 0
   basketBallShotMarkerObjects: []
   _basketBallShotMarkersList: []
   markersRemaining: 0
@@ -1466,7 +1468,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 17.33, y: 172}
-  m_SizeDelta: {x: 234.67, y: 100}
+  m_SizeDelta: {x: 350, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8408471258499463862
 CanvasRenderer:

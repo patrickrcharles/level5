@@ -94,7 +94,6 @@ public class BasketBallShotMade : MonoBehaviour
 
             if (_basketBallState.PlayerOnMarkerOnShoot)
             {
-                Debug.Log("_id  : " + GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId]);
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
 

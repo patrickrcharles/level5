@@ -431,6 +431,8 @@ public class StartManager : MonoBehaviour
 
     private void setGameOptions()
     {
+        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
         GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
         GameOptions.gameModeRequiresShotMarkers3s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers3S;

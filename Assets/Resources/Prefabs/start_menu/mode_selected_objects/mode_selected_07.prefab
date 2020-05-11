@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeId: 7
-  modelDisplayName: Free Play
+  modelDisplayName: Spot up some 3s
   modeObjectName: mode_07
-  modeDescription: Free play
-  modeRequiresCounter: 0
+  modeDescription: Make 5 3s from each position marker
+  modeRequiresCounter: 1
   modeRequiresCountDown: 0
+  modeRequiresShotMarkers3s: 1
+  modeRequiresShotMarkers4s: 0
