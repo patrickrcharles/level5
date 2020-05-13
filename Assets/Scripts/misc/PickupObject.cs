@@ -6,19 +6,18 @@ using Random = System.Random;
 
 public class PickupObject : MonoBehaviour
 {
-    [SerializeField]
-    private string name;
+    [SerializeField] private string name;
+    [SerializeField] float moneyValue;
+    [SerializeField] private float moneyDestroyTime;
+
     //[SerializeField]
     //int moneyType;
-    [SerializeField]
-    float moneyValue;
-
-    [SerializeField] private int shotType;
+    //[SerializeField] private int shotType;
 
     void Awake()
     {
         // destroy game object
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, moneyDestroyTime);
     }
 
     void OnTriggerEnter(Collider other)
@@ -34,14 +33,14 @@ public class PickupObject : MonoBehaviour
 
     public void updateMoneyValue(float value)
     {
-        moneyValue = value + generateRandomCents();
-        Debug.Log("money value : " + moneyValue);
+        moneyValue = value;// + generateRandomCents();
+        //Debug.Log("money value : " + moneyValue);
     }
 
     float generateRandomCents()
     {
-        System.Random random = new Random();
-        Decimal cents = random.Next(1, 100);
+        var random = new Random();
+        decimal cents = random.Next(1, 100);
 
         //Debug.Log("rand change: "+ (float)(Math.Round(cents, 2)) / 100);
         return  (float)(Math.Round(cents, 2))/100;

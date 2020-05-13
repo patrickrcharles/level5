@@ -431,11 +431,19 @@ public class StartManager : MonoBehaviour
 
     private void setGameOptions()
     {
+        GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
+        GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+
         GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
         GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
+
         GameOptions.gameModeRequiresShotMarkers3s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers3S;
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
+
+        GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
     }
 }

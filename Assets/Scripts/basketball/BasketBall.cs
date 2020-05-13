@@ -310,17 +310,12 @@ public class BasketBall : MonoBehaviour
 
     private void shootBasketBall()
     {
-        basketBallState.Locked = true;
-        releaseVelocityY = playerState.rigidBodyYVelocity;
+        basketBallState.Locked = true; // mostly prevent multiple inputs (button presses)
+        releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
+
+        //================== anim stuff 
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
-
-        if (playerState.IsSetShooter)
-        {
-            //Debug.Log("set shooter");
-            playerState.setPlayerAnim("jump", true);
-            playerState.checkIsPlayerFacingGoal();
-        }
 
         // set side or front shooting animation
         if (playerState.facingFront) // facing straight toward bball goal
@@ -330,10 +325,65 @@ public class BasketBall : MonoBehaviour
         }
         else // side of goal, relative postion
         {
-           // Debug.Log("anim");
+            // Debug.Log("anim");
             playerState.setPlayerAnimTrigger("basketballShoot");
         }
 
+        // part of in progress game mechanism
+        if (playerState.IsSetShooter)
+        {
+            //Debug.Log("set shooter");
+            playerState.setPlayerAnim("jump", true);
+            playerState.checkIsPlayerFacingGoal();
+        }
+
+        // check for and set money ball
+        if (GameRules.instance.MoneyBallEnabled)
+        {
+            basketBallState.MoneyBallEnabledOnShoot = true; 
+            Debug.Log("moneyball shot");
+            PlayerStats.instance.Money -= 5; // moneyball spent
+        }
+        else
+        {
+            basketBallState.MoneyBallEnabledOnShoot = false;
+        }
+
+        // let basketball state know what type of shot is attempted
+        updateBasketBallStateShotTypeOnShoot();
+
+        // player on shot marker and game mode requires markers
+        if (basketBallState.PlayerOnMarker && GameRules.instance.PositionMarkersRequired)
+        {
+            // on shoot. 
+            basketBallState.PlayerOnMarkerOnShoot = true;
+            basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
+            // update shot attempt stat for marker position shot from
+            GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
+
+            if (GameRules.instance.MoneyBallEnabled)
+            {
+                basketBallState.MoneyBallEnabledOnShoot = true;
+            }
+        }
+
+        //launch ball to goal      
+        Launch();
+
+        //calculate shot distance 
+        Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
+            0, basketBallState.BasketBallTarget.transform.position.z);
+        float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
+        lastShotDistance = tempDist;
+
+        //reset state flags
+        basketBallState.Thrown = true;
+        basketBallState.InAir = true;
+        basketBallState.Locked = false;
+    }
+
+    private void updateBasketBallStateShotTypeOnShoot()
+    {
         // identify is in 2 or 3 point range for stat counters
         if (basketBallState.TwoPoints)
         {
@@ -358,37 +408,13 @@ public class BasketBall : MonoBehaviour
             basketBallState.SevenAttempt = true;
             basketBallStats.SevenPointerAttempts++;
         }
-
-        if (basketBallState.PlayerOnMarker)
-        {
-            // on shoot. 
-            basketBallState.PlayerOnMarkerOnShoot = true;
-            basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
-            // update shot attempt stat for marker position shot from
-            GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
-        }
-
-        //launch ball to goal      
-        Launch();
-
-
-        //calculate shot distance 
-        Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
-            0, basketBallState.BasketBallTarget.transform.position.z);
-        float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
-        lastShotDistance = tempDist;
-
-        //reset state flags
-        basketBallState.Thrown = true;
-        basketBallState.InAir = true;
-        basketBallState.Locked = false;
+        // update total; shot attempst
+        basketBallStats.ShotAttempt++;
     }
 
     // =================================== Launch ball function =======================================
     void Launch()
     {
-        // shot attempted
-        basketBallStats.ShotAttempt++;
 
         Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Vector3 targetXZPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
@@ -407,7 +433,7 @@ public class BasketBall : MonoBehaviour
         float Vy = tanAlpha * Vz;
 
         // accuracy modifier logic
-        //accuracyModifierX;
+        // accuracyModifierX;
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
         {
             accuracyModifierX = 0;
@@ -494,8 +520,8 @@ public class BasketBall : MonoBehaviour
 
     private float getAccuracyModifier()
     {
-        //int direction = getRandomPositiveOrNegative();
-        int direction = 1; //for testing to do stat analysis
+        int direction = getRandomPositiveOrNegative();
+        //int direction = 1; //for testing to do stat analysis
         float accuracyModifier = 1;
         if (basketBallState.TwoPoints)
         {

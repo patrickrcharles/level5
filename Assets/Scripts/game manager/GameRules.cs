@@ -16,6 +16,7 @@ public class GameRules : MonoBehaviour
 
     private bool gameOver;
     private bool gameStart;
+    [SerializeField]
     private bool gameRulesEnabled;
 
     private bool modeRequiresCounter;
@@ -23,6 +24,10 @@ public class GameRules : MonoBehaviour
 
     bool gameModeRequiresShotMarkers3s;
     bool gameModeRequiresShotMarkers4s;
+
+    bool gameModeRequiresMoneyBall;
+    [SerializeField]
+    bool moneyBallEnabled;
 
     private Timer timer;
     private BasketBallStats basketBallStats;
@@ -33,10 +38,14 @@ public class GameRules : MonoBehaviour
     private const string displayScoreObjectName = "display_score";
     private const string displayCurrentScoreObjectName = "display_current_score";
     private const string displayHighScoreObjectName = "display_high_score";
+    private const string displayMoneyObjectName = "money_display";
+    private const string displayMoneyBallObjectName = "money_ball_enabled";
 
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
+    private Text displayMoneyText;
+    private Text displayMoneyBallText;
 
     private float timeCompleted;
 
@@ -62,28 +71,43 @@ public class GameRules : MonoBehaviour
         gameModeId = GameOptions.gameModeSelected;
         timer = GameObject.Find("timer").GetComponent<Timer>();
 
-        modeRequiresCounter = GameOptions.gameModeRequiresCounter;
-        modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
-
+        // components
         basketBallStats = BasketBall.instance.BasketBallStats;
+
         displayScoreText = GameObject.Find(displayScoreObjectName).GetComponent<Text>();
         displayCurrentScoreText = GameObject.Find(displayCurrentScoreObjectName).GetComponent<Text>();
         displayHighScoreText = GameObject.Find(displayHighScoreObjectName).GetComponent<Text>();
+        displayMoneyText = GameObject.Find(displayMoneyObjectName).GetComponent<Text>();
+        displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
 
+        // rules flags
+        modeRequiresCounter = GameOptions.gameModeRequiresCounter;
+        modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
+
+        gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
+        gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+
+        gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
+        //gameModeRequiresMoneyBall = true;
+
+        // init text
         displayScoreText.text = "";
         displayCurrentScoreText.text = "";
         displayHighScoreText.text = "";
+        displayMoneyText.text = "";
+        displayMoneyBallText.text = "";
 
+            // init markers
         gameRulesEnabled = true;
-
         // enable/disable necessary shot markers for game mode
-        if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s)
+        if (gameModeRequiresShotMarkers3s || gameModeRequiresShotMarkers4s)
         {
             positionMarkersRequired = true;
+            //moneyBallEnabled = true;
             setPositionMarkers();
         }
     }
-
+    // ================================================ Update ============================================
     void Update()
     {
         // update current score
@@ -95,6 +119,7 @@ public class GameRules : MonoBehaviour
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
+            displayMoneyText.text = "";
         }
 
         if (GameOver && !Pause.instance.Paused && gameRulesEnabled)
@@ -102,6 +127,7 @@ public class GameRules : MonoBehaviour
             Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
+            displayMoneyText.text = "";
 
             //pause on game over
             Pause.instance.TogglePause();
@@ -115,6 +141,41 @@ public class GameRules : MonoBehaviour
 
             // alert game manager
             GameLevelManager.Instance.GameOver = true;
+        }
+
+        // enable moneyball
+        if (InputManager.GetKeyDown(KeyCode.F))
+        {
+            toggleMoneyBall();
+            Debug.Log("moenyball : " + moneyBallEnabled);
+        }
+
+        // if not enough money and moneyball required, disabled by default
+        if (GameModeRequiresMoneyBall && PlayerStats.instance.Money < 5)
+        {
+            moneyBallEnabled = false;
+            displayMoneyBallText.text = "";
+        }
+    }
+
+    //===================================================== toggle money ball ====================================================
+
+    private void toggleMoneyBall()
+    {
+        Debug.Log("private void toggleMoneyBall()");
+        if (PlayerStats.instance.Money >= 5 && !moneyBallEnabled)
+        {
+            moneyBallEnabled = true;
+            if (moneyBallEnabled)
+            {
+                Debug.Log("if (moneyBallEnabled)");
+                displayMoneyBallText.text = "Money Ball enabled";
+            }
+        }
+        else
+        {
+            moneyBallEnabled = false;
+            displayMoneyBallText.text = "";
         }
     }
 
@@ -152,6 +213,7 @@ public class GameRules : MonoBehaviour
         markersRemaining = BasketBallShotMarkersList.Count;
     }
 
+    // ================================================ set score display ============================================
     private void setScoreDisplayText()
     {
         if (gameModeId == 1)
@@ -195,6 +257,7 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance._makeThreePointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 8)
         {
@@ -202,14 +265,38 @@ public class GameRules : MonoBehaviour
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance._makeFourPointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 9)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance._makeAllPointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 10)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance._makeThreePointersLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 11)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance._makeFourPointersLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 12)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance._makeAllPointersLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 13)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
                                                              + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
@@ -222,6 +309,7 @@ public class GameRules : MonoBehaviour
         }
     }
 
+    // ================================================ get display text ============================================
     private string getDisplayText(int modeId)
     {
         //Debug.Log("display data  mode: "+ GameModeId);
@@ -252,13 +340,18 @@ public class GameRules : MonoBehaviour
         {
             displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
-        if (gameModeId == 7 || gameModeId == 8 || gameModeId == 9)
+        if (gameModeId >= 6 && gameModeId <= 12 )
         {
-            displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
+            int minutes = Mathf.FloorToInt(counterTime / 60);
+            float seconds = (counterTime - (minutes * 60));
+            //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
+            displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
         }
 
         return displayText;
     }
+
+    // ================================================ get stats total ============================================
 
     string getStatsTotals()
     {
@@ -319,6 +412,14 @@ public class GameRules : MonoBehaviour
             Debug.Log("basketBallStats.MakeallPointersLowTime : " + basketBallStats.MakeAllPointersLowTime);
         }
     }
+
+    public bool MoneyBallEnabled
+    {
+        get => moneyBallEnabled;
+        set => moneyBallEnabled = value;
+    }
+
+    public bool GameModeRequiresMoneyBall => gameModeRequiresMoneyBall;
 
     public float CounterTime
     {

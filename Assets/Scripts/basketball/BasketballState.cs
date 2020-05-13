@@ -32,6 +32,8 @@ public class BasketBallState : MonoBehaviour
     private bool _playerOnMarker;
     [SerializeField]
     private bool _playerOnMarkerOnShoot;
+    [SerializeField]
+    private bool __moneyBallEnabledOnShoot;
 
     [SerializeField]
     private int _currentShotMarkerId;
@@ -68,6 +70,7 @@ public class BasketBallState : MonoBehaviour
         {
             PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
         }
+
 
         if (BallDistanceFromRim < ThreePointDistance)
         {
@@ -110,28 +113,34 @@ public class BasketBallState : MonoBehaviour
         }
     }
 
-    bool isPlayerOnMarker()
-    {
-        // is player on 3point marker  + game requires 3 pt markers
-        //if (GameRules.instance.GameModeRequiresShotMarkers3S)
-        //{
-        //    PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
-        //    return true;
-        //}
+    //bool isPlayerOnMarker()
+    //{
+    //    // is player on 3point marker  + game requires 3 pt markers
+    //    //if (GameRules.instance.GameModeRequiresShotMarkers3S)
+    //    //{
+    //    //    PlayerOnMarker = GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
+    //    //    return true;
+    //    //}
 
-        //// is player on 4p oint marker  + game requires 4 pt markers
-        //if (GameRules.instance.GameModeRequiresShotMarkers4S)
-        //{
-        //    PlayerOnMarker = GameRules.instance.BasketBallShotMarkers4ptList[CurrentShotMarkerId].PlayerOnMarker;
-        //    return true;
-        //}
+    //    //// is player on 4p oint marker  + game requires 4 pt markers
+    //    //if (GameRules.instance.GameModeRequiresShotMarkers4S)
+    //    //{
+    //    //    PlayerOnMarker = GameRules.instance.BasketBallShotMarkers4ptList[CurrentShotMarkerId].PlayerOnMarker;
+    //    //    return true;
+    //    //}
 
-        return false;
-    }
+    //    return false;
+    //}
 
     public float ThreePointDistance => _threePointDistance;
     public float FourPointDistance => _fourPointDistance;
     public float SevenPointDistance => _sevenPointDistance;
+
+    public bool MoneyBallEnabledOnShoot
+    {
+        get => __moneyBallEnabledOnShoot;
+        set => __moneyBallEnabledOnShoot = value;
+    }
 
     public bool PlayerOnMarker
     {

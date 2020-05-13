@@ -12,11 +12,13 @@ public class BasketBallStats : MonoBehaviour
     private float _threePointerMade;
     private float _fourPointerMade;
     private float _sevenPointerMade;
+    private float _moneyBallMade;
 
     private float _twoPointerAttempts;
     private float _threePointerAttempts;
     private float _fourPointerAttempts;
     private float _sevenPointerAttempts;
+    private float _moneyBallAttempts;
 
     private float _shotAttempt;
     private float _shotMade;
