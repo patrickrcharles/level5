@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shooterProfile: {fileID: 0}
+  inAirSpeed: 0.5
   running: 0
   runningToggle: 0
   hasBasketball: 0
