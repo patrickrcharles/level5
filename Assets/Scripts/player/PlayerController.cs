@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     // walk speed
     private float movementSpeed;
+    [SerializeField]
+    private float inAirSpeed;
 
     // player state bools
     [SerializeField]
@@ -205,8 +207,8 @@ public class PlayerController : MonoBehaviour
         // ----- control speed based on commands----------
         if (currentState == idleState
             || currentState == walkState
-            || inAir
-            || currentState == bIdle)
+            || currentState == bIdle
+            && ! inAir)
         {
             if (runningToggle)
             {
@@ -223,6 +225,12 @@ public class PlayerController : MonoBehaviour
             movementSpeed = shooterProfile.RunSpeed; ;
         }
 
+        if (inAir)
+        {
+            checkIsPlayerFacingGoal();
+            movementSpeed = inAirSpeed;
+        }
+
         //------------------ jump -----------------------------------
         if ((InputManager.GetButtonDown("Jump")
             && !(InputManager.GetButtonDown("Fire1"))
@@ -230,12 +238,6 @@ public class PlayerController : MonoBehaviour
             && !isSetShooter))
         {
             playerJump();
-        }
-
-
-        if (inAir)
-        {
-            checkIsPlayerFacingGoal();
         }
 
 
