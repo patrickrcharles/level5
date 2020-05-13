@@ -25,7 +25,7 @@ public class BehaviorJessica : MonoBehaviour
 
     public void rollForTakePhoto()
     {
-        if (rollForPhotoChance(percentChanceOfTakingPhoto) && playerState.playerDistanceFromRim < 10)
+        if (rollForPhotoChance(percentChanceOfTakingPhoto))// && playerState.playerDistanceFromRim < 10)
         {
            //Debug.Log("percentChanceOfTakingPhoto : " + percentChanceOfTakingPhoto);
             //StartCoroutine(wait(1));
