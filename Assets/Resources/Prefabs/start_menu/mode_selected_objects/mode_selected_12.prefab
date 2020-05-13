@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5648804619900406356}
   - component: {fileID: 5648804619900406355}
   m_Layer: 0
-  m_Name: mode_selected_99
+  m_Name: mode_selected_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,12 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 13
-  modelDisplayName: Free Play
-  modeObjectName: mode_10
-  modeDescription: Free play
-  modeRequiresCounter: 0
+  modeId: 12
+  modelDisplayName: Money Ball All
+  modeObjectName: mode_12
+  modeDescription: Make 5 shots from each position marker. Every $5, you can enable
+    a moneyball that will clear a marker
+  modeRequiresCounter: 1
   modeRequiresCountDown: 0
-  modeRequiresShotMarkers3s: 0
-  modeRequiresShotMarkers4s: 0
-  modeRequiresMoneyBall: 0
+  modeRequiresShotMarkers3s: 1
+  modeRequiresShotMarkers4s: 1
+  modeRequiresMoneyBall: 1
