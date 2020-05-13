@@ -340,15 +340,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shooterProfile: {fileID: 0}
-  movementSpeed: 2
   running: 0
   runningToggle: 0
   hasBasketball: 0
+  isSetShooter: 0
   canMove: 1
   playerDistanceFromRim: 0
   playerHitbox: {fileID: 3292790863164195047}
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
+  _facingRight: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -521,7 +522,7 @@ MonoBehaviour:
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 35
+  criticalPercent: 33
   shootAngle: 45
   level: 0
   experience: 0
@@ -538,6 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
+  money: 0
   experience: 0
   level: 0
 --- !u!1 &9043821920853312769

@@ -59,8 +59,8 @@ MonoBehaviour:
   speedStatCeiling: 6
   accuracy2pt: 90
   accuracy3pt: 82
-  accuracy4pt: 78
-  accuracy7pt: 65
+  accuracy4pt: 84
+  accuracy7pt: 75
   shooterProfilePrefabName: 
   jumpForce: 5.5
   speed: 3
@@ -70,6 +70,6 @@ MonoBehaviour:
   range: 99
   release: 0
   criticalPercent: 35
-  shootAngle: 50
+  shootAngle: 53
   level: 0
   experience: 0

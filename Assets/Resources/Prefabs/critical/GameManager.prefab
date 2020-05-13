@@ -568,7 +568,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: adadawda
+  m_Text: 
 --- !u!114 &1763041275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,11 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128a5f39f69aa344825e318f9b99d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameModeRequiresShotMarkers3s: 0
-  gameModeRequiresShotMarkers4s: 0
-  basketBallShotMarkerObjects: []
   _basketBallShotMarkersList: []
-  markersRemaining: 0
 --- !u!1 &2626216200384811591
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +855,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 105, y: -8}
+  m_AnchoredPosition: {x: 105, y: 1}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2626216200384811595
