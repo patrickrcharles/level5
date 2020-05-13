@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_03_snow.unity
     guid: d46944fd1d418794b8a9ab1afc4ff705
+  - enabled: 1
+    path: Assets/Scenes/level_04_slab.unity
+    guid: 395c7854922a41c4eb071caa1327b705
   m_configObjects: {}
