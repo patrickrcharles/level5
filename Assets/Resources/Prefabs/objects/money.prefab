@@ -170,9 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d163e903e3a9ed74abf60e77b33da8d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
-  moneyValue: 1.1800001
-  shotType: 0
+  name: money
+  moneyValue: 1
+  moneyDestroyTime: 3.5
 --- !u!1 &8000122495356072823
 GameObject:
   m_ObjectHideFlags: 0
