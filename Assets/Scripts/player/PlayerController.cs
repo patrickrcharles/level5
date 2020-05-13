@@ -18,19 +18,8 @@ public class PlayerController : MonoBehaviour
     ShooterProfile shooterProfile;
     BasketBall basketball;
 
-    //[Range(20f, 90f)]
-    //public float _angle; // for bball mini game trajectory
-
     // walk speed
-    [SerializeField]
     private float movementSpeed;
-
-    // jump vars 
-    //float jumpForce;
-    //public float runMovementSpeed;
-    //public float basketballRunSpeed;
-    //public float walkMovementSpeed;
-    //public float attackMovementSpeed;
 
     // player state bools
     [SerializeField]
@@ -38,8 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool runningToggle;
     public bool hasBasketball;
-    //public bool smokingEnabled = true;
-    //public bool soundPlayed;
+
+    [SerializeField]
+    private bool isSetShooter;
+    public bool IsSetShooter => isSetShooter;
+
     public bool canMove; // save this when i cars that can knock player down
 
     Vector3 bballRimVector;
@@ -63,6 +55,7 @@ public class PlayerController : MonoBehaviour
     bool triggerLeftAxisInUse, triggerRightAxisInUse;
 
     // get/set for following at bottom of class
+    [SerializeField]
     private bool _facingRight;
     private bool _facingFront;
     private bool _notLocked;
@@ -145,7 +138,16 @@ public class PlayerController : MonoBehaviour
 
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
+        if (grounded)
+        {
+            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y,
+                transform.root.position.z);
+        }
+        else
+        {
+            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
+                transform.root.position.z);
+        }
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -222,23 +224,20 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump") && grounded)
-            && !(InputManager.GetButtonDown("Fire1")))
+        if ((InputManager.GetButtonDown("Jump")
+            && !(InputManager.GetButtonDown("Fire1"))
+            && grounded
+            && !isSetShooter))
         {
             playerJump();
         }
 
+
         if (inAir)
         {
-            if (bballRelativePositioning > 0 && !facingRight)
-            {
-                Flip();
-            }
-            if (bballRelativePositioning < 0f && facingRight)
-            {
-                Flip();
-            }
+            checkIsPlayerFacingGoal();
         }
+
 
         // if player is falling, nto sure what this is useful for. comment out
         //if (rigidBody.velocity.y > 0)
@@ -250,17 +249,21 @@ public class PlayerController : MonoBehaviour
         //}
     }
 
-    private void playerJump()
+    public void checkIsPlayerFacingGoal()
     {
-        //Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
         }
+
         if (bballRelativePositioning < 0f && facingRight)
         {
             Flip();
         }
+    }
+
+    public void playerJump()
+    {
         rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce) + (Vector3.forward * rigidBody.velocity.x);
     }
 
@@ -295,7 +298,7 @@ public class PlayerController : MonoBehaviour
             if (!hasBasketball)
             {
                 anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed; 
+                movementSpeed = shooterProfile.RunSpeed;
             }
 
             if (hasBasketball)
@@ -325,6 +328,7 @@ public class PlayerController : MonoBehaviour
 
     void Flip()
     {
+        //Debug.Log("flip");
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
@@ -372,8 +376,8 @@ public class PlayerController : MonoBehaviour
 
         //gravityModifier = shooterProfile.HangTime;
         //_angle = shooterProfile.ShootAngle;
-    } 
-    
+    }
+
     //*** need to update this
     void printShooterProfileStats()
     {

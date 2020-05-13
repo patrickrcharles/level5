@@ -138,7 +138,7 @@ public class BasketBall : MonoBehaviour
     private void Update()
     {
         // drop shadow lock to bball transform on the ground
-        dropShadow.transform.position = new Vector3(transform.root.position.x, 0.02f, transform.root.position.z);
+        dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
         // change this to reduce opacity
         if (!playerState.hasBasketball)
@@ -205,72 +205,28 @@ public class BasketBall : MonoBehaviour
             && playerState.hasBasketball
             && InputManager.GetButtonDown("Fire1")
             //&& playerState.jumpPeakReached
+            && !playerState.IsSetShooter
             && !basketBallState.Locked)
         {
-            basketBallState.Locked = true;
-            releaseVelocityY = playerState.rigidBodyYVelocity;
-            playerState.hasBasketball = false;
-            playerState.setPlayerAnim("hasBasketball", false);
+            //Debug.Log("shoot");
+            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+            shootBasketBall();
+        }
 
-            // set side or front shooting animation
-            if (playerState.facingFront) // facing straight toward bball goal
-            {
-                playerState.setPlayerAnimTrigger("basketballShootFront");
-            }
-            else // side of goal, relative postion
-            {
-                playerState.setPlayerAnimTrigger("basketballShoot");
-            }
-
-            // identify is in 2 or 3 point range for stat counters
-            if (basketBallState.TwoPoints)
-            {
-                basketBallState.TwoAttempt = true;
-                basketBallStats.TwoPointerAttempts++;
-            }
-
-            if (basketBallState.ThreePoints)
-            {
-                basketBallState.ThreeAttempt = true;
-                basketBallStats.ThreePointerAttempts++;
-            }
-
-            if (basketBallState.FourPoints)
-            {
-                basketBallState.FourAttempt = true;
-                basketBallStats.FourPointerAttempts++;
-            }
-
-            if (basketBallState.SevenPoints)
-            {
-                basketBallState.SevenAttempt = true;
-                basketBallStats.SevenPointerAttempts++;
-            }
-            if (basketBallState.PlayerOnMarker)
-            {
-                // on shoot. 
-                basketBallState.PlayerOnMarkerOnShoot = true;
-                basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
-                // update shot attempt stat for marker position shot from
-                GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
-            }
-
-            //launch ball to goal      
-            Launch();
-
-
-            //calculate shot distance 
-            Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
-                0, basketBallState.BasketBallTarget.transform.position.z);
-            float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
-            lastShotDistance = tempDist;
-
-            //reset state flags
-            basketBallState.Thrown = true;
-            basketBallState.InAir = true;
-            basketBallState.Locked = false;
+        // if has ball, is in air, and pressed shoot button.
+        if (!playerState.inAir
+            && playerState.hasBasketball
+            && InputManager.GetButtonDown("Fire1")
+            && InputManager.GetButton("Jump")
+            //&& playerState.jumpPeakReached
+            && playerState.IsSetShooter
+            && !basketBallState.Locked)
+        {
+           // Debug.Log("shoot");
+            shootBasketBall();
         }
     }
+
 
     // =========================================================== Collisions ========================================================
 
@@ -350,6 +306,84 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    // =================================== shoot ball function =======================================
+
+    private void shootBasketBall()
+    {
+        basketBallState.Locked = true;
+        releaseVelocityY = playerState.rigidBodyYVelocity;
+        playerState.hasBasketball = false;
+        playerState.setPlayerAnim("hasBasketball", false);
+
+        if (playerState.IsSetShooter)
+        {
+            //Debug.Log("set shooter");
+            playerState.setPlayerAnim("jump", true);
+            playerState.checkIsPlayerFacingGoal();
+        }
+
+        // set side or front shooting animation
+        if (playerState.facingFront) // facing straight toward bball goal
+        {
+            //Debug.Log("anim");
+            playerState.setPlayerAnimTrigger("basketballShootFront");
+        }
+        else // side of goal, relative postion
+        {
+           // Debug.Log("anim");
+            playerState.setPlayerAnimTrigger("basketballShoot");
+        }
+
+        // identify is in 2 or 3 point range for stat counters
+        if (basketBallState.TwoPoints)
+        {
+            basketBallState.TwoAttempt = true;
+            basketBallStats.TwoPointerAttempts++;
+        }
+
+        if (basketBallState.ThreePoints)
+        {
+            basketBallState.ThreeAttempt = true;
+            basketBallStats.ThreePointerAttempts++;
+        }
+
+        if (basketBallState.FourPoints)
+        {
+            basketBallState.FourAttempt = true;
+            basketBallStats.FourPointerAttempts++;
+        }
+
+        if (basketBallState.SevenPoints)
+        {
+            basketBallState.SevenAttempt = true;
+            basketBallStats.SevenPointerAttempts++;
+        }
+
+        if (basketBallState.PlayerOnMarker)
+        {
+            // on shoot. 
+            basketBallState.PlayerOnMarkerOnShoot = true;
+            basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
+            // update shot attempt stat for marker position shot from
+            GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
+        }
+
+        //launch ball to goal      
+        Launch();
+
+
+        //calculate shot distance 
+        Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
+            0, basketBallState.BasketBallTarget.transform.position.z);
+        float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
+        lastShotDistance = tempDist;
+
+        //reset state flags
+        basketBallState.Thrown = true;
+        basketBallState.InAir = true;
+        basketBallState.Locked = false;
+    }
+
     // =================================== Launch ball function =======================================
     void Launch()
     {
@@ -374,16 +408,19 @@ public class BasketBall : MonoBehaviour
 
         // accuracy modifier logic
         //accuracyModifierX;
-        //if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
-        //{
-        //    accuracyModifierX = 0;
-        //    //Jessica might take a photo
-        //    BehaviorJessica.instance.playAnimationTakePhoto();
-        //}
-        //else
-        //{
-        //    accuracyModifierX = getAccuracyModifier();
-        //}
+        if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
+        {
+            accuracyModifierX = 0;
+            //Jessica might take a photo and if !null
+            if (BehaviorJessica.instance != null)
+            {
+                BehaviorJessica.instance.playAnimationTakePhoto();
+            }
+        }
+        else
+        {
+            accuracyModifierX = getAccuracyModifier();
+        }
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -447,7 +484,7 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
         if (percent <= maxPercent)
         {
-            //Debug.Log("********************** critical shot rolled");
+            Debug.Log("********************** critical shot rolled");
             BasketBallStats.CriticalRolled++;
             return true;
         }
