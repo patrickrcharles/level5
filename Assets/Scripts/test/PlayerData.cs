@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    [SerializeField]
     private BasketBallStats basketBallStats;
 
     public  int _playerId;
@@ -31,12 +30,17 @@ public class PlayerData : MonoBehaviour
 
     public  float _makeThreePointersLowTime;
     public  float _makeFourPointersLowTime;
-
     public  float _makeAllPointersLowTime;
 
-    private bool _isCheating;
+    public  float _makeThreePointersMoneyBallLowTime;
+    public  float _makeFourPointersMoneyBallLowTime;
+    public  float _makeAllPointersMoneyBallLowTime;
 
-    static bool _created = false;
+    private bool _isCheating; // if cheats enabled, no saving
+
+    //prevent PlayerData from creating multiple objects
+    static bool _created = false; 
+
     public static PlayerData instance;
 
     void Awake()
@@ -56,22 +60,13 @@ public class PlayerData : MonoBehaviour
         loadStats();
     }
 
-    void Start()
-    {
-
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void saveStats()
     {
         // get stats object
-        basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
+        //basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
+        basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
 
-        // not cheating and game mode name doesnt contain 'free' as in, Free Play mode
+        //cheating and game mode name doesnt contain 'free' as in, Free Play mode
         if (IsCheating && !GameOptions.gameModeSelectedName.ToLower().Contains("free"))
         {
             // no save for you
@@ -197,9 +192,33 @@ public class PlayerData : MonoBehaviour
             _makeAllPointersLowTime = 0;
             loadStats();
         }
+        // save mode 10 low time 3s
+        if ((_makeThreePointersMoneyBallLowTime > basketBallStats.MakeThreePointersMoneyBallLowTime && GameOptions.gameModeSelected == 10) 
+            || _makeThreePointersMoneyBallLowTime == 0)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTime", (float)Math.Round(basketBallStats.MakeThreePointersMoneyBallLowTime, 4));
+            _makeThreePointersLowTime = 0;
+            loadStats();
+        }
+        // save mode 11 low time 4s
+        if ((_makeFourPointersMoneyBallLowTime > basketBallStats.MakeFourPointersMoneyBallLowTime && GameOptions.gameModeSelected == 11 ) 
+            || _makeFourPointersMoneyBallLowTime == 0)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTime", (float)Math.Round(basketBallStats.MakeFourPointersMoneyBallLowTime, 4));
+            _makeFourPointersLowTime = 0;
+            loadStats();
+        }
+        // save mode 12 low time 3s + 4s
+        if ((_makeAllPointersMoneyBallLowTime > basketBallStats.MakeAllPointersMoneyBallLowTime && GameOptions.gameModeSelected == 12) 
+            || _makeAllPointersMoneyBallLowTime == 0)
+        {
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTime", (float)Math.Round(basketBallStats.MakeAllPointersMoneyBallLowTime, 4));
+            _makeAllPointersLowTime = 0;
+            loadStats();
+        }
 
-        // save mode 10 (longest shot in free play)
-        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 10)
+        // save mode 13 (longest shot in free play)
+        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
         {
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
             _longestShotMadeFreePlay = 0;
@@ -260,8 +279,11 @@ public class PlayerData : MonoBehaviour
         _makeFourPointersLowTime = PlayerPrefs.GetFloat("mode_" + 8 + "_lowFourTime");
         _makeAllPointersLowTime = PlayerPrefs.GetFloat("mode_" + 9 + "_lowAllTime");
 
-        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 10 + "_longestShotMadeFreePlay");
+        _makeThreePointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 10 + "_lowThreeTime");
+        _makeFourPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTime");
+        _makeAllPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTime");
 
+        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
     }
 
     public void deleteAllSavedData()
