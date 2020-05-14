@@ -51,5 +51,5 @@ MonoBehaviour:
   modeRequiresCounter: 1
   modeRequiresCountDown: 0
   modeRequiresShotMarkers3s: 1
-  modeRequiresShotMarkers4s: 1
+  modeRequiresShotMarkers4s: 0
   modeRequiresMoneyBall: 1
