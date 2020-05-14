@@ -237,12 +237,12 @@ public class BehaviorPrimo : MonoBehaviour
     //    return newTransform;
     //}
 
-    //int RandomNumber(int min, int max)
-    //{
-    //    System.Random rnd = new System.Random();
-    //    int randNum = rnd.Next(min, max);
-    //    //Debug.Log("generate randNum : " + randNum);
-    //    return randNum;
-    //}
+    int RandomNumber(int min, int max)
+    {
+        System.Random rnd = new System.Random();
+        int randNum = rnd.Next(min, max);
+        //Debug.Log("generate randNum : " + randNum);
+        return randNum;
+    }
 }
 
