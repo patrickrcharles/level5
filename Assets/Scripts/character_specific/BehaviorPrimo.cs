@@ -6,8 +6,7 @@ using UnityEngine.AI;
 
 public class BehaviorPrimo : MonoBehaviour
 {
-
-    AudioSource moonwalkAudio;
+    AudioSource runAudio;
 
     public float walkMovementSpeed;
     public float runMovementSpeed;
@@ -16,21 +15,16 @@ public class BehaviorPrimo : MonoBehaviour
 
     public GameObject pos1, pos2, pos3;
 
-    [SerializeField]
     float distanceFromStartPos;
-    [SerializeField]
     bool locked;
-    GameObject player;
+    //GameObject player;
 
     private float movementSpeed;
     private Rigidbody rigidBody;
-    [SerializeField]
     private NavMeshAgent navmeshAgent;
-    [SerializeField]
     public SpriteRenderer currentSprite;
 
-    public GameObject playerHitbox;
-    [SerializeField]
+    //public GameObject playerHitbox;
     Animator anim;
     AnimatorStateInfo currentStateInfo;
 
@@ -39,29 +33,24 @@ public class BehaviorPrimo : MonoBehaviour
     static int idleState2 = Animator.StringToHash("base.idle2");
     static int walkState = Animator.StringToHash("base.walk");
     static int runState = Animator.StringToHash("base.run");
-    [SerializeField]
+
     Vector3 playerRelativePosition;
-    [SerializeField]
     bool waiting;
 
     public bool ignoreCollision;
-    public bool idle;
-    public bool moving;
     public bool outsideRange;
     public bool insideRange;
-    [SerializeField]
     public bool movingToTarget;
 
     public float maxDistance;
     private bool reachedDestination;
     private bool isSleeping;
-    [SerializeField]
     private bool followPlayer;
 
     // Use this for initialization
     void Start()
     {
-        player = GameLevelManager.Instance.Player;
+        //player = GameLevelManager.Instance.Player;
         facingRight = true;
         canMove = true;
         followPlayer = false;
@@ -73,13 +62,6 @@ public class BehaviorPrimo : MonoBehaviour
         locked = false;
     }
 
-
-    // not affected by framerate
-    void FixedUpdate()
-    {
-
-    }
-
     void Update()
     {
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
@@ -89,7 +71,6 @@ public class BehaviorPrimo : MonoBehaviour
         {
             outsideRange = true;
             insideRange = false;
-            //Debug.Log("if(distanceFromStartPos > maxDistance && !movingToTarget)");
         }
 
         if (distanceFromStartPos < maxDistance && movingToTarget)
@@ -107,7 +88,7 @@ public class BehaviorPrimo : MonoBehaviour
             movingToTarget = false;
             ignoreCollision = false;
         }
-
+        // arrived and not sleeping
         if (reachedDestination && !isSleeping)
         {
             locked = true;
@@ -124,14 +105,12 @@ public class BehaviorPrimo : MonoBehaviour
             StartCoroutine( waitOutsideRangeForXSeconds( 1));
         }
 
-
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
 
         // ----- control speed based on commands----------
-
         if (currentState == idleState || currentState == walkState
-        || currentState == idleState2)
+                                      || currentState == idleState2)
         {
             movementSpeed = walkMovementSpeed;
         }
@@ -139,20 +118,13 @@ public class BehaviorPrimo : MonoBehaviour
         {
             movementSpeed = runMovementSpeed;
         }
-        //rigidBody.velocity = movement * movementSpeed;
-        navmeshAgent.speed = movementSpeed;
 
-        ////set limits for player movement
-        //rigidBody.transform.position = new Vector3(
-        //   Mathf.Clamp(rigidBody.position.x, xMin, xMax),
-        //   Mathf.Clamp(rigidBody.position.y, yMin, yMax),
-        //   Mathf.Clamp(rigidBody.position.z, zMin, zMax)
-        //   );
+        navmeshAgent.speed = movementSpeed;
 
         //anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
 
-        ////check if walking
-        ////  function will flip sprite if needed
+        //check if walking
+        //  function will flip sprite if needed
         isWalking(navmeshAgent.velocity.magnitude);
     }
 
@@ -168,41 +140,33 @@ public class BehaviorPrimo : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if collsion, wake primo
-        Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.tag);
 
-        if (gameObject.name == "primo" 
+        // if primo collision with (player, basketball or flash)
+        if (gameObject.name.Contains("primo")
             && (other.CompareTag("Player") || other.CompareTag("basketball") || other.name.Contains("flash"))
             && !movingToTarget
             && followPlayer)
         {
-           //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
             anim.SetBool("sleep", false);
             isSleeping = false;
 
             //movingToTarget = true;
         }
-        if (gameObject.name == "primo"
+        // if primo initial collsion with player, follow player
+        if (gameObject.name.Contains("primo")
             && (other.CompareTag("Player") 
             && !movingToTarget
             && !followPlayer))
         {
             followPlayer = true;
-
-           //Debug.Log(" OnTrigger primo :  " + gameObject.name + " other : " + other.name);
             anim.SetBool("sleep", false);
             isSleeping = false;
         }
-
     }
 
     IEnumerator waitOutsideRangeForXSeconds(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
-
-        //List<GameObject> list = new List<GameObject> { pos1, pos2, pos3 };
-        //int finder = Random.Range(0, list.Capacity - 1); //Then you just use this; nameDisplayString = names[finder];
-        //GameObject randPos = list[finder];
-
         Vector3 relativePosition = pos1.transform.position - transform.position;
 
         if (relativePosition.x < 0 && facingRight)
@@ -247,13 +211,11 @@ public class BehaviorPrimo : MonoBehaviour
 
     void Flip()
     {
-        //Debug.Log(" Flip()");
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
     }
-
 
     public void setPlayerAnim(string animationName, bool isTrue)
     {
@@ -266,23 +228,21 @@ public class BehaviorPrimo : MonoBehaviour
         waiting = false;
     }
 
-    private Vector3 getRandomTransformFromPlayerPosition()
-    {
-        Vector3 newTransform = new Vector3(transform.position.x + RandomNumber(-5, 5),
-            transform.position.y,
-            transform.position.z + RandomNumber(-3, 2));
+    //private Vector3 getRandomTransformFromPlayerPosition()
+    //{
+    //    Vector3 newTransform = new Vector3(transform.position.x + RandomNumber(-5, 5),
+    //        transform.position.y,
+    //        transform.position.z + RandomNumber(-3, 2));
 
-        //Debug.Log("generate new transform : " + newTransform);
+    //    return newTransform;
+    //}
 
-        return newTransform;
-    }
-
-    int RandomNumber(int min, int max)
-    {
-        System.Random rnd = new System.Random();
-        int randNum = rnd.Next(min, max);
-        //Debug.Log("generate randNum : " + randNum);
-        return randNum;
-    }
+    //int RandomNumber(int min, int max)
+    //{
+    //    System.Random rnd = new System.Random();
+    //    int randNum = rnd.Next(min, max);
+    //    //Debug.Log("generate randNum : " + randNum);
+    //    return randNum;
+    //}
 }
 
