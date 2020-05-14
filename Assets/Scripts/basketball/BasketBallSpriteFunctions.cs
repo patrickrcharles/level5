@@ -11,15 +11,27 @@ public class BasketBallSpriteFunctions : MonoBehaviour
        audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
    }
 
-    public void playSFfxBasketballDribbling()
+    public void playSfxBasketballDribbling()
     {
 //       //Debug.Log("play bounce sound");
         audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
     }
 
-    public void playSFfxAlienWalking()
+    public void playSfxAlienWalking()
     {
 //       //Debug.Log("play bounce sound");
         audioSource.PlayOneShot(SFXBB.Instance.alien_walk);
+    }
+
+    public void playSfxGameChanger()
+    {
+        //       //Debug.Log("play bounce sound");
+        audioSource.PlayOneShot(SFXBB.Instance.gamechanger);
+    }
+
+    public void playSfxCameraFlash()
+    {
+        //       //Debug.Log("play bounce sound");
+        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
 }

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BehaviorJessica : MonoBehaviour
+public class BehaviorNpcCritical : MonoBehaviour
 {
     Animator anim;
     AudioSource audioSource;
     bool shotMade;
-    public float percentChanceOfTakingPhoto;
+    public float percentChanceOfCritical;
     public Animator animOnCamera;
     PlayerController playerState;
-    public static BehaviorJessica instance;
+
+    private string npcName;
+    public static BehaviorNpcCritical instance;
 
     // Start is called before the first frame update
     void Start()
@@ -20,38 +22,42 @@ public class BehaviorJessica : MonoBehaviour
         anim = GetComponent<Animator>();
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
         playerState = GameLevelManager.Instance.PlayerState;
+        npcName = gameObject.transform.root.name;
+        Debug.Log("npc name  " + npcName);
     }
 
 
-    public void rollForTakePhoto()
+    public void rollForCritical()
     {
-        if (rollForPhotoChance(percentChanceOfTakingPhoto))// && playerState.playerDistanceFromRim < 10)
+        if (rollForPhotoChance(percentChanceOfCritical))// && playerState.playerDistanceFromRim < 10)
         {
            //Debug.Log("percentChanceOfTakingPhoto : " + percentChanceOfTakingPhoto);
             //StartCoroutine(wait(1));
-            takePhoto();
+            playCriticalSuccessfulAnim();
         }
     }
 
-    public void playAnimationTakePhoto()
+    public void playAnimationCriticalSuccesful()
     {
-        takePhoto();
+        playCriticalSuccessfulAnim();
     }
 
     IEnumerator wait(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
        //Debug.Log("jessica take photo");
-        anim.Play("takePhoto");
+        anim.Play("critical_success");
         audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
 
-    private void takePhoto()
+    private void playCriticalSuccessfulAnim()
     {
        //Debug.Log("jessica take photo");
-        anim.Play("takePhoto");
-        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
+        anim.Play("critical_success");
+
+        //audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
+
 
     public bool rollForPhotoChance( float maxPercent)
     {
