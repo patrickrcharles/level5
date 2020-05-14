@@ -16,8 +16,9 @@ public class BasketBall : MonoBehaviour
     PlayerController playerState;
     new Rigidbody rigidbody;
     AudioSource audioSource;
-
-    private Vector3 dropShadowPosition;
+    ShooterProfile shooterProfile;
+    BasketBallState basketBallState;
+    BasketBallStats basketBallStats;
 
     GameObject basketBallSprite;
     GameObject playerDunkPos;
@@ -27,18 +28,13 @@ public class BasketBall : MonoBehaviour
 
     GameObject player;
     GameObject dropShadow;
-    [SerializeField]
-    ShooterProfile shooterProfile;
-    [SerializeField]
-    BasketBallState basketBallState;
-    [SerializeField]
-    BasketBallStats basketBallStats;
+    private Vector3 dropShadowPosition;
 
     // text objects
-    public GameObject TextObject;
+    //GameObject scoreTextObject;
     Text scoreText;
 
-    public GameObject shootProfile;
+    //GameObject shootProfileObject;
     Text shootProfileText;
 
 
@@ -61,17 +57,22 @@ public class BasketBall : MonoBehaviour
 
     bool playHitRimSound;
     bool locked;
-    [SerializeField] private bool uiStatsEnabled;
+    private bool uiStatsEnabled;
 
     //public BasketballTestStats testStats;
     //public BasketBallTestStatsConclusions testConclusions;
-    public int currentTestStatsIndex = 0;
-    public BasketBallShotMade basketBallShotMade;
+
+    int currentTestStatsIndex = 0;
+    BasketBallShotMade basketBallShotMade;
 
     public static BasketBall instance;
 
     [SerializeField]
     float accuracyModifierX;
+    [SerializeField]
+    private float accuracyModifierY;
+    [SerializeField]
+    private float accuracyModifierZ;
 
     // =========================================================== Start() ========================================================
     // Use this for initialization
@@ -114,8 +115,7 @@ public class BasketBall : MonoBehaviour
         if (GameObject.Find("ui_stats") != null)
         {
             shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
-            TextObject = GameObject.Find("shootStatsTextObject");
-            scoreText = TextObject.GetComponent<Text>();
+            scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
             if (uiStatsEnabled)
             {
                 shootProfileText.text = "ball distance : " +
@@ -341,7 +341,7 @@ public class BasketBall : MonoBehaviour
         if (GameRules.instance.MoneyBallEnabled)
         {
             basketBallState.MoneyBallEnabledOnShoot = true; 
-            Debug.Log("moneyball shot");
+            //Debug.Log("moneyball shot");
             PlayerStats.instance.Money -= 5; // moneyball spent
         }
         else
@@ -432,15 +432,15 @@ public class BasketBall : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        // accuracy modifier logic
-        // accuracyModifierX;
+        //accuracy modifier logic
+       //accuracyModifierX;
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
         {
             accuracyModifierX = 0;
             //Jessica might take a photo and if !null
-            if (BehaviorJessica.instance != null)
+            if (BehaviorNpcCritical.instance != null)
             {
-                BehaviorJessica.instance.playAnimationTakePhoto();
+                BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
         }
         else
@@ -449,8 +449,8 @@ public class BasketBall : MonoBehaviour
         }
 
         float xVector = 0 + accuracyModifierX;
-        float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
-        float zVector = Vz; // + (accuracyModifier * shooterProfile.shootZVariance);
+        float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float zVector = Vz + accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(0, Vy, Vz);
