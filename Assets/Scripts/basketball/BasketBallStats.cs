@@ -25,12 +25,13 @@ public class BasketBallStats : MonoBehaviour
     private float _longestShotMade;
     private float _totalDistance;
 
-    [SerializeField]
     private float _makeThreePointersLowTime;
-    [SerializeField]
     private float _makeFourPointersLowTime;
-    [SerializeField]
     private float _makeAllPointersLowTime;
+
+    private float _makeThreePointersMoneyBallLowTime;
+    private float _makeFourPointersMoneyBallLowTime;
+    private float _makeAllPointersMoneyBallLowTime;
 
     private float _criticalRolled;
 
@@ -41,6 +42,24 @@ public class BasketBallStats : MonoBehaviour
         // id and name use to construct key that will be stored
         PlayerId = GameOptions.playerId;
         PlayerName = GameOptions.playerObjectName;
+    }
+
+    public float MakeThreePointersMoneyBallLowTime
+    {
+        get => _makeThreePointersMoneyBallLowTime;
+        set => _makeThreePointersMoneyBallLowTime = value;
+    }
+
+    public float MakeFourPointersMoneyBallLowTime
+    {
+        get => _makeFourPointersMoneyBallLowTime;
+        set => _makeFourPointersMoneyBallLowTime = value;
+    }
+
+    public float MakeAllPointersMoneyBallLowTime
+    {
+        get => _makeAllPointersMoneyBallLowTime;
+        set => _makeAllPointersMoneyBallLowTime = value;
     }
 
     public float MakeThreePointersLowTime
