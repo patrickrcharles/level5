@@ -208,8 +208,9 @@ public class BasketBall : MonoBehaviour
             && !playerState.IsSetShooter
             && !basketBallState.Locked)
         {
-            //Debug.Log("shoot");
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+            playerState.shotmeter.MeterEnded = true;
+            
             shootBasketBall();
         }
 
@@ -222,7 +223,7 @@ public class BasketBall : MonoBehaviour
             && playerState.IsSetShooter
             && !basketBallState.Locked)
         {
-           // Debug.Log("shoot");
+            Debug.Log(" slider value on press : "+ playerState.shotmeter.SliderValueOnButtonPress);
             shootBasketBall();
         }
     }
@@ -433,19 +434,27 @@ public class BasketBall : MonoBehaviour
         float Vy = tanAlpha * Vz;
 
         //accuracy modifier logic
-       //accuracyModifierX;
-        if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
+        //accuracyModifierX;
+        //if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
+        //{
+        //    accuracyModifierX = 0;
+        //    //Jessica might take a photo and if !null
+        //    if (BehaviorNpcCritical.instance != null)
+        //    {
+        //        BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+        //    }
+        //}
+        //else
+        //{
+        //    accuracyModifierX = getAccuracyModifier();
+        //}
+
+        if (playerState.shotmeter.SliderValueOnButtonPress >= 90)
         {
+            Debug.Log("great shot >= 90");
             accuracyModifierX = 0;
-            //Jessica might take a photo and if !null
-            if (BehaviorNpcCritical.instance != null)
-            {
-                BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
-            }
-        }
-        else
-        {
-            accuracyModifierX = getAccuracyModifier();
+            accuracyModifierY = 0;
+            accuracyModifierX = 0;
         }
 
         float xVector = 0 + accuracyModifierX;

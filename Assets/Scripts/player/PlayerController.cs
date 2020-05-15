@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     ShooterProfile shooterProfile;
     BasketBall basketball;
+    [SerializeField]
+    public ShotMeter shotmeter;
 
     // walk speed
     private float movementSpeed;
@@ -73,9 +75,11 @@ public class PlayerController : MonoBehaviour
     //bool useGravity = true;
 
     private float _rigidBodyYVelocity;
+
     [SerializeField]
     //public bool facingFront;
-
+    public float jumpStartTime;
+    public float jumpEndTime;
 
     void Start()
     {
@@ -86,6 +90,7 @@ public class PlayerController : MonoBehaviour
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
+        shotmeter = GameObject.FindWithTag("shot_meter").GetComponent<ShotMeter>();
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
@@ -129,6 +134,7 @@ public class PlayerController : MonoBehaviour
         //check if walking
         //  function will flip sprite if needed
         isWalking(moveHorizontal, moveVertical);
+
     }
 
     // Update :: once once per frame
@@ -137,6 +143,14 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(" update() shoot profile stats ==================================================================================");
         //printShooterProfileStats();
+
+        //if (rigidBody.velocity.y > 0)
+        //{
+        //    jumpEndTime = Time.time;
+        //    //Debug.Log("jump end time (at 0) : " + jumpEndTime);
+        //    //Debug.Log(" jump time : " + (jumpEndTime - jumpStartTime));
+        //    //Debug.Log("end velocity : " + rigidBody.velocity.y);
+        //}
 
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
@@ -172,7 +186,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        if (rigidBodyYVelocity < 0 && inAir)
+        if (rigidBodyYVelocity > 0 && inAir)
         {
             jumpPeakReached = true;
         }
@@ -266,7 +280,12 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
-        rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce) + (Vector3.forward * rigidBody.velocity.x);
+        rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce);// + (Vector3.forward * rigidBody.velocity.x);
+        //jumpStartTime = Time.time;
+        shotmeter.MeterStarted = true;
+        shotmeter.MeterStartTime = Time.time;
+        Debug.Log("jump time: "+ Time.time);
+ 
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
