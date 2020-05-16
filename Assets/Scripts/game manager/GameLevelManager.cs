@@ -50,7 +50,7 @@ public class GameLevelManager : MonoBehaviour
     //List<string> scenes = new List<string>();
 
     [SerializeField]
-    private GameObject _npcObject;
+    private GameObject[] _npcObjects;
 
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
@@ -99,19 +99,26 @@ public class GameLevelManager : MonoBehaviour
         Anim = Player.GetComponentInChildren<Animator>();
 
         InitializePlayer();
-
+        GameOptions.printCurrentValues();
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
-        _npcObject = GameObject.FindGameObjectWithTag("auto_npc");
 
-        if ( !string.IsNullOrEmpty(GameOptions.playerObjectName) 
-             && GameOptions.playerObjectName.Contains("flash") 
-             && _npcObject != null )
+        _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
+        string playerName = GameObject.FindWithTag("Player").name;
+        foreach (var npc in _npcObjects)
         {
-            _npcObject.SetActive(false);
+            //if (!string.IsNullOrEmpty(GameOptions.playerObjectName)
+            //    && GameOptions.playerObjectName.Contains("flash")
+            //    && npc != null)
+            //{
+            //    npc.SetActive(false);
+            //}
+            Debug.Log("player : "+ playerName + "   npc : "+ npc.name);
+            if (npc.name.Contains(playerName))
+            {
+                npc.SetActive(false);
+            }
         }
-
-        GameOptions.printCurrentValues();
     }
 
 

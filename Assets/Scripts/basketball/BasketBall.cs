@@ -210,7 +210,7 @@ public class BasketBall : MonoBehaviour
         {
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.shotmeter.MeterEnded = true;
-            
+
             shootBasketBall();
         }
 
@@ -223,7 +223,7 @@ public class BasketBall : MonoBehaviour
             && playerState.IsSetShooter
             && !basketBallState.Locked)
         {
-            Debug.Log(" slider value on press : "+ playerState.shotmeter.SliderValueOnButtonPress);
+            Debug.Log(" slider value on press : " + playerState.shotmeter.SliderValueOnButtonPress);
             shootBasketBall();
         }
     }
@@ -341,7 +341,7 @@ public class BasketBall : MonoBehaviour
         // check for and set money ball
         if (GameRules.instance.MoneyBallEnabled)
         {
-            basketBallState.MoneyBallEnabledOnShoot = true; 
+            basketBallState.MoneyBallEnabledOnShoot = true;
             //Debug.Log("moneyball shot");
             PlayerStats.instance.Money -= 5; // moneyball spent
         }
@@ -435,31 +435,32 @@ public class BasketBall : MonoBehaviour
 
         //accuracy modifier logic
         //accuracyModifierX;
-        //if (rollForCriticalShotChance(shooterProfile.CriticalPercent))
-        //{
-        //    accuracyModifierX = 0;
-        //    //Jessica might take a photo and if !null
-        //    if (BehaviorNpcCritical.instance != null)
-        //    {
-        //        BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
-        //    }
-        //}
-        //else
-        //{
-        //    accuracyModifierX = getAccuracyModifier();
-        //}
 
-        if (playerState.shotmeter.SliderValueOnButtonPress >= 90)
+        if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
+            || playerState.shotmeter.slider.value >= 90)
         {
             Debug.Log("great shot >= 90");
             accuracyModifierX = 0;
             accuracyModifierY = 0;
-            accuracyModifierX = 0;
+            accuracyModifierZ = 0;
+
+            //Jessica might take a photo and if !null
+            if (BehaviorNpcCritical.instance != null)
+            {
+                BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+            }
+        }
+        else
+        {
+            accuracyModifierX = getAccuracyModifier();
         }
 
+        Debug.Log(" acc modifier : " + accuracyModifierX);
+        Debug.Log(playerState.shotmeter.slider.value);
+
         float xVector = 0 + accuracyModifierX;
-        float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
-        float zVector = Vz + accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
+        float yVector = Vy; //+ accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float zVector = Vz; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(0, Vy, Vz);
@@ -527,32 +528,87 @@ public class BasketBall : MonoBehaviour
         return false;
     }
 
+    //bool rollForAccuracyModifier(float maxAccuracy, int slider)
+    //{
+    //    Random random = new Random();
+    //    float percent = random.Next(1, Mathf.FloorToInt(maxAccuracy));
+    //    Debug.Log("maxAcc : "+ maxAccuracy + "   slider : "+ slider);
+    //    Debug.Log("percent : "+ percent);
+    //    if (percent <= slider)
+    //    {
+    //        //BasketBallStats.CriticalRolled++;
+    //        return true;
+    //    }
+    //    Debug.Log("******************************************************************************* accuracy mod: false");
+    //    return false;
+    //}
+
+    //public double GetRandomNumber(double minimum, double maximum)
+    //{
+    //    Random random = new Random();
+    //    return random.NextDouble() * (maximum - minimum) + minimum;
+    //}
+
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
+        //int slider = Mathf.FloorToInt(playerState.shotmeter.slider.value);
         float accuracyModifier = 1;
         if (basketBallState.TwoPoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
+            //if (!rollForAccuracyModifier(shooterProfile.Accuracy2Pt,slider))
+            //{
+            //    accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
+            //}
+            //else
+            //{
+            //    accuracyModifier = 0;
+            //}
         }
 
         if (basketBallState.ThreePoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
+            //if (!rollForAccuracyModifier(shooterProfile.Accuracy3Pt, slider))
+            //{
+            //    accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
+            //}
+            //else
+            //{
+            //    accuracyModifier = 0;
+            //}
         }
 
         if (basketBallState.FourPoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
+            //if (!rollForAccuracyModifier(shooterProfile.Accuracy4Pt, slider))
+            //{
+            //    accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
+            //}
+            //else
+            //{
+            //    accuracyModifier = 0;
+            //}
         }
 
         if (basketBallState.SevenPoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
+            //if (!rollForAccuracyModifier(shooterProfile.Accuracy2Pt, slider))
+            //{
+            //    accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
+            //}
+            //else
+            //{
+            //    accuracyModifier = 0;
+            //}
         }
 
-        return (accuracyModifier) * direction;
+        Debug.Log(("accuracy mod : " + accuracyModifier));
+        return accuracyModifier * direction;
     }
 
     private int getRandomPositiveOrNegative()
@@ -564,6 +620,7 @@ public class BasketBall : MonoBehaviour
 
         return shotDirectionModifier;
     }
+
 
     //public bool getDunk()
     //{

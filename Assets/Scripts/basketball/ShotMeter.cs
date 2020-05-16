@@ -61,7 +61,7 @@ public class ShotMeter : MonoBehaviour
 
         if (slider.value >= 100)
         {
-            Debug.Log("if (slider.value >= 100)");
+            //Debug.Log("if (slider.value >= 100)");
             sliderMaxReached = true;
         }
 
@@ -83,23 +83,28 @@ public class ShotMeter : MonoBehaviour
                 currentTime = Time.time;
                 meterEndTime = meterStartTime + meterFillTime;
 
-                Debug.Log("     start : " + meterStartTime + "  end : " + meterEndTime);
-                Debug.Log("     current time : " + currentTime);
-                Debug.Log("     start time : " + meterStartTime);
-                Debug.Log("     end time : " + meterEndTime);
-                Debug.Log("     MeterEndTime - currentTime : " + ((MeterEndTime - currentTime)));
-                Debug.Log("     meterEndTime - startTime : " +  (MeterEndTime - MeterStartTime));
-                Debug.Log("     meter fill time 1 : " + meterFillTime + "   %: "+ (((currentTime - meterStartTime) / (meterFillTime)*100)));
-                Debug.Log("     meter fill time 2 : " + meterFillTime + "   %: " + (((currentTime - meterStartTime) / (MeterEndTime - MeterStartTime)) * 100));
+                //Debug.Log("     start : " + meterStartTime + "  end : " + meterEndTime);
+                //Debug.Log("     current time : " + currentTime);
+                //Debug.Log("     start time : " + meterStartTime);
+                //Debug.Log("     end time : " + meterEndTime);
+                //Debug.Log("     MeterEndTime - currentTime : " + ((MeterEndTime - currentTime)));
+                //Debug.Log("     meterEndTime - startTime : " +  (MeterEndTime - MeterStartTime));
+                //Debug.Log("     meter fill time 1 : " + meterFillTime + "   %: "+ (((currentTime - meterStartTime) / (meterFillTime)*100)));
+                //Debug.Log("     meter fill time 2 : " + meterFillTime + "   %: " + (((currentTime - meterStartTime) / (MeterEndTime - MeterStartTime)) * 100));
                 slider.value = (((currentTime - meterStartTime) / (meterFillTime)) * 100);
-                Debug.Log("slider.value : " + slider.value + "=======================================================================");
+                // incase this is where it hits 100, it can carry over to next next if statement and get overwritten
+                if (slider.value >= 100)
+                {
+                    sliderMaxReached = true;
+                }
+                //Debug.Log("slider.value : " + slider.value + "=======================================================================");
             }
 
             if (sliderMaxReached)
             {
                 currentTime = Time.time;
                 slider.value = 90 - Math.Abs(100 - (((currentTime - meterStartTime) / (meterFillTime)) * 100));
-                Debug.Log("slider.value : " + slider.value + "///////////////////////////////////////////////////////////// >= 100 =====");
+                //Debug.Log("slider.value : " + slider.value + "///////////////////////////////////////////////////////////// >= 100 =====");
             }
         }
         //Debug.Log("slider.value : " + slider.value + "###################################################################################################################");
@@ -108,8 +113,8 @@ public class ShotMeter : MonoBehaviour
         if (meterEnded)
         {
             sliderValueOnButtonPress = ((((Time.time - meterStartTime) / (meterFillTime)) *100));
-            Debug.Log("sliderValueOnButtonPress : "+ sliderValueOnButtonPress);
-            Debug.Log("time to press : "+ sliderValueOnButtonPress);
+           // Debug.Log("sliderValueOnButtonPress : "+ sliderValueOnButtonPress);
+           // Debug.Log("time to press : "+ sliderValueOnButtonPress);
             //Debug.Log("% : " + ((sliderValueOnButtonPress - meterStartTime) / (meterEndTime- meterStartTime)) + "=======================================================================");
             meterStarted = false;
             meterEnded = false;
