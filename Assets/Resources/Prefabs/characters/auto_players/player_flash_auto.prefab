@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8644691119547050672}
   - component: {fileID: 8644691119547050675}
   m_Layer: 8
-  m_Name: flash_auto_play
+  m_Name: player_flash_auto
   m_TagString: auto_npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
