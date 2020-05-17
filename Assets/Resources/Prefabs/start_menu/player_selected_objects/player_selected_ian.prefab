@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 3
+  playerId: 4
   playerDisplayName: Ian
   playerObjectName: ian
   playerPortrait: {fileID: 21300012, guid: e94887cfd41a16f4ba97185518f23737, type: 3}
@@ -62,14 +62,14 @@ MonoBehaviour:
   accuracy4pt: 85
   accuracy7pt: 75
   shooterProfilePrefabName: 
-  jumpForce: 5.1
-  speed: 3.3
-  runSpeedHasBall: 3.8
-  runSpeed: 4.2
+  jumpForce: 5
+  speed: 3.2
+  runSpeedHasBall: 3.5
+  runSpeed: 3.8
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 37
+  criticalPercent: 12
   shootAngle: 53
   level: 0
   experience: 0
