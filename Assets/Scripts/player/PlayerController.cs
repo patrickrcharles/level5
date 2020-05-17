@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
         // dont like having hard code values. add variables
         if (grounded)
         {
-            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y,
+            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y + 0.02f,
                 transform.root.position.z);
         }
         else
@@ -284,7 +284,7 @@ public class PlayerController : MonoBehaviour
         //jumpStartTime = Time.time;
         shotmeter.MeterStarted = true;
         shotmeter.MeterStartTime = Time.time;
-        Debug.Log("jump time: "+ Time.time);
+        //Debug.Log("jump time: "+ Time.time);
  
     }
 
