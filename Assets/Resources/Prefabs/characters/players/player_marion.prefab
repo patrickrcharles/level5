@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 4
+  playerId: 5
   playerDisplayName: Marion
   playerObjectName: marion
   playerPortrait: {fileID: 0}
@@ -615,9 +615,9 @@ MonoBehaviour:
   speedStatFloor: 0
   speedStatCeiling: 0
   accuracy2pt: 90
-  accuracy3pt: 80
-  accuracy4pt: 80
-  accuracy7pt: 65
+  accuracy3pt: 85
+  accuracy4pt: 83
+  accuracy7pt: 78
   shooterProfilePrefabName: 
   jumpForce: 4
   speed: 2
@@ -626,7 +626,7 @@ MonoBehaviour:
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 0
+  criticalPercent: 12
   shootAngle: 45
   level: 0
   experience: 0

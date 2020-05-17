@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 6
+  playerId: 9
   playerDisplayName: Woody
   playerObjectName: woody
   playerPortrait: {fileID: 0}
@@ -475,14 +475,14 @@ MonoBehaviour:
   accuracy7pt: 65
   shooterProfilePrefabName: 
   jumpForce: 5.2
-  speed: 2
-  runSpeedHasBall: 3
-  runSpeed: 3
+  speed: 3
+  runSpeedHasBall: 3.5
+  runSpeed: 4
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 33
-  shootAngle: 45
+  criticalPercent: 12
+  shootAngle: 50
   level: 0
   experience: 0
 --- !u!114 &904804546433258722

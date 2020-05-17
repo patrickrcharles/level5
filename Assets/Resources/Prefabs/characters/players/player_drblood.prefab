@@ -831,7 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 2
+  playerId: 1
   playerDisplayName: Dr Blood
   playerObjectName: drblood
   playerPortrait: {fileID: 0}
@@ -841,18 +841,18 @@ MonoBehaviour:
   speedStatFloor: 0
   speedStatCeiling: 0
   accuracy2pt: 90
-  accuracy3pt: 80
+  accuracy3pt: 84
   accuracy4pt: 75
   accuracy7pt: 65
   shooterProfilePrefabName: 
   jumpForce: 5
-  speed: 2
-  runSpeedHasBall: 3
-  runSpeed: 3
+  speed: 2.5
+  runSpeedHasBall: 3.3
+  runSpeed: 3.3
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 33
+  criticalPercent: 15
   shootAngle: 60
   level: 0
   experience: 0

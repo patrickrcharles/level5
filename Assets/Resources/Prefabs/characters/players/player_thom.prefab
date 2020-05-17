@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 5
+  playerId: 8
   playerDisplayName: Thom
   playerObjectName: thom
   playerPortrait: {fileID: -3372947476295043727, guid: 5a64327fd1eed024d81b7131d55dccf8,
@@ -477,13 +477,13 @@ MonoBehaviour:
   accuracy7pt: 65
   shooterProfilePrefabName: 
   jumpForce: 5.3
-  speed: 2
-  runSpeedHasBall: 3
-  runSpeed: 3
+  speed: 4.3
+  runSpeedHasBall: 4.3
+  runSpeed: 4.3
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 33
+  criticalPercent: 12
   shootAngle: 55
   level: 0
   experience: 0
