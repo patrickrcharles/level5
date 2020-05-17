@@ -187,11 +187,6 @@ public class BasketBall : MonoBehaviour
                 //playerState.setPlayerAnim("walking", false);
                 playerState.setPlayerAnim("moonwalking", false);
             }
-            else
-            {
-                //basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
-                //playerState.setPlayerAnim("hasBasketball", false);
-            }
         }
 
         // if player doesnt have ball, reset rotation i think
@@ -223,7 +218,6 @@ public class BasketBall : MonoBehaviour
             && playerState.IsSetShooter
             && !basketBallState.Locked)
         {
-            Debug.Log(" slider value on press : " + playerState.shotmeter.SliderValueOnButtonPress);
             shootBasketBall();
         }
     }
@@ -437,14 +431,13 @@ public class BasketBall : MonoBehaviour
         //accuracyModifierX;
 
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
-            || playerState.shotmeter.slider.value >= 90)
+            || playerState.shotmeter.Slider.value >= 95)
         {
-            Debug.Log("great shot >= 90");
             accuracyModifierX = 0;
             accuracyModifierY = 0;
             accuracyModifierZ = 0;
 
-            //Jessica might take a photo and if !null
+            // npc performs critical success action 
             if (BehaviorNpcCritical.instance != null)
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
@@ -454,9 +447,6 @@ public class BasketBall : MonoBehaviour
         {
             accuracyModifierX = getAccuracyModifier();
         }
-
-        Debug.Log(" acc modifier : " + accuracyModifierX);
-        Debug.Log(playerState.shotmeter.slider.value);
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy; //+ accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -517,10 +507,8 @@ public class BasketBall : MonoBehaviour
     {
         Random random = new Random();
         float percent = random.Next(1, 100);
-        //Debug.Log("percent : " + percent + " maxPercent : " + maxPercent);
         if (percent <= maxPercent)
         {
-            Debug.Log("********************** critical shot rolled");
             BasketBallStats.CriticalRolled++;
             return true;
         }
@@ -528,87 +516,35 @@ public class BasketBall : MonoBehaviour
         return false;
     }
 
-    //bool rollForAccuracyModifier(float maxAccuracy, int slider)
-    //{
-    //    Random random = new Random();
-    //    float percent = random.Next(1, Mathf.FloorToInt(maxAccuracy));
-    //    Debug.Log("maxAcc : "+ maxAccuracy + "   slider : "+ slider);
-    //    Debug.Log("percent : "+ percent);
-    //    if (percent <= slider)
-    //    {
-    //        //BasketBallStats.CriticalRolled++;
-    //        return true;
-    //    }
-    //    Debug.Log("******************************************************************************* accuracy mod: false");
-    //    return false;
-    //}
-
-    //public double GetRandomNumber(double minimum, double maximum)
-    //{
-    //    Random random = new Random();
-    //    return random.NextDouble() * (maximum - minimum) + minimum;
-    //}
-
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
-        //int slider = Mathf.FloorToInt(playerState.shotmeter.slider.value);
-        float accuracyModifier = 1;
+        int slider = Mathf.FloorToInt(playerState.shotmeter.Slider.value);
+        float sliderModifer = (100 - slider) * 0.01f;
+        float accuracyModifier = 0;
+
         if (basketBallState.TwoPoints)
         {
-            accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
-            //if (!rollForAccuracyModifier(shooterProfile.Accuracy2Pt,slider))
-            //{
-            //    accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
-            //}
-            //else
-            //{
-            //    accuracyModifier = 0;
-            //}
+            accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.001f;
         }
 
         if (basketBallState.ThreePoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
-            //if (!rollForAccuracyModifier(shooterProfile.Accuracy3Pt, slider))
-            //{
-            //    accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
-            //}
-            //else
-            //{
-            //    accuracyModifier = 0;
-            //}
         }
 
         if (basketBallState.FourPoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
-            //if (!rollForAccuracyModifier(shooterProfile.Accuracy4Pt, slider))
-            //{
-            //    accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
-            //}
-            //else
-            //{
-            //    accuracyModifier = 0;
-            //}
         }
 
         if (basketBallState.SevenPoints)
         {
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
-            //if (!rollForAccuracyModifier(shooterProfile.Accuracy2Pt, slider))
-            //{
-            //    accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.01f;
-            //}
-            //else
-            //{
-            //    accuracyModifier = 0;
-            //}
         }
-
-        Debug.Log(("accuracy mod : " + accuracyModifier));
-        return accuracyModifier * direction;
+        // 100 - slider + 1/3 of (100 - profile accuracy)
+        return (sliderModifer + (accuracyModifier/3)) * direction;
     }
 
     private int getRandomPositiveOrNegative()
