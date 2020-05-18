@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_04_slab.unity
     guid: 395c7854922a41c4eb071caa1327b705
+  - enabled: 1
+    path: Assets/Scenes/level_05_aveb.unity
+    guid: 4bcc85b78b58506449c2608d62b6cc0c
   m_configObjects: {}
