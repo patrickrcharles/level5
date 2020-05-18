@@ -91,7 +91,7 @@ public class GameLevelManager : MonoBehaviour
         Anim = Player.GetComponentInChildren<Animator>();
 
         //InitializePlayer();
-        //GameOptions.printCurrentValues();
+        GameOptions.printCurrentValues();
 
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
@@ -117,19 +117,19 @@ public class GameLevelManager : MonoBehaviour
             PlayerState.toggleRun();
             _locked = false;
         }
-        //toggle pull ball to player, shift + 2
+        ////toggle pull ball to player, shift + 2
+        //if (GetKey(KeyCode.LeftShift)
+        //    && GetKeyDown(KeyCode.Alpha2)
+        //    && !_locked)
+        //{
+        //    _locked = true;
+        //    CallBallToPlayer.instance.toggleCallBallToPlayer(); 
+        //    _locked = false;
+        //}
+
+        //turn off stats, shift + 2
         if (GetKey(KeyCode.LeftShift)
             && GetKeyDown(KeyCode.Alpha2)
-            && !_locked)
-        {
-            _locked = true;
-            CallBallToPlayer.instance.toggleCallBallToPlayer(); 
-            _locked = false;
-        }
-
-        //turn off stats, shift +3
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha3)
             && !_locked)
         {
             _locked = true;
