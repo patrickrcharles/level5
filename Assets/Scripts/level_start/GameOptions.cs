@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public  class GameOptions : MonoBehaviour
 {
+    static public string applicationVersion;
+
     static public String playerDisplayName;
     static public int playerId;
     static public String levelSelected;
-   static public int gameModeSelected;
+    static public int gameModeSelected;
 
     static public String playerObjectName;
     static public String levelSelectedName;
@@ -55,6 +58,8 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
+        applicationVersion = Application.version;
+
         //gameModeSelected = 8;
 
         //gameModeRequiresCounter = true;
@@ -76,5 +81,8 @@ public  class GameOptions : MonoBehaviour
         Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
         Debug.Log("3s : " + gameModeRequiresShotMarkers3s);
         Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
+        Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
+        Debug.Log("app version : " + applicationVersion);
+        Debug.Log("date  : " + DateTime.Now);
     }
 }
