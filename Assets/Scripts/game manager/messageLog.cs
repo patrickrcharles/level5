@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class messageLog : MonoBehaviour
 {
     Text log;
+
     public static messageLog instance;
 
     // Start is called before the first frame update
@@ -21,14 +23,15 @@ public class messageLog : MonoBehaviour
 
     }
 
-    public void toggleMessageDisplay()
+    public void toggleMessageDisplay(String message)
     {
 
-        StartCoroutine(ToggleMessageDisplayLog(5));
+        StartCoroutine(ToggleMessageDisplayLog(5, message));
     }
 
-    IEnumerator ToggleMessageDisplayLog(float seconds)
+    IEnumerator ToggleMessageDisplayLog(float seconds, String message)
     {
+        log.text = message;
         yield return new WaitForSeconds(seconds);
         log.text = "";
     }
