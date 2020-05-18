@@ -122,7 +122,7 @@ public class GameRules : MonoBehaviour
 
         if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
-            Debug.Log("game over, pause");
+            //Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";

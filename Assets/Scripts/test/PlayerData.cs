@@ -66,7 +66,7 @@ public class PlayerData : MonoBehaviour
     public void saveStats()
     {
 
-        Debug.Log("save");
+        //Debug.Log("save");
 
         // get stats object
         //basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
