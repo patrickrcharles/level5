@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class ShotMeter : MonoBehaviour
 {
+    private const string sliderValueOnPressName = "slider_value_text";
+    [SerializeField]
+    private Text sliderValueOnPress;
 
     float sliderValueOnButtonPress;
     public float SliderValueOnButtonPress => sliderValueOnButtonPress;
@@ -35,6 +38,7 @@ public class ShotMeter : MonoBehaviour
         shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
+        sliderValueOnPress = GameObject.Find(sliderValueOnPressName).GetComponent<Text>();
     }
 
 
@@ -81,12 +85,15 @@ public class ShotMeter : MonoBehaviour
             {
                 currentTime = Time.time;
                 slider.value = 90 - Math.Abs(100 - (((currentTime - meterStartTime) / (meterFillTime)) * 100));
+
             }
         }
 
         if (meterEnded)
         {
             sliderValueOnButtonPress = ((((Time.time - meterStartTime) / (meterFillTime)) * 100));
+            // display number
+            displaySliderValueOnPressText(slider.value.ToString("###"));
             meterStarted = false;
             meterEnded = false;
             sliderMaxReached = false;
@@ -120,5 +127,18 @@ public class ShotMeter : MonoBehaviour
     {
         get => meterEnded;
         set => meterEnded = value;
+    }
+
+    public void displaySliderValueOnPressText(String message)
+    {
+
+        StartCoroutine(toggleSliderValueOnPressText(2, message));
+    }
+
+    IEnumerator toggleSliderValueOnPressText(float seconds, String message)
+    {
+        sliderValueOnPress.text = message;
+        yield return new WaitForSeconds(seconds);
+        sliderValueOnPress.text = "";
     }
 }
