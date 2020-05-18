@@ -1019,6 +1019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1d8ac14ec39e4a86cf1ba35fb1649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
 --- !u!1 &2313588878625703545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128a5f39f69aa344825e318f9b99d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOver: 0
   _basketBallShotMarkersList: []
 --- !u!1 &2626216200384811591
 GameObject:
@@ -1236,7 +1238,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3056989723612319028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.25}
+  m_LocalPosition: {x: 0, y: 0, z: -9.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7410545784202926038}
@@ -1244,7 +1246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.699, y: 0.754}
+  m_AnchoredPosition: {x: 2.43, y: 0.754}
   m_SizeDelta: {x: 1.28, y: 1.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3469435673186801345
@@ -1768,7 +1770,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8408471258253358769}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.13, y: 1, z: -6.2}
+  m_LocalPosition: {x: 2.32, y: 1, z: -6.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7410545784202926038}
@@ -2137,12 +2139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092ea041b8e4b0d40966a5b277667844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
   Basketball: {fileID: 0}
   BasketballObject: {fileID: 0}
-  _playerCount: 0
-  _basketballCount: 0
-  _npcObjects: []
 --- !u!114 &8408471259260259006
 MonoBehaviour:
   m_ObjectHideFlags: 0
