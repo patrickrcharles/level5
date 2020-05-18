@@ -8,7 +8,7 @@ public class GameLevelManager : MonoBehaviour
 {
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
-    [SerializeField] private GameObject _player;
+    private GameObject _player;
     private PlayerController _playerState;
 
     //private AudioSource[] allAudioSources;
@@ -30,30 +30,22 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _basketballSpawnLocation;
     private GameObject _playerSpawnLocation;
 
-    [SerializeField]
     public BasketBall Basketball;
-    [SerializeField]
     public GameObject BasketballObject;
 
     //[SerializeField]
     //GameObject player_spawn;
 
-    [SerializeField]
-    private int _playerCount;
+    //[SerializeField]
+    //private int _playerCount;
 
-    [SerializeField] private int _basketballCount;
-
-    public static GameLevelManager Instance;
+    //[SerializeField] private int _basketballCount;
 
     private GameObject _playerClone;
-
-    //List<string> scenes = new List<string>();
-
-    [SerializeField]
     private GameObject[] _npcObjects;
-
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
+    public static GameLevelManager Instance;
 
     private void Awake()
     {
@@ -68,8 +60,8 @@ public class GameLevelManager : MonoBehaviour
         //allAudioSources = FindObjectsOfType<AudioSource>();
         //Application.targetFrameRate = 60;
 
-        if (!GetCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
-        // player + ball spawn locations
+        //if (!GetCurrentSceneName().StartsWith("start")) { InitializePlayer(); }
+        //// player + ball spawn locations
 
         _playerSpawnLocation = GameObject.Find("player_spawn_location");
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
@@ -98,22 +90,15 @@ public class GameLevelManager : MonoBehaviour
         _playerState = Player.GetComponent<PlayerController>();
         Anim = Player.GetComponentInChildren<Animator>();
 
-        InitializePlayer();
-        GameOptions.printCurrentValues();
+        //InitializePlayer();
+        //GameOptions.printCurrentValues();
+
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
-
         _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
         string playerName = GameObject.FindWithTag("Player").name;
         foreach (var npc in _npcObjects)
         {
-            //if (!string.IsNullOrEmpty(GameOptions.playerObjectName)
-            //    && GameOptions.playerObjectName.Contains("flash")
-            //    && npc != null)
-            //{
-            //    npc.SetActive(false);
-            //}
-            Debug.Log("player : "+ playerName + "   npc : "+ npc.name);
             if (npc.name.Contains(playerName))
             {
                 npc.SetActive(false);
@@ -121,32 +106,8 @@ public class GameLevelManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
-        ////close app
-        //if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift)) 
-        //    && InputManager.GetKeyDown(KeyCode.Q))
-        //{
-        //    Quit();
-        //}
-
-        ////reload start
-        //if ((InputManager.GetKey(KeyCode.LeftShift) || InputManager.GetKey(KeyCode.RightShift))
-        //    && InputManager.GetKeyDown(KeyCode.P))
-        //{
-        //    SceneManager.LoadScene("level_00_start");
-        //}
-
-        ////pause ESC, submit, cancel
-        //if (InputManager.GetButtonDown("Submit")
-        //    || InputManager.GetButtonDown("Cancel")
-        //    || InputManager.GetKeyDown(KeyCode.Escape))
-        //{
-        //    paused = TogglePause();
-        //}
-        // reload scene 4+2+0
-
         //turn on : toggle run, shift +1
         if (GetKey(KeyCode.LeftShift)
             && GetKeyDown(KeyCode.Alpha1)
@@ -156,7 +117,7 @@ public class GameLevelManager : MonoBehaviour
             PlayerState.toggleRun();
             _locked = false;
         }
-        //toggle pull ball to player, shift + 4
+        //toggle pull ball to player, shift + 2
         if (GetKey(KeyCode.LeftShift)
             && GetKeyDown(KeyCode.Alpha2)
             && !_locked)
@@ -165,47 +126,37 @@ public class GameLevelManager : MonoBehaviour
             CallBallToPlayer.instance.toggleCallBallToPlayer(); 
             _locked = false;
         }
-        //turn off accuracy shift +2
+
+        //turn off stats, shift +3
         if (GetKey(KeyCode.LeftShift)
             && GetKeyDown(KeyCode.Alpha3)
             && !_locked)
         {
             _locked = true;
-            Basketball.toggleAddAccuracyModifier();
-            _locked = false;
-        }
-        
-        //turn off stats, shift +3
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha4)
-            && !_locked)
-        {
-            _locked = true;
             BasketBall.instance.toggleUiStats(); 
             _locked = false;
-        }       
-        
-        ////run stat analysis
-        //if (InputManager.GetKey(KeyCode.LeftShift)
-        //    && InputManager.GetKeyDown(KeyCode.Alpha0)
-        //    && !locked)
+        }
+
+        ////turn off accuracy shift +2
+        //if (GetKey(KeyCode.LeftShift)
+        //    && GetKeyDown(KeyCode.Alpha3)
+        //    && !_locked)
         //{
-        //    locked = true;
-        //    _basketballState.testConclusions.getDataFromList();
-        //    _basketballState.testConclusions.printConclusions();
-        //    locked = false;
+        //    _locked = true;
+        //    Basketball.toggleAddAccuracyModifier();
+        //    _locked = false;
         //}
     }
 
     // set up player references that other scripts use
     // game manager provides read only links to player object and player states
-    public void InitializePlayer()
-    {
-        //Debug.Log("initialize player");
-        //_player = GameObject.FindGameObjectWithTag("Player");
-        //_playerState = player.GetComponent<playercontrollerscript>();
-        //_anim = player.GetComponentInChildren<Animator>();
-    }
+    //public void InitializePlayer()
+    //{
+    //    //Debug.Log("initialize player");
+    //    //_player = GameObject.FindGameObjectWithTag("Player");
+    //    //_playerState = player.GetComponent<playercontrollerscript>();
+    //    //_anim = player.GetComponentInChildren<Animator>();
+    //
 
     private string GetCurrentSceneName()
     {
@@ -259,6 +210,6 @@ public class GameLevelManager : MonoBehaviour
 
     public Animator Anim { get; private set; }
 
-
+    [SerializeField]
     public bool GameOver { get; set; }
 }
