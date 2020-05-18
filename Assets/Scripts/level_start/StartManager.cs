@@ -447,5 +447,7 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
 
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
+
+        GameOptions.applicationVersion = Application.version;
     }
 }
