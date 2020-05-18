@@ -60,7 +60,7 @@ public class ShooterProfile : MonoBehaviour
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected)
         {
-            Debug.Log("init shoot profile");
+            //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
     }

@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         if (GameOptions.gameModeHasBeenSelected)
         {
-            Debug.Log(" set shoot profile");
+            //Debug.Log(" set shoot profile");
             setShooterProfileStats();
         }
 

@@ -23,7 +23,7 @@ public class BehaviorNpcCritical : MonoBehaviour
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
         playerState = GameLevelManager.Instance.PlayerState;
         npcName = gameObject.transform.root.name;
-        Debug.Log("npc name  " + npcName);
+        //Debug.Log("npc name  " + npcName);
     }
 
 

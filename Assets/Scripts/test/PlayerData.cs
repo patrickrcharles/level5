@@ -308,7 +308,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStats()
     {
-       Debug.Log("load()");
+       //Debug.Log("load()");
         //only call at beginning of a game
 
         //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
@@ -357,7 +357,6 @@ public class PlayerData : MonoBehaviour
         _makeThreePointersLowTime = PlayerPrefs.GetFloat("mode_" + 7 + "_lowThreeTime");
         _makeFourPointersLowTime = PlayerPrefs.GetFloat("mode_" + 8 + "_lowFourTime");
         _makeAllPointersLowTime = PlayerPrefs.GetFloat("mode_" + 9 + "_lowAllTime");
-        Debug.Log(" low 4s mode 8: "+ _makeFourPointersLowTime);
 
         _makeThreePointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 10 + "_lowThreeTimeMoneyBall");
         _makeFourPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTimeMoneyBall");
