@@ -42,8 +42,17 @@ change log
   (disables high score saving) Default : OFF
 - added toggle stats display during game (Left shift + 4) Default : OFF
 
-2.2.0
+3.0.0
 
-- added 2 new game mode:  make 5 shot from 5 different positons ( 3 point and 4 point ) 
+- added 6 new game mode:  
+	make 5 shot from 5 different positons ( 3 point / 4 point / 3 + 4 point ) 
+	make 5 shot from 5 different positons but collect $1 for each shot made from marker.
+	every $5 you can buy a moneyball which will clear any marker entirely
+	 ( 3 point / 4 point / 3 + 4 point ) 
 - added ghost character
-- added minor leveling system
+- added robot character
+- new level Avenue B
+- new level The Slab
+- attempt at character leveling
+- new shot meter system to determine shot accuracy
+- tons of ui fixes for readability

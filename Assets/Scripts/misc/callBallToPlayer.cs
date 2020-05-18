@@ -28,6 +28,7 @@ public class CallBallToPlayer : MonoBehaviour
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
+        canBallToPlayerEnabled = true;
     }
 
     private void pullBallToPlayer()

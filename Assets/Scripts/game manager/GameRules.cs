@@ -14,6 +14,7 @@ public class GameRules : MonoBehaviour
     private int gameModeId;
     private float timerStart;
 
+    [SerializeField]
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
@@ -119,9 +120,9 @@ public class GameRules : MonoBehaviour
             displayMoneyText.text = "";
         }
 
-        if (GameOver && !Pause.instance.Paused && gameRulesEnabled)
+        if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
-            //Debug.Log("game over, pause");
+            Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
@@ -252,7 +253,7 @@ public class GameRules : MonoBehaviour
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeThreePointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeThreePointersLowTime;
             //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 8)
@@ -260,21 +261,21 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeFourPointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeFourPointersLowTime;
             //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 9)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeAllPointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersLowTime;
             //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 10)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeThreePointersMoneyBallLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeThreePointersMoneyBallLowTime;
             displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 11)
@@ -282,14 +283,14 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeFourPointersMoneyBallLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeFourPointersMoneyBallLowTime;
             displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 12)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeAllPointersMoneyBallLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersMoneyBallLowTime;
             displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 13)

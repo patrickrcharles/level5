@@ -8,33 +8,35 @@ public class PlayerData : MonoBehaviour
 {
     private BasketBallStats basketBallStats;
 
-    public  int _playerId;
-    public  string _playerName;
+    private  int _playerId;
+    private  string _playerName;
 
-    public  float _totalPoints;
-    public  float _twoPointerMade;
-    public  float _threePointerMade;
-    public  float _sevenPointerMade;
+    private  float _totalPoints;
+    private  float _twoPointerMade;
+    private  float _threePointerMade;
+    private  float _sevenPointerMade;
 
-    public  float _fourPointerMade;
-    public  float _twoPointerAttempts;
-    public  float _threePointerAttempts;
-    public  float _fourPointerAttempts;
-    public  float _sevenPointerAttempts;
+    private  float _fourPointerMade;
+    private  float _twoPointerAttempts;
+    private  float _threePointerAttempts;
+    private  float _fourPointerAttempts;
+    private  float _sevenPointerAttempts;
 
-    public  float _shotAttempt;
-    public  float _shotMade;
-    public  float _longestShotMade;
-    public  float _longestShotMadeFreePlay;
-    public  float _totalDistance;
+    private  float _shotAttempt;
+    private  float _shotMade;
+    private  float _longestShotMade;
+    private  float _longestShotMadeFreePlay;
+    private  float _totalDistance;
 
-    public  float _makeThreePointersLowTime;
-    public  float _makeFourPointersLowTime;
-    public  float _makeAllPointersLowTime;
+    private  float _makeThreePointersLowTime;
+    private  float _makeFourPointersLowTime;
+    private  float _makeAllPointersLowTime;
 
-    public  float _makeThreePointersMoneyBallLowTime;
-    public  float _makeFourPointersMoneyBallLowTime;
-    public  float _makeAllPointersMoneyBallLowTime;
+    private  float _makeThreePointersMoneyBallLowTime;
+    private  float _makeFourPointersMoneyBallLowTime;
+    private  float _makeAllPointersMoneyBallLowTime;
+
+    private  bool _callBallAchievementUnlocked;
 
     private bool _isCheating; // if cheats enabled, no saving
 
@@ -62,16 +64,24 @@ public class PlayerData : MonoBehaviour
 
     public void saveStats()
     {
+
+        Debug.Log("save");
+
         // get stats object
         //basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
         basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
 
-        //cheating and game mode name doesnt contain 'free' as in, Free Play mode
-        if (IsCheating && !GameOptions.gameModeSelectedName.ToLower().Contains("free"))
-        {
-            // no save for you
-            return;
-        }
+
+        Debug.Log("7s high" + SevenPointerMade + " / " + SevenPointerAttempts);
+        Debug.Log("7s made " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts);
+
+
+        ////cheating and game mode name doesnt contain 'free' as in, Free Play mode
+        //if (IsCheating && !GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        //{
+        //    // no save for you
+        //    return;
+        //}
 
         // save can be called whenever as long as load isnt called as well.
         // if you call load, you need to reset the local variables
@@ -150,10 +160,10 @@ public class PlayerData : MonoBehaviour
             _fourPointerMade = 0;
             loadStats();
         }
-        // save mode 3 (7s)
+        // save mode 4 (7s)
         if (_sevenPointerMade < basketBallStats.SevenPointerMade && GameOptions.gameModeSelected == 4)
         {
-            PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_fourPointersMade", (int)(basketBallStats.FourPointerMade));
+            PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_sevenPointersMade", (int)(basketBallStats.SevenPointerMade));
             _fourPointerMade = 0;
             loadStats();
         }
@@ -196,7 +206,7 @@ public class PlayerData : MonoBehaviour
         if ((_makeThreePointersMoneyBallLowTime > basketBallStats.MakeThreePointersMoneyBallLowTime && GameOptions.gameModeSelected == 10) 
             || _makeThreePointersMoneyBallLowTime == 0)
         {
-            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTime", (float)Math.Round(basketBallStats.MakeThreePointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBall", (float)Math.Round(basketBallStats.MakeThreePointersMoneyBallLowTime, 4));
             _makeThreePointersLowTime = 0;
             loadStats();
         }
@@ -204,7 +214,7 @@ public class PlayerData : MonoBehaviour
         if ((_makeFourPointersMoneyBallLowTime > basketBallStats.MakeFourPointersMoneyBallLowTime && GameOptions.gameModeSelected == 11 ) 
             || _makeFourPointersMoneyBallLowTime == 0)
         {
-            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTime", (float)Math.Round(basketBallStats.MakeFourPointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBall", (float)Math.Round(basketBallStats.MakeFourPointersMoneyBallLowTime, 4));
             _makeFourPointersLowTime = 0;
             loadStats();
         }
@@ -212,7 +222,7 @@ public class PlayerData : MonoBehaviour
         if ((_makeAllPointersMoneyBallLowTime > basketBallStats.MakeAllPointersMoneyBallLowTime && GameOptions.gameModeSelected == 12) 
             || _makeAllPointersMoneyBallLowTime == 0)
         {
-            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTime", (float)Math.Round(basketBallStats.MakeAllPointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBall", (float)Math.Round(basketBallStats.MakeAllPointersMoneyBallLowTime, 4));
             _makeAllPointersLowTime = 0;
             loadStats();
         }
@@ -362,6 +372,15 @@ public class PlayerData : MonoBehaviour
 
     public float TotalDistance => _totalDistance;
 
-    public static PlayerData Instance => instance;
+    public float MakeThreePointersLowTime => _makeThreePointersLowTime;
 
+    public float MakeFourPointersLowTime => _makeFourPointersLowTime;
+
+    public float MakeAllPointersLowTime => _makeAllPointersLowTime;
+
+    public float MakeThreePointersMoneyBallLowTime => _makeThreePointersMoneyBallLowTime;
+
+    public float MakeFourPointersMoneyBallLowTime => _makeFourPointersMoneyBallLowTime;
+
+    public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
 }

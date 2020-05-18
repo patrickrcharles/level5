@@ -17,6 +17,7 @@ public class BasketBall : MonoBehaviour
     new Rigidbody rigidbody;
     AudioSource audioSource;
     ShooterProfile shooterProfile;
+    [SerializeField]
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
 
@@ -62,7 +63,7 @@ public class BasketBall : MonoBehaviour
     //public BasketballTestStats testStats;
     //public BasketBallTestStatsConclusions testConclusions;
 
-    int currentTestStatsIndex = 0;
+    //int currentTestStatsIndex = 0;
     BasketBallShotMade basketBallShotMade;
 
     public static BasketBall instance;
@@ -465,38 +466,6 @@ public class BasketBall : MonoBehaviour
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
-
-
-        // ================================== for SHOT TEST STATS ====================================
-
-        //BasketballTestStats testStats = gameObject.GetComponent<BasketballTestStats>();
-
-        //testStats.AccuracyModifier = accuracyModifierX;
-        //testStats.Distance = lastShotDistance;
-        //testStats.LocalVelocity = localVelocity;
-        //testStats.GlobalVelocity = globalVelocity;
-        //testStats.ReleaseVelocity = releaseVelocityY;
-        //if (basketBallState.TwoPoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy2Pt;
-        //    testStats.Two = true;
-        //}
-        //if (basketBallState.ThreePoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy3Pt;
-        //    testStats.Three = true;
-        //}
-        //if (basketBallState.FourPoints)
-        //{
-        //    testStats.Accuracy = shooterProfile.Accuracy4Pt;
-        //    testStats.Four = true;
-        //}
-
-        //testConclusions.shotStats.Add(testStats);
-        //currentTestStatsIndex = (testConclusions.shotStats.Count) - 1;
-        //basketBallShotMade.currentShotTestIndex = currentTestStatsIndex;
-
-        // ================================================================================================
     }
 
     // =========================================================== Functions and Properties ========================================================
