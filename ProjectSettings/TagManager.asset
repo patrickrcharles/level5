@@ -32,6 +32,7 @@ TagManager:
   - shot_marker
   - money
   - shot_meter
+  - vehicle_position_marker
   layers:
   - Default
   - TransparentFX
