@@ -116,7 +116,9 @@ public class StartManager : MonoBehaviour
         ////Debug.Log("current : "+ currentHighlightedButton);
 
         // start game
-        if ((InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space))
+        if ((InputManager.GetKeyDown(KeyCode.Return) 
+             || InputManager.GetKeyDown(KeyCode.Space)
+             || InputManager.GetButtonDown("Fire1"))
             && currentHighlightedButton.Equals(startButtonName))
         {
             //Debug.Log("pressed enter");
@@ -200,7 +202,7 @@ public class StartManager : MonoBehaviour
             }
         }
 
-        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
+        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow )))
         {
             //Debug.Log("down : player option");
             if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
