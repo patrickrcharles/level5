@@ -59,4 +59,5 @@ change log
 - removed toggle call ball/ toggle accuracy modifier
 - tons of ui fixes for readability
 - new data saving for future online leaderboard
+- xbox controller works for most. cant change start screen options but can play game and access pause screen options
 - tons of shit in general. cant remember everything 
