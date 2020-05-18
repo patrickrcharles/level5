@@ -136,13 +136,6 @@ public class BehaviorFlash : MonoBehaviour
         //rigidBody.velocity = movement * movementSpeed;
         navmeshAgent.speed = movementSpeed;
 
-        ////set limits for player movement
-        //rigidBody.transform.position = new Vector3(
-        //   Mathf.Clamp(rigidBody.position.x, xMin, xMax),
-        //   Mathf.Clamp(rigidBody.position.y, yMin, yMax),
-        //   Mathf.Clamp(rigidBody.position.z, zMin, zMax)
-        //   );
-
         anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
 
         ////check if walking
