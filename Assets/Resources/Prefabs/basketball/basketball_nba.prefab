@@ -98,7 +98,6 @@ GameObject:
   - component: {fileID: 3489391390474842162}
   - component: {fileID: 4784205251377224028}
   - component: {fileID: -3620328289021908805}
-  - component: {fileID: 4332793979592524497}
   m_Layer: 0
   m_Name: basketball_nba
   m_TagString: basketball
@@ -320,16 +319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abde0ad1994cf894a918bcf36ce90924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterProfile: {fileID: 0}
   basketBallState: {fileID: 0}
-  basketBallStats: {fileID: 0}
-  TextObject: {fileID: 0}
-  shootProfile: {fileID: 0}
   _angle: 60
-  uiStatsEnabled: 0
-  currentTestStatsIndex: 0
-  basketBallShotMade: {fileID: 0}
   accuracyModifierX: 0
+  accuracyModifierY: 0
+  accuracyModifierZ: 0
 --- !u!114 &-3620328289021908805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,25 +336,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c8393904979c4faea16cf0061a011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _makeThreePointersLowTime: 0
-  _makeFourPointersLowTime: 0
-  _makeAllPointersLowTime: 0
---- !u!114 &4332793979592524497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3569830428581291380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerOnMarker: 0
-  _playerOnMarkerOnShoot: 0
-  _currentShotMarkerId: 0
-  _ballDistanceFromRim: 0
 --- !u!1 &3569848962387920496
 GameObject:
   m_ObjectHideFlags: 0
