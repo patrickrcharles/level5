@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TeamUtility.IO;
 using UnityEngine;
 
@@ -142,42 +143,72 @@ public class PlayerData : MonoBehaviour
         //save game mode 1 high score
         if (_totalPoints < basketBallStats.TotalPoints && GameOptions.gameModeSelected == 1)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_totalPoints", (int) (basketBallStats.TotalPoints));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsPlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsAppVersion", Application.version);
             _totalPoints = 0;
             loadStats();
         }
         // save mode 2 (3s)
         if (_threePointerMade < basketBallStats.ThreePointerMade && GameOptions.gameModeSelected == 2)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_threePointersMade", (int)(basketBallStats.ThreePointerMade));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_threePointersMadePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_threePointersMadeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_threePointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _threePointerMade = 0;
             loadStats();
         }
         // save mode 3 (4s)
         if (_fourPointerMade < basketBallStats.FourPointerMade && GameOptions.gameModeSelected == 3)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_fourPointersMade", (int)(basketBallStats.FourPointerMade));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_fourPointersMadePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_fourPointersMadeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_fourPointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _fourPointerMade = 0;
             loadStats();
         }
         // save mode 4 (7s)
         if (_sevenPointerMade < basketBallStats.SevenPointerMade && GameOptions.gameModeSelected == 4)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetInt("mode_" + GameOptions.gameModeSelected + "_sevenPointersMade", (int)(basketBallStats.SevenPointerMade));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_sevenPointersMadePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_sevenPointersMadeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_sevenPointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _fourPointerMade = 0;
             loadStats();
         }
         // save mode 5 (long shot)
         if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 5)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMade", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _longestShotMade = 0;
             loadStats();
         }
         // save mode 6 (total shot distance made)
         if (_totalDistance < (basketBallStats.TotalDistance * 6) && GameOptions.gameModeSelected == 6)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_totalDistance", (float)Math.Round(basketBallStats.TotalDistance * 6, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalDistancePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalDistanceLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalDistanceDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _totalDistance = 0;
             loadStats();
         }
@@ -185,7 +216,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeThreePointersLowTime > basketBallStats.MakeThreePointersLowTime && GameOptions.gameModeSelected == 7)
             || _makeThreePointersLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTime", (float)Math.Round(basketBallStats.MakeThreePointersLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeThreePointersLowTime = 0;
             loadStats();
         }
@@ -193,7 +229,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeFourPointersLowTime > basketBallStats.MakeFourPointersLowTime && GameOptions.gameModeSelected == 8)
             || _makeFourPointersLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTime", (float)Math.Round(basketBallStats.MakeFourPointersLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeFourPointersLowTime = 0;
             loadStats();
         }
@@ -201,7 +242,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeAllPointersLowTime > basketBallStats.MakeAllPointersLowTime && GameOptions.gameModeSelected == 9)
             || _makeAllPointersLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTime", (float)Math.Round(basketBallStats.MakeAllPointersLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimePlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeAllPointersLowTime = 0;
             loadStats();
         }
@@ -209,7 +255,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeThreePointersMoneyBallLowTime > basketBallStats.MakeThreePointersMoneyBallLowTime && GameOptions.gameModeSelected == 10) 
             || _makeThreePointersMoneyBallLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBall", (float)Math.Round(basketBallStats.MakeThreePointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBallPlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBallLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeThreePointersLowTime = 0;
             loadStats();
         }
@@ -217,7 +268,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeFourPointersMoneyBallLowTime > basketBallStats.MakeFourPointersMoneyBallLowTime && GameOptions.gameModeSelected == 11 ) 
             || _makeFourPointersMoneyBallLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBall", (float)Math.Round(basketBallStats.MakeFourPointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBallPlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBallLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeFourPointersLowTime = 0;
             loadStats();
         }
@@ -225,7 +281,12 @@ public class PlayerData : MonoBehaviour
         if ((_makeAllPointersMoneyBallLowTime > basketBallStats.MakeAllPointersMoneyBallLowTime && GameOptions.gameModeSelected == 12) 
             || _makeAllPointersMoneyBallLowTime == 0)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBall", (float)Math.Round(basketBallStats.MakeAllPointersMoneyBallLowTime, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBallPlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBallLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _makeAllPointersLowTime = 0;
             loadStats();
         }
@@ -233,7 +294,12 @@ public class PlayerData : MonoBehaviour
         // save mode 13 (longest shot in free play)
         if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
         {
+            messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayPlayer", GameOptions.playerObjectName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayLevel", GameOptions.levelSelectedName);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             _longestShotMadeFreePlay = 0;
             loadStats();
         }
