@@ -671,9 +671,7 @@ MonoBehaviour:
 
     left shift + 2
 
-    left shift + 3
-
-    left shift + 4'
+    left shift + 3'
 --- !u!222 &1251944728
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -947,8 +945,6 @@ MonoBehaviour:
     toggle run :
 
     toggle call ball :
-
-    toggle accuracy :
 
     toggle stats  :'
 --- !u!222 &1953127739
