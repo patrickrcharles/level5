@@ -55,4 +55,8 @@ change log
 - new level The Slab
 - attempt at character leveling
 - new shot meter system to determine shot accuracy
+- added call ball on by default for every mode
+- removed toggle call ball/ toggle accuracy modifier
 - tons of ui fixes for readability
+- new data saving for future online leaderboard
+- tons of shit in general. cant remember everything 
