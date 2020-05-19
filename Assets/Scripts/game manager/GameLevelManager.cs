@@ -91,12 +91,12 @@ public class GameLevelManager : MonoBehaviour
         Anim = Player.GetComponentInChildren<Animator>();
 
         //InitializePlayer();
-        //GameOptions.printCurrentValues();
+        GameOptions.printCurrentValues();
 
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
         _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
-        string playerName = GameObject.FindWithTag("Player").name;
+        string playerName = GameOptions.playerObjectName;
         foreach (var npc in _npcObjects)
         {
             if (npc.name.Contains(playerName))
