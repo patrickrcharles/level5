@@ -149,6 +149,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _totalPoints = 0;
             loadStats();
         }
@@ -161,6 +162,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_threePointersMadeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_threePointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _threePointerMade = 0;
             loadStats();
         }
@@ -173,6 +175,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_fourPointersMadeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_fourPointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _fourPointerMade = 0;
             loadStats();
         }
@@ -185,6 +188,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_sevenPointersMadeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_sevenPointersMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _fourPointerMade = 0;
             loadStats();
         }
@@ -197,6 +201,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _longestShotMade = 0;
             loadStats();
         }
@@ -209,6 +214,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalDistanceLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalDistanceDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _totalDistance = 0;
             loadStats();
         }
@@ -222,6 +228,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeThreePointersLowTime = 0;
             loadStats();
         }
@@ -235,6 +242,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeFourPointersLowTime = 0;
             loadStats();
         }
@@ -248,6 +256,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeAllPointersLowTime = 0;
             loadStats();
         }
@@ -261,6 +270,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBallLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowThreeTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeThreePointersLowTime = 0;
             loadStats();
         }
@@ -274,6 +284,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBallLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowFourTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeFourPointersLowTime = 0;
             loadStats();
         }
@@ -287,6 +298,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBallLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_lowAllTimeMoneyBallDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeAllPointersLowTime = 0;
             loadStats();
         }
@@ -300,6 +312,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayLevel", GameOptions.levelSelectedName);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
+            PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _longestShotMadeFreePlay = 0;
             loadStats();
         }

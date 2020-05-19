@@ -449,5 +449,6 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
 
         GameOptions.applicationVersion = Application.version;
+        GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
     }
 }
