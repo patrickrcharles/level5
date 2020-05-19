@@ -34,4 +34,10 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         //       //Debug.Log("play bounce sound");
         audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
+
+    public void playSfxWerewolfHowl()
+    {
+        //       //Debug.Log("play bounce sound");
+        audioSource.PlayOneShot(SFXBB.Instance.werewolfHowl);
+    }
 }

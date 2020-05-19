@@ -13,6 +13,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip cameraFlash;
     public AudioClip alien_walk;
     public AudioClip gamechanger;
+    public AudioClip werewolfHowl;
 
     //public List<AudioClip> vanMusicPlayList;
 
