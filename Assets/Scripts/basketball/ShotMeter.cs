@@ -91,18 +91,17 @@ public class ShotMeter : MonoBehaviour
             sliderValueOnButtonPress = ((((Time.time - meterStartTime) / (meterFillTime)) * 100));
             if (sliderValueOnButtonPress >= 100)
             {
-                Debug.Log(" >>>>>>>>>>>>>>>>>>>>>> 100   sliderValueOnButtonPress : " + sliderValueOnButtonPress);
                 // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
                 // start at 90. 10 point penalty for hitting peak
-                sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
+                //sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
+                sliderValueOnButtonPress = 100 - Math.Abs(100 - sliderValueOnButtonPress);
             }
-
-            slider.value = SliderValueOnButtonPress;
-
-            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress);
-            Debug.Log("slider.value : " + slider.value);
+            // used in launch
+            slider.value = sliderValueOnButtonPress;
             // display number
-            displaySliderValueOnPressText(Slider.value.ToString("###"));
+            displaySliderValueOnPressText(sliderValueOnButtonPress.ToString("###"));
+            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
+            Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
 
             meterStarted = false;
             meterEnded = false;

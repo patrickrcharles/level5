@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -365,8 +366,8 @@ public class BasketBall : MonoBehaviour
             }
         }
 
-        //launch ball to goal      
-        Launch();
+        // wait for shot meter to finish calculations for accurate launch values
+        StartCoroutine(LaunchBasketBall());
 
         //calculate shot distance 
         Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
@@ -434,7 +435,7 @@ public class BasketBall : MonoBehaviour
         //accuracyModifierX;
 
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
-            || playerState.shotmeter.Slider.value >= 95)
+           || playerState.shotmeter.SliderValueOnButtonPress >= 95)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
@@ -491,7 +492,8 @@ public class BasketBall : MonoBehaviour
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
-        int slider = Mathf.FloorToInt(playerState.shotmeter.Slider.value);
+        int slider = Mathf.FloorToInt(playerState.shotmeter.SliderValueOnButtonPress);
+
         float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
 
@@ -515,7 +517,7 @@ public class BasketBall : MonoBehaviour
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
         }
         // 100 - slider + 1/3 of (100 - profile accuracy)
-        return (sliderModifer + (accuracyModifier/3)) * direction;
+        return (sliderModifer + (accuracyModifier / 3)) * direction;
     }
 
     private int getRandomPositiveOrNegative()
@@ -668,5 +670,13 @@ public class BasketBall : MonoBehaviour
     public BasketBallStats BasketBallStats
     {
         get => basketBallStats;
+    }
+
+    IEnumerator LaunchBasketBall()
+    {
+        // wait for shot meter to finish
+        yield return new WaitUntil(() => playerState.shotmeter.MeterEnded == false);
+        //launch ball to goal      
+        Launch();
     }
 }
