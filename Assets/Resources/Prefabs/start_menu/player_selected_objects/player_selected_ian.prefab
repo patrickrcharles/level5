@@ -62,7 +62,7 @@ MonoBehaviour:
   accuracy4pt: 80
   accuracy7pt: 80
   shooterProfilePrefabName: 
-  jumpForce: 5
+  jumpForce: 4.8
   speed: 3.2
   runSpeedHasBall: 3.5
   runSpeed: 3.8
