@@ -214,11 +214,13 @@ public class BasketBall : MonoBehaviour
         if (!playerState.inAir
             && playerState.hasBasketball
             && InputManager.GetButtonDown("Fire1")
-            && InputManager.GetButton("Jump")
+            //&& InputManager.GetButtonDown("Jump")
             //&& playerState.jumpPeakReached
             && playerState.IsSetShooter
             && !basketBallState.Locked)
         {
+            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+            playerState.shotmeter.MeterEnded = true;
             shootBasketBall();
         }
     }

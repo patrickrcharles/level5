@@ -248,8 +248,8 @@ public class PlayerController : MonoBehaviour
         //------------------ jump -----------------------------------
         if ((InputManager.GetButtonDown("Jump")
             && !(InputManager.GetButtonDown("Fire1"))
-            && grounded
-            && !isSetShooter))
+            && grounded))
+            //&& !isSetShooter))
         {
             playerJump();
         }
@@ -280,7 +280,11 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
-        rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce);// + (Vector3.forward * rigidBody.velocity.x);
+        if (!isSetShooter)
+        {
+            rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
+        }
+
         //jumpStartTime = Time.time;
         shotmeter.MeterStarted = true;
         shotmeter.MeterStartTime = Time.time;

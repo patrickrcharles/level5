@@ -50,11 +50,6 @@ public class ShotMeter : MonoBehaviour
         {
             slider.value = 0;
         }
-        // if meter hits max
-        if (slider.value >= 100)
-        {
-            sliderMaxReached = true;
-        }
         //
         if (meterStarted && !locked)
         {
@@ -66,6 +61,7 @@ public class ShotMeter : MonoBehaviour
             locked = false;
         }
 
+        // this just to move the slider
         if (meterStarted && locked)
         {
             //ShotEnded = false;
@@ -79,21 +75,35 @@ public class ShotMeter : MonoBehaviour
                 {
                     sliderMaxReached = true;
                 }
+                //Debug.Log("slider.value : " + slider.value.ToString("###"));
             }
 
             if (sliderMaxReached)
             {
                 currentTime = Time.time;
                 slider.value = 90 - Math.Abs(100 - (((currentTime - meterStartTime) / (meterFillTime)) * 100));
-
             }
         }
 
+        // this is to set the values and text display. it is separate from the above code
         if (meterEnded)
         {
             sliderValueOnButtonPress = ((((Time.time - meterStartTime) / (meterFillTime)) * 100));
+            if (sliderValueOnButtonPress >= 100)
+            {
+                Debug.Log(" >>>>>>>>>>>>>>>>>>>>>> 100   sliderValueOnButtonPress : " + sliderValueOnButtonPress);
+                // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
+                // start at 90. 10 point penalty for hitting peak
+                sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
+            }
+
+            slider.value = SliderValueOnButtonPress;
+
+            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress);
+            Debug.Log("slider.value : " + slider.value);
             // display number
-            displaySliderValueOnPressText(slider.value.ToString("###"));
+            displaySliderValueOnPressText(Slider.value.ToString("###"));
+
             meterStarted = false;
             meterEnded = false;
             sliderMaxReached = false;
