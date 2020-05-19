@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public  class GameOptions : MonoBehaviour
 {
     static public string applicationVersion;
+    static public string operatingSystemVersion;
 
     static public String playerDisplayName;
     static public int playerId;
@@ -84,5 +84,6 @@ public  class GameOptions : MonoBehaviour
         Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
         Debug.Log("app version : " + applicationVersion);
         Debug.Log("date  : " + DateTime.Now);
+        Debug.Log("os  : " + operatingSystemVersion);
     }
 }
