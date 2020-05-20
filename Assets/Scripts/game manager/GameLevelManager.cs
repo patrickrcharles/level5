@@ -42,6 +42,7 @@ public class GameLevelManager : MonoBehaviour
     //[SerializeField] private int _basketballCount;
 
     private GameObject _playerClone;
+    [SerializeField]
     private GameObject[] _npcObjects;
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
@@ -99,7 +100,7 @@ public class GameLevelManager : MonoBehaviour
         string playerName = GameOptions.playerObjectName;
         foreach (var npc in _npcObjects)
         {
-            if (npc.name.Contains(playerName))
+            if ( !string.IsNullOrEmpty(playerName) && npc.name.Contains(playerName) )
             {
                 npc.SetActive(false);
             }
