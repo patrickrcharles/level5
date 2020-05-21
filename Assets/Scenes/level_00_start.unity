@@ -1641,6 +1641,11 @@ PrefabInstance:
       propertyPath: _inputConfigurations.Array.data[1].axes.Array.data[7].altPositive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1380377927853615276, guid: b8f89821c4dca504489ca098c79554ce,
+        type: 3}
+      propertyPath: _inputConfigurations.Array.data[1].axes.Array.data[2].positive
+      value: 305
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f89821c4dca504489ca098c79554ce, type: 3}
 --- !u!1001 &1644936761
