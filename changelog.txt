@@ -61,3 +61,12 @@ change log
 - new data saving for future online leaderboard
 - xbox controller works for most. cant change start screen options but can play game and access pause screen options
 - tons of shit in general. cant remember everything 
+
+3.0.1
+
+- fixed issue with flash npc in level when flash was selected as player
+- character stat tweaks
+- new character: Meggadeth
+- Woody select screen change image, change idle animation
+- fixed shot meter issue : value shown was not actual value used in caclulating basketball launch
+- swapped shoot from left control to right control
