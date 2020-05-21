@@ -96,7 +96,7 @@ public class Pause : MonoBehaviour
             // ================== pause menu options ==============================================================
 
             // reload scene
-            if (currentHighlightedButton.Equals(loadSceneButton.name)
+            if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
                     || InputManager.GetKeyDown(KeyCode.Space)
                     || InputManager.GetButtonDown("Fire1")))
@@ -110,7 +110,7 @@ public class Pause : MonoBehaviour
             }
 
             //load start screen
-            if (currentHighlightedButton.Equals(loadStartScreenButton.name)
+            if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
                 || InputManager.GetKeyDown(KeyCode.Space)
                 || InputManager.GetButtonDown("Fire1")))
@@ -119,7 +119,7 @@ public class Pause : MonoBehaviour
                 SceneManager.LoadScene("level_00_start");
             }
             // quit
-            if (currentHighlightedButton.Equals(quitGameButton.name)
+            if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
                 || InputManager.GetKeyDown(KeyCode.Space))
                 || InputManager.GetButtonDown("Fire1"))
