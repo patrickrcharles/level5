@@ -98,8 +98,8 @@ public class Pause : MonoBehaviour
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
-                    || InputManager.GetKeyDown(KeyCode.Space)
-                    || InputManager.GetButtonDown("Fire1")))
+                    || InputManager.GetKeyDown(KeyCode.Space)))
+                    //|| InputManager.GetButtonDown("Fire1")))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 // check if game still paused. on reload, game should be active
@@ -112,8 +112,8 @@ public class Pause : MonoBehaviour
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
-                || InputManager.GetKeyDown(KeyCode.Space)
-                || InputManager.GetButtonDown("Fire1")))
+                || InputManager.GetKeyDown(KeyCode.Space)))
+                //|| InputManager.GetButtonDown("Fire1")))
             {
                 // start screen should be first scene in build
                 SceneManager.LoadScene("level_00_start");
@@ -121,8 +121,8 @@ public class Pause : MonoBehaviour
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
-                || InputManager.GetKeyDown(KeyCode.Space))
-                || InputManager.GetButtonDown("Fire1"))
+                || InputManager.GetKeyDown(KeyCode.Space)))
+                //|| InputManager.GetButtonDown("Fire1"))
             {
                 Quit();
             }
