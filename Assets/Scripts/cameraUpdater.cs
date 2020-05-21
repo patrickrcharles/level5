@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Experimental.PlayerLoop;
@@ -6,7 +7,7 @@ using UnityEngine.Experimental.PlayerLoop;
 public class cameraUpdater : MonoBehaviour
 {
 
-    public Transform player;
+    public GameObject player;
 
     public Camera cam;
     public float xMin, xMax, zMin, zMax, yMin, yMax;
@@ -31,6 +32,10 @@ public class cameraUpdater : MonoBehaviour
     [SerializeField]
     private float addToCameraPosY;
 
+    [SerializeField]
+    float playerDistanceFromRimX;
+    [SerializeField]
+    float playerDistanceFromRimZ;
 
 
     void Start()
@@ -49,7 +54,7 @@ public class cameraUpdater : MonoBehaviour
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = GameLevelManager.Instance.Player.transform;
+        player = GameLevelManager.Instance.Player;
         //relCameraPos = player.position - transform.position;
 
         addToCameraPosY = 1.835f;
@@ -60,8 +65,8 @@ public class cameraUpdater : MonoBehaviour
     {
         //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        playerPos = new Vector3(player.position.x,
-            0, player.position.z);
+        playerPos = new Vector3(player.transform.position.x,
+            0, player.transform.position.z);
         //camPos = new Vector3(cam.transform.position.x,
         //    0, cam.transform.root.position.z);
 
@@ -70,6 +75,10 @@ public class cameraUpdater : MonoBehaviour
 
         //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
         distanceRimFromPlayer = rimPos.z - playerPos.z;
+
+        playerDistanceFromRimX = Math.Abs( player.transform.position.x );
+        playerDistanceFromRimZ = Math.Abs( player.transform.position.z );
+
 
         //if ((player != null))
         //{
@@ -96,7 +105,7 @@ public class cameraUpdater : MonoBehaviour
     {
         if ((player != null))
         {
-            transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
+            transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
                 //cam.transform.position.y,
                 player.transform.position.y + addToCameraPosY,
                 cam.transform.position.z);
@@ -112,6 +121,17 @@ public class cameraUpdater : MonoBehaviour
         {
             zoomIn();
         }
+
+        //if (playerDistanceFromRimX > 6f && playerDistanceFromRimZ < 2 && cameraZoomedIn)
+        //{
+        //    Debug.Log(" zoom out side");
+        //    zoomOut();
+        //}
+        //if (playerDistanceFromRimX < 6f && playerDistanceFromRimZ > 2 && cameraZoomedOut)
+        //{
+        //    Debug.Log(" zoom in side");
+        //    zoomIn();
+        //}
     }
 
     private void zoomOut()
