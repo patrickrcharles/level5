@@ -60,8 +60,8 @@ MonoBehaviour:
   speedStatCeiling: 6
   accuracy2pt: 90
   accuracy3pt: 81
-  accuracy4pt: 86
-  accuracy7pt: 90
+  accuracy4pt: 83
+  accuracy7pt: 93
   shooterProfilePrefabName: 
   jumpForce: 5.2
   speed: 3
