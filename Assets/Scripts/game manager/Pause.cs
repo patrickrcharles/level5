@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -49,13 +50,12 @@ public class Pause : MonoBehaviour
             setPauseScreen(false);
         }
         // init current button
-        currentHighlightedButton = EventSystem.current.firstSelectedGameObject;
+        currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         //pause ESC, submit, cancel
         if (InputManager.GetButtonDown("Submit")
             || InputManager.GetButtonDown("Cancel")
@@ -83,21 +83,20 @@ public class Pause : MonoBehaviour
         // if paused, show pause menu
         if (paused)
         {
-            // if no button is selected (null). this happens with mouse clicks on the screen.
-            // reset to default button
-            currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
-
-            // check if button highlight empty. reset to default
-            if (currentHighlightedButton == null)
+            // check for some button not selected
+            //*this is a hack but it works patch for v3.0.1 : clicking mouse causing game to crash
+            if (EventSystem.current.currentSelectedGameObject == null)
             {
-                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
-                currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
             }
+            currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
+            currentHighlightedButton.GetComponent<Button>().Select();
+            currentHighlightedButton.GetComponent<Button>().OnSelect(null);
 
             // ================== pause menu options ==============================================================
 
             // reload scene
-            if (currentHighlightedButton.name.Equals(loadSceneButton.name)
+            if (currentHighlightedButton.Equals(loadSceneButton.name)
                 && (InputManager.GetKeyDown(KeyCode.Return)
                     || InputManager.GetKeyDown(KeyCode.Space)
                     || InputManager.GetButtonDown("Fire1")))
@@ -111,8 +110,8 @@ public class Pause : MonoBehaviour
             }
 
             //load start screen
-            if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-            && (InputManager.GetKeyDown(KeyCode.Return)
+            if (currentHighlightedButton.Equals(loadStartScreenButton.name)
+                && (InputManager.GetKeyDown(KeyCode.Return)
                 || InputManager.GetKeyDown(KeyCode.Space)
                 || InputManager.GetButtonDown("Fire1")))
             {
@@ -120,8 +119,8 @@ public class Pause : MonoBehaviour
                 SceneManager.LoadScene("level_00_start");
             }
             // quit
-            if (currentHighlightedButton.name.Equals(quitGameButton.name)
-            && (InputManager.GetKeyDown(KeyCode.Return)
+            if (currentHighlightedButton.Equals(quitGameButton.name)
+                && (InputManager.GetKeyDown(KeyCode.Return)
                 || InputManager.GetKeyDown(KeyCode.Space))
                 || InputManager.GetButtonDown("Fire1"))
             {
