@@ -23,12 +23,93 @@ public class DBHelper : MonoBehaviour
         filepath = Application.dataPath + databaseNamePath;
     }
 
-    // For Strings
-    // create a helper class with overrides for other types
-    public String getAllValuesFromTableByField(String tableName, String field)
+    // check if spcified table is emoty
+    public bool isTableEmpty(String tableName)
     {
+        int count = 0;
 
-        String value = null;
+        dbconn = new SqliteConnection(connection);
+        dbconn.Open();
+        dbcmd = dbconn.CreateCommand();
+
+        string version = Application.version;
+        string os = SystemInfo.operatingSystem;
+
+        String sqlQuery = "SELECT count(*) FROM '" + tableName + "'";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            int value = reader.GetInt32(0); count = reader.GetInt16(0);
+        }
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        if (count == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    // rewrite function to insert relevant game mode data based on current mode
+    //**** should be called in GameRules.cs
+    public void InsertGameModeSaveData( BasketBallStats stats)
+    {
+        Debug.Log("InsertPrevVersionHighScoresToDB()");
+        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
+        filepath = Application.dataPath + databaseNamePath;
+
+        Debug.Log("connection : " + connection);
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        /*what to save 
+         * modeid
+         * character
+         * characterid
+         * level
+         * levelid
+         * os
+         * version
+         * date
+         * time
+         * totalpoints
+         * long shot
+         * total distance
+         * max shots made
+         */
+
+        string sqlQuery1 = "";
+        //    "INSERT INTO HighScores( modeid, character, level, os, version ,date, totalPoints )  " +
+        //    "Values( '" + 1 + "',  '" + m1Player + "', '" + m1Level + "','" + m1os + "','" + m1version + "','" + m1Date + "','" + m1score + "')";
+
+        dbcmd.CommandText =sqlQuery1;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+    }
+
+    public List<String> getStringListOfAllValuesFromTableByField(String tableName, String field)
+    {
+        Debug.Log("getListOfAllValuesFromTableByField()");
+        List<String> listOfValues = new List<string>();
+        String value;
 
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -43,6 +124,8 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetString(0);
+            listOfValues.Add(value);
+
             Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
         }
         reader.Close();
@@ -52,9 +135,77 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
-        return value;
+        return listOfValues;
     }
 
+    public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
+    {
+        Debug.Log("getListOfAllValuesFromTableByField()");
+        List<int> listOfValues = new List<int>();
+        int value;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery = "SELECT " + field + " FROM " + tableName;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+            listOfValues.Add(value);
+
+            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return listOfValues;
+    }
+
+    public List<float> getFloatListOfAllValuesFromTableByField(String tableName, String field)
+    {
+        Debug.Log("getListOfAllValuesFromTableByField()");
+        List<float> listOfValues = new List<float>();
+        float value;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery = "SELECT " + field + " FROM " + tableName;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetFloat(0);
+            listOfValues.Add(value);
+
+            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return listOfValues;
+    }
+
+
+    // return string from specified table by field and userid
     public String getStringValueFromTableByFieldAndId(String tableName, String field, int userid)
     {
 
@@ -91,6 +242,7 @@ public class DBHelper : MonoBehaviour
         return value.ToString();
     }
 
+    // return int from specified table by field and userid
     public int getIntValueFromTableByFieldAndId(String tableName, String field, int userid)
     {
 
@@ -127,28 +279,27 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-
-    public bool isTableEmpty(String tableName)
+    // return string from specified table by field and userid
+    public float getFloatValueFromTableByFieldAndId(String tableName, String field, float userid)
     {
-        int count = 0;
 
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
+        float value = 0;
 
-        string version = Application.version;
-        string os = SystemInfo.operatingSystem;
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
 
-        String sqlQuery = "SELECT count(*) FROM '" + tableName + "'";
+        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = " + userid;
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
         while (reader.Read())
         {
-            int value = reader.GetInt32(0); count = reader.GetInt16(0);
+            value = reader.GetFloat(0);
+            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
         }
-
         reader.Close();
         reader = null;
         dbcmd.Dispose();
@@ -156,10 +307,7 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
-        if (count == 0)
-        {
-            return true;
-        }
-        return false;
+        return value;
     }
+
 }

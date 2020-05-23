@@ -19,14 +19,21 @@ public class DBConnector : MonoBehaviour
     private int currentGameVersion;
     private String filepath;
 
+    const String tableNameHighScores = "HighScores";
+    const String tableNameUser = "User";
+
     IDbCommand dbcmd;
     IDataReader reader;
     private IDbConnection dbconn;
 
+    // move ld playerpref scores to db
     TransferPlayerPrefScoresToDB transferPlayerPrefScoresToDB;
+    // DB function
+    DBHelper dbHelper;
 
     public static DBConnector instance;
 
+    // game versions that use playerprefs for scores
     enum prevVersionsWithNoDB
     {
         v1 = 201,
@@ -39,6 +46,7 @@ public class DBConnector : MonoBehaviour
     void Awake()
     {
         instance = this;
+
         // only create player data once
         if (!_created)
         {
@@ -57,10 +65,12 @@ public class DBConnector : MonoBehaviour
         connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         filepath = Application.dataPath + databaseNamePath;
         currentGameVersion = getCurrentGameVersionToInt(Application.version);
-        currentPlayerId =  getIntValueFromTableByFieldAndId("User", "userid", 1) ;
-        Debug.Log( "currentPlayerId : "+ currentPlayerId);
 
-        transferPlayerPrefScoresToDB = new TransferPlayerPrefScoresToDB();
+        dbHelper = gameObject.GetComponent<DBHelper>();
+        transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
+
+        // im the only person with a player id right now. this will come from  registration
+        currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
 
         // if database doesnt exist
         if (!File.Exists(filepath))
@@ -69,15 +79,14 @@ public class DBConnector : MonoBehaviour
         }
 
         //if(currentGameVersion.Equals())
-
         //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v1);
         //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v2);
         //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v3);
 
-        Debug.Log(" v to int " + getCurrentGameVersionToInt(Application.version));
-
+        // get device user is currently using
         SetCurrentUserDevice();
 
+        // check if old version and scores need to be transferred
         if (currentGameVersion == (int) prevVersionsWithNoDB.v1
             || currentGameVersion == (int) prevVersionsWithNoDB.v2
             || currentGameVersion == (int) prevVersionsWithNoDB.v3 
@@ -85,13 +94,13 @@ public class DBConnector : MonoBehaviour
             && getPrevHighScoreInserted() == 0)
         {
             Debug.Log(" put playerprefs into db");
-            Debug.Log("long shot made : "+PlayerData.instance.LongestShotMade);
-
-             transferPlayerPrefScoresToDB.InsertPrevVersionHighScoresToDB();
+            // get object instance needed to transfer scores
+            transferPlayerPrefScoresToDB.InsertPrevVersionHighScoresToDB();
         }
-
+        // setf lag that scores have been transferred and dont need to be transferred again
         setPrevHighScoreInsertedTrue();
 
+        dbHelper.getStringListOfAllValuesFromTableByField(tableNameHighScores, "level");
         //Debug.Log(isTableEmpty("User") );
         //Debug.Log(isTableEmpty("HighScores") );
         //getAllValuesFromTableByField("User", "userName");
@@ -100,157 +109,7 @@ public class DBConnector : MonoBehaviour
         //getValueFromTableByFieldAndId("User", "email", 1);
     }
 
-    void InsertPrevVersionHighScoresToDB()
-    {
-        Debug.Log("add prev high scores to DB");
-
-        ///int maxGameModes = 13;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-
-        //string sqlQuery = "INSERT INTO User Values(?,?), ('" + uname + "', '" + pass + "')";
-
-        string sqlQuery1 =
-            "INSERT INTO HighScores( playerid, modeid, totalPoints )  " +
-            "Values('" + currentPlayerId + "', '" + 1 + "',  '" + PlayerData.instance.TotalPoints  + "')";
-
-        string sqlQuery2 =
-            "INSERT INTO HighScores( playerid, modeid, maxShotMade )  " +
-            "Values('" + currentPlayerId + "', '" + 2 + "',  '" + PlayerData.instance.ThreePointerMade + "')";
-
-        string sqlQuery3 =
-            "INSERT INTO HighScores( playerid, modeid, maxShotMade )  " +
-            "Values('" + currentPlayerId + "', '" + 3 + "',  '" + PlayerData.instance.FourPointerMade + "')";
-
-        string sqlQuery4 =
-            "INSERT INTO HighScores( playerid, modeid, maxShotMade )  " +
-            "Values('" + currentPlayerId + "', '" + 4 + "',  '" + PlayerData.instance.SevenPointerMade + "')";
-
-        string sqlQuery5 =
-            "INSERT INTO HighScores( playerid, modeid, longestShot ) " +
-            "Values('" + currentPlayerId + "', '" + 5 + "',  '" + PlayerData.instance.LongestShotMade + "')";
-
-        string sqlQuery6 =
-            "INSERT INTO HighScores( playerid, modeid, totalDistance )  " +
-            "Values('" + currentPlayerId + "', '" + 6 + "',  '" + PlayerData.instance.TotalDistance + "')";
-
-        string sqlQuery7 =
-            "INSERT INTO HighScores( playerid, modeid, time )  " +
-            "Values('" + currentPlayerId + "', '" + 7 + "',  '" + PlayerData.instance.MakeThreePointersLowTime + "')";
-
-        string sqlQuery8 =
-            "INSERT INTO HighScores( playerid, modeid, time ) " +
-            "Values('" + currentPlayerId + "', '" + 8 + "',  '" + PlayerData.instance.MakeFourPointersLowTime + "')";
-
-        string sqlQuery9 =
-            "INSERT INTO HighScores( playerid, modeid, time )  " +
-            "Values('" + currentPlayerId + "', '" + 9 + "',  '" + PlayerData.instance.MakeAllPointersLowTime + "')";
-
-        string sqlQuery10 =
-            "INSERT INTO HighScores( playerid, modeid, time ) " +
-            " Values('" + currentPlayerId + "', '" + 10 + "',  '" + PlayerData.instance.MakeAllPointersMoneyBallLowTime + "')";
-
-        string sqlQuery11 =
-            "INSERT INTO HighScores( playerid, modeid, time )  " +
-            "Values('" + currentPlayerId + "', '" + 11 + "',  '" + PlayerData.instance.MakeFourPointersMoneyBallLowTime + "')";
-
-        string sqlQuery12 =
-            "INSERT INTO HighScores( playerid, modeid, time )  " +
-            "Values('" + currentPlayerId + "', '" + 12 + "',  '" + PlayerData.instance.MakeAllPointersMoneyBallLowTime + "')";
-
-        string sqlQuery13 =
-            "INSERT INTO HighScores( playerid, modeid, longestShot )  " +
-            "Values('" + currentPlayerId + "', '" + 13 + "',  '" + PlayerData.instance.LongestShotMadeFreePlay + "')";
-
-
-        dbcmd.CommandText = sqlQuery1;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery2;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-        dbcmd.CommandText = sqlQuery3;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery4;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery5;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery6;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery7;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery8;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery9;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery10;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery11;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery12;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-        
-
-        dbcmd.CommandText = sqlQuery13;
-        reader = dbcmd.ExecuteReader();
-        reader.Close();
-
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-
-        //while (reader.Read())
-        //{
-        //    //int value = reader.GetInt32(0);
-        //    int id = reader.GetInt16(0);
-        //    string name = reader.GetString(1);
-        //    string email = reader.GetString(2);
-        //    string password = reader.GetString(3);
-        //    //int rand = reader.GetInt32(2);
-
-        //    Debug.Log("id = " + id + " | name =" + name + " | email = " + email + " | password : " + password);
-        //}
-    }
-
-
+    // strip string to convert to an int that can be used for comparisons with enum (int)var
     int getCurrentGameVersionToInt(String version)
     {
         // parse out ".", convert to int
@@ -259,7 +118,7 @@ public class DBConnector : MonoBehaviour
 
         return versionInt;
     }
-
+    // have high scores been transferred already. checks flag in User table
     int getPrevHighScoreInserted()
     {
         int value = 0; 
@@ -288,7 +147,7 @@ public class DBConnector : MonoBehaviour
 
         return value;
     }
-
+    // set high sores transferred flag to true
     int setPrevHighScoreInsertedTrue()
     {
         int value = 0;
@@ -317,7 +176,7 @@ public class DBConnector : MonoBehaviour
 
         return value;
     }
-
+    // set user's current device in User table
     void SetCurrentUserDevice()
     {
         dbconn = new SqliteConnection(connection);
@@ -335,146 +194,7 @@ public class DBConnector : MonoBehaviour
 
     }
 
-    // For Strings
-    // create a helper class with overrides for other types
-    String getAllValuesFromTableByField(String tableName, String field)
-    {
- 
-        String value = null;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetString(0);
-            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-
-    String getStringValueFromTableByFieldAndId(String tableName, String field, int userid)
-    {
-
-        String value = null;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = "+ userid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            //int value = reader.GetInt32(0);
-            value = reader.GetString(0);
-            //string name = reader.GetString(1);
-            //string email = reader.GetString(2);
-            //string password = reader.GetString(3);
-            ////int rand = reader.GetInt32(2);
-
-            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value.ToString();
-    }
-
-    int getIntValueFromTableByFieldAndId(String tableName, String field, int userid)
-    {
-
-        int value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = " + userid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            //int value = reader.GetInt32(0);
-            value = reader.GetInt32(0);
-            //string name = reader.GetString(1);
-            //string email = reader.GetString(2);
-            //string password = reader.GetString(3);
-            ////int rand = reader.GetInt32(2);
-
-            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-
-
-    bool isTableEmpty(String tableName)
-    {
-        int count = 0;
-
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
-
-        string version = Application.version;
-        string os = SystemInfo.operatingSystem;
-
-        String sqlQuery = "SELECT count(*) FROM '"+ tableName + "'";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            int value = reader.GetInt32(0);count = reader.GetInt16(0);
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        if (count == 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
+    // create tables if not created
     void createDatabase()
     {
         Debug.Log("create database");
@@ -515,69 +235,6 @@ public class DBConnector : MonoBehaviour
         dbconn.Close();
 
     }
-
-    void ReadDatabase()
-    {
-        Debug.Log("read database");
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT id, name, email, password " + "FROM User";
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        while (reader.Read())
-        {
-            //int value = reader.GetInt32(0);
-            int id = reader.GetInt16(0);
-            string name = reader.GetString(1);
-            string email = reader.GetString(2);
-            string password = reader.GetString(3);
-            //int rand = reader.GetInt32(2);
-
-            Debug.Log("id = " + id + " | name =" + name + " | email = " + email + " | password : " + password);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-    }
-
-    //void AddUser()
-    //{
-    //    Debug.Log("add user to database");
-
-    //    string conn = "URI=file:" + Application.dataPath + "/level5.db"; //Path to database.
-    //    IDbConnection dbconn;
-    //    dbconn = (IDbConnection)new SqliteConnection(conn);
-    //    dbconn.Open(); //Open connection to the database.
-    //    IDbCommand dbcmd = dbconn.CreateCommand();
-
-    //    string sqlQuery = "INSERT INTO User Values(?,?), ('" + uname + "', '" + pass + "')";
-    //    dbcmd.CommandText = sqlQuery;
-    //    IDataReader reader = dbcmd.ExecuteReader();
-    //    //while (reader.Read())
-    //    //{
-    //    //    //int value = reader.GetInt32(0);
-    //    //    int id = reader.GetInt16(0);
-    //    //    string name = reader.GetString(1);
-    //    //    string email = reader.GetString(2);
-    //    //    string password = reader.GetString(3);
-    //    //    //int rand = reader.GetInt32(2);
-
-    //    //    Debug.Log("id = " + id + " | name =" + name + " | email = " + email + " | password : " + password);
-    //    //}
-    //    reader.Close();
-    //    reader = null;
-    //    dbcmd.Dispose();
-    //    dbcmd = null;
-    //    dbconn.Close();
-    //    dbconn = null;
-    //}
 }
 
 
