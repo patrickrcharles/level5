@@ -13,7 +13,7 @@ using System.Threading;
 public class DBConnector : MonoBehaviour
 {
     private int currentPlayerId;
-
+    bool _created;
     private String connection;
     private String databaseNamePath = "/level5.db";
     private int currentGameVersion;
@@ -25,6 +25,7 @@ public class DBConnector : MonoBehaviour
 
     TransferPlayerPrefScoresToDB transferPlayerPrefScoresToDB;
 
+    public static DBConnector instance;
 
     enum prevVersionsWithNoDB
     {
@@ -32,7 +33,23 @@ public class DBConnector : MonoBehaviour
         v2 = 300,
         v3 = 301,
         v4 = 302
-    }; 
+    };
+
+
+    void Awake()
+    {
+        instance = this;
+        // only create player data once
+        if (!_created)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            _created = true;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
 
     void Start()
