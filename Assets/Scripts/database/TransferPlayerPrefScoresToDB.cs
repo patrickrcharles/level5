@@ -75,6 +75,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m1Level = PlayerPrefs.GetString("mode_" + 1 + "_totalPointsLevel");
         string m1Player = PlayerPrefs.GetString("mode_" + 1 + "_totalPointsPlayer");
         string m1os = PlayerPrefs.GetString("mode_" + 1 + "_operatingSystem");
+        string m1version = PlayerPrefs.GetString("mode_1_totalPointsAppVersion");
 
 
         int m2score = PlayerPrefs.GetInt("mode_" + 2 + "_threePointersMade");
@@ -83,6 +84,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m2Level = PlayerPrefs.GetString("mode_" + 2 + "_threePointersMadeLevel");
         string m2Player = PlayerPrefs.GetString("mode_" + 2 + "_threePointersMadePlayer");
         string m2os = PlayerPrefs.GetString("mode_" + 2 + "_operatingSystem");
+        string m2version = PlayerPrefs.GetString("mode_" + 2 + "_longestShotMadeFreePlayAppVersion");
 
         int m3score = PlayerPrefs.GetInt("mode_" + 3 + "_fourPointersMade");
         string m3Version = PlayerPrefs.GetString("mode_" + 3 + "_fourPointersMadeAppVersion");
@@ -90,6 +92,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m3Level = PlayerPrefs.GetString("mode_" + 3 + "_fourPointersMadeLevel");
         string m3Player = PlayerPrefs.GetString("mode_" + 3 + "_fourPointersMadePlayer");
         string m3os = PlayerPrefs.GetString("mode_" + 3 + "_operatingSystem");
+        string m3version = PlayerPrefs.GetString("mode_" + 3 + "_longestShotMadeFreePlayAppVersion");
 
         int m4score = PlayerPrefs.GetInt("mode_" + 4 + "_sevenPointersMade");
         string m4Version = PlayerPrefs.GetString("mode_" + 4 + "_sevenPointersMadeAppVersion");
@@ -97,6 +100,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m4Level = PlayerPrefs.GetString("mode_" + 4 + "_sevenPointersMadeLevel");
         string m4Player = PlayerPrefs.GetString("mode_" + 4 + "_sevenPointersMadePlayer");
         string m4os = PlayerPrefs.GetString("mode_" + 4 + "_operatingSystem");
+        string m4version = PlayerPrefs.GetString("mode_" + 4 + "_longestShotMadeFreePlayAppVersion");
 
         float m5score = PlayerPrefs.GetFloat("mode_" + 5 + "_longestShotMade");
         string m5Version = PlayerPrefs.GetString("mode_" + 5 + "_longestShotMadeAppVersion");
@@ -104,6 +108,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m5Level = PlayerPrefs.GetString("mode_" + 5 + "_longestShotMadeLevel");
         string m5Player = PlayerPrefs.GetString("mode_" + 5 + "_longestShotMadePlayer");
         string m5os = PlayerPrefs.GetString("mode_" + 5 + "_operatingSystem");
+        string m5version = PlayerPrefs.GetString("mode_" + 5 + "_longestShotMadeFreePlayAppVersion");
 
         float m6score = PlayerPrefs.GetFloat("mode_" + 6 + "_totalDistance");
         string m6Version = PlayerPrefs.GetString("mode_" + 6 + "_totalDistanceAppVersion");
@@ -111,6 +116,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m6Level = PlayerPrefs.GetString("mode_" + 6 + "_totalDistanceLevel");
         string m6Player = PlayerPrefs.GetString("mode_" + 6 + "_totalDistancePlayer");
         string m6os = PlayerPrefs.GetString("mode_" + 6 + "_operatingSystem");
+        string m6version = PlayerPrefs.GetString("mode_" + 6 + "_longestShotMadeFreePlayAppVersion");
 
         float m7score = PlayerPrefs.GetFloat("mode_" + 7 + "_lowThreeTime");
         string m7Version = PlayerPrefs.GetString("mode_" + 7 + "_lowThreeTimeAppVersion");
@@ -118,6 +124,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m7Level = PlayerPrefs.GetString("mode_" + 7 + "_lowThreeTimeLevel");
         string m7Player = PlayerPrefs.GetString("mode_" + 7 + "_lowThreeTimePlayer");
         string m7os = PlayerPrefs.GetString("mode_" + 7 + "_operatingSystem");
+        string m7version = PlayerPrefs.GetString("mode_" + 7 + "_longestShotMadeFreePlayAppVersion");
 
         float m8score = PlayerPrefs.GetFloat("mode_" + 8 + "_lowFourTime");
         string m8Version = PlayerPrefs.GetString("mode_" + 8 + "_lowFourTimeAppVersion");
@@ -125,6 +132,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m8Level = PlayerPrefs.GetString("mode_" + 8 + "_lowFourTimeLevel");
         string m8Player = PlayerPrefs.GetString("mode_" + 8 + "_lowFourTimePlayer");
         string m8os = PlayerPrefs.GetString("mode_" + 8 + "_operatingSystem");
+        string m8version = PlayerPrefs.GetString("mode_" + 8 + "_longestShotMadeFreePlayAppVersion");
 
 
         float m9score = PlayerPrefs.GetFloat("mode_" + 9 + "_lowAllTime");
@@ -133,6 +141,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m9Level = PlayerPrefs.GetString("mode_" + 9 + "_lowAllTimeLevel");
         string m9Player = PlayerPrefs.GetString("mode_" + 9 + "_lowAllTimePlayer");
         string m9os = PlayerPrefs.GetString("mode_" + 9 + "_operatingSystem");
+        string m9version = PlayerPrefs.GetString("mode_" + 9 + "_longestShotMadeFreePlayAppVersion");
 
         float m10score = PlayerPrefs.GetFloat("mode_" + 10 + "_lowThreeTimeMoneyBall");
         string m10Version = PlayerPrefs.GetString("mode_" + 10 + "_lowThreeTimeMoneyBallAppVersion");
@@ -140,6 +149,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m10Level = PlayerPrefs.GetString("mode_" + 10 + "_lowThreeTimeMoneyBallLevel");
         string m10Player = PlayerPrefs.GetString("mode_" + 10 + "_lowThreeTimeMoneyBallPlayer");
         string m10os = PlayerPrefs.GetString("mode_" + 10 + "_operatingSystem");
+        string m10version = PlayerPrefs.GetString("mode_" + 10 + "_longestShotMadeFreePlayAppVersion");
 
         float m11score = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTimeMoneyBall");
         string m11Version = PlayerPrefs.GetString("mode_" + 11 + "_lowFourTimeMoneyBallAppVersion");
@@ -147,6 +157,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m11Level = PlayerPrefs.GetString("mode_" + 11 + "_lowFourTimeMoneyBallLevel");
         string m11Player = PlayerPrefs.GetString("mode_" + 11 + "_lowFourTimeMoneyBallPlayer");
         string m11os = PlayerPrefs.GetString("mode_" + 11 + "_operatingSystem");
+        string m11version = PlayerPrefs.GetString("mode_11_longestShotMadeFreePlayAppVersion");
 
         float m12score = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTimeMoneyBall");
         string m12Version = PlayerPrefs.GetString("mode_" + 12 + "_lowAllTimeMoneyBallAppVersion");
@@ -154,6 +165,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m12Level = PlayerPrefs.GetString("mode_" + 12 + "_lowAllTimeMoneyBallLevel");
         string m12Player = PlayerPrefs.GetString("mode_" + 12 + "_lowAllTimeMoneyBallPlayer");
         string m12os = PlayerPrefs.GetString("mode_" + 12 + "_operatingSystem");
+        string m12version = PlayerPrefs.GetString("mode_12_longestShotMadeFreePlayAppVersion");
 
         float m13score = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
         string m13Version = PlayerPrefs.GetString("mode_" + 13 + "_longestShotMadeFreePlayAppVersion");
@@ -161,61 +173,63 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
         string m13Level = PlayerPrefs.GetString("mode_" + 13 + "_longestShotMadeFreePlayLevel");
         string m13Player = PlayerPrefs.GetString("mode_" + 13 + "_longestShotMadeFreePlayPlayer");
         string m13os = PlayerPrefs.GetString("mode_" + 13 + "_operatingSystem");
+        string m13version = PlayerPrefs.GetString("mode_13_longestShotMadeFreePlayAppVersion");
+
 
         string sqlQuery1 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, totalPoints )  " +
-            "Values( '" + 1 + "',  '"+ m1Player + "', '" + m1Level + "','" + m1os + "','" + m1Date+ "','" + m1score+ "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, totalPoints )  " +
+            "Values( '" + 1 + "',  '"+ m1Player + "', '" + m1Level + "','" + m1os + "','" + m1version + "','" + m1Date + "','" + m1score+ "')";
 
         string sqlQuery2 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, maxShotMade )  " +
-            "Values( '" + 2 + "',  '" + m2Player + "', '" + m2Level + "','" + m2os + "','" + m2Date + "','" + m2score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, maxShotMade )  " +
+            "Values( '" + 2 + "',  '" + m2Player + "', '" + m2Level + "','" + m2os + "','" + m2version + "','" + m2Date + "','" + m2score + "')";
 
 
         string sqlQuery3 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, maxShotMade )  " +
-            "Values( '" + 3 + "',  '" + m3Player + "', '" + m3Level + "','" + m3os + "','" + m3Date + "','" + m3score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, maxShotMade )  " +
+            "Values( '" + 3 + "',  '" + m3Player + "', '" + m3Level + "','" + m3os + "','" + m3version + "','" + m3Date + "','" + m3score + "')";
 
 
         string sqlQuery4 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, maxShotMade )  " +
-            "Values( '" + 4 + "',  '" + m4Player + "', '" + m4Level + "','" + m4os + "','" + m4Date + "','" + m4score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, maxShotMade )  " +
+            "Values( '" + 4 + "',  '" + m4Player + "', '" + m4Level + "','" + m4os + "','" + m4version + "','" + m4Date + "','" + m4score + "')";
 
 
         string sqlQuery5 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, longestShot )  " +
-            "Values( '" + 5 + "',  '" + m5Player + "', '" + m5Level + "','" + m5os + "','" + m5Date + "','" + m5score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, longestShot )  " +
+            "Values( '" + 5 + "',  '" + m5Player + "', '" + m5Level + "','" + m5os + "','" + m5version + "','" + m5Date + "','" + m5score + "')";
 
         string sqlQuery6 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, totalDistance )  " +
-            "Values( '" + 6 + "',  '" + m6Player + "', '" + m6Level + "','" + m6os + "','" + m6Date + "','" + m6score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, totalDistance )  " +
+            "Values( '" + 6 + "',  '" + m6Player + "', '" + m6Level + "','" + m6os + "','" + m6version + "','" + m6Date + "','" + m6score + "')";
 
         string sqlQuery7 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 7 + "',  '" + m7Player + "', '" + m7Level + "','" + m7os + "','" + m7Date + "','" + m7score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 7 + "',  '" + m7Player + "', '" + m7Level + "','" + m7os + "','" + m7version + "','" + m7Date + "','" + m7score + "')";
 
         string sqlQuery8 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 8 + "',  '" + m8Player + "', '" + m8Level + "','" + m8os + "','" + m8Date + "','" + m8score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 8 + "',  '" + m8Player + "', '" + m8Level + "','" + m8os + "','" + m8version + "','" + m8Date + "','" + m8score + "')";
 
         string sqlQuery9 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 9 + "',  '" + m9Player + "', '" + m9Level + "','" + m9os + "','" + m9Date + "','" + m9score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 9 + "',  '" + m9Player + "', '" + m9Level + "','" + m9os + "','" + m9version + "','" + m9Date + "','" + m9score + "')";
 
         string sqlQuery10 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 10 + "',  '" + m10Player + "', '" + m10Level + "','" + m10os + "','" + m10Date + "','" + m10score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 10 + "',  '" + m10Player + "', '" + m10Level + "','" + m10os + "','" + m10version + "','" + m10Date + "','" + m10score + "')";
 
         string sqlQuery11 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 11 + "',  '" + m11Player + "', '" + m11Level + "','" + m11os + "','" + m11Date + "','" + m11score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 11 + "',  '" + m11Player + "', '" + m11Level + "','" + m11os + "','" + m11version + "','" + m11Date + "','" + m11score + "')";
 
         string sqlQuery12 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, time )  " +
-            "Values( '" + 12 + "',  '" + m12Player + "', '" + m12Level + "','" + m12os + "','" + m12Date + "','" + m12score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, time )  " +
+            "Values( '" + 12 + "',  '" + m12Player + "', '" + m12Level + "','" + m12os + "','" + m12version + "','" + m12Date + "','" + m12score + "')";
 
         string sqlQuery13 =
-            "INSERT INTO HighScores( modeid, character, level, os, date, longestShot )  " +
-            "Values( '" + 13 + "',  '" + m13Player + "', '" + m13Level + "','" + m13os + "','" + m13Date + "','" + m13score + "')";
+            "INSERT INTO HighScores( modeid, character, level, os, version ,date, longestShot )  " +
+            "Values( '" + 13 + "',  '" + m13Player + "', '" + m13Level + "','" + m13os + "','" + m13version + "','" + m13Date + "','" + m13score + "')";
 
 
         dbcmd.CommandText = sqlQuery1;
