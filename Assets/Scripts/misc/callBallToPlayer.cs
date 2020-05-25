@@ -33,13 +33,6 @@ public class CallBallToPlayer : MonoBehaviour
         pullSpeed = 2.3f;
     }
 
-    private void pullBallToPlayer()
-    {
-        Vector3 tempDirection = basketballRigidBody.transform.position;
-        pullDirection = transform.position - tempDirection;
-        basketballRigidBody.velocity = pullDirection * pullSpeed;
-    }
-
     private void Update()
     {
         if (InputManager.GetButtonDown("Fire1")
