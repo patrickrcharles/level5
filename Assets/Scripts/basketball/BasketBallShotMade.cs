@@ -74,6 +74,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 Debug.Log(" instantiate moeny : player on marker at shoot");
                 instantiateMoney(1);
+                BasketBall.instance.BasketBallStats.MoneyBallMade++;
             }
 
             // reset states

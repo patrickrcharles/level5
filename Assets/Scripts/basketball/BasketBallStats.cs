@@ -38,6 +38,8 @@ public class BasketBallStats : MonoBehaviour
 
     private float _criticalRolled;
 
+    private float _timePlayed;
+
     //init from game options
     void Start()
     {
@@ -176,5 +178,24 @@ public class BasketBallStats : MonoBehaviour
     {
         get => _sevenPointerAttempts;
         set => _sevenPointerAttempts = value;
+    }
+
+
+    public float MoneyBallMade
+    {
+        get => _moneyBallMade;
+        set => _moneyBallMade = value;
+    }
+
+    public float MoneyBallAttempts
+    {
+        get => _moneyBallAttempts;
+        set => _moneyBallAttempts = value;
+    }
+
+    public float TimePlayed
+    {
+        get => _timePlayed;
+        set => _timePlayed = value;
     }
 }

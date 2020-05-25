@@ -12,6 +12,8 @@ public class DBHelper : MonoBehaviour
     private String databaseNamePath = "/level5.db";
     private String filepath;
 
+    private const String allTimeStatsTableName = "AllTimeStats";
+
     IDbCommand dbcmd;
     IDataReader reader;
     private IDbConnection dbconn;
@@ -42,7 +44,9 @@ public class DBHelper : MonoBehaviour
 
         while (reader.Read())
         {
-            int value = reader.GetInt32(0); count = reader.GetInt16(0);
+            int value = reader.GetInt32(0); 
+            count = value;
+            Debug.Log(" count : " + count);
         }
 
         reader.Close();
@@ -148,11 +152,14 @@ public class DBHelper : MonoBehaviour
 
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade )  " +
+           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt )  " +
            "Values( '" + GameOptions.gameModeSelected + "', '" + GameOptions.playerId + "', '" + GameOptions.playerDisplayName 
            + "','" + GameOptions.levelId + "','" + GameOptions.levelDisplayName + "','" + SystemInfo.operatingSystem + "','" 
            + Application.version + "','" + DateTime.Now + "','" + GameRules.instance.CounterTime 
-           + "','" + stats.TotalPoints   + "','" + stats.LongestShotMade + "','"+ stats.TotalDistance + "','"+ stats.ShotMade+"')";
+           + "','" + stats.TotalPoints   + "','" + stats.LongestShotMade + "','"+ stats.TotalDistance + "','"
+           + stats.ShotMade + "','" + stats.ShotAttempt +  "')";
+
+        Debug.Log(sqlQuery1);
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -166,9 +173,101 @@ public class DBHelper : MonoBehaviour
 
     }
 
+    internal BasketBallStats getAllTimeStats()
+    {
+        BasketBallStats prevStats = gameObject.AddComponent<BasketBallStats>();
+
+        String sqlQuery = "";
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+
+        if (!isTableEmpty(allTimeStatsTableName))
+        {
+            Debug.Log(" table is not empty");
+            sqlQuery ="Select  * From " + allTimeStatsTableName;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                prevStats.TwoPointerMade = reader.GetInt32(0);
+                prevStats.TwoPointerAttempts = reader.GetInt32(1);
+                prevStats.ThreePointerMade = reader.GetInt32(2);
+                prevStats.ThreePointerAttempts = reader.GetInt32(3);
+                prevStats.FourPointerMade = reader.GetInt32(4);
+                prevStats.FourPointerAttempts = reader.GetInt32(5);
+                prevStats.SevenPointerMade = reader.GetInt32(6);
+                prevStats.SevenPointerAttempts = reader.GetInt32(7);
+                prevStats.MoneyBallMade = reader.GetInt32(8);
+                prevStats.MoneyBallAttempts = reader.GetInt32(9);
+                prevStats.TotalDistance = reader.GetFloat(10);
+                prevStats.TimePlayed = reader.GetFloat(11);
+            }
+
+            Debug.Log(" prevstats : " + prevStats.TwoPointerMade + " / " + prevStats.TwoPointerAttempts);
+
+        }
+        Destroy(prevStats, 5);
+        return prevStats;
+    }
+
     internal void UpdateAllTimeStats(BasketBallStats stats)
     {
-        throw new NotImplementedException();
+        String sqlQuery = "";
+        BasketBallStats prevStats = getAllTimeStats();
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        if (isTableEmpty(allTimeStatsTableName))
+        {
+            Debug.Log(" table is empty");
+            sqlQuery =
+           "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
+           "sevenAtt, moneyBallMade, moneyBallAtt, totalDistance, timePlayed)  " +
+           "Values( '" + stats.TwoPointerMade + "', '" + stats.TwoPointerAttempts + "', '" + stats.ThreePointerMade
+           + "','" + stats.ThreePointerAttempts + "','" + stats.FourPointerMade + "','" + stats.FourPointerAttempts + "','"
+           + stats.SevenPointerMade + "','" + stats.SevenPointerAttempts + "','" + stats.MoneyBallMade + "','" + stats.MoneyBallAttempts
+           + "','" + stats.TotalDistance + "','" + stats.TimePlayed + "')";
+        }
+        else
+        {
+            Debug.Log(" table not empty");
+
+            sqlQuery =
+           "Update " + allTimeStatsTableName + 
+           " SET" +
+           " twoMade = " + (prevStats.TwoPointerMade += stats.TwoPointerMade) +
+           ", twoAtt = " + (prevStats.TwoPointerAttempts += stats.TwoPointerAttempts) +
+           ", threeMade = " + (prevStats.ThreePointerMade += stats.ThreePointerMade) +
+           ", threeAtt = " + (prevStats.ThreePointerAttempts += stats.ThreePointerAttempts) +
+           ", fourMade = " + (prevStats.FourPointerMade += stats.FourPointerMade) +
+           ", FourAtt = " + (prevStats.FourPointerAttempts += stats.FourPointerAttempts) +
+           ", sevenMade = " + (prevStats.SevenPointerMade += stats.SevenPointerMade) +
+           ", sevenAtt = " + (prevStats.SevenPointerMade += stats.SevenPointerAttempts) +
+           ", moneyBallMade = " + (prevStats.MoneyBallMade += stats.MoneyBallMade) +
+           ", moneyBallAtt = " + (prevStats.MoneyBallAttempts += stats.MoneyBallAttempts) +
+           ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
+           ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
+           " WHERE ROWID = 1 ";
+        }
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
     }
 
 

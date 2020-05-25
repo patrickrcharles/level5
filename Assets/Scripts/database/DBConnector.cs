@@ -114,7 +114,7 @@ public class DBConnector : MonoBehaviour
         dbHelper.InsertGameScore(stats);
     }
 
-    void savePlayerAllTimeStats(BasketBallStats stats)
+    public void savePlayerAllTimeStats(BasketBallStats stats)
     {
         dbHelper.UpdateAllTimeStats(stats);
     }
@@ -237,8 +237,21 @@ public class DBConnector : MonoBehaviour
             "password  TEXT, " +
             "version   TEXT, " +
             "os    TEXT, " +
-            "PRIMARY KEY(id));"
-        );
+            "PRIMARY KEY(id));" +
+
+            "CREATE TABLE if not exists AllTimeStats(" +
+            "twoMade   INTEGER," +
+            "twoAtt    INTEGER," +
+            "threeMade INTEGER," +
+            "threeAtt  INTEGER," +
+            "fourMade  INTEGER," +
+            "fourAtt   INTEGER," +
+            "sevenMade INTEGER," +
+            "sevenAtt  INTEGER," +
+            "moneyBallMade INTEGER," +
+            "moneyBallAtt  INTEGER," +
+            "totalDistance REAL," +
+            "timePlayed    REAL);");
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();

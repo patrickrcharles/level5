@@ -8,15 +8,12 @@ using UnityEngine.UIElements;
 
 public class GameRules : MonoBehaviour
 {
-    [SerializeField]
+
     private int playerId;
-    [SerializeField]
     private int levelId;
-    [SerializeField]
     private int gameModeId;
     private float timerStart;
 
-    [SerializeField]
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
@@ -61,9 +58,13 @@ public class GameRules : MonoBehaviour
 
     public static GameRules instance;
 
+    float timePlayedStart;
+    float timePlayedEnd;
+
     private void Awake()
     {
         instance = this;
+        timePlayedStart = Time.time;
     }
 
     private void Start()
@@ -130,6 +131,11 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
 
+            // time played end
+            timePlayedEnd = Time.time;
+            basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
+            Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
+
             //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
@@ -145,6 +151,7 @@ public class GameRules : MonoBehaviour
             {
                 Debug.Log("**********************************************save to DB :: if (GameObject.Find(database) != null) ");
                 DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
             }
 
             // alert game manager
@@ -380,6 +387,7 @@ public class GameRules : MonoBehaviour
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
+            
             if (modeRequiresCounter)
             {
                 setRequiresCounterLowScore();
