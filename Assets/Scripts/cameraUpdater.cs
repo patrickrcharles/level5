@@ -37,6 +37,13 @@ public class cameraUpdater : MonoBehaviour
     [SerializeField]
     float playerDistanceFromRimZ;
 
+    [SerializeField]
+    bool isOrthoGraphic;
+
+    bool mainPerspectiveCamActive;
+    bool orthoCam1Active;
+    bool orthoCam2Active;
+
 
     void Start()
     {
@@ -57,7 +64,21 @@ public class cameraUpdater : MonoBehaviour
         player = GameLevelManager.Instance.Player;
         //relCameraPos = player.position - transform.position;
 
-        addToCameraPosY = 1.835f;
+        if (isOrthoGraphic && cam.name.Contains("camera_orthographic_1"))
+        {
+            addToCameraPosY = 2.5f;
+            orthoCam1Active = true;
+        }
+        if (isOrthoGraphic && cam.name.Contains("camera_orthographic_2"))
+        {
+            addToCameraPosY = 3.3f;
+            orthoCam2Active = true;
+        }
+        if(!isOrthoGraphic)
+        {
+            addToCameraPosY = 1.835f;
+            mainPerspectiveCamActive = true;
+        }
     }
 
 
@@ -103,11 +124,18 @@ public class cameraUpdater : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((player != null))
+        if ((player != null) && mainPerspectiveCamActive)
         {
             transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
                 //cam.transform.position.y,
                 player.transform.position.y + addToCameraPosY,
+                cam.transform.position.z);
+        }
+        if ((player != null) && isOrthoGraphic)
+        {
+            transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
+                //cam.transform.position.y,
+                addToCameraPosY,
                 cam.transform.position.z);
         }
 
