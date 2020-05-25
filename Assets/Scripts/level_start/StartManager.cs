@@ -408,6 +408,7 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
+        Debug.Log("scene name : " + sceneName);
         SceneManager.LoadScene(sceneName);
     }
 
@@ -435,7 +436,12 @@ public class StartManager : MonoBehaviour
     {
         GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;        
+        
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+        GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
+        GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
+
 
         GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;

@@ -109,6 +109,16 @@ public class DBConnector : MonoBehaviour
         //getValueFromTableByFieldAndId("User", "email", 1);
     }
 
+    public void savePlayerGameStats(BasketBallStats stats)
+    {
+        dbHelper.InsertGameScore(stats);
+    }
+
+    void savePlayerAllTimeStats(BasketBallStats stats)
+    {
+        dbHelper.UpdateAllTimeStats(stats);
+    }
+
     // strip string to convert to an int that can be used for comparisons with enum (int)var
     int getCurrentGameVersionToInt(String version)
     {

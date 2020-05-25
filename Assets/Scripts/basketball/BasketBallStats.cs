@@ -5,7 +5,10 @@ using UnityEngine;
 public class BasketBallStats : MonoBehaviour
 {
     private int _playerId;
-    private string _playerName;
+    private string _playerName;    
+    
+    private int _levelId;
+    private string _levelName;
 
     private float _totalPoints;
     private float _twoPointerMade;

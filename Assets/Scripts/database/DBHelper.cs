@@ -138,6 +138,40 @@ public class DBHelper : MonoBehaviour
         return listOfValues;
     }
 
+
+    internal void InsertGameScore(BasketBallStats stats)
+    {
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery1 =
+           "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
+           "totalPoints, longestShot, totalDistance, maxShotMade )  " +
+           "Values( '" + GameOptions.gameModeSelected + "', '" + GameOptions.playerId + "', '" + GameOptions.playerDisplayName 
+           + "','" + GameOptions.levelId + "','" + GameOptions.levelDisplayName + "','" + SystemInfo.operatingSystem + "','" 
+           + Application.version + "','" + DateTime.Now + "','" + GameRules.instance.CounterTime 
+           + "','" + stats.TotalPoints   + "','" + stats.LongestShotMade + "','"+ stats.TotalDistance + "','"+ stats.ShotMade+"')";
+
+        dbcmd.CommandText = sqlQuery1;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+    }
+
+    internal void UpdateAllTimeStats(BasketBallStats stats)
+    {
+        throw new NotImplementedException();
+    }
+
+
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
     {
         Debug.Log("getListOfAllValuesFromTableByField()");

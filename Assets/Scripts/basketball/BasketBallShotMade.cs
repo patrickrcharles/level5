@@ -52,12 +52,12 @@ public class BasketBallShotMade : MonoBehaviour
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
 
             // add to total shot distance made total
-            _basketBallStats.TotalDistance += BasketBall.instance.LastShotDistance;
+            _basketBallStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
 
             // is this the longest shot made?
             if (BasketBall.instance.LastShotDistance > _basketBallStats.LongestShotMade)
             {
-                _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance;
+                _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
             }
             // play rim animation
             anim.Play("madeshot");
