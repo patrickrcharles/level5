@@ -303,11 +303,12 @@ MonoBehaviour:
   hasBasketball: 0
   isSetShooter: 0
   canMove: 1
-  playerRelativePositioning: {x: 0, y: 0, z: 0}
   playerDistanceFromRim: 0
   playerHitbox: {fileID: 5952285497870594516}
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
+  _facingRight: 0
+  _grounded: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -600,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5758546809750715842
 Transform:
   m_ObjectHideFlags: 0
@@ -699,7 +700,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6129896483946636891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0.3}
+  m_LocalPosition: {x: 0, y: 1, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4316879966801490548}
