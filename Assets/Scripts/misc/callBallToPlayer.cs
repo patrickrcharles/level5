@@ -29,6 +29,7 @@ public class CallBallToPlayer : MonoBehaviour
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
         canBallToPlayerEnabled = true;
+        pullSpeed = 2.3f;
     }
 
     private void pullBallToPlayer()
@@ -44,7 +45,7 @@ public class CallBallToPlayer : MonoBehaviour
             && !playerState.hasBasketball
             && !playerState.inAir
             && _basketBallState.CanPullBall
-            && canBallToPlayerEnabled
+            //&& canBallToPlayerEnabled
             && !locked)
         {
             locked = true;
