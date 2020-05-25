@@ -25,7 +25,7 @@ public class DBHelper : MonoBehaviour
         filepath = Application.dataPath + databaseNamePath;
     }
 
-    // check if spcified table is emoty
+    // check if specified table is emoty
     public bool isTableEmpty(String tableName)
     {
         int count = 0;
@@ -46,7 +46,6 @@ public class DBHelper : MonoBehaviour
         {
             int value = reader.GetInt32(0); 
             count = value;
-            Debug.Log(" count : " + count);
         }
 
         reader.Close();
@@ -63,52 +62,7 @@ public class DBHelper : MonoBehaviour
         return false;
     }
 
-    // rewrite function to insert relevant game mode data based on current mode
-    //**** should be called in GameRules.cs
-    public void InsertGameModeSaveData( BasketBallStats stats)
-    {
-        Debug.Log("InsertPrevVersionHighScoresToDB()");
-        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
-        filepath = Application.dataPath + databaseNamePath;
-
-        Debug.Log("connection : " + connection);
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        /*what to save 
-         * modeid
-         * character
-         * characterid
-         * level
-         * levelid
-         * os
-         * version
-         * date
-         * time
-         * totalpoints
-         * long shot
-         * total distance
-         * max shots made
-         */
-
-        string sqlQuery1 = "";
-        //    "INSERT INTO HighScores( modeid, character, level, os, version ,date, totalPoints )  " +
-        //    "Values( '" + 1 + "',  '" + m1Player + "', '" + m1Level + "','" + m1os + "','" + m1version + "','" + m1Date + "','" + m1score + "')";
-
-        dbcmd.CommandText =sqlQuery1;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-    }
-
+    // list of string values by table/field
     public List<String> getStringListOfAllValuesFromTableByField(String tableName, String field)
     {
         Debug.Log("getListOfAllValuesFromTableByField()");
@@ -129,8 +83,6 @@ public class DBHelper : MonoBehaviour
         {
             value = reader.GetString(0);
             listOfValues.Add(value);
-
-            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -142,7 +94,7 @@ public class DBHelper : MonoBehaviour
         return listOfValues;
     }
 
-
+    // insert current game's stats and score
     internal void InsertGameScore(BasketBallStats stats)
     {
         IDbConnection dbconn;
@@ -270,7 +222,6 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
     }
 
-
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
     {
         Debug.Log("getListOfAllValuesFromTableByField()");
@@ -393,14 +344,7 @@ public class DBHelper : MonoBehaviour
 
         while (reader.Read())
         {
-            //int value = reader.GetInt32(0);
             value = reader.GetInt32(0);
-            //string name = reader.GetString(1);
-            //string email = reader.GetString(2);
-            //string password = reader.GetString(3);
-            ////int rand = reader.GetInt32(2);
-
-            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
         }
         reader.Close();
         reader = null;
