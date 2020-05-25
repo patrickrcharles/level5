@@ -28,6 +28,7 @@ public class CallBallToPlayer : MonoBehaviour
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
+
         canBallToPlayerEnabled = true;
         pullSpeed = 2.3f;
     }
@@ -45,6 +46,7 @@ public class CallBallToPlayer : MonoBehaviour
             && !playerState.hasBasketball
             && !playerState.inAir
             && _basketBallState.CanPullBall
+            && playerState.grounded
             //&& canBallToPlayerEnabled
             && !locked)
         {
@@ -52,6 +54,15 @@ public class CallBallToPlayer : MonoBehaviour
             pullBallToPlayer();
             locked = false;
         }
+    }
+
+
+    private void pullBallToPlayer()
+    {
+        Debug.Log("pullBallToPlayer()");
+        Vector3 tempDirection = basketballRigidBody.transform.position;
+        pullDirection = transform.position - tempDirection;
+        basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
 
     public void toggleCallBallToPlayer()

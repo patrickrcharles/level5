@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -231,14 +230,17 @@ public class BasketBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && playHitRimSound)
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") 
+            && playHitRimSound
+            && !playerState.hasBasketball)
         {
             playHitRimSound = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
             basketBallState.CanPullBall = true;
         }
 
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground")
+            && !playerState.hasBasketball)
         {
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
@@ -249,7 +251,8 @@ public class BasketBall : MonoBehaviour
             audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
         }
 
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence"))
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence")
+            && !playerState.hasBasketball)
         {
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
             basketBallState.CanPullBall = true;
@@ -495,6 +498,9 @@ public class BasketBall : MonoBehaviour
         //int direction = 1; //for testing to do stat analysis
         int slider = Mathf.FloorToInt(playerState.shotmeter.SliderValueOnButtonPress);
 
+        Debug.Log("slider : " + slider);
+
+
         float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
 
@@ -518,6 +524,8 @@ public class BasketBall : MonoBehaviour
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
         }
         // 100 - slider + 1/3 of (100 - profile accuracy)
+
+        Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
         return (sliderModifer + (accuracyModifier / 3)) * direction;
     }
 

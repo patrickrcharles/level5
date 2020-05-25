@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5855897891810619623
+--- !u!1 &6193461906605669940
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5855897891810619620}
-  - component: {fileID: 4643953591246336263}
+  - component: {fileID: 6193461906605669898}
+  - component: {fileID: 151013593}
   m_Layer: 0
-  m_Name: player_selected_drblood_ghost
+  m_Name: player_selected_rad_tony
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5855897891810619620
+--- !u!224 &6193461906605669898
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5855897891810619623}
+  m_GameObject: {fileID: 6193461906605669940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9276042, y: 0.9276042, z: 0.9276042}
@@ -36,22 +36,22 @@ RectTransform:
   m_AnchoredPosition: {x: 383.00006, y: 835.1011}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4643953591246336263
+--- !u!114 &151013593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5855897891810619623}
+  m_GameObject: {fileID: 6193461906605669940}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 2
-  playerDisplayName: Doctor Blood's Ghost
-  playerObjectName: drblood_ghost
-  playerPortrait: {fileID: 1459547446756339361, guid: d5e47bd61a655884ea70d88de03a3002,
+  playerId: 10
+  playerDisplayName: Rad Tony
+  playerObjectName: rad_tony
+  playerPortrait: {fileID: -8566624774656428946, guid: 2dee6df81ce1d1f4391a3866752a9fa6,
     type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
@@ -59,14 +59,14 @@ MonoBehaviour:
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 79
-  accuracy4pt: 78
-  accuracy7pt: 85
+  accuracy3pt: 81
+  accuracy4pt: 83
+  accuracy7pt: 70
   shooterProfilePrefabName: 
   jumpForce: 5
-  speed: 2.7
-  runSpeedHasBall: 3.2
-  runSpeed: 3.7
+  speed: 3.5
+  runSpeedHasBall: 3.8
+  runSpeed: 4
   hangTime: 0
   range: 99
   release: 0

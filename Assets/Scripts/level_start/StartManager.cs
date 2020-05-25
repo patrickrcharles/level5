@@ -111,8 +111,15 @@ public class StartManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // check for some button not selected
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+        }
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
+
         ////Debug.Log("current : "+ currentHighlightedButton);
 
         // start game

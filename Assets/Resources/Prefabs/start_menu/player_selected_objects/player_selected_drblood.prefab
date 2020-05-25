@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 1
-  playerDisplayName: Dr Blood
+  playerDisplayName: Doctor Blood
   playerObjectName: drblood
   playerPortrait: {fileID: 21300002, guid: 7dc23eb5b81a4504b8f882b643b7272f, type: 3}
   shooterProfileObject: {fileID: 0}
