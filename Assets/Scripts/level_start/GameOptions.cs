@@ -13,9 +13,11 @@ public  class GameOptions : MonoBehaviour
     static public int playerId;
     static public String levelSelected;
     static public int gameModeSelected;
+    static public int levelId;
 
     static public String playerObjectName;
     static public String levelSelectedName;
+    static public String levelDisplayName;
     static public String gameModeSelectedName;
 
     static public int levelSelectedRootCount;

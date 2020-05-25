@@ -343,6 +343,7 @@ public class BasketBall : MonoBehaviour
         if (GameRules.instance.MoneyBallEnabled)
         {
             basketBallState.MoneyBallEnabledOnShoot = true;
+            BasketBallStats.MoneyBallAttempts++;
             //Debug.Log("moneyball shot");
             PlayerStats.instance.Money -= 5; // moneyball spent
         }

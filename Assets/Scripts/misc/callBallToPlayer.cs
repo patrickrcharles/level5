@@ -28,7 +28,16 @@ public class CallBallToPlayer : MonoBehaviour
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         locked = false;
-        //canBallToPlayerEnabled = true;
+
+        canBallToPlayerEnabled = true;
+        pullSpeed = 2.3f;
+    }
+
+    private void pullBallToPlayer()
+    {
+        Vector3 tempDirection = basketballRigidBody.transform.position;
+        pullDirection = transform.position - tempDirection;
+        basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
 
     private void Update()
