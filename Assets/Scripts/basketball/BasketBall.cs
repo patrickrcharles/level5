@@ -156,7 +156,10 @@ public class BasketBall : MonoBehaviour
                                     + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
                                     + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
                                     + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
-                                    + "7 point accuracy : " + shooterProfile.Accuracy7Pt;
+                                    + "7 point accuracy : " + shooterProfile.Accuracy7Pt + "\n"
+                                    + "jump : " + shooterProfile.JumpForce + "\n"
+                                    + "luck : " + shooterProfile.CriticalPercent + "\n"
+                                    + "speed : " + shooterProfile.RunSpeed;
         }
         else
         {
