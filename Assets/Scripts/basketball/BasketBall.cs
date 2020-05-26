@@ -659,7 +659,7 @@ public class BasketBall : MonoBehaviour
 
     public float getSevenPointAccuracy()
     {
-        if (basketBallStats.FourPointerAttempts > 0)
+        if (basketBallStats.SevenPointerAttempts > 0)
         {
             sevenAccuracy = basketBallStats.SevenPointerMade / basketBallStats.SevenPointerAttempts;
             return (sevenAccuracy * 100);
