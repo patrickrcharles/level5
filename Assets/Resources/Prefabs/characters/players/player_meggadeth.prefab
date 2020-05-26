@@ -308,7 +308,6 @@ MonoBehaviour:
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
   _facingRight: 0
-  _grounded: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -601,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5758546809750715842
 Transform:
   m_ObjectHideFlags: 0
@@ -673,9 +672,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.73
-  m_Height: 2.28
+  m_Height: 1.765068
   m_Direction: 1
-  m_Center: {x: -0.030286837, y: 0.12685245, z: 0}
+  m_Center: {x: -0.030286837, y: -0.1306136, z: 0}
 --- !u!1 &6129896483946636891
 GameObject:
   m_ObjectHideFlags: 0
