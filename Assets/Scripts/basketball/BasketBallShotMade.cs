@@ -198,6 +198,10 @@ public class BasketBallShotMade : MonoBehaviour
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;  
         }
+        if(ConsecutiveShotsMade > _basketBallStats.MostConsecutiveShots)
+        {
+            _basketBallStats.MostConsecutiveShots = ConsecutiveShotsMade;
+        }
     }
 
     public int ConsecutiveShotsMade { get => _consecutiveShotsMade; set => _consecutiveShotsMade = value; }

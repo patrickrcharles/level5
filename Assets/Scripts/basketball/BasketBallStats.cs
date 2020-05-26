@@ -37,8 +37,8 @@ public class BasketBallStats : MonoBehaviour
     private float _makeAllPointersMoneyBallLowTime;
 
     private float _criticalRolled;
-
     private float _timePlayed;
+    private float _mostConsecutiveShots;
 
     //init from game options
     void Start()
@@ -197,5 +197,9 @@ public class BasketBallStats : MonoBehaviour
     {
         get => _timePlayed;
         set => _timePlayed = value;
+    }
+    public float MostConsecutiveShots 
+    { get => _mostConsecutiveShots;
+      set => _mostConsecutiveShots = value; 
     }
 }
