@@ -17,7 +17,6 @@ public class cameraUpdater : MonoBehaviour
     [SerializeField]
     GameObject basketBallRim;
 
-
     public Vector3 playerPos, camPos, rimPos;
     public float floatcameraDistanceFromGoal;
 
@@ -45,6 +44,7 @@ public class cameraUpdater : MonoBehaviour
     bool orthoCam2Active;
 
 
+
     void Start()
     {
 
@@ -61,24 +61,12 @@ public class cameraUpdater : MonoBehaviour
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
+        // will check settings and set intial camera
+        setCamera();
+
         player = GameLevelManager.Instance.Player;
         //relCameraPos = player.position - transform.position;
 
-        if (isOrthoGraphic && cam.name.Contains("camera_orthographic_1"))
-        {
-            addToCameraPosY = 2.5f;
-            orthoCam1Active = true;
-        }
-        if (isOrthoGraphic && cam.name.Contains("camera_orthographic_2"))
-        {
-            addToCameraPosY = 3.3f;
-            orthoCam2Active = true;
-        }
-        if(!isOrthoGraphic)
-        {
-            addToCameraPosY = 1.835f;
-            mainPerspectiveCamActive = true;
-        }
     }
 
 
@@ -99,31 +87,16 @@ public class cameraUpdater : MonoBehaviour
 
         playerDistanceFromRimX = Math.Abs( player.transform.position.x );
         playerDistanceFromRimZ = Math.Abs( player.transform.position.z );
-
-
-        //if ((player != null))
-        //{
-        //    transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
-        //                                   //cam.transform.position.y,
-        //                                   player.transform.position.y + 1.2f,
-        //                                    cam.transform.position.z);
-        //}
-
-        //if (distanceRimFromPlayer > startZoomDistance 
-        //    && !cameraZoomedOut)
-        //    //&& cam.transform.position.z > zMin)
-        //{
-        //    zoomOut();
-        //}
-        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
-        //{
-        //    zoomIn();
-        //}
-
     }
 
     void FixedUpdate()
     {
+        /* todo
+         * if( player.x > 6 || player.x < -6)
+         *  clamp camera.x to position
+         *  ranf is roughly -1 --> 5.7
+         */
+
         if ((player != null) && mainPerspectiveCamActive)
         {
             transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
@@ -192,5 +165,36 @@ public class cameraUpdater : MonoBehaviour
         ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
         var translate = Mathf.Min(Mathf.Abs(1), MaxToClamp - Mathf.Abs(ZoomAmount));
         gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(1));
+    }
+
+    void setCamera()
+    {
+
+        // if perspective camera
+        if (!isOrthoGraphic)
+        {
+            addToCameraPosY = 1.835f;
+            mainPerspectiveCamActive = true;
+            orthoCam1Active = false;
+            orthoCam2Active = false;
+        }
+
+        // 2 orthographic cameras
+        if (isOrthoGraphic)
+        {
+            if (cam.name.Contains("camera_orthographic_1"))
+            {
+                addToCameraPosY = 2.5f;
+                mainPerspectiveCamActive = false;
+                orthoCam1Active = true;
+            }
+            if (cam.name.Contains("camera_orthographic_2"))
+            {
+                addToCameraPosY = 3.3f;
+                mainPerspectiveCamActive = false;
+                orthoCam1Active = false;
+                orthoCam2Active = true;
+            }
+        }
     }
 }
