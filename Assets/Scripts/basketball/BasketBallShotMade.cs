@@ -9,7 +9,7 @@ public class BasketBallShotMade : MonoBehaviour
     BasketBallState _basketBallState;
     BasketBallStats _basketBallStats;
 
-    public int currentShotTestIndex;
+    //public int currentShotTestIndex;
 
     AudioSource audioSource;
     public GameObject rimSprite;
@@ -18,10 +18,27 @@ public class BasketBallShotMade : MonoBehaviour
     bool isColliding;
 
     const string moneyPrefabPath = "Prefabs/objects/money";
-    [SerializeField]
     private GameObject moneyClone;
 
+    int _consecutiveShotsMade;
 
+    int _currentShotMade;
+    int _currentShotAttempts;
+
+    int _expectedShotMade;
+    int _expectedShotAttempts;
+
+    public static BasketBallShotMade instance;
+
+    private void Awake()
+    {
+        instance = this;
+        _currentShotMade = 0;
+        _currentShotAttempts = 0;
+        _expectedShotMade = 1;
+        _expectedShotAttempts = 1;
+
+    }
 
     // Use this for initialization
     void Start()
@@ -34,6 +51,7 @@ public class BasketBallShotMade : MonoBehaviour
 
         // path to money prfab
         moneyClone = Resources.Load(moneyPrefabPath) as GameObject;
+
     }
 
     // Update is called once per frame
@@ -48,6 +66,7 @@ public class BasketBallShotMade : MonoBehaviour
         {
             if (isColliding) return;
             else { isColliding = true; }
+
 
             audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
 
@@ -107,6 +126,7 @@ public class BasketBallShotMade : MonoBehaviour
 
     private void updateShotMadeBasketBallStats()
     {
+
         if (_basketBallState.TwoAttempt)
         {
             _basketBallStats.TotalPoints += 2;
@@ -157,6 +177,29 @@ public class BasketBallShotMade : MonoBehaviour
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
         }
+
+        // get current state of made/attempt
+        _currentShotMade = (int)_basketBallStats.ShotMade;
+        _currentShotAttempts = (int)_basketBallStats.ShotAttempt;
+
+        // if current is == expected made/attempt, increment consecutive
+        if (_currentShotMade == _expectedShotMade && _currentShotAttempts == _expectedShotAttempts)
+        {
+            Debug.Log(" expected = current");
+            ConsecutiveShotsMade++;
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;
+        }
+        // else, not consecutive shot. get current, increment for next expected consecutive shot
+        else
+        {
+            Debug.Log(" else");
+            ConsecutiveShotsMade = 1;
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;  
+        }
     }
+
+    public int ConsecutiveShotsMade { get => _consecutiveShotsMade; set => _consecutiveShotsMade = value; }
 }
 

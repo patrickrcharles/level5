@@ -28,14 +28,10 @@ public class BasketBallState : MonoBehaviour
     private bool _canPullBall;
     private bool _grounded;
 
-    [SerializeField]
     private bool _playerOnMarker;
-    [SerializeField]
     private bool _playerOnMarkerOnShoot;
-    [SerializeField]
     private bool __moneyBallEnabledOnShoot;
 
-    [SerializeField]
     private int _currentShotMarkerId;
     private int _onShootShotMarkerId;
 

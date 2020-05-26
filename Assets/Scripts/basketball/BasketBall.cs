@@ -119,16 +119,7 @@ public class BasketBall : MonoBehaviour
             scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
             if (uiStatsEnabled)
             {
-                shootProfileText.text = "ball distance : " +
-                                        (Math.Round(basketBallState.BallDistanceFromRim, 2)).ToString("0.00") + "\n"
-                                        + "shot distance : " +
-                                        (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
-                                        " ft.\n"
-                                        + "shooter : Dr Blood\n"
-                                        + "2 point accuracy : " + ((1 - shooterProfile.Accuracy2Pt) * 100) + "\n"
-                                        + "3 point accuracy : " + ((1 - shooterProfile.Accuracy3Pt) * 100) + "\n"
-                                        + "4 point accuracy : " + ((1 - shooterProfile.Accuracy4Pt) * 100) + "\n"
-                                        + "7 point accuracy : " + ((1 - shooterProfile.Accuracy7Pt) * 100);
+                updateScoreText();
             }
         }
     }
@@ -352,6 +343,11 @@ public class BasketBall : MonoBehaviour
             basketBallState.MoneyBallEnabledOnShoot = false;
         }
 
+        //// let basketball rim know current statistics of made/attempt for every shot
+        //// this is more determining consecutive shots
+        //// on make, if made = made+1 && attempt = attempt +1 ---> consecutive++
+        //BasketBallShotMade.instance.setCurrentShotsMadeAttempted((int)basketBallStats.ShotMade, (int)basketBallStats.ShotAttempt);
+
         // let basketball state know what type of shot is attempted
         updateBasketBallStateShotTypeOnShoot();
 
@@ -498,9 +494,6 @@ public class BasketBall : MonoBehaviour
         //int direction = 1; //for testing to do stat analysis
         int slider = Mathf.FloorToInt(playerState.shotmeter.SliderValueOnButtonPress);
 
-        Debug.Log("slider : " + slider);
-
-
         float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
 
@@ -589,7 +582,9 @@ public class BasketBall : MonoBehaviour
                          "\n"
                          + "longest shot distance : " +
                          (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft." + "\n" +
-                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt + "  " + getCriticalPercentage().ToString("0.00") + "%";
+                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt 
+                         + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
+                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
     }
 
     public float getCriticalPercentage()

@@ -149,7 +149,6 @@ public class GameRules : MonoBehaviour
             //save
             if (GameObject.Find("database") != null)
             {
-                Debug.Log("**********************************************save to DB :: if (GameObject.Find(database) != null) ");
                 DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
             }
@@ -176,13 +175,11 @@ public class GameRules : MonoBehaviour
 
     private void toggleMoneyBall()
     {
-        Debug.Log("private void toggleMoneyBall()");
         if (PlayerStats.instance.Money >= 5 && !moneyBallEnabled)
         {
             moneyBallEnabled = true;
             if (moneyBallEnabled)
             {
-                Debug.Log("if (moneyBallEnabled)");
                 displayMoneyBallText.text = "Money Ball enabled";
             }
         }
@@ -377,7 +374,8 @@ public class GameRules : MonoBehaviour
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.";
+                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
+                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
         return scoreText;
     }
 
