@@ -203,7 +203,7 @@ public class DBHelper : MonoBehaviour
            ", fourMade = " + (prevStats.FourPointerMade += stats.FourPointerMade) +
            ", FourAtt = " + (prevStats.FourPointerAttempts += stats.FourPointerAttempts) +
            ", sevenMade = " + (prevStats.SevenPointerMade += stats.SevenPointerMade) +
-           ", sevenAtt = " + (prevStats.SevenPointerMade += stats.SevenPointerAttempts) +
+           ", sevenAtt = " + (prevStats.SevenPointerAttempts += stats.SevenPointerAttempts) +
            ", moneyBallMade = " + (prevStats.MoneyBallMade += stats.MoneyBallMade) +
            ", moneyBallAtt = " + (prevStats.MoneyBallAttempts += stats.MoneyBallAttempts) +
            ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
