@@ -38,7 +38,10 @@ public class CallBallToPlayer : MonoBehaviour
         if (InputManager.GetButtonDown("Fire1")
             && !playerState.hasBasketball
             && !playerState.inAir
+            //&& !_basketBallState.Thrown
             && _basketBallState.CanPullBall
+            && !_basketBallState.Locked
+            //&& !_basketBallState.InAir
             && playerState.grounded
             //&& canBallToPlayerEnabled
             && !locked)
