@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6193461906605669898}
   - component: {fileID: 151013593}
   m_Layer: 0
-  m_Name: player_selected_rad_tony
+  m_Name: player_selected_ak47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 11
-  playerDisplayName: Rad Tony
-  playerObjectName: rad_tony
-  playerPortrait: {fileID: -8566624774656428946, guid: 2dee6df81ce1d1f4391a3866752a9fa6,
+  playerId: 12
+  playerDisplayName: AK-47
+  playerObjectName: ak47
+  playerPortrait: {fileID: 773034392910430927, guid: 1278dbefeacddd34ab2dbee2f246ac50,
     type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
@@ -60,17 +60,17 @@ MonoBehaviour:
   speedStatCeiling: 6
   accuracy2pt: 90
   accuracy3pt: 81
-  accuracy4pt: 83
-  accuracy7pt: 70
+  accuracy4pt: 90
+  accuracy7pt: 80
   shooterProfilePrefabName: 
-  jumpForce: 5
-  speed: 3.5
-  runSpeedHasBall: 3.8
-  runSpeed: 4
+  jumpForce: 5.2
+  speed: 3
+  runSpeedHasBall: 3.5
+  runSpeed: 3.5
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 12
+  criticalPercent: 13
   shootAngle: 50
   level: 0
   experience: 0

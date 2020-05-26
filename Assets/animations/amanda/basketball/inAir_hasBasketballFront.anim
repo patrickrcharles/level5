@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: inAir_hasBasketballFront 2
+  m_Name: inAir_hasBasketballFront
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,7 +20,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -6902268628526504051, guid: ec166354696747948aa61edb673b827a,
+      value: {fileID: -1206897287305292271, guid: 1278dbefeacddd34ab2dbee2f246ac50,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -41,7 +41,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -6902268628526504051, guid: ec166354696747948aa61edb673b827a, type: 3}
+    - {fileID: -1206897287305292271, guid: 1278dbefeacddd34ab2dbee2f246ac50, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
