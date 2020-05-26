@@ -244,6 +244,7 @@ public class BasketBall : MonoBehaviour
         {
             basketBallState.InAir = false;
             basketBallState.Grounded = true;
+            basketBallState.CanPullBall = true;
             //reset rotation
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
@@ -343,9 +344,8 @@ public class BasketBall : MonoBehaviour
         if (GameRules.instance.MoneyBallEnabled)
         {
             basketBallState.MoneyBallEnabledOnShoot = true;
-            BasketBallStats.MoneyBallAttempts++;
-            //Debug.Log("moneyball shot");
             PlayerStats.instance.Money -= 5; // moneyball spent
+            BasketBallStats.MoneyBallAttempts++;
         }
         else
         {
@@ -525,8 +525,8 @@ public class BasketBall : MonoBehaviour
         }
         // 100 - slider + 1/3 of (100 - profile accuracy)
 
-        Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
-        return (sliderModifer + (accuracyModifier / 3)) * direction;
+        //Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
+        return (sliderModifer + (accuracyModifier / 2)) * direction;
     }
 
     private int getRandomPositiveOrNegative()

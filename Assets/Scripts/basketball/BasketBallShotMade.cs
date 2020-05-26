@@ -72,9 +72,8 @@ public class BasketBallShotMade : MonoBehaviour
                 //&& PlayerStats.instance.Money >= 5
                 //&& GameRules.instance.MoneyBallEnabled)
             {
-                Debug.Log(" instantiate moeny : player on marker at shoot");
+                //Debug.Log(" instantiate moeny : player on marker at shoot");
                 instantiateMoney(1);
-                BasketBall.instance.BasketBallStats.MoneyBallMade++;
             }
 
             // reset states
@@ -136,20 +135,25 @@ public class BasketBallShotMade : MonoBehaviour
             _basketBallStats.ShotMade ++;
         }
 
+        if (_basketBallState.MoneyBallEnabledOnShoot)
+        {
+            _basketBallStats.MoneyBallMade++;
+        }
+
         if (_basketBallState.PlayerOnMarkerOnShoot)
         {
-            Debug.Log("if(_basketBallState.PlayerOnMarkerOnShoot)");
-            Debug.Log("GameRules.instance.MoneyBallEnabled : " + GameRules.instance.MoneyBallEnabled);
+            //Debug.Log("if(_basketBallState.PlayerOnMarkerOnShoot)");
+            //Debug.Log("GameRules.instance.MoneyBallEnabled : " + GameRules.instance.MoneyBallEnabled);
             if (_basketBallState.MoneyBallEnabledOnShoot)
             {
-                Debug.Log("clear marker");
+                //Debug.Log("clear marker");
                 int max = GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MaxShotMade;
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
-                Debug.Log("max : "+ max);
+                //Debug.Log("max : "+ max);
             }
             else
             {
-                Debug.Log(" else : shot made");
+                //Debug.Log(" else : shot made");
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
         }
