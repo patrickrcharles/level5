@@ -52,6 +52,9 @@ public class cameraUpdater : MonoBehaviour
 
     bool cameraLockToGoal;
     private bool locked;
+    private bool isLockOnGoalCamera;
+
+    bool onGoalCameraEnabled;
 
     void Start()
     {
@@ -109,7 +112,7 @@ public class cameraUpdater : MonoBehaviour
         //Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         //transform.position = smoothedPosition;
 
-        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera)
+        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             // * note change var to player distance because each camera is in a different spot
             if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
@@ -123,22 +126,49 @@ public class cameraUpdater : MonoBehaviour
             }
         }
 
-        if ((player != null) && isOrthoGraphic && !isFollowBallCamera)
+        if(!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
+        {
+            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
+            onGoalCameraEnabled = false;
+        }
+
+        // * note change var to player distance because each camera is in a different spot
+        if ( Math.Abs(playerDistanceFromRimX) > 8  && !onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+
+        if (Math.Abs(playerDistanceFromRimX) < 8  && onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+
+
+        if ((player != null) && isOrthoGraphic && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
                 //cam.transform.position.y,
                 addToCameraPosY,
                 cam.transform.position.z);
         }
-        if ((player != null) && isFollowBallCamera)
+        if ((player != null) && isFollowBallCamera && !isLockOnGoalCamera)
         {
             transform.position = new Vector3(BasketBall.instance.transform.position.x,
                  BasketBall.instance.transform.position.y + 0.5f,
                  BasketBall.instance.transform.position.z - 2);
         }
 
+        //if ((player != null) && isLockOnGoalCamera)
+        //{
+        //    transform.position = new Vector3(BasketBall.instance.transform.position.x,
+        //         BasketBall.instance.transform.position.y + 0.5f,
+        //         BasketBall.instance.transform.position.z - 2);
+        //}
+
         if (distanceRimFromPlayer > startZoomDistance
-            && !cameraZoomedOut && !isFollowBallCamera)
+            && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
         //&& cam.transform.position.z > zMin)
         {
             zoomOut();
@@ -146,6 +176,19 @@ public class cameraUpdater : MonoBehaviour
         if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
         {
             zoomIn();
+        }
+    }
+
+    private void toggleCameraOnGoal()
+    {
+        onGoalCameraEnabled = !onGoalCameraEnabled;
+        if (onGoalCameraEnabled)
+        {
+            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(true);
+        }
+        if (!onGoalCameraEnabled)
+        {
+            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
         }
     }
 
@@ -235,6 +278,14 @@ public class cameraUpdater : MonoBehaviour
         else
         {
             isFollowBallCamera = false;
+        }
+        if (cam.name.Contains("goal"))
+        {
+            isLockOnGoalCamera = true;
+        }
+        else
+        {
+            isLockOnGoalCamera = false;
         }
     }
 }
