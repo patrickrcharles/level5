@@ -24,6 +24,7 @@ public class cameraUpdater : MonoBehaviour
     public float MaxToClamp = 10;
     public float ROTSpeed = .1f;
 
+    [SerializeField]
     bool cameraZoomedIn, cameraZoomedOut;
 
     public float startZoomDistance;
@@ -42,8 +43,15 @@ public class cameraUpdater : MonoBehaviour
     bool mainPerspectiveCamActive;
     bool orthoCam1Active;
     bool orthoCam2Active;
+    bool isFollowBallCamera;
 
+    [SerializeField]
+    public float smoothSpeed = 0.125f;
+    [SerializeField]
+    public Vector3 offset;
 
+    bool cameraLockToGoal;
+    private bool locked;
 
     void Start()
     {
@@ -52,13 +60,12 @@ public class cameraUpdater : MonoBehaviour
         basketBallRim = GameObject.Find("rim");
 
         cam = GetComponent<Camera>();
-        cam.depth = -5;
+        //cam.depth = -5;
 
         // this is for the sorting layers. when using perspective camera like i am,
         // sometimes the rendering isnt always done by z values because perspective 
         // uses a value that closest to center of the camera or something
         // this should finally fix all the rendering problems i've been having
-
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
         // will check settings and set intial camera
@@ -85,8 +92,8 @@ public class cameraUpdater : MonoBehaviour
         //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
         distanceRimFromPlayer = rimPos.z - playerPos.z;
 
-        playerDistanceFromRimX = Math.Abs( player.transform.position.x );
-        playerDistanceFromRimZ = Math.Abs( player.transform.position.z );
+        playerDistanceFromRimX = player.transform.position.x;
+        playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
     }
 
     void FixedUpdate()
@@ -97,23 +104,41 @@ public class cameraUpdater : MonoBehaviour
          *  ranf is roughly -1 --> 5.7
          */
 
-        if ((player != null) && mainPerspectiveCamActive)
+        //Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        //Vector3 desiredPosition = targetPosition + offset;
+        //Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        //transform.position = smoothedPosition;
+
+        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera)
         {
-            transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
-                //cam.transform.position.y,
-                player.transform.position.y + addToCameraPosY,
-                cam.transform.position.z);
+            // * note change var to player distance because each camera is in a different spot
+            if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
+                && !((playerDistanceFromRimX < -6.8 || playerDistanceFromRimX > 6.8)))
+            {
+                updatePositionNearGoal();
+            }
+            else
+            {
+                updatePositionOnPlayer();
+            }
         }
-        if ((player != null) && isOrthoGraphic)
+
+        if ((player != null) && isOrthoGraphic && !isFollowBallCamera)
         {
             transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
                 //cam.transform.position.y,
                 addToCameraPosY,
                 cam.transform.position.z);
         }
+        if ((player != null) && isFollowBallCamera)
+        {
+            transform.position = new Vector3(BasketBall.instance.transform.position.x,
+                 BasketBall.instance.transform.position.y + 0.5f,
+                 BasketBall.instance.transform.position.z - 2);
+        }
 
         if (distanceRimFromPlayer > startZoomDistance
-            && !cameraZoomedOut)
+            && !cameraZoomedOut && !isFollowBallCamera)
         //&& cam.transform.position.z > zMin)
         {
             zoomOut();
@@ -122,17 +147,22 @@ public class cameraUpdater : MonoBehaviour
         {
             zoomIn();
         }
+    }
 
-        //if (playerDistanceFromRimX > 6f && playerDistanceFromRimZ < 2 && cameraZoomedIn)
-        //{
-        //    Debug.Log(" zoom out side");
-        //    zoomOut();
-        //}
-        //if (playerDistanceFromRimX < 6f && playerDistanceFromRimZ > 2 && cameraZoomedOut)
-        //{
-        //    Debug.Log(" zoom in side");
-        //    zoomIn();
-        //}
+    private void updatePositionOnPlayer()
+    {
+        Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        Vector3 desiredPosition = targetPosition + offset;
+        Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.deltaTime);
+        transform.position = smoothedPosition;
+    }
+
+    private void updatePositionNearGoal()
+    {
+        Vector3 targetPosition = new Vector3(cam.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        Vector3 desiredPosition = targetPosition + offset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
     }
 
     private void zoomOut()
@@ -153,6 +183,8 @@ public class cameraUpdater : MonoBehaviour
         var translate = Mathf.Min(Mathf.Abs(-1), MaxToClamp - Mathf.Abs(ZoomAmount));
         gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(-1));
     }
+
+
     private void zoomIn()
     {
         if (ZoomAmount == 0.5f)
@@ -195,6 +227,14 @@ public class cameraUpdater : MonoBehaviour
                 orthoCam1Active = false;
                 orthoCam2Active = true;
             }
+        }
+        if (cam.name.Contains("follow_ball"))
+        {
+            isFollowBallCamera = true;
+        }
+        else
+        {
+            isFollowBallCamera = false;
         }
     }
 }

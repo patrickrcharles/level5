@@ -119,6 +119,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 5388563522435166887}
+    - target: {fileID: 5745724345264589684, guid: f42a9a87887d95b498bc35dd9343ee0b,
+        type: 3}
+      propertyPath: smoothSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5745724345264589680, guid: f42a9a87887d95b498bc35dd9343ee0b,
         type: 3}
       propertyPath: m_Depth
@@ -225,6 +230,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1756289431806455307, guid: e8ecf58361edd5142ac9045438aaaa2e,
+        type: 3}
+      propertyPath: smoothSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ecf58361edd5142ac9045438aaaa2e, type: 3}
 --- !u!4 &3458139331350587533 stripped
@@ -319,6 +329,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4878841159625068211, guid: 0be40aaacb748cf46998b00d74f00d73,
+        type: 3}
+      propertyPath: smoothSpeed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0be40aaacb748cf46998b00d74f00d73, type: 3}
