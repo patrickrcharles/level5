@@ -104,12 +104,22 @@ public class DBHelper : MonoBehaviour
 
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt )  " +
-           "Values( '" + GameOptions.gameModeSelected + "', '" + GameOptions.playerId + "', '" + GameOptions.playerDisplayName 
-           + "','" + GameOptions.levelId + "','" + GameOptions.levelDisplayName + "','" + SystemInfo.operatingSystem + "','" 
-           + Application.version + "','" + DateTime.Now + "','" + GameRules.instance.CounterTime 
-           + "','" + stats.TotalPoints   + "','" + stats.LongestShotMade + "','"+ stats.TotalDistance + "','"
-           + stats.ShotMade + "','" + stats.ShotAttempt +  "')";
+           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots )  " +
+           "Values( '" + GameOptions.gameModeSelected 
+           + "', '" + GameOptions.playerId 
+           + "', '" + GameOptions.playerDisplayName 
+           + "','" + GameOptions.levelId 
+           + "','" + GameOptions.levelDisplayName 
+           + "','" + SystemInfo.operatingSystem 
+           + "','" + Application.version 
+           + "','" + DateTime.Now 
+           + "','" + GameRules.instance.CounterTime 
+           + "','" + stats.TotalPoints   
+           + "','" + stats.LongestShotMade 
+           + "','"+ stats.TotalDistance + "','"
+           + stats.ShotMade + "','" 
+           + stats.ShotAttempt + "','"
+           + stats.MostConsecutiveShots +  "')";
 
         Debug.Log(sqlQuery1);
 

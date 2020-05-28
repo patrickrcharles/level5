@@ -218,14 +218,19 @@ public class DBConnector : MonoBehaviour
             "playerid  INTEGER," +
             "modeid    INTEGER UNIQUE," +
             "characterid   INTEGER, " +
+            "character   TEXT, " +
             "levelid   INTEGER," +
+            "level    TEXT," +
             "os    TEXT," +
             "version   TEXT," +
             "date  TEXT," +
             "time  TEXT," +
             "totalPoints   INTEGER," +
             "longestShot   REAL," +
-            "totalDistance REAL);" +
+            "totalDistance REAL" +
+            "maxShotMade   INTEGER,"+
+            "maxShotAtt    INTEGER," +
+            "consecutiveShots   INTEGER);" +
 
             "CREATE TABLE if not exists User( " +
             "id    INTEGER, " +
@@ -251,7 +256,8 @@ public class DBConnector : MonoBehaviour
             "moneyBallMade INTEGER," +
             "moneyBallAtt  INTEGER," +
             "totalDistance REAL," +
-            "timePlayed    REAL);");
+            "timePlayed    REAL"+
+            "consecutiveShots    INTEGER);");
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
