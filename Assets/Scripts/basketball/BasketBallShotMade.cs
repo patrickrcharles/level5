@@ -110,9 +110,10 @@ public class BasketBallShotMade : MonoBehaviour
         {
             BasketBall.instance.updateScoreText();
         }
-        //// object test shot data in list
-        //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
-    }
+
+    //// object test shot data in list
+    //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
+}
 
     void instantiateMoney(float value)
     {

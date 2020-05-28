@@ -58,7 +58,6 @@ public class BasketBall : MonoBehaviour
 
     bool playHitRimSound;
     bool locked;
-    private bool uiStatsEnabled;
 
     //public BasketballTestStats testStats;
     //public BasketBallTestStatsConclusions testConclusions;
@@ -74,6 +73,9 @@ public class BasketBall : MonoBehaviour
     private float accuracyModifierY;
     [SerializeField]
     private float accuracyModifierZ;
+
+    public bool UiStatsEnabled { get; private set; }
+    public BasketBallState BasketBallState => basketBallState;
 
     // =========================================================== Start() ========================================================
     // Use this for initialization
@@ -111,15 +113,21 @@ public class BasketBall : MonoBehaviour
         //testConclusions = GetComponent<BasketBallTestStatsConclusions>();
 
         //todo: move to game manager
-        uiStatsEnabled = false;
+        UiStatsEnabled = false;
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
         if (GameObject.Find("ui_stats") != null)
         {
             shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
             scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
-            if (uiStatsEnabled)
+            if (UiStatsEnabled)
             {
                 updateScoreText();
+                updateShooterProlieText();
+            }
+            else
+            {
+                scoreText.text = "";
+                shootProfileText.text = "";
             }
         }
     }
@@ -145,27 +153,6 @@ public class BasketBall : MonoBehaviour
             PlayerData.instance.IsCheating = true;
         }
 
-        if (uiStatsEnabled)
-        {
-            updateScoreText();
-            shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-                                    + "shot distance : " +
-                                    (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
-                                    " ft.\n"
-                                    + "shooter : " + shooterProfile.PlayerDisplayName + "\n"
-                                    + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
-                                    + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
-                                    + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
-                                    + "7 point accuracy : " + shooterProfile.Accuracy7Pt + "\n"
-                                    + "jump : " + shooterProfile.JumpForce + "\n"
-                                    + "luck : " + shooterProfile.CriticalPercent + "\n"
-                                    + "speed : " + shooterProfile.RunSpeed;
-        }
-        else
-        {
-            scoreText.text = "";
-            shootProfileText.text = "";
-        }
 
         //if player has ball and hasnt shot
         if (playerState.hasBasketball && !basketBallState.Thrown)
@@ -217,6 +204,22 @@ public class BasketBall : MonoBehaviour
             playerState.shotmeter.MeterEnded = true;
             shootBasketBall();
         }
+    }
+
+    private void updateShooterProlieText()
+    {
+        shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                                + "shot distance : " +
+                                (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
+                                " ft.\n"
+                                + "shooter : " + shooterProfile.PlayerDisplayName + "\n"
+                                + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
+                                + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
+                                + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
+                                + "7 point accuracy : " + shooterProfile.Accuracy7Pt + "\n"
+                                + "jump : " + shooterProfile.JumpForce + "\n"
+                                + "luck : " + shooterProfile.CriticalPercent + "\n"
+                                + "speed : " + shooterProfile.RunSpeed;
     }
 
 
@@ -382,6 +385,18 @@ public class BasketBall : MonoBehaviour
         basketBallState.Thrown = true;
         basketBallState.InAir = true;
         basketBallState.Locked = false;
+
+        // update ui stats if necessary
+        if (UiStatsEnabled)
+        {
+            updateScoreText();
+            updateShooterProlieText();
+        }
+        else
+        {
+            scoreText.text = "";
+            shootProfileText.text = "";
+        }
     }
 
     private void updateBasketBallStateShotTypeOnShoot()
@@ -475,8 +490,7 @@ public class BasketBall : MonoBehaviour
     }
 
     // =========================================================== Functions and Properties ========================================================
-    public bool UiStatsEnabled => uiStatsEnabled;
-    public BasketBallState BasketBallState => basketBallState;
+
 
     bool rollForCriticalShotChance(float maxPercent)
     {
@@ -553,9 +567,20 @@ public class BasketBall : MonoBehaviour
 
     public void toggleUiStats()
     {
-        uiStatsEnabled = !uiStatsEnabled;
+        UiStatsEnabled = !UiStatsEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "ui stats = " + uiStatsEnabled;
+        messageText.text = "ui stats = " + UiStatsEnabled;
+
+        if (UiStatsEnabled)
+        {
+            updateScoreText();
+            updateShooterProlieText();
+        }
+        else
+        {
+            scoreText.text = "";
+            shootProfileText.text = "";
+        }
 
         // turn off text display after 5 seconds
         StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
