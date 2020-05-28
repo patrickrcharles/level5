@@ -14,6 +14,8 @@ public class CameraManager : MonoBehaviour
     int currentCameraIndex;
     int defaultCameraIndex = 0;
 
+    int numberOfCameras;
+
     bool locked;
     private int cameraOnGoalIndex;
     private int cameraFollowBallIndex;
@@ -66,40 +68,44 @@ public class CameraManager : MonoBehaviour
             if (i == defaultCameraIndex)
             {
                 Cameras[i].SetActive(true);
+                numberOfCameras++;
             }
             if (i != defaultCameraIndex)
             {
                 Cameras[i].SetActive(false);
+                numberOfCameras++;
             }
             if (Cameras[i].name.Contains("follow_ball"))
             {
                 cameraFollowBallIndex = i;
+                numberOfCameras--;
             }
             if (Cameras[i].name.Contains("goal"))
             {
                 cameraOnGoalIndex = i;
+                numberOfCameras--;
             }
-            Debug.Log("cam[i].name : " + Cameras[i].name);
         }
+        Debug.Log(" number of cameras : " + numberOfCameras);
     }
 
     void switchCamera()
     {
         // if not last camera, go to next
-        if (currentCameraIndex < Cameras.Length)
+        if (currentCameraIndex < numberOfCameras)
         {
             currentCameraIndex++;
         }
 
         // current camera at end of array, go to default/first camera
-        if (currentCameraIndex >= Cameras.Length)
+        if (currentCameraIndex >= numberOfCameras)
         {
             currentCameraIndex = 0;
         }
 
         // set next camera active based on incremented index
         // set other cameras inactive
-        for (int i = 0; i < Cameras.Length; i++)
+        for (int i = 0; i < numberOfCameras; i++)
         {
             if (i == currentCameraIndex)
             {

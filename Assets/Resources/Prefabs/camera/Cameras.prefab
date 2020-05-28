@@ -211,8 +211,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8232279206683020862, guid: 992ddb1fa7630bc4ab179542c817c0dd, type: 3}
+    - target: {fileID: 8232279206683020863, guid: 992ddb1fa7630bc4ab179542c817c0dd,
+        type: 3}
+      propertyPath: lockOnGoalCameraOffset.y
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232279206683020863, guid: 992ddb1fa7630bc4ab179542c817c0dd,
+        type: 3}
+      propertyPath: lockOnGoalCameraOffset.z
+      value: -2.7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 992ddb1fa7630bc4ab179542c817c0dd, type: 3}
 --- !u!4 &9069554518235085726 stripped
 Transform:
@@ -497,6 +506,21 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1155266597981065554, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156782258293108670, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156782258420127908, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
+        type: 3}
+      propertyPath: smoothSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1156782258420127904, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x
@@ -522,23 +546,7 @@ PrefabInstance:
       propertyPath: m_Depth
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1156782258420127908, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
-        type: 3}
-      propertyPath: smoothSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1155266597981065554, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1156782258293108670, guid: 92a3a351cda9fdf42a43bc99c5bfc70b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1156782258420127909, guid: 92a3a351cda9fdf42a43bc99c5bfc70b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92a3a351cda9fdf42a43bc99c5bfc70b, type: 3}
 --- !u!4 &5244067231174987965 stripped
 Transform:

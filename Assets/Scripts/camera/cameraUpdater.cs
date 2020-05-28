@@ -48,13 +48,19 @@ public class cameraUpdater : MonoBehaviour
     [SerializeField]
     public float smoothSpeed = 0.125f;
     [SerializeField]
-    public Vector3 offset;
+    private Vector3 lockOnGoalCameraOffset;
 
     bool cameraLockToGoal;
     private bool locked;
+    [SerializeField]
     private bool isLockOnGoalCamera;
 
     bool onGoalCameraEnabled;
+
+    private void Awake()
+    {
+        
+    }
 
     void Start()
     {
@@ -93,9 +99,11 @@ public class cameraUpdater : MonoBehaviour
             0, basketBallRim.transform.root.position.z);
 
         //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
-        distanceRimFromPlayer = rimPos.z - playerPos.z;
 
-        playerDistanceFromRimX = player.transform.position.x;
+        // for zoom
+        distanceRimFromPlayer = rimPos.z - playerPos.z;
+        // for secondary camera
+        playerDistanceFromRimX = rimPos.x -  player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
     }
 
@@ -177,6 +185,11 @@ public class cameraUpdater : MonoBehaviour
         {
             zoomIn();
         }
+
+        if (isLockOnGoalCamera)
+        {
+            transform.position = basketBallRim.transform.position + lockOnGoalCameraOffset;
+        }
     }
 
     private void toggleCameraOnGoal()
@@ -195,7 +208,7 @@ public class cameraUpdater : MonoBehaviour
     private void updatePositionOnPlayer()
     {
         Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
-        Vector3 desiredPosition = targetPosition + offset;
+        Vector3 desiredPosition = targetPosition;
         Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.deltaTime);
         transform.position = smoothedPosition;
     }
@@ -203,7 +216,7 @@ public class cameraUpdater : MonoBehaviour
     private void updatePositionNearGoal()
     {
         Vector3 targetPosition = new Vector3(cam.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
-        Vector3 desiredPosition = targetPosition + offset;
+        Vector3 desiredPosition = targetPosition;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
     }
@@ -282,10 +295,16 @@ public class cameraUpdater : MonoBehaviour
         if (cam.name.Contains("goal"))
         {
             isLockOnGoalCamera = true;
+            transform.position = basketBallRim.transform.position  +  lockOnGoalCameraOffset;
+
+            Debug.Log(" rim transform : " + basketBallRim.transform.position);
+            Debug.Log(" cam transform : " + transform.position);
+            Debug.Log(" offset : " + lockOnGoalCameraOffset);
         }
         else
         {
             isLockOnGoalCamera = false;
         }
+        Debug.Log(" transform : " + gameObject.transform.position);
     }
 }
