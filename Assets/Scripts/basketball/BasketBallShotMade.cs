@@ -20,6 +20,7 @@ public class BasketBallShotMade : MonoBehaviour
     const string moneyPrefabPath = "Prefabs/objects/money";
     private GameObject moneyClone;
 
+    [SerializeField]
     int _consecutiveShotsMade;
 
     int _currentShotMade;
@@ -187,7 +188,7 @@ public class BasketBallShotMade : MonoBehaviour
         if (_currentShotMade == _expectedShotMade && _currentShotAttempts == _expectedShotAttempts)
         {
             Debug.Log(" expected = current");
-            ConsecutiveShotsMade++;
+            _consecutiveShotsMade++;
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;
         }
@@ -195,7 +196,7 @@ public class BasketBallShotMade : MonoBehaviour
         else
         {
             Debug.Log(" else");
-            ConsecutiveShotsMade = 1;
+            _consecutiveShotsMade = 1;
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;  
         }
@@ -205,6 +206,6 @@ public class BasketBallShotMade : MonoBehaviour
         }
     }
 
-    public int ConsecutiveShotsMade { get => _consecutiveShotsMade; set => _consecutiveShotsMade = value; }
+    public int ConsecutiveShotsMade { get => _consecutiveShotsMade; }
 }
 
