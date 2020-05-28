@@ -122,7 +122,7 @@ public class BasketBall : MonoBehaviour
             if (UiStatsEnabled)
             {
                 updateScoreText();
-                updateShooterProlieText();
+                updateShooterProfileText();
             }
             else
             {
@@ -206,13 +206,13 @@ public class BasketBall : MonoBehaviour
         }
     }
 
-    private void updateShooterProlieText()
+    private void updateShooterProfileText()
     {
-        shootProfileText.text = "distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-                                + "shot distance : " +
-                                (Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
-                                " ft.\n"
-                                + "shooter : " + shooterProfile.PlayerDisplayName + "\n"
+        shootProfileText.text = //"distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
+                                //+ "shot distance : " +
+                                //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
+                               // " ft.\n"
+                                  "shooter : " + shooterProfile.PlayerDisplayName + "\n"
                                 + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
                                 + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
                                 + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
@@ -390,7 +390,7 @@ public class BasketBall : MonoBehaviour
         if (UiStatsEnabled)
         {
             updateScoreText();
-            updateShooterProlieText();
+            updateShooterProfileText();
         }
         else
         {
@@ -509,7 +509,7 @@ public class BasketBall : MonoBehaviour
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
-        int slider = Mathf.FloorToInt(playerState.shotmeter.SliderValueOnButtonPress);
+        int slider = Mathf.CeilToInt(playerState.shotmeter.SliderValueOnButtonPress);
 
         float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
@@ -574,7 +574,7 @@ public class BasketBall : MonoBehaviour
         if (UiStatsEnabled)
         {
             updateScoreText();
-            updateShooterProlieText();
+            updateShooterProfileText();
         }
         else
         {
