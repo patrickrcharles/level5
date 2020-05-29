@@ -148,3 +148,4 @@ MonoBehaviour:
   alien_walk: {fileID: 8300000, guid: 074beb67cd0b3ae4486ef067e5f8b9a8, type: 3}
   gamechanger: {fileID: 8300000, guid: ed36e2475c2d3a84fb1316167df131de, type: 3}
   werewolfHowl: {fileID: 8300000, guid: 20c1874f77d37df42b21a73300866537, type: 3}
+  worker_parasite: {fileID: 8300000, guid: cf5b8fa97aedd0742995a3750288a1f3, type: 3}
