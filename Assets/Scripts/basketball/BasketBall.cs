@@ -275,6 +275,7 @@ public class BasketBall : MonoBehaviour
         if (gameObject.CompareTag("basketball") && other.CompareTag("playerHitbox"))
         {
             playerState.hasBasketball = true;
+            playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
             basketBallState.CanPullBall = false;
         }
