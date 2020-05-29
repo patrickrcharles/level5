@@ -88,7 +88,8 @@ public class ShotMeter : MonoBehaviour
         // this is to set the values and text display. it is separate from the above code
         if (meterEnded)
         {
-            sliderValueOnButtonPress = ((((Time.time - meterStartTime) / (meterFillTime)) * 100));
+            sliderValueOnButtonPress = Mathf.CeilToInt(( ( (Time.time - meterStartTime) / (meterFillTime) * 100) ) );
+
             if (sliderValueOnButtonPress >= 100)
             {
                 // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
@@ -100,8 +101,8 @@ public class ShotMeter : MonoBehaviour
             slider.value = sliderValueOnButtonPress;
             // display number
             displaySliderValueOnPressText(sliderValueOnButtonPress.ToString("###"));
-            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
-            Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
+            //Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
+            //Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
 
             meterStarted = false;
             meterEnded = false;
