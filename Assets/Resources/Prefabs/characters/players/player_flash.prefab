@@ -475,6 +475,8 @@ MonoBehaviour:
   shootAngle: 50
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : score 100 points or greater on Avenue B'
 --- !u!114 &-208470134653182654
 MonoBehaviour:
   m_ObjectHideFlags: 0

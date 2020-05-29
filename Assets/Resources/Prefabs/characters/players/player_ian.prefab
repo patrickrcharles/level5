@@ -749,6 +749,8 @@ MonoBehaviour:
   shootAngle: 55
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Score 100 points or more on The Scrapyard'
 --- !u!114 &-3153344981158664087
 MonoBehaviour:
   m_ObjectHideFlags: 0

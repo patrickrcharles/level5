@@ -486,6 +486,8 @@ MonoBehaviour:
   shootAngle: 45
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Score 100 points or more on The Slab'
 --- !u!114 &904804546433258722
 MonoBehaviour:
   m_ObjectHideFlags: 0

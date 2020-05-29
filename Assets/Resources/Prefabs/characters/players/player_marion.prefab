@@ -630,6 +630,8 @@ MonoBehaviour:
   shootAngle: 45
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 
 --- !u!114 &7108422170762171116
 MonoBehaviour:
   m_ObjectHideFlags: 0
