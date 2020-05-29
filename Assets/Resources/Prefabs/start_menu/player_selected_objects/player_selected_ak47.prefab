@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 12
+  playerId: 7
   playerDisplayName: AK-47
   playerObjectName: ak47
   playerPortrait: {fileID: 773034392910430927, guid: 1278dbefeacddd34ab2dbee2f246ac50,

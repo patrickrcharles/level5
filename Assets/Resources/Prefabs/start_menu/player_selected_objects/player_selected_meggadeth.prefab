@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 10
+  playerId: 8
   playerDisplayName: Meggadeth
   playerObjectName: meggadeth
   playerPortrait: {fileID: -2682901381714028585, guid: 53be13773e068a34285a0bae621e8faf,

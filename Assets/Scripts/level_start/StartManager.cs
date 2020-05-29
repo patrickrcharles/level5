@@ -306,7 +306,25 @@ public class StartManager : MonoBehaviour
             //Debug.Log(" temp : " + temp.PlayerDisplayName);
             playerSelectedData.Add(temp);
         }
+        // sort list by  character id
+        playerSelectedData.Sort(sortByPlayerId);
     }
+
+    static int sortByPlayerId(ShooterProfile p1, ShooterProfile p2)
+    {
+        return p1.PlayerId.CompareTo(p2.PlayerId);
+    }
+
+    static int sortByLevelId(StartScreenLevelSelected l1, StartScreenLevelSelected l2)
+    {
+        return l1.LevelId.CompareTo(l2.LevelId);
+    }
+
+    static int sortByModeId(StartScreenModeSelected m1, StartScreenModeSelected m2)
+    {
+        return m2.ModeId.CompareTo(m2.ModeId);
+    }
+
     private void loadLevelSelectDataList()
     {
         Debug.Log("loadPlayerSelectDataList()");
@@ -319,6 +337,8 @@ public class StartManager : MonoBehaviour
             StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
             levelSelectedData.Add(temp);
         }
+        // sort list by  level id
+        levelSelectedData.Sort(sortByLevelId);
     }
 
     private void loadModeSelectDataList()
@@ -333,6 +353,8 @@ public class StartManager : MonoBehaviour
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
             modeSelectedData.Add(temp);
         }
+        // sort list by  mode id
+        modeSelectedData.Sort(sortByModeId);
     }
 
     private void changeSelectedPlayerUp()
