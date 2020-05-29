@@ -40,6 +40,8 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private int level;
     [SerializeField] private int experience;
     [SerializeField] private decimal money;
+    [SerializeField] private bool isLocked;
+    [SerializeField] private string unlockCharacterText;
 
 
     //private float shootXVariance;
@@ -252,4 +254,6 @@ public class ShooterProfile : MonoBehaviour
         get => shootAngle;
         set => shootAngle = value;
     }
+    public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
+    public bool IsLocked { get => isLocked; set => isLocked = value; }
 }

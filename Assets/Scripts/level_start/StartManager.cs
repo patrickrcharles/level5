@@ -42,9 +42,10 @@ public class StartManager : MonoBehaviour
     private Text playerSelectOptionText;
     private Image playerSelectOptionImage;
     private Text playerSelectOptionStatsText;
-
     private Text levelSelectOptionText;
-    //private Image levelSelectOptionImage;
+
+    [SerializeField]
+    private Text playerSelectUnlockText;
 
     //player selected display
     private Text modeSelectOptionText;
@@ -56,11 +57,16 @@ public class StartManager : MonoBehaviour
     private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
+    private const string playerSelectUnlockObjectName = "player_selected_unlock";
+    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
+
+    [SerializeField]
+    GameObject playerSelectedIsLockedObject;
 
     //level objects
     private const string levelSelectButtonName = "level_select";
     private const string levelSelectOptionButtonName = "level_selected_name";
-    private const string levelSelectImageObectName = "level_selected_image";
+    private const string levelSelectImageObjectName = "level_selected_image";
 
     //mode objects
     private const string modeSelectButtonName = "mode_select";
@@ -75,6 +81,13 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
+        // object with lock texture and unlock text
+        playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+        playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
+        playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
+        playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
+        playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
+
         //default index for player selected
         playerSelectedIndex = 0;
         levelSelectedIndex = 0;
@@ -92,7 +105,6 @@ public class StartManager : MonoBehaviour
         initializePlayerDisplay();
         initializeLevelDisplay();
         intializeModeDisplay();
-
         setInitialGameOptions();
 
     }
@@ -249,13 +261,26 @@ public class StartManager : MonoBehaviour
 
     private void initializePlayerDisplay()
     {
+        Debug.Log("initializePlayerDisplay()");
 
-        playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
-        playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
-        playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
+        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            // disable text and unlock text
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            playerSelectedIsLockedObject.SetActive(true);
+            playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
+        }
+        else
+        {
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            playerSelectedIsLockedObject.SetActive(false);
+            playerSelectUnlockText.text = "";
+        }
+
 
         playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
         playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+
         playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
@@ -274,16 +299,17 @@ public class StartManager : MonoBehaviour
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        //Debug.Log("obects : " + objects.Length);
+        Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
+            //Debug.Log(" temp : " + temp.PlayerDisplayName);
             playerSelectedData.Add(temp);
         }
     }
     private void loadLevelSelectDataList()
     {
-        //Debug.Log("loadPlayerSelectDataList()");
+        Debug.Log("loadPlayerSelectDataList()");
 
         string path = "Prefabs/start_menu/level_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
@@ -315,6 +341,7 @@ public class StartManager : MonoBehaviour
         if (playerSelectedIndex == 0)
         {
             playerSelectedIndex = playerSelectedData.Count - 1;
+
         }
         else
         {
