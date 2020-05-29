@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5855897891810619620}
   - component: {fileID: 4643953591246336263}
   m_Layer: 0
-  m_Name: player_selected_drblood
+  m_Name: player_selected_drblood_white
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,30 +48,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 1
-  playerDisplayName: Doctor Blood
-  playerObjectName: drblood
-  playerPortrait: {fileID: 21300002, guid: 7dc23eb5b81a4504b8f882b643b7272f, type: 3}
+  playerId: 13
+  playerDisplayName: ???
+  playerObjectName: drblood_white
+  playerPortrait: {fileID: 21300000, guid: 5a88c2a251c880748b9a370bd5fcbae5, type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 83
-  accuracy4pt: 83
-  accuracy7pt: 75
+  accuracy3pt: 90
+  accuracy4pt: 90
+  accuracy7pt: 90
   shooterProfilePrefabName: 
-  jumpForce: 4.5
-  speed: 3.4
-  runSpeedHasBall: 3.9
-  runSpeed: 4.4
+  jumpForce: 4.3
+  speed: 3.7
+  runSpeedHasBall: 4.2
+  runSpeed: 4.5
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 17
+  criticalPercent: 19
   shootAngle: 50
   level: 0
   experience: 0
   isLocked: 0
-  unlockCharacterText: 
+  unlockCharacterText: 'Unlock : ???'

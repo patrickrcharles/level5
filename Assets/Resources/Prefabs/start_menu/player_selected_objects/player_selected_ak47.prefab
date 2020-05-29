@@ -74,3 +74,5 @@ MonoBehaviour:
   shootAngle: 50
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Make 10 consecutive 4 pointers'

@@ -73,3 +73,5 @@ MonoBehaviour:
   shootAngle: 45
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Make 20 consecutive 3s'
