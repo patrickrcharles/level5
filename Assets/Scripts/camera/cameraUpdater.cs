@@ -109,16 +109,6 @@ public class cameraUpdater : MonoBehaviour
 
     void FixedUpdate()
     {
-        /* todo
-         * if( player.x > 6 || player.x < -6)
-         *  clamp camera.x to position
-         *  ranf is roughly -1 --> 5.7
-         */
-
-        //Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
-        //Vector3 desiredPosition = targetPosition + offset;
-        //Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        //transform.position = smoothedPosition;
 
         if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
         {
@@ -167,13 +157,6 @@ public class cameraUpdater : MonoBehaviour
                  BasketBall.instance.transform.position.y + 0.5f,
                  BasketBall.instance.transform.position.z - 2);
         }
-
-        //if ((player != null) && isLockOnGoalCamera)
-        //{
-        //    transform.position = new Vector3(BasketBall.instance.transform.position.x,
-        //         BasketBall.instance.transform.position.y + 0.5f,
-        //         BasketBall.instance.transform.position.z - 2);
-        //}
 
         if (distanceRimFromPlayer > startZoomDistance
             && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
@@ -297,14 +280,14 @@ public class cameraUpdater : MonoBehaviour
             isLockOnGoalCamera = true;
             transform.position = basketBallRim.transform.position  +  lockOnGoalCameraOffset;
 
-            Debug.Log(" rim transform : " + basketBallRim.transform.position);
-            Debug.Log(" cam transform : " + transform.position);
-            Debug.Log(" offset : " + lockOnGoalCameraOffset);
+            //Debug.Log(" rim transform : " + basketBallRim.transform.position);
+            //Debug.Log(" cam transform : " + transform.position);
+            //Debug.Log(" offset : " + lockOnGoalCameraOffset);
         }
         else
         {
             isLockOnGoalCamera = false;
         }
-        Debug.Log(" transform : " + gameObject.transform.position);
+        //Debug.Log(" transform : " + gameObject.transform.position);
     }
 }
