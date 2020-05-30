@@ -20,6 +20,8 @@ public class CallBallToPlayer : MonoBehaviour
 
     public static CallBallToPlayer instance;
 
+    public bool Locked { get => locked; set => locked = value; }
+
     private void Start()
     {
         instance = this;
@@ -27,7 +29,7 @@ public class CallBallToPlayer : MonoBehaviour
         basketBall = GameLevelManager.Instance.Basketball;
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
-        locked = false;
+        Locked = false;
 
         canBallToPlayerEnabled = true;
         pullSpeed = 2.3f;
@@ -44,11 +46,11 @@ public class CallBallToPlayer : MonoBehaviour
             //&& !_basketBallState.InAir
             && playerState.grounded
             //&& canBallToPlayerEnabled
-            && !locked)
+            && !Locked)
         {
-            locked = true;
+            Locked = true;
             pullBallToPlayer();
-            locked = false;
+            Locked = false;
         }
     }
 

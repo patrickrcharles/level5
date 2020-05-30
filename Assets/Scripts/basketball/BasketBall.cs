@@ -147,12 +147,20 @@ public class BasketBall : MonoBehaviour
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
             //spriteRenderer.enabled = true;
             dropShadow.SetActive(true);
+
+            basketBallState.CanPullBall = true;
+
+            basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
+        }
+        if (playerState.hasBasketball)
+        {
+            basketBallState.CanPullBall = false;
         }
 
-        if (!addAccuracyModifier && PlayerData.instance != null)
-        {
-            PlayerData.instance.IsCheating = true;
-        }
+        //if (!addAccuracyModifier && PlayerData.instance != null)
+        //{
+        //    PlayerData.instance.IsCheating = true;
+        //}
 
 
         //if player has ball and hasnt shot
@@ -172,20 +180,16 @@ public class BasketBall : MonoBehaviour
             }
         }
 
-        // if player doesnt have ball, reset rotation i think
-        if (!playerState.hasBasketball)
-        {
-            basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
-        }
-
         // if has ball, is in air, and pressed shoot button.
         if (playerState.inAir
             && playerState.hasBasketball
             && InputManager.GetButtonDown("Fire1")
             //&& playerState.jumpPeakReached
-            && !playerState.IsSetShooter
-            && !basketBallState.Locked)
+            && !playerState.IsSetShooter)
+            //&& !basketBallState.Locked)
         {
+            Debug.Log("shoot()");
+            CallBallToPlayer.instance.Locked = true;
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.shotmeter.MeterEnded = true;
@@ -198,9 +202,10 @@ public class BasketBall : MonoBehaviour
             && InputManager.GetButtonDown("Fire1")
             //&& InputManager.GetButtonDown("Jump")
             //&& playerState.jumpPeakReached
-            && playerState.IsSetShooter
-            && !basketBallState.Locked)
+            && playerState.IsSetShooter)
+            //&& !basketBallState.Locked)
         {
+            Debug.Log("shoot()");
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.shotmeter.MeterEnded = true;
@@ -236,20 +241,22 @@ public class BasketBall : MonoBehaviour
             playHitRimSound = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
             basketBallState.CanPullBall = true;
+            //basketBallState.Thrown = false;
             basketBallState.Locked = false;
         }
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground")
             && !playerState.hasBasketball)
         {
-            basketBallState.InAir = false;
-            basketBallState.Grounded = true;
+            //basketBallState.InAir = false;
+            //basketBallState.Grounded = true;
             basketBallState.CanPullBall = true;
             //reset rotation
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
-            basketBallState.CanPullBall = true;
+            //basketBallState.CanPullBall = true;
             basketBallState.Locked = false;
+            //basketBallState.Thrown = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
         }
 
@@ -258,6 +265,7 @@ public class BasketBall : MonoBehaviour
         {
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
             basketBallState.CanPullBall = true;
+            //basketBallState.Thrown = false;
             basketBallState.Locked = false;
         }
     }
@@ -269,10 +277,10 @@ public class BasketBall : MonoBehaviour
             playHitRimSound = true;
         }
 
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
-        {
-            basketBallState.Grounded = false;
-        }
+        //if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
+        //{
+        //    basketBallState.Grounded = false;
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -283,13 +291,12 @@ public class BasketBall : MonoBehaviour
             basketBallState.Thrown = false;
             //playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
-            basketBallState.CanPullBall = false;
         }
 
-        if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
-        {
-            basketBallState.Grounded = true;
-        }
+        //if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
+        //{
+        //    basketBallState.Grounded = true;
+        //}
 
         if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
         {
@@ -304,7 +311,7 @@ public class BasketBall : MonoBehaviour
         {
             basketBallState.Thrown = true;
             playerState.hasBasketball = false;
-            basketBallState.Locked = false;
+            //basketBallState.Locked = false;
         }
 
         if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
@@ -390,8 +397,9 @@ public class BasketBall : MonoBehaviour
 
         //reset state flags
         basketBallState.Thrown = true;
-        basketBallState.InAir = true;
-        basketBallState.Locked = false;
+        CallBallToPlayer.instance.Locked = false;
+        //basketBallState.InAir = true;
+        //basketBallState.Locked = false;
 
         // update ui stats if necessary
         if (UiStatsEnabled)
