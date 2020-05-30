@@ -58,7 +58,9 @@ public class GameRules : MonoBehaviour
 
     public static GameRules instance;
 
+    [SerializeField]
     float timePlayedStart;
+    [SerializeField]
     float timePlayedEnd;
 
     private void Awake()
@@ -131,10 +133,7 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
 
-            // time played end
-            timePlayedEnd = Time.time;
-            basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
-            Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
+            setTimePlayed();
 
             //pause on game over
             Pause.instance.TogglePause();
@@ -169,6 +168,14 @@ public class GameRules : MonoBehaviour
             moneyBallEnabled = false;
             displayMoneyBallText.text = "";
         }
+    }
+
+    public void setTimePlayed()
+    {
+        // time played end
+        timePlayedEnd = Time.time;
+        basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
+        Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
     }
 
     //===================================================== toggle money ball ====================================================
@@ -374,8 +381,7 @@ public class GameRules : MonoBehaviour
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
-                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.";
         return scoreText;
     }
 

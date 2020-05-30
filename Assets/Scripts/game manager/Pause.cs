@@ -107,6 +107,11 @@ public class Pause : MonoBehaviour
                 {
                     TogglePause();
                 }
+                // update all time stats
+                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                {
+                    updateFreePlayStats();
+                }
             }
 
             //load start screen
@@ -115,6 +120,12 @@ public class Pause : MonoBehaviour
                 || InputManager.GetKeyDown(KeyCode.Space)))
                 //|| InputManager.GetButtonDown("Fire1")))
             {
+                // update all time stats
+                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                {
+                    updateFreePlayStats();
+                }
+
                 // start screen should be first scene in build
                 SceneManager.LoadScene("level_00_start");
             }
@@ -124,9 +135,22 @@ public class Pause : MonoBehaviour
                 || InputManager.GetKeyDown(KeyCode.Space)))
                 //|| InputManager.GetButtonDown("Fire1"))
             {
+                // update all time stats
+                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                {
+                    updateFreePlayStats();
+                }
                 Quit();
             }
         }
+    }
+
+    private static void updateFreePlayStats()
+    {
+        //set time played to stopped
+        GameRules.instance.setTimePlayed();
+        // update all time stats
+        DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
     }
 
 
