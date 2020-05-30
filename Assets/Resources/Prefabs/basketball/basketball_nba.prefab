@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3245768345025216548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8522811792713454656}
+  - component: {fileID: 506356937143107223}
+  - component: {fileID: 6417855999425663345}
+  m_Layer: 0
+  m_Name: groundCheck
+  m_TagString: groundCheck
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8522811792713454656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245768345025216548}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 6.2, y: 1.3499999, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3567679246626141782}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &506356937143107223
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245768345025216548}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.18146043, y: 0.30158335, z: 1.014987}
+  m_Center: {x: 0.00036737972, y: 0.0036800627, z: 0.17659393}
+--- !u!114 &6417855999425663345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245768345025216548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48af77e4d1c73a94da342786c291ce99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialHeight: 0.62588716
+  finalHeight: 0
+  _player: {fileID: 0}
 --- !u!1 &3569587445836172348
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +180,7 @@ Transform:
   - {fileID: 3567739242467096940}
   - {fileID: 3574978809456273586}
   - {fileID: 3567744020026090148}
+  - {fileID: 8522811792713454656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -322,6 +383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basketBallState: {fileID: 0}
   _angle: 60
+  locked: 0
   accuracyModifierX: 0
   accuracyModifierY: 0
   accuracyModifierZ: 0
@@ -349,10 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448f8871d13874e4d8616bc4d2c508ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerOnMarker: 0
-  _playerOnMarkerOnShoot: 0
-  __moneyBallEnabledOnShoot: 0
-  _currentShotMarkerId: 0
+  _inAir: 0
+  _thrown: 0
+  _locked: 0
+  _canPullBall: 0
   _ballDistanceFromRim: 0
 --- !u!1 &3569848962387920496
 GameObject:

@@ -171,7 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialHeight: 0.62588716
   finalHeight: 0
-  _player: {fileID: 0}
+  basketBallState: {fileID: 0}
 --- !u!1 &1275706453887232854
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,10 +585,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.73
-  m_Height: 2.28
+  m_Radius: 0.5
+  m_Height: 1.672362
   m_Direction: 1
-  m_Center: {x: -0.030286837, y: 0.12685245, z: 0}
+  m_Center: {x: -0.030286837, y: -0.17696668, z: 0}
 --- !u!1 &8188476234929711695
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +602,6 @@ GameObject:
   - component: {fileID: 4620539903697033636}
   - component: {fileID: 5617727460697569618}
   - component: {fileID: 3421694135598086858}
-  - component: {fileID: 7632455355797941681}
   - component: {fileID: 4881404290225261413}
   - component: {fileID: 3123467015696178035}
   - component: {fileID: -7830458416913712004}
@@ -679,6 +678,9 @@ MonoBehaviour:
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
   _facingRight: 0
+  _notLocked: 0
+  _inAir: 0
+  _grounded: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -793,19 +795,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!135 &7632455355797941681
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8188476234929711695}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.64
-  m_Center: {x: 0, y: 0.49, z: 0}
 --- !u!136 &4881404290225261413
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -991,11 +980,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4492720442590388176, guid: 2c5be4240f8817443a8116f62e1624b0,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c5be4240f8817443a8116f62e1624b0, type: 3}
