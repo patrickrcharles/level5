@@ -673,9 +673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8232279206683020858}
   - component: {fileID: 8232279206683020859}
-  - component: {fileID: 8232279206683020856}
   - component: {fileID: 8232279206683020857}
-  - component: {fileID: 8232279206683020862}
   - component: {fileID: 8232279206683020863}
   m_Layer: 8
   m_Name: camera_perspective_on_goal
@@ -744,24 +742,8 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!92 &8232279206683020856
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8232279206683020860}
-  m_Enabled: 1
 --- !u!124 &8232279206683020857
 Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8232279206683020860}
-  m_Enabled: 1
---- !u!81 &8232279206683020862
-AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -806,4 +788,5 @@ MonoBehaviour:
   playerDistanceFromRimZ: 0
   isOrthoGraphic: 0
   smoothSpeed: 0.125
-  offset: {x: 0, y: 0, z: 0}
+  lockOnGoalCameraOffset: {x: 0, y: 0, z: 0}
+  isLockOnGoalCamera: 0
