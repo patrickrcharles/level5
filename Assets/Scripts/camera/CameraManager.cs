@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
     {
         instance = this;
 
-        CameraOnGoalAllowed = false;
+        CameraOnGoalAllowed = true;
 
         defaultCameraIndex = 0;
         currentCameraIndex = defaultCameraIndex;
@@ -86,7 +86,6 @@ public class CameraManager : MonoBehaviour
                 numberOfCameras--;
             }
         }
-        Debug.Log(" number of cameras : " + numberOfCameras);
     }
 
     void switchCamera()
