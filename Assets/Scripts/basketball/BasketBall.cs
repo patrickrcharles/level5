@@ -235,6 +235,7 @@ public class BasketBall : MonoBehaviour
             playHitRimSound = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
             basketBallState.CanPullBall = true;
+            basketBallState.Locked = false;
         }
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground")
@@ -247,6 +248,7 @@ public class BasketBall : MonoBehaviour
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
             basketBallState.CanPullBall = true;
+            basketBallState.Locked = false;
             audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
         }
 
@@ -255,6 +257,7 @@ public class BasketBall : MonoBehaviour
         {
             audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
             basketBallState.CanPullBall = true;
+            basketBallState.Locked = false;
         }
     }
 
