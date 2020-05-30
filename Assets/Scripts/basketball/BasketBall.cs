@@ -186,9 +186,9 @@ public class BasketBall : MonoBehaviour
             && !playerState.IsSetShooter
             && !basketBallState.Locked)
         {
+            basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.shotmeter.MeterEnded = true;
-
             shootBasketBall();
         }
 
@@ -201,6 +201,7 @@ public class BasketBall : MonoBehaviour
             && playerState.IsSetShooter
             && !basketBallState.Locked)
         {
+            basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.shotmeter.MeterEnded = true;
             shootBasketBall();
@@ -316,7 +317,7 @@ public class BasketBall : MonoBehaviour
 
     private void shootBasketBall()
     {
-        basketBallState.Locked = true; // mostly prevent multiple inputs (button presses)
+         // mostly prevent multiple inputs (button presses)
         releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
         //================== anim stuff 
