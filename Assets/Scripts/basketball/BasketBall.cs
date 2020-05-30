@@ -57,6 +57,7 @@ public class BasketBall : MonoBehaviour
     public bool IsCheating => isCheating;
 
     bool playHitRimSound;
+    [SerializeField]
     bool locked;
 
     //public BasketballTestStats testStats;
@@ -275,7 +276,8 @@ public class BasketBall : MonoBehaviour
         if (gameObject.CompareTag("basketball") && other.CompareTag("playerHitbox"))
         {
             playerState.hasBasketball = true;
-            playerState.setPlayerAnim("hasBasketball", true);
+            basketBallState.Thrown = false;
+            //playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
             basketBallState.CanPullBall = false;
         }
@@ -296,7 +298,7 @@ public class BasketBall : MonoBehaviour
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
             basketBallState.Thrown)
         {
-            basketBallState.Thrown = false;
+            basketBallState.Thrown = true;
             playerState.hasBasketball = false;
             basketBallState.Locked = false;
         }
