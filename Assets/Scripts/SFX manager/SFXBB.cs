@@ -16,6 +16,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip werewolfHowl;
     public AudioClip worker_parasite;
     public AudioClip airhorn;
+    public AudioClip lightningStrike;
 
     //public List<AudioClip> vanMusicPlayList;
 

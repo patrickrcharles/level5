@@ -149,3 +149,5 @@ MonoBehaviour:
   gamechanger: {fileID: 8300000, guid: ed36e2475c2d3a84fb1316167df131de, type: 3}
   werewolfHowl: {fileID: 8300000, guid: 20c1874f77d37df42b21a73300866537, type: 3}
   worker_parasite: {fileID: 8300000, guid: cf5b8fa97aedd0742995a3750288a1f3, type: 3}
+  airhorn: {fileID: 8300000, guid: eb07d9a73a7ac6d4888370a2a82860b5, type: 3}
+  lightningStrike: {fileID: 8300000, guid: ea9cadfeb213f454eb895f4bae5cf636, type: 3}

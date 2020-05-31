@@ -52,4 +52,9 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         //       //Debug.Log("play bounce sound");
         audioSource.PlayOneShot(SFXBB.Instance.airhorn);
     }
+    public void playSfxLightningStrike()
+    {
+        //       //Debug.Log("play bounce sound");
+        audioSource.PlayOneShot(SFXBB.Instance.lightningStrike);
+    }
 }
