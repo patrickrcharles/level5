@@ -174,13 +174,13 @@ public class PlayerController : MonoBehaviour
 
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
-        if ((InputManager.GetButton("Run") && canMove && !inAir))
+        // if run input or run toggle on
+        if ( (InputManager.GetButton("Run") && canMove && !inAir))
         {
             running = true;
         }
         else
         {
-            anim.SetBool("moonwalking", false);
             running = false;
             moonwalkAudio.enabled = false;
         }
@@ -295,18 +295,41 @@ public class PlayerController : MonoBehaviour
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)
     {
-        // if moving/ not holding item. bool holdingItem set in AtttackCollision.cs
+        // if moving/ not holding item. 
         if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
         {
-            if (!inAir) // dont want walking animation playing while inAir
+            if (!inAir && !running ) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
             }
         }
+        // not moving
         else
         {
             anim.SetBool("walking", false);
+            anim.SetBool("moonwalking", false);
         }
+
+        // if running enabled
+        if ((runningToggle || running) &&  canMove && !inAir && currentState == walkState)
+        {
+            //Debug.Log("if (runningToggle && canMove && !inAir)");
+            if (!hasBasketball)
+            {
+                anim.SetBool("moonwalking", true);
+                //movementSpeed = shooterProfile.RunSpeed;
+            }
+
+            //if (hasBasketball)
+            //{
+            //    movementSpeed = shooterProfile.RunSpeedHasBall; ;
+            //}
+            //else
+            //{
+            //    movementSpeed = runMovementSpeed;
+            //}
+        }
+
         if (moveHorz > 0 && !facingRight && canMove)
         {
             Flip();
@@ -316,39 +339,19 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
-        // if running enabled
-        if (runningToggle && canMove && !inAir)
-        {
-            //Debug.Log("if (runningToggle && canMove && !inAir)");
-            if (!hasBasketball)
-            {
-                anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed;
-            }
+        //if (running && canMove && !inAir)
+        //{
+        //    if (!hasBasketball)
+        //    {
+        //        anim.SetBool("moonwalking", true);
+        //        movementSpeed = shooterProfile.RunSpeed;
+        //    }
 
-            if (hasBasketball)
-            {
-                movementSpeed = shooterProfile.RunSpeedHasBall; ;
-            }
-            //else
-            //{
-            //    movementSpeed = runMovementSpeed;
-            //}
-        }
-
-        if (running && canMove && !inAir)
-        {
-            if (!hasBasketball)
-            {
-                anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed;
-            }
-
-            if (hasBasketball)
-            {
-                movementSpeed = shooterProfile.RunSpeedHasBall;
-            }
-        }
+        //    if (hasBasketball)
+        //    {
+        //        movementSpeed = shooterProfile.RunSpeedHasBall;
+        //    }
+        //}
     }
 
     void Flip()
@@ -461,7 +464,7 @@ public class PlayerController : MonoBehaviour
     {
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "running = " + running;
+        messageText.text = "running toggle = " + runningToggle;
 
         // turn off text display after 5 seconds
         StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(5));
