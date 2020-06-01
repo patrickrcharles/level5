@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: money
   moneyValue: 1
-  moneyDestroyTime: 3.5
+  moneyDestroyTime: 5
 --- !u!1 &8000122495356072823
 GameObject:
   m_ObjectHideFlags: 0
