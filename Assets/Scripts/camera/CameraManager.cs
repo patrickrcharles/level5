@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
+    [SerializeField]
     GameObject[] cameras;
 
     cameraUpdater cameraUpdater;
     Camera cam;
-
+    [SerializeField]
     int currentCameraIndex;
     int defaultCameraIndex = 0;
-
+    [SerializeField]
     int numberOfCameras;
 
     bool locked;
@@ -36,8 +37,8 @@ public class CameraManager : MonoBehaviour
 
         CameraOnGoalAllowed = true;
 
-        defaultCameraIndex = 0;
-        currentCameraIndex = defaultCameraIndex;
+        //defaultCameraIndex = 0;
+        //currentCameraIndex = defaultCameraIndex;
         Cameras = GameObject.FindGameObjectsWithTag("MainCamera");
         setDefaultCamera();
     }
@@ -65,31 +66,39 @@ public class CameraManager : MonoBehaviour
     {
         for (int i = 0; i < Cameras.Length; i++)
         {
-            if (i == defaultCameraIndex)
+            if (Cameras[i].name.Contains("perspective_1"))
             {
+                currentCameraIndex = i;
                 Cameras[i].SetActive(true);
                 numberOfCameras++;
             }
-            if (i != defaultCameraIndex)
+            //if (i == defaultCameraIndex)
+            //{
+            //    Cameras[i].SetActive(true);
+            //    numberOfCameras++;
+            //}
+            if (!Cameras[i].name.Contains("perspective"))
             {
                 Cameras[i].SetActive(false);
                 numberOfCameras++;
             }
-            if (Cameras[i].name.Contains("follow_ball"))
-            {
-                cameraFollowBallIndex = i;
-                numberOfCameras--;
-            }
+            //if (Cameras[i].name.Contains("follow_ball"))
+            //{
+            //    cameraFollowBallIndex = i;
+            //    numberOfCameras--;
+            //}
             if (Cameras[i].name.Contains("goal"))
             {
                 cameraOnGoalIndex = i;
-                numberOfCameras--;
+                Cameras[i].SetActive(false);
+                //numberOfCameras--;
             }
         }
     }
 
     void switchCamera()
     {
+        Debug.Log(" switch camera :   current cam : " + cameras[currentCameraIndex].name);
         // if not last camera, go to next
         if (currentCameraIndex < numberOfCameras)
         {
