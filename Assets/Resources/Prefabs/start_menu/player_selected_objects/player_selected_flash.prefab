@@ -65,8 +65,8 @@ MonoBehaviour:
   shooterProfilePrefabName: 
   jumpForce: 5.6
   speed: 5
-  runSpeedHasBall: 5.5
-  runSpeed: 6
+  runSpeedHasBall: 5.3
+  runSpeed: 5.6
   hangTime: 0
   range: 99
   release: 0
