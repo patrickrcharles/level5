@@ -45,6 +45,9 @@ public class DBConnector : MonoBehaviour
 
     void Awake()
     {
+
+        Debug.Log(" DBconnector");
+
         instance = this;
 
         // only create player data once
@@ -57,31 +60,57 @@ public class DBConnector : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        Debug.Log(" DBconnector : Start");
+
+        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
+        Debug.Log(connection);
+        filepath = Application.dataPath + databaseNamePath;
+        Debug.Log(filepath);
+        currentGameVersion = getCurrentGameVersionToInt(Application.version);
+
+        // im the only person with a player id right now. this will come from  registration
+        //currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
+
+        // if database doesnt exist
+        if (!File.Exists(filepath))
+        {
+            Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+            createDatabase();
+        }
     }
 
 
     void Start()
     {
-        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
-        filepath = Application.dataPath + databaseNamePath;
-        currentGameVersion = getCurrentGameVersionToInt(Application.version);
-
         dbHelper = gameObject.GetComponent<DBHelper>();
         transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
 
-        // im the only person with a player id right now. this will come from  registration
-        currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
+        //Debug.Log(" DBconnector : Start");
 
-        // if database doesnt exist
-        if (!File.Exists(filepath))
-        {
-            createDatabase();
-        }
+        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
+        //Debug.Log(connection);
+        //filepath = Application.dataPath + databaseNamePath;
+        //Debug.Log(filepath);
+        //currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
-        //if(currentGameVersion.Equals())
-        //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v1);
-        //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v2);
-        //Debug.Log("enum test v1 : "+ (int)prevVersionsWithNoDB.v3);
+        //dbHelper = gameObject.GetComponent<DBHelper>();
+        //transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
+
+        //// im the only person with a player id right now. this will come from  registration
+        ////currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
+
+        //// if database doesnt exist
+        //if (!File.Exists(filepath))
+        //{
+        //    Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+        //    createDatabase();
+        //}
+
+        //if (currentGameVersion.Equals())
+        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v1);
+        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v2);
+        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v3);
 
         // get device user is currently using
         SetCurrentUserDevice();
@@ -100,7 +129,7 @@ public class DBConnector : MonoBehaviour
         // setf lag that scores have been transferred and dont need to be transferred again
         setPrevHighScoreInsertedTrue();
 
-        dbHelper.getStringListOfAllValuesFromTableByField(tableNameHighScores, "level");
+        //dbHelper.getStringListOfAllValuesFromTableByField(tableNameHighScores, "level");
         //Debug.Log(isTableEmpty("User") );
         //Debug.Log(isTableEmpty("HighScores") );
         //getAllValuesFromTableByField("User", "userName");
@@ -131,6 +160,7 @@ public class DBConnector : MonoBehaviour
     // have high scores been transferred already. checks flag in User table
     int getPrevHighScoreInserted()
     {
+        Debug.Log("getPrevHighScoreInserted");
         int value = 0; 
 
         IDbConnection dbconn;
@@ -160,6 +190,8 @@ public class DBConnector : MonoBehaviour
     // set high sores transferred flag to true
     int setPrevHighScoreInsertedTrue()
     {
+        Debug.Log("insert previous high scores");
+
         int value = 0;
 
         IDbConnection dbconn;
@@ -216,24 +248,24 @@ public class DBConnector : MonoBehaviour
         string sqlQuery = String.Format(
             "CREATE TABLE if not exists HighScores(" +
             "playerid  INTEGER," +
-            "modeid    INTEGER UNIQUE," +
+            "modeid    INTEGER, " +
             "characterid   INTEGER, " +
             "character   TEXT, " +
-            "levelid   INTEGER," +
-            "level    TEXT," +
-            "os    TEXT," +
-            "version   TEXT," +
-            "date  TEXT," +
-            "time  TEXT," +
-            "totalPoints   INTEGER," +
-            "longestShot   REAL," +
-            "totalDistance REAL" +
-            "maxShotMade   INTEGER,"+
-            "maxShotAtt    INTEGER," +
-            "consecutiveShots   INTEGER);" +
+            "levelid   INTEGER, " +
+            "level    TEXT, " +
+            "os    TEXT, " +
+            "version   TEXT, " +
+            "date  TEXT, " +
+            "time  TEXT, " +
+            "totalPoints   INTEGER, " +
+            "longestShot   REAL, " +
+            "totalDistance REAL, " +
+            "maxShotMade   INTEGER, "+
+            "maxShotAtt    INTEGER, " +
+            "consecutiveShots   INTEGER); " +
 
             "CREATE TABLE if not exists User( " +
-            "id    INTEGER, " +
+            "id    INTEGER PRIMARY KEY, " +
             "userName  INTEGER, " +
             "firstName TEXT, " +
             "middleName    INTEGER, " +
@@ -242,22 +274,24 @@ public class DBConnector : MonoBehaviour
             "password  TEXT, " +
             "version   TEXT, " +
             "os    TEXT, " +
-            "PRIMARY KEY(id));" +
+            "prevScoresInserted   DEFAULT 0 );" +
 
             "CREATE TABLE if not exists AllTimeStats(" +
-            "twoMade   INTEGER," +
-            "twoAtt    INTEGER," +
-            "threeMade INTEGER," +
-            "threeAtt  INTEGER," +
-            "fourMade  INTEGER," +
-            "fourAtt   INTEGER," +
-            "sevenMade INTEGER," +
-            "sevenAtt  INTEGER," +
-            "moneyBallMade INTEGER," +
-            "moneyBallAtt  INTEGER," +
-            "totalDistance REAL," +
-            "timePlayed    REAL"+
+            "twoMade   INTEGER, " +
+            "twoAtt    INTEGER, " +
+            "threeMade INTEGER, " +
+            "threeAtt  INTEGER, " +
+            "fourMade  INTEGER, " +
+            "fourAtt   INTEGER, " +
+            "sevenMade INTEGER, " +
+            "sevenAtt  INTEGER, " +
+            "moneyBallMade INTEGER, " +
+            "moneyBallAtt  INTEGER, " +
+            "totalDistance REAL, " +
+            "timePlayed    REAL, "+
             "consecutiveShots    INTEGER);");
+
+        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();

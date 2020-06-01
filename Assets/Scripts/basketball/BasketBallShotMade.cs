@@ -187,7 +187,7 @@ public class BasketBallShotMade : MonoBehaviour
         // if current is == expected made/attempt, increment consecutive
         if (_currentShotMade == _expectedShotMade && _currentShotAttempts == _expectedShotAttempts)
         {
-            Debug.Log(" expected = current");
+            //Debug.Log(" expected = current");
             _consecutiveShotsMade++;
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;
@@ -195,7 +195,7 @@ public class BasketBallShotMade : MonoBehaviour
         // else, not consecutive shot. get current, increment for next expected consecutive shot
         else
         {
-            Debug.Log(" else");
+            //Debug.Log(" else");
             _consecutiveShotsMade = 1;
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;  

@@ -188,7 +188,7 @@ public class BasketBall : MonoBehaviour
             && !playerState.IsSetShooter)
             //&& !basketBallState.Locked)
         {
-            Debug.Log("shoot()");
+            //Debug.Log("shoot()");
             CallBallToPlayer.instance.Locked = true;
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
@@ -234,7 +234,7 @@ public class BasketBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("COLLISION ENTER  this : " + gameObject.tag + "      other : " + other.gameObject.tag);
+        //Debug.Log("COLLISION ENTER  this : " + gameObject.tag + "      other : " + other.gameObject.tag);
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") 
             && playHitRimSound
             && !playerState.hasBasketball)
@@ -273,7 +273,7 @@ public class BasketBall : MonoBehaviour
 
     private void OnCollisionExit(Collision other)
     {
-        Debug.Log("COLLISION EXIT  this : " + gameObject.tag + "      other : " + other.gameObject.tag);
+        //Debug.Log("COLLISION EXIT  this : " + gameObject.tag + "      other : " + other.gameObject.tag);
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && !playHitRimSound)
         {
             playHitRimSound = true;
@@ -287,7 +287,7 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TRIGGER ENTER    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
+        //Debug.Log("TRIGGER ENTER    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") 
             && !basketBallState.Thrown)
         {
@@ -310,7 +310,7 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("TRIGGER EXIT    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
+        //Debug.Log("TRIGGER EXIT    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
             basketBallState.Thrown)
         {
@@ -329,7 +329,7 @@ public class BasketBall : MonoBehaviour
 
     private void shootBasketBall()
     {
-        Debug.Log("shootBasketBall()");
+        //Debug.Log("shootBasketBall()");
         // mostly prevent multiple inputs (button presses)
         releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
@@ -508,7 +508,7 @@ public class BasketBall : MonoBehaviour
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
-        Debug.Log("Launch ----------- finish()");
+        //Debug.Log("Launch ----------- finish()");
     }
 
     // =========================================================== Functions and Properties ========================================================
@@ -728,7 +728,7 @@ public class BasketBall : MonoBehaviour
 
     IEnumerator LaunchBasketBall()
     {
-        Debug.Log("LaunchBasketBall()");
+        //Debug.Log("LaunchBasketBall()");
         // wait for shot meter to finish
         yield return new WaitUntil(() => playerState.shotmeter.MeterEnded == false);
         //launch ball to goal      

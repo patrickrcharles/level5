@@ -48,7 +48,7 @@ public class CallBallToPlayer : MonoBehaviour
             //&& canBallToPlayerEnabled
             && !Locked)
         {
-            Debug.Log("call ball input read");
+            //Debug.Log("call ball input read");
             Locked = true;
             pullBallToPlayer();
             Locked = false;
@@ -58,7 +58,7 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void pullBallToPlayer()
     {
-        Debug.Log("pullBallToPlayer()");
+        //Debug.Log("pullBallToPlayer()");
         Vector3 tempDirection = basketballRigidBody.transform.position;
         pullDirection = transform.position - tempDirection;
         basketballRigidBody.velocity = pullDirection * pullSpeed;
