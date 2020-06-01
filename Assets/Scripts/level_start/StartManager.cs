@@ -464,8 +464,20 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        Debug.Log("scene name : " + sceneName);
-        SceneManager.LoadScene(sceneName);
+        //Debug.Log("scene name : " + sceneName);
+
+        // check if Player selected is locked
+        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+            messageText.text = " Bruh, it's locked";
+            // turn off text display after 5 seconds
+            StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+        }
+        if (!playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
     private void setPlayerProfileStats()
@@ -512,5 +524,12 @@ public class StartManager : MonoBehaviour
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
+    }
+
+    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "";
     }
 }
