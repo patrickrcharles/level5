@@ -31,7 +31,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
 
     void Start()
     {
-
+        Debug.Log("TransferPlayerPrefScoresToDB - start");
         //currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
         //currentPlayerId = getIntValueFromTableByFieldAndId("User", "userid", 1);
@@ -59,6 +59,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
     public void InsertPrevVersionHighScoresToDB()
     {
         Debug.Log("InsertPrevVersionHighScoresToDB()");
+
         connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         filepath = Application.dataPath + databaseNamePath;
 

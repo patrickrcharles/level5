@@ -20,6 +20,7 @@ public class DBConnector : MonoBehaviour
     private String filepath;
 
     const String tableNameHighScores = "HighScores";
+    const String tableNameAllTimeStats = "AllTimeStats";
     const String tableNameUser = "User";
 
     IDbCommand dbcmd;
@@ -69,6 +70,9 @@ public class DBConnector : MonoBehaviour
         Debug.Log(filepath);
         currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
+        dbHelper = gameObject.GetComponent<DBHelper>();
+        transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
+
         // im the only person with a player id right now. this will come from  registration
         //currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
 
@@ -83,8 +87,7 @@ public class DBConnector : MonoBehaviour
 
     void Start()
     {
-        dbHelper = gameObject.GetComponent<DBHelper>();
-        transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
+
 
         //Debug.Log(" DBconnector : Start");
 
@@ -107,20 +110,22 @@ public class DBConnector : MonoBehaviour
         //    createDatabase();
         //}
 
-        //if (currentGameVersion.Equals())
-        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v1);
-        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v2);
-        Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v3);
+        //create default user 
+        if (!dbHelper.isTableEmpty(tableNameUser))
+        {
+            dbHelper.InsertDefaultUserRecord();
+        }
+
+        ////if (currentGameVersion.Equals())
+        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v1);
+        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v2);
+        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v3);
 
         // get device user is currently using
         SetCurrentUserDevice();
 
-        // check if old version and scores need to be transferred
-        if (currentGameVersion == (int) prevVersionsWithNoDB.v1
-            || currentGameVersion == (int) prevVersionsWithNoDB.v2
-            || currentGameVersion == (int) prevVersionsWithNoDB.v3 
-            || currentGameVersion == (int) prevVersionsWithNoDB.v4
-            && getPrevHighScoreInserted() == 0)
+        // check if scores need to be transferred, flag is et in User table
+        if (getPrevHighScoreInserted() == 0)
         {
             Debug.Log(" put playerprefs into db");
             // get object instance needed to transfer scores
@@ -168,7 +173,7 @@ public class DBConnector : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        string sqlQuery = "SELECT prevScoresInserted from User where userid = "+ currentPlayerId ;
+        string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -264,18 +269,6 @@ public class DBConnector : MonoBehaviour
             "maxShotAtt    INTEGER, " +
             "consecutiveShots   INTEGER); " +
 
-            "CREATE TABLE if not exists User( " +
-            "id    INTEGER PRIMARY KEY, " +
-            "userName  INTEGER, " +
-            "firstName TEXT, " +
-            "middleName    INTEGER, " +
-            "lastName  INTEGER, " +
-            "email TEXT, " +
-            "password  TEXT, " +
-            "version   TEXT, " +
-            "os    TEXT, " +
-            "prevScoresInserted   DEFAULT 0 );" +
-
             "CREATE TABLE if not exists AllTimeStats(" +
             "twoMade   INTEGER, " +
             "twoAtt    INTEGER, " +
@@ -289,14 +282,31 @@ public class DBConnector : MonoBehaviour
             "moneyBallAtt  INTEGER, " +
             "totalDistance REAL, " +
             "timePlayed    REAL, "+
-            "consecutiveShots    INTEGER);");
+            "consecutiveShots    INTEGER);" +
+
+            "CREATE TABLE if not exists User( " +
+            "id    INTEGER PRIMARY KEY, " +
+            "userName  INTEGER, " +
+            "firstName TEXT, " +
+            "middleName    INTEGER, " +
+            "lastName  INTEGER, " +
+            "email TEXT, " +
+            "password  TEXT, " +
+            "version   TEXT, " +
+            "os    TEXT, " +
+            "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);");
 
         Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
-        dbconn.Close();
 
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        Debug.Log("close database on CREATE");
     }
 }
 

@@ -48,7 +48,9 @@ public class PlayerData : MonoBehaviour
 
     void Awake()
     {
+
         instance = this;
+        Debug.Log(" PlayerData : Awake()");
         // only create player data once
         if (!_created)
         {
@@ -60,7 +62,13 @@ public class PlayerData : MonoBehaviour
             Destroy(this.gameObject);
         }
         // load stats wake
-        loadStats();
+        //loadStatsFromPlayerPrefs();
+    }
+
+    private void Start()
+    {
+        // load stats wake
+        loadStatsFromDatabase();
     }
 
     public void saveStats()
@@ -151,7 +159,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_totalPointsAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _totalPoints = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 2 (3s)
         if (_threePointerMade < basketBallStats.ThreePointerMade && GameOptions.gameModeSelected == 2)
@@ -164,7 +172,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _threePointerMade = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 3 (4s)
         if (_fourPointerMade < basketBallStats.FourPointerMade && GameOptions.gameModeSelected == 3)
@@ -177,7 +185,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _fourPointerMade = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 4 (7s)
         if (_sevenPointerMade < basketBallStats.SevenPointerMade && GameOptions.gameModeSelected == 4)
@@ -190,7 +198,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _fourPointerMade = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 5 (long shot)
         if (_longestShotMade < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 5)
@@ -203,7 +211,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _longestShotMade = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 6 (total shot distance made)
         if (_totalDistance < (basketBallStats.TotalDistance * 6) && GameOptions.gameModeSelected == 6)
@@ -216,7 +224,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _totalDistance = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 7 low time 3s
         if ((_makeThreePointersLowTime > basketBallStats.MakeThreePointersLowTime && GameOptions.gameModeSelected == 7)
@@ -230,7 +238,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeThreePointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 8 low time 4s
         if ((_makeFourPointersLowTime > basketBallStats.MakeFourPointersLowTime && GameOptions.gameModeSelected == 8)
@@ -244,7 +252,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeFourPointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 9 low time 3s + 4s
         if ((_makeAllPointersLowTime > basketBallStats.MakeAllPointersLowTime && GameOptions.gameModeSelected == 9)
@@ -258,7 +266,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeAllPointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 10 low time 3s
         if ((_makeThreePointersMoneyBallLowTime > basketBallStats.MakeThreePointersMoneyBallLowTime && GameOptions.gameModeSelected == 10) 
@@ -272,7 +280,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeThreePointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 11 low time 4s
         if ((_makeFourPointersMoneyBallLowTime > basketBallStats.MakeFourPointersMoneyBallLowTime && GameOptions.gameModeSelected == 11 ) 
@@ -286,7 +294,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeFourPointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // save mode 12 low time 3s + 4s
         if ((_makeAllPointersMoneyBallLowTime > basketBallStats.MakeAllPointersMoneyBallLowTime && GameOptions.gameModeSelected == 12) 
@@ -300,7 +308,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _makeAllPointersLowTime = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
 
         // save mode 13 (longest shot in free play)
@@ -314,14 +322,14 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
             _longestShotMadeFreePlay = 0;
-            loadStats();
+            loadStatsFromPlayerPrefs();
         }
         // after save, data zeroed. can reload
     }
 
-    public void loadStats()
+    public void loadStatsFromPlayerPrefs()
     {
-       //Debug.Log("load()");
+       Debug.Log("load()");
         //only call at beginning of a game
 
         //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
@@ -376,6 +384,26 @@ public class PlayerData : MonoBehaviour
         _makeAllPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTimeMoneyBall");
 
         _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
+    }
+
+
+    public void loadStatsFromDatabase()
+    {
+        Debug.Log("load from database");
+   
+        _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
+        _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");
+        _fourPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 3, "DESC");
+        _sevenPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 4, "DESC");
+        _longestShotMade = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 5, "DESC");
+        _totalDistance = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "totalDistance", 6, "DESC");
+        _makeThreePointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 7, "ASC");
+        _makeFourPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 8, "ASC");
+        _makeFourPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 9, "ASC");
+        _makeThreePointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 10, "ASC");
+        _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC");
+        _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
+        _longestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
     }
 
     public void deleteAllSavedData()

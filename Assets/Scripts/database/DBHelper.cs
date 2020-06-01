@@ -18,9 +18,13 @@ public class DBHelper : MonoBehaviour
     IDataReader reader;
     private IDbConnection dbconn;
 
+    public static DBHelper instance;
 
-    void Start()
+
+    void Awake()
     {
+        instance = this;
+        Debug.Log(" DBHelper : Awake");
         connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         filepath = Application.dataPath + databaseNamePath;
     }
@@ -57,8 +61,10 @@ public class DBHelper : MonoBehaviour
 
         if (count == 0)
         {
+            Debug.Log(" is table empty : true");
             return true;
         }
+        Debug.Log(" is table empty : false");
         return false;
     }
 
@@ -92,6 +98,54 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
 
         return listOfValues;
+    }
+
+    internal void InsertDefaultUserRecord()
+    {
+
+        Debug.Log("InsertDefaultUserRecord");
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery1 =
+           "INSERT INTO User( " +
+           "id, " +
+           "userName, " +
+           "firstName," +
+           "middleName," +
+           "lastName," +
+           "email," +
+           "password," +
+           "version," +
+           "os, " +
+           "prevScoresInserted)  " +
+
+           "Values( '" + 1
+           + "', '" + "placeholder"
+           + "','" + "placeholder"
+           + "','" + "placeholder"
+           + "','" + "placeholder"
+           + "','" + "email@placeholder.com"
+           + "','" + "password"
+           + "','" + "6.9.420"
+           + "','" + "os version"
+           + "','" + 0  + "')";
+
+        Debug.Log(sqlQuery1);
+
+        dbcmd.CommandText = sqlQuery1;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
     }
 
     // insert current game's stats and score
@@ -132,7 +186,6 @@ public class DBHelper : MonoBehaviour
         dbcmd = null;
         dbconn.Close();
         dbconn = null;
-
     }
 
     internal BasketBallStats getAllTimeStats()
@@ -298,7 +351,7 @@ public class DBHelper : MonoBehaviour
         return listOfValues;
     }
 
-
+    // ***************************** get values by USER ID *******************************************
     // return string from specified table by field and userid
     public String getStringValueFromTableByFieldAndId(String tableName, String field, int userid)
     {
@@ -386,6 +439,87 @@ public class DBHelper : MonoBehaviour
         {
             value = reader.GetFloat(0);
             Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    // ***************************** get values by MODE ID *******************************************
+    // return string from specified table by field and userid
+    public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    {
+        Debug.Log("getIntValueHighScoreFromTableByFieldAndModeId");
+
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT " + field + " FROM " + tableName 
+            + " WHERE modeid = " + modeid + " ORDER BY " + field + "  "+ order +"  LIMIT 1";
+
+        Debug.Log(sqlQuery);
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            //int value = reader.GetInt32(0);
+            value = reader.GetInt32(0);
+            //string name = reader.GetString(1);
+            //string email = reader.GetString(2);
+            //string password = reader.GetString(3);
+            ////int rand = reader.GetInt32(2);
+
+            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    {
+
+        float value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT " + field + " FROM " + tableName
+            + " WHERE modeid = " + modeid + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            //int value = reader.GetInt32(0);
+            value = reader.GetFloat(0);
+            //string name = reader.GetString(1);
+            //string email = reader.GetString(2);
+            //string password = reader.GetString(3);
+            ////int rand = reader.GetInt32(2);
+
+            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
         }
         reader.Close();
         reader = null;
