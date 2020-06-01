@@ -1100,8 +1100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128a5f39f69aa344825e318f9b99d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOver: 0
   _basketBallShotMarkersList: []
+  timePlayedStart: 0
+  timePlayedEnd: 0
 --- !u!1 &2626216200384811591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,7 +1238,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3056989723612319028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -9.14}
+  m_LocalPosition: {x: 0, y: 0, z: -5.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7410545784202926038}
@@ -1245,7 +1246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.43, y: 0.754}
+  m_AnchoredPosition: {x: 0.86, y: 0.754}
   m_SizeDelta: {x: 1.28, y: 1.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3469435673186801345
