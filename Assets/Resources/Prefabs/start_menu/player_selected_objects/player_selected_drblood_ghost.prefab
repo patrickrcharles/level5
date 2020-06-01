@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 12
-  playerDisplayName: Doctor Blood's Ghost
+  playerDisplayName: Ghost Dawg
   playerObjectName: drblood_ghost
   playerPortrait: {fileID: 1459547446756339361, guid: d5e47bd61a655884ea70d88de03a3002,
     type: 3}
@@ -59,9 +59,9 @@ MonoBehaviour:
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 79
+  accuracy3pt: 93
   accuracy4pt: 78
-  accuracy7pt: 85
+  accuracy7pt: 87
   shooterProfilePrefabName: 
   jumpForce: 5
   speed: 2.7
@@ -74,5 +74,5 @@ MonoBehaviour:
   shootAngle: 50
   level: 0
   experience: 0
-  isLocked: 0
+  isLocked: 1
   unlockCharacterText: 'Unlock : ???'

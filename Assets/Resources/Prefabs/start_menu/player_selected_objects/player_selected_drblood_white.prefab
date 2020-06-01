@@ -73,5 +73,5 @@ MonoBehaviour:
   shootAngle: 50
   level: 0
   experience: 0
-  isLocked: 0
+  isLocked: 1
   unlockCharacterText: 'Unlock : ???'
