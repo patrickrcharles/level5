@@ -196,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275706453887232854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1440889072488101908}
@@ -620,7 +620,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8188476234929711695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.748}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6766979455619701448}
@@ -634,7 +634,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.34, y: 1.42}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1.28, y: 1.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!54 &7882584539614933877
@@ -678,9 +678,6 @@ MonoBehaviour:
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
   _facingRight: 0
-  _notLocked: 0
-  _inAir: 0
-  _grounded: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -848,7 +845,7 @@ MonoBehaviour:
   accuracy4pt: 75
   accuracy7pt: 65
   shooterProfilePrefabName: 
-  jumpForce: 5.5
+  jumpForce: 4.6
   speed: 2.5
   runSpeedHasBall: 3.3
   runSpeed: 3.3
