@@ -35,7 +35,7 @@ public class CallBallToPlayer : MonoBehaviour
         pullSpeed = 2.3f;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (InputManager.GetButtonDown("Fire1")
             && !playerState.hasBasketball
@@ -48,6 +48,7 @@ public class CallBallToPlayer : MonoBehaviour
             //&& canBallToPlayerEnabled
             && !Locked)
         {
+            Debug.Log("call ball input read");
             Locked = true;
             pullBallToPlayer();
             Locked = false;
