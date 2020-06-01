@@ -74,8 +74,10 @@ public class BasketBallShotMade : MonoBehaviour
             // add to total shot distance made total
             _basketBallStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
 
+            //Debug.Log(" last shot : " + BasketBall.instance.LastShotDistance * 6);
+            //Debug.Log(" long shot : " + _basketBallStats.LongestShotMade);
             // is this the longest shot made?
-            if (BasketBall.instance.LastShotDistance > _basketBallStats.LongestShotMade)
+            if ((BasketBall.instance.LastShotDistance * 6) > _basketBallStats.LongestShotMade)
             {
                 _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
             }
