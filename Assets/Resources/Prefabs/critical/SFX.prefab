@@ -151,3 +151,4 @@ MonoBehaviour:
   worker_parasite: {fileID: 8300000, guid: cf5b8fa97aedd0742995a3750288a1f3, type: 3}
   airhorn: {fileID: 8300000, guid: eb07d9a73a7ac6d4888370a2a82860b5, type: 3}
   lightningStrike: {fileID: 8300000, guid: ea9cadfeb213f454eb895f4bae5cf636, type: 3}
+  rimShot: {fileID: 8300000, guid: 459d4ffabfeb310489255fe4e5f40de4, type: 3}
