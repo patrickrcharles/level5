@@ -312,7 +312,7 @@ public class PlayerData : MonoBehaviour
         }
 
         // save mode 13 (longest shot in free play)
-        if (_longestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
+        if (LongestShotMadeFreePlay1 < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
         {
             messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
@@ -321,7 +321,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
-            _longestShotMadeFreePlay = 0;
+            LongestShotMadeFreePlay1 = 0;
             loadStatsFromPlayerPrefs();
         }
         // after save, data zeroed. can reload
@@ -383,7 +383,7 @@ public class PlayerData : MonoBehaviour
         _makeFourPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTimeMoneyBall");
         _makeAllPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTimeMoneyBall");
 
-        _longestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
+        LongestShotMadeFreePlay1 = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
     }
 
 
@@ -403,7 +403,7 @@ public class PlayerData : MonoBehaviour
         _makeThreePointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 10, "ASC");
         _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC");
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
-        _longestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
+        LongestShotMadeFreePlay1 = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
     }
 
     public void deleteAllSavedData()
@@ -451,8 +451,7 @@ public class PlayerData : MonoBehaviour
     }
 
     public float SevenPointerAttempts =>_sevenPointerAttempts;
-    
-    public float LongestShotMadeFreePlay => _longestShotMadeFreePlay;
+   
 
     public int PlayerId => _playerId;
 
@@ -493,4 +492,6 @@ public class PlayerData : MonoBehaviour
     public float MakeFourPointersMoneyBallLowTime => _makeFourPointersMoneyBallLowTime;
 
     public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
+
+    public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
 }
