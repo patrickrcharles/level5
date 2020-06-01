@@ -317,7 +317,7 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 13)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade ).ToString("0.00")
-                                                             + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim ).ToString("00.00");
+                                                             + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6 ).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
             // if longest shot > saved longest shot
             if ((BasketBall.instance.BasketBallStats.LongestShotMade ) > PlayerData.instance.LongestShotMadeFreePlay)
