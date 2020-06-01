@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -108,7 +109,7 @@ public class Pause : MonoBehaviour
                     TogglePause();
                 }
                 // update all time stats
-                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
                 {
                     updateFreePlayStats();
                 }
@@ -121,7 +122,7 @@ public class Pause : MonoBehaviour
                 //|| InputManager.GetButtonDown("Fire1")))
             {
                 // update all time stats
-                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free") )
                 {
                     updateFreePlayStats();
                 }
@@ -136,7 +137,7 @@ public class Pause : MonoBehaviour
                 //|| InputManager.GetButtonDown("Fire1"))
             {
                 // update all time stats
-                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
                 {
                     updateFreePlayStats();
                 }
