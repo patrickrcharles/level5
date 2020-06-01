@@ -528,6 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rimSprite: {fileID: 4106419974629607320}
+  _consecutiveShotsMade: 0
 --- !u!1 &4105776292341139252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,7 +1266,7 @@ Transform:
   m_GameObject: {fileID: 4107209178547675236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.038, y: -0.063, z: 0.497}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children:
   - {fileID: 4101644690916574578}
   - {fileID: 6805375978910367787}

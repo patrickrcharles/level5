@@ -520,7 +520,7 @@ Transform:
   m_GameObject: {fileID: 513947498237799942}
   m_LocalRotation: {x: -0.11840396, y: -0, z: -0, w: 0.9929655}
   m_LocalPosition: {x: -0.02699995, y: -0.051, z: 0.189}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children:
   - {fileID: 519510890762455824}
   - {fileID: 7039083469800541769}
@@ -1054,9 +1054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fcf57ae7484169409620e1c24e0fe71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentShotTestIndex: 0
   rimSprite: {fileID: 514179258511854074}
-  moneyClone: {fileID: 0}
+  _consecutiveShotsMade: 0
 --- !u!1 &856486996861207497
 GameObject:
   m_ObjectHideFlags: 0
