@@ -31,7 +31,7 @@ public class TransferPlayerPrefScoresToDB : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("TransferPlayerPrefScoresToDB - start");
+        //Debug.Log("TransferPlayerPrefScoresToDB - start");
         //currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
         //currentPlayerId = getIntValueFromTableByFieldAndId("User", "userid", 1);

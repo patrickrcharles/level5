@@ -50,7 +50,7 @@ public class PlayerData : MonoBehaviour
     {
 
         instance = this;
-        Debug.Log(" PlayerData : Awake()");
+       //Debug.Log(" PlayerData : Awake()");
         // only create player data once
         if (!_created)
         {
@@ -329,7 +329,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStatsFromPlayerPrefs()
     {
-       Debug.Log("load()");
+      //Debug.Log("load()");
         //only call at beginning of a game
 
         //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
@@ -389,7 +389,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStatsFromDatabase()
     {
-        Debug.Log("load from database");
+       //Debug.Log("load from database");
    
         _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
         _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");

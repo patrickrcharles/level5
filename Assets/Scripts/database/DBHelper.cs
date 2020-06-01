@@ -24,7 +24,7 @@ public class DBHelper : MonoBehaviour
     void Awake()
     {
         instance = this;
-        Debug.Log(" DBHelper : Awake");
+       //Debug.Log(" DBHelper : Awake");
         connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         filepath = Application.dataPath + databaseNamePath;
     }
@@ -61,17 +61,17 @@ public class DBHelper : MonoBehaviour
 
         if (count == 0)
         {
-            Debug.Log(" is table empty : true");
+           //Debug.Log(" is table empty : true");
             return true;
         }
-        Debug.Log(" is table empty : false");
+       //Debug.Log(" is table empty : false");
         return false;
     }
 
     // list of string values by table/field
     public List<String> getStringListOfAllValuesFromTableByField(String tableName, String field)
     {
-        Debug.Log("getListOfAllValuesFromTableByField()");
+       //Debug.Log("getListOfAllValuesFromTableByField()");
         List<String> listOfValues = new List<string>();
         String value;
 
@@ -103,7 +103,7 @@ public class DBHelper : MonoBehaviour
     internal void InsertDefaultUserRecord()
     {
 
-        Debug.Log("InsertDefaultUserRecord");
+       //Debug.Log("InsertDefaultUserRecord");
 
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -134,7 +134,7 @@ public class DBHelper : MonoBehaviour
            + "','" + "os version"
            + "','" + 0  + "')";
 
-        Debug.Log(sqlQuery1);
+       //Debug.Log(sqlQuery1);
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -175,7 +175,7 @@ public class DBHelper : MonoBehaviour
            + stats.ShotAttempt + "','"
            + stats.MostConsecutiveShots +  "')";
 
-        Debug.Log(sqlQuery1);
+       //Debug.Log(sqlQuery1);
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -198,11 +198,11 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+       //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
 
         if (!isTableEmpty(allTimeStatsTableName))
         {
-            Debug.Log(" table is not empty");
+           //Debug.Log(" table is not empty");
             sqlQuery ="Select  * From " + allTimeStatsTableName;
 
             dbcmd.CommandText = sqlQuery;
@@ -224,7 +224,7 @@ public class DBHelper : MonoBehaviour
                 prevStats.TimePlayed = reader.GetFloat(11);
             }
 
-            Debug.Log(" prevstats : " + prevStats.TwoPointerMade + " / " + prevStats.TwoPointerAttempts);
+           //Debug.Log(" prevstats : " + prevStats.TwoPointerMade + " / " + prevStats.TwoPointerAttempts);
 
         }
         Destroy(prevStats, 5);
@@ -243,7 +243,7 @@ public class DBHelper : MonoBehaviour
 
         if (isTableEmpty(allTimeStatsTableName))
         {
-            Debug.Log(" table is empty");
+           //Debug.Log(" table is empty");
             sqlQuery =
            "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
            "sevenAtt, moneyBallMade, moneyBallAtt, totalDistance, timePlayed)  " +
@@ -254,7 +254,7 @@ public class DBHelper : MonoBehaviour
         }
         else
         {
-            Debug.Log(" table not empty");
+           //Debug.Log(" table not empty");
 
             sqlQuery =
            "Update " + allTimeStatsTableName + 
@@ -287,7 +287,7 @@ public class DBHelper : MonoBehaviour
 
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
     {
-        Debug.Log("getListOfAllValuesFromTableByField()");
+       //Debug.Log("getListOfAllValuesFromTableByField()");
         List<int> listOfValues = new List<int>();
         int value;
 
@@ -305,8 +305,7 @@ public class DBHelper : MonoBehaviour
         {
             value = reader.GetInt32(0);
             listOfValues.Add(value);
-
-            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
+            //Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -320,7 +319,7 @@ public class DBHelper : MonoBehaviour
 
     public List<float> getFloatListOfAllValuesFromTableByField(String tableName, String field)
     {
-        Debug.Log("getListOfAllValuesFromTableByField()");
+       //Debug.Log("getListOfAllValuesFromTableByField()");
         List<float> listOfValues = new List<float>();
         float value;
 
@@ -338,8 +337,7 @@ public class DBHelper : MonoBehaviour
         {
             value = reader.GetFloat(0);
             listOfValues.Add(value);
-
-            Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
+            //Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -370,14 +368,8 @@ public class DBHelper : MonoBehaviour
 
         while (reader.Read())
         {
-            //int value = reader.GetInt32(0);
             value = reader.GetString(0);
-            //string name = reader.GetString(1);
-            //string email = reader.GetString(2);
-            //string password = reader.GetString(3);
-            ////int rand = reader.GetInt32(2);
-
-            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
+            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -438,7 +430,7 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetFloat(0);
-            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
+            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -454,7 +446,7 @@ public class DBHelper : MonoBehaviour
     // return string from specified table by field and userid
     public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
     {
-        Debug.Log("getIntValueHighScoreFromTableByFieldAndModeId");
+       //Debug.Log("getIntValueHighScoreFromTableByFieldAndModeId");
 
         int value = 0;
 
@@ -467,21 +459,13 @@ public class DBHelper : MonoBehaviour
         string sqlQuery = "SELECT " + field + " FROM " + tableName 
             + " WHERE modeid = " + modeid + " ORDER BY " + field + "  "+ order +"  LIMIT 1";
 
-        Debug.Log(sqlQuery);
-
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
         while (reader.Read())
         {
-            //int value = reader.GetInt32(0);
             value = reader.GetInt32(0);
-            //string name = reader.GetString(1);
-            //string email = reader.GetString(2);
-            //string password = reader.GetString(3);
-            ////int rand = reader.GetInt32(2);
-
-            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
+            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
         }
         reader.Close();
         reader = null;
@@ -519,7 +503,7 @@ public class DBHelper : MonoBehaviour
             //string password = reader.GetString(3);
             ////int rand = reader.GetInt32(2);
 
-            Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
+           //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + modeid + " | value = " + value);
         }
         reader.Close();
         reader = null;

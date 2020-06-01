@@ -261,7 +261,7 @@ public class StartManager : MonoBehaviour
 
     private void initializePlayerDisplay()
     {
-        Debug.Log("initializePlayerDisplay()");
+        //Debug.Log("initializePlayerDisplay()");
 
         if (playerSelectedData[playerSelectedIndex].IsLocked)
         {
@@ -299,7 +299,7 @@ public class StartManager : MonoBehaviour
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        Debug.Log("objects : " + objects.Length);
+        //Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
@@ -327,7 +327,7 @@ public class StartManager : MonoBehaviour
 
     private void loadLevelSelectDataList()
     {
-        Debug.Log("loadPlayerSelectDataList()");
+        //Debug.Log("loadPlayerSelectDataList()");
 
         string path = "Prefabs/start_menu/level_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];

@@ -453,7 +453,7 @@ public class BasketBall : MonoBehaviour
     // =================================== Launch ball function =======================================
     void Launch()
     {
-        Debug.Log("Launch()");
+        //Debug.Log("Launch()");
         Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Vector3 targetXZPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
             basketBallState.BasketBallTarget.transform.position.y,
