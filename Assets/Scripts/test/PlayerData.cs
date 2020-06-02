@@ -26,6 +26,7 @@ public class PlayerData : MonoBehaviour
     private  float _shotAttempt;
     private  float _shotMade;
     private  float _longestShotMade;
+    [SerializeField]
     private  float _longestShotMadeFreePlay;
     private  float _totalDistance;
 
@@ -54,19 +55,25 @@ public class PlayerData : MonoBehaviour
         // only create player data once
         if (!_created)
         {
-            DontDestroyOnLoad(this.gameObject);
+            //Debug.Log(" PlayerData !created");
+            DontDestroyOnLoad(gameObject);
             _created = true;
         }
         else
         {
-            Destroy(this.gameObject);
+            //Debug.Log(" PlayerData created");
+            Destroy(gameObject);
         }
         // load stats wake
         //loadStatsFromPlayerPrefs();
+        //loadStatsFromDatabase();
+        //Debug.Log("PlayerData : Awake");
+
     }
 
     private void Start()
     {
+        //Debug.Log("PlayerData : Start");
         // load stats wake
         loadStatsFromDatabase();
     }
@@ -79,74 +86,6 @@ public class PlayerData : MonoBehaviour
         // get stats object
         //basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
         basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
-
-
-        //Debug.Log("money 3s high" + MakeThreePointersMoneyBallLowTime );
-        //Debug.Log("money 3s current " + basketBallStats.MakeThreePointersMoneyBallLowTime);
-
-
-        ////cheating and game mode name doesnt contain 'free' as in, Free Play mode
-        //if (IsCheating && !GameOptions.gameModeSelectedName.ToLower().Contains("free"))
-        //{
-        //    // no save for you
-        //    return;
-        //}
-
-        // save can be called whenever as long as load isnt called as well.
-        // if you call load, you need to reset the local variables
-        // example load, totalpoint = 100, make 50, save totalpoint = 150.
-        // load = 150, save again totalpoint = 250 (100 + 150)
-
-        //specific to player, finish later. for now, just save any player
-
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+"_totalPoints",  (int)(_totalPoints + stats.TotalPoints));
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+"_totalShotMade", (int)(shotMade +stats.ShotMade));
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+"_totalShotAttempt", (int)(shotAttempt+  stats.ShotAttempt));
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+"_twoPointersMade", (int)(_twoPointerMade+stats.TwoPointerMade));
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+ "_threePointersMade", (int)(_threePointerMade+stats.ThreePointerMade));
-        //PlayerPrefs.SetInt(stats.PlayerId+"_"+stats.PlayerName+ "_fourPointersMade", (int)(_fourPointerMade+stats.FourPointerMade));
-        //PlayerPrefs.SetInt(stats.PlayerId + "_" + stats.PlayerName + "_twoPointersAttempt", (int)(_twoPointerAttempts+stats.TwoPointerAttempts));
-        //PlayerPrefs.SetInt(stats.PlayerId + "_" + stats.PlayerName + "_threePointersAttempt", (int)(stats.ThreePointerAttempts));
-        //PlayerPrefs.SetInt(stats.PlayerId + "_" + stats.PlayerName + "_fourPointersAttempt", (int)(stats.FourPointerAttempts));
-
-        //if (stats.LongestShotMade > longestShotMade)
-        //{
-        //    PlayerPrefs.SetFloat(stats.PlayerId + "_" + stats.PlayerName + "_longestShotMade",  stats.LongestShotMade);
-        //}
-
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalPoints",  (int)(_totalPoints + stats.TotalPoints));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalShotMade", (int)(_shotMade +stats.ShotMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalShotAttempt", (int)(_shotAttempt+  stats.ShotAttempt));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_twoPointersMade", (int)(_twoPointerMade+stats.TwoPointerMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+ "_threePointersMade", (int)(_threePointerMade+stats.ThreePointerMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+ "_fourPointersMade", (int)(_fourPointerMade+stats.FourPointerMade));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_twoPointersAttempt", (int)(_twoPointerAttempts+stats.TwoPointerAttempts));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_threePointersAttempt", (int)(stats.ThreePointerAttempts));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_fourPointersAttempt", (int)(stats.FourPointerAttempts));
-
-        //if (stats.LongestShotMade > _longestShotMade)
-        //{
-        //    PlayerPrefs.SetFloat("mode_" + stats.PlayerName + "_longestShotMade",  (stats.LongestShotMade * 6));
-        //}
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_totalDistance", (int)(stats.TotalDistance));
-
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalPoints",  (int)(_totalPoints + stats.TotalPoints));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalShotMade", (int)(_shotMade +stats.ShotMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_totalShotAttempt", (int)(_shotAttempt+  stats.ShotAttempt));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+"_twoPointersMade", (int)(_twoPointerMade+stats.TwoPointerMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+ "_threePointersMade", (int)(_threePointerMade+stats.ThreePointerMade));
-        //PlayerPrefs.SetInt("mode_"+stats.PlayerName+ "_fourPointersMade", (int)(_fourPointerMade+stats.FourPointerMade));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_twoPointersAttempt", (int)(_twoPointerAttempts+stats.TwoPointerAttempts));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_threePointersAttempt", (int)(stats.ThreePointerAttempts));
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_fourPointersAttempt", (int)(stats.FourPointerAttempts));
-
-        //if (stats.LongestShotMade > _longestShotMade)
-        //{
-        //    PlayerPrefs.SetFloat("mode_" + stats.PlayerName + "_longestShotMade",  (stats.LongestShotMade * 6));
-        //}
-        //PlayerPrefs.SetInt("mode_" + stats.PlayerName + "_totalDistance", (int)(stats.TotalDistance));
-
-        //Debug.Log(_totalPoints + " : basketBallStats.pioints : "+ basketBallStats.TotalPoints);
 
         //save game mode 1 high score
         if (_totalPoints < basketBallStats.TotalPoints && GameOptions.gameModeSelected == 1)
@@ -312,7 +251,7 @@ public class PlayerData : MonoBehaviour
         }
 
         // save mode 13 (longest shot in free play)
-        if (LongestShotMadeFreePlay1 < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
+        if (LongestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
         {
             messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
@@ -321,7 +260,7 @@ public class PlayerData : MonoBehaviour
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayDate", DateTime.Now.ToString(CultureInfo.CurrentCulture));
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlayAppVersion", Application.version);
             PlayerPrefs.SetString("mode_" + GameOptions.gameModeSelected + "_operatingSystem", SystemInfo.operatingSystem);
-            LongestShotMadeFreePlay1 = 0;
+            LongestShotMadeFreePlay = 0;
             loadStatsFromPlayerPrefs();
         }
         // after save, data zeroed. can reload
@@ -331,32 +270,6 @@ public class PlayerData : MonoBehaviour
     {
       //Debug.Log("load()");
         //only call at beginning of a game
-
-        //int temp = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints", (int)stats.TotalPoints);
-
-        //Debug.Log(" load : total points : " + temp);
-        //_totalPoints = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalPoints");
-        //shotMade = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalShotMade");
-        //shotAttempt = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_totalShotAttempt");
-        //_twoPointerMade = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_twoPointersMade");
-        //_threePointerMade = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_threePointersMade");
-        //_fourPointerMade = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_fourPointersMade");
-        //_twoPointerAttempts = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_twoPointersAttempt");
-        //_threePointerAttempts = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_threePointersAttempt");
-        //_fourPointerAttempts = PlayerPrefs.GetInt(stats.PlayerId + "_" + stats.PlayerName + "_fourPointersAttempt");
-        //longestShotMade = PlayerPrefs.GetFloat(stats.PlayerId + "_" + stats.PlayerName + "_longestShotMade");
-
-        //_totalPoints = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_totalPoints");
-        //_shotMade = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_totalShotMade");
-        //_shotAttempt = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_totalShotAttempt");
-        //_twoPointerMade = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_twoPointersMade");
-        //_threePointerMade = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_threePointersMade");
-        //_fourPointerMade = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_fourPointersMade");
-        //_twoPointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_twoPointersAttempt");
-        //_threePointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_threePointersAttempt");
-        //_fourPointerAttempts = PlayerPrefs.GetInt("mode_" + stats.PlayerName + "_fourPointersAttempt");
-        //_longestShotMade = PlayerPrefs.GetFloat("mode_" + stats.PlayerName + "_longestShotMade");
-        //_totalDistance  = PlayerPrefs.GetFloat("mode_" + stats.PlayerName + "_totalDistance", (int)(stats.TotalDistance));
 
         _totalPoints = PlayerPrefs.GetInt("mode_" + 1 + "_totalPoints");
 
@@ -383,13 +296,13 @@ public class PlayerData : MonoBehaviour
         _makeFourPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTimeMoneyBall");
         _makeAllPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTimeMoneyBall");
 
-        LongestShotMadeFreePlay1 = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
+        LongestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
     }
 
 
     public void loadStatsFromDatabase()
     {
-       //Debug.Log("load from database");
+       ////Debug.Log("load from database");
    
         _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
         _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");
@@ -403,7 +316,28 @@ public class PlayerData : MonoBehaviour
         _makeThreePointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 10, "ASC");
         _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC");
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
-        LongestShotMadeFreePlay1 = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
+        LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
+
+        //Debug.Log(" Playerdata freeplay long : " + PlayerData.instance.LongestShotMadeFreePlay);
+    }
+
+    public void resetCurrentPlayerDataInMemory()
+    {
+        Debug.Log("resetCurrentPlayerDataInMemory");
+
+        _totalPoints = 0;
+        _threePointerMade = 0;
+        _fourPointerMade = 0;
+        _sevenPointerMade = 0;
+        _longestShotMade = 0;
+        _totalDistance = 0;
+        _makeThreePointersLowTime = 0;
+        _makeFourPointersLowTime = 0;
+        _makeFourPointersLowTime = 0;
+        _makeThreePointersMoneyBallLowTime = 0;
+        _makeFourPointersMoneyBallLowTime = 0;
+        _makeAllPointersMoneyBallLowTime = 0;
+        LongestShotMadeFreePlay = 0;
     }
 
     public void deleteAllSavedData()
