@@ -133,26 +133,21 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
 
+            // set end time for time played, store in basketballstats.timeplayed
             setTimePlayed();
 
             //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
 
-            ////save
-            //if (GameObject.Find("player_data") != null)
-            //{
-            //    PlayerData.instance.saveStats();
-            //}
-
-            //save
-            if (GameObject.Find("database") != null)
+            //save if at leat 1 minte played
+            if (GameObject.Find("database") != null && basketBallStats.TimePlayed > 60)
             {
                 DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
             }
 
-            // alert game manager
+            // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;
         }
 
@@ -471,6 +466,8 @@ public class GameRules : MonoBehaviour
         set => gameModeId = value;
     }
 
+    // TODO: used to allow pause toggle. never set to false. still works somehow. 
+    // this needs a deeper look when i get time 
     public bool GameOver
     {
         get => gameOver;

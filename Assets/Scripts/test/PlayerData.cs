@@ -9,7 +9,7 @@ public class PlayerData : MonoBehaviour
 {
     private BasketBallStats basketBallStats;
 
-    private  int _playerId;
+    private int _playerId;
     private  string _playerName;
 
     private  float _totalPoints;
@@ -26,7 +26,6 @@ public class PlayerData : MonoBehaviour
     private  float _shotAttempt;
     private  float _shotMade;
     private  float _longestShotMade;
-    [SerializeField]
     private  float _longestShotMadeFreePlay;
     private  float _totalDistance;
 

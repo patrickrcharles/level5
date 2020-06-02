@@ -33,14 +33,6 @@ public class GameLevelManager : MonoBehaviour
     public BasketBall Basketball;
     public GameObject BasketballObject;
 
-    //[SerializeField]
-    //GameObject player_spawn;
-
-    //[SerializeField]
-    //private int _playerCount;
-
-    //[SerializeField] private int _basketballCount;
-
     private GameObject _playerClone;
     [SerializeField]
     private GameObject[] _npcObjects;

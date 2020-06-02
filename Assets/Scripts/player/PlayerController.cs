@@ -7,6 +7,9 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+
+    //#todo start breaking this up into separate classes: playerState, player move (walk / jump /input actions) 
+
     // components 
     Animator anim;
     AnimatorStateInfo currentStateInfo;
@@ -14,36 +17,32 @@ public class PlayerController : MonoBehaviour
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
-    [SerializeField]
     ShooterProfile shooterProfile;
     BasketBall basketball;
-    [SerializeField]
-    public ShotMeter shotmeter;
+    private ShotMeter shotmeter;
 
-    // walk speed
+    // walk speed #review can potentially remove
     private float movementSpeed;
     [SerializeField]
-    private float inAirSpeed;
+    private float inAirSpeed; // leave serialized
 
     // player state bools
-    [SerializeField]
     private bool running;
-    [SerializeField]
     private bool runningToggle;
     public bool hasBasketball;
 
-    [SerializeField]
-    private bool isSetShooter;
+    // #note this is work a work in progress feature. it works but it's bugged
+    private bool isSetShooter; 
     public bool IsSetShooter => isSetShooter;
-
-    public bool canMove; // save this when i cars that can knock player down
+    public bool canMove; // #todo add player knock downs, this could be used
+                         // will be useful for when play knockdowns implemented
+    public GameObject playerHitbox;
 
     Vector3 bballRimVector;
     float bballRelativePositioning;
     Vector3 playerRelativePositioning;
     public float playerDistanceFromRim;
 
-    public GameObject playerHitbox;
 
     // control movement speed based on state
     static int currentState;
@@ -59,7 +58,6 @@ public class PlayerController : MonoBehaviour
     bool triggerLeftAxisInUse, triggerRightAxisInUse;
 
     // get/set for following at bottom of class
-    [SerializeField]
     private bool _facingRight;
     private bool _facingFront;
     private bool _notLocked;
@@ -67,17 +65,12 @@ public class PlayerController : MonoBehaviour
     private bool _inAir;
     private bool _grounded;
 
+    //#review no longer use, but some it could be useful
     public float initialHeight, finalHeight;
-    // custom gravity for player from shooterprofile
-    //public float gravityModifier;
     public bool jumpPeakReached = false;
-    //[SerializeField]
-    //bool useGravity = true;
-
     private float _rigidBodyYVelocity;
 
-    [SerializeField]
-    //public bool facingFront;
+    // used to calculate shot meter time
     public float jumpStartTime;
     public float jumpEndTime;
 
@@ -90,7 +83,7 @@ public class PlayerController : MonoBehaviour
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
-        shotmeter = GameObject.FindWithTag("shot_meter").GetComponent<ShotMeter>();
+        Shotmeter = GameObject.FindWithTag("shot_meter").GetComponent<ShotMeter>();
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
@@ -286,8 +279,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //jumpStartTime = Time.time;
-        shotmeter.MeterStarted = true;
-        shotmeter.MeterStartTime = Time.time;
+        Shotmeter.MeterStarted = true;
+        Shotmeter.MeterStartTime = Time.time;
         //Debug.Log("jump time: "+ Time.time);
  
     }
@@ -459,8 +452,10 @@ public class PlayerController : MonoBehaviour
         get => _facingFront;
         set => _facingFront = value;
     }
+    public ShotMeter Shotmeter { get => shotmeter; set => shotmeter = value; }
 
-    public void toggleRun()
+    // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
+    public void toggleRun() 
     {
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();

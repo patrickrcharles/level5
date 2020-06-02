@@ -109,10 +109,6 @@ public class BasketBall : MonoBehaviour
         addAccuracyModifier = true;
         playHitRimSound = true;
 
-        // for test data
-        //testStats = GetComponent<BasketballTestStats>();
-        //testConclusions = GetComponent<BasketBallTestStatsConclusions>();
-
         //todo: move to game manager
         UiStatsEnabled = false;
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
@@ -157,12 +153,6 @@ public class BasketBall : MonoBehaviour
             basketBallState.CanPullBall = false;
         }
 
-        //if (!addAccuracyModifier && PlayerData.instance != null)
-        //{
-        //    PlayerData.instance.IsCheating = true;
-        //}
-
-
         //if player has ball and hasnt shot
         if (playerState.hasBasketball && !basketBallState.Thrown)
         {
@@ -192,7 +182,7 @@ public class BasketBall : MonoBehaviour
             CallBallToPlayer.instance.Locked = true;
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.shotmeter.MeterEnded = true;
+            playerState.Shotmeter.MeterEnded = true;
             shootBasketBall();
         }
 
@@ -208,7 +198,7 @@ public class BasketBall : MonoBehaviour
             Debug.Log("shoot()");
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.shotmeter.MeterEnded = true;
+            playerState.Shotmeter.MeterEnded = true;
             shootBasketBall();
         }
     }
@@ -229,6 +219,7 @@ public class BasketBall : MonoBehaviour
                                 + "speed : " + shooterProfile.RunSpeed;
     }
 
+    // #REVIEW : can probably move collsions to separate script. this could clean up code
 
     // =========================================================== Collisions ========================================================
 
@@ -474,7 +465,7 @@ public class BasketBall : MonoBehaviour
         //accuracyModifierX;
 
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
-           || playerState.shotmeter.SliderValueOnButtonPress >= 95)
+           || playerState.Shotmeter.SliderValueOnButtonPress >= 95)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
@@ -531,7 +522,7 @@ public class BasketBall : MonoBehaviour
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
-        int slider = Mathf.CeilToInt(playerState.shotmeter.SliderValueOnButtonPress);
+        int slider = Mathf.CeilToInt(playerState.Shotmeter.SliderValueOnButtonPress);
 
         float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
@@ -730,7 +721,7 @@ public class BasketBall : MonoBehaviour
     {
         //Debug.Log("LaunchBasketBall()");
         // wait for shot meter to finish
-        yield return new WaitUntil(() => playerState.shotmeter.MeterEnded == false);
+        yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
         //launch ball to goal      
         Launch();
     }
