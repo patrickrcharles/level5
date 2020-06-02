@@ -102,17 +102,20 @@ public class Pause : MonoBehaviour
                     || InputManager.GetKeyDown(KeyCode.Space)))
                     //|| InputManager.GetButtonDown("Fire1")))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                // update all time stats
+                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                {
+                    updateFreePlayStats();
+                    //make sure new high scores (if any) are loaded
+                    PlayerData.instance.loadStatsFromDatabase();
+                }
                 // check if game still paused. on reload, game should be active
                 if (paused)
                 {
                     TogglePause();
                 }
-                // update all time stats
-                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
-                {
-                    updateFreePlayStats();
-                }
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
             //load start screen
@@ -148,6 +151,7 @@ public class Pause : MonoBehaviour
 
     private static void updateFreePlayStats()
     {
+        //Debug.Log("updateFreePlayStats()");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats

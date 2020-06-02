@@ -476,6 +476,8 @@ public class StartManager : MonoBehaviour
         }
         if (!playerSelectedData[playerSelectedIndex].IsLocked)
         {
+            // load highscores before loading scene
+            PlayerData.instance.loadStatsFromDatabase();
             SceneManager.LoadScene(sceneName);
         }
     }
