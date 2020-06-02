@@ -70,7 +70,7 @@ MonoBehaviour:
   range: 99
   release: 0
   criticalPercent: 10
-  shootAngle: 53
+  shootAngle: 48
   level: 0
   experience: 0
   isLocked: 0
