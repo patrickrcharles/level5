@@ -227,8 +227,6 @@ MonoBehaviour:
   pos3: {fileID: 0}
   pos4: {fileID: 0}
   currentSprite: {fileID: 0}
-  playerRelativePosition: {x: 0, y: 0, z: 0}
-  waiting: 0
   ignoreCollision: 0
   idle: 0
   moving: 0
@@ -236,10 +234,6 @@ MonoBehaviour:
   insideRange: 0
   movingToTarget: 0
   maxDistance: 0
-  currentTarget: {x: 0, y: 0, z: 0}
-  currentTargetIndex: 0
-  returnPositions: []
-  relativePosition: 0
 --- !u!1 &5866262484674210509
 GameObject:
   m_ObjectHideFlags: 0

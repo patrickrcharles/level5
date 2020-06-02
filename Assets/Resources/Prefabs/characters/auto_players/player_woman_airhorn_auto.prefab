@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4261301150728327155}
   - component: {fileID: 4261301150728327152}
   m_Layer: 0
-  m_Name: player_woman_airhorn
+  m_Name: player_woman_airhorn_auto
   m_TagString: auto_npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
