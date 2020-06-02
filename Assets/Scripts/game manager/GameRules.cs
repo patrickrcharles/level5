@@ -139,11 +139,11 @@ public class GameRules : MonoBehaviour
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
 
-            //save
-            if (GameObject.Find("player_data") != null)
-            {
-                PlayerData.instance.saveStats();
-            }
+            ////save
+            //if (GameObject.Find("player_data") != null)
+            //{
+            //    PlayerData.instance.saveStats();
+            //}
 
             //save
             if (GameObject.Find("database") != null)
@@ -175,7 +175,7 @@ public class GameRules : MonoBehaviour
         // time played end
         timePlayedEnd = Time.time;
         basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
-        Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
+        //Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
     }
 
     //===================================================== toggle money ball ====================================================
@@ -317,7 +317,7 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 13)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade ).ToString("0.00")
-                                                             + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim ).ToString("00.00");
+                                                             + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
             // if longest shot > saved longest shot
             if ((BasketBall.instance.BasketBallStats.LongestShotMade ) > PlayerData.instance.LongestShotMadeFreePlay)
