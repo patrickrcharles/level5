@@ -189,8 +189,8 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
 
         // clear current player data in memory and reload high scores from DB
-        PlayerData.instance.resetCurrentPlayerDataInMemory();
-        PlayerData.instance.loadStatsFromDatabase();
+        //PlayerData.instance.resetCurrentPlayerDataInMemory();
+        //PlayerData.instance.loadStatsFromDatabase();
     }
 
     internal BasketBallStats getAllTimeStats()
@@ -289,6 +289,8 @@ public class DBHelper : MonoBehaviour
         dbcmd = null;
         dbconn.Close();
         dbconn = null;
+
+        Destroy(prevStats.gameObject);
     }
 
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
@@ -485,7 +487,7 @@ public class DBHelper : MonoBehaviour
 
     public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
     {
-
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
 
         IDbConnection dbconn;

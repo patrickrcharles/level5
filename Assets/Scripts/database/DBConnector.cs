@@ -28,20 +28,20 @@ public class DBConnector : MonoBehaviour
     private IDbConnection dbconn;
 
     // move ld playerpref scores to db
-    TransferPlayerPrefScoresToDB transferPlayerPrefScoresToDB;
+    //TransferPlayerPrefScoresToDB transferPlayerPrefScoresToDB;
     // DB function
     DBHelper dbHelper;
 
     public static DBConnector instance;
 
     // game versions that use playerprefs for scores
-    enum prevVersionsWithNoDB
-    {
-        v1 = 201,
-        v2 = 300,
-        v3 = 301,
-        v4 = 302
-    };
+    //enum prevVersionsWithNoDB
+    //{
+    //    v1 = 201,
+    //    v2 = 300,
+    //    v3 = 301,
+    //    v4 = 302
+    //};
 
 
     void Awake()
@@ -50,68 +50,47 @@ public class DBConnector : MonoBehaviour
        //Debug.Log(" DBconnector");
 
         instance = this;
-
-        // only create player data once
+        // only create this data once
         if (!_created)
         {
-            DontDestroyOnLoad(this.gameObject);
+            //Debug.Log(" !created");
+            DontDestroyOnLoad(gameObject);
             _created = true;
         }
         else
         {
-            Destroy(this.gameObject);
+            Debug.Log("created, destroy this");
+            Destroy(gameObject);
         }
 
        //Debug.Log(" DBconnector : Start");
 
         //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
-        Debug.Log(connection);
+        //Debug.Log(connection);
         filepath = Application.persistentDataPath + databaseNamePath;
        //Debug.Log(filepath);
         currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
+
         dbHelper = gameObject.GetComponent<DBHelper>();
-        transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
+        //transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
 
         // im the only person with a player id right now. this will come from  registration
         //currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
-        Debug.Log(" DBconnector : if (!File.Exists(filepath))");
-        createDatabase();
+        //Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+        //createDatabase();
 
-        //// if database doesnt exist
-        //if (!File.Exists(filepath))
-        //{
-        //   Debug.Log(" DBconnector : if (!File.Exists(filepath))");
-        //   createDatabase();
-        //}
+        // if database doesnt exist
+        if (!File.Exists(filepath))
+        {
+            Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+            createDatabase();
+        }
     }
-
 
     void Start()
     {
-
-
-        //Debug.Log(" DBconnector : Start");
-
-        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
-        //Debug.Log(connection);
-        //filepath = Application.dataPath + databaseNamePath;
-        //Debug.Log(filepath);
-        //currentGameVersion = getCurrentGameVersionToInt(Application.version);
-
-        //dbHelper = gameObject.GetComponent<DBHelper>();
-        //transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
-
-        //// im the only person with a player id right now. this will come from  registration
-        ////currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
-
-        //// if database doesnt exist
-        //if (!File.Exists(filepath))
-        //{
-        //   //Debug.Log(" DBconnector : if (!File.Exists(filepath))");
-        //    createDatabase();
-        //}
 
         //create default user 
         if (dbHelper.isTableEmpty(tableNameUser))
@@ -119,42 +98,28 @@ public class DBConnector : MonoBehaviour
             dbHelper.InsertDefaultUserRecord();
         }
 
-        ////if (currentGameVersion.Equals())
-        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v1);
-        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v2);
-        //Debug.Log("enum test v1 : " + (int)prevVersionsWithNoDB.v3);
-
         // get device user is currently using
         SetCurrentUserDevice();
 
-        // check if scores need to be transferred, flag is set in User table
-        if (getPrevHighScoreInserted() == 0)
-        {
-           //Debug.Log(" put playerprefs into db");
-            // get object instance needed to transfer scores
-            transferPlayerPrefScoresToDB.InsertPrevVersionHighScoresToDB();
-            setPrevHighScoreInsertedTrue();
-        }
-        // setf lag that scores have been transferred and dont need to be transferred again
-
-        //setPrevHighScoreInsertedTrue();
-
-        //dbHelper.getStringListOfAllValuesFromTableByField(tableNameHighScores, "level");
-        //Debug.Log(isTableEmpty("User") );
-        //Debug.Log(isTableEmpty("HighScores") );
-        //getAllValuesFromTableByField("User", "userName");
-        //getAllValuesFromTableByField("User", "email");
-        //getAllValuesFromTableByField("User", "version");
-        //getValueFromTableByFieldAndId("User", "email", 1);
+        //// check if scores need to be transferred, flag is set in User table
+        //if (getPrevHighScoreInserted() == 0)
+        //{
+        //   //Debug.Log(" put playerprefs into db");
+        //    // get object instance needed to transfer scores
+        //    transferPlayerPrefScoresToDB.InsertPrevVersionHighScoresToDB();
+        //    setPrevHighScoreInsertedTrue();
+        //}
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
     {
+        //Debug.Log("updateFreePlayStats()");
         dbHelper.InsertGameScore(stats);
     }
 
     public void savePlayerAllTimeStats(BasketBallStats stats)
     {
+        //Debug.Log("savePlayerAllTimeStats()");
         dbHelper.UpdateAllTimeStats(stats);
     }
 
