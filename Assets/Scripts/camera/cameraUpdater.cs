@@ -7,17 +7,13 @@ using UnityEngine.Experimental.PlayerLoop;
 public class cameraUpdater : MonoBehaviour
 {
 
-    public GameObject player;
-
-    public Camera cam;
-    public float xMin, xMax, zMin, zMax, yMin, yMax;
-
-    public float distanceCamFromPlayer, distanceRimFromPlayer;
-
-    [SerializeField]
+    GameObject player;
+    Camera cam;
     GameObject basketBallRim;
-
     public Vector3 playerPos, camPos, rimPos;
+
+    public float xMin, xMax, zMin, zMax, yMin, yMax;
+    public float distanceCamFromPlayer, distanceRimFromPlayer;
     public float floatcameraDistanceFromGoal;
 
     public float ZoomAmount = 0; //With Positive and negative values
@@ -26,12 +22,10 @@ public class cameraUpdater : MonoBehaviour
 
     [SerializeField]
     bool cameraZoomedIn, cameraZoomedOut;
-
-    public float startZoomDistance;
-
+    [SerializeField]
+    float startZoomDistance;
     [SerializeField]
     private float addToCameraPosY;
-
     [SerializeField]
     float playerDistanceFromRimX;
     [SerializeField]
@@ -57,15 +51,39 @@ public class cameraUpdater : MonoBehaviour
 
     bool onGoalCameraEnabled;
 
+
+    // flag for activating weather system prefab
+    // set this in camera manager because it is based on a specific level
+    // GM if( level requires weather ) --> for each cam, requires weather = true;
+    // Cam Update if(requires weather) weather.setActive(true)
+    [SerializeField]
+    GameObject weatherSystemObject; 
+    bool requiresWeatherSystem;
+    public bool RequiresWeatherSystem { get => requiresWeatherSystem; set => requiresWeatherSystem = value; }
+
     private void Awake()
     {
-        
+        // get weather system object reference
+        foreach (Transform t in gameObject.transform)
+        {
+            if (t.CompareTag("weather_system"))
+            {
+                weatherSystemObject = t.gameObject;
+            }
+        }
+        if (requiresWeatherSystem)
+        {
+            weatherSystemObject.SetActive(true);
+        }
+        else
+        {
+            weatherSystemObject.SetActive(false);
+        }
     }
 
     void Start()
     {
-
-        //Debug.Log(("camera updater Start()"));
+       
         basketBallRim = GameObject.Find("rim");
 
         cam = GetComponent<Camera>();

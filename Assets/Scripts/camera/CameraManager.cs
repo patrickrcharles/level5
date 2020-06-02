@@ -66,6 +66,14 @@ public class CameraManager : MonoBehaviour
     {
         for (int i = 0; i < Cameras.Length; i++)
         {
+            // #review for better way to make this more generic
+            // if level requires weather system. currently only this level so can hardcode
+            // doesnt work unless game options display name set
+            if (GameOptions.levelDisplayName.ToLower().Contains("norf"))
+            {
+                Cameras[i].GetComponent<cameraUpdater>().RequiresWeatherSystem = true;
+            }
+
             if (Cameras[i].name.Contains("perspective_1"))
             {
                 currentCameraIndex = i;
