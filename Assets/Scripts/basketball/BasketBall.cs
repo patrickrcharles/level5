@@ -14,7 +14,7 @@ public class BasketBall : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     PlayerController playerState;
-    new Rigidbody rigidbody;
+    Rigidbody rigidbody;
     AudioSource audioSource;
     ShooterProfile shooterProfile;
     [SerializeField]

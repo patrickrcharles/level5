@@ -6,7 +6,7 @@ using Random = System.Random;
 
 public class PickupObject : MonoBehaviour
 {
-    [SerializeField] private string name;
+    [SerializeField] private string Objectname;
     [SerializeField] float moneyValue;
     [SerializeField] private float moneyDestroyTime;
 
@@ -48,8 +48,8 @@ public class PickupObject : MonoBehaviour
 
     public string Name
     {
-        get => name;
-        set => name = value;
+        get => Objectname;
+        set => Objectname = value;
     }
 
     //public int MoneyType
