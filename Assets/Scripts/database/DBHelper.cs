@@ -25,8 +25,9 @@ public class DBHelper : MonoBehaviour
     {
         instance = this;
        //Debug.Log(" DBHelper : Awake");
-        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
-        filepath = Application.dataPath + databaseNamePath;
+        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
+        connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
+        filepath = Application.persistentDataPath + databaseNamePath;
     }
 
     // check if specified table is emoty
@@ -186,6 +187,10 @@ public class DBHelper : MonoBehaviour
         dbcmd = null;
         dbconn.Close();
         dbconn = null;
+
+        // clear current player data in memory and reload high scores from DB
+        PlayerData.instance.resetCurrentPlayerDataInMemory();
+        PlayerData.instance.loadStatsFromDatabase();
     }
 
     internal BasketBallStats getAllTimeStats()
@@ -234,6 +239,7 @@ public class DBHelper : MonoBehaviour
     internal void UpdateAllTimeStats(BasketBallStats stats)
     {
         String sqlQuery = "";
+        // get prev stats that current stats will be added to
         BasketBallStats prevStats = getAllTimeStats();
 
         IDbConnection dbconn;
@@ -514,5 +520,34 @@ public class DBHelper : MonoBehaviour
 
         return value;
     }
+    //// ***************************** get values by MODE ID *******************************************
+    //// set int value by specified table by field and userid
+    //public int setIntValueFromTableByFieldAndModeId(String tableName, String field, int userid)
+    //{
 
+    //    int value = 0;
+
+    //    IDbConnection dbconn;
+    //    dbconn = (IDbConnection)new SqliteConnection(connection);
+    //    dbconn.Open(); //Open connection to the database.
+    //    IDbCommand dbcmd = dbconn.CreateCommand();
+
+    //    string sqlQuery = "UPDATE " + field + " SET " + tableName + " WHERE userid = " + userid;
+
+    //    dbcmd.CommandText = sqlQuery;
+    //    IDataReader reader = dbcmd.ExecuteReader();
+
+    //    while (reader.Read())
+    //    {
+    //        value = reader.GetInt32(0);
+    //    }
+    //    reader.Close();
+    //    reader = null;
+    //    dbcmd.Dispose();
+    //    dbcmd = null;
+    //    dbconn.Close();
+    //    dbconn = null;
+
+    //    return value;
+    //}
 }

@@ -64,9 +64,10 @@ public class DBConnector : MonoBehaviour
 
        //Debug.Log(" DBconnector : Start");
 
-        connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
-       //Debug.Log(connection);
-        filepath = Application.dataPath + databaseNamePath;
+        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
+        connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
+        Debug.Log(connection);
+        filepath = Application.persistentDataPath + databaseNamePath;
        //Debug.Log(filepath);
         currentGameVersion = getCurrentGameVersionToInt(Application.version);
 
@@ -75,13 +76,15 @@ public class DBConnector : MonoBehaviour
 
         // im the only person with a player id right now. this will come from  registration
         //currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
+        Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+        createDatabase();
 
-        // if database doesnt exist
-        if (!File.Exists(filepath))
-        {
-           //Debug.Log(" DBconnector : if (!File.Exists(filepath))");
-            createDatabase();
-        }
+        //// if database doesnt exist
+        //if (!File.Exists(filepath))
+        //{
+        //   Debug.Log(" DBconnector : if (!File.Exists(filepath))");
+        //   createDatabase();
+        //}
     }
 
 
