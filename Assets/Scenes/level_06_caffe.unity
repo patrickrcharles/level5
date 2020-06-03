@@ -4635,6 +4635,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_ak47
       objectReference: {fileID: 0}
+    - target: {fileID: 1361230629192624495, guid: 24e3a66043ca3504fbc342dbc178c444,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4316879966801490548, guid: 24e3a66043ca3504fbc342dbc178c444,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4747,7 +4752,12 @@ PrefabInstance:
     - target: {fileID: 4492720442550630081, guid: 24e3a66043ca3504fbc342dbc178c444,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492720441378289870, guid: 24e3a66043ca3504fbc342dbc178c444,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24e3a66043ca3504fbc342dbc178c444, type: 3}

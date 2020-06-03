@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_05_aveb.unity
     guid: 4bcc85b78b58506449c2608d62b6cc0c
+  - enabled: 1
+    path: Assets/Scenes/level_06_caffe.unity
+    guid: 70fa1dc4ab8108e4588855e94d0d5baa
   m_configObjects: {}
