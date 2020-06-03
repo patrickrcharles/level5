@@ -66,18 +66,19 @@ public class cameraUpdater : MonoBehaviour
         // get weather system object reference
         foreach (Transform t in gameObject.transform)
         {
-            if (t.CompareTag("weather_system"))
+            //#hack
+            if (t.CompareTag("weather_system") && !t.name.Contains("goal"))
             {
                 weatherSystemObject = t.gameObject;
+                if (requiresWeatherSystem)
+                {
+                    weatherSystemObject.SetActive(true);
+                }
+                else
+                {
+                    weatherSystemObject.SetActive(false);
+                }
             }
-        }
-        if (requiresWeatherSystem)
-        {
-            weatherSystemObject.SetActive(true);
-        }
-        else
-        {
-            weatherSystemObject.SetActive(false);
         }
     }
 
