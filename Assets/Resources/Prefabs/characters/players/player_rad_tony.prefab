@@ -295,19 +295,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterProfile: {fileID: 0}
-  shotmeter: {fileID: 0}
   inAirSpeed: 0.5
-  running: 0
-  runningToggle: 0
   hasBasketball: 0
-  isSetShooter: 0
   canMove: 1
-  playerDistanceFromRim: 0
   playerHitbox: {fileID: 5952285497870594516}
+  playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _facingRight: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
