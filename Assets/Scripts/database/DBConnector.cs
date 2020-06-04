@@ -231,7 +231,7 @@ public class DBConnector : MonoBehaviour
             "os    TEXT, " +
             "version   TEXT, " +
             "date  TEXT, " +
-            "time  TEXT, " +
+            "time  REAL, " +
             "totalPoints   INTEGER, " +
             "longestShot   REAL, " +
             "totalDistance REAL, " +
