@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_06_caffe.unity
     guid: 70fa1dc4ab8108e4588855e94d0d5baa
+  - enabled: 1
+    path: Assets/Scenes/level_07_sudan.unity
+    guid: 6010424dadd4d7645bcbc04067590e62
   m_configObjects: {}
