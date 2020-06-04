@@ -43,11 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 10
+  modeId: 13
   modelDisplayName: Free Play
-  modeObjectName: mode_10
+  modeObjectName: mode_13
   modeDescription: Free play
   modeRequiresCounter: 0
   modeRequiresCountDown: 0
   modeRequiresShotMarkers3s: 0
   modeRequiresShotMarkers4s: 0
+  modeRequiresMoneyBall: 0

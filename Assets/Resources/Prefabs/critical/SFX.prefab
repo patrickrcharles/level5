@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.406
+  m_Volume: 0.383
   m_Pitch: -1.24
   Loop: 0
   Mute: 0
@@ -55,7 +55,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -146,3 +146,9 @@ MonoBehaviour:
   basketballNetSwish: {fileID: 8300000, guid: 547f1fa8d0ff7ee4796187bae13fb2a0, type: 3}
   cameraFlash: {fileID: 8300000, guid: ba3f1e98376f94d42a5b742c4614c292, type: 3}
   alien_walk: {fileID: 8300000, guid: 074beb67cd0b3ae4486ef067e5f8b9a8, type: 3}
+  gamechanger: {fileID: 8300000, guid: ed36e2475c2d3a84fb1316167df131de, type: 3}
+  werewolfHowl: {fileID: 8300000, guid: 20c1874f77d37df42b21a73300866537, type: 3}
+  worker_parasite: {fileID: 8300000, guid: cf5b8fa97aedd0742995a3750288a1f3, type: 3}
+  airhorn: {fileID: 8300000, guid: eb07d9a73a7ac6d4888370a2a82860b5, type: 3}
+  lightningStrike: {fileID: 8300000, guid: ea9cadfeb213f454eb895f4bae5cf636, type: 3}
+  rimShot: {fileID: 8300000, guid: 459d4ffabfeb310489255fe4e5f40de4, type: 3}

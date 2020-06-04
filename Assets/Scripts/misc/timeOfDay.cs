@@ -23,6 +23,8 @@ public class timeOfDay : MonoBehaviour {
     //  0 = 0%
     // usage -  spriteRenderer.color = new Color(1f, 1f, 1f, alphaLevel);
 
+    // #todo write function to set to a specific time of day
+    // the slab only at night
 
     // Use this for initialization
     void Start () {

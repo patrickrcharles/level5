@@ -42,9 +42,10 @@ public class StartManager : MonoBehaviour
     private Text playerSelectOptionText;
     private Image playerSelectOptionImage;
     private Text playerSelectOptionStatsText;
-
     private Text levelSelectOptionText;
-    //private Image levelSelectOptionImage;
+
+    [SerializeField]
+    private Text playerSelectUnlockText;
 
     //player selected display
     private Text modeSelectOptionText;
@@ -56,11 +57,16 @@ public class StartManager : MonoBehaviour
     private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
+    private const string playerSelectUnlockObjectName = "player_selected_unlock";
+    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
+
+    [SerializeField]
+    GameObject playerSelectedIsLockedObject;
 
     //level objects
     private const string levelSelectButtonName = "level_select";
     private const string levelSelectOptionButtonName = "level_selected_name";
-    private const string levelSelectImageObectName = "level_selected_image";
+    private const string levelSelectImageObjectName = "level_selected_image";
 
     //mode objects
     private const string modeSelectButtonName = "mode_select";
@@ -75,6 +81,13 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
+        // object with lock texture and unlock text
+        playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+        playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
+        playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
+        playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
+        playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
+
         //default index for player selected
         playerSelectedIndex = 0;
         levelSelectedIndex = 0;
@@ -92,7 +105,6 @@ public class StartManager : MonoBehaviour
         initializePlayerDisplay();
         initializeLevelDisplay();
         intializeModeDisplay();
-
         setInitialGameOptions();
 
     }
@@ -111,12 +123,21 @@ public class StartManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // check for some button not selected
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+        }
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
+
         ////Debug.Log("current : "+ currentHighlightedButton);
 
         // start game
-        if ((InputManager.GetKeyDown(KeyCode.Return) || InputManager.GetKeyDown(KeyCode.Space))
+        if ((InputManager.GetKeyDown(KeyCode.Return) 
+             || InputManager.GetKeyDown(KeyCode.Space)
+             || InputManager.GetButtonDown("Fire1"))
             && currentHighlightedButton.Equals(startButtonName))
         {
             //Debug.Log("pressed enter");
@@ -200,7 +221,7 @@ public class StartManager : MonoBehaviour
             }
         }
 
-        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
+        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow )))
         {
             //Debug.Log("down : player option");
             if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
@@ -240,13 +261,26 @@ public class StartManager : MonoBehaviour
 
     private void initializePlayerDisplay()
     {
+        //Debug.Log("initializePlayerDisplay()");
 
-        playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
-        playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
-        playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
+        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            // disable text and unlock text
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            playerSelectedIsLockedObject.SetActive(true);
+            playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
+        }
+        else
+        {
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            playerSelectedIsLockedObject.SetActive(false);
+            playerSelectUnlockText.text = "";
+        }
+
 
         playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
         playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+
         playerSelectOptionStatsText.text = playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
@@ -265,13 +299,32 @@ public class StartManager : MonoBehaviour
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        //Debug.Log("obects : " + objects.Length);
+        //Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
+            //Debug.Log(" temp : " + temp.PlayerDisplayName);
             playerSelectedData.Add(temp);
         }
+        // sort list by  character id
+        playerSelectedData.Sort(sortByPlayerId);
     }
+
+    static int sortByPlayerId(ShooterProfile p1, ShooterProfile p2)
+    {
+        return p1.PlayerId.CompareTo(p2.PlayerId);
+    }
+
+    static int sortByLevelId(StartScreenLevelSelected l1, StartScreenLevelSelected l2)
+    {
+        return l1.LevelId.CompareTo(l2.LevelId);
+    }
+
+    static int sortByModeId(StartScreenModeSelected m1, StartScreenModeSelected m2)
+    {
+        return m2.ModeId.CompareTo(m2.ModeId);
+    }
+
     private void loadLevelSelectDataList()
     {
         //Debug.Log("loadPlayerSelectDataList()");
@@ -284,6 +337,8 @@ public class StartManager : MonoBehaviour
             StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
             levelSelectedData.Add(temp);
         }
+        // sort list by  level id
+        levelSelectedData.Sort(sortByLevelId);
     }
 
     private void loadModeSelectDataList()
@@ -298,6 +353,8 @@ public class StartManager : MonoBehaviour
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
             modeSelectedData.Add(temp);
         }
+        // sort list by  mode id
+        modeSelectedData.Sort(sortByModeId);
     }
 
     private void changeSelectedPlayerUp()
@@ -306,6 +363,7 @@ public class StartManager : MonoBehaviour
         if (playerSelectedIndex == 0)
         {
             playerSelectedIndex = playerSelectedData.Count - 1;
+
         }
         else
         {
@@ -406,7 +464,22 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        SceneManager.LoadScene(sceneName);
+        //Debug.Log("scene name : " + sceneName);
+
+        // check if Player selected is locked
+        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+            messageText.text = " Bruh, it's locked";
+            // turn off text display after 5 seconds
+            StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+        }
+        if (!playerSelectedData[playerSelectedIndex].IsLocked)
+        {
+            // load highscores before loading scene
+            PlayerData.instance.loadStatsFromDatabase();
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
     private void setPlayerProfileStats()
@@ -431,11 +504,34 @@ public class StartManager : MonoBehaviour
 
     private void setGameOptions()
     {
+        GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
+        GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;        
+        
+        GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+        GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
+        GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
+
+
         GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
         GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
+
         GameOptions.gameModeRequiresShotMarkers3s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers3S;
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
+
+        GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
+
+        GameOptions.applicationVersion = Application.version;
+        GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
+    }
+
+    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "";
     }
 }

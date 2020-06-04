@@ -40,6 +40,8 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private int level;
     [SerializeField] private int experience;
     [SerializeField] private decimal money;
+    [SerializeField] private bool isLocked;
+    [SerializeField] private string unlockCharacterText;
 
 
     //private float shootXVariance;
@@ -60,7 +62,7 @@ public class ShooterProfile : MonoBehaviour
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected)
         {
-            Debug.Log("init shoot profile");
+            //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
     }
@@ -252,4 +254,6 @@ public class ShooterProfile : MonoBehaviour
         get => shootAngle;
         set => shootAngle = value;
     }
+    public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
+    public bool IsLocked { get => isLocked; set => isLocked = value; }
 }

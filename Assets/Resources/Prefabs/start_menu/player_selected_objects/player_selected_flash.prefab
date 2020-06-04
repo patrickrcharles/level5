@@ -25,7 +25,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3400360205296921900}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4.15}
   m_LocalScale: {x: 0.9276042, y: 0.9276042, z: 0.9276042}
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 2
+  playerId: 3
   playerDisplayName: Flash
   playerObjectName: flash
   playerPortrait: {fileID: 8280663977718776272, guid: bdac9d539f8d4b7468c6e6dd3627218a,
@@ -59,18 +59,20 @@ MonoBehaviour:
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 87
+  accuracy3pt: 78
   accuracy4pt: 85
-  accuracy7pt: 65
+  accuracy7pt: 80
   shooterProfilePrefabName: 
-  jumpForce: 6
+  jumpForce: 5.6
   speed: 5
-  runSpeedHasBall: 5.5
-  runSpeed: 6
+  runSpeedHasBall: 5.3
+  runSpeed: 5.6
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 45
-  shootAngle: 53
+  criticalPercent: 12
+  shootAngle: 50
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Score 100 or more points at Avenue B'

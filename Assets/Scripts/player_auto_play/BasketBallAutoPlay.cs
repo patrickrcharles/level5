@@ -17,7 +17,7 @@ public class BasketBallAutoPlay : MonoBehaviour
     GameObject basketBallSprite, playerDunkPos;
 
     PlayerControllerAutoPlay playerState;
-    new Rigidbody rigidbody;
+    Rigidbody rigidbody;
 
     private BasketballStateAutoPlay basketballState;
     private BasketBallStats basketBallStats;

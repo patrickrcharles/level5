@@ -25,7 +25,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6193461906605669940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4.15}
   m_LocalScale: {x: 0.9276042, y: 0.9276042, z: 0.9276042}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,26 +51,27 @@ MonoBehaviour:
   playerId: 6
   playerDisplayName: Woody
   playerObjectName: woody
-  playerPortrait: {fileID: 979706884839070216, guid: 1e220d07535b954409b42117cc28f5e1,
-    type: 3}
+  playerPortrait: {fileID: 21300032, guid: b751e9d98be24044da18ee071739ba99, type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 85
-  accuracy4pt: 80
-  accuracy7pt: 65
+  accuracy3pt: 81
+  accuracy4pt: 83
+  accuracy7pt: 78
   shooterProfilePrefabName: 
-  jumpForce: 5.3
+  jumpForce: 5.2
   speed: 3.5
   runSpeedHasBall: 3.5
   runSpeed: 3.5
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 40
-  shootAngle: 55
+  criticalPercent: 10
+  shootAngle: 50
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 'Unlock : Score 100 or more points at Tammy''s'

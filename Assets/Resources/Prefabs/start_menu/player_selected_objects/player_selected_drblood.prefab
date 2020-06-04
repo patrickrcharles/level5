@@ -25,7 +25,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5855897891810619623}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4.15}
   m_LocalScale: {x: 0.9276042, y: 0.9276042, z: 0.9276042}
   m_Children: []
   m_Father: {fileID: 0}
@@ -49,27 +49,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 1
-  playerDisplayName: Dr Blood
+  playerDisplayName: Doctor Blood
   playerObjectName: drblood
-  playerPortrait: {fileID: 21300002, guid: 7dc23eb5b81a4504b8f882b643b7272f, type: 3}
+  playerPortrait: {fileID: 21300000, guid: d60a812e2ac0563498f9145d0a6b5af6, type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
   jumpStatCeiling: 6
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 82
-  accuracy4pt: 78
-  accuracy7pt: 65
+  accuracy3pt: 83
+  accuracy4pt: 83
+  accuracy7pt: 75
   shooterProfilePrefabName: 
-  jumpForce: 5.5
-  speed: 3
-  runSpeedHasBall: 3.5
-  runSpeed: 4
+  jumpForce: 4.5
+  speed: 3.4
+  runSpeedHasBall: 3.9
+  runSpeed: 4.4
   hangTime: 0
   range: 99
   release: 0
-  criticalPercent: 35
+  criticalPercent: 13
   shootAngle: 50
   level: 0
   experience: 0
+  isLocked: 0
+  unlockCharacterText: 

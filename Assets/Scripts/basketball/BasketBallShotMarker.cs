@@ -31,6 +31,8 @@ public class BasketBallShotMarker : MonoBehaviour
     [SerializeField] private int maxShotAttempt;
     [SerializeField] private int maxShotMade;
 
+    public int MaxShotMade => maxShotMade;
+
     [SerializeField] private bool shotTypeThree;
     [SerializeField] private bool shotTypeFour;
     [SerializeField] private bool shotTypeSeven;

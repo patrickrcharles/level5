@@ -31,6 +31,9 @@ TagManager:
   - flash_return_position
   - shot_marker
   - money
+  - shot_meter
+  - vehicle_position_marker
+  - weather_system
   layers:
   - Default
   - TransparentFX

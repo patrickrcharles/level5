@@ -1,26 +1,54 @@
 fileFormatVersion: 2
 guid: bed74a7070de6f44c964b37234468930
-timeCreated: 1517281277
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: mega_robot_attack1_0
-    21300002: mega_robot_attack1_1
-    21300004: mega_robot_attack1_2
-    21300006: mega_robot_attack1_3
-    21300008: mega_robot_attack1_4
-    21300010: mega_robot_attack1_5
-    21300012: mega_robot_attack1_6
-    21300014: mega_robot_attack1_7
-    21300016: mega_robot_attack1_8
-    21300018: mega_robot_attack1_9
-    21300020: mega_robot_attack1_10
-    21300022: mega_robot_attack1_11
-    21300024: mega_robot_attack1_12
-    21300026: mega_robot_attack1_13
-    21300028: mega_robot_attack1_14
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: mega_robot_attack1_0
+  - first:
+      213: 21300002
+    second: mega_robot_attack1_1
+  - first:
+      213: 21300004
+    second: mega_robot_attack1_2
+  - first:
+      213: 21300006
+    second: mega_robot_attack1_3
+  - first:
+      213: 21300008
+    second: mega_robot_attack1_4
+  - first:
+      213: 21300010
+    second: mega_robot_attack1_5
+  - first:
+      213: 21300012
+    second: mega_robot_attack1_6
+  - first:
+      213: 21300014
+    second: mega_robot_attack1_7
+  - first:
+      213: 21300016
+    second: mega_robot_attack1_8
+  - first:
+      213: 21300018
+    second: mega_robot_attack1_9
+  - first:
+      213: 21300020
+    second: mega_robot_attack1_10
+  - first:
+      213: 21300022
+    second: mega_robot_attack1_11
+  - first:
+      213: 21300024
+    second: mega_robot_attack1_12
+  - first:
+      213: 21300026
+    second: mega_robot_attack1_13
+  - first:
+      213: 21300028
+    second: mega_robot_attack1_14
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -38,6 +66,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -48,7 +78,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -60,18 +90,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -81,7 +114,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Standalone
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -91,7 +126,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: WebGL
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -101,6 +138,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -112,12 +150,19 @@ TextureImporter:
         y: 1024
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c86d0956121d93343baa389703886507
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_1
       rect:
@@ -126,12 +171,19 @@ TextureImporter:
         y: 1024
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2abc95cf15bc1d346b5d109939f653a8
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_2
       rect:
@@ -140,12 +192,19 @@ TextureImporter:
         y: 1024
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a8f91628160739642843cbc348ae7e46
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_3
       rect:
@@ -154,12 +213,19 @@ TextureImporter:
         y: 1024
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 28f5675dc63f6ac429447f17caa668f8
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_4
       rect:
@@ -168,54 +234,145 @@ TextureImporter:
         y: 1024
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04d7a79f8fb372542bd9853f7fca0366
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_5
       rect:
         serializedVersion: 2
         x: 0
         y: 512
-        width: 768
+        width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.25, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: b810121abf9844a42a63eb5172efc290
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mega_robot_attack1_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 512
+        width: 384
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85ca1e9e0f1edd24fa69c2d681f5c517
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_7
       rect:
         serializedVersion: 2
         x: 768
         y: 512
-        width: 768
+        width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.25, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 1065c54ee0900b74c80b3e1b21378d1f
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mega_robot_attack1_8
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 512
+        width: 384
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a017c83aebed6242938a1fe6d017784
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_9
       rect:
         serializedVersion: 2
         x: 1536
         y: 512
-        width: 768
+        width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.25, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a9cee4e7204d9a04e8c3a4fa28dcd599
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mega_robot_attack1_10
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 512
+        width: 384
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32bfce81978bfd341a8699db0549ba7a
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_11
       rect:
@@ -224,12 +381,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 1a2f8dbae5aeb014c8f41bcb6a481238
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_12
       rect:
@@ -238,12 +402,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 7227fe276c12524448e7733fd2c47563
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_13
       rect:
@@ -252,12 +423,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0e88c876fea525247a6ebd33d8cae373
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_attack1_14
       rect:
@@ -266,15 +444,32 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 00ea4a41961055e48997da8c4200145e
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 6855a3b0cebe2604c9d367e9dba25859
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

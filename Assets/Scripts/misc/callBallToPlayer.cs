@@ -20,36 +20,48 @@ public class CallBallToPlayer : MonoBehaviour
 
     public static CallBallToPlayer instance;
 
+    public bool Locked { get => locked; set => locked = value; }
+
     private void Start()
     {
         instance = this;
         playerState = GameLevelManager.Instance.PlayerState;
-        basketBall = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
-        _basketBallState = GameObject.FindWithTag("basketball").GetComponent<BasketBallState>();
+        basketBall = GameLevelManager.Instance.Basketball;
+        _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
-        locked = false;
+        Locked = false;
+
+        canBallToPlayerEnabled = true;
+        pullSpeed = 2.3f;
     }
 
-    private void pullBallToPlayer()
-    {
-        Vector3 tempDirection = basketballRigidBody.transform.position;
-        pullDirection = transform.position - tempDirection;
-        basketballRigidBody.velocity = pullDirection * pullSpeed;
-    }
-
-    private void Update()
+    private void LateUpdate()
     {
         if (InputManager.GetButtonDown("Fire1")
             && !playerState.hasBasketball
             && !playerState.inAir
+            //&& !_basketBallState.Thrown
             && _basketBallState.CanPullBall
-            && canBallToPlayerEnabled
-            && !locked)
+            && !_basketBallState.Locked
+            //&& !_basketBallState.InAir
+            && playerState.grounded
+            //&& canBallToPlayerEnabled
+            && !Locked)
         {
-            locked = true;
+            //Debug.Log("call ball input read");
+            Locked = true;
             pullBallToPlayer();
-            locked = false;
+            Locked = false;
         }
+    }
+
+
+    private void pullBallToPlayer()
+    {
+        //Debug.Log("pullBallToPlayer()");
+        Vector3 tempDirection = basketballRigidBody.transform.position;
+        pullDirection = transform.position - tempDirection;
+        basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
 
     public void toggleCallBallToPlayer()

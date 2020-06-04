@@ -6,13 +6,18 @@ using UnityEngine.SceneManagement;
 
 public  class GameOptions : MonoBehaviour
 {
+    static public string applicationVersion;
+    static public string operatingSystemVersion;
+
     static public String playerDisplayName;
     static public int playerId;
     static public String levelSelected;
-   static public int gameModeSelected;
+    static public int gameModeSelected;
+    static public int levelId;
 
     static public String playerObjectName;
     static public String levelSelectedName;
+    static public String levelDisplayName;
     static public String gameModeSelectedName;
 
     static public int levelSelectedRootCount;
@@ -43,6 +48,8 @@ public  class GameOptions : MonoBehaviour
     static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
 
+    static public bool gameModeRequiresMoneyBall;
+
     //static public int level;
     //static public int experience;
     //static public decimal money;
@@ -52,6 +59,8 @@ public  class GameOptions : MonoBehaviour
         levelSelectedRootCount = SceneManager.GetActiveScene().rootCount;
         levelSelectedName = SceneManager.GetActiveScene().name;
         levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
+
+        applicationVersion = Application.version;
 
         //gameModeSelected = 8;
 
@@ -67,12 +76,16 @@ public  class GameOptions : MonoBehaviour
 
     static public void printCurrentValues()
     {
-        Debug.Log("playerSelected : " + playerId);
-        Debug.Log("levelSected : " + levelSelectedName);
-        Debug.Log("gameModeSelected : " + gameModeSelected);
-        Debug.Log("gameModeSelectedName : " + gameModeSelectedName);
-        Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
-        Debug.Log("3s : " + gameModeRequiresShotMarkers3s);
-        Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
+        //Debug.Log("playerSelected : " + playerId);
+        //Debug.Log("levelSected : " + levelSelectedName);
+        //Debug.Log("gameModeSelected : " + gameModeSelected);
+        //Debug.Log("gameModeSelectedName : " + gameModeSelectedName);
+        //Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
+        //Debug.Log("3s : " + gameModeRequiresShotMarkers3s);
+        //Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
+        //Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
+        //Debug.Log("app version : " + applicationVersion);
+        //Debug.Log("date  : " + DateTime.Now);
+        //Debug.Log("os  : " + operatingSystemVersion);
     }
 }

@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
-using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class GameRules : MonoBehaviour
 {
+
     private int playerId;
     private int levelId;
     private int gameModeId;
@@ -24,19 +24,24 @@ public class GameRules : MonoBehaviour
     bool gameModeRequiresShotMarkers3s;
     bool gameModeRequiresShotMarkers4s;
 
+    bool gameModeRequiresMoneyBall;
+    bool moneyBallEnabled;
+
     private Timer timer;
     private BasketBallStats basketBallStats;
-
-    public static GameRules instance;
 
     // object name that displays score
     private const string displayScoreObjectName = "display_score";
     private const string displayCurrentScoreObjectName = "display_current_score";
     private const string displayHighScoreObjectName = "display_high_score";
+    private const string displayMoneyObjectName = "money_display";
+    private const string displayMoneyBallObjectName = "money_ball_enabled";
 
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
+    private Text displayMoneyText;
+    private Text displayMoneyBallText;
 
     private float timeCompleted;
 
@@ -51,9 +56,17 @@ public class GameRules : MonoBehaviour
 
     private float counterTime; // this is set when shot is made that ends game : class BasketBallShotMade (attached to rim)
 
+    public static GameRules instance;
+
+    [SerializeField]
+    float timePlayedStart;
+    [SerializeField]
+    float timePlayedEnd;
+
     private void Awake()
     {
         instance = this;
+        timePlayedStart = Time.time;
     }
 
     private void Start()
@@ -62,28 +75,41 @@ public class GameRules : MonoBehaviour
         gameModeId = GameOptions.gameModeSelected;
         timer = GameObject.Find("timer").GetComponent<Timer>();
 
-        modeRequiresCounter = GameOptions.gameModeRequiresCounter;
-        modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
-
+        // components
         basketBallStats = BasketBall.instance.BasketBallStats;
+
         displayScoreText = GameObject.Find(displayScoreObjectName).GetComponent<Text>();
         displayCurrentScoreText = GameObject.Find(displayCurrentScoreObjectName).GetComponent<Text>();
         displayHighScoreText = GameObject.Find(displayHighScoreObjectName).GetComponent<Text>();
+        displayMoneyText = GameObject.Find(displayMoneyObjectName).GetComponent<Text>();
+        displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
 
+        // rules flags
+        modeRequiresCounter = GameOptions.gameModeRequiresCounter;
+        modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
+
+        gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
+        gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+        gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
+
+        // init text
         displayScoreText.text = "";
         displayCurrentScoreText.text = "";
         displayHighScoreText.text = "";
+        displayMoneyText.text = "";
+        displayMoneyBallText.text = "";
 
+        // init markers
         gameRulesEnabled = true;
 
         // enable/disable necessary shot markers for game mode
-        if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s)
+        if (gameModeRequiresShotMarkers3s || gameModeRequiresShotMarkers4s)
         {
             positionMarkersRequired = true;
             setPositionMarkers();
         }
     }
-
+    // ================================================ Update ============================================
     void Update()
     {
         // update current score
@@ -91,30 +117,78 @@ public class GameRules : MonoBehaviour
         {
             setScoreDisplayText();
         }
+        // if game over, empty text display
         if (gameOver && gameRulesEnabled)
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
+            displayMoneyText.text = "";
         }
 
-        if (GameOver && !Pause.instance.Paused && gameRulesEnabled)
+        // game over. display end game and save
+        if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
-            Debug.Log("game over, pause");
+            //Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
+            displayMoneyText.text = "";
+
+            // set end time for time played, store in basketballstats.timeplayed
+            setTimePlayed();
 
             //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
 
-            //save
-            if (GameObject.Find("player_data") != null)
+            //save if at leat 1 minte played
+            if (GameObject.Find("database") != null && basketBallStats.TimePlayed > 60)
             {
-                PlayerData.instance.saveStats();
+                DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
             }
 
-            // alert game manager
+            // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;
+        }
+
+        // enable moneyball
+        if (InputManager.GetKeyDown(KeyCode.F))
+        {
+            toggleMoneyBall();
+        }
+
+        // if not enough money and moneyball required, disabled by default
+        if (GameModeRequiresMoneyBall && PlayerStats.instance.Money < 5)
+        {
+            moneyBallEnabled = false;
+            displayMoneyBallText.text = "";
+        }
+    }
+
+    public void setTimePlayed()
+    {
+        // time played end
+        timePlayedEnd = Time.time;
+        basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
+        //Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
+    }
+
+    //===================================================== toggle money ball ====================================================
+
+    private void toggleMoneyBall()
+    {
+        if (PlayerStats.instance.Money >= 5 && !moneyBallEnabled)
+        {
+            moneyBallEnabled = true;
+            if (moneyBallEnabled)
+            {
+                displayMoneyBallText.text = "Money Ball enabled";
+            }
+        }
+        else
+        {
+            moneyBallEnabled = false;
+            displayMoneyBallText.text = "";
         }
     }
 
@@ -152,6 +226,7 @@ public class GameRules : MonoBehaviour
         markersRemaining = BasketBallShotMarkersList.Count;
     }
 
+    // ================================================ set score display ============================================
     private void setScoreDisplayText()
     {
         if (gameModeId == 1)
@@ -180,52 +255,77 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 5)
         {
-            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
-                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
+            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade ).ToString("0.00")
+                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
         }
         if (gameModeId == 6)
         {
-            displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance * 6).ToString("0.00")
-            + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance ).ToString("0.00")
+            + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim ).ToString("0.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
         }
         if (gameModeId == 7)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeThreePointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeThreePointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 8)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
             //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeFourPointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeFourPointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 9)
         {
             displayCurrentScoreText.text = "";
             //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
-            displayHighScoreText.text = "high score : " + PlayerData.instance._makeAllPointersLowTime;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersLowTime;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 10)
         {
-            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade * 6).ToString("0.00")
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeThreePointersMoneyBallLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 11)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            //displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeFourPointersMoneyBallLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 12)
+        {
+            displayCurrentScoreText.text = "";
+            //                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersMoneyBallLowTime;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 13)
+        {
+            displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade ).ToString("0.00")
                                                              + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
             displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
             // if longest shot > saved longest shot
-            if ((BasketBall.instance.BasketBallStats.LongestShotMade * 6) > PlayerData.instance.LongestShotMadeFreePlay)
+            if ((BasketBall.instance.BasketBallStats.LongestShotMade ) > PlayerData.instance.LongestShotMadeFreePlay)
             {
-                PlayerData.instance.saveStats();
+                //PlayerData.instance.saveStats();
+                PlayerData.instance.LongestShotMadeFreePlay = BasketBall.instance.BasketBallStats.LongestShotMade;
             }
         }
     }
 
+    // ================================================ get display text ============================================
     private string getDisplayText(int modeId)
     {
-        //Debug.Log("display data  mode: "+ GameModeId);
-
         string displayText = "";
 
         if (gameModeId == 1)
@@ -246,19 +346,22 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 5)
         {
-            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
+            displayText = "Your longest shot made was " + (basketBallStats.LongestShotMade ).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
         if (gameModeId == 6)
         {
-            displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance * 6).ToString("0.00") + " ft.\n\n" + getStatsTotals();
+            displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance ).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
-        if (gameModeId == 7 || gameModeId == 8 || gameModeId == 9)
+        if (gameModeId >= 6 && gameModeId <= 12 )
         {
-            displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
+            int minutes = Mathf.FloorToInt(counterTime / 60);
+            float seconds = (counterTime - (minutes * 60));
+            //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
+            displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
         }
-
         return displayText;
     }
+    // ================================================ get stats total ============================================
 
     string getStatsTotals()
     {
@@ -273,9 +376,8 @@ public class GameRules : MonoBehaviour
                          + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
-                         + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2) * 6f).ToString("0.00") + " ft.";
-
+                         + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
+                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.";
         return scoreText;
     }
 
@@ -285,11 +387,11 @@ public class GameRules : MonoBehaviour
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
+            
             if (modeRequiresCounter)
             {
                 setRequiresCounterLowScore();
             }
-
             return true;
         }
         else
@@ -300,24 +402,51 @@ public class GameRules : MonoBehaviour
 
     private void setRequiresCounterLowScore()
     {
-        Debug.Log("setRequiresCounterLowScore()");
-        if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s)
+        // mode 7
+        if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeThreePointersLowTime = counterTime;
-            Debug.Log("basketBallStats.MakeThreePointersLowTime : " + basketBallStats.MakeThreePointersLowTime);
+            //Debug.Log("basketBallStats.MakeThreePointersLowTime : " + basketBallStats.MakeThreePointersLowTime);
         }
-
-        if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s)
+        // mode 8
+        if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeFourPointersLowTime = counterTime;
-            Debug.Log("basketBallStats.Make4PointersLowTime : " + basketBallStats.MakeFourPointersLowTime);
+            //Debug.Log("basketBallStats.Make4PointersLowTime : " + basketBallStats.MakeFourPointersLowTime);
         }
-
-        if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s)
+        // mode 9
+        if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeAllPointersLowTime = counterTime;
-            Debug.Log("basketBallStats.MakeallPointersLowTime : " + basketBallStats.MakeAllPointersLowTime);
+            //Debug.Log("basketBallStats.MakeallPointersLowTime : " + basketBallStats.MakeAllPointersLowTime);
         }
+
+        // mode 10
+        if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        {
+            basketBallStats.MakeThreePointersMoneyBallLowTime = counterTime;
+            //Debug.Log("basketBallStats.MakeThreePointersLowTimeMoneyball : " + basketBallStats.MakeThreePointersMoneyBallLowTime);
+        }
+        // mode 11
+        if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        {
+            basketBallStats.MakeFourPointersMoneyBallLowTime = counterTime;
+            //Debug.Log("basketBallStats.Make4PointersLowTimeMoneyball : " + basketBallStats.MakeFourPointersMoneyBallLowTime);
+        }
+        // mode 12
+        if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        {
+            basketBallStats.MakeAllPointersMoneyBallLowTime = counterTime;
+            //Debug.Log("basketBallStats.MakeallPointersLowTimeMoneyball : " + basketBallStats.MakeAllPointersMoneyBallLowTime);
+        }
+    }
+
+    public bool GameModeRequiresMoneyBall => gameModeRequiresMoneyBall;
+
+    public bool MoneyBallEnabled
+    {
+        get => moneyBallEnabled;
+        set => moneyBallEnabled = value;
     }
 
     public float CounterTime
@@ -337,6 +466,8 @@ public class GameRules : MonoBehaviour
         set => gameModeId = value;
     }
 
+    // TODO: used to allow pause toggle. never set to false. still works somehow. 
+    // this needs a deeper look when i get time 
     public bool GameOver
     {
         get => gameOver;

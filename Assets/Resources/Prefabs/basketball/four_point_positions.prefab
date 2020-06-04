@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2642357530427797255}
   m_Layer: 8
-  m_Name: 'four_point_positions '
+  m_Name: four_point_positions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 0
   shotTypeFour: 1
   shotTypeSeven: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 0
   shotTypeFour: 1
   shotTypeSeven: 0
@@ -371,7 +371,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 0
   shotTypeFour: 1
   shotTypeSeven: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 0
   shotTypeFour: 1
   shotTypeSeven: 0
@@ -607,7 +607,7 @@ MonoBehaviour:
   _shotMade: 0
   _shotAttempt: 0
   maxShotAttempt: 0
-  maxShotMade: 1
+  maxShotMade: 5
   shotTypeThree: 0
   shotTypeFour: 1
   shotTypeSeven: 0

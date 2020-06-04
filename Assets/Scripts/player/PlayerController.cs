@@ -7,6 +7,9 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+
+    //#todo start breaking this up into separate classes: playerState, player move (walk / jump /input actions) 
+
     // components 
     Animator anim;
     AnimatorStateInfo currentStateInfo;
@@ -14,40 +17,32 @@ public class PlayerController : MonoBehaviour
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
-    [SerializeField]
     ShooterProfile shooterProfile;
     BasketBall basketball;
+    private ShotMeter shotmeter;
 
-    //[Range(20f, 90f)]
-    //public float _angle; // for bball mini game trajectory
-
-    // walk speed
-    [SerializeField]
+    // walk speed #review can potentially remove
     private float movementSpeed;
-
-    // jump vars 
-    //float jumpForce;
-    //public float runMovementSpeed;
-    //public float basketballRunSpeed;
-    //public float walkMovementSpeed;
-    //public float attackMovementSpeed;
+    [SerializeField]
+    private float inAirSpeed; // leave serialized
 
     // player state bools
-    [SerializeField]
     private bool running;
-    [SerializeField]
     private bool runningToggle;
     public bool hasBasketball;
-    //public bool smokingEnabled = true;
-    //public bool soundPlayed;
-    public bool canMove; // save this when i cars that can knock player down
+
+    // #note this is work a work in progress feature. it works but it's bugged
+    private bool isSetShooter; 
+    public bool IsSetShooter => isSetShooter;
+    public bool canMove; // #todo add player knock downs, this could be used
+                         // will be useful for when play knockdowns implemented
+    public GameObject playerHitbox;
 
     Vector3 bballRimVector;
     float bballRelativePositioning;
     Vector3 playerRelativePositioning;
     public float playerDistanceFromRim;
 
-    public GameObject playerHitbox;
 
     // control movement speed based on state
     static int currentState;
@@ -70,17 +65,14 @@ public class PlayerController : MonoBehaviour
     private bool _inAir;
     private bool _grounded;
 
+    //#review no longer use, but some it could be useful
     public float initialHeight, finalHeight;
-    // custom gravity for player from shooterprofile
-    //public float gravityModifier;
     public bool jumpPeakReached = false;
-    //[SerializeField]
-    //bool useGravity = true;
-
     private float _rigidBodyYVelocity;
-    [SerializeField]
-    //public bool facingFront;
 
+    // used to calculate shot meter time
+    public float jumpStartTime;
+    public float jumpEndTime;
 
     void Start()
     {
@@ -91,13 +83,14 @@ public class PlayerController : MonoBehaviour
         basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
         shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
+        Shotmeter = GameObject.FindWithTag("shot_meter").GetComponent<ShotMeter>();
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
         if (GameOptions.gameModeHasBeenSelected)
         {
-            Debug.Log(" set shoot profile");
+            //Debug.Log(" set shoot profile");
             setShooterProfileStats();
         }
 
@@ -134,6 +127,7 @@ public class PlayerController : MonoBehaviour
         //check if walking
         //  function will flip sprite if needed
         isWalking(moveHorizontal, moveVertical);
+
     }
 
     // Update :: once once per frame
@@ -143,9 +137,26 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(" update() shoot profile stats ==================================================================================");
         //printShooterProfileStats();
 
+        //if (rigidBody.velocity.y > 0)
+        //{
+        //    jumpEndTime = Time.time;
+        //    //Debug.Log("jump end time (at 0) : " + jumpEndTime);
+        //    //Debug.Log(" jump time : " + (jumpEndTime - jumpStartTime));
+        //    //Debug.Log("end velocity : " + rigidBody.velocity.y);
+        //}
+
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
-        dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.02f, dropShadow.transform.position.z);
+        if (grounded)
+        {
+            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y + 0.02f,
+                transform.root.position.z);
+        }
+        else
+        {
+            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
+                transform.root.position.z);
+        }
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -156,19 +167,19 @@ public class PlayerController : MonoBehaviour
 
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
-        if ((InputManager.GetButton("Run") && canMove && !inAir))
+        // if run input or run toggle on
+        if ( (InputManager.GetButton("Run") && canMove && !inAir))
         {
             running = true;
         }
         else
         {
-            anim.SetBool("moonwalking", false);
             running = false;
             moonwalkAudio.enabled = false;
         }
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        if (rigidBodyYVelocity < 0 && inAir)
+        if (rigidBodyYVelocity > 0 && inAir)
         {
             jumpPeakReached = true;
         }
@@ -203,8 +214,8 @@ public class PlayerController : MonoBehaviour
         // ----- control speed based on commands----------
         if (currentState == idleState
             || currentState == walkState
-            || inAir
-            || currentState == bIdle)
+            || currentState == bIdle
+            && ! inAir)
         {
             if (runningToggle)
             {
@@ -221,24 +232,21 @@ public class PlayerController : MonoBehaviour
             movementSpeed = shooterProfile.RunSpeed; ;
         }
 
+        if (inAir)
+        {
+            checkIsPlayerFacingGoal();
+            movementSpeed = inAirSpeed;
+        }
+
         //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump") && grounded)
-            && !(InputManager.GetButtonDown("Fire1")))
+        if ((InputManager.GetButtonDown("Jump")
+            && !(InputManager.GetButtonDown("Fire1"))
+            && grounded))
+            //&& !isSetShooter))
         {
             playerJump();
         }
 
-        if (inAir)
-        {
-            if (bballRelativePositioning > 0 && !facingRight)
-            {
-                Flip();
-            }
-            if (bballRelativePositioning < 0f && facingRight)
-            {
-                Flip();
-            }
-        }
 
         // if player is falling, nto sure what this is useful for. comment out
         //if (rigidBody.velocity.y > 0)
@@ -250,35 +258,71 @@ public class PlayerController : MonoBehaviour
         //}
     }
 
-    private void playerJump()
+    public void checkIsPlayerFacingGoal()
     {
-        //Debug.Log("player jumped");
         if (bballRelativePositioning > 0 && !facingRight)
         {
             Flip();
         }
+
         if (bballRelativePositioning < 0f && facingRight)
         {
             Flip();
         }
-        rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce) + (Vector3.forward * rigidBody.velocity.x);
+    }
+
+    public void playerJump()
+    {
+        if (!isSetShooter)
+        {
+            rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
+        }
+
+        //jumpStartTime = Time.time;
+        Shotmeter.MeterStarted = true;
+        Shotmeter.MeterStartTime = Time.time;
+        //Debug.Log("jump time: "+ Time.time);
+ 
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)
     {
-        // if moving/ not holding item. bool holdingItem set in AtttackCollision.cs
+        // if moving/ not holding item. 
         if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
         {
-            if (!inAir) // dont want walking animation playing while inAir
+            if (!inAir && !running ) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
             }
         }
+        // not moving
         else
         {
             anim.SetBool("walking", false);
+            anim.SetBool("moonwalking", false);
         }
+
+        // if running enabled
+        if ((runningToggle || running) &&  canMove && !inAir && currentState == walkState)
+        {
+            //Debug.Log("if (runningToggle && canMove && !inAir)");
+            if (!hasBasketball)
+            {
+                anim.SetBool("moonwalking", true);
+                //movementSpeed = shooterProfile.RunSpeed;
+            }
+
+            //if (hasBasketball)
+            //{
+            //    movementSpeed = shooterProfile.RunSpeedHasBall; ;
+            //}
+            //else
+            //{
+            //    movementSpeed = runMovementSpeed;
+            //}
+        }
+
         if (moveHorz > 0 && !facingRight && canMove)
         {
             Flip();
@@ -288,43 +332,24 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
-        // if running enabled
-        if (runningToggle && canMove && !inAir)
-        {
-            //Debug.Log("if (runningToggle && canMove && !inAir)");
-            if (!hasBasketball)
-            {
-                anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed; 
-            }
+        //if (running && canMove && !inAir)
+        //{
+        //    if (!hasBasketball)
+        //    {
+        //        anim.SetBool("moonwalking", true);
+        //        movementSpeed = shooterProfile.RunSpeed;
+        //    }
 
-            if (hasBasketball)
-            {
-                movementSpeed = shooterProfile.RunSpeedHasBall; ;
-            }
-            //else
-            //{
-            //    movementSpeed = runMovementSpeed;
-            //}
-        }
-
-        if (running && canMove && !inAir)
-        {
-            if (!hasBasketball)
-            {
-                anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed;
-            }
-
-            if (hasBasketball)
-            {
-                movementSpeed = shooterProfile.RunSpeedHasBall;
-            }
-        }
+        //    if (hasBasketball)
+        //    {
+        //        movementSpeed = shooterProfile.RunSpeedHasBall;
+        //    }
+        //}
     }
 
     void Flip()
     {
+        //Debug.Log("flip");
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
@@ -372,8 +397,8 @@ public class PlayerController : MonoBehaviour
 
         //gravityModifier = shooterProfile.HangTime;
         //_angle = shooterProfile.ShootAngle;
-    } 
-    
+    }
+
     //*** need to update this
     void printShooterProfileStats()
     {
@@ -427,12 +452,14 @@ public class PlayerController : MonoBehaviour
         get => _facingFront;
         set => _facingFront = value;
     }
+    public ShotMeter Shotmeter { get => shotmeter; set => shotmeter = value; }
 
-    public void toggleRun()
+    // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
+    public void toggleRun() 
     {
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "running = " + running;
+        messageText.text = "running toggle = " + runningToggle;
 
         // turn off text display after 5 seconds
         StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(5));
