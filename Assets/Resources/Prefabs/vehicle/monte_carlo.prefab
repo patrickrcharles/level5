@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.418486, y: 0.36027265, z: 0.61576223}
-  m_Center: {x: -0.03387904, y: 0.25888622, z: 0.113684416}
+  m_Size: {x: 3.0551033, y: 0.49355483, z: 0.61576223}
+  m_Center: {x: 0.097215414, y: 0.3255273, z: 0.113684416}
 --- !u!1 &3495530507618325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 4195175298390248783, guid: 21b2e76d1f12da14688759bcc26920dc,
+  m_Sprite: {fileID: -9199816207308088950, guid: a20d352349da68742a987d64f79b9534,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -170,8 +170,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3495530507651257925}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 0.212}
-  m_LocalScale: {x: 1, y: 0.30258235, z: 1}
+  m_LocalPosition: {x: 0.196, y: -0, z: 0.2803}
+  m_LocalScale: {x: 0.82458085, y: 0.26838002, z: 1}
   m_Children: []
   m_Father: {fileID: 3495530508101950486}
   m_RootOrder: 2
@@ -235,11 +235,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3495530508101950486}
   - component: {fileID: 3495530508101950485}
+  - component: {fileID: 8560600608456518476}
   - component: {fileID: 1953145661}
   - component: {fileID: 1953145662}
   - component: {fileID: 2287148718150073986}
   m_Layer: 11
-  m_Name: cadillac
+  m_Name: monte_carlo
   m_TagString: vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,8 +274,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.418486, y: 0.45422673, z: 0.61576223}
-  m_Center: {x: -0.03387904, y: 0.30586326, z: 0.113684416}
+  m_Size: {x: 3.0551033, y: 0.49355483, z: 0.5271182}
+  m_Center: {x: 0.097215414, y: 0.3255273, z: 0.15800643}
+--- !u!65 &8560600608456518476
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3495530508101950487}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2570121, y: 0.39459372, z: 0.5271182}
+  m_Center: {x: -0.12850606, y: 0.6396748, z: 0.081320524}
 --- !u!54 &1953145661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -286,8 +300,8 @@ Rigidbody:
   m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
@@ -325,6 +339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792ed1427af8f9243b70f40b4a5ef4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleId: 1
+  vehicleId: 2
   startPoint: {fileID: 0}
-  vehicleSpeed: 5
+  vehicleSpeed: 6
