@@ -23,6 +23,7 @@ public class VehicleController : MonoBehaviour
 
     const string vehiclePosMarkersTag = "vehicle_position_marker";
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,4 +79,6 @@ public class VehicleController : MonoBehaviour
     {
 
     }
+
+    public int VehicleId { get => vehicleId; set => vehicleId = value; }
 }

@@ -159,8 +159,8 @@ public class PlayerController : MonoBehaviour
         if (KnockedDown && !locked)
         {
             locked = true;
-            rigidBody.constraints = RigidbodyConstraints.FreezePositionX;
-            rigidBody.constraints = RigidbodyConstraints.FreezePositionZ;
+            rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+
             // coroutine that holds animation with WaitUntil knock down time is through
             StartCoroutine(PlayerKnockedDown());
         }
