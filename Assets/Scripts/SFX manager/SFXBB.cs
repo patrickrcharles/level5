@@ -18,6 +18,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip airhorn;
     public AudioClip lightningStrike;
     public AudioClip rimShot;
+    public AudioClip knockedDown;
 
     //public List<AudioClip> vanMusicPlayList;
 

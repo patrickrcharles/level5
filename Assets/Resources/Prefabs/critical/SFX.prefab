@@ -152,3 +152,4 @@ MonoBehaviour:
   airhorn: {fileID: 8300000, guid: eb07d9a73a7ac6d4888370a2a82860b5, type: 3}
   lightningStrike: {fileID: 8300000, guid: ea9cadfeb213f454eb895f4bae5cf636, type: 3}
   rimShot: {fileID: 8300000, guid: 459d4ffabfeb310489255fe4e5f40de4, type: 3}
+  knockedDown: {fileID: 8300000, guid: af0464c0374abe741913a2cf2d0d9551, type: 3}

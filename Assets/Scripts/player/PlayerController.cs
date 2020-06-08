@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     static int currentState;
     static int idleState = Animator.StringToHash("base.idle");
     static int walkState = Animator.StringToHash("base.movement.walk");
-    static int mWalk = Animator.StringToHash("base.movement.moonwalk");
+    static int run = Animator.StringToHash("base.movement.moonwalk");
     static int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
     static int bIdle = Animator.StringToHash("base.movement.basketball_idle");
     static int knockedDownState = Animator.StringToHash("base.takeDamage.knockedDown");
@@ -60,10 +60,14 @@ public class PlayerController : MonoBehaviour
     // get/set for following at bottom of class
     private bool _facingRight;
     private bool _facingFront;
-    private bool _notLocked;
+    private bool _locked;
     private bool _jump;
     private bool _inAir;
     private bool _grounded;
+    private bool _knockedDown;
+
+    [SerializeField]
+    float _knockDownTime;
 
     //#review no longer use, but some it could be useful
     public float initialHeight, finalHeight;
@@ -88,6 +92,7 @@ public class PlayerController : MonoBehaviour
         // bball rim vector, used for relative positioning
         bballRimVector = GameObject.Find("rim").transform.position;
 
+        // #note used for testing scenes
         if (GameOptions.gameModeHasBeenSelected)
         {
             //Debug.Log(" set shoot profile");
@@ -105,29 +110,35 @@ public class PlayerController : MonoBehaviour
         runningToggle = true;
     }
 
+
+
     // not affected by framerate
     void FixedUpdate()
     {
         //------MOVEMENT---------------------------
-        float moveHorizontal = InputManager.GetAxis("Horizontal");
-        float moveVertical = InputManager.GetAxis("Vertical");
-        Vector3 movement;
+        if (!KnockedDown)
+        {
+            //Debug.Log("movement : knocked down "+ KnockedDown);
+            float moveHorizontal = InputManager.GetAxis("Horizontal");
+            float moveVertical = InputManager.GetAxis("Vertical");
+            Vector3 movement;
 
-        movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
+            movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
 
-        rigidBody.MovePosition(transform.position + movement);
-        /*
-        //set limits for player movement
-        rigidBody.transform.position = new Vector3(
-           Mathf.Clamp(rigidBody.position.x, xMin, xMax),
-           Mathf.Clamp(rigidBody.position.y, yMin, yMax),
-           Mathf.Clamp(rigidBody.position.z, zMin, zMax)
-           );
-           */
-        //check if walking
-        //  function will flip sprite if needed
-        isWalking(moveHorizontal, moveVertical);
+            rigidBody.MovePosition(transform.position + movement);
+            /*
+            //set limits for player movement
+            rigidBody.transform.position = new Vector3(
+               Mathf.Clamp(rigidBody.position.x, xMin, xMax),
+               Mathf.Clamp(rigidBody.position.y, yMin, yMax),
+               Mathf.Clamp(rigidBody.position.z, zMin, zMax)
+               );
+               */
+            //check if walking
+            //  function will flip sprite if needed
 
+            isWalking(moveHorizontal, moveVertical);
+        }
     }
 
     // Update :: once once per frame
@@ -144,6 +155,15 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log(" jump time : " + (jumpEndTime - jumpStartTime));
         //    //Debug.Log("end velocity : " + rigidBody.velocity.y);
         //}
+
+        if (KnockedDown && !locked)
+        {
+            locked = true;
+            rigidBody.constraints = RigidbodyConstraints.FreezePositionX;
+            rigidBody.constraints = RigidbodyConstraints.FreezePositionZ;
+            // coroutine that holds animation with WaitUntil knock down time is through
+            StartCoroutine(PlayerKnockedDown());
+        }
 
         // keep drop shadow on ground at all times
         // dont like having hard code values. add variables
@@ -168,7 +188,11 @@ public class PlayerController : MonoBehaviour
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ( (InputManager.GetButton("Run") && canMove && !inAir))
+        if ( (InputManager.GetButton("Run") 
+            && canMove 
+            && !inAir
+            && !KnockedDown
+            && !locked))
         {
             running = true;
         }
@@ -215,7 +239,8 @@ public class PlayerController : MonoBehaviour
         if (currentState == idleState
             || currentState == walkState
             || currentState == bIdle
-            && ! inAir)
+            && ! inAir
+            && !KnockedDown)
         {
             if (runningToggle)
             {
@@ -227,7 +252,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        else if (currentState == mWalk)
+        else if (currentState == run)
         {
             movementSpeed = shooterProfile.RunSpeed; ;
         }
@@ -241,7 +266,8 @@ public class PlayerController : MonoBehaviour
         //------------------ jump -----------------------------------
         if ((InputManager.GetButtonDown("Jump")
             && !(InputManager.GetButtonDown("Fire1"))
-            && grounded))
+            && grounded
+            && !KnockedDown))
             //&& !isSetShooter))
         {
             playerJump();
@@ -288,6 +314,7 @@ public class PlayerController : MonoBehaviour
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(float moveHorz, float moveVert)
     {
+        //Debug.Log("walking : knocked down " + KnockedDown);;
         // if moving/ not holding item. 
         if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
         {
@@ -354,6 +381,26 @@ public class PlayerController : MonoBehaviour
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
+    }
+
+    // ------------------------------- Knocked down -------------------------------------------------------
+    IEnumerator PlayerKnockedDown()
+    {
+        float startTime = Time.time;
+        float endTime = startTime + _knockDownTime;
+
+        Debug.Log("================   IEnumerator KnockedDown() ===========================");
+        //yield return new WaitUntil(() => grounded == true);
+        anim.SetBool("knockedDown", true);
+        anim.Play("knockedDown");
+        //yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        yield return new WaitUntil(() => Time.time > endTime);
+
+        anim.SetBool("knockedDown", false);
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        KnockedDown = false;
+        locked = false;
+        Debug.Log("finish - KnockedDown() - knocked down time.time : " + Time.timeSinceLevelLoad);
     }
 
     //------------------------- set animator parameters -----------------------
@@ -432,10 +479,10 @@ public class PlayerController : MonoBehaviour
         get { return _jump; }
         set { _jump = value; }
     }
-    public bool notLocked
+    public bool locked
     {
-        get { return _notLocked; }
-        set { _notLocked = value; }
+        get { return _locked; }
+        set { _locked = value; }
     }
     public bool facingRight
     {
@@ -452,7 +499,17 @@ public class PlayerController : MonoBehaviour
         get => _facingFront;
         set => _facingFront = value;
     }
-    public ShotMeter Shotmeter { get => shotmeter; set => shotmeter = value; }
+    public ShotMeter Shotmeter 
+    { 
+        get => shotmeter; 
+        set => shotmeter = value; 
+    }
+
+    public bool KnockedDown 
+    { 
+        get => _knockedDown; 
+        set => _knockedDown = value; 
+    }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun() 

@@ -599,6 +599,7 @@ GameObject:
   - component: {fileID: 1440889072488101908}
   - component: {fileID: 7882584539614933877}
   - component: {fileID: 4620539903697033636}
+  - component: {fileID: 1191819642}
   - component: {fileID: 5617727460697569618}
   - component: {fileID: 3421694135598086858}
   - component: {fileID: 7632455355797941681}
@@ -665,24 +666,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterProfile: {fileID: 0}
-  shotmeter: {fileID: 0}
   inAirSpeed: 0.5
-  running: 0
-  runningToggle: 0
   hasBasketball: 0
-  isSetShooter: 0
   canMove: 1
-  playerDistanceFromRim: 0
   playerHitbox: {fileID: 6914078478174060254}
+  playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _facingRight: 0
+  _knockDownTime: 2
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
+--- !u!114 &1191819642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8188476234929711695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCanBeKnockedDown: 1
 --- !u!114 &5617727460697569618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullSpeed: 2
+  pullSpeed: 0
 --- !u!82 &3421694135598086858
 AudioSource:
   m_ObjectHideFlags: 0
@@ -831,9 +840,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 1
-  playerDisplayName: Dr Blood
-  playerObjectName: drblood
+  playerId: 0
+  playerDisplayName: 
+  playerObjectName: 
   playerPortrait: {fileID: 0}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
@@ -841,19 +850,19 @@ MonoBehaviour:
   speedStatFloor: 0
   speedStatCeiling: 0
   accuracy2pt: 90
-  accuracy3pt: 84
-  accuracy4pt: 75
+  accuracy3pt: 83
+  accuracy4pt: 77
   accuracy7pt: 65
   shooterProfilePrefabName: 
-  jumpForce: 4.6
-  speed: 2.5
-  runSpeedHasBall: 3.3
-  runSpeed: 3.3
+  jumpForce: 5.2
+  speed: 3
+  runSpeedHasBall: 3.5
+  runSpeed: 4
   hangTime: 0
   range: 100
   release: 100
-  criticalPercent: 15
-  shootAngle: 48
+  criticalPercent: 12
+  shootAngle: 50
   level: 0
   experience: 0
   isLocked: 0
