@@ -145,21 +145,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        //Debug.Log(" update() shoot profile stats ==================================================================================");
-        //printShooterProfileStats();
-
-        //if (rigidBody.velocity.y > 0)
-        //{
-        //    jumpEndTime = Time.time;
-        //    //Debug.Log("jump end time (at 0) : " + jumpEndTime);
-        //    //Debug.Log(" jump time : " + (jumpEndTime - jumpStartTime));
-        //    //Debug.Log("end velocity : " + rigidBody.velocity.y);
-        //}
-
         if (KnockedDown && !locked)
         {
             locked = true;
-            rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
             // coroutine that holds animation with WaitUntil knock down time is through
             StartCoroutine(PlayerKnockedDown());
