@@ -34,6 +34,8 @@ TagManager:
   - shot_meter
   - vehicle_position_marker
   - weather_system
+  - vehicle_hitbox
+  - vehicle_spawn_target
   layers:
   - Default
   - TransparentFX
