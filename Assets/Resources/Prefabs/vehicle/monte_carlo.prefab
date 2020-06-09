@@ -342,7 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vehicleId: 2
   spawnPoint: {fileID: 0}
-  vehicleSpeed: 6
+  vehicleSpeed: 4.5
 --- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0
