@@ -7,16 +7,19 @@ public class VehicleController : MonoBehaviour
 {
     [SerializeField]
     int vehicleId;
+    string direction;
 
     NavMeshAgent navMeshAgent;
     [SerializeField]
     //GameObject[] VehiclePositions;
-    GameObject startPoint;
+    GameObject spawnPoint;
 
     Vector3 currentTarget;
     [SerializeField]
     float vehicleSpeed;
-    int currentTargetIndex = 1;
+
+    int currentTargetIndex;
+    int defaultTargetIndex = 0;
 
     Animator animator;
     Rigidbody rigidbody;
@@ -32,15 +35,10 @@ public class VehicleController : MonoBehaviour
         navMeshAgent.updateRotation = false;
         navMeshAgent.speed = vehicleSpeed;
 
-        //VehiclePositions = GameObject.FindGameObjectsWithTag(vehiclePosMarkersTag);
-        //startPoint = VehiclePositions[0];
-        //gameObject.transform.position = startPoint.transform.position;
         animator = GetComponentInChildren<Animator>();
         rigidbody = GetComponent<Rigidbody>();
 
-        //get vehicle to go to destination
-        //currentTarget = VehiclePositions[1].transform.position;
-        //currentTarget = navMeshAgent.destination;
+        currentTargetIndex = defaultTargetIndex;
     }
 
     // Update is called once per frame
@@ -59,20 +57,22 @@ public class VehicleController : MonoBehaviour
 
     //void GotoNextPoint()
     //{
-    //    if (VehiclePositions.Length == 0)
+    //    // if vehicle target list is empty, bail
+    //    if (TrafficManager.instance.VehicleTargetPositions.Length == 0)
     //        return;
-
-    //    if(currentTargetIndex == VehiclePositions.Length - 1)
+    //    // if current target is final target in targets list, go to first target
+    //    if (currentTargetIndex == TrafficManager.instance.VehicleTargetPositions.Length - 1)
     //    {
     //        currentTargetIndex = 0;
     //    }
+    //    // else, go to next target
     //    else
     //    {
     //        currentTargetIndex++;
     //    }
 
     //    currentTarget = navMeshAgent.destination;
-    //    navMeshAgent.destination = VehiclePositions[currentTargetIndex].transform.position;
+    //    navMeshAgent.destination = TrafficManager.instance.VehicleTargetPositions[currentTargetIndex].transform.position;
     //}
 
     void flip()
@@ -81,4 +81,6 @@ public class VehicleController : MonoBehaviour
     }
 
     public int VehicleId { get => vehicleId; set => vehicleId = value; }
+    public string Direction { get => direction; set => direction = value; }
+    public Vector3 CurrentTarget { get => currentTarget; set => currentTarget = value; }
 }
