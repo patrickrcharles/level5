@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.04941, y: 1.4978309, z: 0.78}
-  m_Center: {x: 0.6598949, y: 0.8276653, z: 0.15800643}
+  m_Size: {x: 1.4775994, y: 0.60656667, z: 0.5639062}
+  m_Center: {x: -0.079449534, y: 0.38203323, z: -0.029927492}
 --- !u!1 &3495530507618325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ Animator:
   m_GameObject: {fileID: 3495530507618325090}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: bfd6a9a5ee78fa948928a0822a9694aa, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4162b3e0a39d6084a99fd83f477a05f0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -133,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -6320748364524789098, guid: 157aa595f33d2194f8aa8547711b2321,
+  m_Sprite: {fileID: -2124041779939512314, guid: ad25ee679f3c5ec44828d931ba42b722,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -170,8 +170,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3495530507651257925}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.8635, y: -0, z: 0}
-  m_LocalScale: {x: 1.2563313, y: 0.26838002, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.34759027, y: 0.16987693, z: 1}
   m_Children: []
   m_Father: {fileID: 3495530508101950486}
   m_RootOrder: 2
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 2287148718150073986}
   - component: {fileID: 1155739993}
   m_Layer: 11
-  m_Name: winnebago
+  m_Name: three_wheeler_wob1
   m_TagString: vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,8 +274,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.04941, y: 1.4978309, z: 0.78}
-  m_Center: {x: 0.6598949, y: 0.8276653, z: 0.15800643}
+  m_Size: {x: 1.4775994, y: 0.60656667, z: 0.5639062}
+  m_Center: {x: -0.079449534, y: 0.38203323, z: -0.029927492}
 --- !u!54 &1953145661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -326,10 +326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792ed1427af8f9243b70f40b4a5ef4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleId: 6
+  vehicleId: 5
   direction: right
   currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
-  vehicleSpeed: 3
+  vehicleSpeed: 4
   currentTargetIndex: 0
 --- !u!82 &1155739993
 AudioSource:
@@ -341,9 +341,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cd327c24e7bd7d249ac2f1f3b32d408d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5a0dc7f0363a60147b682e40123d378e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
