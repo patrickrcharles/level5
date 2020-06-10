@@ -6,12 +6,12 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: monte_carlo_Animator Override Controller
+  m_Name: three_wheeler_wob2_Animator Override Controller
   m_Controller: {fileID: 9100000, guid: b3e163cf92fab0b46a19a10109311365, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 8ae8c06523b8f4f4083f7139948aabe5, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: be0f8c3f1e6f1714aa6c3342590abad3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a04ff8a1fab22524b9f8caecc9849381, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 7597c310317de6e46b26a6a571f261ad, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 99e21a0391014f348b2b9a622fc0d917, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: afa227bb79e24d748869ec492f866b41, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 93e66c78bb836ed46b79ab7006758050, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 8bd7e6780a6d5f9408a50f421a418b87, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e5a16ced2ec700944958fd3897c76a7c, type: 2}
