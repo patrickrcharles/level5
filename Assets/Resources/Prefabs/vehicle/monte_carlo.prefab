@@ -341,8 +341,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleId: 2
-  spawnPoint: {fileID: 0}
+  direction: left
+  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
   vehicleSpeed: 4.5
+  currentTargetIndex: 0
 --- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0
