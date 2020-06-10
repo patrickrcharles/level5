@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 4335230696680439515}
   - component: {fileID: 4285487697881171478}
   - component: {fileID: 904804546433258722}
+  - component: {fileID: 392727030549639336}
   m_Layer: 0
   m_Name: player_jimmy_ford
   m_TagString: Player
@@ -302,6 +303,7 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
+  _knockDownTime: 2
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -498,6 +500,20 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
+--- !u!114 &392727030549639336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361230629192624495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: {fileID: 0}
+  playerCanBeKnockedDown: 1
 --- !u!1 &4704057943004090548
 GameObject:
   m_ObjectHideFlags: 0

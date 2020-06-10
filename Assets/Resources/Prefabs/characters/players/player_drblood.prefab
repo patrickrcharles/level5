@@ -606,6 +606,7 @@ GameObject:
   - component: {fileID: 4881404290225261413}
   - component: {fileID: 3123467015696178035}
   - component: {fileID: -7830458416913712004}
+  - component: {fileID: -8333066769937295536}
   m_Layer: 0
   m_Name: player_drblood
   m_TagString: Player
@@ -691,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: {fileID: 0}
   playerCanBeKnockedDown: 1
 --- !u!114 &5617727460697569618
 MonoBehaviour:
@@ -704,7 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567ca935929c9cd4ea9d04d51ef75440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullSpeed: 0
+  pullSpeed: 2.3
 --- !u!82 &3421694135598086858
 AudioSource:
   m_ObjectHideFlags: 0
@@ -883,6 +885,20 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
+--- !u!114 &-8333066769937295536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8188476234929711695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: {fileID: 0}
+  playerCanBeKnockedDown: 0
 --- !u!1001 &3691963381689224131
 PrefabInstance:
   m_ObjectHideFlags: 0
