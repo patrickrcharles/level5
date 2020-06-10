@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1753862019}
   m_Layer: 0
   m_Name: hitbox
-  m_TagString: vehicle_hitbox
+  m_TagString: knock_down_attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

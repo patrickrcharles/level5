@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.418486, y: 0.36027265, z: 0.61576223}
-  m_Center: {x: -0.03387904, y: 0.25888622, z: 0.113684416}
+  m_Size: {x: 5.04941, y: 1.4978309, z: 0.78}
+  m_Center: {x: 0.6598949, y: 0.8276653, z: 0.15800643}
 --- !u!1 &3495530507618325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,7 +70,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3495530507618325090}
   m_LocalRotation: {x: 0.11840396, y: 0, z: 0, w: 0.9929655}
-  m_LocalPosition: {x: 0, y: 0, z: 0.077}
+  m_LocalPosition: {x: 0, y: 0, z: -0.072}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3495530508101950486}
@@ -86,7 +86,7 @@ Animator:
   m_GameObject: {fileID: 3495530507618325090}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b3e163cf92fab0b46a19a10109311365, type: 2}
+  m_Controller: {fileID: 22100000, guid: bfd6a9a5ee78fa948928a0822a9694aa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -133,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 4195175298390248783, guid: 21b2e76d1f12da14688759bcc26920dc,
+  m_Sprite: {fileID: -6320748364524789098, guid: 157aa595f33d2194f8aa8547711b2321,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -170,8 +170,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3495530507651257925}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 0.212}
-  m_LocalScale: {x: 1, y: 0.30258235, z: 1}
+  m_LocalPosition: {x: 0.8635, y: -0, z: 0}
+  m_LocalScale: {x: 1.2563313, y: 0.26838002, z: 1}
   m_Children: []
   m_Father: {fileID: 3495530508101950486}
   m_RootOrder: 2
@@ -238,9 +238,9 @@ GameObject:
   - component: {fileID: 1953145661}
   - component: {fileID: 1953145662}
   - component: {fileID: 2287148718150073986}
-  - component: {fileID: 761275396}
+  - component: {fileID: 1155739993}
   m_Layer: 11
-  m_Name: cadillac
+  m_Name: winnebago
   m_TagString: vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,8 +274,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.418486, y: 0.45422673, z: 0.61576223}
-  m_Center: {x: -0.03387904, y: 0.30586326, z: 0.113684416}
+  m_Size: {x: 5.04941, y: 1.4978309, z: 0.78}
+  m_Center: {x: 0.6598949, y: 0.8276653, z: 0.15800643}
 --- !u!54 &1953145661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -302,7 +302,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.12
-  m_Speed: 3.5
+  m_Speed: 0.1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -326,12 +326,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792ed1427af8f9243b70f40b4a5ef4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleId: 1
-  direction: left
-  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
-  vehicleSpeed: 3.5
+  vehicleId: 2
+  direction: right
+  currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
+  vehicleSpeed: 3
   currentTargetIndex: 0
---- !u!82 &761275396
+--- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -343,7 +343,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cd327c24e7bd7d249ac2f1f3b32d408d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0
