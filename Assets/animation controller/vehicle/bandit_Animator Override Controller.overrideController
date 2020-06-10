@@ -6,12 +6,12 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: monte_carlo_Animator Override Controller
+  m_Name: bandit_Animator Override Controller
   m_Controller: {fileID: 9100000, guid: b3e163cf92fab0b46a19a10109311365, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 8ae8c06523b8f4f4083f7139948aabe5, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: be0f8c3f1e6f1714aa6c3342590abad3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 404c9e97e1005cb488cbe700a188f332, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: df9fd57b1c23bca41b636ec934f986f0, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 99e21a0391014f348b2b9a622fc0d917, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 75ff5524284bfba48bcb3f1c301e3d6b, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: ea21a39bcfb37584db60efc122de0072, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 8bd7e6780a6d5f9408a50f421a418b87, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2e1d0613fa6574a459357dc5e9e7e3a5, type: 2}
