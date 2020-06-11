@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4775994, y: 0.60656667, z: 0.5639062}
-  m_Center: {x: -0.079449534, y: 0.38203323, z: -0.029927492}
+  m_Size: {x: 1.4775994, y: 0.60656667, z: 0.653275}
+  m_Center: {x: -0.079449534, y: 0.38203323, z: -0.030982733}
 --- !u!1 &3495530507618325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,7 +329,7 @@ MonoBehaviour:
   vehicleId: 5
   direction: right
   currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
-  vehicleSpeed: 4
+  vehicleSpeed: 5
   currentTargetIndex: 0
 --- !u!82 &1155739993
 AudioSource:
