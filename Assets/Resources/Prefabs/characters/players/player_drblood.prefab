@@ -81,6 +81,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &1586730125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1586730126}
+  - component: {fileID: 1586730127}
+  m_Layer: 0
+  m_Name: attack_box
+  m_TagString: attack_box
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1586730126
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586730125}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1440889072488101908}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.396, y: 0.628}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!135 &1586730127
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586730125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.52
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1940865089
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackBox: {fileID: 0}
 --- !u!1 &2824986375866728901
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +557,7 @@ GameObject:
   - component: {fileID: 1174152894394561451}
   - component: {fileID: 2183456492026138889}
   - component: {fileID: 1037194618832312042}
+  - component: {fileID: 7240694280107484565}
   m_Layer: 0
   m_Name: hitbox
   m_TagString: playerHitbox
@@ -588,6 +639,20 @@ CapsuleCollider:
   m_Height: 1.6511372
   m_Direction: 1
   m_Center: {x: -0.030286837, y: -0.18757851, z: 0}
+--- !u!114 &7240694280107484565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914078478174060254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: {fileID: 0}
+  playerCanBeKnockedDown: 1
 --- !u!1 &8188476234929711695
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,14 +664,12 @@ GameObject:
   - component: {fileID: 1440889072488101908}
   - component: {fileID: 7882584539614933877}
   - component: {fileID: 4620539903697033636}
-  - component: {fileID: 1191819642}
   - component: {fileID: 5617727460697569618}
   - component: {fileID: 3421694135598086858}
   - component: {fileID: 7632455355797941681}
   - component: {fileID: 4881404290225261413}
   - component: {fileID: 3123467015696178035}
   - component: {fileID: -7830458416913712004}
-  - component: {fileID: -8333066769937295536}
   m_Layer: 0
   m_Name: player_drblood
   m_TagString: Player
@@ -631,6 +694,7 @@ RectTransform:
   - {fileID: 7152000215602134727}
   - {fileID: 7293220425333525689}
   - {fileID: 6384136416282025686}
+  - {fileID: 1586730126}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -680,20 +744,6 @@ MonoBehaviour:
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
---- !u!114 &1191819642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8188476234929711695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerState: {fileID: 0}
-  playerCanBeKnockedDown: 1
 --- !u!114 &5617727460697569618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,20 +935,6 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
---- !u!114 &-8333066769937295536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8188476234929711695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerState: {fileID: 0}
-  playerCanBeKnockedDown: 0
 --- !u!1001 &3691963381689224131
 PrefabInstance:
   m_ObjectHideFlags: 0
