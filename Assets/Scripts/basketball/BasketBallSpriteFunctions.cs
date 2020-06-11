@@ -5,11 +5,19 @@ using UnityEngine;
 public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
+    const string  attackBoxText = "attack_box";
+
+    [SerializeField]
+    GameObject attackBox;
 
    void Start()
    {
        audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-   }
+        if (gameObject.transform.parent.Find(attackBoxText) != null)
+        {
+            attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+        }
+    }
 
     public void playSfxBasketballDribbling()
     {
