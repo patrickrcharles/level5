@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.0551033, y: 0.49355483, z: 0.7948656}
-  m_Center: {x: 0.097215414, y: 0.3255273, z: 0.22341871}
+  m_Size: {x: 2.8681934, y: 1.0066152, z: 0.6963191}
+  m_Center: {x: -0.22871888, y: 0.5820575, z: 0.20667672}
 --- !u!1 &3495530507618325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ Animator:
   m_GameObject: {fileID: 3495530507618325090}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 44f0790c5cb9321459d475484c0ffe97, type: 2}
+  m_Controller: {fileID: 22100000, guid: dabd214f116925946aad280cf6156ed0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -133,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -9199816207308088950, guid: a20d352349da68742a987d64f79b9534,
+  m_Sprite: {fileID: -945395015234780173, guid: 5cc2aa8e242d2e64780a9eb1e8dead87,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -235,13 +235,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3495530508101950486}
   - component: {fileID: 3495530508101950485}
-  - component: {fileID: 8560600608456518476}
   - component: {fileID: 1953145661}
   - component: {fileID: 1953145662}
   - component: {fileID: 2287148718150073986}
   - component: {fileID: 1155739993}
   m_Layer: 11
-  m_Name: monte_carlo
+  m_Name: van
   m_TagString: vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,21 +274,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.0551033, y: 0.49355483, z: 0.5271182}
-  m_Center: {x: 0.097215414, y: 0.3255273, z: 0.15800643}
---- !u!65 &8560600608456518476
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3495530508101950487}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2570121, y: 0.39459372, z: 0.5271182}
-  m_Center: {x: -0.12850606, y: 0.6396748, z: 0.081320524}
+  m_Size: {x: 2.708033, y: 1.0066152, z: 0.5271182}
+  m_Center: {x: -0.2121296, y: 0.5820575, z: 0.15800643}
 --- !u!54 &1953145661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -340,10 +326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792ed1427af8f9243b70f40b4a5ef4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleId: 2
-  direction: left
-  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
-  vehicleSpeed: 4.5
+  vehicleId: 8
+  direction: right
+  currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
+  vehicleSpeed: 4
   currentTargetIndex: 0
 --- !u!82 &1155739993
 AudioSource:
@@ -355,9 +341,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 28cd98ab6db0183448df297fb605d9e9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ba340c5729efcc245b4a5907c7a1f04b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0.884
   m_Pitch: 1
   Loop: 1
   Mute: 0
