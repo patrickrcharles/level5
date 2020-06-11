@@ -26,7 +26,7 @@ public class Pause : MonoBehaviour
     private Button loadSceneButton;
     private Button loadStartScreenButton;
     private Button quitGameButton;
-
+    private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
 
     public static Pause instance;
@@ -44,6 +44,7 @@ public class Pause : MonoBehaviour
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
 
+        allAudioSources = FindObjectsOfType<AudioSource>();
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -183,7 +184,7 @@ public class Pause : MonoBehaviour
             Time.timeScale = 1f;
             setBackgroundFade(false);
             setPauseScreen(false);
-            //resumeAllAudio();
+            resumeAllAudio();
 
             return (false);
         }
@@ -193,7 +194,7 @@ public class Pause : MonoBehaviour
             //gameManager.instance.backgroundFade.SetActive(true);
             paused = true;
             Time.timeScale = 0f;
-            //pauseAllAudio();
+            pauseAllAudio();
             setBackgroundFade(true);
             setPauseScreen(true);
 
@@ -219,6 +220,24 @@ public class Pause : MonoBehaviour
     private string getCurrentSceneName()
     {
         return SceneManager.GetActiveScene().name;
+    }
+
+    void pauseAllAudio()
+    {
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            //audioS.Stop();
+            audioS.Pause();
+        }
+    }
+
+    void resumeAllAudio()
+    {
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            //audioS.Stop();
+            audioS.UnPause();
+        }
     }
 
     private void Quit()
