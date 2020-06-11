@@ -343,7 +343,7 @@ MonoBehaviour:
   vehicleId: 2
   direction: left
   currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
-  vehicleSpeed: 4.5
+  vehicleSpeed: 4
   currentTargetIndex: 0
 --- !u!82 &1155739993
 AudioSource:
