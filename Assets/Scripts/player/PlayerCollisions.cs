@@ -12,17 +12,22 @@ public class PlayerCollisions : MonoBehaviour
     private void Awake()
     {
         //Debug.Log(" player collsions : awake")
-        playerState = gameObject.GetComponent<PlayerController>();
+        playerState = gameObject.transform.parent.GetComponent<PlayerController>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(" this : " + gameObject.tag + "       other : " + other.tag);
+        //Debug.Log(" this : " + gameObject.tag + "       other : " + other.tag);
         // if collsion between hitboc and vehicle, knocked down
-        if (gameObject.CompareTag("Player") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown && playerCanBeKnockedDown)
+        if (gameObject.CompareTag("playerHitbox") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown && playerCanBeKnockedDown)
         {
-            playerState.KnockedDown = true;
-            Debug.Log("KnockedDown = true;");
+            playerKnockedDown(other.gameObject);
         }
+    }
+
+    void playerKnockedDown( GameObject playerKnockedDown)
+    {
+        playerState.KnockedDown = true;
+        Debug.Log("KnockedDown = true;");
     }
 }
