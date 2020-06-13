@@ -331,6 +331,7 @@ MonoBehaviour:
   currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
   vehicleSpeed: 1.7
   currentTargetIndex: 0
+  timeToRespawn: 3
 --- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0

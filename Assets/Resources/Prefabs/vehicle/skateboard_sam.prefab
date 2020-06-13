@@ -327,10 +327,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleId: 12
-  direction: right
-  currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
+  direction: left
+  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
   vehicleSpeed: 2.8
   currentTargetIndex: 0
+  timeToRespawn: 3
 --- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0
