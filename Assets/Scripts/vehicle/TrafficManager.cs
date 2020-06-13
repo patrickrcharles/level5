@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 public class TrafficManager : MonoBehaviour
 {
 
-    //[SerializeField]
-    //GameObject[] _vehicleTargetPositions;
+    [SerializeField]
+    GameObject[] _vehicleTargetPositions;
 
-    //[SerializeField]
-    //GameObject[] _vehicleSpawnPositions;
+    [SerializeField]
+    GameObject _vehicleSpawnLeftPosition;
+    [SerializeField]
+    GameObject _vehicleSpawnRightPosition;
 
     [SerializeField]
     List<VehicleController> _vehiclesList;
@@ -19,7 +22,8 @@ public class TrafficManager : MonoBehaviour
     List<GameObject> _vehiclesPrefabsList;
 
     const string vehicleTargetsTag = "vehicle_position_marker";
-    const string spawnPointsTag = "vehicle_spawn_target";
+    const string spawnLeftTag = "vehicle_spawn_left";
+    const string spawnRightTag = "vehicle_spawn_right";
 
     const string leftSpawnText1 = "leftSpawn1";
     const string leftSpawnText2 = "leftSpawn2";
@@ -40,13 +44,19 @@ public class TrafficManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        // get spawn points
+        _vehicleSpawnLeftPosition = GameObject.FindGameObjectWithTag(spawnLeftTag);
+        _vehicleSpawnRightPosition = GameObject.FindGameObjectWithTag(spawnRightTag);
+        loadVehiclePrefabs();
+    }
 
-        //_vehicleTargetPositions = GameObject.FindGameObjectsWithTag(vehicleTargetsTag);
-        //_vehicleSpawnPositions = GameObject.FindGameObjectsWithTag(spawnPointsTag);
-
+    private void loadVehiclePrefabs()
+    {
+        // where are the prefabs, load them
         string path = "Prefabs/vehicle";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
+        // get all the objects in folder, create list of the vehicleControllers
         foreach (GameObject obj in objects)
         {
             VehicleController temp = obj.GetComponent<VehicleController>();
@@ -55,19 +65,80 @@ public class TrafficManager : MonoBehaviour
 
             // this where to set direction and target
         }
+        //spawn vehicles
+        spawnVehiclePrefabs();
+    }
+
+    public void spawnVehicle(int vehicleId, string direction, float waitTimeToRespawn)
+    {
+        // find object in list by prefab
+        VehicleController vehiclePrefab = VehiclesList.Where(x => x.VehicleId == vehicleId).SingleOrDefault();
+        // call coroutine
+        StartCoroutine(spawnVehicleCoRoutine(vehiclePrefab, direction, waitTimeToRespawn));
+    }
+
+    private IEnumerator spawnVehicleCoRoutine(VehicleController vehicle, string direction, float waitTimeToRespawn)
+    {
+        // change to opposite direction
+        if(direction == "left")
+        {
+            vehicle.Direction = "right";
+            vehicle.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
+            yield return new WaitForSeconds(waitTimeToRespawn);
+            Instantiate(vehicle, _vehicleSpawnLeftPosition.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            vehicle.Direction = "left";
+            vehicle.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
+            yield return new WaitForSeconds(waitTimeToRespawn);
+            Instantiate(vehicle, _vehicleSpawnRightPosition.transform.position, Quaternion.identity);
+        }
+    }
+
+    private void spawnVehiclePrefabs()
+    {
         // sort list by  mode id
         VehiclesList.Sort(sortByVehicleId);
+
+        //foreach(GameObject g in VehiclesPrefabsList)
+        //{
+        //    Debug.Log("prefab list : " + g.name);
+        //}
+        //foreach (VehicleController v in VehiclesList)
+        //{
+        //    Debug.Log(" list : " + v.name);
+        //}
+
         // set vehicles directions and targets
         setVehicleDirection(VehiclesList);
 
         //instantiate vehicle at first postion
-        //int i = 0;
-        //foreach (GameObject obj in objects)
-        //{
-        //    if()
-        //    Instantiate(obj, _vehicleSpawnPositions[i].transform.position, Quaternion.identity);
-        //    i++;
-        //}
+        int vehicleIndex = 0;
+
+        // to prevent vehicles spawning on top of each other
+        Vector3 VectorToAddToSpawn = new Vector3();
+
+        foreach (VehicleController v in VehiclesList)
+        {
+            // if car going left --> right, spawn on left
+            if (v.Direction == "right")
+            {
+                VectorToAddToSpawn += new Vector3((-5 * vehicleIndex) , 0, 0);
+                Instantiate(v, _vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
+                //Debug.Log(" spawn : " + v.name);
+            }
+            // if car going right --> left, spawn on right
+            if (v.Direction == "left")
+            {
+                //Debug.Log("if (v.Direction == left)");
+                VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
+                Instantiate(v, _vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
+                //Debug.Log(" spawn : " + v.name);
+            }
+            //Debug.Log("v.direction : " + v.Direction);
+            vehicleIndex++;
+        }
     }
 
     void setVehicleDirection(List<VehicleController> vehicles)
@@ -94,18 +165,21 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void flip()
     {
-
+        Debug.Log("flip");
+        //facingRight = !facingRight;
+        Vector3 thisScale = transform.localScale;
+        thisScale.x *= -1;
+        transform.localScale = thisScale;
     }
 
     static int sortByVehicleId(VehicleController m1, VehicleController m2)
     {
-        return m2.VehicleId.CompareTo(m2.VehicleId);
+        return m1.VehicleId.CompareTo(m2.VehicleId);
     }
 
     public List<VehicleController> VehiclesList { get => _vehiclesList; }
-    //public GameObject[] VehicleTargetPositions { get => _vehicleTargetPositions; }
+
     public List<GameObject> VehiclesPrefabsList { get => _vehiclesPrefabsList; }
 }
