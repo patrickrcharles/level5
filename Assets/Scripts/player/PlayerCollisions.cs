@@ -9,10 +9,11 @@ public class PlayerCollisions : MonoBehaviour
     [SerializeField]
     bool playerCanBeKnockedDown;
 
-    private void Awake()
+    private void Start()
     {
         //Debug.Log(" player collsions : awake")
-        playerState = gameObject.transform.parent.GetComponent<PlayerController>();
+        //playerState = gameObject.transform.parent.GetComponent<PlayerController>();
+        playerState = GameLevelManager.Instance.PlayerState;
     }
 
     private void OnTriggerEnter(Collider other)
