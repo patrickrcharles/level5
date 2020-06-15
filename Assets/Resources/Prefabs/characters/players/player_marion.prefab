@@ -462,7 +462,7 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _knockDownTime: 0
+  _knockDownTime: 1
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
