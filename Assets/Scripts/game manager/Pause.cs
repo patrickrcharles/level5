@@ -44,7 +44,7 @@ public class Pause : MonoBehaviour
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
 
-        allAudioSources = FindObjectsOfType<AudioSource>();
+       
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -224,6 +224,8 @@ public class Pause : MonoBehaviour
 
     void pauseAllAudio()
     {
+        allAudioSources = FindObjectsOfType<AudioSource>();
+
         foreach (AudioSource audioS in allAudioSources)
         {
             //audioS.Stop();
@@ -233,6 +235,8 @@ public class Pause : MonoBehaviour
 
     void resumeAllAudio()
     {
+        allAudioSources = FindObjectsOfType<AudioSource>();
+
         foreach (AudioSource audioS in allAudioSources)
         {
             //audioS.Stop();
