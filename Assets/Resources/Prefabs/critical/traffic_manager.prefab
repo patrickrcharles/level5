@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114256057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 92.46, y: -0.72, z: -1}
+  m_LocalPosition: {x: 88.27, y: -0.42, z: -0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1834697208}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425508053}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.68, y: -0.1, z: -0.3}
+  m_LocalPosition: {x: -35.69, y: -0.65, z: -1.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1834697208}
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4950560946175264291}
   m_Layer: 8
-  m_Name: westBoundLeft
+  m_Name: eastBoundLeft
   m_TagString: vehicle_position_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4788978104435272834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.31, y: -0.81, z: -2.15}
+  m_LocalPosition: {x: -37.1, y: -0.78, z: -3.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6635442220460573321}
@@ -166,7 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6635442221296476535}
   m_Layer: 8
-  m_Name: eastBoundLeft
+  m_Name: westBoundLeft
   m_TagString: vehicle_position_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,7 +180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6635442221296476534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.31, y: -0.2, z: -0.57}
+  m_LocalPosition: {x: -37.1, y: -0.5, z: -1.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6635442220460573321}
@@ -196,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6635442221304832143}
   m_Layer: 8
-  m_Name: eastBoundRight
+  m_Name: westBoundRight
   m_TagString: vehicle_position_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6635442221304832142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.2, y: -0.6, z: -1.9}
+  m_LocalPosition: {x: 88.6, y: -0.6, z: -1.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6635442220460573321}
@@ -277,7 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2618257095195861891}
   m_Layer: 8
-  m_Name: westBoundRight
+  m_Name: eastBoundRight
   m_TagString: vehicle_position_marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,7 +291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7447332061991028120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.2, y: -0.70000005, z: -2.12}
+  m_LocalPosition: {x: 88.6, y: -1.25, z: -3.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6635442220460573321}
