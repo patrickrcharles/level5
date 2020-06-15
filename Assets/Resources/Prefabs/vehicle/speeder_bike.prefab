@@ -254,7 +254,7 @@ Transform:
   m_GameObject: {fileID: 3495530508101950487}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.8, y: 0, z: -4.841}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 3495530507618325089}
   - {fileID: 3495530507617595560}
@@ -303,7 +303,7 @@ NavMeshAgent:
   m_Radius: 0.12
   m_Speed: 0.1
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
@@ -312,7 +312,7 @@ NavMeshAgent:
   m_Height: 0.27
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &2287148718150073986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,11 +326,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleId: 14
-  direction: left
-  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
   vehicleSpeed: 7
-  currentTargetIndex: 0
   timeToRespawn: 3
+  currentTarget: {x: -36.46, y: 0.0099120885, z: -5.5996103}
+  direction: left
+  relativePositioning: 0
 --- !u!82 &1155739993
 AudioSource:
   m_ObjectHideFlags: 0
