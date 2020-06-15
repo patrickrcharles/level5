@@ -73,6 +73,7 @@ public class TrafficManager : MonoBehaviour
     {
         // find object in list by prefab
         VehicleController vehiclePrefab = VehiclesList.Where(x => x.VehicleId == vehicleId).SingleOrDefault();
+
         // call coroutine
         StartCoroutine(spawnVehicleCoRoutine(vehiclePrefab, direction, waitTimeToRespawn));
     }
@@ -87,10 +88,12 @@ public class TrafficManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeToRespawn);
             Instantiate(vehicle, _vehicleSpawnLeftPosition.transform.position, Quaternion.identity);
         }
-        else
+        if (direction == "right")
         {
             vehicle.Direction = "left";
             vehicle.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
+            ////flip sprite
+            //vehicle.Flip();
             yield return new WaitForSeconds(waitTimeToRespawn);
             Instantiate(vehicle, _vehicleSpawnRightPosition.transform.position, Quaternion.identity);
         }
@@ -101,77 +104,37 @@ public class TrafficManager : MonoBehaviour
         // sort list by  mode id
         VehiclesList.Sort(sortByVehicleId);
 
-        //foreach(GameObject g in VehiclesPrefabsList)
-        //{
-        //    Debug.Log("prefab list : " + g.name);
-        //}
-        //foreach (VehicleController v in VehiclesList)
-        //{
-        //    Debug.Log(" list : " + v.name);
-        //}
-
-        // set vehicles directions and targets
-        setVehicleDirection(VehiclesList);
-
         //instantiate vehicle at first postion
         int vehicleIndex = 0;
 
         // to prevent vehicles spawning on top of each other
         Vector3 VectorToAddToSpawn = new Vector3();
 
+        // ************* need to be spawning from prefabs list. this is saving and changing prefabs value
         foreach (VehicleController v in VehiclesList)
         {
-            // if car going left --> right, spawn on left
-            if (v.Direction == "right")
-            {
-                VectorToAddToSpawn += new Vector3((-5 * vehicleIndex) , 0, 0);
-                Instantiate(v, _vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
-                //Debug.Log(" spawn : " + v.name);
-            }
-            // if car going right --> left, spawn on right
-            if (v.Direction == "left")
-            {
-                //Debug.Log("if (v.Direction == left)");
-                VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
-                Instantiate(v, _vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
-                //Debug.Log(" spawn : " + v.name);
-            }
-            //Debug.Log("v.direction : " + v.Direction);
-            vehicleIndex++;
-        }
-    }
-
-    void setVehicleDirection(List<VehicleController> vehicles)
-    {
-        int i = 0;
-        foreach (VehicleController v in vehicles)
-        {
-            // if index is even
-            if (i % 2 == 0)
+            if (v.VehicleId % 2 == 0)
             {
                 //direction to move vehicle towards
                 v.Direction = "right";
+                v.FacingRight = true;
                 // set target to correct vector3
                 v.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
+                VectorToAddToSpawn += new Vector3((-5 * vehicleIndex), 0, 0);
+                Instantiate(v, _vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
             }
             else
             {
                 //direction to move vehicle towards
                 v.Direction = "left";
+                v.FacingRight = false;
                 // set target to vector3
                 v.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
+                VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
+                Instantiate(v, _vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
             }
-            i++;
+            vehicleIndex++;
         }
-    }
-
-    void flip()
-    {
-        Debug.Log("flip");
-        //facingRight = !facingRight;
-        Vector3 thisScale = transform.localScale;
-        thisScale.x *= -1;
-        transform.localScale = thisScale;
     }
 
     static int sortByVehicleId(VehicleController m1, VehicleController m2)

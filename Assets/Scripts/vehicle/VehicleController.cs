@@ -8,31 +8,29 @@ public class VehicleController : MonoBehaviour
     [SerializeField]
     int vehicleId;
     [SerializeField]
-    string direction;
-
-    NavMeshAgent navMeshAgent;
-    GameObject spawnPoint;
-
-    [SerializeField]
-    Vector3 currentTarget;
-    [SerializeField]
     float vehicleSpeed;
-
-    [SerializeField]
-    int currentTargetIndex;
-    int defaultTargetIndex = 0;
-
     [SerializeField]
     float timeToRespawn;
 
-    //bool facingRight;
+    // these 2 vars need to be serialzed because they set before a clone of them is 
+    // configured and instantiated
 
+    public Vector3 currentTarget;
+    public string direction;
+
+    int currentTargetIndex;
+    int defaultTargetIndex = 0;
+    const string vehiclePosMarkersTag = "vehicle_position_marker";
+
+    NavMeshAgent navMeshAgent;
+    GameObject spawnPoint;
     Animator animator;
     Rigidbody rigidbody;
 
-   
 
-    const string vehiclePosMarkersTag = "vehicle_position_marker";
+    public bool facingRight;
+    Transform bballRimVector;
+    public float relativePositioning;
 
 
     // Start is called before the first frame update
@@ -43,15 +41,36 @@ public class VehicleController : MonoBehaviour
         navMeshAgent.updateRotation = false;
         navMeshAgent.speed = vehicleSpeed;
 
+        bballRimVector = GameObject.Find("rim").transform;
+
         animator = GetComponentInChildren<Animator>();
         rigidbody = GetComponent<Rigidbody>();
 
-        // if going right --> left, flip object.
-        if(direction == "left")
+        // where is vehicle spawned in relation to rim
+        relativePositioning = bballRimVector.transform.position.x - gameObject.transform.position.x;
+
+        // determine which way Gameobject is facing
+        if(transform.localScale.x > 0)
+        {
+            facingRight = true;
+        }
+        else
+        {
+            facingRight = false;
+        }
+
+        //if vehicle is on right side of rim, flip
+        if (relativePositioning < 0 && facingRight)
         {
             Flip();
         }
-        navMeshAgent.destination = currentTarget;
+        //if vehicle is on right side of rim, flip
+        if (relativePositioning > 0 && !facingRight)
+        {
+            Flip();
+        }
+
+        navMeshAgent.destination = CurrentTarget;
     }
 
     // Update is called once per frame
@@ -61,51 +80,36 @@ public class VehicleController : MonoBehaviour
         //set animator speed to transition to move animation
         animator.SetFloat("speed", navMeshAgent.speed);
 
-        //Debug.Log("navMeshAgent.speed : " + navMeshAgent.speed);
-
         // if reached destination, destroy
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.1f)
         {
             // call traffic manager coroutine to respawn a new instance
-            // respawn(vehicle, time to respawn)
-
-            //Debug.Log(" spawn vehicle before destroy : "+ this.name);
             TrafficManager.instance.spawnVehicle(VehicleId, Direction, timeToRespawn);
+            resetVehicleDefaults();
             Destroy(gameObject);
         }
     }
 
-    void GotoNextPoint()
+    public void Flip()
     {
-        //// if vehicle target list is empty, bail
-        //if (TrafficManager.instance.VehicleTargetPositions.Length == 0)
-        //    return;
-        //// if current target is final target in targets list, go to first target
-        //if (currentTargetIndex == TrafficManager.instance.VehicleTargetPositions.Length - 1)
-        //{
-        //    currentTargetIndex = 0;
-        //}
-        //// else, go to next target
-        //else
-        //{
-        //    currentTargetIndex++;
-        //}
-
-        //currentTarget = navMeshAgent.destination;
-        navMeshAgent.destination = currentTarget;
-    }
-
-    void Flip()
-    {
-        //Debug.Log("flip");
-        //facingRight = !facingRight;
+        Debug.Log(" flip : " + gameObject.name);
+        FacingRight = !FacingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
     }
 
+    void resetVehicleDefaults()
+    {
+        Direction = "";
+        if (!facingRight)
+        {
+            Flip();
+        }
+    }
+
     public int VehicleId { get => vehicleId; set => vehicleId = value; }
     public string Direction { get => direction; set => direction = value; }
     public Vector3 CurrentTarget { get => currentTarget; set => currentTarget = value; }
-    //public bool FacingRight { get => facingRight; set => facingRight = value; }
+    public bool FacingRight { get => facingRight; set => facingRight = value; }
 }
