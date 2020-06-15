@@ -347,20 +347,6 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
-
-        //if (running && canMove && !inAir)
-        //{
-        //    if (!hasBasketball)
-        //    {
-        //        anim.SetBool("moonwalking", true);
-        //        movementSpeed = shooterProfile.RunSpeed;
-        //    }
-
-        //    if (hasBasketball)
-        //    {
-        //        movementSpeed = shooterProfile.RunSpeedHasBall;
-        //    }
-        //}
     }
 
     void Flip()
@@ -378,18 +364,15 @@ public class PlayerController : MonoBehaviour
         float startTime = Time.time;
         float endTime = startTime + _knockDownTime;
 
-        Debug.Log("================   IEnumerator KnockedDown() ===========================");
-        //yield return new WaitUntil(() => grounded == true);
         anim.SetBool("knockedDown", true);
         anim.Play("knockedDown");
-        //yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+
         yield return new WaitUntil(() => Time.time > endTime);
 
         anim.SetBool("knockedDown", false);
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         KnockedDown = false;
         locked = false;
-        Debug.Log("finish - KnockedDown() - knocked down time.time : " + Time.timeSinceLevelLoad);
     }
 
     //------------------------- set animator parameters -----------------------
@@ -430,9 +413,6 @@ public class PlayerController : MonoBehaviour
         shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
         shooterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
         shooterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
-
-        //gravityModifier = shooterProfile.HangTime;
-        //_angle = shooterProfile.ShootAngle;
     }
 
     //*** need to update this
@@ -448,10 +428,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log(shooterProfile.Accuracy3Pt);
         Debug.Log(shooterProfile.Accuracy4Pt);
         Debug.Log(shooterProfile.Accuracy7Pt);
-
-        //gravityModifier = shooterProfile.HangTime;
-        //_angle = shooterProfile.ShootAngle;
     }
+
     public bool grounded
     {
         get { return _grounded; }
