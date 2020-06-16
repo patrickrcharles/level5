@@ -92,7 +92,7 @@ public class VehicleController : MonoBehaviour
 
     public void Flip()
     {
-        Debug.Log(" flip : " + gameObject.name);
+        //Debug.Log(" flip : " + gameObject.name);
         FacingRight = !FacingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;

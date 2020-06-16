@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TeamUtility.IO;
 using UnityEngine;
 
@@ -37,14 +38,12 @@ public class PlayerData : MonoBehaviour
     private  float _makeFourPointersMoneyBallLowTime;
     private  float _makeAllPointersMoneyBallLowTime;
 
-    private  bool _callBallAchievementUnlocked;
-
-    private bool _isCheating; // if cheats enabled, no saving
-
     //prevent PlayerData from creating multiple objects
     static bool _created = false; 
-
+    [SerializeField]
     public static PlayerData instance;
+
+    List<HitByCar> hitByCars; 
 
     void Awake()
     {
@@ -74,7 +73,48 @@ public class PlayerData : MonoBehaviour
     {
         //Debug.Log("PlayerData : Start");
         // load stats wake
+        hitByCars = new List<HitByCar>();
         loadStatsFromDatabase();
+    }
+
+    public void AddHitByCarInstanceToList(int vehId, string charName, string lvl)
+    {
+        //Debug.Log("    public void AddHitByCarInstanceToList(int vehId, string charName, string lvl)");
+        // if vehicle entry exists, eg, hit by car already
+        Debug.Log(hitByCars);
+        HitByCar temp = hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault();
+
+        if (temp != null)
+        {
+            // increase counter
+           
+            temp.counter++;
+            Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
+        }
+        else // create the vehicle entry
+        {
+            temp = new HitByCar(vehId, charName, lvl);
+            hitByCars.Add(temp);
+            temp.counter++;
+            Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
+        } 
+
+
+    }
+
+    public class HitByCar
+    {
+        public int vehicleId;
+        public string character;
+        public string level;
+        public int counter = 0;
+
+        public HitByCar(int vehId, string charName, string lvl)
+        {
+            vehicleId = vehId;
+            character = charName;
+            level = lvl;
+        }
     }
 
     public void saveStats()
@@ -377,12 +417,6 @@ public class PlayerData : MonoBehaviour
         //PlayerPrefs.DeleteKey("mode_" + stats.PlayerName + "_totalDistance");
     }
 
-    public bool IsCheating
-    {
-        get => _isCheating;
-        set => _isCheating = value;
-    }
-
     public float SevenPointerAttempts =>_sevenPointerAttempts;
    
 
@@ -427,4 +461,5 @@ public class PlayerData : MonoBehaviour
     public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
 
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
+    public List<HitByCar> HitByCars { get; set; }
 }
