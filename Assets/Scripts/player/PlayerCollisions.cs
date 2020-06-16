@@ -11,24 +11,36 @@ public class PlayerCollisions : MonoBehaviour
 
     private void Start()
     {
-        //Debug.Log(" player collsions : awake")
-        //playerState = gameObject.transform.parent.GetComponent<PlayerController>();
         playerState = GameLevelManager.Instance.PlayerState;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(" this : " + gameObject.tag + "       other : " + other.tag);
+
         // if collsion between hitboc and vehicle, knocked down
-        if (gameObject.CompareTag("playerHitbox") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown && playerCanBeKnockedDown)
+        if (gameObject.CompareTag("playerHitbox") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown)
         {
-            playerKnockedDown(other.gameObject);
+            Debug.Log(" this : " + gameObject.tag + "       other : " + other.tag);
+            if (playerCanBeKnockedDown) 
+            {
+                playerKnockedDown(other.gameObject);
+                VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
+                PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId, GameOptions.playerDisplayName, GameOptions.levelDisplayName);
+            }
+            else
+            {
+                // avoid knockdown scenario
+                playerAvoidKnockDown(other.gameObject);
+            }
         }
     }
 
     void playerKnockedDown( GameObject playerKnockedDown)
     {
         playerState.KnockedDown = true;
-        Debug.Log("KnockedDown = true;");
+    }
+    void playerAvoidKnockDown(GameObject playerAvoidKnocked)
+    {
+        playerState.AvoidedKnockDown = true;
     }
 }

@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     private bool _inAir;
     private bool _grounded;
     private bool _knockedDown;
+    private bool _avoidedKnockDown;
 
     [SerializeField]
     float _knockDownTime;
@@ -126,17 +127,6 @@ public class PlayerController : MonoBehaviour
             movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
 
             rigidBody.MovePosition(transform.position + movement);
-            /*
-            //set limits for player movement
-            rigidBody.transform.position = new Vector3(
-               Mathf.Clamp(rigidBody.position.x, xMin, xMax),
-               Mathf.Clamp(rigidBody.position.y, yMin, yMax),
-               Mathf.Clamp(rigidBody.position.z, zMin, zMax)
-               );
-               */
-            //check if walking
-            //  function will flip sprite if needed
-
             isWalking(moveHorizontal, moveVertical);
         }
     }
@@ -152,6 +142,16 @@ public class PlayerController : MonoBehaviour
 
             // coroutine that holds animation with WaitUntil knock down time is through
             StartCoroutine(PlayerKnockedDown());
+        }
+        if (AvoidedKnockDown && !locked)
+        {
+            Debug.Log("        if (AvoidedKnockDown && !locked)");
+            locked = true;
+            //rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+            // coroutine that holds animation with WaitUntil knock down time is through
+            //StartCoroutine(PlayerAvoidKnockedDown());
+            PlayerAvoidKnockedDown();
         }
 
         // keep drop shadow on ground at all times
@@ -375,6 +375,13 @@ public class PlayerController : MonoBehaviour
         locked = false;
     }
 
+    private void PlayerAvoidKnockedDown()
+    {
+        anim.Play("knockedDown");
+        AvoidedKnockDown = false;
+        locked = false;
+    }
+
     //------------------------- set animator parameters -----------------------
     public void setPlayerAnim(string animationName, bool isTrue)
     {
@@ -477,6 +484,7 @@ public class PlayerController : MonoBehaviour
         get => _knockedDown; 
         set => _knockedDown = value; 
     }
+    public bool AvoidedKnockDown { get => _avoidedKnockDown; set => _avoidedKnockDown = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun() 
