@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerState: {fileID: 0}
-  playerCanBeKnockedDown: 1
+  playerCanBeKnockedDown: 0
 --- !u!1 &3841832724455047397
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _knockDownTime: 1
+  _knockDownTime: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -944,11 +944,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4492720442590388176, guid: 2c5be4240f8817443a8116f62e1624b0,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c5be4240f8817443a8116f62e1624b0, type: 3}
