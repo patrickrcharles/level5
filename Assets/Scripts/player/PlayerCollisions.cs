@@ -25,7 +25,10 @@ public class PlayerCollisions : MonoBehaviour
             {
                 playerKnockedDown(other.gameObject);
                 VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
-                PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId, GameOptions.playerDisplayName, GameOptions.levelDisplayName);
+                if (PlayerData.instance != null)
+                {
+                    PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId, GameOptions.playerDisplayName, GameOptions.levelDisplayName);
+                }
             }
             else
             {

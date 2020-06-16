@@ -370,9 +370,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => Time.time > endTime);
 
         anim.SetBool("knockedDown", false);
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         KnockedDown = false;
         locked = false;
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     private void PlayerAvoidKnockedDown()
