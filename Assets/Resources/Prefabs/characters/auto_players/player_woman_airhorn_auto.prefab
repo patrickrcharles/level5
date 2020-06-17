@@ -393,6 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackBox: {fileID: 0}
 --- !u!114 &2501337456796152676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,3 +408,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   percentChanceOfCritical: 0
   animOnCamera: {fileID: 0}
+  cheerleaderDisplayName: Amber
+  cheerleaderObjectName: amber
+  cheerleaderPortrait: {fileID: -5545448555885951010, guid: d12c150ddd375554cb87c83dc7300d5e,
+    type: 3}
+  cheerleaderProfileObject: {fileID: 0}
+  isLocked: 1
+  cheerleaderId: 6
+  unlockCharacterText: ???

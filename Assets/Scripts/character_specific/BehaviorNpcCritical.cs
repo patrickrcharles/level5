@@ -23,7 +23,6 @@ public class BehaviorNpcCritical : MonoBehaviour
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
         playerState = GameLevelManager.Instance.PlayerState;
         npcName = gameObject.transform.root.name;
-        //Debug.Log("npc name  " + npcName);
     }
 
 
@@ -31,8 +30,6 @@ public class BehaviorNpcCritical : MonoBehaviour
     {
         if (rollForPhotoChance(percentChanceOfCritical))// && playerState.playerDistanceFromRim < 10)
         {
-           //Debug.Log("percentChanceOfTakingPhoto : " + percentChanceOfTakingPhoto);
-            //StartCoroutine(wait(1));
             playCriticalSuccessfulAnim();
         }
     }
@@ -52,17 +49,13 @@ public class BehaviorNpcCritical : MonoBehaviour
 
     private void playCriticalSuccessfulAnim()
     {
-       //Debug.Log("jessica take photo");
         anim.Play("critical_success");
-
-        //audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
     }
 
 
     public bool rollForPhotoChance( float maxPercent)
     {
         float percent = Random.Range(1, 100);
-       //Debug.Log("jessica random percent : " + percent + " maxPercent : " + maxPercent);
         if(percent <= maxPercent)
         {
            //Debug.Log(" jessica takes a photo");

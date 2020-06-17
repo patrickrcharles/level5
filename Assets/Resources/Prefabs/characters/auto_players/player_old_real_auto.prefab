@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackBox: {fileID: 0}
 --- !u!114 &2501337456796152676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,3 +421,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   percentChanceOfCritical: 0
   animOnCamera: {fileID: 0}
+  cheerleaderDisplayName: Old Real
+  cheerleaderObjectName: oldreal
+  cheerleaderPortrait: {fileID: 21300012, guid: 1d7f877db8a1c08409a4bc1447f773af,
+    type: 3}
+  cheerleaderProfileObject: {fileID: 0}
+  isLocked: 1
+  cheerleaderId: 2
+  unlockCharacterText: ???

@@ -10,15 +10,19 @@ public  class GameOptions : MonoBehaviour
     static public string operatingSystemVersion;
 
     static public String playerDisplayName;
+    static public String cheerleaderDisplayName;
     static public int playerId;
     static public String levelSelected;
     static public int gameModeSelected;
     static public int levelId;
+    static public int cheerleaderId;
 
     static public String playerObjectName;
+    static public String cheerleaderObjectName;
     static public String levelSelectedName;
     static public String levelDisplayName;
     static public String gameModeSelectedName;
+    static public String cheerleaderSelectedName;
 
     static public int levelSelectedRootCount;
     static public int levelSelectedBuildIndex;
