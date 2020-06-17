@@ -168,6 +168,7 @@ public class BasketBallShotMade : MonoBehaviour
         {
             //Debug.Log("if(_basketBallState.PlayerOnMarkerOnShoot)");
             //Debug.Log("GameRules.instance.MoneyBallEnabled : " + GameRules.instance.MoneyBallEnabled);
+            // if money ball enabled
             if (_basketBallState.MoneyBallEnabledOnShoot)
             {
                 //Debug.Log("clear marker");
@@ -175,6 +176,7 @@ public class BasketBallShotMade : MonoBehaviour
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
                 //Debug.Log("max : "+ max);
             }
+            // no money ball, update current shot marker stats
             else
             {
                 //Debug.Log(" else : shot made");
@@ -186,8 +188,10 @@ public class BasketBallShotMade : MonoBehaviour
         _currentShotMade = (int)_basketBallStats.ShotMade;
         _currentShotAttempts = (int)_basketBallStats.ShotAttempt;
 
-        // if current is == expected made/attempt, increment consecutive
-        if (_currentShotMade == _expectedShotMade && _currentShotAttempts == _expectedShotAttempts)
+        // if current is == expected made/attempt, increment consecutive and not a 2 point shot
+        if (_currentShotMade == _expectedShotMade 
+            && _currentShotAttempts == _expectedShotAttempts
+            && !_basketBallState.TwoAttempt)
         {
             //Debug.Log(" expected = current");
             _consecutiveShotsMade++;
