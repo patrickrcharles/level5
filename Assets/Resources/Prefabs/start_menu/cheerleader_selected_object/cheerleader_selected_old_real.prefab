@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cheerleaderDisplayName: Old Real
-  cheerleaderObjectName: oldreal
+  cheerleaderObjectName: old_real
   cheerleaderPortrait: {fileID: 21300000, guid: 1d7f877db8a1c08409a4bc1447f773af,
     type: 3}
   cheerleaderProfileObject: {fileID: 0}

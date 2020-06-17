@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4261301149780951674}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.13, y: 5.68, z: 1}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 4261301150728327116}
   m_RootOrder: 1
@@ -68,7 +68,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6c4441f524ef5fe4dbdb91b33a4e1402, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,8 +94,8 @@ GameObject:
   - component: {fileID: 4261301150728327155}
   - component: {fileID: 4261301150728327152}
   m_Layer: 0
-  m_Name: player_dallas_auto
-  m_TagString: auto_npc
+  m_Name: cheerleader_toups
+  m_TagString: cheerleader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261301151391130814}
   m_LocalRotation: {x: 0.11840396, y: 0, z: 0, w: 0.9929655}
-  m_LocalPosition: {x: -0.206, y: 0, z: 0.098}
+  m_LocalPosition: {x: 0, y: 0, z: 0.054}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4261301150728327116}
@@ -254,7 +254,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -6547349487479784951, guid: c1ce31fbb61042c4dba07da695cd742c,
+  m_Sprite: {fileID: -7182350360539337510, guid: a2ed829b0c780db43821b0a97745c8f7,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -276,7 +276,7 @@ Animator:
   m_GameObject: {fileID: 4261301151391130814}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 87848c0ce0f35ce42abdb3947eae1203, type: 2}
+  m_Controller: {fileID: 22100000, guid: c3add6abfb656d44f98baed2987d691c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -408,11 +408,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   percentChanceOfCritical: 0
   animOnCamera: {fileID: 0}
-  cheerleaderDisplayName: Dallas
-  cheerleaderObjectName: dallas
-  cheerleaderPortrait: {fileID: 21300000, guid: f5bc6d6e84d88b24a8432428a9fee551,
-    type: 3}
-  cheerleaderProfileObject: {fileID: 0}
-  isLocked: 1
-  cheerleaderId: 4
-  unlockCharacterText: ???

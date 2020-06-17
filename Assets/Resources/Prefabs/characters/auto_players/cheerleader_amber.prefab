@@ -94,8 +94,8 @@ GameObject:
   - component: {fileID: 4261301150728327155}
   - component: {fileID: 4261301150728327152}
   m_Layer: 0
-  m_Name: player_toups_auto
-  m_TagString: auto_npc
+  m_Name: cheerleader_amber
+  m_TagString: cheerleader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -254,7 +254,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -7182350360539337510, guid: a2ed829b0c780db43821b0a97745c8f7,
+  m_Sprite: {fileID: -1339479215381994628, guid: d12c150ddd375554cb87c83dc7300d5e,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -276,7 +276,7 @@ Animator:
   m_GameObject: {fileID: 4261301151391130814}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c3add6abfb656d44f98baed2987d691c, type: 2}
+  m_Controller: {fileID: 22100000, guid: 66766315120590b4da2e71324d8abe85, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -408,11 +408,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   percentChanceOfCritical: 0
   animOnCamera: {fileID: 0}
-  cheerleaderDisplayName: 2pz
-  cheerleaderObjectName: toups
-  cheerleaderPortrait: {fileID: 6515177112446254840, guid: a2ed829b0c780db43821b0a97745c8f7,
-    type: 3}
-  cheerleaderProfileObject: {fileID: 0}
-  isLocked: 1
-  cheerleaderId: 3
-  unlockCharacterText: ???

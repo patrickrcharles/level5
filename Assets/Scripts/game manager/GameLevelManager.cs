@@ -25,15 +25,18 @@ public class GameLevelManager : MonoBehaviour
 
     //BasketBall objects
     private GameObject _basketballPrefab;
+    private GameObject _cheerleaderPrefab;
 
     //spawn locations
     private GameObject _basketballSpawnLocation;
     private GameObject _playerSpawnLocation;
+    private GameObject _cheerleaderSpawnLocation;
 
     public BasketBall Basketball;
     public GameObject BasketballObject;
 
     private GameObject _playerClone;
+    private GameObject _cheerleaderClone;
     [SerializeField]
     private GameObject[] _npcObjects;
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
@@ -53,6 +56,7 @@ public class GameLevelManager : MonoBehaviour
 
         _playerSpawnLocation = GameObject.Find("player_spawn_location");
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
+        _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
 
         if (GameObject.FindWithTag("Player") == null)
         {
@@ -62,6 +66,13 @@ public class GameLevelManager : MonoBehaviour
         {
             _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
             Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+        }
+        if (GameObject.FindWithTag("cheerleader") == null)
+        {
+            string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
+            _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
+
+            Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
         }
 
         BasketballObject = GameObject.FindWithTag("basketball");

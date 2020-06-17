@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261301149780951674}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.41, y: 3.8400009, z: 1}
+  m_LocalPosition: {x: 0.0019999743, y: -0.5781456, z: -0.2767048}
+  m_LocalScale: {x: 1, y: 3.8400009, z: 1}
   m_Children: []
   m_Father: {fileID: 4261301150728327116}
   m_RootOrder: 1
@@ -68,7 +68,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6c4441f524ef5fe4dbdb91b33a4e1402, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,8 +94,8 @@ GameObject:
   - component: {fileID: 4261301150728327155}
   - component: {fileID: 4261301150728327152}
   m_Layer: 0
-  m_Name: player_worker_parasite_auto
-  m_TagString: auto_npc
+  m_Name: cheerleader_jessica
+  m_TagString: cheerleader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,8 +108,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261301150728327153}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9, y: 0, z: -3.5}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
+  m_LocalPosition: {x: -0.9, y: 0.754, z: -3.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4261301151391130809}
   - {fileID: 4261301149780951669}
@@ -177,10 +177,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3165239
-  m_Height: 1.5
-  m_Direction: 0
-  m_Center: {x: -0.37705934, y: 0.29544353, z: 0}
+  m_Radius: 0.1
+  m_Height: 1.0155432
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.1272284, z: 0}
 --- !u!1 &4261301151391130814
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,11 +193,11 @@ GameObject:
   - component: {fileID: 4261301151391130804}
   - component: {fileID: 4261301151391130805}
   - component: {fileID: 4261301151391130810}
+  - component: {fileID: 4261301151391130808}
   - component: {fileID: 4261301151391130811}
-  - component: {fileID: 2501337456796152675}
-  - component: {fileID: 2501337456796152676}
+  - component: {fileID: 841506739}
   m_Layer: 8
-  m_Name: ' Sprite'
+  m_Name: Jessica Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +211,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261301151391130814}
   m_LocalRotation: {x: 0.11840396, y: 0, z: 0, w: 0.9929655}
-  m_LocalPosition: {x: 0, y: 0, z: 0.121}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4261301150728327116}
@@ -255,8 +255,7 @@ SpriteRenderer:
   m_SortingLayerID: -890595863
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -5718606422640373327, guid: 5cdaacf5a17a60d49baf91b155911bba,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1ee1f0a0013e4404c82f401d591c2b3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -277,7 +276,7 @@ Animator:
   m_GameObject: {fileID: 4261301151391130814}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: b967d65a11f32554c80fd95007ddc845, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7cfc1bb5f7d04484da1c67aa91e18564, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -299,6 +298,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.9612773, z: 0.05}
   m_Center: {x: 0, y: -0.17347458, z: -2.877263e-10}
+--- !u!114 &4261301151391130808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4261301151391130814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0ba7a8dd2409744a0030034a17ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentChanceOfCritical: 0
+  animOnCamera: {fileID: 0}
 --- !u!82 &4261301151391130811
 AudioSource:
   m_ObjectHideFlags: 0
@@ -395,7 +408,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2501337456796152675
+--- !u!114 &841506739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -408,25 +421,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
---- !u!114 &2501337456796152676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4261301151391130814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0ba7a8dd2409744a0030034a17ce65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  percentChanceOfCritical: 0
-  animOnCamera: {fileID: 0}
-  cheerleaderDisplayName: Worker and Parasite
-  cheerleaderObjectName: workpara
-  cheerleaderPortrait: {fileID: 21300000, guid: 40e46ac7f94562140b736f8ec2683f18,
-    type: 3}
-  cheerleaderProfileObject: {fileID: 0}
-  isLocked: 1
-  cheerleaderId: 5
-  unlockCharacterText: ???
