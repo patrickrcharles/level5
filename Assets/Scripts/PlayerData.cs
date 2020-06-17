@@ -49,37 +49,26 @@ public class PlayerData : MonoBehaviour
     {
 
         instance = this;
-       //Debug.Log(" PlayerData : Awake()");
         // only create player data once
         if (!_created)
         {
-            //Debug.Log(" PlayerData !created");
             DontDestroyOnLoad(gameObject);
             _created = true;
         }
         else
         {
-            //Debug.Log(" PlayerData created");
             Destroy(gameObject);
         }
-        // load stats wake
-        //loadStatsFromPlayerPrefs();
-        //loadStatsFromDatabase();
-        //Debug.Log("PlayerData : Awake");
-
     }
 
     private void Start()
     {
-        //Debug.Log("PlayerData : Start");
-        // load stats wake
         hitByCars = new List<HitByCar>();
         loadStatsFromDatabase();
     }
 
     public void AddHitByCarInstanceToList(int vehId, string charName, string lvl)
     {
-        //Debug.Log("    public void AddHitByCarInstanceToList(int vehId, string charName, string lvl)");
         // if vehicle entry exists, eg, hit by car already
         Debug.Log(hitByCars);
         HitByCar temp = hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault();
@@ -87,7 +76,6 @@ public class PlayerData : MonoBehaviour
         if (temp != null)
         {
             // increase counter
-           
             temp.counter++;
             Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
         }
@@ -98,8 +86,6 @@ public class PlayerData : MonoBehaviour
             temp.counter++;
             Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
         } 
-
-
     }
 
     public class HitByCar
@@ -119,9 +105,6 @@ public class PlayerData : MonoBehaviour
 
     public void saveStats()
     {
-
-        //Debug.Log("save");
-
         // get stats object
         //basketBallStats = GameObject.FindWithTag("basketball").GetComponent<BasketBallStats>();
         basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
