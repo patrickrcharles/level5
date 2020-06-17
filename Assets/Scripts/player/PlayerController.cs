@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public bool hasBasketball;
 
     // #note this is work a work in progress feature. it works but it's bugged
-    private bool isSetShooter; 
+    private bool isSetShooter;
     public bool IsSetShooter => isSetShooter;
     public bool canMove; // #todo add player knock downs, this could be used
                          // will be useful for when play knockdowns implemented
@@ -177,8 +177,8 @@ public class PlayerController : MonoBehaviour
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ( (InputManager.GetButton("Run") 
-            && canMove 
+        if ((InputManager.GetButton("Run")
+            && canMove
             && !inAir
             && !KnockedDown
             && !locked))
@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
         if (currentState == idleState
             || currentState == walkState
             || currentState == bIdle
-            && ! inAir
+            && !inAir
             && !KnockedDown)
         {
             if (runningToggle)
@@ -257,11 +257,20 @@ public class PlayerController : MonoBehaviour
             && !(InputManager.GetButtonDown("Fire1"))
             && grounded
             && !KnockedDown))
-            //&& !isSetShooter))
+        //&& !isSetShooter))
         {
             playerJump();
         }
 
+        //------------------ special -----------------------------------
+        if ((InputManager.GetKeyDown(KeyCode.G))
+            && !inAir
+            && grounded
+            && !KnockedDown)
+        //&& !isSetShooter))
+        {
+            playerSpecial();
+        }
 
         // if player is falling, nto sure what this is useful for. comment out
         //if (rigidBody.velocity.y > 0)
@@ -271,6 +280,11 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
+    }
+
+    private void playerSpecial()
+    {
+        playAnim("special");
     }
 
     public void checkIsPlayerFacingGoal()
@@ -297,7 +311,7 @@ public class PlayerController : MonoBehaviour
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;
         //Debug.Log("jump time: "+ Time.time);
- 
+
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
@@ -307,7 +321,7 @@ public class PlayerController : MonoBehaviour
         // if moving/ not holding item. 
         if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
         {
-            if (!inAir && !running ) // dont want walking animation playing while inAir
+            if (!inAir && !running) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
             }
@@ -320,7 +334,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // if running enabled
-        if ((runningToggle || running) &&  canMove && !inAir && currentState == walkState)
+        if ((runningToggle || running) && canMove && !inAir && currentState == walkState)
         {
             //Debug.Log("if (runningToggle && canMove && !inAir)");
             if (!hasBasketball)
@@ -473,21 +487,21 @@ public class PlayerController : MonoBehaviour
         get => _facingFront;
         set => _facingFront = value;
     }
-    public ShotMeter Shotmeter 
-    { 
-        get => shotmeter; 
-        set => shotmeter = value; 
+    public ShotMeter Shotmeter
+    {
+        get => shotmeter;
+        set => shotmeter = value;
     }
 
-    public bool KnockedDown 
-    { 
-        get => _knockedDown; 
-        set => _knockedDown = value; 
+    public bool KnockedDown
+    {
+        get => _knockedDown;
+        set => _knockedDown = value;
     }
     public bool AvoidedKnockDown { get => _avoidedKnockDown; set => _avoidedKnockDown = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
-    public void toggleRun() 
+    public void toggleRun()
     {
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();

@@ -16,12 +16,10 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        // if collsion between hitboc and vehicle, knocked down
+        // if collsion between hitbox and vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown)
         {
-            Debug.Log(" this : " + gameObject.tag + "       other : " + other.tag);
-            if (playerCanBeKnockedDown) 
+            if (playerCanBeKnockedDown)
             {
                 playerKnockedDown(other.gameObject);
                 VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
@@ -35,6 +33,12 @@ public class PlayerCollisions : MonoBehaviour
                 // avoid knockdown scenario
                 playerAvoidKnockDown(other.gameObject);
             }
+        }
+        // if attack box hits vehicle or npc
+        if ((gameObject.CompareTag("attack_box") && other.CompareTag("vehicle") )
+            || (gameObject.CompareTag("attack_box") && other.CompareTag("auto_npc")) )
+        {
+            TestText.instance.setText(" collsion between "+ gameObject.name + "  and "+ other.gameObject.name);
         }
     }
 
