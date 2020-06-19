@@ -10,7 +10,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     [SerializeField]
     GameObject attackBox;
 
-    private void Awake()
+    private void Start()
     {
         audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         // get attack box reference
