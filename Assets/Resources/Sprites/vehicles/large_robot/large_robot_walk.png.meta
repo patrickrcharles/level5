@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: a360175cfa969e7459cfb17f3fa2de3a
+guid: 0035ca3524b6ed54d97a01cf16ce8989
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: mega_robot_walk_0
+      213: -8809989606269415392
+    second: large_robot_walk_0
   - first:
-      213: 21300002
-    second: mega_robot_walk_1
+      213: 3255250295242111941
+    second: large_robot_walk_1
   - first:
-      213: 21300004
-    second: mega_robot_walk_2
+      213: 1236981707360203617
+    second: large_robot_walk_2
   - first:
-      213: 21300006
-    second: mega_robot_walk_3
+      213: -5480606589261740063
+    second: large_robot_walk_3
   - first:
-      213: 21300008
-    second: mega_robot_walk_4
+      213: -3789971551692811397
+    second: large_robot_walk_4
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -84,7 +84,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
@@ -96,9 +96,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
+    buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -108,12 +108,24 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mega_robot_walk_0
+      name: large_robot_walk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -127,14 +139,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc2bf36862e54914cb54f3df35832647
-      internalID: 21300000
+      spriteID: 9e7ba980264931b47862b0089263c06d
+      internalID: -8809989606269415392
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mega_robot_walk_1
+      name: large_robot_walk_1
       rect:
         serializedVersion: 2
         x: 384
@@ -148,14 +160,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d115e1ed5636d442842afbe5f8c9c65
-      internalID: 21300002
+      spriteID: ba79f9e3b9832ed4d965fa937aeb3eb2
+      internalID: 3255250295242111941
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mega_robot_walk_2
+      name: large_robot_walk_2
       rect:
         serializedVersion: 2
         x: 768
@@ -169,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1ac8f62774040f4996136409c567d22
-      internalID: 21300004
+      spriteID: 5a0f7ce0e1f22334b80404568cf05dbb
+      internalID: 1236981707360203617
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mega_robot_walk_3
+      name: large_robot_walk_3
       rect:
         serializedVersion: 2
         x: 1152
@@ -190,14 +202,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 910dcdcbfccf87a469a5dcec4dfbcd44
-      internalID: 21300006
+      spriteID: e066997b3bea7944e8d26eca20bf1cf7
+      internalID: -5480606589261740063
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mega_robot_walk_4
+      name: large_robot_walk_4
       rect:
         serializedVersion: 2
         x: 1536
@@ -211,8 +223,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94f93bc0a61eb89478c58377eddd0a56
-      internalID: 21300008
+      spriteID: 225667db31ca92e459bb73d166c68caf
+      internalID: -3789971551692811397
       vertices: []
       indices: 
       edges: []
@@ -220,7 +232,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: e5bb7a9c405c6ad42aad47eb070f13c3
+    spriteID: 29e567a47badbae4c94193329dbf6408
     internalID: 0
     vertices: []
     indices: 

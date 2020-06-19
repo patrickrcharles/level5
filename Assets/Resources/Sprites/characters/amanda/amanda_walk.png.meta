@@ -17,6 +17,15 @@ TextureImporter:
   - first:
       213: -7017069143177737846
     second: amanda_walk_4
+  - first:
+      213: -7573958319068098376
+    second: amanda_walk_5
+  - first:
+      213: 7252667321767879046
+    second: amanda_walk_6
+  - first:
+      213: -1380313259149637732
+    second: amanda_walk_7
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -139,7 +148,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d5867f75c99bcd46b3f5fd4901c6287
+      spriteID: 822bac740a5fe22409ee23b9346b34e6
       internalID: -302832551335666809
       vertices: []
       indices: 
@@ -160,7 +169,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b94e9edc212e2c40b4d35f19ba42fe1
+      spriteID: e5adfd5fdc5c8164d90c45f800a29328
       internalID: 4287387209814080438
       vertices: []
       indices: 
@@ -181,7 +190,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23493abdc156af44095dce3f018691ba
+      spriteID: cadd4cf0a82fe4047a791d81579c427d
       internalID: -290021030685652721
       vertices: []
       indices: 
@@ -202,7 +211,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c208e0877f47c7c47938255f1cac000e
+      spriteID: 9b5166da922dab443bc277d31ee15564
       internalID: 8004319566710326582
       vertices: []
       indices: 
@@ -223,8 +232,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa07ec7035758a441896479fd9cf7e23
+      spriteID: fdf0bf8933f39554597b3ecd8d6b70aa
       internalID: -7017069143177737846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: amanda_walk_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0bffd0467c07294cb585190d02e0663
+      internalID: -7573958319068098376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: amanda_walk_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bcd085f7f9361e4dad39a9a5ebcbd20
+      internalID: 7252667321767879046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: amanda_walk_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f815857e7118b794c91463164eda1b5e
+      internalID: -1380313259149637732
       vertices: []
       indices: 
       edges: []
