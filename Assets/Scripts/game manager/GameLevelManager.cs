@@ -67,7 +67,7 @@ public class GameLevelManager : MonoBehaviour
             _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
             Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
-        if (GameObject.FindWithTag("cheerleader") == null)
+        if (GameObject.FindWithTag("cheerleader") == null && GameOptions.cheerleaderObjectName != null)
         {
             string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
