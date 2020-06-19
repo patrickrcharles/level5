@@ -6,7 +6,7 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: tank_gold_Animator Override Controller 1
+  m_Name: tank_gold_Animator Override Controller
   m_Controller: {fileID: 9100000, guid: b3e163cf92fab0b46a19a10109311365, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 8ae8c06523b8f4f4083f7139948aabe5, type: 2}
