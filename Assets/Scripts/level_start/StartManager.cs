@@ -119,13 +119,15 @@ public class StartManager : MonoBehaviour
         loadLevelSelectDataList();
         loadModeSelectDataList();
 
+
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        initializePlayerDisplay();
         initializeCheerleaderDisplay();
+        initializePlayerDisplay();
         initializeLevelDisplay();
         intializeModeDisplay();
         setInitialGameOptions();
@@ -379,7 +381,7 @@ public class StartManager : MonoBehaviour
             + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
+            //+ playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
 
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
@@ -613,14 +615,14 @@ public class StartManager : MonoBehaviour
         //Debug.Log("scene name : " + sceneName);
 
         // check if Player selected is locked
-        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        if (playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
             Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-            messageText.text = " Bruh, it's locked";
+            messageText.text = " Bruh, it's locked. pick something else";
             // turn off text display after 5 seconds
             StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
         }
-        if (!playerSelectedData[playerSelectedIndex].IsLocked)
+        if (!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
             // load highscores before loading scene
             PlayerData.instance.loadStatsFromDatabase();
