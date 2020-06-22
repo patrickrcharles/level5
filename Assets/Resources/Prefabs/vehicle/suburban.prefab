@@ -329,8 +329,9 @@ MonoBehaviour:
   vehicleId: 9
   vehicleSpeed: 3.2
   timeToRespawn: 3
-  currentTarget: {x: 94.049995, y: 0.0773952, z: -7.900149}
-  direction: right
+  currentTarget: {x: -37.1, y: 0.009407133, z: -5.9604807}
+  direction: left
+  facingRight: 1
   relativePositioning: 0
 --- !u!82 &1155739993
 AudioSource:

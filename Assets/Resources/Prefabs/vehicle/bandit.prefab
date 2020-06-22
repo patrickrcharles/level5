@@ -345,7 +345,7 @@ MonoBehaviour:
   timeToRespawn: 3
   currentTarget: {x: -37.1, y: 0.009407133, z: -5.9604807}
   direction: left
-  facingRight: 0
+  facingRight: 1
   relativePositioning: 0
 --- !u!82 &3126087350469765242
 AudioSource:
