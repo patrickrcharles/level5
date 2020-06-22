@@ -24,8 +24,6 @@ public class DBHelper : MonoBehaviour
     void Awake()
     {
         instance = this;
-       //Debug.Log(" DBHelper : Awake");
-        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
     }
@@ -134,8 +132,6 @@ public class DBHelper : MonoBehaviour
            + "','" + "6.9.420"
            + "','" + "os version"
            + "','" + 0  + "')";
-
-       //Debug.Log(sqlQuery1);
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();

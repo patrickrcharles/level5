@@ -103,10 +103,10 @@ public class CameraManager : MonoBehaviour
             }
         }
         //Debug.Log("**************************************************** setDefaultCamera :   current cam : " + cameras[currentCameraIndex].name);
-        foreach (GameObject cam in cameras)
-        {
-            Debug.Log(cam.name + " is active : " + cam.activeSelf);
-        }
+        //foreach (GameObject cam in cameras)
+        //{
+        //    //Debug.Log(cam.name + " is active : " + cam.activeSelf);
+        //}
     }
 
     void switchCamera()

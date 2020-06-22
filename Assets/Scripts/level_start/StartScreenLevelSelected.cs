@@ -9,7 +9,6 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private string levelDisplayName;
     [SerializeField] private string levelObjectName;
     [SerializeField] private string levelDescription;
-    [SerializeField] private Sprite levelImage;
 
     public string LevelDescription
     {
@@ -33,11 +32,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     {
         get => levelObjectName;
         set => levelObjectName = value;
-    }
-
-    public Sprite LevelImage
-    {
-        get => levelImage;
-        set => levelImage = value;
     }
 }
