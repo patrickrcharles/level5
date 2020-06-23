@@ -622,7 +622,7 @@ public class BasketBall : MonoBehaviour
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." +
                          "\n"
                          + "longest shot distance : " +
-                         (Math.Round(basketBallStats.LongestShotMade, 2) * 6f).ToString("0.00") + " ft." + "\n" +
+                         (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
                          "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt 
                          + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
                          + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
