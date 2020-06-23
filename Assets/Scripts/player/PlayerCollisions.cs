@@ -16,16 +16,24 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
+
         // if collsion between hitbox and vehicle, knocked down
-        if (gameObject.CompareTag("playerHitbox") && other.CompareTag("knock_down_attack") && !playerState.KnockedDown)
+        if (gameObject.CompareTag("playerHitbox") 
+            && other.CompareTag("knock_down_attack") 
+            && !playerState.KnockedDown)
         {
+            //Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.name);
+
             if (playerCanBeKnockedDown)
             {
                 playerKnockedDown(other.gameObject);
                 VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
+                // if playerData object exists
                 if (PlayerData.instance != null)
                 {
-                    PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId, GameOptions.playerDisplayName, GameOptions.levelDisplayName);
+                    // add hit by car reference
+                    PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId);
                 }
             }
             else
@@ -50,4 +58,5 @@ public class PlayerCollisions : MonoBehaviour
     {
         playerState.AvoidedKnockDown = true;
     }
+
 }

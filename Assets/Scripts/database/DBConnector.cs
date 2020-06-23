@@ -13,6 +13,7 @@ using System.Threading;
 public class DBConnector : MonoBehaviour
 {
     private int currentPlayerId;
+    [SerializeField]
     bool _created;
     private String connection;
     private String databaseNamePath = "/level5.db";
@@ -27,35 +28,16 @@ public class DBConnector : MonoBehaviour
     IDataReader reader;
     private IDbConnection dbconn;
 
-    // move ld playerpref scores to db
-    //TransferPlayerPrefScoresToDB transferPlayerPrefScoresToDB;
-    // DB function
     DBHelper dbHelper;
 
     public static DBConnector instance;
 
-    // game versions that use playerprefs for scores
-    //enum prevVersionsWithNoDB
-    //{
-    //    v1 = 201,
-    //    v2 = 300,
-    //    v3 = 301,
-    //    v4 = 302
-    //};
-
-
     void Awake()
     {
-
-       //Debug.Log(" DBconnector");
-
-        instance = this;
-        // only create this data once
-        if (!_created)
+        DontDestroyOnLoad(gameObject);
+        if (instance == null)
         {
-            //Debug.Log(" !created");
-            DontDestroyOnLoad(gameObject);
-            _created = true;
+            instance = this;
         }
         else
         {
@@ -63,23 +45,10 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
-       //Debug.Log(" DBconnector : Start");
-
-        //connection = "URI=file:" + Application.dataPath + databaseNamePath; //Path to database
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
-        //Debug.Log(connection);
         filepath = Application.persistentDataPath + databaseNamePath;
-       //Debug.Log(filepath);
         currentGameVersion = getCurrentGameVersionToInt(Application.version);
-
-
         dbHelper = gameObject.GetComponent<DBHelper>();
-        //transferPlayerPrefScoresToDB = gameObject.GetComponent<TransferPlayerPrefScoresToDB>();
-
-        // im the only person with a player id right now. this will come from  registration
-        //currentPlayerId =  dbHelper.getIntValueFromTableByFieldAndId("User", "userid", 1) ;
-        //Debug.Log(" DBconnector : if (!File.Exists(filepath))");
-        //createDatabase();
 
         // if database doesnt exist
         if (!File.Exists(filepath))
@@ -100,26 +69,20 @@ public class DBConnector : MonoBehaviour
 
         // get device user is currently using
         SetCurrentUserDevice();
-
-        //// check if scores need to be transferred, flag is set in User table
-        //if (getPrevHighScoreInserted() == 0)
-        //{
-        //   //Debug.Log(" put playerprefs into db");
-        //    // get object instance needed to transfer scores
-        //    transferPlayerPrefScoresToDB.InsertPrevVersionHighScoresToDB();
-        //    setPrevHighScoreInsertedTrue();
-        //}
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
     {
-        //Debug.Log("updateFreePlayStats()");
         dbHelper.InsertGameScore(stats);
+    }
+
+    public void saveHitByCarGameStats()
+    {
+        dbHelper.UpdateHitByCarStats();
     }
 
     public void savePlayerAllTimeStats(BasketBallStats stats)
     {
-        //Debug.Log("savePlayerAllTimeStats()");
         dbHelper.UpdateAllTimeStats(stats);
     }
 
@@ -135,7 +98,6 @@ public class DBConnector : MonoBehaviour
     // have high scores been transferred already. checks flag in User table
     int getPrevHighScoreInserted()
     {
-       //Debug.Log("getPrevHighScoreInserted");
         int value = 0; 
 
         IDbConnection dbconn;
@@ -151,7 +113,6 @@ public class DBConnector : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
-           //Debug.Log(" value = " + value);
         }
         reader.Close();
         reader = null;
@@ -165,8 +126,6 @@ public class DBConnector : MonoBehaviour
     // set high sores transferred flag to true
     int setPrevHighScoreInsertedTrue()
     {
-       //Debug.Log("insert previous high scores");
-
         int value = 0;
 
         IDbConnection dbconn;
@@ -182,7 +141,6 @@ public class DBConnector : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
-           //Debug.Log(" value = " + value);
         }
         reader.Close();
         reader = null;
@@ -214,8 +172,6 @@ public class DBConnector : MonoBehaviour
     // create tables if not created
     void createDatabase()
     {
-       //Debug.Log("create database");
-
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
         dbcmd = dbconn.CreateCommand();
@@ -254,7 +210,12 @@ public class DBConnector : MonoBehaviour
             "timePlayed    REAL, "+
             "consecutiveShots    INTEGER);" +
 
-            "CREATE TABLE if not exists User( " +
+            "CREATE TABLE if not exists HitByCar( " +
+            "id  INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "vehicleId  INTEGER UNIQUE, " +
+            "count INTEGER );" +
+
+        "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +
             "userName  INTEGER, " +
             "firstName TEXT, " +
@@ -266,8 +227,6 @@ public class DBConnector : MonoBehaviour
             "os    TEXT, " +
             "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);");
 
-       //Debug.Log(sqlQuery);
-
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
 
@@ -275,8 +234,6 @@ public class DBConnector : MonoBehaviour
         dbcmd = null;
         dbconn.Close();
         dbconn = null;
-
-       //Debug.Log("close database on CREATE");
     }
 }
 

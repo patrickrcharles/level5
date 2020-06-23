@@ -43,20 +43,35 @@ public class PlayerData : MonoBehaviour
     [SerializeField]
     public static PlayerData instance;
 
-    List<HitByCar> hitByCars; 
+    public List<HitByCar> hitByCars;
+
+    public class HitByCar
+    {
+        public int vehicleId;
+        public int counter = 0;
+
+        public HitByCar(int vehId)
+        {
+            vehicleId = vehId;
+        }
+        public HitByCar(int vehId, int count)
+        {
+            vehicleId = vehId;
+            counter = count;
+        }
+    }
 
     void Awake()
     {
 
-        instance = this;
-        // only create player data once
-        if (!_created)
+        DontDestroyOnLoad(gameObject);
+        if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
-            _created = true;
+            instance = this;
         }
         else
         {
+            Debug.Log("created, destroy this");
             Destroy(gameObject);
         }
     }
@@ -67,40 +82,25 @@ public class PlayerData : MonoBehaviour
         loadStatsFromDatabase();
     }
 
-    public void AddHitByCarInstanceToList(int vehId, string charName, string lvl)
+    public void AddHitByCarInstanceToList(int vehId)
     {
-        // if vehicle entry exists, eg, hit by car already
-        Debug.Log(hitByCars);
+        // if vehicle entry exists, eg, hit by this vehicleId already
         HitByCar temp = hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault();
-
-        if (temp != null)
+        if (temp != null) // if not hit by this car
         {
             // increase counter
             temp.counter++;
-            Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
+            Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle " + vehId + " on level : " + GameOptions.levelDisplayName 
+                + " " + temp.counter + " times");
         }
         else // create the vehicle entry
         {
-            temp = new HitByCar(vehId, charName, lvl);
+            temp = new HitByCar(vehId);
             hitByCars.Add(temp);
             temp.counter++;
-            Debug.Log(charName + " hit by : vehicle" + vehId + " on level : " + lvl + " " + hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault().counter + " times");
+            Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle" + vehId + " on level : " 
+                + GameOptions.levelDisplayName + " " + temp.counter + " times");
         } 
-    }
-
-    public class HitByCar
-    {
-        public int vehicleId;
-        public string character;
-        public string level;
-        public int counter = 0;
-
-        public HitByCar(int vehId, string charName, string lvl)
-        {
-            vehicleId = vehId;
-            character = charName;
-            level = lvl;
-        }
     }
 
     public void saveStats()
