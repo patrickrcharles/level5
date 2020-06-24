@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 6635442221398143766}
   m_Layer: 0
   m_Name: traffic_manager
-  m_TagString: Untagged
+  m_TagString: traffic_manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

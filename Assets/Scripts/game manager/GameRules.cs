@@ -14,6 +14,7 @@ public class GameRules : MonoBehaviour
     private int gameModeId;
     private float timerStart;
 
+    [SerializeField]
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
@@ -141,10 +142,12 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             //save if at leat 1 minte played
-            if (GameObject.Find("database") != null && basketBallStats.TimePlayed > 60)
+            if (GameObject.Find("database") != null  && basketBallStats.TimePlayed > 60)
             {
+                //Debug.Log(" game over save stats");
                 DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
+                DBConnector.instance.saveHitByCarGameStats();
             }
 
             // alert game manager. trigger

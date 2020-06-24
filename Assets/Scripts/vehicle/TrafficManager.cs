@@ -21,6 +21,9 @@ public class TrafficManager : MonoBehaviour
     [SerializeField]
     List<GameObject> _vehiclesPrefabsList;
 
+    [SerializeField]
+    List<GameObject> _customVehiclePrefabList;
+
     const string vehicleTargetsTag = "vehicle_position_marker";
     const string spawnLeftTag = "vehicle_spawn_left";
     const string spawnRightTag = "vehicle_spawn_right";
@@ -35,8 +38,11 @@ public class TrafficManager : MonoBehaviour
     const string westBoundLeftText = "westBoundLeft";
     const string westBoundRightText = "westBoundRight";
 
+    const string trafficManagerText = "traffic_manager";
+
+    // create custom vehicle list for specific level
     [SerializeField]
-    float spawnTime;
+    bool customVehicles;
 
     public static TrafficManager instance;
 
@@ -47,7 +53,17 @@ public class TrafficManager : MonoBehaviour
         // get spawn points
         _vehicleSpawnLeftPosition = GameObject.FindGameObjectWithTag(spawnLeftTag);
         _vehicleSpawnRightPosition = GameObject.FindGameObjectWithTag(spawnRightTag);
-        loadVehiclePrefabs();
+
+        // if vehicleslist is manually created
+        if (customVehicles)
+        {
+            loadCustomVehiclePrefabs();
+        }
+        // else, load prefabs from folder
+        else
+        {
+            loadVehiclePrefabs();
+        }
     }
 
     private void loadVehiclePrefabs()
@@ -65,23 +81,46 @@ public class TrafficManager : MonoBehaviour
 
             // this where to set direction and target
         }
-        //spawn vehicles
-        spawnVehiclePrefabs();
+        //spawn vehicles if traffic manager exists
+        if (trafficManagerExists())
+        {
+            spawnVehiclePrefabs();
+        }
+    }
+
+    private void loadCustomVehiclePrefabs()
+    {
+        if (trafficManagerExists())
+        {
+            // get all the objects in folder, create list of the vehicleControllers
+            foreach (GameObject car in _customVehiclePrefabList)
+            {
+                VehicleController temp = car.GetComponent<VehicleController>();
+                VehiclesList.Add(temp);
+            }
+            spawnVehiclePrefabs();
+        }
     }
 
     public void spawnVehicle(int vehicleId, string direction, float waitTimeToRespawn)
     {
-        // find object in list by prefab
-        VehicleController vehiclePrefab = VehiclesList.Where(x => x.VehicleId == vehicleId).SingleOrDefault();
+        // if traffic manager exists
+        if (trafficManagerExists())
+        {
+            // find object in list by prefab
+            //NOTE : if more than one with same id, error called
+            //
+            VehicleController vehiclePrefab = VehiclesList.Where(x => x.VehicleId == vehicleId).Single();
 
-        // call coroutine
-        StartCoroutine(spawnVehicleCoRoutine(vehiclePrefab, direction, waitTimeToRespawn));
+            // call coroutine
+            StartCoroutine(spawnVehicleCoRoutine(vehiclePrefab, direction, waitTimeToRespawn));
+        }
     }
 
     private IEnumerator spawnVehicleCoRoutine(VehicleController vehicle, string direction, float waitTimeToRespawn)
     {
         // change to opposite direction
-        if(direction == "left")
+        if (direction == "left")
         {
             vehicle.Direction = "right";
             vehicle.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
@@ -113,7 +152,7 @@ public class TrafficManager : MonoBehaviour
         // ************* need to be spawning from prefabs list. this is saving and changing prefabs value
         foreach (VehicleController v in VehiclesList)
         {
-            if (v.VehicleId % 2 == 0)
+            if (vehicleIndex % 2 == 0)
             {
                 //direction to move vehicle towards
                 v.Direction = "right";
@@ -121,7 +160,7 @@ public class TrafficManager : MonoBehaviour
                 // set target to correct vector3
                 v.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
                 VectorToAddToSpawn += new Vector3((-5 * vehicleIndex), 0, 0);
-                Instantiate(v, _vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
+                Instantiate(v, (_vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
             }
             else
             {
@@ -131,7 +170,7 @@ public class TrafficManager : MonoBehaviour
                 // set target to vector3
                 v.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
                 VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
-                Instantiate(v, _vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn, Quaternion.identity);
+                Instantiate(v, (_vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
             }
             vehicleIndex++;
         }
@@ -140,6 +179,20 @@ public class TrafficManager : MonoBehaviour
     static int sortByVehicleId(VehicleController m1, VehicleController m2)
     {
         return m1.VehicleId.CompareTo(m2.VehicleId);
+    }
+
+    private bool trafficManagerExists()
+    {
+        bool value;
+        if (GameObject.FindGameObjectWithTag(trafficManagerText))
+        {
+            value = true;
+        }
+        else
+        {
+            value = false;
+        }
+        return value;
     }
 
     public List<VehicleController> VehiclesList { get => _vehiclesList; }

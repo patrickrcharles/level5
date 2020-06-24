@@ -328,9 +328,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vehicleId: 12
   vehicleSpeed: 2.8
-  timeToRespawn: 3
+  timeToRespawn: 5
   currentTarget: {x: 88.6, y: 0.013269305, z: -9.00884}
-  direction: right
+  direction: ' '
   facingRight: 1
   relativePositioning: 0
 --- !u!82 &1155739993

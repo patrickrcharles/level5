@@ -70,6 +70,8 @@ public class VehicleController : MonoBehaviour
             Flip();
         }
 
+        Debug.Log("vehicle : " + gameObject.name);
+
         navMeshAgent.destination = CurrentTarget;
     }
 
@@ -92,7 +94,6 @@ public class VehicleController : MonoBehaviour
 
     public void Flip()
     {
-        //Debug.Log(" flip : " + gameObject.name);
         FacingRight = !FacingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
