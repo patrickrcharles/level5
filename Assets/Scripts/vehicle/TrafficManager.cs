@@ -98,7 +98,7 @@ public class TrafficManager : MonoBehaviour
                 VehicleController temp = car.GetComponent<VehicleController>();
                 VehiclesList.Add(temp);
             }
-            spawnVehiclePrefabs();
+            spawnCustomVehiclePrefabs();
         }
     }
 
@@ -110,7 +110,7 @@ public class TrafficManager : MonoBehaviour
             // find object in list by prefab
             //NOTE : if more than one with same id, error called
             //
-            VehicleController vehiclePrefab = VehiclesList.Where(x => x.VehicleId == vehicleId).Single();
+            VehicleController vehiclePrefab = VehiclesList.Find(x => x.VehicleId == vehicleId);
 
             // call coroutine
             StartCoroutine(spawnVehicleCoRoutine(vehiclePrefab, direction, waitTimeToRespawn));
@@ -142,6 +142,44 @@ public class TrafficManager : MonoBehaviour
     {
         // sort list by  mode id
         VehiclesList.Sort(sortByVehicleId);
+
+        //instantiate vehicle at first postion
+        int vehicleIndex = 0;
+
+        // to prevent vehicles spawning on top of each other
+        Vector3 VectorToAddToSpawn = new Vector3();
+
+        // ************* need to be spawning from prefabs list. this is saving and changing prefabs value
+        foreach (VehicleController v in VehiclesList)
+        {
+            if (vehicleIndex % 2 == 0)
+            {
+                //direction to move vehicle towards
+                v.Direction = "right";
+                v.FacingRight = true;
+                // set target to correct vector3
+                v.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
+                VectorToAddToSpawn += new Vector3((-5 * vehicleIndex), 0, 0);
+                Instantiate(v, (_vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
+            }
+            else
+            {
+                //direction to move vehicle towards
+                v.Direction = "left";
+                v.FacingRight = false;
+                // set target to vector3
+                v.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
+                VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
+                Instantiate(v, (_vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
+            }
+            vehicleIndex++;
+        }
+    }
+
+    private void spawnCustomVehiclePrefabs()
+    {
+        // sort list by  mode id
+        //VehiclesList.Sort(sortByVehicleId);
 
         //instantiate vehicle at first postion
         int vehicleIndex = 0;
