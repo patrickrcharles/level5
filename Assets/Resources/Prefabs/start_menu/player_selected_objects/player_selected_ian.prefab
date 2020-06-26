@@ -66,12 +66,9 @@ MonoBehaviour:
   speed: 3.2
   runSpeedHasBall: 3.5
   runSpeed: 3.8
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 10
+  luck: 10
   shootAngle: 48
   level: 0
   experience: 0
-  isLocked: 0
+  isLocked: 1
   unlockCharacterText: 'Unlock : Score 100 or more points at The Scrapyard'

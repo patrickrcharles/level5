@@ -66,10 +66,7 @@ MonoBehaviour:
   speed: 6
   runSpeedHasBall: 6
   runSpeed: 6
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 10
+  luck: 10
   shootAngle: 50
   level: 0
   experience: 0

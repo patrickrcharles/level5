@@ -67,12 +67,9 @@ MonoBehaviour:
   speed: 5
   runSpeedHasBall: 5.3
   runSpeed: 5.6
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 12
+  luck: 10
   shootAngle: 50
   level: 0
   experience: 0
-  isLocked: 0
+  isLocked: 1
   unlockCharacterText: 'Unlock : Score 100 or more points at Avenue B'
