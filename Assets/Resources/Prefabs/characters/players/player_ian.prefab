@@ -803,10 +803,7 @@ MonoBehaviour:
   speed: 0
   runSpeedHasBall: 0
   runSpeed: 0
-  hangTime: 0
-  range: 0
-  release: 0
-  criticalPercent: 0
+  luck: 10
   shootAngle: 0
   level: 0
   experience: 0

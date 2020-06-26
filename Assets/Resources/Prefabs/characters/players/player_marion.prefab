@@ -634,10 +634,7 @@ MonoBehaviour:
   speed: 2
   runSpeedHasBall: 3
   runSpeed: 3
-  hangTime: 0
-  range: 100
-  release: 100
-  criticalPercent: 12
+  luck: 10
   shootAngle: 45
   level: 0
   experience: 0
@@ -839,11 +836,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: shot_meter
       objectReference: {fileID: 0}
-    - target: {fileID: 4492720442590388176, guid: 2c5be4240f8817443a8116f62e1624b0,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4492720442301743505, guid: 2c5be4240f8817443a8116f62e1624b0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -963,6 +955,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.061008
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492720442590388176, guid: 2c5be4240f8817443a8116f62e1624b0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c5be4240f8817443a8116f62e1624b0, type: 3}
