@@ -119,13 +119,17 @@ public class StartManager : MonoBehaviour
         loadLevelSelectDataList();
         loadModeSelectDataList();
 
-
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        //loadPlayerSelectDataList();
+        //loadCheerleaderSelectDataList();
+        //loadLevelSelectDataList();
+        //loadModeSelectDataList();
+
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
         initializeLevelDisplay();
@@ -348,7 +352,6 @@ public class StartManager : MonoBehaviour
 
     private void initializePlayerDisplay()
     {
-        //Debug.Log("initializePlayerDisplay()");
         cheerleaderSelectOptionImage.enabled = false;
         cheerleaderSelectedIsLockedObject.SetActive(false);
 
@@ -356,6 +359,17 @@ public class StartManager : MonoBehaviour
         playerSelectOptionStatsText.enabled = true;
         playerSelectedIsLockedObject.SetActive(true);
         playerSelectCategoryStatsText.enabled = true;
+
+        // check if players is locked
+        foreach (ShooterProfile sp in playerSelectedData)
+        {
+            if (AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId) != null)
+            {
+                Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId);
+                sp.IsLocked = tempAchieve.IsLocked;
+                sp.UnlockCharacterText = tempAchieve.AchievementDescription;
+            }
+        }
 
         if (playerSelectedData[playerSelectedIndex].IsLocked)
         {
@@ -389,15 +403,13 @@ public class StartManager : MonoBehaviour
 
     private void loadPlayerSelectDataList()
     {
-
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        //Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
-            //Debug.Log(" temp : " + temp.PlayerDisplayName);
+            Debug.Log(" temp : " + temp.PlayerDisplayName);
             playerSelectedData.Add(temp);
         }
         // sort list by  character id
@@ -414,7 +426,7 @@ public class StartManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             StartScreenCheerleaderSelected temp = obj.GetComponentInChildren<StartScreenCheerleaderSelected>();
-            Debug.Log(" temp : " + temp.name);
+            //Debug.Log(" temp : " + temp.name);
             cheerleaderSelectedData.Add(temp);
         }
         // sort list by  character id
