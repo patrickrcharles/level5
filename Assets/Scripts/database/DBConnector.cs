@@ -90,7 +90,7 @@ public class DBConnector : MonoBehaviour
     int getCurrentGameVersionToInt(String version)
     {
         // parse out ".", convert to int
-        var temp =  Regex.Replace(version, "[.]", "");
+        var temp = Regex.Replace(version, "[.]", "");
         var versionInt = Int16.Parse(temp);
 
         return versionInt;
@@ -98,7 +98,7 @@ public class DBConnector : MonoBehaviour
     // have high scores been transferred already. checks flag in User table
     int getPrevHighScoreInserted()
     {
-        int value = 0; 
+        int value = 0;
 
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -191,7 +191,7 @@ public class DBConnector : MonoBehaviour
             "totalPoints   INTEGER, " +
             "longestShot   REAL, " +
             "totalDistance REAL, " +
-            "maxShotMade   INTEGER, "+
+            "maxShotMade   INTEGER, " +
             "maxShotAtt    INTEGER, " +
             "consecutiveShots   INTEGER); " +
 
@@ -207,13 +207,30 @@ public class DBConnector : MonoBehaviour
             "moneyBallMade INTEGER, " +
             "moneyBallAtt  INTEGER, " +
             "totalDistance REAL, " +
-            "timePlayed    REAL, "+
+            "timePlayed    REAL, " +
             "consecutiveShots    INTEGER);" +
 
             "CREATE TABLE if not exists HitByCar( " +
             "id  INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "vehicleId  INTEGER UNIQUE, " +
             "count INTEGER );" +
+
+            "CREATE TABLE Achievements(" +
+            "aid   INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "charid   INTEGER," +
+            "levelid   INTEGER," +
+            "modeid    INTEGER," +
+            "name  TEXT," +
+            "description   TEXT," +
+            "required_charid   INTEGER," +
+            "required_levelid  INTEGER," +
+            "required_modeid   INTEGER," +
+            "activevalue_int   INTEGER," +
+            "activevalue_float REAL," +
+            "activevalue_progress_int  INTEGER," +
+            "activevalue_progress_float    REAL," +
+            "unlocked  INTEGER );" +
+
 
         "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +

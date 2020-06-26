@@ -161,6 +161,7 @@ public class Pause : MonoBehaviour
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
+        //DBConnector.instance.saveHitByCarGameStats(PlayerData.instance.HitByCars);
     }
 
     private void setPauseScreen(bool value)

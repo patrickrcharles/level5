@@ -34,7 +34,6 @@ public class GameLevelManager : MonoBehaviour
 
     public BasketBall Basketball;
     public GameObject BasketballObject;
-
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
     [SerializeField]
@@ -60,7 +59,10 @@ public class GameLevelManager : MonoBehaviour
 
         if (GameObject.FindWithTag("Player") == null)
         {
+            Debug.Log("if (GameObject.FindWithTag(Player) == null)");
             Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+            Debug.Log("player clone : " + _playerClone.name);
+
         }
         if(GameObject.FindWithTag("basketball") == null)
         {

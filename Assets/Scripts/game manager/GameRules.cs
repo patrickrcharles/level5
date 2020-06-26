@@ -150,6 +150,8 @@ public class GameRules : MonoBehaviour
                 DBConnector.instance.saveHitByCarGameStats();
             }
 
+            AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints);
+
             // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;
         }

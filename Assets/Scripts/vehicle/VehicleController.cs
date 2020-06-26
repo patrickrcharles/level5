@@ -70,7 +70,7 @@ public class VehicleController : MonoBehaviour
             Flip();
         }
 
-        Debug.Log("vehicle : " + gameObject.name);
+        //Debug.Log("vehicle : " + gameObject.name);
 
         navMeshAgent.destination = CurrentTarget;
     }

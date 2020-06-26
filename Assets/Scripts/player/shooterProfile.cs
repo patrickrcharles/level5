@@ -41,6 +41,7 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private int experience;
     [SerializeField] private decimal money;
     [SerializeField] private bool isLocked;
+    //[SerializeField] private int achievementId;
     [SerializeField] private string unlockCharacterText;
 
     void Start()
@@ -87,7 +88,6 @@ public class ShooterProfile : MonoBehaviour
 
     public float calculateSpeedToPercent()
     {
-
         //modifier
         float modifier = 100 / ((speedStatCeiling - speedStatFloor) * 10);
         // percent

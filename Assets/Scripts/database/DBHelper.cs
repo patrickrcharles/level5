@@ -239,7 +239,7 @@ public class DBHelper : MonoBehaviour
             {
                 int vehicleId = reader.GetInt32(1);
                 int count = reader.GetInt32(2);
-                Debug.Log(" vid : " + vehicleId + " count : " + count);
+                //Debug.Log(" vid : " + vehicleId + " count : " + count);
                 prevStats.Add(new PlayerData.HitByCar(vehicleId, count));
             }
             reader.Close();
