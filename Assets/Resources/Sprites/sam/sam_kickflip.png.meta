@@ -56,6 +56,12 @@ TextureImporter:
   - first:
       213: 8406288800797741988
     second: sam_kickflip_17
+  - first:
+      213: 6258074355017998351
+    second: sam_kickflip_18
+  - first:
+      213: 6119032836210521213
+    second: sam_kickflip_19
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -154,7 +160,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c9e814b938200d4792c2b23179ff9db
+      spriteID: 067bf27eb6dab6e4f81e37d3246c1894
       internalID: 2071615584862552237
       vertices: []
       indices: 
@@ -175,7 +181,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d29661caf9f1ce44c9bfdb3a696bf2c3
+      spriteID: e406e81b9bf54724abd378e979a4b2fb
       internalID: 8957362963507735392
       vertices: []
       indices: 
@@ -196,7 +202,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd924dfef11b8a5438c319aec92be42f
+      spriteID: 206ff65e634d98b4e8484658c858a2b8
       internalID: -6827440131628588007
       vertices: []
       indices: 
@@ -217,7 +223,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2aefc6dd3dace96409cc67bb671ea761
+      spriteID: bd6d850d998839647a3676ac31584a8b
       internalID: 8528634009929211905
       vertices: []
       indices: 
@@ -238,7 +244,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 050aa74dcd1c7654ea60c15f935d215f
+      spriteID: 8cb2546f8937eb443a888fa7c1597c17
       internalID: 4655132604879826627
       vertices: []
       indices: 
@@ -259,7 +265,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2cec4a2ed0b413542b77ab7ae0045793
+      spriteID: 6a398d237cd38ca4796a763aaaef9578
       internalID: -7613834483663688996
       vertices: []
       indices: 
@@ -280,7 +286,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ab6655c1aca334b419537730747841ad
+      spriteID: b78aede1cb8133b4d9e488ef61f07a1b
       internalID: -2825646252208089282
       vertices: []
       indices: 
@@ -301,7 +307,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14a382fcf5088b840aede7b222bf0c0d
+      spriteID: e5c39efa17d27164690c6e99d04361c8
       internalID: 2915806929959086420
       vertices: []
       indices: 
@@ -322,7 +328,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0350b9567215bff4ab8f1c17e57ee26f
+      spriteID: f85ad7a48b417b648967699981950b3c
       internalID: -5346796653423543798
       vertices: []
       indices: 
@@ -343,7 +349,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08d3440f925d3124a9342ab47a8442f8
+      spriteID: 098ab2e8e71275840ac6fff221b3aee3
       internalID: 1965043694242313275
       vertices: []
       indices: 
@@ -364,7 +370,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1e7398eb3ba28c458623d04f70a450e
+      spriteID: 69b9aaf09f4a35b49a76310b80694697
       internalID: 3474022917364316020
       vertices: []
       indices: 
@@ -385,7 +391,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9bf8953d87ff5f439b61a3fe8b17970
+      spriteID: 92f62cb55c6c7a2458cc70b754673eca
       internalID: 736909090970520421
       vertices: []
       indices: 
@@ -406,7 +412,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f049e52740ca15488233c243e8398dc
+      spriteID: 8486b0ea39951d3408f96d341d3cb8de
       internalID: -2229142531505415354
       vertices: []
       indices: 
@@ -427,7 +433,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 59ab93e9eb05d1242b31ff6eb4f4129c
+      spriteID: 1ed056aeae563ed4aa937839d3acf4a4
       internalID: -574329977756418402
       vertices: []
       indices: 
@@ -448,7 +454,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d10a523c8ceede458c03ab52282f55d
+      spriteID: 41555d8e08d005c468fb2b75279f848c
       internalID: 163069708136432587
       vertices: []
       indices: 
@@ -469,7 +475,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ce86acd679c6344ba3fa76a5a922470
+      spriteID: 556527c16927efd4897aa17215152450
       internalID: -8720069997032199540
       vertices: []
       indices: 
@@ -490,7 +496,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d31b1062d017764299339ab6f0f4489
+      spriteID: 372cf42f0f7b0df48adbb84eaa639399
       internalID: -970817421483694933
       vertices: []
       indices: 
@@ -498,6 +504,48 @@ TextureImporter:
       weights: []
     - serializedVersion: 2
       name: sam_kickflip_17
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a9c130db5208d24f9280dce43770c85
+      internalID: 8406288800797741988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sam_kickflip_18
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 209e483319b377c42a06943302412221
+      internalID: 6258074355017998351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sam_kickflip_19
       rect:
         serializedVersion: 2
         x: 512
@@ -511,8 +559,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7038fc6682a4c24c866d2df8314a5e1
-      internalID: 8406288800797741988
+      spriteID: f897254ae59a0eb42850ff15cc2b8bfe
+      internalID: 6119032836210521213
       vertices: []
       indices: 
       edges: []
