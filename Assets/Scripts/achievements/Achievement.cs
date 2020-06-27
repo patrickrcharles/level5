@@ -15,11 +15,15 @@ public class Achievement : MonoBehaviour
     [SerializeField]
     bool characterUnlock;
     [SerializeField]
+    bool cheerleaderUnlock;
+    [SerializeField]
     bool levelUnlock;
     [SerializeField]
     bool modeUnlock;
     [SerializeField]
     private int playerId;
+    [SerializeField]
+    private int cheerleaderId;
     [SerializeField]
     private int levelId;
     [SerializeField]
@@ -73,8 +77,8 @@ public class Achievement : MonoBehaviour
         // if unlocks character and requires counter
         if (characterUnlock && count && IsLocked)
         {
-            Debug.Log("aid: " + achievementId + " pid = " + pid + " lid : " + lid + " mid :" + mid + " " + activationValueInt + " :" + activateValue);
-            Debug.Log("unlockable : " + achievementName);
+            //Debug.Log("aid: " + achievementId + " pid = " + pid + " lid : " + lid + " mid :" + mid + " " + activationValueInt + " :" + activateValue);
+            //Debug.Log("unlockable : " + achievementName);
 
             if (playerRequiredToUseId == 0 && checkActivateValue(activateValue))
             {
@@ -94,6 +98,52 @@ public class Achievement : MonoBehaviour
                 condition1 = true;
             }          
             if(lid == levelRequiredToUseId && checkActivateValue(activateValue) && !condition2)
+            {
+                condition2 = true;
+            }
+            if (mid == modeRequiredToUseId && checkActivateValue(activateValue) && !condition3)
+            {
+                condition3 = true;
+            }
+            if (condition1 && condition2 && condition3)
+            {
+                IsLocked = false;
+                messageLog.instance.toggleMessageDisplay("character id: " + PlayerId + " unlocked ");
+                //Debug.Log("====================================  character id: " + playerId + " unlocked ");
+            }
+        }
+    }
+
+    public void checkCheerleaderUnlockConditions(int cid, int lid, int mid, int activateValue)
+    {
+        bool condition1 = false;
+        bool condition2 = false;
+        bool condition3 = false;
+
+        // if unlocks character and requires counter
+        if (cheerleaderUnlock && count && IsLocked)
+        {
+            //Debug.Log("aid: " + achievementId + " pid = " + pid + " lid : " + lid + " mid :" + mid + " " + activationValueInt + " :" + activateValue);
+            //Debug.Log("unlockable : " + achievementName);
+
+            if (playerRequiredToUseId == 0 && checkActivateValue(activateValue))
+            {
+                condition1 = true;
+            }
+            if (levelRequiredToUseId == 0 && checkActivateValue(activateValue))
+            {
+                condition2 = true;
+            }
+            if (modeRequiredToUseId == 0 && checkActivateValue(activateValue))
+            {
+                condition3 = true;
+            }
+            // != 0 is check to see achievement needspid, lid, or mid
+            if (cid == playerRequiredToUseId && checkActivateValue(activateValue) && !condition1)
+            {
+                condition1 = true;
+            }
+            if (lid == levelRequiredToUseId && checkActivateValue(activateValue) && !condition2)
             {
                 condition2 = true;
             }
@@ -136,7 +186,7 @@ public class Achievement : MonoBehaviour
                 activate = true;
             }
         }
-        Debug.Log("activate : " + activate);
+        //Debug.Log("activate : " + activate);
         return activate;
     }
 }
