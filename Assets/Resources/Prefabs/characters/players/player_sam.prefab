@@ -354,7 +354,7 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _knockDownTime: 1
+  _knockDownTime: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerState: {fileID: 0}
-  playerCanBeKnockedDown: 1
+  playerCanBeKnockedDown: 0
 --- !u!1 &4704057943004090548
 GameObject:
   m_ObjectHideFlags: 0
