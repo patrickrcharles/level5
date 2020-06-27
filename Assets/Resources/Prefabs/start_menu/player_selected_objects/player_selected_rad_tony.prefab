@@ -59,17 +59,17 @@ MonoBehaviour:
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 81
-  accuracy4pt: 83
-  accuracy7pt: 70
+  accuracy3pt: 85
+  accuracy4pt: 85
+  accuracy7pt: 85
   shooterProfilePrefabName: 
-  jumpForce: 4.8
+  jumpForce: 4.5
   speed: 3.5
   runSpeedHasBall: 3.8
-  runSpeed: 4
+  runSpeed: 4.2
   luck: 10
   shootAngle: 50
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 
+  unlockCharacterText: score 175 with Doctor Blood
