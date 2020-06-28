@@ -20,6 +20,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip rimShot;
     public AudioClip knockedDown;
     public AudioClip skateGrind;
+    public AudioClip glitch;
     
 
     //public List<AudioClip> vanMusicPlayList;
