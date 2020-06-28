@@ -47,9 +47,11 @@ MonoBehaviour:
   achievementName: unlock Ghost Dawg
   achievementDescription: ???
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
-  playerId: 12
+  playerId: 13
+  cheerleaderId: 0
   levelId: 0
   modeId: 0
   activationValueInt: 500

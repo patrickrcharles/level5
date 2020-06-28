@@ -47,9 +47,11 @@ MonoBehaviour:
   achievementName: unlock Sam
   achievementDescription: ???
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
-  playerId: 15
+  playerId: 16
+  cheerleaderId: 0
   levelId: 0
   modeId: 0
   activationValueInt: 500

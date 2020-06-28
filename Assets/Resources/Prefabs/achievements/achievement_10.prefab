@@ -45,14 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 10
   achievementName: unlock Rad Tony
-  achievementDescription: score 175 with Doctor Blood
+  achievementDescription: score 150 with Doctor Blood
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
   playerId: 11
+  cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 175
+  activationValueInt: 150
   activationValueFloat: 0
   consecutive: 0
   count: 1

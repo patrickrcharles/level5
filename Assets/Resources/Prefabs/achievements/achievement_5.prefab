@@ -45,14 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 5
   achievementName: unlock Woody
-  achievementDescription: score 150 points at Tammy's
+  achievementDescription: score 125 points at Tammy's
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
   playerId: 6
+  cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 150
+  activationValueInt: 125
   activationValueFloat: 0
   consecutive: 0
   count: 1

@@ -45,14 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 7
   achievementName: unlock Meggadeath
-  achievementDescription: score 150 points with Rusty
+  achievementDescription: score 125 points with Rusty
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
   playerId: 8
+  cheerleaderId: 0
   levelId: 6
   modeId: 0
-  activationValueInt: 150
+  activationValueInt: 125
   activationValueFloat: 0
   consecutive: 0
   count: 1

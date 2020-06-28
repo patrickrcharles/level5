@@ -45,14 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 1
   achievementName: unlock Ian
-  achievementDescription: score 150 points at the Scrapyard
+  achievementDescription: score 125 points at the Scrapyard
   characterUnlock: 1
+  cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
   playerId: 2
+  cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 150
+  activationValueInt: 125
   activationValueFloat: 0
   consecutive: 0
   count: 1
