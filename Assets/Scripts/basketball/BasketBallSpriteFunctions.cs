@@ -82,6 +82,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.Instance.skateGrind);
     }
 
+    public void playSfxGlitch()
+    {
+        audioSource.PlayOneShot(SFXBB.Instance.glitch);
+    }
+
     public void enableAttackBox()
     {
         attackBox.SetActive(true);
