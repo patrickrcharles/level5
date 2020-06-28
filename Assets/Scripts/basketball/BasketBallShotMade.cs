@@ -166,20 +166,15 @@ public class BasketBallShotMade : MonoBehaviour
 
         if (_basketBallState.PlayerOnMarkerOnShoot)
         {
-            //Debug.Log("if(_basketBallState.PlayerOnMarkerOnShoot)");
-            //Debug.Log("GameRules.instance.MoneyBallEnabled : " + GameRules.instance.MoneyBallEnabled);
             // if money ball enabled
             if (_basketBallState.MoneyBallEnabledOnShoot)
             {
-                //Debug.Log("clear marker");
                 int max = GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MaxShotMade;
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
-                //Debug.Log("max : "+ max);
             }
             // no money ball, update current shot marker stats
             else
             {
-                //Debug.Log(" else : shot made");
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
         }

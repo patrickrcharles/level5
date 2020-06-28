@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
     float timeRemaining = 0;
     private float currentTime;
     public float CurrentTime => currentTime;
-
+    [SerializeField]
     private float timeStart;
     int minutes = 0;
     float seconds = 0;
@@ -28,7 +28,7 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private bool modeRequiresCounter;
 
-    public static  Timer instance;
+    public static Timer instance;
 
     private void Awake()
     {
@@ -41,6 +41,7 @@ public class Timer : MonoBehaviour
     {
         // timer is 2 minutes
         timeStart = 120;
+
         // mode 7 is free play. this turns off timer
         //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
         //{
@@ -81,32 +82,38 @@ public class Timer : MonoBehaviour
             seconds = (currentTime - (minutes * 60));
         }
         // gameover, disable timer display and set text to empty
-        if (GameRules.instance.GameOver)
+        if (GameRules.instance.GameOver || timeRemaining <= 0)
         {
             displayTimer = false;
             timerText.text = "";
         }
-
         // time's up, pause and reset timer text
-        if (timeRemaining <= 0 
-            && !GameRules.instance.GameOver 
+        if (timeRemaining <= 0
+            && !GameRules.instance.GameOver
             && !modeRequiresCounter
             && timerEnabled)
         {
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
-            if (!BasketBall.instance.BasketBallState.InAir
-            || (GameLevelManager.Instance.PlayerState.hasBasketball 
-                && GameLevelManager.Instance.PlayerState.inAir))
+            if (!BasketBall.instance.BasketBallState.InAir 
+                // player in air, has ball
+                || (GameLevelManager.Instance.PlayerState.hasBasketball
+                && GameLevelManager.Instance.PlayerState.inAir
+                // not consecutive shots game mode
+                && !GameRules.instance.GameModeRequiresConsecutiveShots))
             {
-                //Debug.Log("timer ended");
                 GameRules.instance.GameOver = true;
-                //Pause.instance.Paused = true;
-                //Time.timeScale = 0f;
+            }
+            // if consecutive shots mode and streak is less than 2
+            if ((GameRules.instance.GameModeRequiresConsecutiveShots
+                && BasketBallShotMade.instance.ConsecutiveShotsMade < 2))
+            {
+                Debug.Log("game over");
+                GameRules.instance.GameOver = true;
             }
         }
 
-        if (displayTimer && timerEnabled && modeRequiresCountDown)
+        if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining > 0)
         {
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }

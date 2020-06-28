@@ -97,7 +97,7 @@ public class GameRules : MonoBehaviour
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
 
-        gameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
+        GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
 
         // init text
         displayScoreText.text = "";
@@ -378,9 +378,9 @@ public class GameRules : MonoBehaviour
             //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
             displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
         }
-        if (gameModeId == 6)
+        if (gameModeId == 14)
         {
-            displayText = "Your most consecutive shots was " + basketBallStats.MostConsecutiveShots + getStatsTotals();
+            displayText = "Your most consecutive shots was " + basketBallStats.MostConsecutiveShots + "\n\n" + getStatsTotals();
         }
         return displayText;
     }
@@ -508,4 +508,5 @@ public class GameRules : MonoBehaviour
         get => markersRemaining;
         set => markersRemaining = value;
     }
+    public bool GameModeRequiresConsecutiveShots { get => gameModeRequiresConsecutiveShots; set => gameModeRequiresConsecutiveShots = value; }
 }

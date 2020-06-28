@@ -46,8 +46,8 @@ MonoBehaviour:
   modeId: 14
   modelDisplayName: Consecutive Shots
   modeObjectName: mode_13
-  modeDescription: most consecutive shots (no 2s) in 2minutes. Time extended if on
-    a streak
+  modeDescription: most consecutive shots (at least 3 pointer ) in 2 minutes. Time
+    extended if on a streak
   modeRequiresCounter: 0
   modeRequiresCountDown: 1
   modeRequiresShotMarkers3s: 0
