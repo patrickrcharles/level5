@@ -20,19 +20,33 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -5849954324138243305, guid: cbbc1a62c3956c34abc5d63c05a64354,
+      value: {fileID: 9162312067797711063, guid: a30c1c63fc0d90e418d48813d1802378,
+        type: 3}
+    - time: 0.125
+      value: {fileID: -5525226242278035568, guid: a30c1c63fc0d90e418d48813d1802378,
         type: 3}
     - time: 0.25
-      value: {fileID: 2131466854676302555, guid: cbbc1a62c3956c34abc5d63c05a64354,
+      value: {fileID: -2055331415277474778, guid: a30c1c63fc0d90e418d48813d1802378,
         type: 3}
+    - time: 0.375
+      value: {fileID: 77717139361452354, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
     - time: 0.5
-      value: {fileID: 3188480000966149844, guid: cbbc1a62c3956c34abc5d63c05a64354,
+      value: {fileID: 8277618199964136102, guid: a30c1c63fc0d90e418d48813d1802378,
+        type: 3}
+    - time: 0.625
+      value: {fileID: -8963022406888101170, guid: a30c1c63fc0d90e418d48813d1802378,
+        type: 3}
+    - time: 0.75
+      value: {fileID: 7690179242269442232, guid: a30c1c63fc0d90e418d48813d1802378,
+        type: 3}
+    - time: 0.875
+      value: {fileID: -7025044659074129144, guid: a30c1c63fc0d90e418d48813d1802378,
         type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 4
+  m_SampleRate: 8
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -47,15 +61,20 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -5849954324138243305, guid: cbbc1a62c3956c34abc5d63c05a64354, type: 3}
-    - {fileID: 2131466854676302555, guid: cbbc1a62c3956c34abc5d63c05a64354, type: 3}
-    - {fileID: 3188480000966149844, guid: cbbc1a62c3956c34abc5d63c05a64354, type: 3}
+    - {fileID: 9162312067797711063, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: -5525226242278035568, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: -2055331415277474778, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: 77717139361452354, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: 8277618199964136102, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: -8963022406888101170, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: 7690179242269442232, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
+    - {fileID: -7025044659074129144, guid: a30c1c63fc0d90e418d48813d1802378, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -76,7 +95,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: playSfxKnockedDown
+    functionName: playSfxGlitch
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
