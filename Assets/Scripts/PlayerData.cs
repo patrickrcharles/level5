@@ -38,6 +38,8 @@ public class PlayerData : MonoBehaviour
     private  float _makeFourPointersMoneyBallLowTime;
     private  float _makeAllPointersMoneyBallLowTime;
 
+    private int _mostConsecutiveShots;
+
     //prevent PlayerData from creating multiple objects
     static bool _created = false; 
     [SerializeField]
@@ -339,6 +341,7 @@ public class PlayerData : MonoBehaviour
         _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC");
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
         LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
+        _mostConsecutiveShots = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "consecutiveShots", 14, "DESC");
 
         //Debug.Log(" Playerdata freeplay long : " + PlayerData.instance.LongestShotMadeFreePlay);
     }
@@ -445,4 +448,5 @@ public class PlayerData : MonoBehaviour
 
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
     public List<HitByCar> HitByCars { get; set; }
+    public int MostConsecutiveShots { get => _mostConsecutiveShots; set => _mostConsecutiveShots = value; }
 }

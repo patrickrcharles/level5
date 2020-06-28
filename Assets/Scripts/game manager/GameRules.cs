@@ -28,6 +28,10 @@ public class GameRules : MonoBehaviour
     bool gameModeRequiresMoneyBall;
     bool moneyBallEnabled;
 
+    bool gameModeRequiresConsecutiveShots;
+
+
+
     private Timer timer;
     private BasketBallStats basketBallStats;
 
@@ -92,6 +96,8 @@ public class GameRules : MonoBehaviour
         gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
+
+        gameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
 
         // init text
         displayScoreText.text = "";
@@ -326,6 +332,14 @@ public class GameRules : MonoBehaviour
                 PlayerData.instance.LongestShotMadeFreePlay = BasketBall.instance.BasketBallStats.LongestShotMade;
             }
         }
+        if (gameModeId == 14)
+        {
+            displayCurrentScoreText.text = "Consecutive Shots"
+                + "\nCurrent : " + BasketBallShotMade.instance.ConsecutiveShotsMade
+                + "\nHigh Shots : " + BasketBall.instance.BasketBallStats.MostConsecutiveShots;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MostConsecutiveShots;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
     }
 
     // ================================================ get display text ============================================
@@ -363,6 +377,10 @@ public class GameRules : MonoBehaviour
             float seconds = (counterTime - (minutes * 60));
             //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
             displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 6)
+        {
+            displayText = "Your most consecutive shots was " + basketBallStats.MostConsecutiveShots + getStatsTotals();
         }
         return displayText;
     }

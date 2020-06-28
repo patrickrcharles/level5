@@ -23,6 +23,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenCheerleaderSelected> cheerleaderSelectedData;
 
+    // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
 
@@ -30,7 +31,6 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
-    [SerializeField]
     private Text playerSelectUnlockText;
 
     [SerializeField]
@@ -409,7 +409,7 @@ public class StartManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
-            Debug.Log(" temp : " + temp.PlayerDisplayName);
+            //Debug.Log(" temp : " + temp.PlayerDisplayName);
             playerSelectedData.Add(temp);
         }
         // sort list by  character id
@@ -683,6 +683,7 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
 
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
+        GameOptions.gameModeRequiresConsecutiveShot = modeSelectedData[modeSelectedIndex].ModeRequiresConsecutiveShots;
 
         GameOptions.cheerleaderDisplayName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
         GameOptions.cheerleaderId = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId;

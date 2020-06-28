@@ -54,6 +54,8 @@ public  class GameOptions : MonoBehaviour
 
     static public bool gameModeRequiresMoneyBall;
 
+    static public bool gameModeRequiresConsecutiveShot;
+
     //static public int level;
     //static public int experience;
     //static public decimal money;
