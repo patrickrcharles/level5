@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840828638710515928}
   - component: {fileID: 840828638710515931}
   m_Layer: 0
-  m_Name: achievement_14
+  m_Name: achievement_14_sam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,4 +68,4 @@ MonoBehaviour:
   GREATER_THAN: 1
   LESS_THAN: 0
   EQUAL_TO: 0
-  isLocked: 1
+  isLocked: 0
