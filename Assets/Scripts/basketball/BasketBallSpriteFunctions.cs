@@ -6,9 +6,13 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
     const string  attackBoxText = "attack_box";
+    const string  hitboxBoxText = "playerHitbox";
 
     [SerializeField]
     GameObject attackBox;
+
+    [SerializeField]
+    GameObject hitBox;
 
     private void Start()
     {
@@ -22,11 +26,21 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         {
             attackBox = null;
         }
+        // find hitbox
+        if (gameObject.transform.parent.Find(hitboxBoxText) != null)
+        {
+            hitBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+        }
+        else
+        {
+            hitBox = null;
+        }
 
-        if(attackBox != null)
+        if (attackBox != null)
         {
             disableAttackBox();
         }
+
     }
 
     public void playSfxBasketballDribbling()
@@ -95,5 +109,15 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     public void disableAttackBox()
     {
         attackBox.SetActive(false);
+    }
+
+    public void enableHitBox()
+    {
+        hitBox.SetActive(true);
+    }
+
+    public void disableHitBox()
+    {
+        hitBox.SetActive(false);
     }
 }
