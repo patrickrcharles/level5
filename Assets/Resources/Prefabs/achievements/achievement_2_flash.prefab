@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840828638710515928}
   - component: {fileID: 840828638710515931}
   m_Layer: 0
-  m_Name: achievement_2
+  m_Name: achievement_2_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,19 +50,25 @@ MonoBehaviour:
   cheerleaderUnlock: 0
   levelUnlock: 0
   modeUnlock: 0
+  otherUnlock: 0
   playerId: 3
   cheerleaderId: 0
   levelId: 0
   modeId: 0
   activationValueInt: 125
   activationValueFloat: 0
+  activationValueProgressionInt: 0
+  activationValueProgressionFloat: 0
   consecutive: 0
   count: 1
+  isProgressiveCount: 0
+  isProgressiveTime: 0
   time: 0
   three: 0
   four: 0
   seven: 0
   playerRequiredToUseId: 0
+  cheerleaderRequiredToUseId: 0
   levelRequiredToUseId: 3
   modeRequiredToUseId: 1
   GREATER_THAN: 1
