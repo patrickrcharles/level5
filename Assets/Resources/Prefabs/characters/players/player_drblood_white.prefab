@@ -92,8 +92,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.26, y: 0.42, z: 1.2278562}
-  m_Center: {x: 0, y: 0.14000002, z: -0.32607225}
+  m_Size: {x: 0.26, y: 0.4899767, z: 1.2278562}
+  m_Center: {x: 0, y: 0.12834339, z: -0.32607225}
 --- !u!114 &5994118148595442126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}
 --- !u!1 &2824986375866728901
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.34, y: 1.42}
+  m_AnchoredPosition: {x: 0.34, y: 0}
   m_SizeDelta: {x: 1.28, y: 1.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!54 &7882584539614933877
@@ -749,7 +750,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8188476234929711695}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.06
   m_Height: 0.91
   m_Direction: 1
