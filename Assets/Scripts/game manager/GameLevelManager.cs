@@ -61,23 +61,17 @@ public class GameLevelManager : MonoBehaviour
         // if player doesnt exists
         if (GameObject.FindWithTag("Player") == null)
         {
-            Debug.Log("player == null");
             if (_playerClone != null)
-            {
-                Debug.Log("if (_playerClone != null)");
-            
+            {    
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
             }
             else
             {
-                Debug.Log("if (_playerClone == null)");
                 // spawn default character
                 string playerPrefabPath = "Prefabs/characters/players/player_drblood" ;
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
             }
-
-
         }
         // if basketball doesnt exists
         if (GameObject.FindWithTag("basketball") == null)
