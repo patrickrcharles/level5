@@ -28,6 +28,7 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private bool modeRequiresCounter;
 
+    bool timerTextLocked;
     public static Timer instance;
 
     private void Awake()
@@ -40,7 +41,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         // timer is 2 minutes
-        timeStart = 120;
+        timeStart = 20;
 
         // mode 7 is free play. this turns off timer
         //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
@@ -85,7 +86,7 @@ public class Timer : MonoBehaviour
         if (GameRules.instance.GameOver || timeRemaining <= 0)
         {
             displayTimer = false;
-            timerText.text = "";
+            //timerText.text = "";
         }
         // time's up, pause and reset timer text
         if (timeRemaining <= 0
@@ -93,20 +94,26 @@ public class Timer : MonoBehaviour
             && !modeRequiresCounter
             && timerEnabled)
         {
+            //Debug.Log("GameRules.instance.GameModeRequiresConsecutiveShot : " + GameRules.instance.GameModeRequiresConsecutiveShots);
+            //Debug.Log("BasketBallShotMade.instance.ConsecutiveShotsMade < 3) : " + BasketBallShotMade.instance.ConsecutiveShotsMade );
+            //Debug.Log("BasketBall.instance.BasketBallState.InAir) : " + BasketBall.instance.BasketBallState.InAir);
+            //Debug.Log("(GameLevelManager.Instance.PlayerState.hasBasketball && GameLevelManager.Instance.PlayerState.inAir)) : " 
+            //    + (GameLevelManager.Instance.PlayerState.hasBasketball && GameLevelManager.Instance.PlayerState.inAir));
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
+            // not consecutive game mode
             if (!BasketBall.instance.BasketBallState.InAir 
                 // player in air, has ball
-                || (GameLevelManager.Instance.PlayerState.hasBasketball
-                && GameLevelManager.Instance.PlayerState.inAir
+                && !(GameLevelManager.Instance.PlayerState.hasBasketball && GameLevelManager.Instance.PlayerState.inAir)
                 // not consecutive shots game mode
-                && !GameRules.instance.GameModeRequiresConsecutiveShots))
+                && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
+                Debug.Log("game over");
                 GameRules.instance.GameOver = true;
             }
             // if consecutive shots mode and streak is less than 2
             if ((GameRules.instance.GameModeRequiresConsecutiveShots
-                && BasketBallShotMade.instance.ConsecutiveShotsMade < 2))
+                && BasketBallShotMade.instance.ConsecutiveShotsMade < 3))
             {
                 Debug.Log("game over");
                 GameRules.instance.GameOver = true;
@@ -118,10 +125,21 @@ public class Timer : MonoBehaviour
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }
 
-        if (displayTimer && timerEnabled && modeRequiresCounter)
+        if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining < 0 && !timerTextLocked)
         {
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+            timerTextLocked = true;
+            setCustomTimerText("OVERTIME");
         }
+
+        //if (displayTimer && timerEnabled && modeRequiresCounter)
+        //{
+        //    timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+        //}
+    }
+
+    void setCustomTimerText(string text)
+    {
+        timerText.text = text;
     }
 
     public float TimeStart

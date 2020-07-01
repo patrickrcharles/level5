@@ -318,6 +318,17 @@ public class StartManager : MonoBehaviour
         playerSelectCategoryStatsText.enabled = false;
         playerSelectedIsLockedObject.SetActive(false);
 
+        // check if players is locked
+        foreach (StartScreenCheerleaderSelected cl in cheerleaderSelectedData)
+        {
+            if (AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId) != null)
+            {
+                Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId);
+                cl.IsLocked = tempAchieve.IsLocked;
+                cl.UnlockCharacterText = tempAchieve.AchievementDescription;
+            }
+        }
+
         if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
             // disable text and unlock text

@@ -41,12 +41,14 @@ public class GameRules : MonoBehaviour
     private const string displayHighScoreObjectName = "display_high_score";
     private const string displayMoneyObjectName = "money_display";
     private const string displayMoneyBallObjectName = "money_ball_enabled";
+    private const string displayOtherMessageName = "other_message";
 
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
     private Text displayMoneyText;
     private Text displayMoneyBallText;
+    private Text displayOtherMessageText;
 
     private float timeCompleted;
 
@@ -88,6 +90,7 @@ public class GameRules : MonoBehaviour
         displayHighScoreText = GameObject.Find(displayHighScoreObjectName).GetComponent<Text>();
         displayMoneyText = GameObject.Find(displayMoneyObjectName).GetComponent<Text>();
         displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
+        displayOtherMessageText = GameObject.Find(displayOtherMessageName).GetComponent<Text>();
 
         // rules flags
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
@@ -98,6 +101,7 @@ public class GameRules : MonoBehaviour
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
 
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
+        //Debug.Log("GameOptions.gameModeRequiresConsecutiveShot : " + GameOptions.gameModeRequiresConsecutiveShot);
 
         // init text
         displayScoreText.text = "";
@@ -105,6 +109,7 @@ public class GameRules : MonoBehaviour
         displayHighScoreText.text = "";
         displayMoneyText.text = "";
         displayMoneyBallText.text = "";
+        displayOtherMessageText.text = "";
 
         // init markers
         gameRulesEnabled = true;
@@ -130,6 +135,8 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
+            displayMoneyBallText.text = "";
+            displayOtherMessageText.text = "";
         }
 
         // game over. display end game and save
@@ -139,6 +146,8 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
+            displayMoneyBallText.text = "";
+            displayOtherMessageText.text = "";
 
             // set end time for time played, store in basketballstats.timeplayed
             setTimePlayed();
@@ -148,15 +157,18 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             //save if at leat 1 minte played
-            if (GameObject.Find("database") != null  && basketBallStats.TimePlayed > 60)
+            if (GameObject.Find("database") != null )//&& basketBallStats.TimePlayed > 60)
             {
                 //Debug.Log(" game over save stats");
                 DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.saveHitByCarGameStats();
+                DBConnector.instance.saveAchievementStats();
             }
 
-            AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints);
+            // check if achievements reached, send bball stats object
+            AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId, 
+                GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints, basketBallStats);
 
             // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;
@@ -340,6 +352,21 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "high score : " + PlayerData.instance.MostConsecutiveShots;
             displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
+        if (gameModeId == 15)
+        {
+            displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints
+                + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType
+                + "\nCurrent Consecutive: " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+            if(BasketBallShotMade.instance.ConsecutiveShotsMade >=5)
+            {
+                displayOtherMessageText.text = "In The Pocket";
+            }
+            else
+            {
+                displayOtherMessageText.text = "";
+            }
+            displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPointsBonus;
+        }
     }
 
     // ================================================ get display text ============================================
@@ -381,6 +408,10 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 14)
         {
             displayText = "Your most consecutive shots was " + basketBallStats.MostConsecutiveShots + "\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 15)
+        {
+            displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         }
         return displayText;
     }

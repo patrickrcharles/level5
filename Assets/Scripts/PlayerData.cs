@@ -14,6 +14,7 @@ public class PlayerData : MonoBehaviour
     private  string _playerName;
 
     private  float _totalPoints;
+    private  float _totalPointsBonus;
     private  float _twoPointerMade;
     private  float _threePointerMade;
     private  float _sevenPointerMade;
@@ -92,16 +93,16 @@ public class PlayerData : MonoBehaviour
         {
             // increase counter
             temp.counter++;
-            Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle " + vehId + " on level : " + GameOptions.levelDisplayName 
-                + " " + temp.counter + " times");
+            //Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle " + vehId + " on level : " + GameOptions.levelDisplayName 
+            //    + " " + temp.counter + " times");
         }
         else // create the vehicle entry
         {
             temp = new HitByCar(vehId);
             hitByCars.Add(temp);
             temp.counter++;
-            Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle" + vehId + " on level : " 
-                + GameOptions.levelDisplayName + " " + temp.counter + " times");
+            //Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle" + vehId + " on level : " 
+            //    + GameOptions.levelDisplayName + " " + temp.counter + " times");
         } 
     }
 
@@ -329,6 +330,7 @@ public class PlayerData : MonoBehaviour
        ////Debug.Log("load from database");
    
         _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
+        TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
         _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");
         _fourPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 3, "DESC");
         _sevenPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 4, "DESC");
@@ -449,4 +451,5 @@ public class PlayerData : MonoBehaviour
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
     public List<HitByCar> HitByCars { get; set; }
     public int MostConsecutiveShots { get => _mostConsecutiveShots; set => _mostConsecutiveShots = value; }
+    public float TotalPointsBonus { get => _totalPointsBonus; set => _totalPointsBonus = value; }
 }
