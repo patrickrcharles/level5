@@ -23,6 +23,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameHighScores = "HighScores";
     const String tableNameAllTimeStats = "AllTimeStats";
     const String tableNameUser = "User";
+    const String tableNameAchievements = "Achievements";
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -53,7 +54,6 @@ public class DBConnector : MonoBehaviour
         // if database doesnt exist
         if (!File.Exists(filepath))
         {
-            Debug.Log(" DBconnector : if (!File.Exists(filepath))");
             createDatabase();
         }
     }
@@ -69,6 +69,14 @@ public class DBConnector : MonoBehaviour
 
         // get device user is currently using
         SetCurrentUserDevice();
+
+        // if achievement table is empty, create default entries
+        //if (dbHelper.isTableEmpty(tableNameAchievements))
+        //{
+        //    dbHelper.UpdateAchievementStats();
+        //}
+        // use this for testing
+        dbHelper.UpdateAchievementStats();
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
@@ -79,6 +87,11 @@ public class DBConnector : MonoBehaviour
     public void saveHitByCarGameStats()
     {
         dbHelper.UpdateHitByCarStats();
+    }
+
+    public void saveAchievementStats()
+    {
+        dbHelper.UpdateAchievementStats();
     }
 
     public void savePlayerAllTimeStats(BasketBallStats stats)
@@ -178,6 +191,7 @@ public class DBConnector : MonoBehaviour
 
         string sqlQuery = String.Format(
             "CREATE TABLE if not exists HighScores(" +
+            "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
             "playerid  INTEGER," +
             "modeid    INTEGER, " +
             "characterid   INTEGER, " +
@@ -206,9 +220,9 @@ public class DBConnector : MonoBehaviour
             "sevenAtt  INTEGER, " +
             "moneyBallMade INTEGER, " +
             "moneyBallAtt  INTEGER, " +
+            "totalPoints  INTEGER, " +
             "totalDistance REAL, " +
-            "timePlayed    REAL, " +
-            "consecutiveShots    INTEGER);" +
+            "timePlayed    REAL);" +
 
             "CREATE TABLE if not exists HitByCar( " +
             "id  INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -230,7 +244,6 @@ public class DBConnector : MonoBehaviour
             "activevalue_progress_int  INTEGER," +
             "activevalue_progress_float    REAL," +
             "unlocked  INTEGER );" +
-
 
         "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +

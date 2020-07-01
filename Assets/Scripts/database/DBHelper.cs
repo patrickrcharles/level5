@@ -16,6 +16,7 @@ public class DBHelper : MonoBehaviour
 
     private const String allTimeStatsTableName = "AllTimeStats";
     private const String hitByCarTableName = "HitByCar";
+    private const String achievementTableName = "Achievements";
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -210,8 +211,9 @@ public class DBHelper : MonoBehaviour
                 prevStats.SevenPointerAttempts = reader.GetInt32(7);
                 prevStats.MoneyBallMade = reader.GetInt32(8);
                 prevStats.MoneyBallAttempts = reader.GetInt32(9);
-                prevStats.TotalDistance = reader.GetFloat(10);
-                prevStats.TimePlayed = reader.GetFloat(11);
+                prevStats.TotalPoints = reader.GetInt32(10);
+                prevStats.TotalDistance = reader.GetFloat(11);
+                prevStats.TimePlayed = reader.GetFloat(12);
             }
         }
         Destroy(prevStats, 5);
@@ -249,7 +251,41 @@ public class DBHelper : MonoBehaviour
             dbconn.Close();
             dbconn = null;
         }
-      return prevStats;
+        return prevStats;
+    }
+
+    internal List<Achievement> getAchievementStats()
+    {
+        List<Achievement> achieveStats = new List<Achievement>();
+
+        String sqlQuery = "";
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        if (!isTableEmpty(achievementTableName))
+        {
+            sqlQuery = "Select aid, islocked From " + achievementTableName;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                //Debug.Log(" reader.GetInt32(1) : " + reader.GetInt32(0) + " reader.GetInt32(2) : " + reader.GetInt32(1));
+                int aid = reader.GetInt32(0);
+                int islocked = reader.GetInt32(1);
+                achieveStats.Add(new Achievement(aid, islocked));
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        return achieveStats;
     }
 
     internal void UpdateAllTimeStats(BasketBallStats stats)
@@ -267,11 +303,21 @@ public class DBHelper : MonoBehaviour
         {
             sqlQuery =
            "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-           "sevenAtt, moneyBallMade, moneyBallAtt, totalDistance, timePlayed)  " +
-           "Values( '" + stats.TwoPointerMade + "', '" + stats.TwoPointerAttempts + "', '" + stats.ThreePointerMade
-           + "','" + stats.ThreePointerAttempts + "','" + stats.FourPointerMade + "','" + stats.FourPointerAttempts + "','"
-           + stats.SevenPointerMade + "','" + stats.SevenPointerAttempts + "','" + stats.MoneyBallMade + "','" + stats.MoneyBallAttempts
-           + "','" + stats.TotalDistance + "','" + stats.TimePlayed + "')";
+           "sevenAtt, totalPoints moneyBallMade, moneyBallAtt, totalDistance, timePlayed)  " +
+           "Values( '" +
+           stats.TwoPointerMade + "', '" +
+           stats.TwoPointerAttempts + "', '" +
+           stats.ThreePointerMade + "','" +
+           stats.ThreePointerAttempts + "','" +
+           stats.FourPointerMade + "','" +
+           stats.FourPointerAttempts + "','" +
+           stats.SevenPointerMade + "','" +
+           stats.SevenPointerAttempts + "','" +
+           stats.TotalPoints + "','" +
+           stats.MoneyBallMade + "','" +
+           stats.MoneyBallAttempts + "','" +
+           stats.TotalDistance + "','" +
+           stats.TimePlayed + "')";
         }
         else
         {
@@ -288,6 +334,7 @@ public class DBHelper : MonoBehaviour
            ", sevenAtt = " + (prevStats.SevenPointerAttempts += stats.SevenPointerAttempts) +
            ", moneyBallMade = " + (prevStats.MoneyBallMade += stats.MoneyBallMade) +
            ", moneyBallAtt = " + (prevStats.MoneyBallAttempts += stats.MoneyBallAttempts) +
+           ", totalPoints = " + (prevStats.TotalPoints += stats.TotalPoints) +
            ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
            ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
            " WHERE ROWID = 1 ";
@@ -336,6 +383,89 @@ public class DBHelper : MonoBehaviour
                             + " Values( '" + hbc.vehicleId + "', '" + hbc.counter + "')";
                             // else update hbc count + prev.count
                         }
+                        cmd.CommandText = sqlQuery;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                tr.Commit();
+            }
+            dbconn.Close();
+        }
+        //reset list of hit by cars
+        PlayerData.instance.hitByCars.Clear();
+    }
+
+    internal void UpdateAchievementStats()
+    {
+        Debug.Log("UpdateAchievementStats()");
+
+        List<Achievement> achievementsList = getAchievementStats();
+        String sqlQuery = "";
+
+        var dbconn = new SqliteConnection(connection);
+        using (dbconn)
+        {
+            dbconn.Open(); //Open connection to the database.
+            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            {
+                using (SqliteCommand cmd = dbconn.CreateCommand())
+                {
+                    cmd.Transaction = tr;
+                    foreach (Achievement ach in AchievementManager.instance.AchievementList)
+                    {
+                        bool entryExists = achievementsList.Any(x => x.achievementId == ach.achievementId);
+                        Achievement prevAchieve;
+
+                        //Debug.Log("(prefab) prev.aid : " + ach.achievementId + " islocked : " + ach.IsLocked);
+                        if (entryExists)
+                        {
+                            prevAchieve = achievementsList.Where(x => x.achievementId == ach.achievementId).Single();
+                            //Debug.Log("(db) prev.aid : " + prevAchieve.achievementId + " islocked : " + prevAchieve.IsLocked);
+                        }
+                        else
+                        {
+                            prevAchieve = null;
+                        }
+                        // if entry exists and database locked != prefab locked
+                        if (entryExists && prevAchieve.IsLocked != ach.IsLocked)
+                        {
+                            Debug.Log(" (DB) entry doesnt = (prefab) entry");
+                            int achieveIsLocked; // default (1 ) ==  islocked = true
+                            if (ach.IsLocked)
+                            {
+                                achieveIsLocked = 1;
+                            }
+                            else
+                            {
+                                achieveIsLocked = 0;
+                            }
+
+                            // if entry is NOT in list of stats
+                            sqlQuery =
+                            "UPDATE " + achievementTableName + " SET islocked = " + achieveIsLocked + " WHERE aid = " + ach.achievementId;
+                        }
+                        if (!entryExists)
+                        {
+                            Debug.Log(" if (DB) entry doesnt exist, create");
+                            // entry, set to default value ( 0 ). 
+                            // 1 - unlocked, 0 - locked
+                            int unlockAchievement = 1;
+                            // if entry is NOT in list of stats
+                            sqlQuery =
+                            "Insert INTO " + achievementTableName + " ( aid, islocked) "
+                            + " Values( '" + ach.achievementId + "', '" + unlockAchievement + "')";
+                            // else update hbc count + prev.count
+                        }
+
+                        //// if entry exists and achievement is previously unlocked and needs to be locked 
+                        //if (entryExists && !prevAchieve.IsLocked && ach.IsLocked)
+                        //{
+                        //    int unlockAchievement = 1;
+                        //    // if entry is NOT in list of stats
+                        //    sqlQuery =
+                        //    "UPDATE " + achievementTableName + " SET islocked = " + unlockAchievement + " WHERE aid = " + ach.achievementId;
+                        //}
+
                         cmd.CommandText = sqlQuery;
                         cmd.ExecuteNonQuery();
                     }
