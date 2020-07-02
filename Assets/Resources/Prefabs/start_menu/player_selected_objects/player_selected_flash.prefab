@@ -72,4 +72,4 @@ MonoBehaviour:
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 'Unlock : Score 100 or more points at Avenue B'
+  unlockCharacterText: 

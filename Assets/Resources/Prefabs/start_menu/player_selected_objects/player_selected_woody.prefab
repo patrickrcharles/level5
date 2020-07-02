@@ -58,17 +58,17 @@ MonoBehaviour:
   speedStatFloor: 2
   speedStatCeiling: 6
   accuracy2pt: 90
-  accuracy3pt: 81
-  accuracy4pt: 83
-  accuracy7pt: 78
+  accuracy3pt: 80
+  accuracy4pt: 85
+  accuracy7pt: 85
   shooterProfilePrefabName: 
   jumpForce: 5.2
   speed: 3.5
   runSpeedHasBall: 3.5
   runSpeed: 3.5
   luck: 10
-  shootAngle: 45
+  shootAngle: 47
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 'Unlock : Score 100 or more points at Tammy''s'
+  unlockCharacterText: 
