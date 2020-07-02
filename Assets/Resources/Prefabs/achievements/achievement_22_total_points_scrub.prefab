@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ca5376fe30bbb4dad3fde99e6c5545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achievementId: 21
+  achievementId: 22
   achievementName: Still a scrub
   achievementDescription: score 5000 Total Points
   characterUnlock: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
   modeId: 0
   activationValueInt: 5000
   activationValueFloat: 0
-  activationValueProgressionInt: 0
+  activationValueProgressionInt: 647
   activationValueProgressionFloat: 0
   consecutive: 0
   count: 1

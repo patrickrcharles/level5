@@ -70,7 +70,7 @@ MonoBehaviour:
   playerRequiredToUseId: 6
   cheerleaderRequiredToUseId: 0
   levelRequiredToUseId: 0
-  modeRequiredToUseId: 0
+  modeRequiredToUseId: 1
   GREATER_THAN: 1
   LESS_THAN: 0
   EQUAL_TO: 0

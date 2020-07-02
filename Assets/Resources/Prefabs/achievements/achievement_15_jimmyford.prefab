@@ -55,7 +55,7 @@ MonoBehaviour:
   cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 500
+  activationValueInt: 125
   activationValueFloat: 0
   activationValueProgressionInt: 0
   activationValueProgressionFloat: 0
