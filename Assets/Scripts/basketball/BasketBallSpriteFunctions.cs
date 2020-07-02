@@ -45,60 +45,60 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     public void playSfxBasketballDribbling()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
+        audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
     }
 
     public void playSfxAlienWalking()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.alien_walk);
+        audioSource.PlayOneShot(SFXBB.instance.alien_walk);
     }
 
     public void playSfxGameChanger()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.gamechanger);
+        audioSource.PlayOneShot(SFXBB.instance.gamechanger);
     }
 
     public void playSfxCameraFlash()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
+        audioSource.PlayOneShot(SFXBB.instance.cameraFlash);
     }
 
     public void playSfxWerewolfHowl()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.werewolfHowl);
+        audioSource.PlayOneShot(SFXBB.instance.werewolfHowl);
     }
 
     public void playSfxWorkerParasite()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.worker_parasite);
+        audioSource.PlayOneShot(SFXBB.instance.worker_parasite);
     }
 
     public void playSfxAirHorn() 
     {
-        audioSource.PlayOneShot(SFXBB.Instance.airhorn);
+        audioSource.PlayOneShot(SFXBB.instance.airhorn);
     }
     public void playSfxLightningStrike()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.lightningStrike);
+        audioSource.PlayOneShot(SFXBB.instance.lightningStrike);
     }
 
     public void playSfxRimShot()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.rimShot);
+        audioSource.PlayOneShot(SFXBB.instance.rimShot);
     }
     public void playSfxKnockedDown()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.knockedDown);
+        audioSource.PlayOneShot(SFXBB.instance.knockedDown);
     }
 
     public void playSfxSkateGrind()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.skateGrind);
+        audioSource.PlayOneShot(SFXBB.instance.skateGrind);
     }
 
     public void playSfxGlitch()
     {
-        audioSource.PlayOneShot(SFXBB.Instance.glitch);
+        audioSource.PlayOneShot(SFXBB.instance.glitch);
     }
 
     public void enableAttackBox()

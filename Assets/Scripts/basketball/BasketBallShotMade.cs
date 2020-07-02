@@ -69,7 +69,7 @@ public class BasketBallShotMade : MonoBehaviour
             else { isColliding = true; }
 
 
-            audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
+            audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
             // add to total shot distance made total
             _basketBallStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);

@@ -44,7 +44,7 @@ public class BehaviorNpcCritical : MonoBehaviour
         yield return new WaitForSecondsRealtime(seconds);
        //Debug.Log("jessica take photo");
         anim.Play("critical_success");
-        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
+        audioSource.PlayOneShot(SFXBB.instance.cameraFlash);
     }
 
     private void playCriticalSuccessfulAnim()

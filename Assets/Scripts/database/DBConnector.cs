@@ -230,7 +230,7 @@ public class DBConnector : MonoBehaviour
             "count INTEGER );" +
 
             "CREATE TABLE Achievements(" +
-            "aid   INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "aid   INTEGER PRIMARY KEY, " +
             "charid   INTEGER," +
             "levelid   INTEGER," +
             "modeid    INTEGER," +

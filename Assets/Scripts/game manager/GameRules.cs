@@ -157,18 +157,21 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             //save if at leat 1 minte played
-            if (GameObject.Find("database") != null )//&& basketBallStats.TimePlayed > 60)
+            if (GameObject.Find("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
-                //Debug.Log(" game over save stats");
-                DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                // dont save free play game score
+                if (gameModeId != 13)
+                {
+                    DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                }
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.saveHitByCarGameStats();
-                DBConnector.instance.saveAchievementStats();
+                /*DBConnector.instance.saveAchievementStats()*/;
+                // check if achievements reached, send bball stats object
+                AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
+                    GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints, basketBallStats);
             }
 
-            // check if achievements reached, send bball stats object
-            AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId, 
-                GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints, basketBallStats);
 
             // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;

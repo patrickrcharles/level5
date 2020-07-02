@@ -416,11 +416,11 @@ public class DBHelper : MonoBehaviour
                         bool entryExists = achievementsList.Any(x => x.achievementId == ach.achievementId);
                         Achievement prevAchieve;
 
-                        //Debug.Log("(prefab) prev.aid : " + ach.achievementId + " islocked : " + ach.IsLocked);
+                        Debug.Log("(prefab) prev.aid : " + ach.achievementId + " islocked : " + ach.IsLocked);
                         if (entryExists)
                         {
                             prevAchieve = achievementsList.Where(x => x.achievementId == ach.achievementId).Single();
-                            //Debug.Log("(db) prev.aid : " + prevAchieve.achievementId + " islocked : " + prevAchieve.IsLocked);
+                            Debug.Log("(db) prev.aid : " + prevAchieve.achievementId + " islocked : " + prevAchieve.IsLocked);
                         }
                         else
                         {
@@ -430,6 +430,7 @@ public class DBHelper : MonoBehaviour
                         if (entryExists && prevAchieve.IsLocked != ach.IsLocked)
                         {
                             Debug.Log(" (DB) entry doesnt = (prefab) entry");
+                            Debug.Log("achieve id : " + ach.achievementId);
                             int achieveIsLocked; // default (1 ) ==  islocked = true
                             if (ach.IsLocked)
                             {
@@ -443,18 +444,22 @@ public class DBHelper : MonoBehaviour
                             // if entry is NOT in list of stats
                             sqlQuery =
                             "UPDATE " + achievementTableName + " SET islocked = " + achieveIsLocked + " WHERE aid = " + ach.achievementId;
+                            Debug.Log(sqlQuery);
                         }
                         if (!entryExists)
                         {
                             Debug.Log(" if (DB) entry doesnt exist, create");
+                            Debug.Log("achieve id : " + ach.achievementId);
                             // entry, set to default value ( 0 ). 
                             // 1 - unlocked, 0 - locked
                             int unlockAchievement = 1;
                             // if entry is NOT in list of stats
                             sqlQuery =
-                            "Insert INTO " + achievementTableName + " ( aid, islocked) "
-                            + " Values( '" + ach.achievementId + "', '" + unlockAchievement + "')";
+                            "Insert INTO " + achievementTableName + " ( islocked) "
+                            //+ " Values( '" + ach.achievementId + "', '" + unlockAchievement + "')";
+                            + " Values( '" + unlockAchievement + "')";
                             // else update hbc count + prev.count
+                            Debug.Log(sqlQuery);
                         }
 
                         //// if entry exists and achievement is previously unlocked and needs to be locked 

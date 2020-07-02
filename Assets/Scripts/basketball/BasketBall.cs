@@ -231,7 +231,7 @@ public class BasketBall : MonoBehaviour
             && !playerState.hasBasketball)
         {
             playHitRimSound = false;
-            audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
+            audioSource.PlayOneShot(SFXBB.instance.basketballHitRim);
             basketBallState.CanPullBall = true;
             basketBallState.Thrown = false;
             basketBallState.Locked = false;
@@ -249,13 +249,13 @@ public class BasketBall : MonoBehaviour
             //basketBallState.CanPullBall = true;
             basketBallState.Locked = false;
             basketBallState.Thrown = false;
-            audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
+            audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
         }
 
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence")
             && !playerState.hasBasketball)
         {
-            audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
+            audioSource.PlayOneShot(SFXBB.instance.basketballHitFence);
             basketBallState.CanPullBall = true;
             basketBallState.Thrown = false;
             basketBallState.Locked = false;
@@ -719,7 +719,6 @@ public class BasketBall : MonoBehaviour
 
     IEnumerator LaunchBasketBall()
     {
-        //Debug.Log("LaunchBasketBall()");
         // wait for shot meter to finish
         yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
         //launch ball to goal      
