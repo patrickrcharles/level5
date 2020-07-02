@@ -21,15 +21,17 @@ public class SFXBB : MonoBehaviour {
     public AudioClip knockedDown;
     public AudioClip skateGrind;
     public AudioClip glitch;
+
+    public AudioClip unlockAchievement;
     
 
     //public List<AudioClip> vanMusicPlayList;
 
-    public static SFXBB Instance;
+    public static SFXBB instance;
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
     }
 
     private void Start()
@@ -37,4 +39,8 @@ public class SFXBB : MonoBehaviour {
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
+    public void playSFX(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
+    }
 }
