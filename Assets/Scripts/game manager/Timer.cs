@@ -86,7 +86,7 @@ public class Timer : MonoBehaviour
         if (GameRules.instance.GameOver || timeRemaining <= 0)
         {
             displayTimer = false;
-            //timerText.text = "";
+            timerText.text = "";
         }
         // time's up, pause and reset timer text
         if (timeRemaining <= 0
@@ -108,14 +108,14 @@ public class Timer : MonoBehaviour
                 // not consecutive shots game mode
                 && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
-                Debug.Log("game over");
+                //Debug.Log("game over");
                 GameRules.instance.GameOver = true;
             }
             // if consecutive shots mode and streak is less than 2
             if ((GameRules.instance.GameModeRequiresConsecutiveShots
                 && BasketBallShotMade.instance.ConsecutiveShotsMade < 3))
             {
-                Debug.Log("game over");
+                //Debug.Log("game over");
                 GameRules.instance.GameOver = true;
             }
         }
@@ -125,15 +125,10 @@ public class Timer : MonoBehaviour
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }
 
-        if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining < 0 && !timerTextLocked)
-        {
-            timerTextLocked = true;
-            setCustomTimerText("OVERTIME");
-        }
-
-        //if (displayTimer && timerEnabled && modeRequiresCounter)
+        //if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining < 0 && !timerTextLocked)
         //{
-        //    timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+        //    timerTextLocked = true;
+        //    setCustomTimerText("OVERTIME");
         //}
     }
 
