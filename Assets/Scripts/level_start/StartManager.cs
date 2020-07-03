@@ -327,6 +327,12 @@ public class StartManager : MonoBehaviour
                 cl.IsLocked = tempAchieve.IsLocked;
                 cl.UnlockCharacterText = tempAchieve.AchievementDescription;
             }
+            // none selected
+            if(cl.CheerleaderId == 0)
+            {
+                cl.IsLocked = false;
+                cl.UnlockCharacterText = "";
+            }
         }
 
         if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
@@ -437,7 +443,7 @@ public class StartManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             StartScreenCheerleaderSelected temp = obj.GetComponentInChildren<StartScreenCheerleaderSelected>();
-            //Debug.Log(" temp : " + temp.name);
+            //Debug.Log(" temp : " + temp.UnlockCharacterText);
             cheerleaderSelectedData.Add(temp);
         }
         // sort list by  character id
