@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ special -----------------------------------
-        if ((InputManager.GetKeyDown(KeyCode.G))
+        if ((InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
             && !inAir
             && grounded
             && !KnockedDown)
