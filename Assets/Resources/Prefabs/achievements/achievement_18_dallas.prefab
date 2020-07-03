@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 18
   achievementName: unlock Dallas
-  achievementDescription: ???
+  achievementDescription: score 500 points with 2pz
   characterUnlock: 0
   cheerleaderUnlock: 1
   levelUnlock: 0

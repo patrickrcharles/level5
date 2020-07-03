@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840828638710515928}
   - component: {fileID: 840828638710515931}
   m_Layer: 0
-  m_Name: achievement_25_test2
+  m_Name: achievement_25_total_points_level5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementId: 25
-  achievementName: test2
-  achievementDescription: score 10000 Total Points
+  achievementName: Not bad
+  achievementDescription: score 50000 Total Points
   characterUnlock: 0
   cheerleaderUnlock: 0
   levelUnlock: 0
@@ -55,9 +55,9 @@ MonoBehaviour:
   cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 15
+  activationValueInt: 50000
   activationValueFloat: 0
-  activationValueProgressionInt: 0
+  activationValueProgressionInt: 647
   activationValueProgressionFloat: 0
   consecutive: 0
   count: 1

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840828638710515928}
   - component: {fileID: 840828638710515931}
   m_Layer: 0
-  m_Name: achievement_24_test
+  m_Name: achievement_24_total_points_tite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementId: 24
-  achievementName: test
-  achievementDescription: score 10000 Total Points
+  achievementName: pretty good
+  achievementDescription: score 25000 Total Points
   characterUnlock: 0
   cheerleaderUnlock: 0
   levelUnlock: 0
@@ -55,13 +55,13 @@ MonoBehaviour:
   cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 10
+  activationValueInt: 25000
   activationValueFloat: 0
-  activationValueProgressionInt: 0
+  activationValueProgressionInt: 647
   activationValueProgressionFloat: 0
   consecutive: 0
   count: 1
-  isProgressiveCount: 0
+  isProgressiveCount: 1
   isProgressiveTime: 0
   time: 0
   three: 0

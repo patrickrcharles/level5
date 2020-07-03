@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 20
   achievementName: unlock Amber
-  achievementDescription: ???
+  achievementDescription: score 500 points with Worker and Parasite
   characterUnlock: 0
   cheerleaderUnlock: 1
   levelUnlock: 0

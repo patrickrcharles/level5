@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 19
   achievementName: unlock Worker and Parasite
-  achievementDescription: ???
+  achievementDescription: score 500 points with Dallas
   characterUnlock: 0
   cheerleaderUnlock: 1
   levelUnlock: 0

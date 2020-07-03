@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 14
   achievementName: unlock Sam
-  achievementDescription: 'score 175 points '
+  achievementDescription: score 200 points on In The Pocket
   characterUnlock: 1
   cheerleaderUnlock: 0
   levelUnlock: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
   cheerleaderId: 0
   levelId: 0
   modeId: 0
-  activationValueInt: 175
+  activationValueInt: 200
   activationValueFloat: 0
   activationValueProgressionInt: 0
   activationValueProgressionFloat: 0
@@ -74,4 +74,4 @@ MonoBehaviour:
   GREATER_THAN: 1
   LESS_THAN: 0
   EQUAL_TO: 0
-  isLocked: 1
+  isLocked: 0
