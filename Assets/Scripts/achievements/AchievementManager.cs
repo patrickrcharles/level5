@@ -74,6 +74,7 @@ public class AchievementManager : MonoBehaviour
             if (ach.IsLocked)
             {
                 ach.checkUnlockConditions(pid, cid, lid, mid, activateValue, basketBallStats);
+
                 // if achievement is unlocked
                 if (!ach.IsLocked)
                 {

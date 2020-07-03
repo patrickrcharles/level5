@@ -107,7 +107,7 @@ public class Achievement : MonoBehaviour
         {
             if (count && !isProgressiveCount)
             {
-                if (checkPlayerUnlockConditions(playerId, lid, mid, ref condition1, ref condition2, ref condition3)
+                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3)
                     && checkActivateValue(activateValue))
                 {
                     isLocked = false;
@@ -116,7 +116,7 @@ public class Achievement : MonoBehaviour
             // other unlock : if requires count but is progressive counter
             if (count && isProgressiveCount)
             {
-                if (checkPlayerUnlockConditions(playerId, lid, mid, ref condition1, ref condition2, ref condition3))            
+                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3))            
                 {
                     // if progressive activate value reached
                     if (checkActivateValueProgressive(activateValue))
@@ -168,7 +168,7 @@ public class Achievement : MonoBehaviour
             // cheerleader unlock :  if requires count but isnt progressive counter
             if (count && !isProgressiveCount)
             {
-                if (checkPlayerUnlockConditions(playerId, lid, mid, ref condition1, ref condition2, ref condition3)
+                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3)
                     && checkActivateValue(activateValue))
                 {
                     isLocked = false;
@@ -295,12 +295,6 @@ public class Achievement : MonoBehaviour
         {
             condition1 = true;
         }
-        // if requires specific cheerleader, this points to a cid
-        if (pid == cheerleaderRequiredToUseId && !condition1 && characterUnlock)
-        {
-            condition1 = true;
-        }
-
         if (lid == levelRequiredToUseId && !condition2)
         {
             condition2 = true;
