@@ -82,7 +82,10 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         hitByCars = new List<HitByCar>();
-        loadStatsFromDatabase();
+        if (GameObject.Find("database") != null)
+        {
+            loadStatsFromDatabase();
+        }
     }
 
     public void AddHitByCarInstanceToList(int vehId)
@@ -342,7 +345,7 @@ public class PlayerData : MonoBehaviour
         _makeThreePointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 10, "ASC");
         _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC");
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
-        LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 13, "DESC");
+        LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByField("AllTimeStats", "longestShot", "DESC");
         _mostConsecutiveShots = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "consecutiveShots", 14, "DESC");
 
         //Debug.Log(" Playerdata freeplay long : " + PlayerData.instance.LongestShotMadeFreePlay);

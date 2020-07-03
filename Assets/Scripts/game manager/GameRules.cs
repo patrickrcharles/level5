@@ -345,6 +345,8 @@ public class GameRules : MonoBehaviour
             {
                 //PlayerData.instance.saveStats();
                 PlayerData.instance.LongestShotMadeFreePlay = BasketBall.instance.BasketBallStats.LongestShotMade;
+                // save to db
+                DBHelper.instance.updateFloatValueByTableAndField("AllTimeStats", "longestShot", PlayerData.instance.LongestShotMadeFreePlay);
             }
         }
         if (gameModeId == 14)

@@ -303,7 +303,7 @@ public class DBHelper : MonoBehaviour
         {
             sqlQuery =
            "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-           "sevenAtt, totalPoints moneyBallMade, moneyBallAtt, totalDistance, timePlayed)  " +
+           "sevenAtt, totalPoints moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot)  " +
            "Values( '" +
            stats.TwoPointerMade + "', '" +
            stats.TwoPointerAttempts + "', '" +
@@ -317,7 +317,8 @@ public class DBHelper : MonoBehaviour
            stats.MoneyBallMade + "','" +
            stats.MoneyBallAttempts + "','" +
            stats.TotalDistance + "','" +
-           stats.TimePlayed + "')";
+           stats.TimePlayed + "," +
+           stats.LongestShotMade + "')";
         }
         else
         {
@@ -397,8 +398,6 @@ public class DBHelper : MonoBehaviour
 
     internal void UpdateAchievementStats()
     {
-        Debug.Log("UpdateAchievementStats()");
-
         List<Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
@@ -416,11 +415,11 @@ public class DBHelper : MonoBehaviour
                         bool entryExists = achievementsList.Any(x => x.achievementId == ach.achievementId);
                         Achievement prevAchieve;
 
-                        Debug.Log("(prefab) prev.aid : " + ach.achievementId + " islocked : " + ach.IsLocked);
+                        //Debug.Log("(prefab) prev.aid : " + ach.achievementId + " islocked : " + ach.IsLocked);
                         if (entryExists)
                         {
                             prevAchieve = achievementsList.Where(x => x.achievementId == ach.achievementId).Single();
-                            Debug.Log("(db) prev.aid : " + prevAchieve.achievementId + " islocked : " + prevAchieve.IsLocked);
+                            //Debug.Log("(db) prev.aid : " + prevAchieve.achievementId + " islocked : " + prevAchieve.IsLocked);
                         }
                         else
                         {
@@ -429,8 +428,8 @@ public class DBHelper : MonoBehaviour
                         // if entry exists and database locked != prefab locked
                         if (entryExists && prevAchieve.IsLocked != ach.IsLocked)
                         {
-                            Debug.Log(" (DB) entry doesnt = (prefab) entry");
-                            Debug.Log("achieve id : " + ach.achievementId);
+                            //Debug.Log(" (DB) entry doesnt = (prefab) entry");
+                            //Debug.Log("achieve id : " + ach.achievementId);
                             int achieveIsLocked; // default (1 ) ==  islocked = true
                             if (ach.IsLocked)
                             {
@@ -444,33 +443,19 @@ public class DBHelper : MonoBehaviour
                             // if entry is NOT in list of stats
                             sqlQuery =
                             "UPDATE " + achievementTableName + " SET islocked = " + achieveIsLocked + " WHERE aid = " + ach.achievementId;
-                            Debug.Log(sqlQuery);
                         }
                         if (!entryExists)
                         {
-                            Debug.Log(" if (DB) entry doesnt exist, create");
-                            Debug.Log("achieve id : " + ach.achievementId);
+                            //Debug.Log(" if (DB) entry doesnt exist, create");
+                            //Debug.Log("achieve id : " + ach.achievementId);
                             // entry, set to default value ( 0 ). 
                             // 1 - unlocked, 0 - locked
                             int unlockAchievement = 1;
                             // if entry is NOT in list of stats
                             sqlQuery =
                             "Insert INTO " + achievementTableName + " ( islocked) "
-                            //+ " Values( '" + ach.achievementId + "', '" + unlockAchievement + "')";
                             + " Values( '" + unlockAchievement + "')";
-                            // else update hbc count + prev.count
-                            Debug.Log(sqlQuery);
                         }
-
-                        //// if entry exists and achievement is previously unlocked and needs to be locked 
-                        //if (entryExists && !prevAchieve.IsLocked && ach.IsLocked)
-                        //{
-                        //    int unlockAchievement = 1;
-                        //    // if entry is NOT in list of stats
-                        //    sqlQuery =
-                        //    "UPDATE " + achievementTableName + " SET islocked = " + unlockAchievement + " WHERE aid = " + ach.achievementId;
-                        //}
-
                         cmd.CommandText = sqlQuery;
                         cmd.ExecuteNonQuery();
                     }
@@ -485,7 +470,6 @@ public class DBHelper : MonoBehaviour
 
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
     {
-        //Debug.Log("getListOfAllValuesFromTableByField()");
         List<int> listOfValues = new List<int>();
         int value;
 
@@ -683,6 +667,67 @@ public class DBHelper : MonoBehaviour
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
             + " WHERE modeid = " + modeid + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetFloat(0);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order)
+    {
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+        float value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT " + field + " FROM " + tableName
+            + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetFloat(0);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    // return string from specified table by field and userid
+    public float updateFloatValueByTableAndField(String tableName, String field, float value)
+    {
+        Debug.Log("save to db: " + tableName + "  " + field + "  " + value);
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // if entry is NOT in list of stats
+        string sqlQuery =
+        "UPDATE " + tableName + " SET "+ field + " = " + value ;
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();

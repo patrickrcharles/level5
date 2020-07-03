@@ -222,6 +222,7 @@ public class DBConnector : MonoBehaviour
             "moneyBallAtt  INTEGER, " +
             "totalPoints  INTEGER, " +
             "totalDistance REAL, " +
+            "longestShot REAL, " +
             "timePlayed    REAL);" +
 
             "CREATE TABLE if not exists HitByCar( " +
