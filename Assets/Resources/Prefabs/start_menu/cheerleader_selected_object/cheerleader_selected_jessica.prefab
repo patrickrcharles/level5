@@ -373,3 +373,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}

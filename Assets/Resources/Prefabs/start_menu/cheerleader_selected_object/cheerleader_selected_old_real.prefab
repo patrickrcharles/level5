@@ -132,7 +132,7 @@ MonoBehaviour:
   cheerleaderProfileObject: {fileID: 0}
   isLocked: 1
   cheerleaderId: 2
-  unlockCharacterText: ???
+  unlockCharacterText: 
 --- !u!1 &2100797018209523526
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}
 --- !u!114 &338368355511763100
 MonoBehaviour:
   m_ObjectHideFlags: 0

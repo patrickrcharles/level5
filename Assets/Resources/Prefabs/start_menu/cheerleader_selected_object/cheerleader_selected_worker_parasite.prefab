@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}
 --- !u!114 &1852105985241177687
 MonoBehaviour:
   m_ObjectHideFlags: 0
