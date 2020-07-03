@@ -29,6 +29,8 @@ public class Pause : MonoBehaviour
     private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
 
+    GameObject controlsObject;
+
     public static Pause instance;
 
     void Awake()
@@ -43,6 +45,13 @@ public class Pause : MonoBehaviour
         loadSceneButton = GameObject.Find("load_scene").GetComponent<Button>();
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
+
+        controlsObject = GameObject.Find("controls");
+
+        if(controlsObject != null)
+        {
+            controlsObject.SetActive(false);
+        }
 
        
         // if game active, disable pause
@@ -81,6 +90,12 @@ public class Pause : MonoBehaviour
             TogglePause();
         }
         //==========================================================
+
+        //disable cotnrols display if game over
+        if (GameRules.instance.GameOver)
+        {
+            controlsObject.SetActive(false);
+        }
 
         // if paused, show pause menu
         if (paused)
@@ -173,6 +188,7 @@ public class Pause : MonoBehaviour
         loadSceneButton.enabled = value;
         loadStartScreenButton.enabled = value;
         quitGameButton.enabled = value;
+        controlsObject.SetActive(value);
     }
 
 
@@ -187,7 +203,7 @@ public class Pause : MonoBehaviour
             setPauseScreen(false);
             resumeAllAudio();
 
-            return (false);
+            return false;
         }
         else
         {
@@ -199,7 +215,7 @@ public class Pause : MonoBehaviour
             setBackgroundFade(true);
             setPauseScreen(true);
 
-            return (true);
+            return true;
         }
     }
 
