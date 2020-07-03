@@ -66,6 +66,7 @@ public class AchievementManager : MonoBehaviour
     {
         //List<string> achieveUnlockedList = new List<string>();
         string achText = "";
+        bool achUnlocked = false;
         foreach (Achievement ach in AchievementList)
         {
           
@@ -78,10 +79,14 @@ public class AchievementManager : MonoBehaviour
                 {
                     //achieveUnlockedList.Add(ach.achievementName);
                     achText += "\n" + ach.achievementName;
+                    achUnlocked = true;
                 }
             }           
         }
-        StartCoroutine(displayAchievementUnlockNotification(5, achText));
+        if (achUnlocked)
+        {
+            StartCoroutine(displayAchievementUnlockNotification(5, achText));
+        }
 
         //foreach (string s  in achieveUnlockedList)
         //{
