@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}
 --- !u!1 &1250227082854108154
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,8 +509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 16
-  playerDisplayName: Jimmy Ford
-  playerObjectName: jimmy_ford
+  playerDisplayName: sam
+  playerObjectName: sam
   playerPortrait: {fileID: 0}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
