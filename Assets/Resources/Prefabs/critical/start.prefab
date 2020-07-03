@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 589, y: -783}
-  m_SizeDelta: {x: 800, y: 100}
+  m_SizeDelta: {x: 1200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1636661337
 CanvasRenderer:
@@ -80,7 +80,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'this whatever is locked '
+  m_Text: 
 --- !u!114 &1636661335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,8 +220,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Unlock : Make 100 whatever on this level Unlock Make 100 whatever on this
-    level'
+  m_Text: 
 --- !u!114 &1761961177948023383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Minion : '
+  m_Text: 'friend :'
 --- !u!114 &6549862006069184979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2377,7 +2376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 334, y: 0}
+  m_AnchoredPosition: {x: 331, y: 0}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8951612363019090422
@@ -2613,7 +2612,6 @@ MonoBehaviour:
   cheerleaderSelectedData: []
   levelSelectedData: []
   modeSelectedData: []
-  playerSelectUnlockText: {fileID: 0}
   cheerleaderSelectUnlockText: {fileID: 0}
   playerSelectedIsLockedObject: {fileID: 0}
   cheerleaderSelectedIsLockedObject: {fileID: 0}
