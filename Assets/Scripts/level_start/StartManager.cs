@@ -337,10 +337,13 @@ public class StartManager : MonoBehaviour
 
         if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
+            Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId);
             // disable text and unlock text
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             cheerleaderSelectedIsLockedObject.SetActive(true);
-            cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText;
+            cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText
+                + "\nprogress " + tempAchieve.ActivationValueProgressionInt 
+                + " / " + tempAchieve.ActivationValueInt;
         }
         else
         {
@@ -390,10 +393,14 @@ public class StartManager : MonoBehaviour
 
         if (playerSelectedData[playerSelectedIndex].IsLocked)
         {
+            // find achievement that unlocks player
+            //Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == playerSelectedData[playerSelectedIndex].PlayerId);
             // disable text and unlock text
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             playerSelectedIsLockedObject.SetActive(true);
             playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
+                // find achievement by player id
+               // + "\nprogress : " + tempAchieve.ActivationValueProgressionInt;
         }
         else
         {

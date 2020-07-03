@@ -81,6 +81,10 @@ public class Achievement : MonoBehaviour
     public bool IsLocked { get => isLocked; set => isLocked = value; }
     public string AchievementDescription { get => achievementDescription; set => achievementDescription = value; }
     public int CheerleaderId { get => cheerleaderId; set => cheerleaderId = value; }
+    public int ActivationValueInt { get => activationValueInt; set => activationValueInt = value; }
+    public int ActivationValueProgressionInt { get => activationValueProgressionInt; set => activationValueProgressionInt = value; }
+    public float ActivationValueFloat { get => activationValueFloat; set => activationValueFloat = value; }
+    public float ActivationValueProgressionFloat { get => activationValueProgressionFloat; set => activationValueProgressionFloat = value; }
 
     // new achievement object
     public Achievement(int aid, int islockedValue)
@@ -168,7 +172,7 @@ public class Achievement : MonoBehaviour
             // cheerleader unlock :  if requires count but isnt progressive counter
             if (count && !isProgressiveCount)
             {
-                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3)
+                if (checkPlayerUnlockConditions(playerId, lid, mid, ref condition1, ref condition2, ref condition3)
                     && checkActivateValue(activateValue))
                 {
                     isLocked = false;
