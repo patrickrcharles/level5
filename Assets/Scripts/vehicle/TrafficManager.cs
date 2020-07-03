@@ -197,7 +197,7 @@ public class TrafficManager : MonoBehaviour
                 v.FacingRight = true;
                 // set target to correct vector3
                 v.CurrentTarget = GameObject.Find(eastBoundRightText).transform.position;
-                VectorToAddToSpawn += new Vector3((-5 * vehicleIndex), 0, 0);
+                VectorToAddToSpawn += new Vector3((-7 * vehicleIndex), 0, 0);
                 Instantiate(v, (_vehicleSpawnLeftPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
             }
             else
@@ -207,7 +207,7 @@ public class TrafficManager : MonoBehaviour
                 v.FacingRight = false;
                 // set target to vector3
                 v.CurrentTarget = GameObject.Find(westBoundLeftText).transform.position;
-                VectorToAddToSpawn += new Vector3((5 * vehicleIndex), 0, 0);
+                VectorToAddToSpawn += new Vector3((7 * vehicleIndex), 0, 0);
                 Instantiate(v, (_vehicleSpawnRightPosition.transform.position + VectorToAddToSpawn), Quaternion.identity);
             }
             vehicleIndex++;
