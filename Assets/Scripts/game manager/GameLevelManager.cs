@@ -80,12 +80,16 @@ public class GameLevelManager : MonoBehaviour
             Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
         // cheerleader doesnt exists
-        if (GameObject.FindWithTag("cheerleader") == null && GameOptions.cheerleaderObjectName != null)
+        if (GameObject.FindWithTag("cheerleader") == null 
+            && GameOptions.cheerleaderObjectName != null)
         {
             string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
 
-            Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
+            if (_cheerleaderClone != null)
+            {
+                Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
+            }
         }
 
         BasketballObject = GameObject.FindWithTag("basketball");
