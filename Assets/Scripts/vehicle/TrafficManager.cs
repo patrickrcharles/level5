@@ -44,25 +44,32 @@ public class TrafficManager : MonoBehaviour
     [SerializeField]
     bool customVehicles;
 
+    bool trafficEnabled;
+
     public static TrafficManager instance;
 
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
-        // get spawn points
-        _vehicleSpawnLeftPosition = GameObject.FindGameObjectWithTag(spawnLeftTag);
-        _vehicleSpawnRightPosition = GameObject.FindGameObjectWithTag(spawnRightTag);
 
-        // if vehicleslist is manually created
-        if (customVehicles)
+        // if traffic enabled
+        if (GameOptions.trafficEnabled)
         {
-            loadCustomVehiclePrefabs();
-        }
-        // else, load prefabs from folder
-        else
-        {
-            loadVehiclePrefabs();
+            // get spawn points
+            _vehicleSpawnLeftPosition = GameObject.FindGameObjectWithTag(spawnLeftTag);
+            _vehicleSpawnRightPosition = GameObject.FindGameObjectWithTag(spawnRightTag);
+
+            // if vehicleslist is manually created
+            if (customVehicles)
+            {
+                loadCustomVehiclePrefabs();
+            }
+            // else, load prefabs from folder
+            else
+            {
+                loadVehiclePrefabs();
+            }
         }
     }
 
@@ -234,6 +241,6 @@ public class TrafficManager : MonoBehaviour
     }
 
     public List<VehicleController> VehiclesList { get => _vehiclesList; }
-
     public List<GameObject> VehiclesPrefabsList { get => _vehiclesPrefabsList; }
+    public bool TrafficEnabled { get => trafficEnabled; set => trafficEnabled = value; }
 }

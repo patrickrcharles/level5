@@ -53,6 +53,10 @@ public class StartManager : MonoBehaviour
     private Text modeSelectOptionText;
     private Text ModeSelectOptionDescriptionText;
 
+
+    //traffic
+    private Text trafficSelectOptionText;
+
     //player objects
     private const string startButtonName = "press_start";
     private const string playerSelectButtonName = "player_select";
@@ -79,6 +83,12 @@ public class StartManager : MonoBehaviour
     private const string modeSelectButtonName = "mode_select";
     private const string modeSelectOptionButtonName = "mode_selected_name";
     private const string modeSelectDescriptionObjectName = "mode_selected_description";
+
+    //traffic objects
+    private const string trafficSelectButtonName = "traffic_select";
+    private const string trafficSelectOptionName = "traffic_select_option";
+    [SerializeField]
+    private bool trafficEnabled;
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -108,6 +118,8 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
         cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
+        trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
+
         //default index for player selected
         playerSelectedIndex = 0;
         cheerleaderSelectedIndex = 0;
@@ -116,6 +128,7 @@ public class StartManager : MonoBehaviour
 
         loadPlayerSelectDataList();
         loadCheerleaderSelectDataList();
+        initializeTrafficOptionDisplay();
         loadLevelSelectDataList();
         loadModeSelectDataList();
 
@@ -181,11 +194,15 @@ public class StartManager : MonoBehaviour
             //Debug.Log("pressed enter");
             loadScene();
         }
+
+        // ================================== navigation =====================================================================
+
         // up arrow navigation
         if (InputManager.GetKeyDown(KeyCode.UpArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(trafficSelectOptionName))
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnUp().gameObject);
@@ -195,12 +212,12 @@ public class StartManager : MonoBehaviour
         if (InputManager.GetKeyDown(KeyCode.DownArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(trafficSelectOptionName))
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnDown().gameObject);
         }
-
 
         // right arrow on player select
         if (InputManager.GetKeyDown(KeyCode.RightArrow))
@@ -218,6 +235,11 @@ public class StartManager : MonoBehaviour
                     .GetComponent<Button>().FindSelectableOnRight().gameObject);
             }
             if (currentHighlightedButton.Equals(cheerleaderSelectButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+            }
+            if (currentHighlightedButton.Equals(trafficSelectButtonName))
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                     .GetComponent<Button>().FindSelectableOnRight().gameObject);
@@ -240,6 +262,11 @@ public class StartManager : MonoBehaviour
                     .GetComponent<Button>().FindSelectableOnLeft().gameObject);
             }
             if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                     .GetComponent<Button>().FindSelectableOnLeft().gameObject);
@@ -269,9 +296,13 @@ public class StartManager : MonoBehaviour
             }
             if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
             {
-
                 changeSelectedCheerleaderUp();
                 initializeCheerleaderDisplay();
+            }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
+            {
+                changeSelectedTrafficOption();
+                initializeTrafficOptionDisplay();
             }
         }
 
@@ -299,7 +330,29 @@ public class StartManager : MonoBehaviour
                 changeSelectedCheerleaderDown();
                 initializeCheerleaderDisplay();
             }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
+            {
+                changeSelectedTrafficOption();
+                initializeTrafficOptionDisplay();
+            }
         }
+    }
+
+    private void initializeTrafficOptionDisplay()
+    {
+        if (trafficEnabled)
+        {
+            trafficSelectOptionText.text = "ON";
+        }
+        if (!trafficEnabled)
+        {
+            trafficSelectOptionText.text = "OFF";
+        }
+    }
+
+    private void changeSelectedTrafficOption()
+    {
+        trafficEnabled = !trafficEnabled;
     }
 
     private void initializeLevelDisplay()
@@ -712,6 +765,8 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderDisplayName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
         GameOptions.cheerleaderId = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId;
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
+
+        GameOptions.trafficEnabled = trafficEnabled;
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;

@@ -149,9 +149,15 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
+        int trafficEnabled = 0;
+        if (GameOptions.trafficEnabled)
+        {
+            trafficEnabled = 1;
+        }
+
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots )  " +
+           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled )  " +
            "Values( '" + GameOptions.gameModeSelected
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
@@ -166,7 +172,8 @@ public class DBHelper : MonoBehaviour
            + "','" + stats.TotalDistance + "','"
            + stats.ShotMade + "','"
            + stats.ShotAttempt + "','"
-           + stats.MostConsecutiveShots + "')";
+           + stats.MostConsecutiveShots + "','"
+           + trafficEnabled + "')";
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();

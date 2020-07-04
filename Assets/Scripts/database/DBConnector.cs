@@ -207,7 +207,8 @@ public class DBConnector : MonoBehaviour
             "totalDistance REAL, " +
             "maxShotMade   INTEGER, " +
             "maxShotAtt    INTEGER, " +
-            "consecutiveShots   INTEGER); " +
+            "consecutiveShots   INTEGER" +
+            "trafficEnabled	INTEGER); " +
 
             "CREATE TABLE if not exists AllTimeStats(" +
             "twoMade   INTEGER, " +

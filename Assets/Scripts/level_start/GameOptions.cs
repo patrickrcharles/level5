@@ -56,6 +56,8 @@ public  class GameOptions : MonoBehaviour
 
     static public bool gameModeRequiresConsecutiveShot;
 
+    static public bool trafficEnabled;
+
     //static public int level;
     //static public int experience;
     //static public decimal money;
