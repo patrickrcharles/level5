@@ -500,7 +500,7 @@ public class PlayerControllerAutoPlay : MonoBehaviour
         walkMovementSpeed = shooterProfile.Speed;
         basketballRunSpeed = shooterProfile.RunSpeed;
         jumpForce = shooterProfile.JumpForce;
-        gravityModifier = shooterProfile.HangTime;
+        //gravityModifier = shooterProfile.HangTime;
         _angle = shooterProfile.ShootAngle;
     }
     public bool grounded

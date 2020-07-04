@@ -125,7 +125,7 @@ public class CameraManager : MonoBehaviour
             currentCameraIndex = 0;
             //Debug.Log("     if (currentCameraIndex >= numberOfCameras)");
         }
-        Debug.Log(" --------------------------------------------------- currentCameraIndex : " + currentCameraIndex);
+        //Debug.Log(" --------------------------------------------------- currentCameraIndex : " + currentCameraIndex);
         // set next camera active based on incremented index
         // set other cameras inactive
         for (int i = 0; i < numberOfCameras; i++)
