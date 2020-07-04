@@ -42,12 +42,6 @@ public class PlayerCollisions : MonoBehaviour
                 playerAvoidKnockDown(other.gameObject);
             }
         }
-        // if attack box hits vehicle or npc
-        if ((gameObject.CompareTag("attack_box") && other.CompareTag("vehicle") )
-            || (gameObject.CompareTag("attack_box") && other.CompareTag("auto_npc")) )
-        {
-            TestText.instance.setText(" collsion between "+ gameObject.name + "  and "+ other.gameObject.name);
-        }
     }
 
     void playerKnockedDown( GameObject playerKnockedDown)
