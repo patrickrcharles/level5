@@ -41,7 +41,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         // timer is 2 minutes
-        timeStart = 20;
+        timeStart = 120;
 
         // mode 7 is free play. this turns off timer
         //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
