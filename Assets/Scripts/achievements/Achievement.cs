@@ -85,11 +85,15 @@ public class Achievement : MonoBehaviour
     public int ActivationValueProgressionInt { get => activationValueProgressionInt; set => activationValueProgressionInt = value; }
     public float ActivationValueFloat { get => activationValueFloat; set => activationValueFloat = value; }
     public float ActivationValueProgressionFloat { get => activationValueProgressionFloat; set => activationValueProgressionFloat = value; }
+    public bool Count { get => count; set => count = value; }
+    public bool IsProgressiveCount { get => isProgressiveCount; set => isProgressiveCount = value; }
 
     // new achievement object
-    public Achievement(int aid, int islockedValue)
+    public Achievement(int aid,int activateInt, int progressValue, int islockedValue)
     {
         achievementId = aid;
+        activationValueInt = activateInt;
+        activationValueProgressionInt = progressValue;
         if (islockedValue == 1)
         {
             IsLocked = true;

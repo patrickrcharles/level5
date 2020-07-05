@@ -1,4 +1,4 @@
-﻿using UnityEditor.iOS;
+﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static TeamUtility.IO.InputManager;
