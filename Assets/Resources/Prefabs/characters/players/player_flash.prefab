@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBox: {fileID: 0}
+  hitBox: {fileID: 0}
 --- !u!1 &3760319889797994434
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +342,7 @@ MonoBehaviour:
   playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _knockDownTime: 1
+  _knockDownTime: 0
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
