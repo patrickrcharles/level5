@@ -44,6 +44,11 @@ public class AchievementManager : MonoBehaviour
 
         NotificationObject.SetActive(false);
 
+        
+    }
+
+    private void Start()
+    {
         loadAchievements();
     }
 
@@ -57,19 +62,21 @@ public class AchievementManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             Achievement temp = obj.GetComponent<Achievement>();
+            // update with database values
+            temp.ActivationValueInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_int", temp.achievementId);
+            temp.ActivationValueProgressionInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_progress_int", temp.achievementId);
             AchievementList.Add(temp);
         }
+
         ListCreated = true;
     }
 
     public void checkAllAchievements(int pid, int cid, int lid, int mid, int activateValue, BasketBallStats basketBallStats)
     {
-        //List<string> achieveUnlockedList = new List<string>();
         string achText = "";
         bool achUnlocked = false;
         foreach (Achievement ach in AchievementList)
-        {
-          
+        {         
             // if achievement is locked
             if (ach.IsLocked)
             {

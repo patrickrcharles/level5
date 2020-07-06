@@ -286,6 +286,7 @@ public class DBHelper : MonoBehaviour
                 int activateInt;
                 int progressInt;
                 //Debug.Log(" reader.GetInt32(1) : " + reader.GetInt32(0) + " reader.GetInt32(2) : " + reader.GetInt32(1));
+
                 int aid = reader.GetInt32(0);
                 // check for null activate value
                 if (reader.IsDBNull(1))
@@ -306,7 +307,7 @@ public class DBHelper : MonoBehaviour
                     progressInt = reader.GetInt32(2);
                 }
                 int islocked = reader.GetInt32(3);
-                //Debug.Log("db prgress : " + progressInt);
+                //Debug.Log("db aid" + aid + " islocked : " + islocked);
 
                 achieveStats.Add(new Achievement(aid, activateInt, progressInt, islocked));
             }
@@ -427,11 +428,10 @@ public class DBHelper : MonoBehaviour
         //reset list of hit by cars
         PlayerData.instance.hitByCars.Clear();
     }
-
+    // this is a mess. needs to be redone and split into functions
     internal void UpdateAchievementStats()
     {
-        // need to save/ load data to database
-
+        Debug.Log("    internal void UpdateAchievementStats()");
         List<Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
@@ -444,85 +444,70 @@ public class DBHelper : MonoBehaviour
                 using (SqliteCommand cmd = dbconn.CreateCommand())
                 {
                     cmd.Transaction = tr;
-                    foreach (Achievement ach in AchievementManager.instance.AchievementList)
+                    foreach (Achievement prefabAchievement in AchievementManager.instance.AchievementList)
                     {
-                        bool entryExists = achievementsList.Any(x => x.achievementId == ach.achievementId);
-                        Achievement prevAchieve;
-                        //if (entryExists)
-                        //{
-                        //    Debug.Log("aid : " + ach.achievementId + " exists : " + entryExists + " activaevalue_int : "+ ach.ActivationValueInt);
-                        //}
+                        bool entryExists = achievementsList.Any(x => x.achievementId == prefabAchievement.achievementId);
+                        Achievement databaseAchievement;
 
                         if (entryExists)
                         {
-                            //get object
-                            prevAchieve = achievementsList.Where(x => x.achievementId == ach.achievementId).Single();
+                            //get achievement ddatabase object to update
+                            databaseAchievement = achievementsList.Where(x => x.achievementId == prefabAchievement.achievementId).Single();
 
-                            int achieveIsLocked; // default (1 ) ==  islocked = true
-                            // if this achievement has been unlocked 
-                            if (!ach.IsLocked && prevAchieve.IsLocked)
+                            // if db is unlocked and current ISNT
+                            if (databaseAchievement.IsLocked && !prefabAchievement.IsLocked)
                             {
-                                achieveIsLocked = 0;
-                                // if entry IS in list of stats
-                                sqlQuery =
-                                "UPDATE " + achievementTableName + " SET islocked = " + achieveIsLocked
-                                + " WHERE aid = " + ach.achievementId;
-                                Debug.Log(sqlQuery);
+                                prefabAchievement.IsLocked = true;
                             }
-                            // if db is unlocked and current isnt
-                            if (!prevAchieve.IsLocked && ach.IsLocked)
+                            // if db is NOT unlocked and current IS. this a course correction. DB value takes precedent
+                            if (!databaseAchievement.IsLocked && prefabAchievement.IsLocked)
                             {
-                                ach.IsLocked = false;
+                                prefabAchievement.IsLocked = false;
                             }
 
-                            // if this achievement is still LOCKED but is a progressive count, and current value > db value ;update progression
-                            if (ach.IsLocked && prevAchieve.IsLocked
-                                && ach.IsProgressiveCount)
+                            // if this achievement is LOCKED but is a progressive count, and current value > db value ;update progression
+                            if (prefabAchievement.IsLocked && databaseAchievement.IsLocked
+                                && prefabAchievement.IsProgressiveCount)
                             {
-                                // if needs to pudate progression value
-                                if (ach.ActivationValueProgressionInt > prevAchieve.ActivationValueProgressionInt)
-                                {
-                                    // if entry IS in list of stats
-                                    sqlQuery =
-                                    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + ach.ActivationValueProgressionInt
-                                    + " WHERE aid = " + ach.achievementId;
-                                    Debug.Log(sqlQuery);
-                                }
-                                if (prevAchieve.ActivationValueProgressionInt == 0 && ach.ActivationValueProgressionInt == 0)
+                                // if needs to update progression value
+                                if (prefabAchievement.ActivationValueProgressionInt > databaseAchievement.ActivationValueProgressionInt)
                                 {
                                     sqlQuery =
-                                    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + 0
-                                    + " WHERE aid = " + ach.achievementId;
-                                    //Debug.Log(sqlQuery);
+                                    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + prefabAchievement.ActivationValueProgressionInt
+                                    + " WHERE aid = " + prefabAchievement.achievementId;
                                 }
+                                //// if no progress saved 
+                                //if (databaseAchievement.ActivationValueProgressionInt == 0 && prefabAchievement.ActivationValueProgressionInt == 0)
+                                //{
+                                //    sqlQuery =
+                                //    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + 0
+                                //    + " WHERE aid = " + prefabAchievement.achievementId;
+                                //}
                             }
-
-                            if (prevAchieve.ActivationValueInt == 0)
+                            // if DB doesnt have an activation value, use prefab value to add it in
+                            if (databaseAchievement.ActivationValueInt == 0)
                             {
-                                sqlQuery = "UPDATE " + achievementTableName + " SET activevalue_int = " + ach.ActivationValueInt
-                                    + " WHERE aid = " + ach.achievementId;
-                                Debug.Log(sqlQuery);
+                                sqlQuery = "UPDATE " + achievementTableName + " SET activevalue_int = " + prefabAchievement.ActivationValueInt
+                                    + " WHERE aid = " + prefabAchievement.achievementId;
                             }
 
                         }
                         // if no entry in db. create entry with activate value, progress, and islocked = 1
                         if (!entryExists)
                         {
-                            Debug.Log("no entry exists");
                             // 1 - locked, 0 - unlocked
                             int unlockAchievement = 1;
                             // if entry is NOT in list of stats
                             sqlQuery =
                             "Insert INTO "
                             + achievementTableName + " ( activevalue_int, activevalue_progress_int, islocked) "
-                            + " Values('" + ach.ActivationValueInt + "', '" + ach.ActivationValueProgressionInt + "', '" + unlockAchievement + "')";
-                            //Debug.Log(sqlQuery);
+                            + " Values('" + prefabAchievement.ActivationValueInt + "', '" + prefabAchievement.ActivationValueProgressionInt + "', '" + unlockAchievement + "')";
                         }
+                        // check if sql query is empty/null. time saving method (skip query if not necessary to run)
                         if (!String.IsNullOrEmpty(sqlQuery))
                         {
                             cmd.CommandText = sqlQuery;
                             cmd.ExecuteNonQuery();
-                            //Debug.Log("cmd.ExecuteNonQuery(); ");
                         }
                     }
                 }
@@ -800,6 +785,44 @@ public class DBHelper : MonoBehaviour
         {
             value = reader.GetFloat(0);
         }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    // return int from specified table by field and achievement id
+    public int getIntValueFromTableByFieldAndAchievementID(String tableName, String field, int aid)
+    {
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        // null check
+        if (reader.IsDBNull(0))
+        {
+            value = 0;
+        }
+        else
+        {
+            while (reader.Read())
+            {
+                value = reader.GetInt32(0);
+            }
+        }
+
         reader.Close();
         reader = null;
         dbcmd.Dispose();

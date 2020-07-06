@@ -94,6 +94,7 @@ public class Achievement : MonoBehaviour
         achievementId = aid;
         activationValueInt = activateInt;
         activationValueProgressionInt = progressValue;
+
         if (islockedValue == 1)
         {
             IsLocked = true;
