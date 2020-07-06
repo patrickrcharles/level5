@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         }
         if (AvoidedKnockDown && !locked)
         {
-            Debug.Log("        if (AvoidedKnockDown && !locked)");
+            //Debug.Log("        if (AvoidedKnockDown && !locked)");
             locked = true;
             //rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 

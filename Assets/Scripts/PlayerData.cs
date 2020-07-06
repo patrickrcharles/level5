@@ -74,7 +74,7 @@ public class PlayerData : MonoBehaviour
         }
         else
         {
-            Debug.Log("created, destroy this");
+            //Debug.Log("created, destroy this");
             Destroy(gameObject);
         }
     }

@@ -431,7 +431,6 @@ public class DBHelper : MonoBehaviour
     // this is a mess. needs to be redone and split into functions
     internal void UpdateAchievementStats()
     {
-        Debug.Log("    internal void UpdateAchievementStats()");
         List<Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
