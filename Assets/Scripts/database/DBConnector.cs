@@ -51,27 +51,33 @@ public class DBConnector : MonoBehaviour
 
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
-
         dbHelper = gameObject.GetComponent<DBHelper>();
-
-        currentGameVersion = Application.version;
-        previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
         
         // if database doesnt exist
         if (!File.Exists(filepath))
         {
             Debug.Log("create database");
             createDatabase();
-        }
 
-        // if database does exist but isnt is outdated schema
-        if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
+        }
+        try // check if old game version
+        {
+            // if database does exist but isnt is outdated schema
+            if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
+            {
+                // drop tables
+                dropDatabase();
+                // create upgraded db
+                createDatabase();
+            }
+        }
+        catch // if db errors, drop tables and create db
         {
             // drop tables
             dropDatabase();
             // create upgraded db
             createDatabase();
-        }   
+        }
     }
 
     void Start()
@@ -295,10 +301,15 @@ public class DBConnector : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
 
-        dbcmd.Dispose();
-        dbcmd = null;
         dbconn.Close();
         dbconn = null;
+
+        dbcmd.Dispose();
+        dbcmd = null;
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
     }
 
     void dropDatabase()
