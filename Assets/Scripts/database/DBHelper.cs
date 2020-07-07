@@ -488,7 +488,7 @@ public class DBHelper : MonoBehaviour
                                 //}
                             }
                             // if DB doesnt have an activation value, use prefab value to add it in
-                            if (databaseAchievement.ActivationValueInt == 0)
+                            if (databaseAchievement.ActivationValueInt != prefabAchievement.ActivationValueInt)
                             {
                                 sqlQuery = "UPDATE " + achievementTableName + " SET activevalue_int = " + prefabAchievement.ActivationValueInt
                                     + " WHERE aid = " + prefabAchievement.achievementId;
