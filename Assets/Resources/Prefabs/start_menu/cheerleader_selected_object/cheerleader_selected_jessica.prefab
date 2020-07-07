@@ -130,7 +130,7 @@ MonoBehaviour:
   cheerleaderPortrait: {fileID: 21300000, guid: c0c4c5e49d2941148898371e26185ea7,
     type: 3}
   cheerleaderProfileObject: {fileID: 0}
-  isLocked: 0
+  isLocked: 1
   cheerleaderId: 1
   unlockCharacterText: 
 --- !u!1 &6133396738469394177
