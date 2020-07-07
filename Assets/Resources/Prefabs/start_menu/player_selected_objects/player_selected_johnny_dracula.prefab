@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a4e02d59c2d6841b3084444663e0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 14
+  playerId: 15
   playerDisplayName: Johnny Dracula
   playerObjectName: johnny_dracula
   playerPortrait: {fileID: -6223325839624712928, guid: 032693b80ed05f647959447a6c99252c,
@@ -67,12 +67,9 @@ MonoBehaviour:
   speed: 3.5
   runSpeedHasBall: 3.5
   runSpeed: 3.5
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 10
+  luck: 10
   shootAngle: 50
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 'Unlock : ???'
+  unlockCharacterText: 

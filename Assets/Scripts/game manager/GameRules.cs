@@ -14,6 +14,7 @@ public class GameRules : MonoBehaviour
     private int gameModeId;
     private float timerStart;
 
+    [SerializeField]
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
@@ -27,6 +28,10 @@ public class GameRules : MonoBehaviour
     bool gameModeRequiresMoneyBall;
     bool moneyBallEnabled;
 
+    bool gameModeRequiresConsecutiveShots;
+
+
+
     private Timer timer;
     private BasketBallStats basketBallStats;
 
@@ -36,12 +41,14 @@ public class GameRules : MonoBehaviour
     private const string displayHighScoreObjectName = "display_high_score";
     private const string displayMoneyObjectName = "money_display";
     private const string displayMoneyBallObjectName = "money_ball_enabled";
+    private const string displayOtherMessageName = "other_message";
 
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
     private Text displayMoneyText;
     private Text displayMoneyBallText;
+    private Text displayOtherMessageText;
 
     private float timeCompleted;
 
@@ -83,6 +90,7 @@ public class GameRules : MonoBehaviour
         displayHighScoreText = GameObject.Find(displayHighScoreObjectName).GetComponent<Text>();
         displayMoneyText = GameObject.Find(displayMoneyObjectName).GetComponent<Text>();
         displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
+        displayOtherMessageText = GameObject.Find(displayOtherMessageName).GetComponent<Text>();
 
         // rules flags
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
@@ -92,12 +100,16 @@ public class GameRules : MonoBehaviour
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
 
+        GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
+        //Debug.Log("GameOptions.gameModeRequiresConsecutiveShot : " + GameOptions.gameModeRequiresConsecutiveShot);
+
         // init text
         displayScoreText.text = "";
         displayCurrentScoreText.text = "";
         displayHighScoreText.text = "";
         displayMoneyText.text = "";
         displayMoneyBallText.text = "";
+        displayOtherMessageText.text = "";
 
         // init markers
         gameRulesEnabled = true;
@@ -123,6 +135,8 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
+            displayMoneyBallText.text = "";
+            displayOtherMessageText.text = "";
         }
 
         // game over. display end game and save
@@ -132,6 +146,8 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
+            displayMoneyBallText.text = "";
+            displayOtherMessageText.text = "";
 
             // set end time for time played, store in basketballstats.timeplayed
             setTimePlayed();
@@ -141,11 +157,21 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             //save if at leat 1 minte played
-            if (GameObject.Find("database") != null && basketBallStats.TimePlayed > 60)
+            if (GameObject.Find("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
-                DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                // dont save free play game score
+                if (gameModeId != 13)
+                {
+                    DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                }
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
+                DBConnector.instance.saveHitByCarGameStats();
+                /*DBConnector.instance.saveAchievementStats()*/;
+                // check if achievements reached, send bball stats object
+                AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
+                    GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints, basketBallStats);
             }
+
 
             // alert game manager. trigger
             GameLevelManager.Instance.GameOver = true;
@@ -319,7 +345,32 @@ public class GameRules : MonoBehaviour
             {
                 //PlayerData.instance.saveStats();
                 PlayerData.instance.LongestShotMadeFreePlay = BasketBall.instance.BasketBallStats.LongestShotMade;
+                // save to db
+                DBHelper.instance.updateFloatValueByTableAndField("AllTimeStats", "longestShot", PlayerData.instance.LongestShotMadeFreePlay);
             }
+        }
+        if (gameModeId == 14)
+        {
+            displayCurrentScoreText.text = "Consecutive Shots"
+                + "\nCurrent : " + BasketBallShotMade.instance.ConsecutiveShotsMade
+                + "\nHigh Shots : " + BasketBall.instance.BasketBallStats.MostConsecutiveShots;
+            displayHighScoreText.text = "high score : " + PlayerData.instance.MostConsecutiveShots;
+            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+        }
+        if (gameModeId == 15)
+        {
+            displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints
+                + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType
+                + "\nCurrent Consecutive: " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+            if(BasketBallShotMade.instance.ConsecutiveShotsMade >=5)
+            {
+                displayOtherMessageText.text = "In The Pocket";
+            }
+            else
+            {
+                displayOtherMessageText.text = "";
+            }
+            displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPointsBonus;
         }
     }
 
@@ -358,6 +409,14 @@ public class GameRules : MonoBehaviour
             float seconds = (counterTime - (minutes * 60));
             //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
             displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 14)
+        {
+            displayText = "Your most consecutive shots was " + basketBallStats.MostConsecutiveShots + "\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 15)
+        {
+            displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         }
         return displayText;
     }
@@ -485,4 +544,5 @@ public class GameRules : MonoBehaviour
         get => markersRemaining;
         set => markersRemaining = value;
     }
+    public bool GameModeRequiresConsecutiveShots { get => gameModeRequiresConsecutiveShots; set => gameModeRequiresConsecutiveShots = value; }
 }

@@ -1,16 +1,24 @@
 fileFormatVersion: 2
 guid: a360175cfa969e7459cfb17f3fa2de3a
-timeCreated: 1517260891
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: mega_robot_walk_0
-    21300002: mega_robot_walk_1
-    21300004: mega_robot_walk_2
-    21300006: mega_robot_walk_3
-    21300008: mega_robot_walk_4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: mega_robot_walk_0
+  - first:
+      213: 21300002
+    second: mega_robot_walk_1
+  - first:
+      213: 21300004
+    second: mega_robot_walk_2
+  - first:
+      213: 21300006
+    second: mega_robot_walk_3
+  - first:
+      213: 21300008
+    second: mega_robot_walk_4
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -28,6 +36,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -38,7 +48,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -50,18 +60,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -71,7 +84,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Standalone
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -81,7 +96,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: WebGL
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -91,6 +108,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -102,12 +120,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: fc2bf36862e54914cb54f3df35832647
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_walk_1
       rect:
@@ -116,12 +141,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 5d115e1ed5636d442842afbe5f8c9c65
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_walk_2
       rect:
@@ -130,12 +162,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: f1ac8f62774040f4996136409c567d22
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_walk_3
       rect:
@@ -144,12 +183,19 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 910dcdcbfccf87a469a5dcec4dfbcd44
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: mega_robot_walk_4
       rect:
@@ -158,15 +204,32 @@ TextureImporter:
         y: 0
         width: 384
         height: 512
-      alignment: 9
-      pivot: {x: 0.5, y: 0.125}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 94f93bc0a61eb89478c58377eddd0a56
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: e5bb7a9c405c6ad42aad47eb070f13c3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

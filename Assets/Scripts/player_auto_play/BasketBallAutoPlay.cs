@@ -253,7 +253,7 @@ public class BasketBallAutoPlay : MonoBehaviour
         {
             playHitRimSound = false;
             //Debug.Log("COLLISIONbetween : " + transform.root.name + " and " + other.gameObject.name);
-            audioSource.PlayOneShot(SFXBB.Instance.basketballHitRim);
+            audioSource.PlayOneShot(SFXBB.instance.basketballHitRim);
             basketballState.CanPullBall = true;
         }
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
@@ -263,7 +263,7 @@ public class BasketBallAutoPlay : MonoBehaviour
             //basketballState.Grounded = true;
             basketballState.CanPullBall = true;
             basketballState.Locked = false;
-            audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
+            audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
 
         }
 
@@ -274,7 +274,7 @@ public class BasketBallAutoPlay : MonoBehaviour
             basketballState.InAir = false;
             //Grounded = true;
             basketballState.Locked = false;
-            audioSource.PlayOneShot(SFXBB.Instance.basketballHitFence);
+            audioSource.PlayOneShot(SFXBB.instance.basketballHitFence);
             basketballState.CanPullBall = true;
         }
     }

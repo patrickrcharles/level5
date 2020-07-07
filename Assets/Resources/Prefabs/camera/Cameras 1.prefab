@@ -65,7 +65,7 @@ PrefabInstance:
     - target: {fileID: 8490084476669714976, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.7
+      value: 3.4
       objectReference: {fileID: 0}
     - target: {fileID: 8490084476669714976, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
@@ -116,6 +116,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8490084476669714977, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_Depth
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
@@ -307,15 +312,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4452236365985341150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4452236365985341150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
+      propertyPath: m_Depth
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 2798632698485606606, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
@@ -333,6 +333,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2798632699321201495, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452236365985341150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452236365985341150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
@@ -412,12 +422,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 2857735931704651771, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_Depth
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: CollisionModule.collisionMode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
@@ -432,12 +447,12 @@ PrefabInstance:
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: CollisionModule.collisionMode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000

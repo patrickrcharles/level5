@@ -63,16 +63,13 @@ MonoBehaviour:
   accuracy4pt: 85
   accuracy7pt: 80
   shooterProfilePrefabName: 
-  jumpForce: 5.6
+  jumpForce: 5.2
   speed: 5
   runSpeedHasBall: 5.3
   runSpeed: 5.6
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 12
+  luck: 10
   shootAngle: 50
   level: 0
   experience: 0
-  isLocked: 0
-  unlockCharacterText: 'Unlock : Score 100 or more points at Avenue B'
+  isLocked: 1
+  unlockCharacterText: 

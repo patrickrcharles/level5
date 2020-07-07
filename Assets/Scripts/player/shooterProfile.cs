@@ -30,10 +30,10 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private float runSpeedHasBall;
 
     [SerializeField] private float runSpeed;
-    [SerializeField] private float hangTime;
-    [SerializeField] private float range;
-    [SerializeField] private float release;
-    [SerializeField] private float criticalPercent;
+    //[SerializeField] private float hangTime;
+    //[SerializeField] private float range;
+    //[SerializeField] private float release;
+    [SerializeField] private float luck;
 
     [SerializeField] private float shootAngle;
 
@@ -41,24 +41,11 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private int experience;
     [SerializeField] private decimal money;
     [SerializeField] private bool isLocked;
+    //[SerializeField] private int achievementId;
     [SerializeField] private string unlockCharacterText;
-
-
-    //private float shootXVariance;
-    //private float shootYVariance;
-    //private float shootZVariance;
 
     void Start()
     {
-        //Debug.Log("StartScreenPlayerSelected");
-        //shooterProfilePrefabName = "player" + playerDisplayName;
-
-        //Debug.Log(shooterProfilePrefabName);
-        //shooterProfileObject = Resources.Load("Prefabs /characters/players/" + shooterProfilePrefabName) as GameObject;
-        //Instantiate(shooterProfileObject);
-
-        ////basketball = Resources.Load("Prefabs/objects/basketball_nba") as GameObject;
-
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected)
         {
@@ -96,23 +83,15 @@ public class ShooterProfile : MonoBehaviour
         // percent
         float percent = (JumpForce - jumpStatFloor) * modifier * 10;
 
-        //Debug.Log(jumpStatCeiling - jumpStatFloor);
-        //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
-
         return percent;
     }
 
     public float calculateSpeedToPercent()
     {
-
         //modifier
         float modifier = 100 / ((speedStatCeiling - speedStatFloor) * 10);
         // percent
         float percent = (runSpeed - speedStatFloor) * modifier * 10;
-
-        //Debug.Log(jumpStatCeiling - jumpStatFloor);
-        //Debug.Log(" modifier : "+ modifier + "      percent : "+ percent);
-
 
         return percent;
     }
@@ -134,7 +113,6 @@ public class ShooterProfile : MonoBehaviour
         get => level;
         set => level = value;
     }
-
     public int Experience
     {
         get => experience;
@@ -153,29 +131,23 @@ public class ShooterProfile : MonoBehaviour
         set => playerObjectName = value;
     }
 
-    public Sprite PlayerPortrait
-    {
-        get => playerPortrait;
-        set => playerPortrait = value;
-    }
+    //public GameObject ShooterProfileObject
+    //{
+    //    get => shooterProfileObject;
+    //    set => shooterProfileObject = value;
+    //}
 
-    public GameObject ShooterProfileObject
-    {
-        get => shooterProfileObject;
-        set => shooterProfileObject = value;
-    }
+    //public float JumpStatFloor
+    //{
+    //    get => jumpStatFloor;
+    //    set => jumpStatFloor = value;
+    //}
 
-    public float JumpStatFloor
-    {
-        get => jumpStatFloor;
-        set => jumpStatFloor = value;
-    }
-
-    public float JumpStatCeiling
-    {
-        get => jumpStatCeiling;
-        set => jumpStatCeiling = value;
-    }
+    //public float JumpStatCeiling
+    //{
+    //    get => jumpStatCeiling;
+    //    set => jumpStatCeiling = value;
+    //}
 
     public float Accuracy2Pt
     {
@@ -201,11 +173,11 @@ public class ShooterProfile : MonoBehaviour
         set => accuracy7pt = value;
     }
 
-    public string ShooterProfilePrefabName
-    {
-        get => shooterProfilePrefabName;
-        set => shooterProfilePrefabName = value;
-    }
+    //public string ShooterProfilePrefabName
+    //{
+    //    get => shooterProfilePrefabName;
+    //    set => shooterProfilePrefabName = value;
+    //}
 
     public float JumpForce
     {
@@ -225,28 +197,28 @@ public class ShooterProfile : MonoBehaviour
         set => runSpeed = value;
     }
 
-    public float HangTime
-    {
-        get => hangTime;
-        set => hangTime = value;
-    }
+    //public float HangTime
+    //{
+    //    get => hangTime;
+    //    set => hangTime = value;
+    //}
 
-    public float Range
-    {
-        get => range;
-        set => range = value;
-    }
+    //public float Range
+    //{
+    //    get => range;
+    //    set => range = value;
+    //}
 
-    public float Release
-    {
-        get => release;
-        set => release = value;
-    }
+    //public float Release
+    //{
+    //    get => release;
+    //    set => release = value;
+    //}
 
     public float CriticalPercent
     {
-        get => criticalPercent;
-        set => criticalPercent = value;
+        get => luck;
+        set => luck = value;
     }
 
     public float ShootAngle
@@ -256,4 +228,5 @@ public class ShooterProfile : MonoBehaviour
     }
     public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
     public bool IsLocked { get => isLocked; set => isLocked = value; }
+    public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
 }

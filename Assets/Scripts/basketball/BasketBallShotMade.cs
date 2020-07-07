@@ -69,7 +69,7 @@ public class BasketBallShotMade : MonoBehaviour
             else { isColliding = true; }
 
 
-            audioSource.PlayOneShot(SFXBB.Instance.basketballNetSwish);
+            audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
             // add to total shot distance made total
             _basketBallStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
@@ -88,11 +88,11 @@ public class BasketBallShotMade : MonoBehaviour
             updateShotMadeBasketBallStats();
 
             // instantiate money if game requires it
-            if (GameRules.instance.GameModeRequiresMoneyBall 
+            if (GameRules.instance.GameModeRequiresMoneyBall
                 && _basketBallState.PlayerOnMarkerOnShoot)
-                //&& _basketBallState.MoneyBallEnabledOnShoot)
-                //&& PlayerStats.instance.Money >= 5
-                //&& GameRules.instance.MoneyBallEnabled)
+            //&& _basketBallState.MoneyBallEnabledOnShoot)
+            //&& PlayerStats.instance.Money >= 5
+            //&& GameRules.instance.MoneyBallEnabled)
             {
                 //Debug.Log(" instantiate moeny : player on marker at shoot");
                 instantiateMoney(1);
@@ -114,9 +114,9 @@ public class BasketBallShotMade : MonoBehaviour
             BasketBall.instance.updateScoreText();
         }
 
-    //// object test shot data in list
-    //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
-}
+        //// object test shot data in list
+        //BasketBall.instance.testConclusions.shotStats[currentShotTestIndex].made = true;
+    }
 
     void instantiateMoney(float value)
     {
@@ -130,33 +130,92 @@ public class BasketBallShotMade : MonoBehaviour
 
     private void updateShotMadeBasketBallStats()
     {
+        // first thing, update shot made total
+        _basketBallStats.ShotMade++;
 
+        // ==================== consecutive shots logic ==============================
+
+        // get current state of shots made/attempted
+        _currentShotMade = (int)_basketBallStats.ShotMade;
+        _currentShotAttempts = (int)_basketBallStats.ShotAttempt;
+
+        // if current is == expected made/attempt, increment consecutive and not a 2 point shot
+        // 
+        if (_currentShotMade == _expectedShotMade
+            && _currentShotAttempts == _expectedShotAttempts
+            && !_basketBallState.TwoAttempt)
+        {
+            _consecutiveShotsMade++;
+            // increment expected values for next shot
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;
+            //Debug.Log(" Consecutive shots : " + ConsecutiveShotsMade);
+        }
+        // else, not consecutive shot. get current, increment for next expected consecutive shot
+        else
+        {
+            _consecutiveShotsMade = 1;
+            // increment expected values for next shot
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;
+        }
+        // if current consecutive greater than previous high consecutive
+        if (ConsecutiveShotsMade > _basketBallStats.MostConsecutiveShots)
+        {
+            _basketBallStats.MostConsecutiveShots = ConsecutiveShotsMade;
+        }
+
+        // ==================== point total logic ==============================
         if (_basketBallState.TwoAttempt)
         {
-            _basketBallStats.TotalPoints += 2;
             _basketBallStats.TwoPointerMade++;
-            _basketBallStats.ShotMade ++;
+            _basketBallStats.TotalPoints += 2;
+
         }
 
         if (_basketBallState.ThreeAttempt)
         {
-            _basketBallStats.TotalPoints += 3;
             _basketBallStats.ThreePointerMade++;
-            _basketBallStats.ShotMade ++;
+            // if consecutive > 5 and game mode for 'Total Points+'
+            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+            {
+                _basketBallStats.TotalPoints += 4;
+            }
+            else
+            {
+                _basketBallStats.TotalPoints += 3;
+            }
+
         }
 
         if (_basketBallState.FourAttempt)
         {
-            _basketBallStats.TotalPoints += 4;
             _basketBallStats.FourPointerMade++;
-            _basketBallStats.ShotMade ++;
+            // if consecutive > 5 and game mode for 'Total Points+'
+            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+            {
+                _basketBallStats.TotalPoints += 6;
+            }
+            else
+            {
+                _basketBallStats.TotalPoints += 4;
+            }
+
         }
 
         if (_basketBallState.SevenAttempt)
         {
-            _basketBallStats.TotalPoints += 7;
             _basketBallStats.SevenPointerMade++;
-            _basketBallStats.ShotMade ++;
+            // if consecutive > 5 and game mode for 'Total Points+'
+            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+            {
+                _basketBallStats.TotalPoints += 10;
+            }
+            else
+            {
+                _basketBallStats.TotalPoints += 7;
+            }
+
         }
 
         if (_basketBallState.MoneyBallEnabledOnShoot)
@@ -164,47 +223,20 @@ public class BasketBallShotMade : MonoBehaviour
             _basketBallStats.MoneyBallMade++;
         }
 
+        // ==================== moneyball logic ==============================
         if (_basketBallState.PlayerOnMarkerOnShoot)
         {
-            //Debug.Log("if(_basketBallState.PlayerOnMarkerOnShoot)");
-            //Debug.Log("GameRules.instance.MoneyBallEnabled : " + GameRules.instance.MoneyBallEnabled);
+            // if money ball enabled
             if (_basketBallState.MoneyBallEnabledOnShoot)
             {
-                //Debug.Log("clear marker");
                 int max = GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MaxShotMade;
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
-                //Debug.Log("max : "+ max);
             }
+            // no money ball, update current shot marker stats
             else
             {
-                //Debug.Log(" else : shot made");
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
-        }
-
-        // get current state of made/attempt
-        _currentShotMade = (int)_basketBallStats.ShotMade;
-        _currentShotAttempts = (int)_basketBallStats.ShotAttempt;
-
-        // if current is == expected made/attempt, increment consecutive
-        if (_currentShotMade == _expectedShotMade && _currentShotAttempts == _expectedShotAttempts)
-        {
-            //Debug.Log(" expected = current");
-            _consecutiveShotsMade++;
-            _expectedShotMade = _currentShotMade + 1;
-            _expectedShotAttempts = _currentShotAttempts + 1;
-        }
-        // else, not consecutive shot. get current, increment for next expected consecutive shot
-        else
-        {
-            //Debug.Log(" else");
-            _consecutiveShotsMade = 1;
-            _expectedShotMade = _currentShotMade + 1;
-            _expectedShotAttempts = _currentShotAttempts + 1;  
-        }
-        if(ConsecutiveShotsMade > _basketBallStats.MostConsecutiveShots)
-        {
-            _basketBallStats.MostConsecutiveShots = ConsecutiveShotsMade;
         }
     }
 

@@ -12,15 +12,6 @@ using UnityEngine.UI;
 
 public class StartManager : MonoBehaviour
 {
-    //private GameObject gameModeNameObject;
-    //private Vector3 gameModeNameSpawnPoint;
-
-    //[SerializeField]
-    //private GameObject[] gameModeNamesList;
-
-    //private GameObject gameModeDescriptionsObject;
-    //private Vector3 gameModeDescriptionSpawnPoint;
-
     [SerializeField]
     private string currentHighlightedButton;
 
@@ -28,9 +19,11 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<ShooterProfile> playerSelectedData;
 
-    //list of all scenes in build
-    //private List<string> scenes;
+    // list off cheerleader profile data
+    [SerializeField]
+    private List<StartScreenCheerleaderSelected> cheerleaderSelectedData;
 
+    // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
 
@@ -38,18 +31,31 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
+    private Text playerSelectUnlockText;
+
+    [SerializeField]
+    private Text cheerleaderSelectUnlockText;
+
     //player selected display
     private Text playerSelectOptionText;
     private Image playerSelectOptionImage;
     private Text playerSelectOptionStatsText;
+    private Text playerSelectCategoryStatsText;
+
+    // level select display
     private Text levelSelectOptionText;
 
-    [SerializeField]
-    private Text playerSelectUnlockText;
+    //cheerleader selected display
+    private Text cheerleaderSelectOptionText;
+    private Image cheerleaderSelectOptionImage;
 
-    //player selected display
+    //mode selected display
     private Text modeSelectOptionText;
     private Text ModeSelectOptionDescriptionText;
+
+
+    //traffic
+    private Text trafficSelectOptionText;
 
     //player objects
     private const string startButtonName = "press_start";
@@ -58,10 +64,15 @@ public class StartManager : MonoBehaviour
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
     private const string playerSelectUnlockObjectName = "player_selected_unlock";
-    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
+    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture"; 
+    private const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
-    [SerializeField]
-    GameObject playerSelectedIsLockedObject;
+    //cheerleader objects
+    private const string cheerleaderSelectButtonName = "cheerleader_select";
+    private const string cheerleaderSelectOptionButtonName = "cheerleader_selected_name";
+    private const string cheerleaderSelectImageObjectName = "cheerleader_selected_image";
+    private const string cheerleaderSelectUnlockObjectName = "cheerleader_selected_unlock";
+    private const string cheerleaderSelectIsLockedObjectName = "cheerleader_selected_lock_texture";
 
     //level objects
     private const string levelSelectButtonName = "level_select";
@@ -73,10 +84,22 @@ public class StartManager : MonoBehaviour
     private const string modeSelectOptionButtonName = "mode_selected_name";
     private const string modeSelectDescriptionObjectName = "mode_selected_description";
 
+    //traffic objects
+    private const string trafficSelectButtonName = "traffic_select";
+    private const string trafficSelectOptionName = "traffic_select_option";
+    [SerializeField]
+    private bool trafficEnabled;
+
     private int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
+    private int cheerleaderSelectedIndex;
 
+    [SerializeField]
+    GameObject playerSelectedIsLockedObject;
+
+    [SerializeField]
+    GameObject cheerleaderSelectedIsLockedObject;
 
     //private Text gameModeSelectText;
     void Awake()
@@ -87,13 +110,25 @@ public class StartManager : MonoBehaviour
         playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
         playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
         playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
+        playerSelectCategoryStatsText = GameObject.Find(playerSelectStatsCategoryName).GetComponent<Text>();
+
+        // object with lock texture and unlock text
+        cheerleaderSelectedIsLockedObject = GameObject.Find(cheerleaderSelectIsLockedObjectName);
+        cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
+        cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
+        cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
+
+        trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
 
         //default index for player selected
         playerSelectedIndex = 0;
+        cheerleaderSelectedIndex = 0;
         levelSelectedIndex = 0;
         modeSelectedIndex = 0;
 
         loadPlayerSelectDataList();
+        loadCheerleaderSelectDataList();
+        initializeTrafficOptionDisplay();
         loadLevelSelectDataList();
         loadModeSelectDataList();
 
@@ -102,6 +137,13 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        //loadPlayerSelectDataList();
+        //loadCheerleaderSelectDataList();
+        //loadLevelSelectDataList();
+        //loadModeSelectDataList();
+
+        initializeCheerleaderDisplay();
         initializePlayerDisplay();
         initializeLevelDisplay();
         intializeModeDisplay();
@@ -132,7 +174,16 @@ public class StartManager : MonoBehaviour
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
 
-        ////Debug.Log("current : "+ currentHighlightedButton);
+        // if player highlighted, display player
+        if (currentHighlightedButton.Equals(playerSelectButtonName))
+        {
+            initializePlayerDisplay();
+        }
+        // if cheerleader highlighted, display cheerleader
+        if (currentHighlightedButton.Equals(cheerleaderSelectButtonName))
+        {
+            initializeCheerleaderDisplay();
+        }
 
         // start game
         if ((InputManager.GetKeyDown(KeyCode.Return) 
@@ -143,11 +194,15 @@ public class StartManager : MonoBehaviour
             //Debug.Log("pressed enter");
             loadScene();
         }
+
+        // ================================== navigation =====================================================================
+
         // up arrow navigation
         if (InputManager.GetKeyDown(KeyCode.UpArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(trafficSelectOptionName))
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnUp().gameObject);
@@ -157,12 +212,12 @@ public class StartManager : MonoBehaviour
         if (InputManager.GetKeyDown(KeyCode.DownArrow)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(modeSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(trafficSelectOptionName))
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnDown().gameObject);
         }
-
 
         // right arrow on player select
         if (InputManager.GetKeyDown(KeyCode.RightArrow))
@@ -175,6 +230,16 @@ public class StartManager : MonoBehaviour
             }
             //Debug.Log("right : level select");
             if (currentHighlightedButton.Equals(levelSelectButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+            }
+            if (currentHighlightedButton.Equals(cheerleaderSelectButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+            }
+            if (currentHighlightedButton.Equals(trafficSelectButtonName))
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                     .GetComponent<Button>().FindSelectableOnRight().gameObject);
@@ -192,6 +257,16 @@ public class StartManager : MonoBehaviour
             }
             //Debug.Log("left : level select");
             if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
+            if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                     .GetComponent<Button>().FindSelectableOnLeft().gameObject);
@@ -219,6 +294,16 @@ public class StartManager : MonoBehaviour
                 changeSelectedModeUp();
                 intializeModeDisplay();
             }
+            if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+            {
+                changeSelectedCheerleaderUp();
+                initializeCheerleaderDisplay();
+            }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
+            {
+                changeSelectedTrafficOption();
+                initializeTrafficOptionDisplay();
+            }
         }
 
         if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow )))
@@ -240,7 +325,34 @@ public class StartManager : MonoBehaviour
                 changeSelectedModeDown();
                 intializeModeDisplay();
             }
+            if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+            {
+                changeSelectedCheerleaderDown();
+                initializeCheerleaderDisplay();
+            }
+            if (currentHighlightedButton.Equals(trafficSelectOptionName))
+            {
+                changeSelectedTrafficOption();
+                initializeTrafficOptionDisplay();
+            }
         }
+    }
+
+    private void initializeTrafficOptionDisplay()
+    {
+        if (trafficEnabled)
+        {
+            trafficSelectOptionText.text = "ON";
+        }
+        if (!trafficEnabled)
+        {
+            trafficSelectOptionText.text = "OFF";
+        }
+    }
+
+    private void changeSelectedTrafficOption()
+    {
+        trafficEnabled = !trafficEnabled;
     }
 
     private void initializeLevelDisplay()
@@ -248,6 +360,58 @@ public class StartManager : MonoBehaviour
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
         levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+    }
+
+    private void initializeCheerleaderDisplay()
+    {
+        cheerleaderSelectOptionImage.enabled = true;
+        playerSelectOptionImage.enabled = false;
+        playerSelectOptionStatsText.enabled = false;
+        playerSelectedIsLockedObject.SetActive(false);
+        playerSelectCategoryStatsText.enabled = false;
+        playerSelectedIsLockedObject.SetActive(false);
+
+        // check if players is locked
+        foreach (StartScreenCheerleaderSelected cl in cheerleaderSelectedData)
+        {
+            if (AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId) != null)
+            {
+                Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId);
+                cl.IsLocked = tempAchieve.IsLocked;
+                cl.UnlockCharacterText = tempAchieve.AchievementDescription;
+            }
+            // none selected
+            if(cl.CheerleaderId == 0)
+            {
+                cl.IsLocked = false;
+                cl.UnlockCharacterText = "";
+            }
+        }
+
+        if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
+        {
+            Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId);
+            // disable text and unlock text
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            cheerleaderSelectedIsLockedObject.SetActive(true);
+            cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText
+                + "\nprogress " + tempAchieve.ActivationValueProgressionInt 
+                + " / " + tempAchieve.ActivationValueInt;
+        }
+        else
+        {
+            //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
+            cheerleaderSelectedIsLockedObject.SetActive(false);
+            cheerleaderSelectUnlockText.text = "";
+        }
+
+        cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
+        cheerleaderSelectOptionImage.sprite = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderPortrait;
+
+
+        cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
+        cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
+        GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
     }
 
     private void intializeModeDisplay()
@@ -261,14 +425,35 @@ public class StartManager : MonoBehaviour
 
     private void initializePlayerDisplay()
     {
-        //Debug.Log("initializePlayerDisplay()");
+        cheerleaderSelectOptionImage.enabled = false;
+        cheerleaderSelectedIsLockedObject.SetActive(false);
+
+        playerSelectOptionImage.enabled = true;
+        playerSelectOptionStatsText.enabled = true;
+        playerSelectedIsLockedObject.SetActive(true);
+        playerSelectCategoryStatsText.enabled = true;
+
+        // check if players is locked
+        foreach (ShooterProfile sp in playerSelectedData)
+        {
+            if (AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId) != null)
+            {
+                Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId);
+                sp.IsLocked = tempAchieve.IsLocked;
+                sp.UnlockCharacterText = tempAchieve.AchievementDescription;
+            }
+        }
 
         if (playerSelectedData[playerSelectedIndex].IsLocked)
         {
+            // find achievement that unlocks player
+            //Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == playerSelectedData[playerSelectedIndex].PlayerId);
             // disable text and unlock text
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             playerSelectedIsLockedObject.SetActive(true);
             playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
+                // find achievement by player id
+               // + "\nprogress : " + tempAchieve.ActivationValueProgressionInt;
         }
         else
         {
@@ -287,7 +472,7 @@ public class StartManager : MonoBehaviour
             + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-            + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
+            //+ playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
             + playerSelectedData[playerSelectedIndex].CriticalPercent.ToString("F0");
 
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
@@ -295,11 +480,9 @@ public class StartManager : MonoBehaviour
 
     private void loadPlayerSelectDataList()
     {
-
         string path = "Prefabs/start_menu/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        //Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
@@ -310,9 +493,31 @@ public class StartManager : MonoBehaviour
         playerSelectedData.Sort(sortByPlayerId);
     }
 
+    private void loadCheerleaderSelectDataList()
+    {
+
+        string path = "Prefabs/start_menu/cheerleader_selected_object";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        //Debug.Log("objects : " + objects.Length);
+        foreach (GameObject obj in objects)
+        {
+            StartScreenCheerleaderSelected temp = obj.GetComponentInChildren<StartScreenCheerleaderSelected>();
+            //Debug.Log(" temp : " + temp.UnlockCharacterText);
+            cheerleaderSelectedData.Add(temp);
+        }
+        // sort list by  character id
+        cheerleaderSelectedData.Sort(sortByCheerleaderId);
+    }
+
     static int sortByPlayerId(ShooterProfile p1, ShooterProfile p2)
     {
         return p1.PlayerId.CompareTo(p2.PlayerId);
+    }
+
+    static int sortByCheerleaderId(StartScreenCheerleaderSelected p1, StartScreenCheerleaderSelected p2)
+    {
+        return p1.CheerleaderId.CompareTo(p2.CheerleaderId);
     }
 
     static int sortByLevelId(StartScreenLevelSelected l1, StartScreenLevelSelected l2)
@@ -386,6 +591,38 @@ public class StartManager : MonoBehaviour
             playerSelectedIndex++;
         }
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        //Debug.Log("player selected : " + GameOptions.playerSelected);
+    }
+
+    private void changeSelectedCheerleaderUp()
+    {
+        // if default index (first in list
+        if (cheerleaderSelectedIndex == 0)
+        {
+            cheerleaderSelectedIndex = cheerleaderSelectedData.Count - 1;
+        }
+        else
+        {
+            //if not first index, increment
+            cheerleaderSelectedIndex--;
+        }
+        GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
+        //Debug.Log("player selected : " + GameOptions.playerSelected);
+    }
+
+    private void changeSelectedCheerleaderDown()
+    {
+        // if default index (first in list
+        if (cheerleaderSelectedIndex == cheerleaderSelectedData.Count - 1)
+        {
+            cheerleaderSelectedIndex = 0;
+        }
+        else
+        {
+            //if not first index, increment
+            cheerleaderSelectedIndex++;
+        }
+        GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
@@ -467,14 +704,14 @@ public class StartManager : MonoBehaviour
         //Debug.Log("scene name : " + sceneName);
 
         // check if Player selected is locked
-        if (playerSelectedData[playerSelectedIndex].IsLocked)
+        if (playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
             Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-            messageText.text = " Bruh, it's locked";
+            messageText.text = " Bruh, it's locked. pick something else";
             // turn off text display after 5 seconds
             StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
         }
-        if (!playerSelectedData[playerSelectedIndex].IsLocked)
+        if (!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
         {
             // load highscores before loading scene
             PlayerData.instance.loadStatsFromDatabase();
@@ -523,6 +760,13 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
 
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
+        GameOptions.gameModeRequiresConsecutiveShot = modeSelectedData[modeSelectedIndex].ModeRequiresConsecutiveShots;
+
+        GameOptions.cheerleaderDisplayName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
+        GameOptions.cheerleaderId = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId;
+        GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
+
+        GameOptions.trafficEnabled = trafficEnabled;
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;

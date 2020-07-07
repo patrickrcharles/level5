@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &127696182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 127696183}
+  - component: {fileID: 127696184}
+  m_Layer: 0
+  m_Name: attack_box
+  m_TagString: attack_box
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &127696183
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127696182}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 13.748}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1440889072488101908}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.056, y: -0.7919998}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!135 &127696184
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127696182}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.52
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &937242582
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad79de2b58861f14a8b0f29134bde67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackBox: {fileID: 0}
 --- !u!1 &4740568164346162510
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +558,7 @@ GameObject:
   - component: {fileID: 1174152894394561451}
   - component: {fileID: 2183456492026138889}
   - component: {fileID: 1037194618832312042}
+  - component: {fileID: 56072716}
   m_Layer: 0
   m_Name: hitbox
   m_TagString: playerHitbox
@@ -589,6 +640,20 @@ CapsuleCollider:
   m_Height: 1.7325066
   m_Direction: 1
   m_Center: {x: -0.030286837, y: -0.14689405, z: 0}
+--- !u!114 &56072716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914078478174060254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd0b015c94f2d249b3d34709a0072f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: {fileID: 0}
+  playerCanBeKnockedDown: 0
 --- !u!1 &8188476234929711695
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,6 +695,7 @@ RectTransform:
   - {fileID: 7293220425333525689}
   - {fileID: 6384136416282025686}
   - {fileID: 1448537250}
+  - {fileID: 127696183}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -666,19 +732,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterProfile: {fileID: 0}
-  shotmeter: {fileID: 0}
   inAirSpeed: 0.5
-  running: 0
-  runningToggle: 0
   hasBasketball: 0
-  isSetShooter: 0
   canMove: 1
-  playerDistanceFromRim: 0
   playerHitbox: {fileID: 6914078478174060254}
+  playerDistanceFromRim: 0
   triggerLeftAxisInUse: 0
   triggerRightAxisInUse: 0
-  _facingRight: 0
+  _knockDownTime: 1
   initialHeight: 0
   finalHeight: 0
   jumpPeakReached: 0
@@ -850,10 +911,7 @@ MonoBehaviour:
   speed: 2
   runSpeedHasBall: 3
   runSpeed: 3
-  hangTime: 0
-  range: 100
-  release: 100
-  criticalPercent: 15
+  luck: 10
   shootAngle: 52
   level: 0
   experience: 0

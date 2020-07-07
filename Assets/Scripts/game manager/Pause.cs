@@ -26,8 +26,10 @@ public class Pause : MonoBehaviour
     private Button loadSceneButton;
     private Button loadStartScreenButton;
     private Button quitGameButton;
-
+    private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
+
+    GameObject controlsObject;
 
     public static Pause instance;
 
@@ -44,6 +46,14 @@ public class Pause : MonoBehaviour
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
 
+        controlsObject = GameObject.Find("controls");
+
+        if(controlsObject != null)
+        {
+            controlsObject.SetActive(false);
+        }
+
+       
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -80,6 +90,12 @@ public class Pause : MonoBehaviour
             TogglePause();
         }
         //==========================================================
+
+        //disable cotnrols display if game over
+        if (GameRules.instance.GameOver)
+        {
+            controlsObject.SetActive(false);
+        }
 
         // if paused, show pause menu
         if (paused)
@@ -160,6 +176,7 @@ public class Pause : MonoBehaviour
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
+        //DBConnector.instance.saveHitByCarGameStats(PlayerData.instance.HitByCars);
     }
 
     private void setPauseScreen(bool value)
@@ -171,6 +188,7 @@ public class Pause : MonoBehaviour
         loadSceneButton.enabled = value;
         loadStartScreenButton.enabled = value;
         quitGameButton.enabled = value;
+        controlsObject.SetActive(value);
     }
 
 
@@ -183,9 +201,9 @@ public class Pause : MonoBehaviour
             Time.timeScale = 1f;
             setBackgroundFade(false);
             setPauseScreen(false);
-            //resumeAllAudio();
+            resumeAllAudio();
 
-            return (false);
+            return false;
         }
         else
         {
@@ -193,11 +211,11 @@ public class Pause : MonoBehaviour
             //gameManager.instance.backgroundFade.SetActive(true);
             paused = true;
             Time.timeScale = 0f;
-            //pauseAllAudio();
+            pauseAllAudio();
             setBackgroundFade(true);
             setPauseScreen(true);
 
-            return (true);
+            return true;
         }
     }
 
@@ -219,6 +237,28 @@ public class Pause : MonoBehaviour
     private string getCurrentSceneName()
     {
         return SceneManager.GetActiveScene().name;
+    }
+
+    void pauseAllAudio()
+    {
+        allAudioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            //audioS.Stop();
+            audioS.Pause();
+        }
+    }
+
+    void resumeAllAudio()
+    {
+        allAudioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            //audioS.Stop();
+            audioS.UnPause();
+        }
     }
 
     private void Quit()

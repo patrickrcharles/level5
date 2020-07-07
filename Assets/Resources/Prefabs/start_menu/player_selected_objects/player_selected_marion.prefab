@@ -66,12 +66,9 @@ MonoBehaviour:
   speed: 2.5
   runSpeedHasBall: 2.5
   runSpeed: 3
-  hangTime: 0
-  range: 99
-  release: 0
-  criticalPercent: 8
+  luck: 10
   shootAngle: 45
   level: 0
   experience: 0
-  isLocked: 0
-  unlockCharacterText: 'Unlock : Make 20 consecutive 3s'
+  isLocked: 1
+  unlockCharacterText: 

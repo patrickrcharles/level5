@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &840828638710515930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 840828638710515928}
+  - component: {fileID: 840828638710515931}
+  m_Layer: 0
+  m_Name: achievement_9_53x455
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &840828638710515928
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840828638710515930}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.9726286, y: 5.399699, z: 13.380019}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &840828638710515931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840828638710515930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ca5376fe30bbb4dad3fde99e6c5545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  achievementId: 9
+  achievementName: unlock 53-X455
+  achievementDescription: score 125 points at The Slab
+  characterUnlock: 1
+  cheerleaderUnlock: 0
+  levelUnlock: 0
+  modeUnlock: 0
+  otherUnlock: 0
+  playerId: 10
+  cheerleaderId: 0
+  levelId: 0
+  modeId: 0
+  activationValueInt: 125
+  activationValueFloat: 0
+  activationValueProgressionInt: 0
+  activationValueProgressionFloat: 0
+  consecutive: 0
+  count: 1
+  isProgressiveCount: 0
+  isProgressiveTime: 0
+  time: 0
+  three: 0
+  four: 0
+  seven: 0
+  playerRequiredToUseId: 0
+  cheerleaderRequiredToUseId: 0
+  levelRequiredToUseId: 5
+  modeRequiredToUseId: 1
+  GREATER_THAN: 1
+  LESS_THAN: 0
+  EQUAL_TO: 0
+  isLocked: 1

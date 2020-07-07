@@ -102,36 +102,56 @@ public class CameraManager : MonoBehaviour
                 //numberOfCameras--;
             }
         }
+        //Debug.Log("**************************************************** setDefaultCamera :   current cam : " + cameras[currentCameraIndex].name);
+        //foreach (GameObject cam in cameras)
+        //{
+        //    //Debug.Log(cam.name + " is active : " + cam.activeSelf);
+        //}
     }
 
     void switchCamera()
     {
-        Debug.Log(" switch camera :   current cam : " + cameras[currentCameraIndex].name);
+        //Debug.Log("**************************************************** switch camera :   current cam : " + cameras[currentCameraIndex].name);
+        //Debug.Log(" --------------------------------------------------- currentCameraIndex : " + currentCameraIndex);
         // if not last camera, go to next
         if (currentCameraIndex < numberOfCameras)
         {
             currentCameraIndex++;
+            //Debug.Log("     if (currentCameraIndex < numberOfCameras)");
         }
-
         // current camera at end of array, go to default/first camera
         if (currentCameraIndex >= numberOfCameras)
         {
             currentCameraIndex = 0;
+            //Debug.Log("     if (currentCameraIndex >= numberOfCameras)");
         }
-
+        //Debug.Log(" --------------------------------------------------- currentCameraIndex : " + currentCameraIndex);
         // set next camera active based on incremented index
         // set other cameras inactive
         for (int i = 0; i < numberOfCameras; i++)
         {
             if (i == currentCameraIndex)
             {
+                //Debug.Log("     if (i == currentCameraIndex)        camera[i] : "+ cameras[i].activeSelf);
                 Cameras[i].SetActive(true);
             }
             if (i != currentCameraIndex)
             {
+                //Debug.Log("     if (i != currentCameraIndex)        camera[i] : " + cameras[i].activeSelf);
                 Cameras[i].SetActive(false);
             }
+            if (Cameras[i].name.Contains("goal"))
+            {
+                cameraOnGoalIndex = i;
+                Cameras[i].SetActive(false);
+                //numberOfCameras--;
+            }
         }
+
+        //foreach (GameObject cam in cameras)
+        //{
+        //    Debug.Log(cam.name + " is active : " + cam.activeSelf);
+        //}
         locked = false;
     }
 

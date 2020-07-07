@@ -10,7 +10,7 @@ public class BasketBallStats : MonoBehaviour
     private int _levelId;
     private string _levelName;
 
-    private float _totalPoints;
+    private int _totalPoints;
     private float _twoPointerMade;
     private float _threePointerMade;
     private float _fourPointerMade;
@@ -127,7 +127,7 @@ public class BasketBallStats : MonoBehaviour
         set => _playerName = value;
     }
 
-    public float TotalPoints
+    public int TotalPoints
     {
         get => _totalPoints;
         set => _totalPoints = value;

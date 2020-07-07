@@ -152,3 +152,7 @@ MonoBehaviour:
   airhorn: {fileID: 8300000, guid: eb07d9a73a7ac6d4888370a2a82860b5, type: 3}
   lightningStrike: {fileID: 8300000, guid: ea9cadfeb213f454eb895f4bae5cf636, type: 3}
   rimShot: {fileID: 8300000, guid: 459d4ffabfeb310489255fe4e5f40de4, type: 3}
+  knockedDown: {fileID: 8300000, guid: af0464c0374abe741913a2cf2d0d9551, type: 3}
+  skateGrind: {fileID: 8300000, guid: a3272e6b598eabb48ad85ae04b15acaa, type: 3}
+  glitch: {fileID: 8300000, guid: bd17371fe56889b49bacb08a5cba779b, type: 3}
+  unlockAchievement: {fileID: 8300000, guid: fefdb55c765a84d49a1b22f476b1476d, type: 3}

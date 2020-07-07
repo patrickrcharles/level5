@@ -5,62 +5,119 @@ using UnityEngine;
 public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
+    const string  attackBoxText = "attack_box";
+    const string  hitboxBoxText = "playerHitbox";
 
-   void Start()
-   {
-       audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-   }
+    [SerializeField]
+    GameObject attackBox;
+
+    [SerializeField]
+    GameObject hitBox;
+
+    private void Start()
+    {
+        audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
+        // get attack box reference
+        if (gameObject.transform.parent.Find(attackBoxText) != null)
+        {
+            attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+        }
+        else
+        {
+            attackBox = null;
+        }
+        // find hitbox
+        if (gameObject.transform.parent.Find(hitboxBoxText) != null)
+        {
+            hitBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+        }
+        else
+        {
+            hitBox = null;
+        }
+
+        if (attackBox != null)
+        {
+            disableAttackBox();
+        }
+
+    }
 
     public void playSfxBasketballDribbling()
     {
-//       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.basketballBounce);
+        audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
     }
 
     public void playSfxAlienWalking()
     {
-//       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.alien_walk);
+        audioSource.PlayOneShot(SFXBB.instance.alien_walk);
     }
 
     public void playSfxGameChanger()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.gamechanger);
+        audioSource.PlayOneShot(SFXBB.instance.gamechanger);
     }
 
     public void playSfxCameraFlash()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.cameraFlash);
+        audioSource.PlayOneShot(SFXBB.instance.cameraFlash);
     }
 
     public void playSfxWerewolfHowl()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.werewolfHowl);
+        audioSource.PlayOneShot(SFXBB.instance.werewolfHowl);
     }
 
     public void playSfxWorkerParasite()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.worker_parasite);
+        audioSource.PlayOneShot(SFXBB.instance.worker_parasite);
     }
 
     public void playSfxAirHorn() 
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.airhorn);
+        audioSource.PlayOneShot(SFXBB.instance.airhorn);
     }
     public void playSfxLightningStrike()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.lightningStrike);
+        audioSource.PlayOneShot(SFXBB.instance.lightningStrike);
     }
 
     public void playSfxRimShot()
     {
-        //       //Debug.Log("play bounce sound");
-        audioSource.PlayOneShot(SFXBB.Instance.rimShot);
+        audioSource.PlayOneShot(SFXBB.instance.rimShot);
+    }
+    public void playSfxKnockedDown()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+    }
+
+    public void playSfxSkateGrind()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.skateGrind);
+    }
+
+    public void playSfxGlitch()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.glitch);
+    }
+
+    public void enableAttackBox()
+    {
+        attackBox.SetActive(true);
+    }
+
+    public void disableAttackBox()
+    {
+        attackBox.SetActive(false);
+    }
+
+    public void enableHitBox()
+    {
+        hitBox.SetActive(true);
+    }
+
+    public void disableHitBox()
+    {
+        hitBox.SetActive(false);
     }
 }
