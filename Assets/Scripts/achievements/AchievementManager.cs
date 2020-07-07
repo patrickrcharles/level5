@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,6 +55,7 @@ public class AchievementManager : MonoBehaviour
 
     void loadAchievements()
     {
+        //Debug.Log("loadAchievements()");
         // where are the prefabs, load them
         string path = "Prefabs/achievements";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
@@ -65,6 +67,8 @@ public class AchievementManager : MonoBehaviour
             // update with database values
             //temp.ActivationValueInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_int", temp.achievementId);
             temp.ActivationValueProgressionInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_progress_int", temp.achievementId);
+            //temp.IsLocked = Convert.ToBoolean( DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_progress_int", temp.achievementId) );
+            //Debug.Log("aid : " + temp.achievementId + " islocked : " + temp.IsLocked);
             AchievementList.Add(temp);
         }
 

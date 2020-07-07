@@ -451,12 +451,12 @@ public class DBHelper : MonoBehaviour
                     {
                         bool entryExists = achievementsList.Any(x => x.achievementId == prefabAchievement.achievementId);
                         Achievement databaseAchievement;
-
+                        //Debug.Log("prefab aid : " + prefabAchievement.achievementId + " islocked : " + prefabAchievement.IsLocked);
                         if (entryExists)
                         {
                             //get achievement ddatabase object to update
                             databaseAchievement = achievementsList.Where(x => x.achievementId == prefabAchievement.achievementId).Single();
-
+                            //Debug.Log("db aid : " + databaseAchievement.achievementId + " islocked : "+ databaseAchievement.IsLocked );
                             // if db is unlocked and current ISNT
                             if (databaseAchievement.IsLocked && !prefabAchievement.IsLocked)
                             {
