@@ -57,7 +57,7 @@ MonoBehaviour:
   modeId: 0
   activationValueInt: 25000
   activationValueFloat: 0
-  activationValueProgressionInt: 647
+  activationValueProgressionInt: 0
   activationValueProgressionFloat: 0
   consecutive: 0
   count: 1

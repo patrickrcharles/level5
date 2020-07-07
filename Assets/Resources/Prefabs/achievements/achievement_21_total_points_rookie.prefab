@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840828638710515928}
   - component: {fileID: 840828638710515931}
   m_Layer: 0
-  m_Name: achievement_21_total_points_easy
+  m_Name: achievement_21_total_points_rookie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

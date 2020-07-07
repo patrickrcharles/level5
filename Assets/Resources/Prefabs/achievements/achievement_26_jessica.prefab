@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ca5376fe30bbb4dad3fde99e6c5545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achievementId: 16
+  achievementId: 26
   achievementName: unlock Jessica
   achievementDescription: score 500 points
   characterUnlock: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
   modeId: 0
   activationValueInt: 500
   activationValueFloat: 0
-  activationValueProgressionInt: 93
+  activationValueProgressionInt: 0
   activationValueProgressionFloat: 0
   consecutive: 0
   count: 1
