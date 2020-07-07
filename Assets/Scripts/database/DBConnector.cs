@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
-
+using UnityEditor;
 
 public class DBConnector : MonoBehaviour
 {
@@ -17,7 +17,8 @@ public class DBConnector : MonoBehaviour
     bool _created;
     private String connection;
     private String databaseNamePath = "/level5.db";
-    private int currentGameVersion;
+    private string currentGameVersion;
+    private string previousGameVersion;
     private String filepath;
 
     const String tableNameHighScores = "HighScores";
@@ -35,6 +36,7 @@ public class DBConnector : MonoBehaviour
 
     void Awake()
     {
+
         DontDestroyOnLoad(gameObject);
         if (instance == null)
         {
@@ -48,14 +50,26 @@ public class DBConnector : MonoBehaviour
 
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
-        currentGameVersion = getCurrentGameVersionToInt(Application.version);
-        dbHelper = gameObject.GetComponent<DBHelper>();
 
+        dbHelper = gameObject.GetComponent<DBHelper>();
+        currentGameVersion = Application.version;
+        previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
+        
         // if database doesnt exist
         if (!File.Exists(filepath))
         {
+            Debug.Log("create database");
             createDatabase();
         }
+
+        // if database does exist but isnt is outdated schema
+        if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
+        {
+            // drop tables
+            dropDatabase();
+            // create upgraded db
+            createDatabase();
+        }   
     }
 
     void Start()
@@ -77,6 +91,16 @@ public class DBConnector : MonoBehaviour
         //}
         // use this for testing
         dbHelper.UpdateAchievementStats();
+    }
+
+    private void Update()
+    {
+     //   if (!EditorApplication.isPlayingOrWillChangePlaymode &&
+     //EditorApplication.isPlaying)
+     //   {
+     //       Debug.Log("editor closing, close db conn");
+     //       dbconn.Close();
+     //   }
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
@@ -207,7 +231,7 @@ public class DBConnector : MonoBehaviour
             "totalDistance REAL, " +
             "maxShotMade   INTEGER, " +
             "maxShotAtt    INTEGER, " +
-            "consecutiveShots   INTEGER" +
+            "consecutiveShots   INTEGER," +
             "trafficEnabled	INTEGER); " +
 
             "CREATE TABLE if not exists AllTimeStats(" +
@@ -245,7 +269,7 @@ public class DBConnector : MonoBehaviour
             "activevalue_float REAL," +
             "activevalue_progress_int  INTEGER," +
             "activevalue_progress_float    REAL," +
-            "unlocked  INTEGER );" +
+            "islocked  INTEGER );" +
 
         "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +
@@ -258,6 +282,33 @@ public class DBConnector : MonoBehaviour
             "version   TEXT, " +
             "os    TEXT, " +
             "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);");
+
+        dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteScalar();
+
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+    }
+
+    void dropDatabase()
+    {
+        dbconn = new SqliteConnection(connection);
+        dbconn.Open();
+        dbcmd = dbconn.CreateCommand();
+
+        // DROP TABLE [IF EXISTS] [schema_name.]table_name;
+        string sqlQuery = String.Format(
+            "DROP TABLE if exists HighScores; " +
+
+            "DROP TABLE if exists AllTimeStats; " +
+
+            "DROP TABLE if exists HitByCar; " +
+
+            "DROP TABLE if exists Achievements; " +
+
+            "DROP TABLE if exists User; ");
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();

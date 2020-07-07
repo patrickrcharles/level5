@@ -63,7 +63,7 @@ public class AchievementManager : MonoBehaviour
         {
             Achievement temp = obj.GetComponent<Achievement>();
             // update with database values
-            temp.ActivationValueInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_int", temp.achievementId);
+            //temp.ActivationValueInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_int", temp.achievementId);
             temp.ActivationValueProgressionInt = DBHelper.instance.getIntValueFromTableByFieldAndAchievementID("Achievements", "activevalue_progress_int", temp.achievementId);
             AchievementList.Add(temp);
         }
@@ -88,6 +88,8 @@ public class AchievementManager : MonoBehaviour
                     //achieveUnlockedList.Add(ach.achievementName);
                     achText += "\n" + ach.achievementName;
                     achUnlocked = true;
+                    // update database
+                    DBHelper.instance.updateIntValueFromTableByFieldAndAchievementID("Achievements", "islocked", 0, ach.achievementId);
                 }
             }           
         }

@@ -61,8 +61,10 @@ public class DBHelper : MonoBehaviour
         //if table contains records
         if (count == 0)
         {
+            //Debug.Log(tableName + " is empty");
             return true;
         }
+        //Debug.Log(tableName + " is NOT empty");
         return false;
     }
 
@@ -308,7 +310,6 @@ public class DBHelper : MonoBehaviour
                 }
                 int islocked = reader.GetInt32(3);
                 //Debug.Log("db aid" + aid + " islocked : " + islocked);
-
                 achieveStats.Add(new Achievement(aid, activateInt, progressInt, islocked));
             }
             reader.Close();
@@ -336,7 +337,7 @@ public class DBHelper : MonoBehaviour
         {
             sqlQuery =
            "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-           "sevenAtt, totalPoints moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot)  " +
+           "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot)  " +
            "Values( '" +
            stats.TwoPointerMade + "', '" +
            stats.TwoPointerAttempts + "', '" +
@@ -350,8 +351,10 @@ public class DBHelper : MonoBehaviour
            stats.MoneyBallMade + "','" +
            stats.MoneyBallAttempts + "','" +
            stats.TotalDistance + "','" +
-           stats.TimePlayed + "," +
+           stats.TimePlayed + "','" +
            stats.LongestShotMade + "')";
+
+            Debug.Log(sqlQuery);
         }
         else
         {
@@ -431,7 +434,8 @@ public class DBHelper : MonoBehaviour
     // this is a mess. needs to be redone and split into functions
     internal void UpdateAchievementStats()
     {
-        List<Achievement> achievementsList = getAchievementStats();
+        //Debug.Log("UpdateAchievementStats()");
+        List <Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
         var dbconn = new SqliteConnection(connection);
@@ -505,6 +509,7 @@ public class DBHelper : MonoBehaviour
                         // check if sql query is empty/null. time saving method (skip query if not necessary to run)
                         if (!String.IsNullOrEmpty(sqlQuery))
                         {
+                            //Debug.Log(sqlQuery);
                             cmd.CommandText = sqlQuery;
                             cmd.ExecuteNonQuery();
                         }
@@ -590,7 +595,7 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = " + userid;
+        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE id = " + userid;
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -830,5 +835,35 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
 
         return value;
+    }
+
+    // return int from specified table by field and achievement id
+    public void updateIntValueFromTableByFieldAndAchievementID(String tableName, String field, int value, int aid)
+    {
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        //string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
+
+        string sqlQuery = "UPDATE " + achievementTableName + " SET "+ field + "  = " + value + " WHERE aid = " + aid;
+
+        Debug.Log(sqlQuery);
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+        }
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
     }
 }
