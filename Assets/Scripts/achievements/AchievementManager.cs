@@ -55,6 +55,8 @@ public class AchievementManager : MonoBehaviour
 
     void loadAchievements()
     {
+        //yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
+
         //Debug.Log("loadAchievements()");
         // where are the prefabs, load them
         string path = "Prefabs/achievements";
