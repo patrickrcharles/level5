@@ -596,6 +596,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: start
       objectReference: {fileID: 0}
+    - target: {fileID: 278210207, guid: 81d79243e38dc464588266b4568e186b, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 1172130784}
+    - target: {fileID: 2692522641280016360, guid: 81d79243e38dc464588266b4568e186b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 278210207}
     - target: {fileID: 6042543573864679150, guid: 81d79243e38dc464588266b4568e186b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -711,18 +720,13 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 278210207}
-    - target: {fileID: 2692522641280016360, guid: 81d79243e38dc464588266b4568e186b,
-        type: 3}
-      propertyPath: m_Navigation.m_SelectOnDown
-      value: 
-      objectReference: {fileID: 278210207}
-    - target: {fileID: 278210207, guid: 81d79243e38dc464588266b4568e186b, type: 3}
-      propertyPath: m_Navigation.m_SelectOnUp
-      value: 
-      objectReference: {fileID: 1172130784}
     - target: {fileID: 889204391, guid: 81d79243e38dc464588266b4568e186b, type: 3}
       propertyPath: m_Name
       value: traffic_select_option
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636661333, guid: 81d79243e38dc464588266b4568e186b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -693
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d79243e38dc464588266b4568e186b, type: 3}

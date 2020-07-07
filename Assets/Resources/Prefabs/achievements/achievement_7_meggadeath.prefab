@@ -53,7 +53,7 @@ MonoBehaviour:
   otherUnlock: 0
   playerId: 8
   cheerleaderId: 0
-  levelId: 6
+  levelId: 0
   modeId: 0
   activationValueInt: 125
   activationValueFloat: 0
