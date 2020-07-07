@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEditor;
+using System.Collections;
 
 public class DBConnector : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class DBConnector : MonoBehaviour
         filepath = Application.persistentDataPath + databaseNamePath;
 
         dbHelper = gameObject.GetComponent<DBHelper>();
+
         currentGameVersion = Application.version;
         previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
         
@@ -90,7 +92,7 @@ public class DBConnector : MonoBehaviour
         //    dbHelper.UpdateAchievementStats();
         //}
         // use this for testing
-        dbHelper.UpdateAchievementStats();
+        StartCoroutine(updateAchievements());
     }
 
     private void Update()
@@ -101,6 +103,13 @@ public class DBConnector : MonoBehaviour
      //       Debug.Log("editor closing, close db conn");
      //       dbconn.Close();
      //   }
+    }
+
+    IEnumerator updateAchievements()
+    {
+        yield return new  WaitUntil(() => AchievementManager.instance.ListCreated == true);
+
+        dbHelper.UpdateAchievementStats();
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
