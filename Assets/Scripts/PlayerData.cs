@@ -330,7 +330,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStatsFromDatabase()
     {
-       ////Debug.Log("load from database");
+       //Debug.Log("load from database");
    
         _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
         TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
@@ -347,6 +347,7 @@ public class PlayerData : MonoBehaviour
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
         LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByField("AllTimeStats", "longestShot", "DESC");
         _mostConsecutiveShots = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "consecutiveShots", 14, "DESC");
+        TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
 
         //Debug.Log(" Playerdata freeplay long : " + PlayerData.instance.LongestShotMadeFreePlay);
     }
