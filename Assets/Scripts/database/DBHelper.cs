@@ -58,6 +58,9 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
         //if table contains records
         if (count == 0)
         {
@@ -434,7 +437,7 @@ public class DBHelper : MonoBehaviour
     // this is a mess. needs to be redone and split into functions
     internal void UpdateAchievementStats()
     {
-        //Debug.Log("UpdateAchievementStats()");
+        Debug.Log("UpdateAchievementStats()");
         List <Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 

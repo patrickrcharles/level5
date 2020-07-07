@@ -33,11 +33,15 @@ public class DBConnector : MonoBehaviour
 
     DBHelper dbHelper;
 
+    bool databaseCreated;
+
     public static DBConnector instance;
+
+    public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }
 
     void Awake()
     {
-
+        //Debug.Log("DBConnector : Awake");
         DontDestroyOnLoad(gameObject);
         if (instance == null)
         {
@@ -51,27 +55,54 @@ public class DBConnector : MonoBehaviour
 
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
-
         dbHelper = gameObject.GetComponent<DBHelper>();
 
-        currentGameVersion = Application.version;
-        previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
-        
         // if database doesnt exist
         if (!File.Exists(filepath))
         {
-            Debug.Log("create database");
-            createDatabase();
+            //databaseCreated = false;
+            try
+            {
+                Debug.Log("create database");
+                dropDatabase();
+                createDatabase();
+            }
+            catch
+            {
+                return;
+            }
         }
 
-        // if database does exist but isnt is outdated schema
-        if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
-        {
-            // drop tables
-            dropDatabase();
-            // create upgraded db
-            createDatabase();
-        }   
+        //previousGameVersion = "3.1.0";
+        //currentGameVersion = Application.version;
+
+        //// if user table not empty
+        //if (!dbHelper.isTableEmpty(tableNameUser))
+        //{
+        //    previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
+        //}
+
+        //try // check if old game version
+        //{
+        //    // if database does exist but isnt is outdated schema
+        //    if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
+        //    {
+        //        databaseCreated = false;
+        //        Debug.Log("if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))");
+        //        // drop tables
+        //        dropDatabase();
+        //        // create upgraded db
+        //        createDatabase();
+        //    }
+        //}
+        //catch // if db errors, drop tables and create db
+        //{
+        //    Debug.Log("catch : create database");
+        //    // drop tables
+        //    dropDatabase();
+        //    // create upgraded db
+        //    createDatabase();
+        //}
     }
 
     void Start()
@@ -86,30 +117,37 @@ public class DBConnector : MonoBehaviour
         // get device user is currently using
         SetCurrentUserDevice();
 
-        // if achievement table is empty, create default entries
-        //if (dbHelper.isTableEmpty(tableNameAchievements))
-        //{
-        //    dbHelper.UpdateAchievementStats();
-        //}
         // use this for testing
         StartCoroutine(updateAchievements());
     }
 
     private void Update()
     {
-     //   if (!EditorApplication.isPlayingOrWillChangePlaymode &&
-     //EditorApplication.isPlaying)
-     //   {
-     //       Debug.Log("editor closing, close db conn");
-     //       dbconn.Close();
-     //   }
+        //   if (!EditorApplication.isPlayingOrWillChangePlaymode &&
+        //EditorApplication.isPlaying)
+        //   {
+        //       Debug.Log("editor closing, close db conn");
+        //       dbconn.Close();
+        //   }
     }
 
     IEnumerator updateAchievements()
     {
-        yield return new  WaitUntil(() => AchievementManager.instance.ListCreated == true);
+        // wait for achievement list to be created
+        yield return new WaitUntil(() => AchievementManager.instance.ListCreated == true);
 
-        dbHelper.UpdateAchievementStats();
+        // check if dbhelper is null and if achievement table is null
+        if (dbHelper != null)
+        {
+            try
+            {
+                dbHelper.UpdateAchievementStats();
+            }
+            catch
+            {
+                Debug.Log("exception : dbhelper == null");
+            }
+        }
     }
 
     public void savePlayerGameStats(BasketBallStats stats)
@@ -218,6 +256,8 @@ public class DBConnector : MonoBehaviour
     // create tables if not created
     void createDatabase()
     {
+        Debug.Log("createDatabase()");
+
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
         dbcmd = dbconn.CreateCommand();
@@ -295,14 +335,24 @@ public class DBConnector : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
 
-        dbcmd.Dispose();
-        dbcmd = null;
         dbconn.Close();
         dbconn = null;
+
+        dbcmd.Dispose();
+        dbcmd = null;
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        //databaseCreated = true;
+
     }
 
     void dropDatabase()
     {
+
+        Debug.Log("dropDatabase()");
+
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
         dbcmd = dbconn.CreateCommand();

@@ -55,6 +55,7 @@ public class Timer : MonoBehaviour
         {
             timerEnabled = true;
             displayTimer = true;
+            //Debug.Log("display timer true");
         }
         else
         {
@@ -83,8 +84,9 @@ public class Timer : MonoBehaviour
             seconds = (currentTime - (minutes * 60));
         }
         // gameover, disable timer display and set text to empty
-        if (GameRules.instance.GameOver || timeRemaining <= 0)
+        if (GameRules.instance.GameOver || timeRemaining < 0)
         {
+            //Debug.Log("display timer false");
             displayTimer = false;
             timerText.text = "";
         }
@@ -125,11 +127,12 @@ public class Timer : MonoBehaviour
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }
 
-        //if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining < 0 && !timerTextLocked)
-        //{
-        //    timerTextLocked = true;
-        //    setCustomTimerText("OVERTIME");
-        //}
+        if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
+        {
+            //timerTextLocked = true;
+            //setCustomTimerText("OVERTIME");
+            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+        }
     }
 
     void setCustomTimerText(string text)
