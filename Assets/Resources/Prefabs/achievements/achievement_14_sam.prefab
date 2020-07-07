@@ -74,4 +74,4 @@ MonoBehaviour:
   GREATER_THAN: 1
   LESS_THAN: 0
   EQUAL_TO: 0
-  isLocked: 0
+  isLocked: 1
