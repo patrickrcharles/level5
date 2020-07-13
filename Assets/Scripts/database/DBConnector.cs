@@ -117,8 +117,12 @@ public class DBConnector : MonoBehaviour
         // get device user is currently using
         SetCurrentUserDevice();
 
-        // use this for testing
-        StartCoroutine(updateAchievements());
+        // check for achievement manager
+        // note - create game manager constants list for things like this
+        if (GameObject.Find("achievement_manager") != null)
+        {
+            StartCoroutine(updateAchievements());
+        }
     }
 
     private void Update()
