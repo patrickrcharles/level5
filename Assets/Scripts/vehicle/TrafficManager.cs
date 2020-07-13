@@ -52,6 +52,7 @@ public class TrafficManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        GameOptions.trafficEnabled = true;
 
         // if traffic enabled
         if (GameOptions.trafficEnabled)
@@ -102,8 +103,11 @@ public class TrafficManager : MonoBehaviour
             // get all the objects in folder, create list of the vehicleControllers
             foreach (GameObject car in _customVehiclePrefabList)
             {
-                VehicleController temp = car.GetComponent<VehicleController>();
-                VehiclesList.Add(temp);
+                if (car != null)
+                {
+                    VehicleController temp = car.GetComponent<VehicleController>();
+                    VehiclesList.Add(temp);
+                }
             }
             spawnCustomVehiclePrefabs();
         }
