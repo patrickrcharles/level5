@@ -53,12 +53,17 @@ public class StartManager : MonoBehaviour
     private Text modeSelectOptionText;
     private Text ModeSelectOptionDescriptionText;
 
-
     //traffic
     private Text trafficSelectOptionText;
 
-    //player objects
+    //const object names
     private const string startButtonName = "press_start";
+    private const string statsMenuButtonName = "stats_menu";
+    private const string quitButtonName = "quit_button";
+
+    // scene name
+    private const string statsMenuSceneName = "level_00_stats";
+
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
@@ -126,6 +131,7 @@ public class StartManager : MonoBehaviour
         levelSelectedIndex = 0;
         modeSelectedIndex = 0;
 
+        // load default data
         loadPlayerSelectDataList();
         loadCheerleaderSelectDataList();
         initializeTrafficOptionDisplay();
@@ -137,18 +143,12 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        //loadPlayerSelectDataList();
-        //loadCheerleaderSelectDataList();
-        //loadLevelSelectDataList();
-        //loadModeSelectDataList();
-
+        // display default data
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
         initializeLevelDisplay();
         intializeModeDisplay();
         setInitialGameOptions();
-
     }
 
     private void setInitialGameOptions()
@@ -168,7 +168,6 @@ public class StartManager : MonoBehaviour
         // check for some button not selected
         if (EventSystem.current.currentSelectedGameObject == null)
         {
-            Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
         }
 
@@ -184,15 +183,29 @@ public class StartManager : MonoBehaviour
         {
             initializeCheerleaderDisplay();
         }
-
-        // start game
+        // start button | start game
         if ((InputManager.GetKeyDown(KeyCode.Return) 
              || InputManager.GetKeyDown(KeyCode.Space)
              || InputManager.GetButtonDown("Fire1"))
             && currentHighlightedButton.Equals(startButtonName))
         {
-            //Debug.Log("pressed enter");
             loadScene();
+        }
+        // quit button | quit game
+        if ((InputManager.GetKeyDown(KeyCode.Return)
+             || InputManager.GetKeyDown(KeyCode.Space)
+             || InputManager.GetButtonDown("Fire1"))
+            && currentHighlightedButton.Equals(quitButtonName))
+        {
+            Application.Quit();
+        }
+        // stats menu button | load stats menu
+        if ((InputManager.GetKeyDown(KeyCode.Return)
+             || InputManager.GetKeyDown(KeyCode.Space)
+             || InputManager.GetButtonDown("Fire1"))
+            && currentHighlightedButton.Equals(statsMenuButtonName))
+        {
+            loadStatsMenu(statsMenuSceneName);
         }
 
         // ================================== navigation =====================================================================
@@ -777,5 +790,10 @@ public class StartManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(seconds);
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
+    }
+
+    private void loadStatsMenu(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5217845550521623027}
   m_Layer: 0
   m_Name: highScoreRow
-  m_TagString: Untagged
+  m_TagString: high_score_row
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,10 +82,10 @@ MonoBehaviour:
   characterText: {fileID: 0}
   levelText: {fileID: 0}
   dateText: {fileID: 0}
-  score: 0
-  character: 
-  level: 
-  date: 
+  score: 18
+  character: Doctor Blood
+  level: The Scrapyard
+  date: 7/2/2020 2:22:55 PM
 --- !u!1 &5217845551300956830
 GameObject:
   m_ObjectHideFlags: 0

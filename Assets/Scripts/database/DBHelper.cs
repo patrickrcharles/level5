@@ -438,7 +438,7 @@ public class DBHelper : MonoBehaviour
     internal void UpdateAchievementStats()
     {
         //Debug.Log("UpdateAchievementStats()");
-        List <Achievement> achievementsList = getAchievementStats();
+        List<Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
         var dbconn = new SqliteConnection(connection);
@@ -618,6 +618,8 @@ public class DBHelper : MonoBehaviour
         return value.ToString();
     }
 
+
+
     // return int from specified table by field and userid
     public int getIntValueFromTableByFieldAndId(String tableName, String field, int userid)
     {
@@ -710,6 +712,162 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
+    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid)
+    {
+        List<StatsTableHighScoreRow> listOfValues = new List<StatsTableHighScoreRow>();
+
+        string score; // store as string, more effcient that wrting 3 versions of the function
+        string character;
+        string level;
+        string date;
+
+        string sqlQuery = "";
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // game modes that require float values/ low time as high score
+        if (modeid > 4 && modeid < 14 && modeid !=6)
+        {
+            sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+        }
+        else
+        {
+            sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+        }
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        int i = 0;
+        while (reader.Read())
+        {
+            StatsTableHighScoreRow temp = null;
+
+            // game modes that require float values
+            if (modeid > 4 && modeid < 14)
+            {
+                score = reader.GetFloat(0).ToString();
+            }
+            else
+            {
+                score = reader.GetInt32(0).ToString();
+            }
+            character = reader.GetString(1);
+            level = reader.GetString(2);
+            date = reader.GetString(3);
+            // add to list
+            listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date));
+            //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
+        }
+
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return listOfValues;
+
+    }
+
+    //============================== get all time stats ===================================================
+    public float getFloatValueAllTimeFromTableByField(String tableName, String field)
+    {
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+        float value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery = "SELECT " + field + " FROM " + tableName;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetFloat(0);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+    public int getIntValueAllTimeFromTableByField(String tableName, String field)
+    {
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT " + field + " FROM " + tableName;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+            Debug.Log(" value : " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
+    public int getIntSumByTableByField(String tableName, String field)
+    {
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT SUM(" + field + ") FROM " + tableName;
+
+        //SELECT SUM(count)FROM HitByCar;
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+            Debug.Log(" value : " + value);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+    //====================================================================================================
     public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
@@ -850,7 +1008,7 @@ public class DBHelper : MonoBehaviour
 
         //string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
 
-        string sqlQuery = "UPDATE " + achievementTableName + " SET "+ field + "  = " + value + " WHERE aid = " + aid;
+        string sqlQuery = "UPDATE " + achievementTableName + " SET " + field + "  = " + value + " WHERE aid = " + aid;
 
         Debug.Log(sqlQuery);
 

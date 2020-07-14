@@ -19,6 +19,10 @@ public class StartScreenModeSelected : MonoBehaviour
 
     [SerializeField] private bool modeRequiresConsecutiveShots;
 
+    [SerializeField] private string highScoreField;
+
+
+
     public bool ModeRequiresMoneyBall => modeRequiresMoneyBall;
 
     public bool ModeRequiresShotMarkers3S
@@ -63,4 +67,5 @@ public class StartScreenModeSelected : MonoBehaviour
         get => modeDescription;
     }
     public bool ModeRequiresConsecutiveShots { get => modeRequiresConsecutiveShots; set => modeRequiresConsecutiveShots = value; }
+    public string HighScoreField { get => highScoreField; set => highScoreField = value; }
 }

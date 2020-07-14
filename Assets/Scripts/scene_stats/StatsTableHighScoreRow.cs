@@ -17,7 +17,7 @@ public class StatsTableHighScoreRow : MonoBehaviour
     public Text dateText;
 
     [SerializeField]
-    public int score;
+    public string score;
     [SerializeField]
     public string character;
     [SerializeField]
@@ -36,7 +36,15 @@ public class StatsTableHighScoreRow : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = score.ToString();
+        //if (score == 0)
+        //{
+        //    scoreText.text = "";
+        //}
+        //else
+        //{
+        //    scoreText.text = score.ToString();
+        //}
+        scoreText.text = score;
         characterText.text = character;
         levelText.text = level;
         dateText.text = date;
@@ -44,11 +52,12 @@ public class StatsTableHighScoreRow : MonoBehaviour
         //Debug.Log("score = " + score + " | character =" +character + " | level = " + level + " | date = " +date);
     }
 
-    public StatsTableHighScoreRow(int scor, string charact, string lvl, string dat)
+    public StatsTableHighScoreRow(string scor, string charact, string lvl, string dat)
     {
         score = scor;
         character = charact;
         level = lvl;
         date = dat;
     }
+
 }

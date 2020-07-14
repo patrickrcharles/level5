@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TeamUtility.IO;
 using UnityEditor.iOS;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StatsManager : MonoBehaviour
 {
-
     [SerializeField]
     private string currentHighlightedButton;
 
-    const string scoreOptionButtonName = "score_options";
-    const string highscoreSelectButtonName = "high_score_select";
+    //const string scoreOptionButtonName = "score_options";
+    //const string highscoreSelectButtonName = "high_score_select";
     const string modeSelectButtonName = "mode_select_name";
     const string alltimeSelectButtonName = "all_time_select";
-    const string mainMenuButtonName = "all_time_select";
-    const string allTimeTableName = "high_scores_table";
-    const string highScoreTableName = "all_time_table";
+    const string mainMenuButtonName = "main_menu";
+    // table names
+    const string highScoreTableName = "high_scores_table";
+    const string allTimeTableName = "all_time_table";
+
+    // tag find high score rows that are instantiated
+    const string highScoreRowTag = "high_score_row";
+
+    const string mainMenuSceneName = "level_00_start";
 
     GameObject scoreOptionButtonObject;
     GameObject highscoreSelectButtonObject;
@@ -27,50 +34,54 @@ public class StatsManager : MonoBehaviour
     GameObject alltimeSelectButtonObject;
     GameObject mainMenuButtonObject;
 
-    //GameObject allTimeTableObject;
-    //GameObject highScoreTableObject;
+    GameObject allTimeTableObject;
+    GameObject highScoreTableObject;
 
     Text modeSelectButtonText;
 
     [SerializeField]
-    List<StatsTableHighScoreRow> highScoreRowsList;
+    List<StatsTableHighScoreRow> highScoreRowsDataList;
     List<mode> modesList;
+    List<GameObject> highScoreRowsObjectsList;
 
     int defaultModeSelectedIndex;
     int currentModeSelectedIndex;
 
     GameObject highScoreRowPrefab;
-    string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
+    const string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
 
     const string highScoresRowsName = "high_scores_rows";
     GameObject highScoresRowsObject;
 
     public static StatsManager instance;
 
+    // store data for each row
     public class mode
     {
         public int modeSelectedId;
         public string modeSelectedName;
+        public string modeSelectedHighScoreField;
 
-        public mode(int modeid, string modeName)
+        // constructor
+        public mode(int modeid, string modeName, string field)
         {
             modeSelectedId = modeid;
             modeSelectedName = modeName;
+            modeSelectedHighScoreField = field;
         }
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
+        //check for existsing instance of statmanager
         destroyInstanceIfAlreadyExists();
-
-        scoreOptionButtonObject = GameObject.Find(scoreOptionButtonName);
-        highscoreSelectButtonObject = GameObject.Find(highscoreSelectButtonName);
+        // find objects/buttons
         modeSelectButtonText = GameObject.Find(modeSelectButtonName).GetComponent<Text>();
-        alltimeSelectButtonObject = GameObject.Find(alltimeSelectButtonName);
-        mainMenuButtonObject = GameObject.Find(mainMenuButtonName);
+        highScoreTableObject = GameObject.Find(highScoreTableName);
+        allTimeTableObject = GameObject.Find(allTimeTableName);
 
-        // where rows need to be instantiated
+        // parent object where rows will be instantiated
+        // ex. usage Instantiate(prefab, position, quaternion, parent object);
         highScoresRowsObject = GameObject.Find(highScoresRowsName);
 
         // get mode ids and display names. mode ids will be used for queries to display data
@@ -78,36 +89,40 @@ public class StatsManager : MonoBehaviour
         defaultModeSelectedIndex = 0;
         currentModeSelectedIndex = defaultModeSelectedIndex;
 
-
+        // set default game mode name
         modeSelectButtonText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
 
         // row prefab to be instantiated
         highScoreRowPrefab = Resources.Load(highScoreRowPrefabPath) as GameObject;
 
-        // highscores from db
-        highScoreRowsList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeId(15);
+        // get mode id of default game mode
+        string field = modesList[defaultModeSelectedIndex].modeSelectedHighScoreField;
 
-        foreach (StatsTableHighScoreRow row in highScoreRowsList)
-        {
-            Debug.Log("score = " + row.score + " | character =" + row.character
-        + " | level = " + row.level + " | date = " + row.date);
-        }
+        // get data for default mode to be displayed
+        highScoreRowsDataList =
+            DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
     }
 
     private void Start()
     {
-        for(int i = 0; i < highScoreRowsList.Count; i++)
+        // create rows dor data display
+        for (int i = 0; i < highScoreRowsDataList.Count; i++)
         {
             // set data for prefabs from list retrieved from database
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().score = highScoreRowsList[i].score;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().character = highScoreRowsList[i].character;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().level = highScoreRowsList[i].level;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().date = highScoreRowsList[i].date;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
             // instantiate row on necessary table object
             Instantiate(highScoreRowPrefab, highScoresRowsObject.transform.position, Quaternion.identity, highScoresRowsObject.transform);
         }
-    }
+        // list of row onjects that contain the Text displays
+        highScoreRowsObjectsList = GameObject.FindGameObjectsWithTag(highScoreRowTag).ToList();
 
+        // default table view
+        highScoreTableObject.SetActive(true);
+        allTimeTableObject.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()
@@ -116,150 +131,106 @@ public class StatsManager : MonoBehaviour
         // check for some button not selected
         if (EventSystem.current.currentSelectedGameObject == null)
         {
-            Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
+            //Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
         }
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
-
-        // if high score selected
-        if (currentHighlightedButton.Equals(scoreOptionButtonName))
-        {
-
-        }
-        // if all time stats selected
-        if (currentHighlightedButton.Equals(alltimeSelectButtonName))
-        {
-
-        }
 
         // ================================== navigation =====================================================================
 
-        // up arrow navigation
-        //if (InputManager.GetKeyDown(KeyCode.UpArrow)
-        //    && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
-        //    && !currentHighlightedButton.Equals(trafficSelectOptionName))
-        //{
-        //    EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-        //        .GetComponent<Button>().FindSelectableOnUp().gameObject);
-        //}
-
-        //// down arrow navigation
-        //if (InputManager.GetKeyDown(KeyCode.DownArrow)
-        //    && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
-        //    && !currentHighlightedButton.Equals(trafficSelectOptionName))
-        //{
-        //    EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-        //        .GetComponent<Button>().FindSelectableOnDown().gameObject);
-        //}
-
-        // right arrow on player select
-        if (InputManager.GetKeyDown(KeyCode.RightArrow))
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(modeSelectButtonName))
         {
-            //Debug.Log("right : player select");
-            if (currentHighlightedButton.Equals(highscoreSelectButtonName))
+            highScoreTableObject.SetActive(true);
+            allTimeTableObject.SetActive(false);
+
+            if (InputManager.GetKeyDown(KeyCode.LeftArrow) || InputManager.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("right : mode select");
-                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-                    .GetComponent<Button>().FindSelectableOnRight().gameObject);
+                // change selected mode and display data based on mode selected
+                changeSelectedMode("left");
+                changeHighScoreModeNameDisplay();
+                changeHighScoreDataDisplay();
+            }
+
+            if (InputManager.GetKeyDown(KeyCode.RightArrow) || InputManager.GetKeyDown(KeyCode.D))
+            {
+                // change selected mode and display data based on mode selected
+                changeSelectedMode("right");
+                changeHighScoreModeNameDisplay();
+                changeHighScoreDataDisplay();
+            }
+
+            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
+            {
+                navigateUp();
+            }
+
+            // down arrow navigation
+            if (InputManager.GetKeyDown(KeyCode.DownArrow))//|| InputManager.GetKeyDown(KeyCode.S))
+            {
+                navigateDown();
             }
         }
 
-
-        // left arrow navigation on player options
-        if (InputManager.GetKeyDown(KeyCode.LeftArrow))
+        // all time stats table button selected
+        if (currentHighlightedButton.Equals(alltimeSelectButtonName))
         {
-            //Debug.Log("left : player select");
-            if (currentHighlightedButton.Equals(modeSelectButtonName))
+            allTimeTableObject.SetActive(true);
+            highScoreTableObject.SetActive(false);
+
+            // up arrow navigation
+            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
             {
-                Debug.Log("left : mode select");
-                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+                navigateUp();
+            }
+
+            // down arrow navigation
+            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            {
+                navigateDown();
             }
         }
-        //        //Debug.Log("left : level select");
-        //        if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
-        //        {
-        //            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-        //                .GetComponent<Button>().FindSelectableOnLeft().gameObject);
-        //        }
-        //        if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
-        //        {
-        //            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-        //                .GetComponent<Button>().FindSelectableOnLeft().gameObject);
-        //        }
-        //        if (currentHighlightedButton.Equals(trafficSelectOptionName))
-        //        {
-        //            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-        //                .GetComponent<Button>().FindSelectableOnLeft().gameObject);
-        //        }
-        //    }
 
-        //    // up/down arrow on player options
-        //    if ((InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow)))
-        //    {
-        //        //Debug.Log("up : player option");
-        //        if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
-        //        {
-        //            changeSelectedPlayerUp();
-        //            initializePlayerDisplay();
-        //        }
-        //        //Debug.Log("up : level option");
-        //        if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
-        //        {
-        //            changeSelectedLevelUp();
-        //            initializeLevelDisplay();
-        //        }
-        //        //Debug.Log("up : level option");
-        //        if (currentHighlightedButton.Equals(modeSelectOptionButtonName))
-        //        {
-        //            changeSelectedModeUp();
-        //            intializeModeDisplay();
-        //        }
-        //        if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
-        //        {
-        //            changeSelectedCheerleaderUp();
-        //            initializeCheerleaderDisplay();
-        //        }
-        //        if (currentHighlightedButton.Equals(trafficSelectOptionName))
-        //        {
-        //            changeSelectedTrafficOption();
-        //            initializeTrafficOptionDisplay();
-        //        }
-        //    }
+        // main menu button selected
+        if (currentHighlightedButton.Equals(mainMenuButtonName))
+        {
+            if (InputManager.GetKeyDown(KeyCode.Return)
+             || InputManager.GetKeyDown(KeyCode.Space)
+             || InputManager.GetButtonDown("Fire1"))
+            {
+                loadMainMenu(mainMenuSceneName);
+            }
 
-        //    if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
-        //    {
-        //        //Debug.Log("down : player option");
-        //        if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
-        //        {
-        //            changeSelectedPlayerDown();
-        //            initializePlayerDisplay();
-        //        }
-        //        //Debug.Log("down : level option");
-        //        if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
-        //        {
-        //            changeSelectedLevelDown();
-        //            initializeLevelDisplay();
-        //        }
-        //        if (currentHighlightedButton.Equals(modeSelectOptionButtonName))
-        //        {
-        //            changeSelectedModeDown();
-        //            intializeModeDisplay();
-        //        }
-        //        if (currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
-        //        {
-        //            changeSelectedCheerleaderDown();
-        //            initializeCheerleaderDisplay();
-        //        }
-        //        if (currentHighlightedButton.Equals(trafficSelectOptionName))
-        //        {
-        //            changeSelectedTrafficOption();
-        //            initializeTrafficOptionDisplay();
-        //        }
-        //    }
+            // up arrow navigation
+            if (InputManager.GetKeyDown(KeyCode.UpArrow))// || InputManager.GetKeyDown(KeyCode.W))
+            {
+                navigateUp();
+            }
 
+            // down arrow navigation
+            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            {
+                navigateDown();
+            }
+        }
+    }
+
+    private static void navigateUp()
+    {
+        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+            .GetComponent<Button>().FindSelectableOnUp().gameObject);
+    }
+
+    private static void navigateDown()
+    {
+        EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+            .GetComponent<Button>().FindSelectableOnDown().gameObject);
+    }
+
+    private void loadMainMenu(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     private void destroyInstanceIfAlreadyExists()
@@ -272,15 +243,12 @@ public class StatsManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("created, destroy this");
             Destroy(gameObject);
         }
     }
 
     private List<mode> getModeSelectDataList()
     {
-        //Debug.Log("loadPlayerSelectDataList()");
-
         List<mode> tempList = new List<mode>();
 
         string path = "Prefabs/start_menu/mode_selected_objects";
@@ -290,8 +258,11 @@ public class StatsManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
-            //Debug.Log("modeid : " + temp.ModeId + "    name : " + temp.ModelDisplayName);
-            tempList.Add(new mode(temp.ModeId, temp.ModelDisplayName));
+            // add to list
+            if (!temp.ModelDisplayName.ToLower().Contains("free")) // exclude freeplay
+            {
+                tempList.Add(new mode(temp.ModeId, temp.ModelDisplayName, temp.HighScoreField));
+            }
         }
 
         // sort list by  level id
@@ -303,5 +274,76 @@ public class StatsManager : MonoBehaviour
     static int sortByModeId(mode m1, mode m2)
     {
         return m2.modeSelectedId.CompareTo(m2.modeSelectedId);
+    }
+
+    private void changeSelectedMode(string direction)
+    {
+        // left option || decrement
+        if (direction.ToLower().Equals("left"))
+        {
+            // if default index (first in list), go to end of list
+            if (currentModeSelectedIndex == 0)
+            {
+                currentModeSelectedIndex = modesList.Count - 1;
+            }
+            else
+            {
+                // if not first index, decrement
+                currentModeSelectedIndex--;
+            }
+        }
+
+        // right option || increment
+        if (direction.ToLower().Equals("right"))
+        {
+            // if default index (first in list
+            if (currentModeSelectedIndex == modesList.Count - 1)
+            {
+                currentModeSelectedIndex = 0;
+            }
+            else
+            {
+                //if not first index, increment
+                currentModeSelectedIndex++;
+            }
+        }
+    }
+
+    private void changeHighScoreModeNameDisplay()
+    {
+        modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+    }
+
+    private void changeHighScoreDataDisplay()
+    {
+        // counts number entries returned.
+        int index = 0;
+
+        // get highscore field from mode prefab
+        string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
+
+        // get new list of scores based on currently selected game mode
+        highScoreRowsDataList
+            = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId);
+
+        // updates row with new data
+        for (int i = 0; i < highScoreRowsDataList.Count; i++)
+        {
+            // set data for prefabs from list retrieved from database
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score.ToString();
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
+            index++;
+        }
+        // empty out rows if scores do not exist or there isnt at least 10
+        for (int i = index; i < highScoreRowsObjectsList.Count; i++)
+        {
+            // set data for prefabs from list retrieved from database
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
+            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
+        }
     }
 }
