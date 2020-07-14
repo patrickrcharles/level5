@@ -52,3 +52,5 @@ MonoBehaviour:
   modeRequiresShotMarkers3s: 0
   modeRequiresShotMarkers4s: 1
   modeRequiresMoneyBall: 0
+  modeRequiresConsecutiveShots: 0
+  highScoreField: time

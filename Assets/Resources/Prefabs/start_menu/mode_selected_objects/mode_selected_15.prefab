@@ -54,3 +54,4 @@ MonoBehaviour:
   modeRequiresShotMarkers4s: 0
   modeRequiresMoneyBall: 0
   modeRequiresConsecutiveShots: 0
+  highScoreField: totalPoints
