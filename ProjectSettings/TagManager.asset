@@ -41,6 +41,7 @@ TagManager:
   - attack_box
   - cheerleader
   - traffic_manager
+  - high_score_row
   layers:
   - Default
   - TransparentFX
