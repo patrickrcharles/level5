@@ -434,10 +434,10 @@ public class DBHelper : MonoBehaviour
         //reset list of hit by cars
         PlayerData.instance.hitByCars.Clear();
     }
+
     // this is a mess. needs to be redone and split into functions
     internal void UpdateAchievementStats()
     {
-        //Debug.Log("UpdateAchievementStats()");
         List<Achievement> achievementsList = getAchievementStats();
         String sqlQuery = "";
 
@@ -454,12 +454,11 @@ public class DBHelper : MonoBehaviour
                     {
                         bool entryExists = achievementsList.Any(x => x.achievementId == prefabAchievement.achievementId);
                         Achievement databaseAchievement;
-                        //Debug.Log("prefab aid : " + prefabAchievement.achievementId + " islocked : " + prefabAchievement.IsLocked);
+
                         if (entryExists)
                         {
-                            //get achievement ddatabase object to update
+                            //get achievement database object to update
                             databaseAchievement = achievementsList.Where(x => x.achievementId == prefabAchievement.achievementId).Single();
-                            //Debug.Log("db aid : " + databaseAchievement.achievementId + " islocked : "+ databaseAchievement.IsLocked );
                             // if db is unlocked and current ISNT
                             if (databaseAchievement.IsLocked && !prefabAchievement.IsLocked)
                             {
@@ -482,13 +481,6 @@ public class DBHelper : MonoBehaviour
                                     "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + prefabAchievement.ActivationValueProgressionInt
                                     + " WHERE aid = " + prefabAchievement.achievementId;
                                 }
-                                //// if no progress saved 
-                                //if (databaseAchievement.ActivationValueProgressionInt == 0 && prefabAchievement.ActivationValueProgressionInt == 0)
-                                //{
-                                //    sqlQuery =
-                                //    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + 0
-                                //    + " WHERE aid = " + prefabAchievement.achievementId;
-                                //}
                             }
                             // if DB doesnt have an activation value, use prefab value to add it in
                             if (databaseAchievement.ActivationValueInt != prefabAchievement.ActivationValueInt)
@@ -507,7 +499,9 @@ public class DBHelper : MonoBehaviour
                             sqlQuery =
                             "Insert INTO "
                             + achievementTableName + " ( activevalue_int, activevalue_progress_int, islocked) "
-                            + " Values('" + prefabAchievement.ActivationValueInt + "', '" + prefabAchievement.ActivationValueProgressionInt + "', '" + unlockAchievement + "')";
+                            + " Values('" + prefabAchievement.ActivationValueInt + "', '" 
+                            + prefabAchievement.ActivationValueProgressionInt + "', '" 
+                            + unlockAchievement + "')";
                         }
                         // check if sql query is empty/null. time saving method (skip query if not necessary to run)
                         if (!String.IsNullOrEmpty(sqlQuery))
@@ -823,7 +817,7 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
-            Debug.Log(" value : " + value);
+            //Debug.Log(" value : " + value);
         }
         reader.Close();
         reader = null;
@@ -845,10 +839,8 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        // get all all values sort DESC, return top 1
+        // sum all values in column
         string sqlQuery = "SELECT SUM(" + field + ") FROM " + tableName;
-
-        //SELECT SUM(count)FROM HitByCar;
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
