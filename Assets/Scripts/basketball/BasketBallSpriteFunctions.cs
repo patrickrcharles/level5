@@ -120,4 +120,14 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     {
         hitBox.SetActive(false);
     }
+
+    public void enableRigidBodyIsKinematic()
+    {
+        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    public void disableRigidBodyIsKinematic()
+    {
+        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+    }
 }
