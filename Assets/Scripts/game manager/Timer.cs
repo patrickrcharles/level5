@@ -21,7 +21,6 @@ public class Timer : MonoBehaviour
     bool displayTimer = false;
     [SerializeField]
     private bool timerEnabled = false;
-    //Text timerText;
     private Text timerText;
     [SerializeField]
     private bool modeRequiresCountDown;
@@ -40,8 +39,16 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        // timer is 2 minutes
-        timeStart = 120;
+        Debug.Log("timer : GameOptions.customTimer : " + GameOptions.customTimer);
+        if (GameOptions.customTimer > 0)
+        {
+            timeStart = GameOptions.customTimer;
+        }
+        else
+        {
+            // timer is 2 minutes
+            timeStart = 120;
+        }
 
         // mode 7 is free play. this turns off timer
         //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
