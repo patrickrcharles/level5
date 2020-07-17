@@ -41,11 +41,11 @@ public class PlayerData : MonoBehaviour
 
     private int _mostConsecutiveShots;
 
-    //prevent PlayerData from creating multiple objects
-    static bool _created = false; 
-    [SerializeField]
-    public static PlayerData instance;
+    private float _threePointContestScore;
+    private float _fourPointContestScore;
+    private float _allPointContestScore;
 
+    public static PlayerData instance;
     public List<HitByCar> hitByCars;
 
     public class HitByCar
@@ -74,7 +74,6 @@ public class PlayerData : MonoBehaviour
         }
         else
         {
-            //Debug.Log("created, destroy this");
             Destroy(gameObject);
         }
     }
@@ -279,7 +278,7 @@ public class PlayerData : MonoBehaviour
         }
 
         // save mode 13 (longest shot in free play)
-        if (LongestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 13)
+        if (LongestShotMadeFreePlay < (basketBallStats.LongestShotMade * 6) && GameOptions.gameModeSelected == 99)
         {
             messageLog.instance.toggleMessageDisplay("New High Score");
             PlayerPrefs.SetFloat("mode_" + GameOptions.gameModeSelected + "_longestShotMadeFreePlay", (float)Math.Round(basketBallStats.LongestShotMade * 6, 4));
@@ -324,7 +323,7 @@ public class PlayerData : MonoBehaviour
         _makeFourPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 11 + "_lowFourTimeMoneyBall");
         _makeAllPointersMoneyBallLowTime = PlayerPrefs.GetFloat("mode_" + 12 + "_lowAllTimeMoneyBall");
 
-        LongestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 13 + "_longestShotMadeFreePlay");
+        LongestShotMadeFreePlay = PlayerPrefs.GetFloat("mode_" + 99 + "_longestShotMadeFreePlay");
     }
 
 
@@ -347,7 +346,10 @@ public class PlayerData : MonoBehaviour
         _makeAllPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 12, "ASC");
         LongestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByField("AllTimeStats", "longestShot", "DESC");
         _mostConsecutiveShots = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "consecutiveShots", 14, "DESC");
-        TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
+        _totalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
+        _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC");
+        _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
+        _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
 
         //Debug.Log(" Playerdata freeplay long : " + PlayerData.instance.LongestShotMadeFreePlay);
     }
@@ -453,7 +455,11 @@ public class PlayerData : MonoBehaviour
     public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
 
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
+
     public List<HitByCar> HitByCars { get; set; }
     public int MostConsecutiveShots { get => _mostConsecutiveShots; set => _mostConsecutiveShots = value; }
     public float TotalPointsBonus { get => _totalPointsBonus; set => _totalPointsBonus = value; }
+    public float ThreePointContestScore { get => _threePointContestScore; set => _threePointContestScore = value; }
+    public float FourPointContestScore { get => _fourPointContestScore; set => _fourPointContestScore = value; }
+    public float AllPointContestScore { get => _allPointContestScore; set => _allPointContestScore = value; }
 }
