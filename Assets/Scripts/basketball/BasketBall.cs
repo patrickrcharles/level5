@@ -550,7 +550,7 @@ public class BasketBall : MonoBehaviour
         // 100 - slider + 1/3 of (100 - profile accuracy)
 
         //Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
-        return (sliderModifer + (accuracyModifier / 2)) * direction;
+        return (sliderModifer + (accuracyModifier * 0.75f)) * direction;
     }
 
     private int getRandomPositiveOrNegative()
