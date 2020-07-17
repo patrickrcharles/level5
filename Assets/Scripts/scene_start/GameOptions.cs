@@ -52,6 +52,12 @@ public  class GameOptions : MonoBehaviour
     static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
 
+    static public bool gameModeThreePointContest;
+    static public bool gameModeFourPointContest;
+    static public bool gameModeAllPointContest;
+
+    static public float customTimer;
+
     static public bool gameModeRequiresMoneyBall;
 
     static public bool gameModeRequiresConsecutiveShot;

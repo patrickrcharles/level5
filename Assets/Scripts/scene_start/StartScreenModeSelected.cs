@@ -15,6 +15,11 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool modeRequiresShotMarkers3s;
     [SerializeField] private bool modeRequiresShotMarkers4s;
 
+    [SerializeField] private bool gameModeThreePointContest;
+    [SerializeField] private bool gameModeFourPointContest;
+    [SerializeField] private bool gameModeAllPointContest;
+    [SerializeField] private float customTimer;
+
     [SerializeField] private bool modeRequiresMoneyBall;
 
     [SerializeField] private bool modeRequiresConsecutiveShots;
@@ -68,4 +73,8 @@ public class StartScreenModeSelected : MonoBehaviour
     }
     public bool ModeRequiresConsecutiveShots { get => modeRequiresConsecutiveShots; set => modeRequiresConsecutiveShots = value; }
     public string HighScoreField { get => highScoreField; set => highScoreField = value; }
+    public bool GameModeThreePointContest { get => gameModeThreePointContest; set => gameModeThreePointContest = value; }
+    public bool GameModeFourPointContest { get => gameModeFourPointContest; set => gameModeFourPointContest = value; }
+    public bool GameModeAllPointContest { get => gameModeAllPointContest; set => gameModeAllPointContest = value; }
+    public float CustomTimer { get => customTimer; set => customTimer = value; }
 }

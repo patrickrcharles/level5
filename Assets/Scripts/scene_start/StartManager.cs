@@ -69,7 +69,7 @@ public class StartManager : MonoBehaviour
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
     private const string playerSelectUnlockObjectName = "player_selected_unlock";
-    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture"; 
+    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
     private const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
     //cheerleader objects
@@ -184,7 +184,7 @@ public class StartManager : MonoBehaviour
             initializeCheerleaderDisplay();
         }
         // start button | start game
-        if ((InputManager.GetKeyDown(KeyCode.Return) 
+        if ((InputManager.GetKeyDown(KeyCode.Return)
              || InputManager.GetKeyDown(KeyCode.Space)
              || InputManager.GetButtonDown("Fire1"))
             && currentHighlightedButton.Equals(startButtonName))
@@ -319,7 +319,7 @@ public class StartManager : MonoBehaviour
             }
         }
 
-        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow )))
+        if ((InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow)))
         {
             //Debug.Log("down : player option");
             if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
@@ -394,7 +394,7 @@ public class StartManager : MonoBehaviour
                 cl.UnlockCharacterText = tempAchieve.AchievementDescription;
             }
             // none selected
-            if(cl.CheerleaderId == 0)
+            if (cl.CheerleaderId == 0)
             {
                 cl.IsLocked = false;
                 cl.UnlockCharacterText = "";
@@ -408,7 +408,7 @@ public class StartManager : MonoBehaviour
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             cheerleaderSelectedIsLockedObject.SetActive(true);
             cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText
-                + "\nprogress " + tempAchieve.ActivationValueProgressionInt 
+                + "\nprogress " + tempAchieve.ActivationValueProgressionInt
                 + " / " + tempAchieve.ActivationValueInt;
         }
         else
@@ -465,8 +465,8 @@ public class StartManager : MonoBehaviour
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             playerSelectedIsLockedObject.SetActive(true);
             playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
-                // find achievement by player id
-               // + "\nprogress : " + tempAchieve.ActivationValueProgressionInt;
+            // find achievement by player id
+            // + "\nprogress : " + tempAchieve.ActivationValueProgressionInt;
         }
         else
         {
@@ -540,7 +540,7 @@ public class StartManager : MonoBehaviour
 
     static int sortByModeId(StartScreenModeSelected m1, StartScreenModeSelected m2)
     {
-        return m2.ModeId.CompareTo(m2.ModeId);
+        return m1.ModeId.CompareTo(m2.ModeId);
     }
 
     private void loadLevelSelectDataList()
@@ -573,6 +573,11 @@ public class StartManager : MonoBehaviour
         }
         // sort list by  mode id
         modeSelectedData.Sort(sortByModeId);
+
+        foreach (StartScreenModeSelected s in modeSelectedData)
+        {
+            Debug.Log(" mode id : " + s.ModeId);
+        }
     }
 
     private void changeSelectedPlayerUp()
@@ -756,8 +761,8 @@ public class StartManager : MonoBehaviour
     {
         GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;        
-        
+        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
@@ -772,6 +777,17 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeRequiresShotMarkers3s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers3S;
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
 
+        GameOptions.gameModeThreePointContest = modeSelectedData[modeSelectedIndex].GameModeThreePointContest;
+        GameOptions.gameModeFourPointContest = modeSelectedData[modeSelectedIndex].GameModeFourPointContest;
+        GameOptions.gameModeAllPointContest = modeSelectedData[modeSelectedIndex].GameModeAllPointContest;
+
+        if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
+        {
+            Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
+            GameOptions.customTimer = modeSelectedData[modeSelectedIndex].CustomTimer;
+        }
+
+
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
         GameOptions.gameModeRequiresConsecutiveShot = modeSelectedData[modeSelectedIndex].ModeRequiresConsecutiveShots;
 
@@ -780,6 +796,7 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
 
         GameOptions.trafficEnabled = trafficEnabled;
+
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
