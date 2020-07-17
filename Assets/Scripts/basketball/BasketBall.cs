@@ -380,6 +380,7 @@ public class BasketBall : MonoBehaviour
             if (GameRules.instance.MoneyBallEnabled)
             {
                 basketBallState.MoneyBallEnabledOnShoot = true;
+                basketBallStats.MoneyBallAttempts++;
             }
         }
 

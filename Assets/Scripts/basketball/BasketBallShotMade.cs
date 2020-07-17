@@ -166,64 +166,107 @@ public class BasketBallShotMade : MonoBehaviour
         }
 
         // ==================== point total logic ==============================
-        if (_basketBallState.TwoAttempt)
+        // if not 3/4/all point contest
+        if (!GameRules.instance.GameModeThreePointContest
+            && !GameRules.instance.GameModeFourPointContest
+            && !GameRules.instance.GameModeAllPointContest)
         {
-            _basketBallStats.TwoPointerMade++;
-            _basketBallStats.TotalPoints += 2;
+            if (_basketBallState.TwoAttempt)
+            {
+                Debug.Log("twopointer made");
+                _basketBallStats.TwoPointerMade++;
+                _basketBallStats.TotalPoints += 2;
+            }
 
+            if (_basketBallState.ThreeAttempt)
+            {
+                _basketBallStats.ThreePointerMade++;
+                // if consecutive > 5 and game mode for 'Total Points+'
+                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                {
+                    _basketBallStats.TotalPoints += 4;
+                }
+                else
+                {
+                    _basketBallStats.TotalPoints += 3;
+                }
+            }
+
+            if (_basketBallState.FourAttempt)
+            {
+                _basketBallStats.FourPointerMade++;
+                // if consecutive > 5 and game mode for 'Total Points+'
+                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                {
+                    _basketBallStats.TotalPoints += 6;
+                }
+                else
+                {
+                    _basketBallStats.TotalPoints += 4;
+                }
+
+            }
+            if (_basketBallState.SevenAttempt)
+            {
+                _basketBallStats.SevenPointerMade++;
+                // if consecutive > 5 and game mode for 'Total Points+'
+                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                {
+                    _basketBallStats.TotalPoints += 10;
+                }
+                else
+                {
+                    _basketBallStats.TotalPoints += 7;
+                }
+            }
         }
-
-        if (_basketBallState.ThreeAttempt)
+        else
         {
-            _basketBallStats.ThreePointerMade++;
-            // if consecutive > 5 and game mode for 'Total Points+'
-            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+            // if player is on marker and marker enabled
+            if (_basketBallState.PlayerOnMarkerOnShoot
+                && GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MarkerEnabled)
             {
-                _basketBallStats.TotalPoints += 4;
-            }
-            else
-            {
-                _basketBallStats.TotalPoints += 3;
-            }
+                //_basketBallStats.ShotMade++;
+                // if moneyball
+                if (_basketBallState.TwoAttempt)
+                {
+                    Debug.Log("twopointer made");
+                    _basketBallStats.TwoPointerMade++;
+                }
 
+                if (_basketBallState.ThreeAttempt)
+                {
+                    _basketBallStats.ThreePointerMade++;
+                }
+
+                if (_basketBallState.FourAttempt)
+                {
+                    _basketBallStats.FourPointerMade++;
+                }
+
+                if (_basketBallState.SevenAttempt)
+                {
+                    _basketBallStats.SevenPointerMade++;
+                }
+                // if moneyball / last shot on marker (5/5)
+                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
+                {
+                    _basketBallStats.TotalPoints += 2;
+                }
+                // not last shot on marker (1-4/5)
+                else
+                {
+                    _basketBallStats.TotalPoints += 1;
+                }
+            }
         }
-
-        if (_basketBallState.FourAttempt)
-        {
-            _basketBallStats.FourPointerMade++;
-            // if consecutive > 5 and game mode for 'Total Points+'
-            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
-            {
-                _basketBallStats.TotalPoints += 6;
-            }
-            else
-            {
-                _basketBallStats.TotalPoints += 4;
-            }
-
-        }
-
-        if (_basketBallState.SevenAttempt)
-        {
-            _basketBallStats.SevenPointerMade++;
-            // if consecutive > 5 and game mode for 'Total Points+'
-            if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
-            {
-                _basketBallStats.TotalPoints += 10;
-            }
-            else
-            {
-                _basketBallStats.TotalPoints += 7;
-            }
-
-        }
-
+        // moneyball stats
         if (_basketBallState.MoneyBallEnabledOnShoot)
         {
             _basketBallStats.MoneyBallMade++;
         }
 
-        // ==================== moneyball logic ==============================
+        // ==================== requires position markers logic ==============================
         if (_basketBallState.PlayerOnMarkerOnShoot)
         {
             // if money ball enabled
