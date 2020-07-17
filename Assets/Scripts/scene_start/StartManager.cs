@@ -739,6 +739,7 @@ public class StartManager : MonoBehaviour
 
     private void setPlayerProfileStats()
     {
+        StartScreenModeSelected temp = modeSelectedData[modeSelectedIndex];
         // need object name and playerid
         GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
@@ -749,7 +750,17 @@ public class StartManager : MonoBehaviour
         GameOptions.accuracy4pt = playerSelectedData[playerSelectedIndex].Accuracy4Pt;
         GameOptions.accuracy7pt = playerSelectedData[playerSelectedIndex].Accuracy7Pt;
 
-        GameOptions.criticalPercent = playerSelectedData[playerSelectedIndex].CriticalPercent;
+        // if 3/4/All point contest, disable Luck/citical %
+        if (temp.GameModeThreePointContest
+            || temp.GameModeFourPointContest
+            || temp.GameModeAllPointContest)
+        {
+            GameOptions.criticalPercent = 0;
+        }
+        else
+        {
+            GameOptions.criticalPercent = playerSelectedData[playerSelectedIndex].CriticalPercent;
+        }
         GameOptions.jumpForce = playerSelectedData[playerSelectedIndex].JumpForce;
         GameOptions.speed = playerSelectedData[playerSelectedIndex].Speed;
         GameOptions.runSpeed = playerSelectedData[playerSelectedIndex].RunSpeed;
