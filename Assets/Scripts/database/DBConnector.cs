@@ -14,8 +14,7 @@ using System.Collections;
 public class DBConnector : MonoBehaviour
 {
     private int currentPlayerId;
-    [SerializeField]
-    bool _created;
+ 
     private String connection;
     private String databaseNamePath = "/level5.db";
     private string currentGameVersion;
@@ -37,11 +36,8 @@ public class DBConnector : MonoBehaviour
 
     public static DBConnector instance;
 
-    public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }
-
     void Awake()
     {
-        //Debug.Log("DBConnector : Awake");
         DontDestroyOnLoad(gameObject);
         if (instance == null)
         {
@@ -49,7 +45,6 @@ public class DBConnector : MonoBehaviour
         }
         else
         {
-            //Debug.Log("created, destroy this");
             Destroy(gameObject);
         }
 
@@ -127,12 +122,12 @@ public class DBConnector : MonoBehaviour
 
     private void Update()
     {
-        //   if (!EditorApplication.isPlayingOrWillChangePlaymode &&
-        //EditorApplication.isPlaying)
-        //   {
-        //       Debug.Log("editor closing, close db conn");
-        //       dbconn.Close();
-        //   }
+        //if (!EditorApplication.isPlayingOrWillChangePlaymode &&
+        //    EditorApplication.isPlaying)
+        //{
+        //    Debug.Log("editor closing, close db conn");
+        //    dbconn.Close();
+        //}
     }
 
     IEnumerator updateAchievements()
@@ -381,6 +376,8 @@ public class DBConnector : MonoBehaviour
         dbconn.Close();
         dbconn = null;
     }
+
+    public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }
 }
 
 

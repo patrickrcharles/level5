@@ -103,11 +103,6 @@ public class Timer : MonoBehaviour
             && !modeRequiresCounter
             && timerEnabled)
         {
-            //Debug.Log("GameRules.instance.GameModeRequiresConsecutiveShot : " + GameRules.instance.GameModeRequiresConsecutiveShots);
-            //Debug.Log("BasketBallShotMade.instance.ConsecutiveShotsMade < 3) : " + BasketBallShotMade.instance.ConsecutiveShotsMade );
-            //Debug.Log("BasketBall.instance.BasketBallState.InAir) : " + BasketBall.instance.BasketBallState.InAir);
-            //Debug.Log("(GameLevelManager.Instance.PlayerState.hasBasketball && GameLevelManager.Instance.PlayerState.inAir)) : " 
-            //    + (GameLevelManager.Instance.PlayerState.hasBasketball && GameLevelManager.Instance.PlayerState.inAir));
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
             // not consecutive game mode
@@ -158,4 +153,5 @@ public class Timer : MonoBehaviour
         get => displayTimer;
         set => displayTimer = value;
     }
+    public float Seconds { get => seconds; set => seconds = value; }
 }
