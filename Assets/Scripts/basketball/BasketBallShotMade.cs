@@ -226,37 +226,41 @@ public class BasketBallShotMade : MonoBehaviour
             if (_basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MarkerEnabled)
             {
+                int pointsScored = 0;
                 //_basketBallStats.ShotMade++;
                 // if moneyball
                 if (_basketBallState.TwoAttempt)
                 {
-                    Debug.Log("twopointer made");
                     _basketBallStats.TwoPointerMade++;
+                    pointsScored = 2;
                 }
 
                 if (_basketBallState.ThreeAttempt)
                 {
                     _basketBallStats.ThreePointerMade++;
+                    pointsScored = 3;
                 }
 
                 if (_basketBallState.FourAttempt)
                 {
                     _basketBallStats.FourPointerMade++;
+                    pointsScored = 4;
                 }
 
                 if (_basketBallState.SevenAttempt)
                 {
                     _basketBallStats.SevenPointerMade++;
+                    pointsScored = 7;
                 }
                 // if moneyball / last shot on marker (5/5)
                 if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
                 {
-                    _basketBallStats.TotalPoints += 2;
+                    _basketBallStats.TotalPoints += (pointsScored * 2);
                 }
                 // not last shot on marker (1-4/5)
                 else
                 {
-                    _basketBallStats.TotalPoints += 1;
+                    _basketBallStats.TotalPoints += pointsScored;
                 }
             }
         }
