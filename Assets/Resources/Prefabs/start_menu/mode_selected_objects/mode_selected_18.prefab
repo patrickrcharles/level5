@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5648804619900406356}
   - component: {fileID: 5648804619900406355}
   m_Layer: 0
-  m_Name: mode_selected_16
+  m_Name: mode_selected_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,18 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 16
-  modelDisplayName: 3 point Contest
-  modeObjectName: mode_16
-  modeDescription: 70 seconds to get a high score
+  modeId: 18
+  modelDisplayName: All point Contest
+  modeObjectName: mode_18
+  modeDescription: 140 seconds to get a high score
   modeRequiresCounter: 0
   modeRequiresCountDown: 1
   modeRequiresShotMarkers3s: 1
-  modeRequiresShotMarkers4s: 0
+  modeRequiresShotMarkers4s: 1
   gameModeThreePointContest: 1
-  gameModeFourPointContest: 0
-  gameModeAllPointContest: 0
+  gameModeFourPointContest: 1
+  gameModeAllPointContest: 1
+  customTimer: 140
   modeRequiresMoneyBall: 0
   modeRequiresConsecutiveShots: 0
-  customTimer: 70
   highScoreField: totalPoints

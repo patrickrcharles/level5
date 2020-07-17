@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1d097492c2ed488967f2e6113e2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modeId: 13
+  modeId: 99
   modelDisplayName: Free Play
   modeObjectName: mode_13
   modeDescription: Free play
@@ -51,4 +51,10 @@ MonoBehaviour:
   modeRequiresCountDown: 0
   modeRequiresShotMarkers3s: 0
   modeRequiresShotMarkers4s: 0
+  gameModeThreePointContest: 0
+  gameModeFourPointContest: 0
+  gameModeAllPointContest: 0
+  customTimer: 0
   modeRequiresMoneyBall: 0
+  modeRequiresConsecutiveShots: 0
+  highScoreField: 
