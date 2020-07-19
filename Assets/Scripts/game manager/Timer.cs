@@ -39,22 +39,21 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("timer : GameOptions.customTimer : " + GameOptions.customTimer);
-        if (GameOptions.customTimer > 0)
+
+        // if requires custom timer
+        if (GameOptions.gameModeThreePointContest 
+            || GameOptions.gameModeFourPointContest 
+            || GameOptions.gameModeAllPointContest)
         {
             timeStart = GameOptions.customTimer;
         }
+        //default 2 minute timer
         else
         {
             // timer is 2 minutes
             timeStart = 120;
         }
 
-        // mode 7 is free play. this turns off timer
-        //if (GameOptions.gameModeSelected != 7 && GameOptions.gameModeHasBeenSelected)
-        //{
-        //    timerEnabled = true;
-        //}
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
         modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
 
