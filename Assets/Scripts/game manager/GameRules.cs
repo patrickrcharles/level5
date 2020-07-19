@@ -36,10 +36,7 @@ public class GameRules : MonoBehaviour
 
     bool gameModeRequiresMoneyBall;
     bool moneyBallEnabled;
-
     bool gameModeRequiresConsecutiveShots;
-
-
 
     private Timer timer;
     private BasketBallStats basketBallStats;
@@ -52,6 +49,7 @@ public class GameRules : MonoBehaviour
     private const string displayMoneyBallObjectName = "money_ball_enabled";
     private const string displayOtherMessageName = "other_message";
 
+    // text objects
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
@@ -115,7 +113,8 @@ public class GameRules : MonoBehaviour
 
         if (GameOptions.customTimer > 0) 
         {
-            customTimer = GameOptions.customTimer;
+            setTimer(GameOptions.customTimer);
+            //customTimer = GameOptions.customTimer;
         }
 
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
@@ -420,10 +419,12 @@ public class GameRules : MonoBehaviour
             displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints
                 + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType
                 + "\nCurrent Consecutive: " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+            // in the pocket is active, display text notifier
             if(BasketBallShotMade.instance.ConsecutiveShotsMade >=5)
             {
                 displayOtherMessageText.text = "In The Pocket";
             }
+            // in the pocket not active, no notifier
             else
             {
                 displayOtherMessageText.text = "";
@@ -518,12 +519,15 @@ public class GameRules : MonoBehaviour
 
     public bool isGameOver()
     {
+        Debug.Log("isGameOver()");
         // if all shot markers are cleared
         if (MarkersRemaining <= 0)
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
-            
+            // add remaining counter time FLOOR to total points  as bonus points
+            BasketBall.instance.BasketBallStats.TotalPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+
             // if game has a time counter
             if (modeRequiresCounter)
             {
