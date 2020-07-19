@@ -123,13 +123,10 @@ public class BasketBallShotMarker : MonoBehaviour
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // opacity to 0
                 setDisplayText();
 
-                // enable next marker
-                // Gamerules.enableNextMarker(marker id + 1)
-
                 //check if last remaining shot marker
                 if (GameRules.instance.isGameOver())
                 {
-                    GameRules.instance.CounterTime = Timer.instance.CurrentTime;
+                    //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                     GameRules.instance.GameOver = true;
                 }
             }
@@ -143,7 +140,6 @@ public class BasketBallShotMarker : MonoBehaviour
             if (ShotMade >= MaxShotMade && markerEnabled)
             {
                 markerEnabled = false;
-                Debug.Log("markerEnabled = false;");
                 // decrease markers remaining
                 GameRules.instance.MarkersRemaining--;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // opacity to 0
@@ -152,7 +148,7 @@ public class BasketBallShotMarker : MonoBehaviour
                 // check if last remaining shot marker
                 if (GameRules.instance.isGameOver())
                 {
-                    Debug.Log("game over ");
+
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                     GameRules.instance.GameOver = true;
                 }
