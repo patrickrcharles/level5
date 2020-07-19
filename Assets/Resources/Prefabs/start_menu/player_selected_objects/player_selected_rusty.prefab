@@ -68,7 +68,7 @@ MonoBehaviour:
   runSpeedHasBall: 4
   runSpeed: 4.5
   luck: 10
-  shootAngle: 45
+  shootAngle: 50
   level: 0
   experience: 0
   isLocked: 1
