@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementId: 27
   achievementName: unlock Christy
-  achievementDescription: score 125 points with ???
+  achievementDescription: score 125 points at Party Mansion
   characterUnlock: 1
   cheerleaderUnlock: 0
   levelUnlock: 0
@@ -67,9 +67,9 @@ MonoBehaviour:
   three: 0
   four: 0
   seven: 0
-  playerRequiredToUseId: 14
+  playerRequiredToUseId: 0
   cheerleaderRequiredToUseId: 0
-  levelRequiredToUseId: 0
+  levelRequiredToUseId: 9
   modeRequiredToUseId: 1
   GREATER_THAN: 1
   LESS_THAN: 0
