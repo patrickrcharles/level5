@@ -468,13 +468,14 @@ public class StartManager : MonoBehaviour
             // find achievement by player id
             // + "\nprogress : " + tempAchieve.ActivationValueProgressionInt;
         }
-        else
+        // if player is locked or free play mode selected
+        if (!playerSelectedData[playerSelectedIndex].IsLocked 
+            || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
         {
             //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
             playerSelectedIsLockedObject.SetActive(false);
             playerSelectUnlockText.text = "";
         }
-
 
         playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
         playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
@@ -574,10 +575,10 @@ public class StartManager : MonoBehaviour
         // sort list by  mode id
         modeSelectedData.Sort(sortByModeId);
 
-        foreach (StartScreenModeSelected s in modeSelectedData)
-        {
-            Debug.Log(" mode id : " + s.ModeId);
-        }
+        //foreach (StartScreenModeSelected s in modeSelectedData)
+        //{
+        //    Debug.Log(" mode id : " + s.ModeId);
+        //}
     }
 
     private void changeSelectedPlayerUp()
@@ -729,7 +730,8 @@ public class StartManager : MonoBehaviour
             // turn off text display after 5 seconds
             StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
         }
-        if (!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
+        if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
+            || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
         {
             // load highscores before loading scene
             PlayerData.instance.loadStatsFromDatabase();
