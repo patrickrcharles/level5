@@ -723,7 +723,8 @@ public class StartManager : MonoBehaviour
         //Debug.Log("scene name : " + sceneName);
 
         // check if Player selected is locked
-        if (playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
+        if ((playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
+            && !modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
         {
             Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
             messageText.text = " Bruh, it's locked. pick something else";
