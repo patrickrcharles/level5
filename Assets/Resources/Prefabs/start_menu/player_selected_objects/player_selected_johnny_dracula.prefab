@@ -63,13 +63,13 @@ MonoBehaviour:
   accuracy4pt: 94
   accuracy7pt: 75
   shooterProfilePrefabName: 
-  jumpForce: 5
-  speed: 3.5
-  runSpeedHasBall: 3.5
-  runSpeed: 3.5
+  jumpForce: 5.3
+  speed: 4.5
+  runSpeedHasBall: 5
+  runSpeed: 7
   luck: 10
-  shootAngle: 50
+  shootAngle: 45
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 
+  unlockCharacterText: ???

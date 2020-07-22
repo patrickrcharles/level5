@@ -101,6 +101,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.glitch);
     }
 
+    public void playSfxCloudOfSmoke()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.turnIntoBat);
+    }
+
     public void enableAttackBox()
     {
         attackBox.SetActive(true);

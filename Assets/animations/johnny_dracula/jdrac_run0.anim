@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: knockedDown
+  m_Name: jdrac_run0
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -1507731419699139393, guid: 1adc0e96d94c1b140816676a19598e19,
+      value: {fileID: -4137948616811264292, guid: 1adc0e96d94c1b140816676a19598e19,
         type: 3}
     - time: 0.16666667
-      value: {fileID: 8619859408795224763, guid: 1adc0e96d94c1b140816676a19598e19,
+      value: {fileID: 2581394873633126411, guid: 1adc0e96d94c1b140816676a19598e19,
         type: 3}
     - time: 0.33333334
-      value: {fileID: -7916322154518801596, guid: 1adc0e96d94c1b140816676a19598e19,
+      value: {fileID: 263364984735315714, guid: 1adc0e96d94c1b140816676a19598e19,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -47,9 +47,9 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -1507731419699139393, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
-    - {fileID: 8619859408795224763, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
-    - {fileID: -7916322154518801596, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
+    - {fileID: -4137948616811264292, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
+    - {fileID: 2581394873633126411, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
+    - {fileID: 263364984735315714, guid: 1adc0e96d94c1b140816676a19598e19, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -76,7 +76,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: playSfxKnockedDown
+    functionName: playSfxCloudOfSmoke
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
