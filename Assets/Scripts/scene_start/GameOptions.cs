@@ -9,6 +9,7 @@ public  class GameOptions : MonoBehaviour
     static public string applicationVersion;
     static public string operatingSystemVersion;
 
+    // selected options
     static public String playerDisplayName;
     static public String cheerleaderDisplayName;
     static public int playerId;
@@ -24,10 +25,6 @@ public  class GameOptions : MonoBehaviour
     static public String gameModeSelectedName;
     static public String cheerleaderSelectedName;
 
-    static public int levelSelectedRootCount;
-    static public int levelSelectedBuildIndex;
-
-
     //player stats
     static public float accuracy2pt;
     static public float accuracy3pt;
@@ -38,13 +35,12 @@ public  class GameOptions : MonoBehaviour
     static public float speed;
     static public float runSpeed;
     static public float runSpeedHasBall;
-    //static public float hangTime;
    // static public float range;
    // static public float release;
     static public float criticalPercent;
     static public float shootAngle;
 
-    // for testing scenes. True if scene loaded from start screen
+    // game mode flags for game rules
     static public bool gameModeHasBeenSelected;
     static public bool gameModeRequiresCounter;
     static public bool gameModeRequiresCountDown;
@@ -56,13 +52,20 @@ public  class GameOptions : MonoBehaviour
     static public bool gameModeFourPointContest;
     static public bool gameModeAllPointContest;
 
-    static public float customTimer;
-
     static public bool gameModeRequiresMoneyBall;
-
     static public bool gameModeRequiresConsecutiveShot;
 
-    static public bool trafficEnabled;
+    static public float customTimer;
+
+
+    // start manager selected option indices
+    // set default values = 0 (first element in list)
+    // using values from game options, will load previous values on next load of start manager
+    static public int playerSelectedIndex = 0;
+    static public int levelSelectedIndex = 0;
+    static public int modeSelectedIndex = 0;
+    static public int cheerleaderSelectedIndex = 0;
+    static public bool trafficEnabled = false;
 
     //static public int level;
     //static public int experience;
@@ -70,22 +73,8 @@ public  class GameOptions : MonoBehaviour
 
     void Awake()
     {
-        levelSelectedRootCount = SceneManager.GetActiveScene().rootCount;
         levelSelectedName = SceneManager.GetActiveScene().name;
-        levelSelectedBuildIndex = SceneManager.GetActiveScene().buildIndex;
-
         applicationVersion = Application.version;
-
-        //gameModeSelected = 8;
-
-        //gameModeRequiresCounter = true;
-
-        //gameModeRequiresShotMarkers3s = true;
-        //gameModeRequiresShotMarkers4s = true;
-
-        //Debug.Log("levelSected : " + levelSelected);
-        //Debug.Log("levelSectedName : " + levelSelectedName);
-        //Debug.Log("levelSelectedBuildIndex : " + levelSelectedBuildIndex);
     }
 
     static public void printCurrentValues()

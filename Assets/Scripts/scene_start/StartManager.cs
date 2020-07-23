@@ -109,7 +109,7 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
-        // object with lock texture and unlock text
+        // player object with lock texture and unlock text
         playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
         playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
         playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
@@ -117,19 +117,21 @@ public class StartManager : MonoBehaviour
         playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
         playerSelectCategoryStatsText = GameObject.Find(playerSelectStatsCategoryName).GetComponent<Text>();
 
-        // object with lock texture and unlock text
+        // friend object with lock texture and unlock text
         cheerleaderSelectedIsLockedObject = GameObject.Find(cheerleaderSelectIsLockedObjectName);
         cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
         cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
+        // traffic option selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
 
         //default index for player selected
-        playerSelectedIndex = 0;
-        cheerleaderSelectedIndex = 0;
-        levelSelectedIndex = 0;
-        modeSelectedIndex = 0;
+        playerSelectedIndex = GameOptions.playerSelectedIndex;
+        cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
+        levelSelectedIndex = GameOptions.levelSelectedIndex;
+        modeSelectedIndex = GameOptions.modeSelectedIndex;
+        trafficEnabled = GameOptions.trafficEnabled;
 
         // load default data
         loadPlayerSelectDataList();
@@ -811,9 +813,16 @@ public class StartManager : MonoBehaviour
 
         GameOptions.trafficEnabled = trafficEnabled;
 
-
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
+
+
+        // send current selected options to game options for next load on start manager
+        GameOptions.playerSelectedIndex = playerSelectedIndex;
+        GameOptions.cheerleaderSelectedIndex = cheerleaderSelectedIndex;
+        GameOptions.levelSelectedIndex = levelSelectedIndex;
+        GameOptions.modeSelectedIndex = modeSelectedIndex;
+        GameOptions.trafficEnabled = trafficEnabled;
     }
 
     public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
