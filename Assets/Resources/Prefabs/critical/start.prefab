@@ -682,7 +682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4946951332104197724
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2311,7 +2311,7 @@ GameObject:
   - component: {fileID: 3423317435360094016}
   - component: {fileID: 5395560412618275544}
   m_Layer: 0
-  m_Name: quit
+  m_Name: quit_game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2711,6 +2711,7 @@ MonoBehaviour:
   levelSelectedData: []
   modeSelectedData: []
   cheerleaderSelectUnlockText: {fileID: 0}
+  playerSelectCategoryStatsText: {fileID: 0}
   trafficEnabled: 0
   playerSelectedIsLockedObject: {fileID: 0}
   cheerleaderSelectedIsLockedObject: {fileID: 0}
@@ -2752,9 +2753,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6042543575270876284}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2692522641280016356}
   - {fileID: 278210206}
@@ -2768,8 +2769,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!223 &6042543575270876280
 Canvas:
   m_ObjectHideFlags: 0
@@ -2789,7 +2790,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &6042543575270876281
 MonoBehaviour:
@@ -2908,7 +2909,7 @@ GameObject:
   - component: {fileID: 3227037415786220590}
   - component: {fileID: 4847364108541893348}
   m_Layer: 0
-  m_Name: stats
+  m_Name: stats_menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3235,7 +3236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.050545692, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3255,7 +3256,19 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: '+3
+
+    +5
+
+    +4
+
+    +5
+
+    +3
+
+    +2
+
+    -3'
 --- !u!114 &5654110174396470582
 MonoBehaviour:
   m_ObjectHideFlags: 0
