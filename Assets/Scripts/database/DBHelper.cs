@@ -735,11 +735,8 @@ public class DBHelper : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
-        int i = 0;
         while (reader.Read())
         {
-            StatsTableHighScoreRow temp = null;
-
             // game modes that require float values
             if (modeid > 4 && modeid < 14)
             {
@@ -756,7 +753,6 @@ public class DBHelper : MonoBehaviour
             listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date));
             //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
         }
-
 
         reader.Close();
         reader = null;
@@ -848,7 +844,7 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
-            Debug.Log(" value : " + value);
+            //Debug.Log(" value : " + value);
         }
         reader.Close();
         reader = null;
