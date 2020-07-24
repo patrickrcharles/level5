@@ -2267,7 +2267,7 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_SelectOnUp: {fileID: 4853126762508565900}
-    m_SelectOnDown: {fileID: 4847364108541893348}
+    m_SelectOnDown: {fileID: 1731790921867917481}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 2692522641738026910}
   m_Transition: 1
@@ -2711,7 +2711,6 @@ MonoBehaviour:
   levelSelectedData: []
   modeSelectedData: []
   cheerleaderSelectUnlockText: {fileID: 0}
-  playerSelectCategoryStatsText: {fileID: 0}
   trafficEnabled: 0
   playerSelectedIsLockedObject: {fileID: 0}
   cheerleaderSelectedIsLockedObject: {fileID: 0}
