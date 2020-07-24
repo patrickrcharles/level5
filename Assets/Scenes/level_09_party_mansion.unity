@@ -3891,11 +3891,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1533659013, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.521
+      value: -1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1533659013, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.401
+      value: -1.72
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}
