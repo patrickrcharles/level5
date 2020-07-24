@@ -48,25 +48,13 @@ public class BasketBall : MonoBehaviour
     float threeAccuracy;
     float fourAccuracy;
     float sevenAccuracy;
-
     private float lastShotDistance;
-
-    bool addAccuracyModifier;
-
-    private bool isCheating = false;
-    public bool IsCheating => isCheating;
 
     bool playHitRimSound;
     [SerializeField]
     bool locked;
 
-    //public BasketballTestStats testStats;
-    //public BasketBallTestStatsConclusions testConclusions;
-
-    //int currentTestStatsIndex = 0;
     BasketBallShotMade basketBallShotMade;
-
-    public static BasketBall instance;
 
     [SerializeField]
     float accuracyModifierX;
@@ -75,8 +63,7 @@ public class BasketBall : MonoBehaviour
     [SerializeField]
     private float accuracyModifierZ;
 
-    public bool UiStatsEnabled { get; private set; }
-    public BasketBallState BasketBallState => basketBallState;
+    public static BasketBall instance;
 
     // =========================================================== Start() ========================================================
     // Use this for initialization
@@ -106,7 +93,6 @@ public class BasketBall : MonoBehaviour
         //bool flags
         basketBallState.Locked = false;
         basketBallState.CanPullBall = true;
-        addAccuracyModifier = true;
         playHitRimSound = true;
 
         //todo: move to game manager
@@ -141,11 +127,8 @@ public class BasketBall : MonoBehaviour
         if (!playerState.hasBasketball)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
-            //spriteRenderer.enabled = true;
             dropShadow.SetActive(true);
-
             basketBallState.CanPullBall = true;
-
             basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
         }
         if (playerState.hasBasketball)
@@ -156,6 +139,7 @@ public class BasketBall : MonoBehaviour
         //if player has ball and hasnt shot
         if (playerState.hasBasketball && !basketBallState.Thrown)
         {
+            // move basketball to launch position and disable sprite
             transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
@@ -176,9 +160,8 @@ public class BasketBall : MonoBehaviour
             && InputManager.GetButtonDown("Fire1")
             //&& playerState.jumpPeakReached
             && !playerState.IsSetShooter)
-            //&& !basketBallState.Locked)
+        //&& !basketBallState.Locked)
         {
-            //Debug.Log("shoot()");
             CallBallToPlayer.instance.Locked = true;
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
@@ -193,9 +176,7 @@ public class BasketBall : MonoBehaviour
             //&& InputManager.GetButtonDown("Jump")
             //&& playerState.jumpPeakReached
             && playerState.IsSetShooter)
-            //&& !basketBallState.Locked)
         {
-            Debug.Log("shoot()");
             basketBallState.Locked = true;
             playerState.checkIsPlayerFacingGoal(); // turns player facing rim
             playerState.Shotmeter.MeterEnded = true;
@@ -208,7 +189,7 @@ public class BasketBall : MonoBehaviour
         shootProfileText.text = //"distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
                                 //+ "shot distance : " +
                                 //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
-                               // " ft.\n"
+                                // " ft.\n"
                                   "shooter : " + shooterProfile.PlayerDisplayName + "\n"
                                 + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
                                 + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
@@ -219,14 +200,12 @@ public class BasketBall : MonoBehaviour
                                 + "speed : " + shooterProfile.RunSpeed;
     }
 
-    // #REVIEW : can probably move collsions to separate script. this could clean up code
-
     // =========================================================== Collisions ========================================================
 
     private void OnCollisionEnter(Collision other)
     {
-        //Debug.Log("COLLISION ENTER  this : " + gameObject.tag + "      other : " + other.gameObject.tag);
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") 
+        // collision : basketball + rim
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim")
             && playHitRimSound
             && !playerState.hasBasketball)
         {
@@ -236,22 +215,19 @@ public class BasketBall : MonoBehaviour
             basketBallState.Thrown = false;
             basketBallState.Locked = false;
         }
-
+        // collision : basketball + ground
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground")
             && !playerState.hasBasketball)
         {
-            //basketBallState.InAir = false;
-            //basketBallState.Grounded = true;
             basketBallState.CanPullBall = true;
             //reset rotation
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
             dropShadow.transform.rotation = Quaternion.Euler(90, 0, 0);
-            //basketBallState.CanPullBall = true;
             basketBallState.Locked = false;
             basketBallState.Thrown = false;
             audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
         }
-
+        // collision : basketball + fence
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence")
             && !playerState.hasBasketball)
         {
@@ -278,8 +254,8 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("TRIGGER ENTER    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") 
+        // if basketball enters player hitbox
+        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox")
             && !basketBallState.Thrown)
         {
             playerState.hasBasketball = true;
@@ -301,7 +277,7 @@ public class BasketBall : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //Debug.Log("TRIGGER EXIT    this : " + gameObject.tag + "      other : " + other.gameObject.tag);
+        // if basketball exits player hitbox
         if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
             basketBallState.Thrown)
         {
@@ -309,11 +285,6 @@ public class BasketBall : MonoBehaviour
             playerState.hasBasketball = false;
             //basketBallState.Locked = false;
         }
-
-        //if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
-        //{
-        //    basketBallState.Dunk = false;
-        //}
     }
 
     // =================================== shoot ball function =======================================
@@ -324,6 +295,9 @@ public class BasketBall : MonoBehaviour
         // mostly prevent multiple inputs (button presses)
         releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
+        // reset ball rotation
+        // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
         //================== anim stuff 
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
@@ -354,6 +328,7 @@ public class BasketBall : MonoBehaviour
             basketBallState.MoneyBallEnabledOnShoot = true;
             PlayerStats.instance.Money -= 5; // moneyball spent
             BasketBallStats.MoneyBallAttempts++;
+            GameRules.instance.MoneyBallEnabled = false;
         }
         else
         {
@@ -420,19 +395,16 @@ public class BasketBall : MonoBehaviour
             basketBallState.TwoAttempt = true;
             basketBallStats.TwoPointerAttempts++;
         }
-
         if (basketBallState.ThreePoints)
         {
             basketBallState.ThreeAttempt = true;
             basketBallStats.ThreePointerAttempts++;
         }
-
         if (basketBallState.FourPoints)
         {
             basketBallState.FourAttempt = true;
             basketBallStats.FourPointerAttempts++;
         }
-
         if (basketBallState.SevenPoints)
         {
             basketBallState.SevenAttempt = true;
@@ -445,7 +417,7 @@ public class BasketBall : MonoBehaviour
     // =================================== Launch ball function =======================================
     void Launch()
     {
-        //Debug.Log("Launch()");
+
         Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Vector3 targetXZPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
             basketBallState.BasketBallTarget.transform.position.y,
@@ -462,9 +434,7 @@ public class BasketBall : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        //accuracy modifier logic
-        //accuracyModifierX;
-
+        // if rolled critical or shot meter >= 95
         if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
            || playerState.Shotmeter.SliderValueOnButtonPress >= 95)
         {
@@ -488,14 +458,7 @@ public class BasketBall : MonoBehaviour
         float zVector = Vz; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
-        Vector3 localVelocity = new Vector3(0, Vy, Vz);
-
-        // turn on/off accuracy modifier
-        if (addAccuracyModifier)
-        {
-            localVelocity = new Vector3(xVector, yVector, zVector);
-        }
-
+        Vector3 localVelocity = new Vector3(xVector, Vy, Vz);
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
@@ -505,7 +468,16 @@ public class BasketBall : MonoBehaviour
 
     // =========================================================== Functions and Properties ========================================================
 
+    // wair for shotmeter value calculation, launch ball
+    IEnumerator LaunchBasketBall()
+    {
+        // wait for shot meter to finish
+        yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
+        //launch ball to goal      
+        Launch();
+    }
 
+    // ========================== shot accuracy functions ==========================================
     bool rollForCriticalShotChance(float maxPercent)
     {
         Random random = new Random();
@@ -547,9 +519,9 @@ public class BasketBall : MonoBehaviour
         {
             accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
         }
-        // 100 - slider + 1/3 of (100 - profile accuracy)
 
-        //Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
+        // 100 - slider + 0.6 of (100 - profile accuracy)
+        Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
         return (sliderModifer + (accuracyModifier * 0.6f)) * direction;
     }
 
@@ -563,21 +535,7 @@ public class BasketBall : MonoBehaviour
         return shotDirectionModifier;
     }
 
-
-    //public bool getDunk()
-    //{
-    //    return basketBallState.Dunk;
-    //}
-
-    public void toggleAddAccuracyModifier()
-    {
-        addAccuracyModifier = !addAccuracyModifier;
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "accuracy modifier = " + addAccuracyModifier + "\nhigh score saving disabled";
-
-        // turn off text display after 5 seconds
-        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
-    }
+    // ========================== ui display ===============================
 
     public void toggleUiStats()
     {
@@ -624,11 +582,12 @@ public class BasketBall : MonoBehaviour
                          "\n"
                          + "longest shot distance : " +
                          (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
-                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt 
+                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt
                          + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
                          + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
     }
 
+    // ============================= convert to percentages ======================================
     public float getCriticalPercentage()
     {
         if (basketBallStats.CriticalRolled > 0)
@@ -707,22 +666,17 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    // ============================= getters/ setters ======================================
+
     public float LastShotDistance
     {
         get => lastShotDistance;
         set => lastShotDistance = value;
     }
 
-    public BasketBallStats BasketBallStats
-    {
-        get => basketBallStats;
-    }
+    public BasketBallStats BasketBallStats => basketBallStats;
+    public BasketBallState BasketBallState => basketBallState;
 
-    IEnumerator LaunchBasketBall()
-    {
-        // wait for shot meter to finish
-        yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
-        //launch ball to goal      
-        Launch();
-    }
+    public bool UiStatsEnabled { get; private set; }
+
 }
