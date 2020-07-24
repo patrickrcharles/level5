@@ -22,6 +22,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip skateGrind;
     public AudioClip glitch;
     public AudioClip turnIntoBat;
+    public AudioClip airGuitar;
 
     public AudioClip unlockAchievement;
     

@@ -156,4 +156,5 @@ MonoBehaviour:
   skateGrind: {fileID: 8300000, guid: a3272e6b598eabb48ad85ae04b15acaa, type: 3}
   glitch: {fileID: 8300000, guid: bd17371fe56889b49bacb08a5cba779b, type: 3}
   turnIntoBat: {fileID: 8300000, guid: cbbeb99f158733d43a59b0f57361c7e5, type: 3}
+  airGuitar: {fileID: 8300000, guid: e9cf75ad9900f56478820b7862e0ccd7, type: 3}
   unlockAchievement: {fileID: 8300000, guid: fefdb55c765a84d49a1b22f476b1476d, type: 3}
