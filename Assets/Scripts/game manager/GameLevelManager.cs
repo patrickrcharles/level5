@@ -14,14 +14,8 @@ public class GameLevelManager : MonoBehaviour
 
     //private AudioSource[] allAudioSources;
 
-    private Vector3 _previousPlayerPosition;
-    private Quaternion _previousPlayerRotation;
-
-    private bool _startGame;
     private bool _locked;
-    private bool _paused;
 
-    private string _currentSceneName;
     //private AudioSource[] allAudioSources;
 
     //BasketBall objects
@@ -37,8 +31,7 @@ public class GameLevelManager : MonoBehaviour
     public GameObject BasketballObject;
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
-    [SerializeField]
-    //private GameObject[] _npcObjects;
+
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
     public static GameLevelManager Instance;
@@ -53,7 +46,7 @@ public class GameLevelManager : MonoBehaviour
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
-
+        // spawn location
         _playerSpawnLocation = GameObject.Find("player_spawn_location");
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
         _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
@@ -127,7 +120,6 @@ public class GameLevelManager : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(playerName) && veh.name.Contains(playerName))
             {
-                Debug.Log("veh : " + veh.name + " disabled");
                 veh.SetActive(false);
             }
         }
