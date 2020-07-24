@@ -25,7 +25,8 @@ public class StatsTableAllTime : MonoBehaviour
     const string fourAttemptDBField = "fourAtt";
     const string sevenDBField = "sevenMade";
     const string sevenAttemptDBField = "sevenAtt";
-    const string moneyballDBField = "moneyBallMade";
+    const string moneyballMadeDBField = "moneyBallMade";
+    const string moneyballAttemptDBField = "moneyBallAtt";
     const string hitByCarDBField = "count"; // table 'HitByCar' do count of count table
     const string totalDistanceDBField = "totalDistance";
     const string totalPointsDBField = "totalPoints";
@@ -82,8 +83,8 @@ public class StatsTableAllTime : MonoBehaviour
         int sevenM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sevenDBField);
         int sevenA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sevenAttemptDBField);
 
-        int mbM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballDBField);
-        int mbA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballDBField);
+        int mbM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballMadeDBField);
+        int mbA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballAttemptDBField);
 
         float dist = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", totalDistanceDBField);
         int shotsM = twoM + threeM + fourM + sevenM;
