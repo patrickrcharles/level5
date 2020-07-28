@@ -59,7 +59,7 @@ public class StartManager : MonoBehaviour
     //const object names
     private const string startButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
-    private const string quitButtonName = "quit_button";
+    private const string quitButtonName = "quit_game";
 
     // scene name
     private const string statsMenuSceneName = "level_00_stats";
