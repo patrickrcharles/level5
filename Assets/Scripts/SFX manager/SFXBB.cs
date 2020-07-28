@@ -23,6 +23,8 @@ public class SFXBB : MonoBehaviour {
     public AudioClip glitch;
     public AudioClip turnIntoBat;
     public AudioClip airGuitar;
+    public AudioClip chainRattle;
+    public AudioClip deathRay;
 
     public AudioClip unlockAchievement;
     
