@@ -43,6 +43,7 @@ TagManager:
   - traffic_manager
   - high_score_row
   - knock_down_attack2
+  - hanger
   layers:
   - Default
   - TransparentFX
