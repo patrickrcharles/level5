@@ -20,7 +20,7 @@ public class StatsTableHighScore : MonoBehaviour
         // this where we'll spawn row prefabs
         //highScoresTableObject = GameObject.Find(highScoresTableName);
 
-        Debug.Log("StatsTableHighScore start()");
+        //Debug.Log("StatsTableHighScore start()");
 
         //highScoreRowsList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeId(1);
 

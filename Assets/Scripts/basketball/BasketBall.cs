@@ -521,7 +521,7 @@ public class BasketBall : MonoBehaviour
         }
 
         // 100 - slider + 0.6 of (100 - profile accuracy)
-        Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
+        //Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
         return (sliderModifer + (accuracyModifier * 0.6f)) * direction;
     }
 

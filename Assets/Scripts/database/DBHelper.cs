@@ -313,6 +313,7 @@ public class DBHelper : MonoBehaviour
                 }
                 int islocked = reader.GetInt32(3);
                 //Debug.Log("db aid" + aid + " islocked : " + islocked);
+                //Achievement temp = Achievement(aid, activateInt, progressInt, islocked);
                 achieveStats.Add(new Achievement(aid, activateInt, progressInt, islocked));
             }
             reader.Close();

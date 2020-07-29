@@ -89,13 +89,11 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
         {
             if (currentTargetIndex >= returnPositions.Length-1)
             {
-                Debug.Log("if");
                 currentTargetIndex = 0;
                 currentTarget = returnPositions[currentTargetIndex].transform.position;
             }
             else
             {
-                Debug.Log("else");
                 currentTargetIndex += 1;
                 currentTarget = returnPositions[currentTargetIndex ].transform.position;
             }
@@ -116,7 +114,6 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
         {
             if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)
             {
-                Debug.Log("path complete");
                 return true;
             }
         }

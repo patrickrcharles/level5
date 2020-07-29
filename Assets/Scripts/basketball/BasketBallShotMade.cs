@@ -173,7 +173,7 @@ public class BasketBallShotMade : MonoBehaviour
         {
             if (_basketBallState.TwoAttempt)
             {
-                Debug.Log("twopointer made");
+                //Debug.Log("twopointer made");
                 _basketBallStats.TwoPointerMade++;
                 _basketBallStats.TotalPoints += 2;
             }
