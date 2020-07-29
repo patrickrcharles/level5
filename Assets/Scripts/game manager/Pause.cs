@@ -167,10 +167,8 @@ public class Pause : MonoBehaviour
 
     private static void updateFreePlayStats()
     {
-        //Debug.Log("updateFreePlayStats()");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
-
 
         // save free play stats
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
@@ -190,7 +188,6 @@ public class Pause : MonoBehaviour
         quitGameButton.enabled = value;
         controlsObject.SetActive(value);
     }
-
 
     public bool TogglePause()
     {

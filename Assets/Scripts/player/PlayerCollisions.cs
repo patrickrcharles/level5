@@ -16,11 +16,23 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
-
+        if (gameObject.CompareTag("playerHitbox")
+            && other.CompareTag("knock_down_attack2")
+            && !playerState.KnockedDown_Alternate1)
+        {
+            if (playerCanBeKnockedDown)
+            {
+                playerKnockedDown_Alternate(other.gameObject);
+            }
+            else
+            {
+                // avoid knockdown scenario
+                playerAvoidKnockDown(other.gameObject);
+            }
+        }
         // if collsion between hitbox and vehicle, knocked down
-        if (gameObject.CompareTag("playerHitbox") 
-            && other.CompareTag("knock_down_attack") 
+        if (gameObject.CompareTag("playerHitbox")
+            && other.CompareTag("knock_down_attack")
             && !playerState.KnockedDown)
         {
             //Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.name);
@@ -44,7 +56,12 @@ public class PlayerCollisions : MonoBehaviour
         }
     }
 
-    void playerKnockedDown( GameObject playerKnockedDown)
+    void playerKnockedDown_Alternate(GameObject playerKnockedDown)
+    {
+        playerState.KnockedDown_Alternate1 = true;
+    }
+
+    void playerKnockedDown(GameObject playerKnockedDown)
     {
         playerState.KnockedDown = true;
     }
@@ -52,5 +69,4 @@ public class PlayerCollisions : MonoBehaviour
     {
         playerState.AvoidedKnockDown = true;
     }
-
 }

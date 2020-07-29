@@ -5,8 +5,8 @@ using UnityEngine;
 public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
-    const string  attackBoxText = "attack_box";
-    const string  hitboxBoxText = "playerHitbox";
+    const string attackBoxText = "attack_box";
+    const string hitboxBoxText = "playerHitbox";
 
     [SerializeField]
     GameObject attackBox;
@@ -18,9 +18,10 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     {
         audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         // get attack box reference
-        if (gameObject.transform.parent.Find(attackBoxText) != null)
+        if (gameObject.transform.Find(attackBoxText) != null)
         {
-            attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+            attackBox = gameObject.transform.Find(attackBoxText).gameObject;
+            disableAttackBox();
         }
         else
         {
@@ -29,7 +30,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         // find hitbox
         if (gameObject.transform.parent.Find(hitboxBoxText) != null)
         {
-            hitBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+            hitBox = gameObject.transform.Find(hitboxBoxText).gameObject;
         }
         else
         {
@@ -73,7 +74,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.worker_parasite);
     }
 
-    public void playSfxAirHorn() 
+    public void playSfxAirHorn()
     {
         audioSource.PlayOneShot(SFXBB.instance.airhorn);
     }
@@ -101,6 +102,26 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.glitch);
     }
 
+    public void playSfxCloudOfSmoke()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.turnIntoBat);
+    }
+
+    public void playSfxAirGuitar()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.airGuitar);
+    }
+
+    public void playSfxChainRattle()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.chainRattle);
+    }
+
+    public void playSfxDeathRay()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.deathRay);
+    }
+
     public void enableAttackBox()
     {
         attackBox.SetActive(true);
@@ -120,4 +141,30 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     {
         hitBox.SetActive(false);
     }
+
+    public void enableRigidBodyIsKinematic()
+    {
+        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    public void disableRigidBodyIsKinematic()
+    {
+        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (gameObject.CompareTag("hanger") && other.gameObject.CompareTag("basketball"))
+        {
+            //Debug.Log(" game obejct : " + gameObject.tag + "  other : " + other.tag);
+            gameObject.GetComponentInChildren<Animator>().SetTrigger("hit");
+        }
+
+        if (gameObject.transform.parent.name.Contains("mega_robot") && other.gameObject.CompareTag(hitboxBoxText))
+        {
+            //Debug.Log(" game obejct : " + gameObject.name + "  other : " + other.tag);
+            gameObject.GetComponent<Animator>().SetTrigger("attack");
+        }
+    }
+
 }

@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94042c583f6a9b04d9bd1dbd2ef81d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAirSpeed: 0.5
+  inAirSpeed: 1.5
   hasBasketball: 0
   canMove: 1
   playerHitbox: {fileID: 5952285497870594516}
@@ -719,7 +719,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.6528685
+  m_Height: 1.5
   m_Direction: 1
   m_Center: {x: -0.030286837, y: -0.1867134, z: 0}
 --- !u!114 &7950191742678702435
@@ -760,7 +760,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6129896483946636891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4, z: 0}
+  m_LocalPosition: {x: 0, y: 1.4, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4316879966801490548}

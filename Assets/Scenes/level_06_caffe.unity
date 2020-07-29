@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.7941176, g: 0.8598248, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -403,12 +403,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 965217633620874259, guid: 4a107d046d00e7645aee8ad92a7c6548,
+    - target: {fileID: 965217632377297436, guid: 4a107d046d00e7645aee8ad92a7c6548,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 965217632377297436, guid: 4a107d046d00e7645aee8ad92a7c6548,
+    - target: {fileID: 965217633620874259, guid: 4a107d046d00e7645aee8ad92a7c6548,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4193,7 +4193,7 @@ PrefabInstance:
     - target: {fileID: 4103905638537705546, guid: cada59e9cd7939c459e6453b4889964a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4
+      value: -1.7
       objectReference: {fileID: 0}
     - target: {fileID: 4103905638537705546, guid: cada59e9cd7939c459e6453b4889964a,
         type: 3}
@@ -4404,7 +4404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1816024637}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.8, y: 6.461552, z: -17.71}
+  m_LocalPosition: {x: 13.8, y: 6.461552, z: -18.67}
   m_LocalScale: {x: 129.81, y: 8.1, z: -0.045253634}
   m_Children: []
   m_Father: {fileID: 567471743}
@@ -5001,11 +5001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1533659013, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.883
+      value: -1.83
       objectReference: {fileID: 0}
     - target: {fileID: 1533659013, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.374
+      value: 0.53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3706e4a215b5b5d4d8d7e8dd0f5d0683, type: 3}

@@ -99,7 +99,7 @@ MonoBehaviour:
   positionMarkerId: 4
   _shotMade: 0
   _shotAttempt: 0
-  maxShotAttempt: 0
+  maxShotAttempt: 5
   maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   positionMarkerId: 2
   _shotMade: 0
   _shotAttempt: 0
-  maxShotAttempt: 0
+  maxShotAttempt: 5
   maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
@@ -370,7 +370,7 @@ MonoBehaviour:
   positionMarkerId: 0
   _shotMade: 0
   _shotAttempt: 0
-  maxShotAttempt: 0
+  maxShotAttempt: 5
   maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
   positionMarkerId: 1
   _shotMade: 0
   _shotAttempt: 0
-  maxShotAttempt: 0
+  maxShotAttempt: 5
   maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   positionMarkerId: 3
   _shotMade: 0
   _shotAttempt: 0
-  maxShotAttempt: 0
+  maxShotAttempt: 5
   maxShotMade: 5
   shotTypeThree: 1
   shotTypeFour: 0

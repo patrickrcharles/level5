@@ -122,8 +122,9 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 3.2.0
+  bundleVersion: 3.3.0
   preloadedAssets:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -174,7 +175,7 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.level5.level5
   buildNumber:
-    Standalone: 3.2.0
+    Standalone: 3.3.0
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0

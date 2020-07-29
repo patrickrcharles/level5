@@ -21,6 +21,10 @@ public class SFXBB : MonoBehaviour {
     public AudioClip knockedDown;
     public AudioClip skateGrind;
     public AudioClip glitch;
+    public AudioClip turnIntoBat;
+    public AudioClip airGuitar;
+    public AudioClip chainRattle;
+    public AudioClip deathRay;
 
     public AudioClip unlockAchievement;
     

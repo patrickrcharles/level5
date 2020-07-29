@@ -25,12 +25,18 @@ public class GameRules : MonoBehaviour
     bool gameModeRequiresShotMarkers3s;
     bool gameModeRequiresShotMarkers4s;
 
+    [SerializeField]
+    bool gameModeThreePointContest;
+    [SerializeField]
+    bool gameModeFourPointContest;
+    [SerializeField]
+    bool gameModeAllPointContest;
+    [SerializeField]
+    float customTimer;
+
     bool gameModeRequiresMoneyBall;
     bool moneyBallEnabled;
-
     bool gameModeRequiresConsecutiveShots;
-
-
 
     private Timer timer;
     private BasketBallStats basketBallStats;
@@ -43,6 +49,7 @@ public class GameRules : MonoBehaviour
     private const string displayMoneyBallObjectName = "money_ball_enabled";
     private const string displayOtherMessageName = "other_message";
 
+    // text objects
     private Text displayScoreText;
     private Text displayCurrentScoreText;
     private Text displayHighScoreText;
@@ -53,10 +60,10 @@ public class GameRules : MonoBehaviour
     private float timeCompleted;
 
     // all these specific game rules for each will need to moved to a different file eventually on refactor
-    private GameObject[] basketBallShotMarkerObjects;
-    [SerializeField]
-    private List<BasketBallShotMarker> _basketBallShotMarkersList;
+    [SerializeField] private GameObject[] basketBallShotMarkerObjects;
+    [SerializeField] private List<BasketBallShotMarker> _basketBallShotMarkersList;
 
+    [SerializeField]
     private int markersRemaining;
     private bool positionMarkersRequired;
     public bool PositionMarkersRequired => positionMarkersRequired;
@@ -100,6 +107,16 @@ public class GameRules : MonoBehaviour
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
 
+        gameModeThreePointContest = GameOptions.gameModeThreePointContest;
+        gameModeFourPointContest = GameOptions.gameModeFourPointContest;
+        gameModeAllPointContest = GameOptions.gameModeAllPointContest;
+
+        if (GameOptions.customTimer > 0) 
+        {
+            setTimer(GameOptions.customTimer);
+            //customTimer = GameOptions.customTimer;
+        }
+
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
         //Debug.Log("GameOptions.gameModeRequiresConsecutiveShot : " + GameOptions.gameModeRequiresConsecutiveShot);
 
@@ -129,6 +146,7 @@ public class GameRules : MonoBehaviour
         {
             setScoreDisplayText();
         }
+
         // if game over, empty text display
         if (gameOver && gameRulesEnabled)
         {
@@ -139,7 +157,7 @@ public class GameRules : MonoBehaviour
             displayOtherMessageText.text = "";
         }
 
-        // game over. display end game and save
+        // game over. pause / display end game / save
         if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
             //Debug.Log("game over, pause");
@@ -160,7 +178,7 @@ public class GameRules : MonoBehaviour
             if (GameObject.Find("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
-                if (gameModeId != 13)
+                if (gameModeId != 99)
                 {
                     DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 }
@@ -196,7 +214,6 @@ public class GameRules : MonoBehaviour
         // time played end
         timePlayedEnd = Time.time;
         basketBallStats.TimePlayed = timePlayedEnd - timePlayedStart;
-        //Debug.Log(" timePlayed : " + basketBallStats.TimePlayed);
     }
 
     //===================================================== toggle money ball ====================================================
@@ -248,8 +265,48 @@ public class GameRules : MonoBehaviour
                 temp.PositionMarkerId = BasketBallShotMarkersList.Count - 1;
             }
         }
+        // sort markers list by positionid
+        BasketBallShotMarkersList.Sort(sortByMarkerId);
         // number of markers to complete ( all active and enabled sshot markers based on game options
         markersRemaining = BasketBallShotMarkersList.Count;
+    }
+
+    static int sortByMarkerId(BasketBallShotMarker p1, BasketBallShotMarker p2)
+    {
+        return p1.PositionMarkerId.CompareTo(p2.PositionMarkerId);
+    }
+
+    private void setTimedPointContestPositionMarkers()
+    {
+        //// get all shot position marker objects
+        //basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
+
+        //gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
+        //gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+
+        ////load them into list
+        //foreach (var marker in basketBallShotMarkerObjects)
+        //{
+        //    BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
+        //    // if 3 markers not required, disable them
+        //    if (!gameModeRequiresShotMarkers3s && temp.ShotTypeThree)
+        //    {
+        //        marker.SetActive(false);
+        //    }
+        //    // if 4 markers not required, disable them
+        //    if (!gameModeRequiresShotMarkers4s && temp.ShotTypeFour)
+        //    {
+        //        marker.SetActive(false);
+        //    }
+        //    // add all active and enabled markers to list
+        //    if (temp.isActiveAndEnabled)
+        //    {
+        //        BasketBallShotMarkersList.Add(temp);
+        //        temp.PositionMarkerId = BasketBallShotMarkersList.Count - 1;
+        //    }
+        //}
+        //// number of markers to complete ( all active and enabled sshot markers based on game options
+        //markersRemaining = BasketBallShotMarkersList.Count;
     }
 
     // ================================================ set score display ============================================
@@ -335,7 +392,7 @@ public class GameRules : MonoBehaviour
             displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersMoneyBallLowTime;
             displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
-        if (gameModeId == 13)
+        if (gameModeId == 99)
         {
             displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade ).ToString("0.00")
                                                              + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
@@ -355,26 +412,40 @@ public class GameRules : MonoBehaviour
                 + "\nCurrent : " + BasketBallShotMade.instance.ConsecutiveShotsMade
                 + "\nHigh Shots : " + BasketBall.instance.BasketBallStats.MostConsecutiveShots;
             displayHighScoreText.text = "high score : " + PlayerData.instance.MostConsecutiveShots;
-            displayMoneyText.text = "$" + PlayerStats.instance.Money;
+            //displayMoneyText.text = "$" + PlayerStats.instance.Money;
         }
         if (gameModeId == 15)
         {
             displayCurrentScoreText.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints
                 + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType
                 + "\nCurrent Consecutive: " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+            // in the pocket is active, display text notifier
             if(BasketBallShotMade.instance.ConsecutiveShotsMade >=5)
             {
                 displayOtherMessageText.text = "In The Pocket";
             }
+            // in the pocket not active, no notifier
             else
             {
                 displayOtherMessageText.text = "";
             }
             displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPointsBonus;
         }
+        if (gameModeId == 16) 
+        {
+            displayHighScoreText.text = "high score : " + PlayerData.instance.ThreePointContestScore;
+        }
+        if (gameModeId == 17)
+        {
+            displayHighScoreText.text = "high score : " + PlayerData.instance.FourPointContestScore;
+        }
+        if (gameModeId == 18)
+        {
+            displayHighScoreText.text = "high score : " + PlayerData.instance.AllPointContestScore;
+        }
     }
 
-    // ================================================ get display text ============================================
+    // ================================================ get end game display text ============================================
     private string getDisplayText(int modeId)
     {
         string displayText = "";
@@ -418,6 +489,11 @@ public class GameRules : MonoBehaviour
         {
             displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         }
+        if (gameModeId == 16 || gameModeId == 17 || gameModeId == 18)
+        {
+            displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
+        }
+
         return displayText;
     }
     // ================================================ get stats total ============================================
@@ -436,19 +512,26 @@ public class GameRules : MonoBehaviour
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.";
+                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft."
+                         + "most consecutive shots : " + basketBallStats.MostConsecutiveShots;
         return scoreText;
     }
 
     public bool isGameOver()
     {
+        Debug.Log("isGameOver()");
+        // if all shot markers are cleared
         if (MarkersRemaining <= 0)
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
-            
+            // add remaining counter time FLOOR to total points  as bonus points
+            BasketBall.instance.BasketBallStats.TotalPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+
+            // if game has a time counter
             if (modeRequiresCounter)
             {
+                // set timer score
                 setRequiresCounterLowScore();
             }
             return true;
@@ -461,42 +544,39 @@ public class GameRules : MonoBehaviour
 
     private void setRequiresCounterLowScore()
     {
+        //*NOTE, these if statements could be replaced based on game mode ids but that would be hard coded
+        // so unfortunately this is probably the best way to do it
+
         // mode 7
         if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeThreePointersLowTime = counterTime;
-            //Debug.Log("basketBallStats.MakeThreePointersLowTime : " + basketBallStats.MakeThreePointersLowTime);
         }
         // mode 8
         if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeFourPointersLowTime = counterTime;
-            //Debug.Log("basketBallStats.Make4PointersLowTime : " + basketBallStats.MakeFourPointersLowTime);
         }
         // mode 9
         if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeAllPointersLowTime = counterTime;
-            //Debug.Log("basketBallStats.MakeallPointersLowTime : " + basketBallStats.MakeAllPointersLowTime);
         }
 
         // mode 10
         if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeThreePointersMoneyBallLowTime = counterTime;
-            //Debug.Log("basketBallStats.MakeThreePointersLowTimeMoneyball : " + basketBallStats.MakeThreePointersMoneyBallLowTime);
         }
         // mode 11
         if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeFourPointersMoneyBallLowTime = counterTime;
-            //Debug.Log("basketBallStats.Make4PointersLowTimeMoneyball : " + basketBallStats.MakeFourPointersMoneyBallLowTime);
         }
         // mode 12
         if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             basketBallStats.MakeAllPointersMoneyBallLowTime = counterTime;
-            //Debug.Log("basketBallStats.MakeallPointersLowTimeMoneyball : " + basketBallStats.MakeAllPointersMoneyBallLowTime);
         }
     }
 
@@ -538,11 +618,13 @@ public class GameRules : MonoBehaviour
         get => _basketBallShotMarkersList;
         set => _basketBallShotMarkersList = value;
     }
-
     public int MarkersRemaining
     {
         get => markersRemaining;
         set => markersRemaining = value;
     }
     public bool GameModeRequiresConsecutiveShots { get => gameModeRequiresConsecutiveShots; set => gameModeRequiresConsecutiveShots = value; }
+    public bool GameModeThreePointContest { get => gameModeThreePointContest;  }
+    public bool GameModeFourPointContest { get => gameModeFourPointContest;  }
+    public bool GameModeAllPointContest { get => gameModeAllPointContest; }
 }

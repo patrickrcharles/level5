@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     private bool _inAir;
     private bool _grounded;
     private bool _knockedDown;
+    private bool _knockedDown_alternate1;
     private bool _avoidedKnockDown;
 
     [SerializeField]
@@ -135,13 +136,20 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (KnockedDown && !locked)
+        if ((KnockedDown || KnockedDown_Alternate1)  && !locked)
         {
             locked = true;
             rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
-            // coroutine that holds animation with WaitUntil knock down time is through
-            StartCoroutine(PlayerKnockedDown());
+            // if alternate knockdown animation
+            if (KnockedDown_Alternate1)
+            {
+                StartCoroutine(PlayerKnockedDown("knockedDown_alternate"));
+            }
+            else
+            {
+                StartCoroutine(PlayerKnockedDown("knockedDown"));
+            }
         }
         if (AvoidedKnockDown && !locked)
         {
@@ -373,23 +381,25 @@ public class PlayerController : MonoBehaviour
     }
 
     // ------------------------------- Knocked down -------------------------------------------------------
-    IEnumerator PlayerKnockedDown()
+    public IEnumerator PlayerKnockedDown(string knockDownAnim)
     {
         float startTime = Time.time;
         float endTime = startTime + _knockDownTime;
 
-        anim.SetBool("knockedDown", true);
-        anim.Play("knockedDown");
+        anim.SetBool(knockDownAnim, true);
+        anim.Play(knockDownAnim);
 
         yield return new WaitUntil(() => Time.time > endTime);
 
-        anim.SetBool("knockedDown", false);
+        anim.SetBool(knockDownAnim, false);
         KnockedDown = false;
+        KnockedDown_Alternate1 = false;
+
         locked = false;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
-    private void PlayerAvoidKnockedDown()
+    public void PlayerAvoidKnockedDown()
     {
         anim.Play("knockedDown");
         AvoidedKnockDown = false;
@@ -498,7 +508,16 @@ public class PlayerController : MonoBehaviour
         get => _knockedDown;
         set => _knockedDown = value;
     }
-    public bool AvoidedKnockDown { get => _avoidedKnockDown; set => _avoidedKnockDown = value; }
+    public bool AvoidedKnockDown 
+    { 
+        get => _avoidedKnockDown; 
+        set => _avoidedKnockDown = value;
+    }
+    public bool KnockedDown_Alternate1 
+    {
+        get => _knockedDown_alternate1; 
+        set => _knockedDown_alternate1 = value;
+    }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

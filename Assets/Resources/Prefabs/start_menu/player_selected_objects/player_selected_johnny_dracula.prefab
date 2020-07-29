@@ -51,7 +51,7 @@ MonoBehaviour:
   playerId: 15
   playerDisplayName: Johnny Dracula
   playerObjectName: johnny_dracula
-  playerPortrait: {fileID: -6223325839624712928, guid: 032693b80ed05f647959447a6c99252c,
+  playerPortrait: {fileID: -2147356891784872576, guid: df12e228b0db853409c82ade4dba812f,
     type: 3}
   shooterProfileObject: {fileID: 0}
   jumpStatFloor: 3.5
@@ -63,13 +63,13 @@ MonoBehaviour:
   accuracy4pt: 94
   accuracy7pt: 75
   shooterProfilePrefabName: 
-  jumpForce: 5
-  speed: 3.5
-  runSpeedHasBall: 3.5
-  runSpeed: 3.5
+  jumpForce: 5.3
+  speed: 4.5
+  runSpeedHasBall: 5
+  runSpeed: 7
   luck: 10
-  shootAngle: 50
+  shootAngle: 45
   level: 0
   experience: 0
   isLocked: 1
-  unlockCharacterText: 
+  unlockCharacterText: ???

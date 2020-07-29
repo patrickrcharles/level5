@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/level_00_start.unity
     guid: c504a5a8d7a7ff9438509ac522c82403
   - enabled: 1
+    path: Assets/Scenes/level_00_stats.unity
+    guid: 991c151622530824baca80bff8e8321a
+  - enabled: 1
     path: Assets/Scenes/level_01_scrapyard.unity
     guid: eec0e7592c963d349b51bd7dac306b35
   - enabled: 1
@@ -32,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_08_tammys.unity
     guid: 8f6264616d2c23048a5da57cc98ab8ec
+  - enabled: 1
+    path: Assets/Scenes/level_09_party_mansion.unity
+    guid: 4f35c2e5bf9333c4089b5afac93418d0
+  - enabled: 1
+    path: Assets/Scenes/level_10_time_jail.unity
+    guid: 67184aa62ea7f7c48ac013632e4ee272
   m_configObjects: {}
