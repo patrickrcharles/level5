@@ -25,6 +25,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip airGuitar;
     public AudioClip chainRattle;
     public AudioClip deathRay;
+    public AudioClip probeCritical;
 
     public AudioClip unlockAchievement;
     
