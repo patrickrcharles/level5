@@ -26,7 +26,6 @@ public class PickupObject : MonoBehaviour
         {
             // update player money value
             PlayerStats.instance.Money += moneyValue;
-            Debug.Log("money value picked up : "+ moneyValue);
             Destroy(gameObject);
         }
     }

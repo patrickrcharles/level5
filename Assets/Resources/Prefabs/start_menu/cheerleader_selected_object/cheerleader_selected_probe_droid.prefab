@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9472769905025791}
   - component: {fileID: -363544802655508959}
   m_Layer: 0
-  m_Name: cheerleader_selected_worker_parasite
+  m_Name: cheerleader_selected_probe_droid
   m_TagString: auto_npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde8ea84e630de04586fbffccf841530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cheerleaderDisplayName: Worker and Parasite
-  cheerleaderObjectName: worker_parasite
-  cheerleaderPortrait: {fileID: 21300000, guid: 40e46ac7f94562140b736f8ec2683f18,
+  cheerleaderDisplayName: Ricky
+  cheerleaderObjectName: probe_droid
+  cheerleaderPortrait: {fileID: 21300000, guid: c17d2eff5e226fb43bf47b563d175cc8,
     type: 3}
   cheerleaderProfileObject: {fileID: 0}
   isLocked: 1
-  cheerleaderId: 5
+  cheerleaderId: 8
   unlockCharacterText: 
 --- !u!1 &9472770063871817
 GameObject:

@@ -116,7 +116,7 @@ public class StatsTableAllTime : MonoBehaviour
     {
         float hours;
         float minutes;
-        float secs;
+        //float secs;
 
         hours = Mathf.FloorToInt(seconds / 3600);
         minutes = Mathf.FloorToInt((seconds - (hours * 3600))/60);

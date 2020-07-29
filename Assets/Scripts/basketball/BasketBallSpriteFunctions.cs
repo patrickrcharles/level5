@@ -122,6 +122,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.deathRay);
     }
 
+    public void playSfxProbeDroidCritical()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.probeCritical);
+    }
+
     public void enableAttackBox()
     {
         attackBox.SetActive(true);

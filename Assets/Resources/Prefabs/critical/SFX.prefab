@@ -159,4 +159,5 @@ MonoBehaviour:
   airGuitar: {fileID: 8300000, guid: e9cf75ad9900f56478820b7862e0ccd7, type: 3}
   chainRattle: {fileID: 8300000, guid: 3a903e73a20ab2e4b8c0c0cc0fc624a9, type: 3}
   deathRay: {fileID: 8300000, guid: 936f2e1b22af8a847bdd2a585aa8a7cd, type: 3}
+  probeCritical: {fileID: 8300000, guid: 8b0cb069d53c49e40aaac02db290628f, type: 3}
   unlockAchievement: {fileID: 8300000, guid: fefdb55c765a84d49a1b22f476b1476d, type: 3}
