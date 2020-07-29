@@ -133,6 +133,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: traffic_manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6635442221398143765, guid: c0a214b4a5f04844781ae6b89ecd92b5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6635442221398143767, guid: c0a214b4a5f04844781ae6b89ecd92b5,
         type: 3}
       propertyPath: m_LocalPosition.x
