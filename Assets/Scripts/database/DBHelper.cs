@@ -762,6 +762,16 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
+        // if less than 10 values in list, add empty values
+        if(listOfValues.Count < 10)
+        {
+            int numToAdd = 10 - listOfValues.Count;
+            for(int i = 0; i < numToAdd; i++)
+            {
+                listOfValues.Add(new StatsTableHighScoreRow("", "", "", ""));
+            }
+        }
+
         return listOfValues;
 
     }
