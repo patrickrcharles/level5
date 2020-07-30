@@ -25,7 +25,7 @@ public class VehicleController : MonoBehaviour
     NavMeshAgent navMeshAgent;
     GameObject spawnPoint;
     Animator animator;
-    Rigidbody rigidbody;
+    new Rigidbody rigidbody;
 
 
     public bool facingRight;
