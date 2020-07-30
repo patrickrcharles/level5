@@ -68,7 +68,7 @@ MonoBehaviour:
   four: 0
   seven: 0
   playerRequiredToUseId: 0
-  cheerleaderRequiredToUseId: 0
+  cheerleaderRequiredToUseId: 7
   levelRequiredToUseId: 0
   modeRequiredToUseId: 1
   GREATER_THAN: 1

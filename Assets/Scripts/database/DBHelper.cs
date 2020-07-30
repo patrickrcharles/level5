@@ -762,6 +762,16 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
+        // if less than 10 values in list, add empty values
+        if(listOfValues.Count < 10)
+        {
+            int numToAdd = 10 - listOfValues.Count;
+            for(int i = 0; i < numToAdd; i++)
+            {
+                listOfValues.Add(new StatsTableHighScoreRow("", "", "", ""));
+            }
+        }
+
         return listOfValues;
 
     }
@@ -842,17 +852,21 @@ public class DBHelper : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
-        while (reader.Read())
+        // check if table is empty
+        if (!isTableEmpty(tableName))
         {
-            value = reader.GetInt32(0);
-            //Debug.Log(" value : " + value);
+            while (reader.Read())
+            {
+                value = reader.GetInt32(0);
+                //Debug.Log(" value : " + value);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
         }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
 
         return value;
     }

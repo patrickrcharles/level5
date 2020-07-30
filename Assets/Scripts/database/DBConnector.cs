@@ -58,7 +58,7 @@ public class DBConnector : MonoBehaviour
             //databaseCreated = false;
             try
             {
-                Debug.Log("create database");
+                //Debug.Log("create database");
                 dropDatabase();
                 createDatabase();
             }
@@ -255,7 +255,7 @@ public class DBConnector : MonoBehaviour
     // create tables if not created
     void createDatabase()
     {
-        Debug.Log("createDatabase()");
+        //Debug.Log("createDatabase()");
 
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
@@ -350,7 +350,7 @@ public class DBConnector : MonoBehaviour
     void dropDatabase()
     {
 
-        Debug.Log("dropDatabase()");
+        //Debug.Log("dropDatabase()");
 
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
