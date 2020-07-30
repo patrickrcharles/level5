@@ -116,6 +116,10 @@ public class GameRules : MonoBehaviour
             setTimer(GameOptions.customTimer);
             //customTimer = GameOptions.customTimer;
         }
+        else
+        {
+            setTimer(120);
+        }
 
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
         //Debug.Log("GameOptions.gameModeRequiresConsecutiveShot : " + GameOptions.gameModeRequiresConsecutiveShot);

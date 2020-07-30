@@ -802,7 +802,10 @@ public class StartManager : MonoBehaviour
             Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
             GameOptions.customTimer = modeSelectedData[modeSelectedIndex].CustomTimer;
         }
-
+        else
+        {
+            GameOptions.customTimer = 0;
+        }
 
         GameOptions.gameModeRequiresMoneyBall = modeSelectedData[modeSelectedIndex].ModeRequiresMoneyBall;
         GameOptions.gameModeRequiresConsecutiveShot = modeSelectedData[modeSelectedIndex].ModeRequiresConsecutiveShots;
