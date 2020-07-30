@@ -129,7 +129,6 @@ public class AchievementManager : MonoBehaviour
         yield return new WaitUntil(() => notificationObject.activeInHierarchy == true);
 
         notificationObjectText.text = "Achievement unlocked : " + achText;
-        Debug.Log("Achievement unlocked : " + notificationObjectText.text);
 
         yield return new WaitForSecondsRealtime(seconds);
 

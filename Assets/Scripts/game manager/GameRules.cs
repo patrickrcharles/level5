@@ -182,6 +182,7 @@ public class GameRules : MonoBehaviour
                 {
                     DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
                 }
+
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.saveHitByCarGameStats();
                 /*DBConnector.instance.saveAchievementStats()*/;
