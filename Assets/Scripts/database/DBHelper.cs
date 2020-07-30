@@ -225,7 +225,8 @@ public class DBHelper : MonoBehaviour
                 prevStats.MoneyBallAttempts = reader.GetInt32(9);
                 prevStats.TotalPoints = reader.GetInt32(10);
                 prevStats.TotalDistance = reader.GetFloat(11);
-                prevStats.TimePlayed = reader.GetFloat(12);
+                prevStats.LongestShotMade = reader.GetFloat(12);              
+                prevStats.TimePlayed = reader.GetFloat(13);
             }
         }
         Destroy(prevStats, 5);
@@ -362,6 +363,7 @@ public class DBHelper : MonoBehaviour
         }
         else
         {
+
             sqlQuery =
            "Update " + allTimeStatsTableName +
            " SET" +
@@ -1012,8 +1014,6 @@ public class DBHelper : MonoBehaviour
         //string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
 
         string sqlQuery = "UPDATE " + achievementTableName + " SET " + field + "  = " + value + " WHERE aid = " + aid;
-
-        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
