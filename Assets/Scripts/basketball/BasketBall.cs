@@ -157,7 +157,8 @@ public class BasketBall : MonoBehaviour
         // if has ball, is in air, and pressed shoot button.
         if (playerState.inAir
             && playerState.hasBasketball
-            && InputManager.GetButtonDown("Fire1")
+            //&& InputManager.GetButtonDown("Fire1")
+            && playerState.Controls.Player.shoot.triggered
             //&& playerState.jumpPeakReached
             && !playerState.IsSetShooter)
         //&& !basketBallState.Locked)
@@ -172,7 +173,8 @@ public class BasketBall : MonoBehaviour
         // if has ball, is in air, and pressed shoot button.
         if (!playerState.inAir
             && playerState.hasBasketball
-            && InputManager.GetButtonDown("Fire1")
+            //&& InputManager.GetButtonDown("Fire1")
+            && playerState.Controls.Player.shoot.triggered
             //&& InputManager.GetButtonDown("Jump")
             //&& playerState.jumpPeakReached
             && playerState.IsSetShooter)

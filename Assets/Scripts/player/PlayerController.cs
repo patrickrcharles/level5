@@ -80,6 +80,13 @@ public class PlayerController : MonoBehaviour
     public float jumpStartTime;
     public float jumpEndTime;
 
+    PlayerControls controls;
+
+    private void Awake()
+    {
+        controls = new PlayerControls();
+    }
+
     void Start()
     {
 
@@ -112,7 +119,8 @@ public class PlayerController : MonoBehaviour
         runningToggle = true;
     }
 
-
+    private void OnEnable() => controls.Player.Enable();
+    private void OnDisable() => controls.Player.Disable();
 
     // not affected by framerate
     void FixedUpdate()
@@ -121,14 +129,20 @@ public class PlayerController : MonoBehaviour
         if (!KnockedDown)
         {
             //Debug.Log("movement : knocked down "+ KnockedDown);
-            float moveHorizontal = InputManager.GetAxis("Horizontal");
-            float moveVertical = InputManager.GetAxis("Vertical");
-            Vector3 movement;
+            //float moveHorizontal = InputManager.GetAxis("Horizontal");
+            //float moveVertical = InputManager.GetAxis("Vertical");
 
-            movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
+            //float moveHorizontal = InputManager.GetAxis("Horizontal");
+
+            var movementInput = controls.Player.movement.ReadValue<Vector2>();
+
+            Vector3 movement;
+            movement = new Vector3(movementInput.x, 0 ,movementInput.y)  * movementSpeed * Time.deltaTime;
+
+            //movement.Normalize();
 
             rigidBody.MovePosition(transform.position + movement);
-            isWalking(moveHorizontal, moveVertical);
+            isWalking(movement);
         }
     }
 
@@ -261,10 +275,12 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump")
-            && !(InputManager.GetButtonDown("Fire1"))
+        if (//(InputManager.GetButtonDown("Jump")
+            controls.Player.jump.triggered
+            && !controls.Player.shoot.triggered
+            //&& !(InputManager.GetButtonDown("Fire1"))
             && grounded
-            && !KnockedDown))
+            && !KnockedDown)
         //&& !isSetShooter))
         {
             playerJump();
@@ -323,11 +339,11 @@ public class PlayerController : MonoBehaviour
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
-    void isWalking(float moveHorz, float moveVert)
+    void isWalking(Vector3 movement)
     {
         //Debug.Log("walking : knocked down " + KnockedDown);;
         // if moving/ not holding item. 
-        if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
+        if (movement.x > 0f || movement.x < 0f || movement.z > 0f || movement.z < 0f)
         {
             if (!inAir && !running) // dont want walking animation playing while inAir
             {
@@ -361,11 +377,11 @@ public class PlayerController : MonoBehaviour
             //}
         }
 
-        if (moveHorz > 0 && !facingRight && canMove)
+        if (movement.x > 0 && !facingRight && canMove)
         {
             Flip();
         }
-        if (moveHorz < 0f && facingRight && canMove)
+        if (movement.x < 0f && facingRight && canMove)
         {
             Flip();
         }
@@ -518,6 +534,7 @@ public class PlayerController : MonoBehaviour
         get => _knockedDown_alternate1; 
         set => _knockedDown_alternate1 = value;
     }
+    public PlayerControls Controls { get => controls; set => controls = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

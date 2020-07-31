@@ -37,7 +37,8 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (InputManager.GetButtonDown("Fire1")
+        if (/*InputManager.GetButtonDown("Fire1")*/
+            playerState.Controls.Player.shoot.triggered
             && !playerState.hasBasketball
             && !playerState.inAir
             //&& !_basketBallState.Thrown
