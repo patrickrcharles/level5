@@ -76,9 +76,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""run"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""a66eb25c-8369-4408-a038-ef50b168b899"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Digital"",
                     ""processors"": """",
                     ""interactions"": """"
                 }

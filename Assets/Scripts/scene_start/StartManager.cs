@@ -284,7 +284,6 @@ public class StartManager : MonoBehaviour
         // up/down arrow on player options
         if (controls.UINavigation.Up.triggered && !buttonPressed)
         {
-            Debug.Log("up");
             buttonPressed = true;
             if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
             {

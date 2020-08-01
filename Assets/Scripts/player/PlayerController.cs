@@ -197,13 +197,14 @@ public class PlayerController : MonoBehaviour
 
         // if run input or run toggle on
         if (/*InputManager.GetButton("Run")*/
-            GameLevelManager.Instance.Controls.Player.run.triggered
+            GameLevelManager.Instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
             && canMove
             && !inAir
             && !KnockedDown
             && !locked)
         {
             running = true;
+            anim.SetBool("moonwalking", true);
         }
         else
         {
@@ -251,7 +252,7 @@ public class PlayerController : MonoBehaviour
             && !inAir
             && !KnockedDown)
         {
-            if (runningToggle)
+            if (runningToggle || running)
             {
                 movementSpeed = shooterProfile.RunSpeed;
             }
@@ -357,7 +358,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // if running enabled
-        if ((runningToggle || running) && canMove && !inAir && currentState == walkState)
+        if ((runningToggle || running) &&  !inAir && currentState == walkState)
         {
             //Debug.Log("if (runningToggle && canMove && !inAir)");
             if (!hasBasketball)
