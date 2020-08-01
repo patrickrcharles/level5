@@ -629,11 +629,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: start
       objectReference: {fileID: 0}
-    - target: {fileID: 6042543575270876283, guid: 81d79243e38dc464588266b4568e186b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6184611314463953561, guid: 81d79243e38dc464588266b4568e186b,
         type: 3}
       propertyPath: m_AnchorMin.y

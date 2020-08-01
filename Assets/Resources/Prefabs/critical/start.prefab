@@ -2001,7 +2001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 2692522641280016357}
-  m_sendNavigationEvents: 0
+  m_sendNavigationEvents: 1
   m_DragThreshold: 5
 --- !u!114 &2692522641956846883
 MonoBehaviour:

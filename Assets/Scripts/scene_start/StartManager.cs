@@ -14,7 +14,7 @@ using UnityEngine.UI;
 public class StartManager : MonoBehaviour
 {
     [SerializeField]
-    private string currentHighlightedButton;
+    public string currentHighlightedButton;
 
     //list of all shooter profiles with player data
     [SerializeField]
@@ -195,8 +195,10 @@ public class StartManager : MonoBehaviour
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
         }
+        
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
+        Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
         // if player highlighted, display player
         if (currentHighlightedButton.Equals(playerSelectButtonName))
@@ -272,8 +274,11 @@ public class StartManager : MonoBehaviour
         // left arrow navigation on player options
         if (controls.UINavigation.Left.triggered)
         {
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
-                .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnLeft().gameObject != null)
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
+                    .GetComponent<Button>().FindSelectableOnLeft().gameObject);
+            }
         }
 
         // up/down arrow on player options
