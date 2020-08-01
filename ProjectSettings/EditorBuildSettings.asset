@@ -41,4 +41,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level_10_time_jail.unity
     guid: 67184aa62ea7f7c48ac013632e4ee272
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 95ddb5057007dcc44a2aedb1e5703437,
+      type: 2}

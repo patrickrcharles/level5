@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using static TeamUtility.IO.InputManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,20 +45,24 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetKey(KeyCode.LeftShift) && GetKeyDown(KeyCode.Alpha3) && !locked)
+        if (GameLevelManager.Instance.Controls.Other.change.enabled
+            &&
+            GameLevelManager.Instance.Controls.Other.toggle_camera_keyboard.triggered
+            && !locked
+            && !Pause.instance.Paused)
         {
             locked = true;
             switchCamera();
         }
-        if (GetKey(KeyCode.LeftShift) && GetKeyDown(KeyCode.Alpha4) && !locked)
-        {
-            CameraOnGoalAllowed = !CameraOnGoalAllowed;
+        //if (GetKey(KeyCode.LeftShift) && GetKeyDown(KeyCode.Alpha4) && !locked)
+        //{
+        //    CameraOnGoalAllowed = !CameraOnGoalAllowed;
 
-            Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-            messageText.text = "camera view on goal = " + CameraOnGoalAllowed;
-            // turn off text display after 5 seconds
-            StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
-        }
+        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //    messageText.text = "camera view on goal = " + CameraOnGoalAllowed;
+        //    // turn off text display after 5 seconds
+        //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+        //}
     }
 
     void setDefaultCamera()

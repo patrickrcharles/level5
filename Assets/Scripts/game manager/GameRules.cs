@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -201,7 +200,7 @@ public class GameRules : MonoBehaviour
         }
 
         // enable moneyball
-        if (InputManager.GetKeyDown(KeyCode.F))
+        if (GameLevelManager.Instance.Controls.Player.action.triggered)
         {
             toggleMoneyBall();
         }

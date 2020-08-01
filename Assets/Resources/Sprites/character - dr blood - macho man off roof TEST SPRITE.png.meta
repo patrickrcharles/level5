@@ -1,31 +1,72 @@
 fileFormatVersion: 2
 guid: e92a507842df90546bef7a520f13705b
-timeCreated: 1497406058
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: character - dr blood - macho man off roof TEST SPRITE_0
-    21300002: character - dr blood - macho man off roof TEST SPRITE_1
-    21300004: character - dr blood - macho man off roof TEST SPRITE_2
-    21300006: character - dr blood - macho man off roof TEST SPRITE_3
-    21300008: character - dr blood - macho man off roof TEST SPRITE_4
-    21300010: character - dr blood - macho man off roof TEST SPRITE_5
-    21300012: character - dr blood - macho man off roof TEST SPRITE_6
-    21300014: character - dr blood - macho man off roof TEST SPRITE_7
-    21300016: character - dr blood - macho man off roof TEST SPRITE_8
-    21300018: character - dr blood - macho man off roof TEST SPRITE_9
-    21300020: character - dr blood - macho man off roof TEST SPRITE_10
-    21300022: character - dr blood - macho man off roof TEST SPRITE_11
-    21300024: character - dr blood - macho man off roof TEST SPRITE_12
-    21300026: character - dr blood - macho man off roof TEST SPRITE_13
-    21300028: character - dr blood - macho man off roof TEST SPRITE_14
-    21300030: character - dr blood - macho man off roof TEST SPRITE_15
-    21300032: character - dr blood - macho man off roof TEST SPRITE_16
-    21300034: character - dr blood - macho man off roof TEST SPRITE_17
-    21300036: character - dr blood - macho man off roof TEST SPRITE_18
-    21300038: character - dr blood - macho man off roof TEST SPRITE_19
-    21300040: character - dr blood - macho man off roof TEST SPRITE_20
-  serializedVersion: 4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: character - dr blood - macho man off roof TEST SPRITE_0
+  - first:
+      213: 21300002
+    second: character - dr blood - macho man off roof TEST SPRITE_1
+  - first:
+      213: 21300004
+    second: character - dr blood - macho man off roof TEST SPRITE_2
+  - first:
+      213: 21300006
+    second: character - dr blood - macho man off roof TEST SPRITE_3
+  - first:
+      213: 21300008
+    second: character - dr blood - macho man off roof TEST SPRITE_4
+  - first:
+      213: 21300010
+    second: character - dr blood - macho man off roof TEST SPRITE_5
+  - first:
+      213: 21300012
+    second: character - dr blood - macho man off roof TEST SPRITE_6
+  - first:
+      213: 21300014
+    second: character - dr blood - macho man off roof TEST SPRITE_7
+  - first:
+      213: 21300016
+    second: character - dr blood - macho man off roof TEST SPRITE_8
+  - first:
+      213: 21300018
+    second: character - dr blood - macho man off roof TEST SPRITE_9
+  - first:
+      213: 21300020
+    second: character - dr blood - macho man off roof TEST SPRITE_10
+  - first:
+      213: 21300022
+    second: character - dr blood - macho man off roof TEST SPRITE_11
+  - first:
+      213: 21300024
+    second: character - dr blood - macho man off roof TEST SPRITE_12
+  - first:
+      213: 21300026
+    second: character - dr blood - macho man off roof TEST SPRITE_13
+  - first:
+      213: 21300028
+    second: character - dr blood - macho man off roof TEST SPRITE_14
+  - first:
+      213: 21300030
+    second: character - dr blood - macho man off roof TEST SPRITE_15
+  - first:
+      213: 21300032
+    second: character - dr blood - macho man off roof TEST SPRITE_16
+  - first:
+      213: 21300034
+    second: character - dr blood - macho man off roof TEST SPRITE_17
+  - first:
+      213: 21300036
+    second: character - dr blood - macho man off roof TEST SPRITE_18
+  - first:
+      213: 21300038
+    second: character - dr blood - macho man off roof TEST SPRITE_19
+  - first:
+      213: 21300040
+    second: character - dr blood - macho man off roof TEST SPRITE_20
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -33,6 +74,8 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -41,6 +84,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -48,10 +93,13 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -60,41 +108,56 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: 25
     textureCompression: 0
-    compressionQuality: 50
+    compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
-  - buildTarget: WebGL
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -110,7 +173,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_1
       rect:
@@ -123,7 +194,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_2
       rect:
@@ -136,7 +215,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_3
       rect:
@@ -149,7 +236,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_4
       rect:
@@ -162,7 +257,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_5
       rect:
@@ -175,7 +278,15 @@ TextureImporter:
       pivot: {x: 0.51971525, y: 0.69401854}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_6
       rect:
@@ -188,7 +299,15 @@ TextureImporter:
       pivot: {x: 0.5084018, y: 0.6576401}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_7
       rect:
@@ -201,7 +320,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.94343}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_8
       rect:
@@ -214,7 +341,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_9
       rect:
@@ -227,7 +362,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_10
       rect:
@@ -240,7 +383,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_11
       rect:
@@ -253,7 +404,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_12
       rect:
@@ -266,7 +425,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_13
       rect:
@@ -279,7 +446,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_14
       rect:
@@ -292,7 +467,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_15
       rect:
@@ -305,7 +488,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_16
       rect:
@@ -318,7 +509,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_17
       rect:
@@ -331,7 +530,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_18
       rect:
@@ -344,7 +551,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_19
       rect:
@@ -357,7 +572,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: character - dr blood - macho man off roof TEST SPRITE_20
       rect:
@@ -370,9 +593,28 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

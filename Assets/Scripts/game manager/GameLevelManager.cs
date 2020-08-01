@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static TeamUtility.IO.InputManager;
 #if UNITY_EDITOR
 #endif
 
@@ -32,6 +31,8 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
 
+    PlayerControls controls;
+
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
     public static GameLevelManager Instance;
@@ -40,9 +41,9 @@ public class GameLevelManager : MonoBehaviour
     {
         // initialize game manger player references
         Instance = this;
-
+        controls = new PlayerControls();
         // if player selected is not null / player not selected
-        if(!string.IsNullOrEmpty( GameOptions.playerObjectName)){
+        if (!string.IsNullOrEmpty( GameOptions.playerObjectName)){
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
@@ -127,10 +128,12 @@ public class GameLevelManager : MonoBehaviour
 
     private void Update()
     {
+
         //turn on : toggle run, shift +1
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha1)
-            && !_locked)
+        if (Controls.Other.change.enabled
+            && Controls.Other.toggle_run_keyboard.triggered
+            && !_locked
+            && !Pause.instance.Paused)
         {
             _locked = true;
             PlayerState.toggleRun();
@@ -138,9 +141,10 @@ public class GameLevelManager : MonoBehaviour
         }
 
         //turn off stats, shift + 2
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha2)
-            && !_locked)
+        if (Controls.Other.change.enabled
+            && Controls.Other.toggle_stats_keyboard.triggered
+            && !_locked
+            && !Pause.instance.Paused)
         {
             _locked = true;
             BasketBall.instance.toggleUiStats(); 
@@ -165,4 +169,19 @@ public class GameLevelManager : MonoBehaviour
     public Animator Anim { get; private set; }
 
     public bool GameOver { get; set; }
+    public PlayerControls Controls { get => controls; set => controls = value; }
+
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+        controls.Other.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+        controls.Other.Disable();
+    }
 }

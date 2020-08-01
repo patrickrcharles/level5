@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TeamUtility.IO;
 using System;
 
 public class PlayerController : MonoBehaviour
@@ -80,6 +79,13 @@ public class PlayerController : MonoBehaviour
     public float jumpStartTime;
     public float jumpEndTime;
 
+    //PlayerControls controls;
+
+    private void Awake()
+    {
+        //controls = new PlayerControls();
+    }
+
     void Start()
     {
 
@@ -113,7 +119,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
     // not affected by framerate
     void FixedUpdate()
     {
@@ -121,14 +126,20 @@ public class PlayerController : MonoBehaviour
         if (!KnockedDown)
         {
             //Debug.Log("movement : knocked down "+ KnockedDown);
-            float moveHorizontal = InputManager.GetAxis("Horizontal");
-            float moveVertical = InputManager.GetAxis("Vertical");
-            Vector3 movement;
+            //float moveHorizontal = InputManager.GetAxis("Horizontal");
+            //float moveVertical = InputManager.GetAxis("Vertical");
 
-            movement = new Vector3(moveHorizontal, 0, moveVertical) * movementSpeed * Time.deltaTime;
+            //float moveHorizontal = InputManager.GetAxis("Horizontal");
+
+            var movementInput = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>();
+
+            Vector3 movement;
+            movement = new Vector3(movementInput.x, 0 ,movementInput.y)  * movementSpeed * Time.deltaTime;
+
+            //movement.Normalize();
 
             rigidBody.MovePosition(transform.position + movement);
-            isWalking(moveHorizontal, moveVertical);
+            isWalking(movement);
         }
     }
 
@@ -185,11 +196,12 @@ public class PlayerController : MonoBehaviour
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ((InputManager.GetButton("Run")
+        if (/*InputManager.GetButton("Run")*/
+            GameLevelManager.Instance.Controls.Player.run.triggered
             && canMove
             && !inAir
             && !KnockedDown
-            && !locked))
+            && !locked)
         {
             running = true;
         }
@@ -261,17 +273,20 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ jump -----------------------------------
-        if ((InputManager.GetButtonDown("Jump")
-            && !(InputManager.GetButtonDown("Fire1"))
+        if (//(InputManager.GetButtonDown("Jump")
+            GameLevelManager.Instance.Controls.Player.jump.triggered
+            && !GameLevelManager.Instance.Controls.Player.shoot.triggered
+            //&& !(InputManager.GetButtonDown("Fire1"))
             && grounded
-            && !KnockedDown))
+            && !KnockedDown)
         //&& !isSetShooter))
         {
             playerJump();
         }
 
         //------------------ special -----------------------------------
-        if ((InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
+        if (GameLevelManager.Instance.Controls.Player.special.triggered
+            //(InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
             && !inAir
             && grounded
             && !KnockedDown)
@@ -323,11 +338,11 @@ public class PlayerController : MonoBehaviour
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
-    void isWalking(float moveHorz, float moveVert)
+    void isWalking(Vector3 movement)
     {
         //Debug.Log("walking : knocked down " + KnockedDown);;
         // if moving/ not holding item. 
-        if (moveHorz > 0f || moveHorz < 0f || moveVert > 0f || moveVert < 0f)
+        if (movement.x > 0f || movement.x < 0f || movement.z > 0f || movement.z < 0f)
         {
             if (!inAir && !running) // dont want walking animation playing while inAir
             {
@@ -361,11 +376,11 @@ public class PlayerController : MonoBehaviour
             //}
         }
 
-        if (moveHorz > 0 && !facingRight && canMove)
+        if (movement.x > 0 && !facingRight && canMove)
         {
             Flip();
         }
-        if (moveHorz < 0f && facingRight && canMove)
+        if (movement.x < 0f && facingRight && canMove)
         {
             Flip();
         }

@@ -1,7 +1,6 @@
 ﻿
  using UnityEngine;
  using System.Collections;
- using UnityEngine.Experimental.PlayerLoop;
 
  public class cameraUpdaterOrthographic : MonoBehaviour
 {

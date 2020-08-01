@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using TeamUtility.IO;
+﻿
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -68,9 +64,9 @@ public class Pause : MonoBehaviour
     void Update()
     {
         //pause ESC, submit, cancel
-        if (InputManager.GetButtonDown("Submit")
-            || InputManager.GetButtonDown("Cancel")
-            || InputManager.GetKeyDown(KeyCode.Escape)
+        if (GameLevelManager.Instance.Controls.Player.submit.triggered
+            || GameLevelManager.Instance.Controls.Player.cancel.triggered
+            //|| GameLevelManager.Instance.Controls.Player.esc.triggered
             && !GameLevelManager.Instance.GameOver)
         {
             paused = TogglePause();
@@ -114,8 +110,8 @@ public class Pause : MonoBehaviour
 
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
-                && (InputManager.GetKeyDown(KeyCode.Return)
-                    || InputManager.GetKeyDown(KeyCode.Space)))
+                && (GameLevelManager.Instance.Controls.Player.submit.triggered
+                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
                     //|| InputManager.GetButtonDown("Fire1")))
             {
 
@@ -136,8 +132,8 @@ public class Pause : MonoBehaviour
 
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && (InputManager.GetKeyDown(KeyCode.Return)
-                || InputManager.GetKeyDown(KeyCode.Space)))
+                && (GameLevelManager.Instance.Controls.Player.submit.triggered
+                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
                 //|| InputManager.GetButtonDown("Fire1")))
             {
                 // update all time stats
@@ -151,8 +147,8 @@ public class Pause : MonoBehaviour
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && (InputManager.GetKeyDown(KeyCode.Return)
-                || InputManager.GetKeyDown(KeyCode.Space)))
+                && (GameLevelManager.Instance.Controls.Player.submit.triggered
+                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
                 //|| InputManager.GetButtonDown("Fire1"))
             {
                 // update all time stats
