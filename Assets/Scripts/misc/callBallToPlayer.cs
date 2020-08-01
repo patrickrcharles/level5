@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -38,7 +37,7 @@ public class CallBallToPlayer : MonoBehaviour
     private void LateUpdate()
     {
         if (/*InputManager.GetButtonDown("Fire1")*/
-            playerState.Controls.Player.shoot.triggered
+            GameLevelManager.Instance.Controls.Player.shoot.triggered
             && !playerState.hasBasketball
             && !playerState.inAir
             //&& !_basketBallState.Thrown

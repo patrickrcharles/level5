@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TeamUtility.IO;
 using System;
 
 public class PlayerController : MonoBehaviour
@@ -80,11 +79,11 @@ public class PlayerController : MonoBehaviour
     public float jumpStartTime;
     public float jumpEndTime;
 
-    PlayerControls controls;
+    //PlayerControls controls;
 
     private void Awake()
     {
-        controls = new PlayerControls();
+        //controls = new PlayerControls();
     }
 
     void Start()
@@ -119,8 +118,6 @@ public class PlayerController : MonoBehaviour
         runningToggle = true;
     }
 
-    private void OnEnable() => controls.Player.Enable();
-    private void OnDisable() => controls.Player.Disable();
 
     // not affected by framerate
     void FixedUpdate()
@@ -134,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
             //float moveHorizontal = InputManager.GetAxis("Horizontal");
 
-            var movementInput = controls.Player.movement.ReadValue<Vector2>();
+            var movementInput = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>();
 
             Vector3 movement;
             movement = new Vector3(movementInput.x, 0 ,movementInput.y)  * movementSpeed * Time.deltaTime;
@@ -199,11 +196,12 @@ public class PlayerController : MonoBehaviour
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ((InputManager.GetButton("Run")
+        if (/*InputManager.GetButton("Run")*/
+            GameLevelManager.Instance.Controls.Player.run.triggered
             && canMove
             && !inAir
             && !KnockedDown
-            && !locked))
+            && !locked)
         {
             running = true;
         }
@@ -276,8 +274,8 @@ public class PlayerController : MonoBehaviour
 
         //------------------ jump -----------------------------------
         if (//(InputManager.GetButtonDown("Jump")
-            controls.Player.jump.triggered
-            && !controls.Player.shoot.triggered
+            GameLevelManager.Instance.Controls.Player.jump.triggered
+            && !GameLevelManager.Instance.Controls.Player.shoot.triggered
             //&& !(InputManager.GetButtonDown("Fire1"))
             && grounded
             && !KnockedDown)
@@ -287,7 +285,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ special -----------------------------------
-        if ((InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
+        if (GameLevelManager.Instance.Controls.Player.special.triggered
+            //(InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
             && !inAir
             && grounded
             && !KnockedDown)
@@ -534,7 +533,6 @@ public class PlayerController : MonoBehaviour
         get => _knockedDown_alternate1; 
         set => _knockedDown_alternate1 = value;
     }
-    public PlayerControls Controls { get => controls; set => controls = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

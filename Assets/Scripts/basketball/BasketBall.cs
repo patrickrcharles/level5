@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -158,7 +157,7 @@ public class BasketBall : MonoBehaviour
         if (playerState.inAir
             && playerState.hasBasketball
             //&& InputManager.GetButtonDown("Fire1")
-            && playerState.Controls.Player.shoot.triggered
+            && GameLevelManager.Instance.Controls.Player.shoot.triggered
             //&& playerState.jumpPeakReached
             && !playerState.IsSetShooter)
         //&& !basketBallState.Locked)
@@ -174,7 +173,7 @@ public class BasketBall : MonoBehaviour
         if (!playerState.inAir
             && playerState.hasBasketball
             //&& InputManager.GetButtonDown("Fire1")
-            && playerState.Controls.Player.shoot.triggered
+            && GameLevelManager.Instance.Controls.Player.shoot.triggered
             //&& InputManager.GetButtonDown("Jump")
             //&& playerState.jumpPeakReached
             && playerState.IsSetShooter)

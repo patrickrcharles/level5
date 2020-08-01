@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -52,7 +51,21 @@ public class StatsManager : MonoBehaviour
     const string highScoresRowsName = "high_scores_rows";
     GameObject highScoresRowsObject;
 
+    PlayerControls controls;
+
     public static StatsManager instance;
+
+    // for input system
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+    }
 
     // store data for each row
     public class mode
@@ -74,6 +87,9 @@ public class StatsManager : MonoBehaviour
     {
         //check for existsing instance of statmanager
         destroyInstanceIfAlreadyExists();
+
+        controls = new PlayerControls();
+
         // find objects/buttons
         modeSelectButtonText = GameObject.Find(modeSelectButtonName).GetComponent<Text>();
         highScoreTableObject = GameObject.Find(highScoreTableName);
@@ -126,7 +142,6 @@ public class StatsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // check for some button not selected
         if (EventSystem.current.currentSelectedGameObject == null)
         {
@@ -144,7 +159,7 @@ public class StatsManager : MonoBehaviour
             highScoreTableObject.SetActive(true);
             allTimeTableObject.SetActive(false);
 
-            if (InputManager.GetKeyDown(KeyCode.LeftArrow) || InputManager.GetKeyDown(KeyCode.A))
+            if (controls.UINavigation.Left.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
@@ -152,7 +167,7 @@ public class StatsManager : MonoBehaviour
                 changeHighScoreDataDisplay();
             }
 
-            if (InputManager.GetKeyDown(KeyCode.RightArrow) || InputManager.GetKeyDown(KeyCode.D))
+            if (controls.UINavigation.Right.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
@@ -160,13 +175,13 @@ public class StatsManager : MonoBehaviour
                 changeHighScoreDataDisplay();
             }
 
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))//|| InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
@@ -179,13 +194,13 @@ public class StatsManager : MonoBehaviour
             highScoreTableObject.SetActive(false);
 
             // up arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
@@ -194,21 +209,19 @@ public class StatsManager : MonoBehaviour
         // main menu button selected
         if (currentHighlightedButton.Equals(mainMenuButtonName))
         {
-            if (InputManager.GetKeyDown(KeyCode.Return)
-             || InputManager.GetKeyDown(KeyCode.Space)
-             || InputManager.GetButtonDown("Fire1"))
+            if (controls.UINavigation.Submit.triggered)
             {
                 loadMainMenu(mainMenuSceneName);
             }
 
             // up arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))// || InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)// || InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
