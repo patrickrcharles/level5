@@ -593,6 +593,430 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ]
         },
         {
+            ""name"": ""PlayerTouch"",
+            ""id"": ""61e28353-1d80-48ea-ba40-90154c5fe40e"",
+            ""actions"": [
+                {
+                    ""name"": ""movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""ccda48b8-0339-4353-9274-71e2168d3320"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a93dd3e-f07c-40b6-9aaa-35cf711122e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""21212174-c6b4-4908-9632-0dc57924db6a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""54bcff50-c303-4347-bc34-4ee8669d39ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""402fd70f-28bc-4069-ad5b-e345af6da2f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""action"",
+                    ""type"": ""Button"",
+                    ""id"": ""caa02ad0-ee3e-4939-851c-f715c3031e04"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""special"",
+                    ""type"": ""Button"",
+                    ""id"": ""821ac09f-a455-43ab-a3fb-0e90b843ec1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""run"",
+                    ""type"": ""Value"",
+                    ""id"": ""663e7762-acf5-447e-a5dd-b9845ed6a60d"",
+                    ""expectedControlType"": ""Digital"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""4110aacf-425b-4ec7-a6e4-cd1a6858d39e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""14bc661c-dcde-48c6-93ea-0d51e8bf8567"",
+                    ""path"": ""<Touchscreen>/position/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""73c484e3-97ee-4b29-b283-a041958db262"",
+                    ""path"": ""<Touchscreen>/position/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f8d83052-cfbb-490e-a103-2da3853b3697"",
+                    ""path"": ""<Touchscreen>/primaryTouch/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5f3562b5-f60d-48f2-959d-643c0dfda3fb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9cd82cc7-47a4-448c-a43d-cabf503dd0e2"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""820a7855-2ff7-403d-80a0-0232df19db97"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6dccfc1-6df3-4611-b869-9531ff8ec908"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2505fea-c18a-4f26-8017-cce6f8d72cf2"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a78e572d-c1c0-46cf-83ba-d62889ef5879"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2f97388-fa86-42b8-86ab-343b7273babb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5b8d2dc-44b7-4e97-9910-fb4ec9ae7e31"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb3730c4-6466-46ac-8852-31c67ef5ccfb"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3af799a-82a9-4bda-a65f-3591c5d975af"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c6524bd-a8e8-4051-946d-24e0ad2f882d"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72833098-159b-49e8-878f-2d6e36b2561e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3983568b-329b-4ec4-9fa2-1e7203ec8f14"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e462a954-10a5-4da5-9d7c-d7d816f20155"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""995df7a1-7f66-4d35-bff4-79505e1d3a58"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23455e45-8ba2-477f-a9b3-38bdd767a2ff"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25ff9079-aebd-4710-81ab-215e6a50d136"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button10"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2847f5e-f20e-46f1-9719-5942fbf91dfd"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ab5bd72-a244-457f-b285-5a6280afb9e4"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1b99976-e110-43e8-b6fb-f750b18849a7"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be0a987a-3568-4d20-88a0-f024d36d1c9c"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67c0173d-3d22-4bae-a143-a6f08ec10445"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d27eae11-abdc-4fc0-b688-aeb2ada8787a"",
+                    ""path"": ""<Mouse>/forwardButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72e990c9-26f0-44aa-9e5a-eda6c20d4e82"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e60ccf68-8337-47bd-bd8a-daa48ddcc243"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3c43f70-c8f5-46af-9854-0ac9e3b34204"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c46f357-f4bb-49f7-b620-afc618c6973e"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0b44646-c00c-490d-a61f-5430ee68daa2"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""UINavigation"",
             ""id"": ""6b0c0351-7dee-44fe-b578-6bed4767bf21"",
             ""actions"": [
@@ -1218,6 +1642,16 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_action = m_Player.FindAction("action", throwIfNotFound: true);
         m_Player_special = m_Player.FindAction("special", throwIfNotFound: true);
         m_Player_run = m_Player.FindAction("run", throwIfNotFound: true);
+        // PlayerTouch
+        m_PlayerTouch = asset.FindActionMap("PlayerTouch", throwIfNotFound: true);
+        m_PlayerTouch_movement = m_PlayerTouch.FindAction("movement", throwIfNotFound: true);
+        m_PlayerTouch_jump = m_PlayerTouch.FindAction("jump", throwIfNotFound: true);
+        m_PlayerTouch_shoot = m_PlayerTouch.FindAction("shoot", throwIfNotFound: true);
+        m_PlayerTouch_cancel = m_PlayerTouch.FindAction("cancel", throwIfNotFound: true);
+        m_PlayerTouch_submit = m_PlayerTouch.FindAction("submit", throwIfNotFound: true);
+        m_PlayerTouch_action = m_PlayerTouch.FindAction("action", throwIfNotFound: true);
+        m_PlayerTouch_special = m_PlayerTouch.FindAction("special", throwIfNotFound: true);
+        m_PlayerTouch_run = m_PlayerTouch.FindAction("run", throwIfNotFound: true);
         // UINavigation
         m_UINavigation = asset.FindActionMap("UINavigation", throwIfNotFound: true);
         m_UINavigation_Up = m_UINavigation.FindAction("Up", throwIfNotFound: true);
@@ -1367,6 +1801,95 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
+    // PlayerTouch
+    private readonly InputActionMap m_PlayerTouch;
+    private IPlayerTouchActions m_PlayerTouchActionsCallbackInterface;
+    private readonly InputAction m_PlayerTouch_movement;
+    private readonly InputAction m_PlayerTouch_jump;
+    private readonly InputAction m_PlayerTouch_shoot;
+    private readonly InputAction m_PlayerTouch_cancel;
+    private readonly InputAction m_PlayerTouch_submit;
+    private readonly InputAction m_PlayerTouch_action;
+    private readonly InputAction m_PlayerTouch_special;
+    private readonly InputAction m_PlayerTouch_run;
+    public struct PlayerTouchActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlayerTouchActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @movement => m_Wrapper.m_PlayerTouch_movement;
+        public InputAction @jump => m_Wrapper.m_PlayerTouch_jump;
+        public InputAction @shoot => m_Wrapper.m_PlayerTouch_shoot;
+        public InputAction @cancel => m_Wrapper.m_PlayerTouch_cancel;
+        public InputAction @submit => m_Wrapper.m_PlayerTouch_submit;
+        public InputAction @action => m_Wrapper.m_PlayerTouch_action;
+        public InputAction @special => m_Wrapper.m_PlayerTouch_special;
+        public InputAction @run => m_Wrapper.m_PlayerTouch_run;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerTouch; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerTouchActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerTouchActions instance)
+        {
+            if (m_Wrapper.m_PlayerTouchActionsCallbackInterface != null)
+            {
+                @movement.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnMovement;
+                @movement.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnMovement;
+                @movement.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnMovement;
+                @jump.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnJump;
+                @jump.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnJump;
+                @jump.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnJump;
+                @shoot.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnShoot;
+                @shoot.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnShoot;
+                @shoot.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnShoot;
+                @cancel.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnCancel;
+                @cancel.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnCancel;
+                @cancel.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnCancel;
+                @submit.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSubmit;
+                @submit.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSubmit;
+                @submit.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSubmit;
+                @action.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnAction;
+                @action.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnAction;
+                @action.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnAction;
+                @special.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSpecial;
+                @special.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSpecial;
+                @special.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnSpecial;
+                @run.started -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnRun;
+                @run.performed -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnRun;
+                @run.canceled -= m_Wrapper.m_PlayerTouchActionsCallbackInterface.OnRun;
+            }
+            m_Wrapper.m_PlayerTouchActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @movement.started += instance.OnMovement;
+                @movement.performed += instance.OnMovement;
+                @movement.canceled += instance.OnMovement;
+                @jump.started += instance.OnJump;
+                @jump.performed += instance.OnJump;
+                @jump.canceled += instance.OnJump;
+                @shoot.started += instance.OnShoot;
+                @shoot.performed += instance.OnShoot;
+                @shoot.canceled += instance.OnShoot;
+                @cancel.started += instance.OnCancel;
+                @cancel.performed += instance.OnCancel;
+                @cancel.canceled += instance.OnCancel;
+                @submit.started += instance.OnSubmit;
+                @submit.performed += instance.OnSubmit;
+                @submit.canceled += instance.OnSubmit;
+                @action.started += instance.OnAction;
+                @action.performed += instance.OnAction;
+                @action.canceled += instance.OnAction;
+                @special.started += instance.OnSpecial;
+                @special.performed += instance.OnSpecial;
+                @special.canceled += instance.OnSpecial;
+                @run.started += instance.OnRun;
+                @run.performed += instance.OnRun;
+                @run.canceled += instance.OnRun;
+            }
+        }
+    }
+    public PlayerTouchActions @PlayerTouch => new PlayerTouchActions(this);
+
     // UINavigation
     private readonly InputActionMap m_UINavigation;
     private IUINavigationActions m_UINavigationActionsCallbackInterface;
@@ -1497,6 +2020,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     }
     public OtherActions @Other => new OtherActions(this);
     public interface IPlayerActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+        void OnSubmit(InputAction.CallbackContext context);
+        void OnAction(InputAction.CallbackContext context);
+        void OnSpecial(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
+    }
+    public interface IPlayerTouchActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
