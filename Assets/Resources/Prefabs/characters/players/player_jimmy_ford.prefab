@@ -151,6 +151,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -287,6 +288,7 @@ GameObject:
   - component: {fileID: 4285487697881171478}
   - component: {fileID: 904804546433258722}
   - component: {fileID: 392727030549639336}
+  - component: {fileID: -520744206708962442}
   m_Layer: 0
   m_Name: player_jimmy_ford
   m_TagString: Player
@@ -361,6 +363,9 @@ MonoBehaviour:
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
+  joystick: {fileID: 0}
+  jumpButton: {fileID: 0}
+  shootButton: {fileID: 0}
 --- !u!114 &2546623945084288871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,6 +568,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerState: {fileID: 0}
   playerCanBeKnockedDown: 1
+--- !u!114 &-520744206708962442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361230629192624495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfd0ad57a2649f44901c938903376e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4704057943004090548
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,6 +625,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -640,7 +658,7 @@ SpriteRenderer:
   m_Size: {x: 1.14, y: 0.78}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5952285497870594516
@@ -699,6 +717,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

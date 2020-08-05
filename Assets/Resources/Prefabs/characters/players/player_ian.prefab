@@ -144,6 +144,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -176,7 +177,7 @@ SpriteRenderer:
   m_Size: {x: 1.14, y: 0.78}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1749738142947667286
@@ -235,6 +236,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -429,6 +431,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -564,6 +567,7 @@ GameObject:
   - component: {fileID: 8573517598615954009}
   - component: {fileID: 8190791902532098708}
   - component: {fileID: -3153344981158664087}
+  - component: {fileID: -1374223972780849921}
   m_Layer: 0
   m_Name: player_ian
   m_TagString: Player
@@ -638,6 +642,9 @@ MonoBehaviour:
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
+  joystick: {fileID: 0}
+  jumpButton: {fileID: 0}
+  shootButton: {fileID: 0}
 --- !u!114 &7603757813458887653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,6 +833,18 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
+--- !u!114 &-1374223972780849921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6356414735398319597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfd0ad57a2649f44901c938903376e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1937593907
 PrefabInstance:
   m_ObjectHideFlags: 0

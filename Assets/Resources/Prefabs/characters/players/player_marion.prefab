@@ -245,6 +245,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -342,6 +343,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -374,7 +376,7 @@ SpriteRenderer:
   m_Size: {x: 1.14, y: 0.78}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7911843558496966748
@@ -394,6 +396,7 @@ GameObject:
   - component: {fileID: 4828217923288256488}
   - component: {fileID: 4922873770710365989}
   - component: {fileID: 7108422170762171116}
+  - component: {fileID: -1876452271589342293}
   m_Layer: 0
   m_Name: player_marion
   m_TagString: Player
@@ -468,6 +471,9 @@ MonoBehaviour:
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
+  joystick: {fileID: 0}
+  jumpButton: {fileID: 0}
+  shootButton: {fileID: 0}
 --- !u!114 &6665326606686637652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,6 +662,18 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
+--- !u!114 &-1876452271589342293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7911843558496966748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfd0ad57a2649f44901c938903376e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8442964028158472354
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,6 +775,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

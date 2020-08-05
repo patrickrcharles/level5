@@ -94,6 +94,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -398,6 +399,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -512,6 +514,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -544,7 +547,7 @@ SpriteRenderer:
   m_Size: {x: 1.14, y: 0.78}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6914078478174060254
@@ -603,6 +606,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -672,6 +676,7 @@ GameObject:
   - component: {fileID: 4881404290225261413}
   - component: {fileID: 3123467015696178035}
   - component: {fileID: -5082164899743261167}
+  - component: {fileID: -1350563756068352367}
   m_Layer: 0
   m_Name: player_drblood_ghost
   m_TagString: Player
@@ -746,6 +751,9 @@ MonoBehaviour:
   jumpPeakReached: 0
   jumpStartTime: 0
   jumpEndTime: 0
+  joystick: {fileID: 0}
+  jumpButton: {fileID: 0}
+  shootButton: {fileID: 0}
 --- !u!114 &5617727460697569618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,6 +942,18 @@ MonoBehaviour:
   money: 0
   experience: 0
   level: 0
+--- !u!114 &-1350563756068352367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8188476234929711695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfd0ad57a2649f44901c938903376e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2055053093
 PrefabInstance:
   m_ObjectHideFlags: 0
