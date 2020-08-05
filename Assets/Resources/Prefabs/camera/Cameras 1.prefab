@@ -57,10 +57,61 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4701554410959757976}
     m_Modifications:
-    - target: {fileID: 8490084476669714982, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 2595740099295386547, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: m_Name
-      value: camera_perspective_1
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2595740099295386547, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547178909570682275, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547178909570682275, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547178909833754170, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547178909833754170, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8490084475171240616, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eba14f48086321c4293e86628c831ddf,
+        type: 3}
+    - target: {fileID: 8490084475171240616, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 20.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8490084475171240616, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8490084476669714976, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
@@ -120,48 +171,53 @@ PrefabInstance:
     - target: {fileID: 8490084476669714977, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
       propertyPath: m_Depth
-      value: -5
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8490084476669714977, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 12.1
+      propertyPath: far clip plane
+      value: 30
       objectReference: {fileID: 0}
-    - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8490084476669714977, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.5
+      propertyPath: m_HDR
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2595740099295386547, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8490084476669714977, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
+      propertyPath: m_AllowMSAA
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2595740099295386547, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8490084476669714979, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4547178909570682275, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8490084476669714982, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
+      propertyPath: m_Name
+      value: camera_perspective_1
       objectReference: {fileID: 0}
-    - target: {fileID: 4547178909570682275, guid: 38d2f21e4e8fc014891c436554577102,
+    - target: {fileID: 8584076743434228089, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 4547178909833754170, guid: 38d2f21e4e8fc014891c436554577102,
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 8585643949838558025, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4547178909833754170, guid: 38d2f21e4e8fc014891c436554577102,
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 8585759552348431261, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
-      objectReference: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 8585789933039660935, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38d2f21e4e8fc014891c436554577102, type: 3}
 --- !u!4 &8630544203409871350 stripped
@@ -177,10 +233,40 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4701554410959757976}
     m_Modifications:
-    - target: {fileID: 6491205331760337765, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+    - target: {fileID: 6404414236078084830, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
         type: 3}
-      propertyPath: m_Name
-      value: camera_perspective_on_goal
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 6404515003154734788, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 6404654875805569546, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 6406219094924746810, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 6491205331760337762, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: far clip plane
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491205331760337762, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491205331760337762, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_AllowMSAA
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6491205331760337763, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
         type: 3}
@@ -195,7 +281,7 @@ PrefabInstance:
     - target: {fileID: 6491205331760337763, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.49
+      value: -2.6399999
       objectReference: {fileID: 0}
     - target: {fileID: 6491205331760337763, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
         type: 3}
@@ -237,6 +323,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6491205331760337765, guid: 0da3c9695ed44d94a826b8e4f9d2360c,
+        type: 3}
+      propertyPath: m_Name
+      value: camera_perspective_on_goal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0da3c9695ed44d94a826b8e4f9d2360c, type: 3}
 --- !u!4 &4670329607526652110 stripped
@@ -252,25 +343,85 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4701554410959757976}
     m_Modifications:
+    - target: {fileID: 2798632698485606606, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2798632698485606606, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2798632699321201495, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2798632699321201495, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3801276488265002150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 3802807393639292566, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 3802905403963448898, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 3802945696365449816, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
     - target: {fileID: 3905406320181141497, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_Name
       value: camera_orthographic_1
       objectReference: {fileID: 0}
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_Depth
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: far clip plane
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_AllowMSAA
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5452576
+      value: -2.0107574
       objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.64
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.75
+      value: -10.14
       objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
@@ -312,31 +463,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: m_Depth
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2798632698485606606, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2798632698485606606, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2798632699321201495, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2798632699321201495, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
-        type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
-      objectReference: {fileID: 0}
     - target: {fileID: 4452236365985341150, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: CollisionModule.collisionMode
@@ -362,25 +488,70 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4701554410959757976}
     m_Modifications:
-    - target: {fileID: 2857735931704651772, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
-      propertyPath: m_Name
-      value: camera_orthographic_2
+      propertyPath: CollisionModule.collisionMode
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 600510191894259037, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 600510191894259037, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: CollisionModule.collisionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: CollisionModule.maxKillSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691645388968041635, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 2692084703238762131, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 2692232412051595869, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
+    - target: {fileID: 2692272675462704711, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb52b8c424a49a74d9544b72824aeb5b, type: 2}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5452576
+      value: 1.2985077
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.64
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.73
+      value: -10.1
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
@@ -427,35 +598,25 @@ PrefabInstance:
       propertyPath: m_Depth
       value: -5
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 2857735931704651771, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
+      propertyPath: far clip plane
+      value: 30
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191058411204, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 2857735931704651771, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
+      propertyPath: m_HDR
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191894259037, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 2857735931704651771, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
+      propertyPath: m_AllowMSAA
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 600510191894259037, guid: 42e897ad2be267045976cf32e11eee18,
+    - target: {fileID: 2857735931704651772, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
-        type: 3}
-      propertyPath: CollisionModule.collisionMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
-        type: 3}
-      propertyPath: CollisionModule.maxKillSpeed
-      value: 2000
+      propertyPath: m_Name
+      value: camera_orthographic_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42e897ad2be267045976cf32e11eee18, type: 3}

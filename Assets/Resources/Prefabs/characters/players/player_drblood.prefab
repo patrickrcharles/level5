@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275706453887232854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0.25}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1440889072488101908}
@@ -677,7 +677,7 @@ AudioSource:
   m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e70aa8ea9bd5bd44a95dde05c6e1354e, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.503
   m_Pitch: 1
@@ -816,7 +816,7 @@ MonoBehaviour:
   accuracy4pt: 77
   accuracy7pt: 65
   shooterProfilePrefabName: 
-  jumpForce: 5.2
+  jumpForce: 4.6
   speed: 3
   runSpeedHasBall: 3.5
   runSpeed: 4
