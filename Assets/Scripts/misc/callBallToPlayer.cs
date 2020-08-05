@@ -56,7 +56,7 @@ public class CallBallToPlayer : MonoBehaviour
     }
 
 
-    private void pullBallToPlayer()
+    public void pullBallToPlayer()
     {
         //Debug.Log("pullBallToPlayer()");
         Vector3 tempDirection = basketballRigidBody.transform.position;
