@@ -1,14 +1,10 @@
 ﻿
-using System.Collections.Generic;
 using UnityEngine;
 using Mono.Data.Sqlite;
 using System.Data;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
-using UnityEditor;
 using System.Collections;
 
 public class DBConnector : MonoBehaviour

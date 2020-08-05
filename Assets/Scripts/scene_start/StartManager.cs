@@ -1,13 +1,8 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-//using TeamUtility.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -198,7 +193,7 @@ public class StartManager : MonoBehaviour
         
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
+        //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
         // if player highlighted, display player
         if (currentHighlightedButton.Equals(playerSelectButtonName))
@@ -577,7 +572,7 @@ public class StartManager : MonoBehaviour
 
     private void changeSelectedPlayerUp()
     {
-        Debug.Log("changeSelectedPlayerUp");
+        //Debug.Log("changeSelectedPlayerUp");
         // if default index (first in list), go to end of list
         if (playerSelectedIndex == 0)
         {
@@ -594,7 +589,7 @@ public class StartManager : MonoBehaviour
     }
     private void changeSelectedPlayerDown()
     {
-        Debug.Log("changeSelectedPlayerDown");
+        //Debug.Log("changeSelectedPlayerDown");
         // if default index (first in list
         if (playerSelectedIndex == playerSelectedData.Count - 1)
         {

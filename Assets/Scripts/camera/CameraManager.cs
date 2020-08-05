@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,15 +53,6 @@ public class CameraManager : MonoBehaviour
             locked = true;
             switchCamera();
         }
-        //if (GetKey(KeyCode.LeftShift) && GetKeyDown(KeyCode.Alpha4) && !locked)
-        //{
-        //    CameraOnGoalAllowed = !CameraOnGoalAllowed;
-
-        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    messageText.text = "camera view on goal = " + CameraOnGoalAllowed;
-        //    // turn off text display after 5 seconds
-        //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
-        //}
     }
 
     void setDefaultCamera()

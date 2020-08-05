@@ -5,10 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
-
-
 public class BasketBall : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
@@ -153,36 +149,34 @@ public class BasketBall : MonoBehaviour
             }
         }
 
-        // if has ball, is in air, and pressed shoot button.
-        if (playerState.inAir
-            && playerState.hasBasketball
-            //&& InputManager.GetButtonDown("Fire1")
-            && GameLevelManager.Instance.Controls.Player.shoot.triggered
-            //&& playerState.jumpPeakReached
-            && !playerState.IsSetShooter)
-        //&& !basketBallState.Locked)
-        {
-            CallBallToPlayer.instance.Locked = true;
-            basketBallState.Locked = true;
-            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.Shotmeter.MeterEnded = true;
-            shootBasketBall();
-        }
+        //// if has ball, is in air, and pressed shoot button.
+        //if (playerState.inAir
+        //    && playerState.hasBasketball
+        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
+        //    //&& playerState.jumpPeakReached
+        //    && !playerState.IsSetShooter)
+        ////&& !basketBallState.Locked)
+        //{
+        //    CallBallToPlayer.instance.Locked = true;
+        //    basketBallState.Locked = true;
+        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+        //    playerState.Shotmeter.MeterEnded = true;
+        //    shootBasketBall();
+        //}
 
-        // if has ball, is in air, and pressed shoot button.
-        if (!playerState.inAir
-            && playerState.hasBasketball
-            //&& InputManager.GetButtonDown("Fire1")
-            && GameLevelManager.Instance.Controls.Player.shoot.triggered
-            //&& InputManager.GetButtonDown("Jump")
-            //&& playerState.jumpPeakReached
-            && playerState.IsSetShooter)
-        {
-            basketBallState.Locked = true;
-            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.Shotmeter.MeterEnded = true;
-            shootBasketBall();
-        }
+        //// if has ball, is in air, and pressed shoot button.
+        //if (!playerState.inAir
+        //    && playerState.hasBasketball
+        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
+        //    //&& InputManager.GetButtonDown("Jump")
+        //    //&& playerState.jumpPeakReached
+        //    && playerState.IsSetShooter)
+        //{
+        //    basketBallState.Locked = true;
+        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+        //    playerState.Shotmeter.MeterEnded = true;
+        //    shootBasketBall();
+        //}
     }
 
     private void updateShooterProfileText()
@@ -290,7 +284,7 @@ public class BasketBall : MonoBehaviour
 
     // =================================== shoot ball function =======================================
 
-    private void shootBasketBall()
+    public void shootBasketBall()
     {
         //Debug.Log("shootBasketBall()");
         // mostly prevent multiple inputs (button presses)
@@ -464,6 +458,8 @@ public class BasketBall : MonoBehaviour
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
+
+        playerState.hasBasketball = false;
         //Debug.Log("Launch ----------- finish()");
     }
 
