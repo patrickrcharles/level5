@@ -29,7 +29,7 @@ public class VehicleController : MonoBehaviour
 
 
     public bool facingRight;
-    Transform bballRimVector;
+    Vector3 bballRimVector;
     public float relativePositioning;
 
 
@@ -41,13 +41,13 @@ public class VehicleController : MonoBehaviour
         navMeshAgent.updateRotation = false;
         navMeshAgent.speed = vehicleSpeed;
 
-        bballRimVector = GameObject.Find("rim").transform;
+        bballRimVector = GameLevelManager.Instance.BasketballRimVector;
 
         animator = GetComponentInChildren<Animator>();
         rigidbody = GetComponent<Rigidbody>();
 
         // where is vehicle spawned in relation to rim
-        relativePositioning = bballRimVector.transform.position.x - gameObject.transform.position.x;
+        relativePositioning = bballRimVector.x - gameObject.transform.position.x;
 
         // determine which way Gameobject is facing
         if(transform.localScale.x > 0)

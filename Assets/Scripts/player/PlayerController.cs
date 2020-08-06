@@ -103,22 +103,20 @@ public class PlayerController : MonoBehaviour
         moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        basketball = GameObject.FindWithTag("basketball").GetComponent<BasketBall>();
+        basketball = GameLevelManager.Instance.Basketball;
         shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
-        Shotmeter = GameObject.FindWithTag("shot_meter").GetComponent<ShotMeter>();
-
+        Shotmeter = GetComponentInChildren<ShotMeter>();
         joystick = FindObjectOfType<Joystick>();
 
         // bball rim vector, used for relative positioning
-        bballRimVector = GameObject.Find("rim").transform.position;
+        bballRimVector = GameLevelManager.Instance.BasketballRimVector;
 
-        // #note used for testing scenes
-        if (GameOptions.gameModeHasBeenSelected)
-        {
-            //Debug.Log(" set shoot profile");
-            setShooterProfileStats();
-        }
+        //// #note used for testing scenes
+        //if (GameOptions.gameModeHasBeenSelected)
+        //{
+        //    setShooterProfileStats();
+        //}
 
         //Debug.Log(" initial shooter profile stats =====================================================================================");
         //printShooterProfileStats();
@@ -127,7 +125,6 @@ public class PlayerController : MonoBehaviour
         facingRight = true;
         canMove = true;
         movementSpeed = shooterProfile.Speed;
-
         runningToggle = true;
 
 
@@ -142,7 +139,6 @@ public class PlayerController : MonoBehaviour
         {
 
             // touch controls variables -----------------------------------------------------------------------
-
             movementHorizontal = joystick.Horizontal;
             movementVertical = joystick.Vertical;
             movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
@@ -154,7 +150,6 @@ public class PlayerController : MonoBehaviour
             //movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
 
             //-----------------------------------------------------------------------------------------------------
-
             rigidBody.MovePosition(transform.position + movement);
             isWalking(movement);
         }
@@ -164,7 +159,6 @@ public class PlayerController : MonoBehaviour
     public void TouchControlJump()
     {
         if (grounded && !KnockedDown)
-        //&& !isSetShooter))
         {
             playerJump();
         }
@@ -204,13 +198,11 @@ public class PlayerController : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
-
-
+        // knocked down
         if ((KnockedDown || KnockedDown_Alternate1) && !locked)
         {
             locked = true;
             rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-
             // if alternate knockdown animation
             if (KnockedDown_Alternate1)
             {
@@ -221,6 +213,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(PlayerKnockedDown("knockedDown"));
             }
         }
+        // avoid knockdown
         if (AvoidedKnockDown && !locked)
         {
             //Debug.Log("        if (AvoidedKnockDown && !locked)");
@@ -233,16 +226,17 @@ public class PlayerController : MonoBehaviour
         }
 
         // keep drop shadow on ground at all times
-        // dont like having hard code values. add variables
         if (grounded)
-        {
-            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y + 0.02f,
-                transform.root.position.z);
-        }
-        else
         {
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
                 transform.root.position.z);
+        }
+        if (!grounded) // player in air
+        {
+            //dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y,
+            //    transform.root.position.z);
+            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
+            transform.root.position.z);
         }
 
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
@@ -252,7 +246,7 @@ public class PlayerController : MonoBehaviour
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
 
-        playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
+        //playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
         if (/*InputManager.GetButton("Run")*/
@@ -273,14 +267,14 @@ public class PlayerController : MonoBehaviour
         }
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        if (rigidBodyYVelocity > 0 && inAir)
-        {
-            jumpPeakReached = true;
-        }
-        else
-        {
-            jumpPeakReached = false;
-        }
+        //if (rigidBodyYVelocity > 0 && inAir)
+        //{
+        //    jumpPeakReached = true;
+        //}
+        //else
+        //{
+        //    jumpPeakReached = false;
+        //}
 
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
@@ -334,10 +328,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ jump -----------------------------------
-        if (//(InputManager.GetButtonDown("Jump")
-            GameLevelManager.Instance.Controls.Player.jump.triggered
+        if (GameLevelManager.Instance.Controls.Player.jump.triggered
             && !GameLevelManager.Instance.Controls.Player.shoot.triggered
-            //&& !(InputManager.GetButtonDown("Fire1"))
             && grounded
             && !KnockedDown)
         //&& !isSetShooter))
@@ -355,13 +347,11 @@ public class PlayerController : MonoBehaviour
         //        playerJump();
         //    }
 
-
         //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
         if (inAir
             && hasBasketball
             && GameLevelManager.Instance.Controls.Player.shoot.triggered
-            //&& playerState.jumpPeakReached
             && !IsSetShooter)
         //&& !basketBallState.Locked)
         {
@@ -376,8 +366,6 @@ public class PlayerController : MonoBehaviour
         if (!inAir
             && hasBasketball
             && GameLevelManager.Instance.Controls.Player.shoot.triggered
-            //&& InputManager.GetButtonDown("Jump")
-            //&& playerState.jumpPeakReached
             && IsSetShooter)
         {
             basketball.BasketBallState.Locked = true;
@@ -389,11 +377,9 @@ public class PlayerController : MonoBehaviour
 
         //------------------ special -----------------------------------
         if (GameLevelManager.Instance.Controls.Player.special.triggered
-            //(InputManager.GetKeyDown(KeyCode.G) || InputManager.GetButtonDown("Fire3"))
             && !inAir
             && grounded
             && !KnockedDown)
-        //&& !isSetShooter))
         {
             playerSpecial();
         }

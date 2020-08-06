@@ -38,9 +38,8 @@ public class ShotMeter : MonoBehaviour
         shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
-        sliderValueOnPress = GameObject.Find(sliderValueOnPressName).GetComponent<Text>();
+        sliderValueOnPress = transform.Find(sliderValueOnPressName).GetComponent<Text>();
     }
-
 
     // Update is called once per frame
     void Update()

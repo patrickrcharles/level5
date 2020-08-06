@@ -33,7 +33,6 @@ public class BasketBall : MonoBehaviour
     //GameObject shootProfileObject;
     Text shootProfileText;
 
-
     [Range(20f, 70f)] public float _angle;
 
     float releaseVelocityY;

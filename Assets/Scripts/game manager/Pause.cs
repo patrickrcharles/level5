@@ -32,24 +32,21 @@ public class Pause : MonoBehaviour
     void Awake()
     {
         instance = this;
-        fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
-
-        loadSceneText = GameObject.Find("load_scene").GetComponent<Text>();
-        loadStartScreenText = GameObject.Find("load_start").GetComponent<Text>();
-        quitGameText = GameObject.Find("quit_game").GetComponent<Text>();
-
-        loadSceneButton = GameObject.Find("load_scene").GetComponent<Button>();
-        loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
-        quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
-
-        controlsObject = GameObject.Find("controls");
+        //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
+        fadeTexture = gameObject.transform.Find("fade_texture").GetComponent<Image>();
+        loadSceneText = gameObject.transform.Find("load_scene").GetComponent<Text>();
+        loadStartScreenText = gameObject.transform.Find("load_start").GetComponent<Text>();
+        quitGameText = gameObject.transform.Find("quit_game").GetComponent<Text>();
+        loadSceneButton = gameObject.transform.Find("load_scene").GetComponent<Button>();
+        loadStartScreenButton = gameObject.transform.Find("load_start").GetComponent<Button>();
+        quitGameButton = gameObject.transform.Find("quit_game").GetComponent<Button>();
+        controlsObject = gameObject.transform.Find("controls").gameObject;
 
         if(controlsObject != null)
         {
             controlsObject.SetActive(false);
         }
-
-       
+ 
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -96,12 +93,15 @@ public class Pause : MonoBehaviour
         // if paused, show pause menu
         if (paused)
         {
+            //EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
+
             // check for some button not selected
             //*this is a hack but it works patch for v3.0.1 : clicking mouse causing game to crash
             if (EventSystem.current.currentSelectedGameObject == null)
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
             }
+
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
             currentHighlightedButton.GetComponent<Button>().Select();
             currentHighlightedButton.GetComponent<Button>().OnSelect(null);
@@ -143,7 +143,8 @@ public class Pause : MonoBehaviour
                 }
 
                 // start screen should be first scene in build
-                SceneManager.LoadScene("level_00_start");
+                //SceneManager.LoadScene("level_00_start");
+                SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
@@ -165,7 +166,6 @@ public class Pause : MonoBehaviour
     {
         //set time played to stopped
         GameRules.instance.setTimePlayed();
-
         // save free play stats
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
         // update all time stats

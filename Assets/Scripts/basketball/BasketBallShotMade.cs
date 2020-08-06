@@ -68,7 +68,6 @@ public class BasketBallShotMade : MonoBehaviour
             if (isColliding) return;
             else { isColliding = true; }
 
-
             audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
             // add to total shot distance made total
