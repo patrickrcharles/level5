@@ -67,6 +67,11 @@ PrefabInstance:
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
       objectReference: {fileID: 0}
+    - target: {fileID: 2793998615881215487, guid: 38d2f21e4e8fc014891c436554577102,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2798387501960210689, guid: 38d2f21e4e8fc014891c436554577102,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -408,10 +413,15 @@ PrefabInstance:
       propertyPath: m_AllowMSAA
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3905406320181141502, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: near clip plane
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.0107574
+      value: 2.4900055
       objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
@@ -421,7 +431,7 @@ PrefabInstance:
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.14
+      value: -7.8000007
       objectReference: {fileID: 0}
     - target: {fileID: 3905406320181141503, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
         type: 3}
@@ -473,6 +483,11 @@ PrefabInstance:
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
       objectReference: {fileID: 0}
+    - target: {fileID: 4542487484320491666, guid: 39d7ea9cdf2d31c48ac40eb4394c071c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39d7ea9cdf2d31c48ac40eb4394c071c, type: 3}
 --- !u!4 &3308360149654473583 stripped
@@ -508,6 +523,11 @@ PrefabInstance:
       propertyPath: CollisionModule.maxKillSpeed
       value: 2000
       objectReference: {fileID: 0}
+    - target: {fileID: 1263792985297405185, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1390002772698280781, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: CollisionModule.collisionMode
@@ -541,7 +561,7 @@ PrefabInstance:
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2985077
+      value: 3.6982727
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
@@ -551,7 +571,7 @@ PrefabInstance:
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.1
+      value: -7.9
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651770, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
@@ -612,6 +632,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AllowMSAA
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857735931704651771, guid: 42e897ad2be267045976cf32e11eee18,
+        type: 3}
+      propertyPath: near clip plane
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2857735931704651772, guid: 42e897ad2be267045976cf32e11eee18,
         type: 3}
