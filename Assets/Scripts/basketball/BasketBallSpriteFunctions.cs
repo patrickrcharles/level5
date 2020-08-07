@@ -16,7 +16,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
+        if (GameLevelManager.Instance.Basketball != null)
+        {
+            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
+        }
+
         // get attack box reference
         if (gameObject.transform.Find(attackBoxText) != null)
         {
