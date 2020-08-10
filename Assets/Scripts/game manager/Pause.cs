@@ -53,8 +53,10 @@ public class Pause : MonoBehaviour
             setBackgroundFade(false);
             setPauseScreen(false);
         }
+        EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
         // init current button
         currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
+        //disable joystick if active
     }
 
     // Update is called once per frame
@@ -93,7 +95,7 @@ public class Pause : MonoBehaviour
         // if paused, show pause menu
         if (paused)
         {
-            //EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
+            EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
 
             // check for some button not selected
             //*this is a hack but it works patch for v3.0.1 : clicking mouse causing game to crash
@@ -112,54 +114,68 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && (GameLevelManager.Instance.Controls.Player.submit.triggered
                     || GameLevelManager.Instance.Controls.Player.jump.triggered))
-                    //|| InputManager.GetButtonDown("Fire1")))
+            //|| InputManager.GetButtonDown("Fire1")))
             {
-
-                // update all time stats
-                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
-                {
-                    updateFreePlayStats();
-                    //make sure new high scores (if any) are loaded
-                    PlayerData.instance.loadStatsFromDatabase();
-                }
-                // check if game still paused. on reload, game should be active
-                if (paused)
-                {
-                    TogglePause();
-                }
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                reloadScene();
             }
 
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && (GameLevelManager.Instance.Controls.Player.submit.triggered
                     || GameLevelManager.Instance.Controls.Player.jump.triggered))
-                //|| InputManager.GetButtonDown("Fire1")))
+            //|| InputManager.GetButtonDown("Fire1")))
             {
-                // update all time stats
-                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free") )
-                {
-                    updateFreePlayStats();
-                }
-
-                // start screen should be first scene in build
-                //SceneManager.LoadScene("level_00_start");
-                SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
+                loadstartScreen();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && (GameLevelManager.Instance.Controls.Player.submit.triggered
                     || GameLevelManager.Instance.Controls.Player.jump.triggered))
-                //|| InputManager.GetButtonDown("Fire1"))
+            //|| InputManager.GetButtonDown("Fire1"))
             {
-                // update all time stats
-                if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
-                {
-                    updateFreePlayStats();
-                }
-                Quit();
+                quit();
             }
         }
+    }
+
+    private void quit()
+    {
+        // update all time stats
+        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        {
+            updateFreePlayStats();
+        }
+        Quit();
+    }
+
+    private static void loadstartScreen()
+    {
+        // update all time stats
+        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        {
+            updateFreePlayStats();
+        }
+
+        // start screen should be first scene in build
+        //SceneManager.LoadScene("level_00_start");
+        SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
+    }
+
+    private void reloadScene()
+    {
+        // update all time stats
+        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        {
+            updateFreePlayStats();
+            //make sure new high scores (if any) are loaded
+            PlayerData.instance.loadStatsFromDatabase();
+        }
+        // check if game still paused. on reload, game should be active
+        if (paused)
+        {
+            TogglePause();
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private static void updateFreePlayStats()
@@ -196,6 +212,12 @@ public class Pause : MonoBehaviour
             setPauseScreen(false);
             resumeAllAudio();
 
+            if (GameLevelManager.Instance.JoystickObject != null)
+            {
+                GameLevelManager.Instance.JoystickObject.SetActive(true);
+            }
+
+
             return false;
         }
         else
@@ -207,6 +229,11 @@ public class Pause : MonoBehaviour
             pauseAllAudio();
             setBackgroundFade(true);
             setPauseScreen(true);
+
+            if (GameLevelManager.Instance.JoystickObject != null)
+            {
+                GameLevelManager.Instance.JoystickObject.SetActive(false);
+            }
 
             return true;
         }

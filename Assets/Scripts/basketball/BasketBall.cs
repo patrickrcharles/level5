@@ -138,15 +138,22 @@ public class BasketBall : MonoBehaviour
             transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
-            // if grounded
-            if (playerState.grounded)
-            {
+            //// if grounded
+            //if (playerState.grounded)
+            //{
+            //    spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+            //    dropShadow.SetActive(false);
+            //    playerState.setPlayerAnim("hasBasketball", true);
+            //    //playerState.setPlayerAnim("walking", false);
+            //    playerState.setPlayerAnim("moonwalking", false);
+            //}
+
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
                 dropShadow.SetActive(false);
                 playerState.setPlayerAnim("hasBasketball", true);
                 //playerState.setPlayerAnim("walking", false);
                 playerState.setPlayerAnim("moonwalking", false);
-            }
+            
         }
 
         //// if has ball, is in air, and pressed shoot button.
@@ -254,6 +261,7 @@ public class BasketBall : MonoBehaviour
             && !basketBallState.Thrown)
         {
             playerState.hasBasketball = true;
+            //playerState.setPlayerAnim("hasBasketball", true);
             basketBallState.Thrown = false;
             //playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
