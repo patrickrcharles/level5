@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     static int currentState;
     static int idleState = Animator.StringToHash("base.idle");
     static int walkState = Animator.StringToHash("base.movement.walk");
-    static int run = Animator.StringToHash("base.movement.moonwalk");
+    static int run = Animator.StringToHash("base.movement.run");
     static int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
     static int bIdle = Animator.StringToHash("base.movement.basketball_idle");
     static int knockedDownState = Animator.StringToHash("base.takeDamage.knockedDown");
@@ -119,8 +119,6 @@ public class PlayerController : MonoBehaviour
         //    setShooterProfileStats();
         //}
 
-        //Debug.Log(" initial shooter profile stats =====================================================================================");
-        //printShooterProfileStats();
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
@@ -128,7 +126,6 @@ public class PlayerController : MonoBehaviour
         movementSpeed = shooterProfile.Speed;
         runningToggle = true;
     }
-
 
     // not affected by framerate
     void FixedUpdate()
@@ -159,6 +156,13 @@ public class PlayerController : MonoBehaviour
             //    movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
 
             //}
+            if (joystick == null)
+            {
+                movementHorizontal = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>().x;
+                movementVertical = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>().y;
+                movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
+            }
+
             //Input Sytem 1.0.0 Touch controls variables-------------------------------------------------------------- -
             //movementHorizontal = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().x;
             //movementVertical = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().y;
@@ -189,12 +193,7 @@ public class PlayerController : MonoBehaviour
             //    }
 
             //}
-            if (joystick == null)
-            {
-                movementHorizontal = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().x;
-                movementVertical = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().y;
-                movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
-            }
+
 
             //-----------------------------------------------------------------------------------------------------
             rigidBody.MovePosition(transform.position + movement);
@@ -213,14 +212,12 @@ public class PlayerController : MonoBehaviour
 
     public void touchControlShoot()
     {
-        //Debug.Log(" shoot clicked");
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
         if (inAir
             && hasBasketball
             && !IsSetShooter)
         {
-            //Debug.Log("     shoot ");
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
             checkIsPlayerFacingGoal(); // turns player facing rim
@@ -235,7 +232,6 @@ public class PlayerController : MonoBehaviour
             && grounded
             && !CallBallToPlayer.instance.Locked)
         {
-            //Debug.Log("     call ball");
             CallBallToPlayer.instance.Locked = true;
             CallBallToPlayer.instance.pullBallToPlayer();
             CallBallToPlayer.instance.Locked = false;
@@ -277,7 +273,6 @@ public class PlayerController : MonoBehaviour
         // avoid knockdown
         if (AvoidedKnockDown && !locked)
         {
-            //Debug.Log("        if (AvoidedKnockDown && !locked)");
             locked = true;
             //rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
@@ -310,13 +305,11 @@ public class PlayerController : MonoBehaviour
         //playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if (/*InputManager.GetButton("Run")*/
-            //GameLevelManager.Instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
-            GameLevelManager.Instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
+        if ((GameLevelManager.Instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
             && canMove
             && !inAir
             && !KnockedDown
-            && !locked)
+            && !locked))
         {
             running = true;
             anim.SetBool("moonwalking", true);
@@ -324,8 +317,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             running = false;
-            anim.SetBool("moonwalking", false);
-            //moonwalkAudio.enabled = false;
         }
 
         //player reaches peak of jump. this will be useful for creating AI with auto shoot
@@ -352,37 +343,27 @@ public class PlayerController : MonoBehaviour
         // set player shoot anim based on position
         if (facingFront) // facing straight toward bball goal
         {
-            //setPlayerAnimTrigger("basketballShootFront");
             setPlayerAnim("basketballFacingFront", true);
         }
         else // side of goal, relative postion
         {
-            // setPlayerAnimTrigger("basketballShoot");
             setPlayerAnim("basketballFacingFront", false);
         }
 
         // ----- control speed based on commands----------
-        if (currentState == idleState
-            || currentState == walkState
-            || currentState == bIdle
+        // idle, walk, walk with ball state
+        if (currentState == idleState || currentState == walkState || currentState == bIdle
             && !inAir
             && !KnockedDown)
         {
-            if (runningToggle || running)
-            {
-                movementSpeed = shooterProfile.RunSpeed;
-            }
-            else
-            {
                 movementSpeed = shooterProfile.Speed;
-            }
         }
-
-        else if (currentState == run)
+        // if run state
+        if (currentState == run ) //|| (runningToggle || running) )
         {
             movementSpeed = shooterProfile.RunSpeed; ;
         }
-
+        // inair state
         if (inAir)
         {
             checkIsPlayerFacingGoal();
@@ -436,7 +417,6 @@ public class PlayerController : MonoBehaviour
             playerShoot();
         }
 
-
         //------------------ special -----------------------------------
         if (GameLevelManager.Instance.Controls.Player.special.triggered
             && !inAir
@@ -481,7 +461,6 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
-        //Debug.Log("playerJump");
         if (!isSetShooter)
         {
             rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
@@ -490,55 +469,39 @@ public class PlayerController : MonoBehaviour
         //jumpStartTime = Time.time;
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;
-        //Debug.Log("jump time: "+ Time.time);
-
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     void isWalking(Vector3 movement)
     {
-        //Debug.Log("walking : knocked down " + KnockedDown);;
-        // if moving/ not holding item. 
+        // if moving
         if (movement.x > 0f || movement.x < 0f || movement.z > 0f || movement.z < 0f)
         {
-            if (!inAir && !running) // dont want walking animation playing while inAir
+            // not in air
+            if (!inAir) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
+                // walking but running toggle is ON
+                if (runningToggle)
+                {
+                    anim.SetBool("moonwalking", true);
+                }
             }
         }
         // not moving
         else
         {
             anim.SetBool("walking", false);
-            //anim.SetBool("moonwalking", false);
+            anim.SetBool("moonwalking", false);
             running = false;
         }
 
-        // if running enabled
-        if ((runningToggle || running) && !inAir && currentState == walkState)
-        {
-            //Debug.Log("if (runningToggle && canMove && !inAir)");
-            if (!hasBasketball)
-            {
-                //anim.SetBool("walking", false);
-                anim.SetBool("moonwalking", true);
-                movementSpeed = shooterProfile.RunSpeed;
-            }
-
-            //if (hasBasketball)
-            //{
-            //    movementSpeed = shooterProfile.RunSpeedHasBall; ;
-            //}
-            //else
-            //{
-            //    movementSpeed = runMovementSpeed;
-            //}
-        }
-
+        // player moving right, not facing right
         if (movement.x > 0 && !facingRight && canMove)
         {
             Flip();
         }
+        // player moving left, and facing right
         if (movement.x < 0f && facingRight && canMove)
         {
             Flip();
@@ -547,7 +510,6 @@ public class PlayerController : MonoBehaviour
 
     void Flip()
     {
-        //Debug.Log("flip");
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
@@ -618,21 +580,6 @@ public class PlayerController : MonoBehaviour
         shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
         shooterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
         shooterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
-    }
-
-    //*** need to update this
-    void printShooterProfileStats()
-    {
-        Debug.Log(shooterProfile.Speed);
-        Debug.Log(shooterProfile.RunSpeed);
-        Debug.Log(shooterProfile.RunSpeed);
-        Debug.Log(shooterProfile.JumpForce);
-        Debug.Log(shooterProfile.CriticalPercent);
-        Debug.Log(shooterProfile.ShootAngle);
-        Debug.Log(shooterProfile.Accuracy2Pt);
-        Debug.Log(shooterProfile.Accuracy3Pt);
-        Debug.Log(shooterProfile.Accuracy4Pt);
-        Debug.Log(shooterProfile.Accuracy7Pt);
     }
 
     public bool grounded
