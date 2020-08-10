@@ -38,6 +38,8 @@ public class GameLevelManager : MonoBehaviour
 
 
     PlayerControls controls;
+    [SerializeField]
+    GameObject joystickObject;
 
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
@@ -100,17 +102,20 @@ public class GameLevelManager : MonoBehaviour
 
     private void Start()
     {
+        joystickObject = GameObject.FindGameObjectWithTag("joystick");
+
         //unlimited
-        QualitySettings.vSyncCount = 0;
+        //QualitySettings.vSyncCount = 0;
 
         //Debug.Log("screen.dpi : " + Screen.dpi);
         //Debug.Log("device model : " + SystemInfo.deviceModel);
         //Debug.Log("device  name: " + SystemInfo.deviceName);
         //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
 
-        //QualitySettings.vSyncCount = 1;
-        //Application.targetFrameRate = 60;
-        //QualitySettings.resolutionScalingFixedDPIFactor = 0.5f;
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
+
+        //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
 
 
         //Debug.Log("quality level : " + QualitySettings.GetQualityLevel());
@@ -203,18 +208,20 @@ public class GameLevelManager : MonoBehaviour
 
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
-
+    public GameObject JoystickObject { get => joystickObject; set => joystickObject = value; }
 
     private void OnEnable()
     {
         controls.Player.Enable();
         controls.UINavigation.Enable();
         controls.Other.Enable();
+        controls.PlayerTouch.Enable();
     }
     private void OnDisable()
     {
         controls.Player.Disable();
         controls.UINavigation.Disable();
         controls.Other.Disable();
+        controls.PlayerTouch.Disable();
     }
 }

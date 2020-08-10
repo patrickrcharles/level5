@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using UnityEngine.EventSystems;
+using Touch = UnityEngine.Touch;
 
 public class PlayerController : MonoBehaviour
 {
@@ -84,11 +84,13 @@ public class PlayerController : MonoBehaviour
 
     // for touch controls
     public Joystick joystick;
-    public Button jumpButton;
-    public Button shootButton;
+    //public Button jumpButton;
+    //public Button shootButton;
 
     float movementHorizontal;
     float movementVertical;
+
+    Touch touch;
 
     //PlayerControls controls;
 
@@ -99,8 +101,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
-        moonwalkAudio = GetComponent<AudioSource>();
+        //moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.Instance.Basketball;
@@ -126,8 +127,6 @@ public class PlayerController : MonoBehaviour
         canMove = true;
         movementSpeed = shooterProfile.Speed;
         runningToggle = true;
-
-
     }
 
 
@@ -137,17 +136,65 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown)
         {
+            //foreach (InputDevice i in GameLevelManager.Instance.Controls.devices)
+            //{
+            //    Debug.Log(i.name);
+            //    Debug.Log(i.description);
+            //    Debug.Log(i.device);
+            //    Debug.Log(i.deviceId);
+            //}
 
             // touch controls variables -----------------------------------------------------------------------
-            movementHorizontal = joystick.Horizontal;
-            movementVertical = joystick.Vertical;
-            movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
-            //Debug.Log("movement : " + movement);
+            if (joystick != null)
+            {
+                movementHorizontal = joystick.Horizontal;
+                movementVertical = joystick.Vertical;
+                movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
+            }
 
             // Input Sytem 1.0.0 controls variables ---------------------------------------------------------------
+            //if (joystick == null)
+            //{
+            //    movementInput = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>();
+            //    movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
 
-            //movementInput = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>();
-            //movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
+            //}
+            //Input Sytem 1.0.0 Touch controls variables-------------------------------------------------------------- -
+            //movementHorizontal = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().x;
+            //movementVertical = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().y;
+
+            //Debug.Log("movementHorizontal " + movementHorizontal);
+            //Debug.Log("movementVertical " + movementVertical);
+            //if (Input.touchCount > 0)
+            //{
+            //    touch = Input.GetTouch(0);
+            //    Debug.Log(touch.phase);
+            //    Debug.Log(touch.deltaPosition.x);
+            //    Debug.Log(touch.deltaPosition.y);
+            //    Debug.Log(touch.position);
+            //    Debug.Log(touch.radius);
+
+            //    if (touch.phase == TouchPhase.Moved)
+            //    {
+            //        Vector3 newPosition = Input.GetTouch(0).position - touch.position;
+            //        //touch.position = Input.GetTouch(0).position;
+
+            //        movement = new Vector3(newPosition.x, 0, newPosition.y) * movementSpeed * Time.deltaTime;
+
+            //        if (touch.phase == TouchPhase.Ended)
+            //        {
+            //            Debug.Log("TouchPhase.Ended ");
+            //            rigidBody.velocity = Vector2.zero;
+            //        }
+            //    }
+
+            //}
+            if (joystick == null)
+            {
+                movementHorizontal = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().x;
+                movementVertical = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().y;
+                movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
+            }
 
             //-----------------------------------------------------------------------------------------------------
             rigidBody.MovePosition(transform.position + movement);
@@ -198,6 +245,20 @@ public class PlayerController : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
+        //if (GameLevelManager.Instance.Controls.PlayerTouch.jump.triggered)
+        //{
+        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //    messageText.text = " touch input jump";
+        //    // turn off text display after 5 seconds
+        //    StartCoroutine(basketball.turnOffMessageLogDisplayAfterSeconds(2));
+        //}
+        //if (GameLevelManager.Instance.Controls.PlayerTouch.shoot.triggered)
+        //{
+        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //    messageText.text = " touch input shoot";
+        //    // turn off text display after 5 seconds
+        //    StartCoroutine(basketball.turnOffMessageLogDisplayAfterSeconds(2));
+        //}
         // knocked down
         if ((KnockedDown || KnockedDown_Alternate1) && !locked)
         {
@@ -263,6 +324,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             running = false;
+            anim.SetBool("moonwalking", false);
             //moonwalkAudio.enabled = false;
         }
 
@@ -419,6 +481,7 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
+        //Debug.Log("playerJump");
         if (!isSetShooter)
         {
             rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
