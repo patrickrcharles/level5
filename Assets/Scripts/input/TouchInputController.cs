@@ -2,7 +2,7 @@
 using UnityEngine;
 using TouchPhase = UnityEngine.TouchPhase;
 
-public class SwipeJump : MonoBehaviour {
+public class TouchInputController : MonoBehaviour {
 
 	private Vector2 startTouchPosition, endTouchPosition;
 	private bool jumpAllowed = false;
