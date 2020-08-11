@@ -269,7 +269,8 @@ public class StartManager : MonoBehaviour
         // left arrow navigation on player options
         if (controls.UINavigation.Left.triggered)
         {
-            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnLeft().gameObject != null)
+            // check if button exists. if no selectable on left, throws null object exception
+            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>().FindSelectableOnLeft() != null)
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                     .GetComponent<Button>().FindSelectableOnLeft().gameObject);
