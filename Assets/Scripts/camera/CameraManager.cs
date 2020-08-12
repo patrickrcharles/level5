@@ -44,9 +44,9 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameLevelManager.Instance.Controls.Other.change.enabled
+        if (GameLevelManager.instance.Controls.Other.change.enabled
             &&
-            GameLevelManager.Instance.Controls.Other.toggle_camera_keyboard.triggered
+            GameLevelManager.instance.Controls.Other.toggle_camera_keyboard.triggered
             && !locked
             && !Pause.instance.Paused)
         {

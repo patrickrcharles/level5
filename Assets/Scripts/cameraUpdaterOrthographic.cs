@@ -29,7 +29,7 @@
 
     void Start()
     {
-        basketBallRim = GameLevelManager.Instance.BasketballRimVector;
+        basketBallRim = GameLevelManager.instance.BasketballRimVector;
 
         cam = GetComponent<Camera>();
         cam.depth = -5;
@@ -41,7 +41,7 @@
 
         cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        player = GameLevelManager.Instance.Player.transform;
+        player = GameLevelManager.instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
        //Debug.Log("camera Y : " + cam.transform.position.y);

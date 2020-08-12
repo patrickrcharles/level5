@@ -196,11 +196,11 @@ public class GameRules : MonoBehaviour
 
 
             // alert game manager. trigger
-            GameLevelManager.Instance.GameOver = true;
+            GameLevelManager.instance.GameOver = true;
         }
 
         // enable moneyball
-        if (GameLevelManager.Instance.Controls.Player.action.triggered)
+        if (GameLevelManager.instance.Controls.Player.action.triggered)
         {
             toggleMoneyBall();
         }

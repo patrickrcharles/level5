@@ -84,7 +84,7 @@ public class cameraUpdater : MonoBehaviour
     void Start()
     {
 
-        basketBallRim = GameLevelManager.Instance.BasketballRimVector;
+        basketBallRim = GameLevelManager.instance.BasketballRimVector;
 
         cam = GetComponent<Camera>();
         //cam.depth = -5;
@@ -98,7 +98,7 @@ public class cameraUpdater : MonoBehaviour
         // will check settings and set intial camera
         setCamera();
 
-        player = GameLevelManager.Instance.Player;
+        player = GameLevelManager.instance.Player;
         //relCameraPos = player.position - transform.position;
 
     }

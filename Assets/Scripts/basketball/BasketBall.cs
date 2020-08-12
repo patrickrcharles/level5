@@ -65,12 +65,12 @@ public class BasketBall : MonoBehaviour
     {
         instance = this;
 
-        player = GameLevelManager.Instance.Player;
-        playerState = GameLevelManager.Instance.PlayerState;
+        player = GameLevelManager.instance.Player;
+        playerState = GameLevelManager.instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
-        basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
-        basketBallState = GameLevelManager.Instance.Basketball.GetComponent<BasketBallState>();
-        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
+        basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
+        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
@@ -131,29 +131,20 @@ public class BasketBall : MonoBehaviour
         //}
 
         //if player has ball and hasnt shot
-        if (playerState.hasBasketball )//&& !basketBallState.Thrown)
+        if (playerState.hasBasketball)//&& !basketBallState.Thrown)
         {
             basketBallState.CanPullBall = false;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+            dropShadow.SetActive(false);
+            playerState.setPlayerAnim("hasBasketball", true);
+            //playerState.setPlayerAnim("walking", false);
+            playerState.setPlayerAnim("moonwalking", false);
+
             // move basketball to launch position and disable sprite
             transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
-            //// if grounded
-            //if (playerState.grounded)
-            //{
-            //    spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-            //    dropShadow.SetActive(false);
-            //    playerState.setPlayerAnim("hasBasketball", true);
-            //    //playerState.setPlayerAnim("walking", false);
-            //    playerState.setPlayerAnim("moonwalking", false);
-            //}
 
-                spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-                dropShadow.SetActive(false);
-                playerState.setPlayerAnim("hasBasketball", true);
-                //playerState.setPlayerAnim("walking", false);
-                playerState.setPlayerAnim("moonwalking", false);
-            
         }
 
         //// if has ball, is in air, and pressed shoot button.

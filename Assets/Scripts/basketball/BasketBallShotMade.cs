@@ -48,7 +48,7 @@ public class BasketBallShotMade : MonoBehaviour
         _basketBallStats = BasketBall.instance.GetComponent<BasketBallStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
-        playerState = GameLevelManager.Instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerState;
 
         // path to money prfab
         moneyClone = Resources.Load(moneyPrefabPath) as GameObject;

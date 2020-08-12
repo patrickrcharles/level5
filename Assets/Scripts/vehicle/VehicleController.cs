@@ -41,7 +41,7 @@ public class VehicleController : MonoBehaviour
         navMeshAgent.updateRotation = false;
         navMeshAgent.speed = vehicleSpeed;
 
-        bballRimVector = GameLevelManager.Instance.BasketballRimVector;
+        bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         animator = GetComponentInChildren<Animator>();
         rigidbody = GetComponent<Rigidbody>();

@@ -14,9 +14,9 @@ public class groundcheck : MonoBehaviour
     // ReSharper disable once UnusedMember.Local
     private void Start()
     {
-        _player = GameLevelManager.Instance.Player;
-        _playerState = GameLevelManager.Instance.PlayerState;
-        basketBallState = GameLevelManager.Instance.Basketball.GetComponent<BasketBallState>();
+        _player = GameLevelManager.instance.Player;
+        _playerState = GameLevelManager.instance.PlayerState;
+        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
     }
 
 

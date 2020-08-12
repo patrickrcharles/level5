@@ -24,8 +24,8 @@ public class CallBallToPlayer : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerState = GameLevelManager.Instance.PlayerState;
-        basketBall = GameLevelManager.Instance.Basketball;
+        playerState = GameLevelManager.instance.PlayerState;
+        basketBall = GameLevelManager.instance.Basketball;
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         Locked = false;
@@ -37,7 +37,7 @@ public class CallBallToPlayer : MonoBehaviour
     private void LateUpdate()
     {
         if (/*InputManager.GetButtonDown("Fire1")*/
-            GameLevelManager.Instance.Controls.Player.shoot.triggered
+            GameLevelManager.instance.Controls.Player.shoot.triggered
             && !playerState.hasBasketball
             && !playerState.inAir
             //&& !_basketBallState.Thrown
