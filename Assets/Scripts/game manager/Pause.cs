@@ -11,16 +11,20 @@ public class Pause : MonoBehaviour
     private bool paused;
 
     //fade texture to obscure background
+    [SerializeField]
     private Image fadeTexture;
 
     // ui text
+    [SerializeField]
     private Text loadSceneText;
     private Text loadStartScreenText;
+    private Text cancelMenuText;
     private Text quitGameText;
 
     //ui buttons
     private Button loadSceneButton;
     private Button loadStartScreenButton;
+    private Button cancelMenuButton;
     private Button quitGameButton;
     private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
@@ -33,14 +37,17 @@ public class Pause : MonoBehaviour
     {
         instance = this;
         //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
-        fadeTexture = gameObject.transform.Find("fade_texture").GetComponent<Image>();
-        loadSceneText = gameObject.transform.Find("load_scene").GetComponent<Text>();
-        loadStartScreenText = gameObject.transform.Find("load_start").GetComponent<Text>();
-        quitGameText = gameObject.transform.Find("quit_game").GetComponent<Text>();
-        loadSceneButton = gameObject.transform.Find("load_scene").GetComponent<Button>();
-        loadStartScreenButton = gameObject.transform.Find("load_start").GetComponent<Button>();
-        quitGameButton = gameObject.transform.Find("quit_game").GetComponent<Button>();
-        controlsObject = gameObject.transform.Find("controls").gameObject;
+        fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
+        loadSceneText = GameObject.Find("load_scene").GetComponent<Text>();
+        cancelMenuText = GameObject.Find("cancel_menu").GetComponent<Text>();
+        loadStartScreenText = GameObject.Find("load_start").GetComponent<Text>();
+        quitGameText = GameObject.Find("quit_game").GetComponent<Text>();
+
+        loadSceneButton = GameObject.Find("load_scene").GetComponent<Button>();
+        loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
+        cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
+        quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
+        controlsObject = GameObject.Find("controls").gameObject;
 
         if(controlsObject != null)
         {
@@ -62,11 +69,12 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("Update()" );
         //pause ESC, submit, cancel
-        if (GameLevelManager.Instance.Controls.Player.submit.triggered
-            || GameLevelManager.Instance.Controls.Player.cancel.triggered
+        if (GameLevelManager.instance.Controls.Player.submit.triggered
+            || GameLevelManager.instance.Controls.Player.cancel.triggered
             //|| GameLevelManager.Instance.Controls.Player.esc.triggered
-            && !GameLevelManager.Instance.GameOver)
+            && !GameLevelManager.instance.GameOver)
         {
             paused = TogglePause();
         }
@@ -82,6 +90,7 @@ public class Pause : MonoBehaviour
          */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
+            Debug.Log("pause check");
             TogglePause();
         }
         //==========================================================
@@ -112,8 +121,8 @@ public class Pause : MonoBehaviour
 
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
-                && (GameLevelManager.Instance.Controls.Player.submit.triggered
-                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
+                && (GameLevelManager.instance.Controls.Player.submit.triggered
+                    || GameLevelManager.instance.Controls.Player.jump.triggered))
             //|| InputManager.GetButtonDown("Fire1")))
             {
                 reloadScene();
@@ -121,16 +130,16 @@ public class Pause : MonoBehaviour
 
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && (GameLevelManager.Instance.Controls.Player.submit.triggered
-                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
+                && (GameLevelManager.instance.Controls.Player.submit.triggered
+                    || GameLevelManager.instance.Controls.Player.jump.triggered))
             //|| InputManager.GetButtonDown("Fire1")))
             {
                 loadstartScreen();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && (GameLevelManager.Instance.Controls.Player.submit.triggered
-                    || GameLevelManager.Instance.Controls.Player.jump.triggered))
+                && (GameLevelManager.instance.Controls.Player.submit.triggered
+                    || GameLevelManager.instance.Controls.Player.jump.triggered))
             //|| InputManager.GetButtonDown("Fire1"))
             {
                 quit();
@@ -194,9 +203,11 @@ public class Pause : MonoBehaviour
         loadSceneText.enabled = value;
         loadStartScreenText.enabled = value;
         quitGameText.enabled = value;
+        cancelMenuText.enabled = value;
 
         loadSceneButton.enabled = value;
         loadStartScreenButton.enabled = value;
+        cancelMenuButton.enabled = value;
         quitGameButton.enabled = value;
         controlsObject.SetActive(value);
     }
@@ -212,17 +223,16 @@ public class Pause : MonoBehaviour
             setPauseScreen(false);
             resumeAllAudio();
 
-            if (GameLevelManager.Instance.JoystickObject != null)
+            if (GameLevelManager.instance.Joystick != null)
             {
-                GameLevelManager.Instance.JoystickObject.SetActive(true);
+                GameLevelManager.instance.Joystick.enabled = true;
             }
-
-
+            Debug.Log("paused : " + paused);
+            Debug.Log("Time.timeScale : " + Time.timeScale);
             return false;
         }
         else
         {
-
             //gameManager.instance.backgroundFade.SetActive(true);
             paused = true;
             Time.timeScale = 0f;
@@ -230,11 +240,12 @@ public class Pause : MonoBehaviour
             setBackgroundFade(true);
             setPauseScreen(true);
 
-            if (GameLevelManager.Instance.JoystickObject != null)
+            if (GameLevelManager.instance.Joystick != null)
             {
-                GameLevelManager.Instance.JoystickObject.SetActive(false);
+                GameLevelManager.instance.Joystick.enabled = false;
             }
-
+            Debug.Log("paused : " + paused);
+            Debug.Log("Time.timeScale : " + Time.timeScale);
             return true;
         }
     }
