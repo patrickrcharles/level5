@@ -39,17 +39,43 @@ public class GameLevelManager : MonoBehaviour
 
     PlayerControls controls;
     [SerializeField]
-    GameObject joystickObject;
+    FloatingJoystick joystick;
 
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
-    public static GameLevelManager Instance;
+    public static GameLevelManager instance;
 
     private void Awake()
     {
         // initialize game manger player references
-        Instance = this;
+        instance = this;
+        //DontDestroyOnLoad(gameObject);
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
+
+        //ui touch controls
+        if (GameObject.FindGameObjectWithTag("joystick") != null)
+        {
+            Debug.Log("GM joystick found");
+            joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
+            Debug.Log("GM joystick active: " + joystick.enabled);
+        }
+
+        // mapped controls
         controls = new PlayerControls();
+        ////ui touch controls
+        //if (GameObject.FindGameObjectWithTag("joystick") != null)
+        //{
+        //    Debug.Log("GM joystick found");
+        //    joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
+        //    Debug.Log("GM joystick active: "+ joystick.enabled);
+        //}
 
         // if player selected is not null / player not selected
         if (!string.IsNullOrEmpty( GameOptions.playerObjectName)){
@@ -98,22 +124,22 @@ public class GameLevelManager : MonoBehaviour
         BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = BasketballObject.GetComponent<BasketBall>();
         BasketballRimVector = GameObject.Find("rim").transform.position;
+
     }
 
     private void Start()
     {
-        joystickObject = GameObject.FindGameObjectWithTag("joystick");
 
         //unlimited
-        //QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 0;
 
         //Debug.Log("screen.dpi : " + Screen.dpi);
         //Debug.Log("device model : " + SystemInfo.deviceModel);
         //Debug.Log("device  name: " + SystemInfo.deviceName);
         //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
 
-        QualitySettings.vSyncCount = 1;
-        Application.targetFrameRate = 60;
+        //QualitySettings.vSyncCount = 1;
+        //Application.targetFrameRate = 60;
 
         //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
 
@@ -166,7 +192,6 @@ public class GameLevelManager : MonoBehaviour
 
     private void Update()
     {
-
         //turn on : toggle run
         if (Controls.Other.change.enabled
             && Controls.Other.toggle_run_keyboard.triggered
@@ -208,7 +233,7 @@ public class GameLevelManager : MonoBehaviour
 
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
-    public GameObject JoystickObject { get => joystickObject; set => joystickObject = value; }
+    public FloatingJoystick Joystick { get => joystick;  }
 
     private void OnEnable()
     {

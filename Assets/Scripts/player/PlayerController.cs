@@ -52,10 +52,6 @@ public class PlayerController : MonoBehaviour
     static int bIdle = Animator.StringToHash("base.movement.basketball_idle");
     static int knockedDownState = Animator.StringToHash("base.takeDamage.knockedDown");
 
-    //controller axis
-    [SerializeField]
-    bool triggerLeftAxisInUse, triggerRightAxisInUse;
-
     // get/set for following at bottom of class
     private bool _facingRight;
     private bool _facingFront;
@@ -83,7 +79,7 @@ public class PlayerController : MonoBehaviour
     Vector3 movement;
 
     // for touch controls
-    public Joystick joystick;
+    //public FloatingJoystick joystick;
     //public Button jumpButton;
     //public Button shootButton;
 
@@ -96,22 +92,30 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        //controls = new PlayerControls();
+        //joystick = GameLevelManager.instance.Joystick;
+        //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
+        ////controls = new PlayerControls();
+        //Debug.Log("joystick found   active: " + joystick.enabled);
     }
 
     void Start()
     {
+        //joystick = GameLevelManager.instance.Joystick;
+        //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
+        ////controls = new PlayerControls();
+        //Debug.Log("joystick found   active: " + joystick.enabled);
+
         //moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        basketball = GameLevelManager.Instance.Basketball;
+        basketball = GameLevelManager.instance.Basketball;
         shooterProfile = GetComponent<ShooterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
-        joystick = FindObjectOfType<Joystick>();
+        //joystick = GameLevelManager.instance.Joystick;
 
         // bball rim vector, used for relative positioning
-        bballRimVector = GameLevelManager.Instance.BasketballRimVector;
+        bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         //// #note used for testing scenes
         //if (GameOptions.gameModeHasBeenSelected)
@@ -133,19 +137,11 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown)
         {
-            //foreach (InputDevice i in GameLevelManager.Instance.Controls.devices)
-            //{
-            //    Debug.Log(i.name);
-            //    Debug.Log(i.description);
-            //    Debug.Log(i.device);
-            //    Debug.Log(i.deviceId);
-            //}
-
             // touch controls variables -----------------------------------------------------------------------
-            if (joystick != null)
+            if (GameLevelManager.instance.Joystick != null)
             {
-                movementHorizontal = joystick.Horizontal;
-                movementVertical = joystick.Vertical;
+                movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
+                movementVertical = GameLevelManager.instance.Joystick.Vertical;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
             }
 
@@ -156,10 +152,10 @@ public class PlayerController : MonoBehaviour
             //    movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
 
             //}
-            if (joystick == null)
+            if (GameLevelManager.instance.Joystick == null)
             {
-                movementHorizontal = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>().x;
-                movementVertical = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>().y;
+                movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
+                movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
             }
 
@@ -305,7 +301,7 @@ public class PlayerController : MonoBehaviour
         //playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ((GameLevelManager.Instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
+        if ((GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
             && canMove
             && !inAir
             && !KnockedDown
@@ -371,8 +367,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ jump -----------------------------------
-        if (GameLevelManager.Instance.Controls.Player.jump.triggered
-            && !GameLevelManager.Instance.Controls.Player.shoot.triggered
+        if (GameLevelManager.instance.Controls.Player.jump.triggered
+            && !GameLevelManager.instance.Controls.Player.shoot.triggered
             && grounded
             && !KnockedDown)
         //&& !isSetShooter))
@@ -394,7 +390,7 @@ public class PlayerController : MonoBehaviour
         // if has ball, is in air, and pressed shoot button.
         if (inAir
             && hasBasketball
-            && GameLevelManager.Instance.Controls.Player.shoot.triggered
+            && GameLevelManager.instance.Controls.Player.shoot.triggered
             && !IsSetShooter)
         //&& !basketBallState.Locked)
         {
@@ -408,7 +404,7 @@ public class PlayerController : MonoBehaviour
         // if has ball, is in air, and pressed shoot button.
         if (!inAir
             && hasBasketball
-            && GameLevelManager.Instance.Controls.Player.shoot.triggered
+            && GameLevelManager.instance.Controls.Player.shoot.triggered
             && IsSetShooter)
         {
             basketball.BasketBallState.Locked = true;
@@ -418,7 +414,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //------------------ special -----------------------------------
-        if (GameLevelManager.Instance.Controls.Player.special.triggered
+        if (GameLevelManager.instance.Controls.Player.special.triggered
             && !inAir
             && grounded
             && !KnockedDown)
