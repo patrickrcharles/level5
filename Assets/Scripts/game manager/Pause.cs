@@ -104,7 +104,7 @@ public class Pause : MonoBehaviour
         // if paused, show pause menu
         if (paused)
         {
-            EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
+            //EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
 
             // check for some button not selected
             //*this is a hack but it works patch for v3.0.1 : clicking mouse causing game to crash
