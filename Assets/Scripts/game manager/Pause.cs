@@ -149,6 +149,7 @@ public class Pause : MonoBehaviour
 
     public void quit()
     {
+        Debug.Log("quit");
         // update all time stats
         if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
         {
@@ -157,7 +158,7 @@ public class Pause : MonoBehaviour
         Quit();
     }
 
-    public static void loadstartScreen()
+    public void loadstartScreen()
     {
         // update all time stats
         if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
@@ -166,8 +167,8 @@ public class Pause : MonoBehaviour
         }
 
         // start screen should be first scene in build
-        //SceneManager.LoadScene("level_00_start");
-        SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
+        SceneManager.LoadScene("level_00_start");
+        //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
     }
 
     public void reloadScene()
@@ -214,6 +215,7 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
+        Debug.Log("togglePause()");
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
@@ -262,8 +264,12 @@ public class Pause : MonoBehaviour
 
     public bool Paused
     {
-        get => paused;
+        get => paused; set => paused = value;
     }
+    public Button LoadSceneButton { get => loadSceneButton; set => loadSceneButton = value; }
+    public Button LoadStartScreenButton { get => loadStartScreenButton; set => loadStartScreenButton = value; }
+    public Button CancelMenuButton { get => cancelMenuButton; set => cancelMenuButton = value; }
+    public Button QuitGameButton { get => quitGameButton; set => quitGameButton = value; }
 
     private string getCurrentSceneName()
     {

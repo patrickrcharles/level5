@@ -47,7 +47,7 @@ public class TouchInputController : MonoBehaviour
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
                 GameLevelManager.instance.PlayerState.touchControlShoot();
@@ -56,7 +56,7 @@ public class TouchInputController : MonoBehaviour
 
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
-            if (Input.GetTouch(0).phase == TouchPhase.Moved // finger moving
+            if (touch.phase == TouchPhase.Moved // finger moving
                 && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe up
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
@@ -73,7 +73,7 @@ public class TouchInputController : MonoBehaviour
             }
         }
 
-        // if paused check for swipes
+        // if paused
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -100,6 +100,27 @@ public class TouchInputController : MonoBehaviour
                 //        i++;
                 //    }
                 //}
+            }
+            if (touch.tapCount == 2)
+            {
+                Debug.Log("EventSystem.current.currentSelectedGameObject.name : " + EventSystem.current.currentSelectedGameObject.name);
+
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
+                {
+                    Pause.instance.reloadScene();
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name))
+                {
+                    Pause.instance.loadstartScreen();
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name))
+                {
+                    Pause.instance.TogglePause();
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name))
+                {
+                    Pause.instance.quit();
+                }
             }
         }
     }
