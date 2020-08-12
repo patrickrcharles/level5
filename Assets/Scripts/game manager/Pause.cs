@@ -147,7 +147,7 @@ public class Pause : MonoBehaviour
         }
     }
 
-    private void quit()
+    public void quit()
     {
         // update all time stats
         if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
@@ -157,7 +157,7 @@ public class Pause : MonoBehaviour
         Quit();
     }
 
-    private static void loadstartScreen()
+    public static void loadstartScreen()
     {
         // update all time stats
         if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
@@ -170,7 +170,7 @@ public class Pause : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
     }
 
-    private void reloadScene()
+    public void reloadScene()
     {
         // update all time stats
         if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
