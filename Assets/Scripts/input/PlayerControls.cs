@@ -1259,6 +1259,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""82a73772-a011-47d9-a9e1-6068fbe90bf8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b9ecb624-910b-456d-9613-a758f72dfc25"",
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
