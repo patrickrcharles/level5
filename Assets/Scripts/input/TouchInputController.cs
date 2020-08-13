@@ -10,8 +10,6 @@ public class TouchInputController : MonoBehaviour
 {
 
     private Vector2 startTouchPosition, endTouchPosition;
-    private bool jumpAllowed = false;
-    private bool shootAllowed = false;
 
     float swipeUpTolerance;
     float swipeDownTolerance;
@@ -33,22 +31,7 @@ public class TouchInputController : MonoBehaviour
 
     void Awake()
     {
-        swipeUpTolerance = Screen.height / 7;
-        swipeDownTolerance = Screen.height / 5;
-
-        if (GameObject.FindObjectOfType<GameLevelManager>() != null)
-        {
-            //Fetch the Raycaster from the GameObject (the Canvas)
-            m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
-            //Fetch the Event System from the Scene
-            m_EventSystem = GameLevelManager.instance.gameObject.GetComponentInChildren<EventSystem>();
-        }
-        else
-        {
-            Debug.Log("disable touch input");
-            this.gameObject.SetActive(false);
-        }
-        StartManager.instance.disableButtonsNotUsedForTouchInput();
+        initializeTouchInputController();
     }
 
     void Update()
@@ -74,6 +57,7 @@ public class TouchInputController : MonoBehaviour
                 touch.phase = TouchPhase.Ended;
                 GameLevelManager.instance.PlayerState.TouchControlJump();
             }
+
             if (touch.phase == TouchPhase.Ended // finger stoppped moving
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
@@ -89,38 +73,66 @@ public class TouchInputController : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                //Set up the new Pointer Event
-                m_PointerEventData = new PointerEventData(m_EventSystem);
-                //Set the Pointer Event Position to that of the mouse position
-                m_PointerEventData.position = Input.mousePosition;
-
-                //Create a list of Raycast Results
-                List<RaycastResult> results = new List<RaycastResult>();
-
-                //Raycast using the Graphics Raycaster and mouse click position
-                m_Raycaster.Raycast(m_PointerEventData, results);
+                selectPressedButton();
             }
             // on double tap, perform actions
             if (touch.tapCount == 2)
             {
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
-                {
-                    Pause.instance.reloadScene();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name))
-                {
-                    Pause.instance.loadstartScreen();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name))
-                {
-                    Pause.instance.TogglePause();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name))
-                {
-                    Pause.instance.quit();
-                }
+                activateDoubleTappedButton();
             }
         }
     }
+
+    private static void activateDoubleTappedButton()
+    {
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
+        {
+            Pause.instance.reloadScene();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name))
+        {
+            Pause.instance.loadstartScreen();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name))
+        {
+            Pause.instance.TogglePause();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name))
+        {
+            Pause.instance.quit();
+        }
+    }
+
+    private void selectPressedButton()
+    {
+        //Set up the new Pointer Event
+        m_PointerEventData = new PointerEventData(m_EventSystem);
+        //Set the Pointer Event Position to that of the mouse position
+        m_PointerEventData.position = Input.mousePosition;
+
+        //Create a list of Raycast Results
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        //Raycast using the Graphics Raycaster and mouse click position
+        m_Raycaster.Raycast(m_PointerEventData, results);
+    }
+
+    private void initializeTouchInputController()
+    {
+        if (GameObject.FindObjectOfType<GameLevelManager>() != null)
+        {
+            //Fetch the Raycaster from the GameObject (the Canvas)
+            m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            //Fetch the Event System from the Scene
+            m_EventSystem = GameLevelManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
+        }
+        swipeUpTolerance = Screen.height / 7;
+        swipeDownTolerance = Screen.height / 5;
+    }
+
 }
 

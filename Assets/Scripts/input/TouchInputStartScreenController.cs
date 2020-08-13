@@ -24,10 +24,42 @@ public class TouchInputStartScreenController : MonoBehaviour
     [SerializeField]
     GameObject joystickGameObject;
 
-    public static TouchInputController instance;
+    public static TouchInputStartScreenController instance;
 
 
     void Awake()
+    {
+        initializeStartScreenTouchControls();
+    }
+
+    private void Start()
+    {
+        StartManager.instance.disableButtonsNotUsedForTouchInput();
+        // set distance required for swipe up to be regeistered by device
+        swipeUpTolerance = Screen.height / 7;
+        swipeDownTolerance = Screen.height / 5;
+    }
+
+    void Update()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            // highlight pressed button
+            if (touch.phase == TouchPhase.Began)
+            {
+                selectPressedButton();
+            }
+
+            // on double tap, perform actions
+            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
+            {
+                activateDoubleTappedButton();
+            }
+        }
+    }
+
+    private void initializeStartScreenTouchControls()
     {
         // find onscreen stick and disable
         if (GameObject.Find("floating_joystick") != null)
@@ -49,33 +81,11 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
-        // set distance required for swipe up to be regeistered by device
-        swipeUpTolerance = Screen.height / 7;
-        swipeDownTolerance = Screen.height / 5;
-    }
-
-    void Update()
-    {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            // highlight pressed button
-            if (touch.phase == TouchPhase.Began)
-            {
-                selectPressedButton();
-            }
-
-            // on double tap, perform actions
-            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
-            {
-                buttonPressed = true;
-                activateDoubleTappedButton();
-            }
-        }
     }
 
     private void activateDoubleTappedButton()
     {
+        buttonPressed = true;
         //level select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {

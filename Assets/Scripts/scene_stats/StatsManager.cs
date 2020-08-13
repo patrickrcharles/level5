@@ -38,7 +38,9 @@ public class StatsManager : MonoBehaviour
 
     [SerializeField]
     List<StatsTableHighScoreRow> highScoreRowsDataList;
+    [SerializeField]
     List<mode> modesList;
+    [SerializeField]
     List<GameObject> highScoreRowsObjectsList;
 
     int defaultModeSelectedIndex;
@@ -54,16 +56,24 @@ public class StatsManager : MonoBehaviour
 
     public static StatsManager instance;
 
+    public static string ModeSelectButtonName => modeSelectButtonName;
+    public static string AlltimeSelectButtonName => alltimeSelectButtonName;
+    public static string MainMenuButtonName => mainMenuButtonName;
+
+    public static string MainMenuSceneName => mainMenuSceneName;
+
     // for input system
     private void OnEnable()
     {
         controls.Player.Enable();
         controls.UINavigation.Enable();
+        controls.Other.Enable();
     }
     private void OnDisable()
     {
         controls.Player.Disable();
         controls.UINavigation.Disable();
+        controls.Other.Disable();
     }
 
     // store data for each row
@@ -113,8 +123,7 @@ public class StatsManager : MonoBehaviour
         string field = modesList[defaultModeSelectedIndex].modeSelectedHighScoreField;
 
         // get data for default mode to be displayed
-        highScoreRowsDataList =
-            DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
+        highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
     }
 
     private void Start()
@@ -227,19 +236,19 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    private static void navigateUp()
+    public static void navigateUp()
     {
         EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
             .GetComponent<Button>().FindSelectableOnUp().gameObject);
     }
 
-    private static void navigateDown()
+    public static void navigateDown()
     {
         EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
             .GetComponent<Button>().FindSelectableOnDown().gameObject);
     }
 
-    private void loadMainMenu(string sceneName)
+    public void loadMainMenu(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -287,7 +296,7 @@ public class StatsManager : MonoBehaviour
         return m2.modeSelectedId.CompareTo(m2.modeSelectedId);
     }
 
-    private void changeSelectedMode(string direction)
+    public void changeSelectedMode(string direction)
     {
         // left option || decrement
         if (direction.ToLower().Equals("left"))
@@ -320,12 +329,12 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    private void changeHighScoreModeNameDisplay()
+    public void changeHighScoreModeNameDisplay()
     {
         modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
-    private void changeHighScoreDataDisplay()
+    public void changeHighScoreDataDisplay()
     {
         // counts number entries returned.
         int index = 0;
