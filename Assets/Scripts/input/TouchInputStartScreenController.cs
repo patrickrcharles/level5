@@ -10,29 +10,33 @@ public class TouchInputStartScreenController : MonoBehaviour
 {
 
     private Vector2 startTouchPosition, endTouchPosition;
-    private bool jumpAllowed = false;
-    private bool shootAllowed = false;
 
     float swipeUpTolerance;
     float swipeDownTolerance;
     float swipeDistance;
 
-    [SerializeField]
     GraphicRaycaster m_Raycaster;
-    [SerializeField]
     PointerEventData m_PointerEventData;
-    [SerializeField]
     EventSystem m_EventSystem;
 
     Touch touch;
+    bool buttonPressed;
+    [SerializeField]
+    GameObject joystickGameObject;
 
     public static TouchInputController instance;
-    public bool locked;
 
-    bool pauseExists;
 
     void Awake()
     {
+        // find onscreen stick and disable
+        if (GameObject.Find("floating_joystick") != null)
+        {
+            joystickGameObject = GameObject.Find("floating_joystick");
+            joystickGameObject.SetActive(false);
+        }
+
+        //check if startmanager is empty and find correct GraphicRaycaster and EventSystem
         if (GameObject.FindObjectOfType<StartManager>() != null)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
@@ -40,23 +44,22 @@ public class TouchInputStartScreenController : MonoBehaviour
             //Fetch the Event System from the Scene
             m_EventSystem = StartManager.instance.gameObject.GetComponentInChildren<EventSystem>();
         }
+        // else, this is not the startscreen and disable object
         else
         {
-            Debug.Log("disable touch input start");
             this.gameObject.SetActive(false);
         }
         // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
-
     }
 
     void Update()
     {
-
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
+            // highlight pressed button
             if (touch.phase == TouchPhase.Began)
             {
                 //Set up the new Pointer Event
@@ -69,44 +72,63 @@ public class TouchInputStartScreenController : MonoBehaviour
 
                 //Raycast using the Graphics Raycaster and mouse click position
                 m_Raycaster.Raycast(m_PointerEventData, results);
-
-                //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-                int i = 0;
-                //foreach (RaycastResult result in results)
-                //{
-                //    if (result.gameObject.activeInHierarchy)
-                //    {
-                //        Debug.Log("Hit" + i + " : " + result.gameObject.name);
-                //        i++;
-                //    }
-                //}
             }
 
-
-            //Debug.Log(EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName));
             // on double tap, perform actions
-            if (touch.tapCount == 2)
+            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
+                buttonPressed = true;
+                //level select
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
                 {
                     Debug.Log("level");
+                    StartManager.instance.changeSelectedLevelDown();
+                    StartManager.instance.initializeLevelDisplay();
                 }
+                // traffic select
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
                 {
                     Debug.Log("traffic");
+                    StartManager.instance.changeSelectedTrafficOption();
+                    StartManager.instance.initializeTrafficOptionDisplay();
                 }
+                // player select
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
                 {
                     Debug.Log("player");
+                    StartManager.instance.changeSelectedPlayerDown();
+                    StartManager.instance.initializePlayerDisplay();
                 }
+                // friend select
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
                 {
                     Debug.Log("friend");
+                    StartManager.instance.changeSelectedCheerleaderDown();
+                    StartManager.instance.initializeCheerleaderDisplay();
                 }
+                // mode select
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
                 {
                     Debug.Log("mode");
+                    StartManager.instance.changeSelectedModeDown();
+                    StartManager.instance.intializeModeDisplay();
                 }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
+                {
+                    Debug.Log("stats");
+                    StartManager.instance.loadStatsMenu(StartManager.StatsMenuSceneName);
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
+                {
+                    Debug.Log("start");
+                    StartManager.instance.loadScene();
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
+                {
+                    Debug.Log("quit");
+                    Application.Quit();
+                }
+                buttonPressed = false;
             }
         }
     }

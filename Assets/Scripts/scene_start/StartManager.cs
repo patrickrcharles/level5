@@ -118,6 +118,14 @@ public class StartManager : MonoBehaviour
 
     public static string TrafficSelectOptionName => trafficSelectOptionName;
 
+    public static string StartButtonName => startButtonName;
+
+    public static string StatsMenuButtonName => statsMenuButtonName;
+
+    public static string QuitButtonName => quitButtonName;
+
+    public static string StatsMenuSceneName => statsMenuSceneName;
+
     private void OnEnable()
     {
         controls.Player.Enable();
@@ -354,7 +362,7 @@ public class StartManager : MonoBehaviour
         }
     }
 
-    private void initializeTrafficOptionDisplay()
+    public void initializeTrafficOptionDisplay()
     {
         if (trafficEnabled)
         {
@@ -366,19 +374,19 @@ public class StartManager : MonoBehaviour
         }
     }
 
-    private void changeSelectedTrafficOption()
+    public void changeSelectedTrafficOption()
     {
         trafficEnabled = !trafficEnabled;
     }
 
-    private void initializeLevelDisplay()
+    public void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
         levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
 
-    private void initializeCheerleaderDisplay()
+    public void initializeCheerleaderDisplay()
     {
         cheerleaderSelectOptionImage.enabled = true;
         playerSelectOptionImage.enabled = false;
@@ -430,7 +438,7 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
     }
 
-    private void intializeModeDisplay()
+    public void intializeModeDisplay()
     {
         modeSelectOptionText = GameObject.Find(modeSelectOptionButtonName).GetComponent<Text>();
         modeSelectOptionText.text = modeSelectedData[modeSelectedIndex].ModelDisplayName;
@@ -439,7 +447,7 @@ public class StartManager : MonoBehaviour
         ModeSelectOptionDescriptionText.text = modeSelectedData[modeSelectedIndex].ModeDescription;
     }
 
-    private void initializePlayerDisplay()
+    public void initializePlayerDisplay()
     {
         cheerleaderSelectOptionImage.enabled = false;
         cheerleaderSelectedIsLockedObject.SetActive(false);
@@ -584,7 +592,7 @@ public class StartManager : MonoBehaviour
         //}
     }
 
-    private void changeSelectedPlayerUp()
+    public void changeSelectedPlayerUp()
     {
         //Debug.Log("changeSelectedPlayerUp");
         // if default index (first in list), go to end of list
@@ -601,7 +609,7 @@ public class StartManager : MonoBehaviour
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
-    private void changeSelectedPlayerDown()
+    public void changeSelectedPlayerDown()
     {
         //Debug.Log("changeSelectedPlayerDown");
         // if default index (first in list
@@ -618,7 +626,7 @@ public class StartManager : MonoBehaviour
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
-    private void changeSelectedCheerleaderUp()
+    public void changeSelectedCheerleaderUp()
     {
         // if default index (first in list
         if (cheerleaderSelectedIndex == 0)
@@ -634,7 +642,7 @@ public class StartManager : MonoBehaviour
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
-    private void changeSelectedCheerleaderDown()
+    public void changeSelectedCheerleaderDown()
     {
         // if default index (first in list
         if (cheerleaderSelectedIndex == cheerleaderSelectedData.Count - 1)
@@ -650,7 +658,7 @@ public class StartManager : MonoBehaviour
         //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
-    private void changeSelectedLevelUp()
+    public void changeSelectedLevelUp()
     {
         // if default index (first in list), go to end of list
         if (levelSelectedIndex == 0)
@@ -664,7 +672,7 @@ public class StartManager : MonoBehaviour
         }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
-    private void changeSelectedLevelDown()
+    public void changeSelectedLevelDown()
     {
         // if default index (first in list
         if (levelSelectedIndex == levelSelectedData.Count - 1)
@@ -678,7 +686,7 @@ public class StartManager : MonoBehaviour
         }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
-    private void changeSelectedModeUp()
+    public void changeSelectedModeUp()
     {
         // if default index (first in list), go to end of list
         if (modeSelectedIndex == 0)
@@ -694,7 +702,7 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
     }
 
-    private void changeSelectedModeDown()
+    public void changeSelectedModeDown()
     {
         // if default index (first in list
         if (modeSelectedIndex == modeSelectedData.Count - 1)
@@ -838,7 +846,7 @@ public class StartManager : MonoBehaviour
         messageText.text = "";
     }
 
-    private void loadStatsMenu(string sceneName)
+    public void loadStatsMenu(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
