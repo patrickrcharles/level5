@@ -32,6 +32,13 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private Text cheerleaderSelectUnlockText;
 
+    // option select buttons, this will be disabled with touch input
+    Button levelSelectButton;
+    Button trafficSelectButton;
+    Button playerSelectButton;
+    Button CheerleaderSelectButton;
+    Button modeSelectButton;
+
     //player selected display
     private Text playerSelectOptionText;
     private Image playerSelectOptionImage;
@@ -108,24 +115,6 @@ public class StartManager : MonoBehaviour
 
     bool buttonPressed;
 
-    public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
-
-    public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
-
-    public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
-
-    public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
-
-    public static string TrafficSelectOptionName => trafficSelectOptionName;
-
-    public static string StartButtonName => startButtonName;
-
-    public static string StatsMenuButtonName => statsMenuButtonName;
-
-    public static string QuitButtonName => quitButtonName;
-
-    public static string StatsMenuSceneName => statsMenuSceneName;
-
     private void OnEnable()
     {
         controls.Player.Enable();
@@ -139,15 +128,20 @@ public class StartManager : MonoBehaviour
         controls.Other.Disable();
     }
 
-    //private void OnEnable() => controls.UINavigation.Enable();
-    //private void OnDisable() => controls.Player.Disable();
-
     //private Text gameModeSelectText;
     void Awake()
     {
         instance = this;
         controls = new PlayerControls();
         buttonPressed = false;
+
+        // buttons to disable for touch input
+        levelSelectButton = GameObject.Find(levelSelectButtonName).GetComponent<Button>();
+        trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
+        playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
+        CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
+        modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
+
         // player object with lock texture and unlock text
         playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
         playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
@@ -210,11 +204,8 @@ public class StartManager : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
-        }
-        
-
+        }        
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
         // if player highlighted, display player
         if (currentHighlightedButton.Equals(playerSelectButtonName))
@@ -226,6 +217,8 @@ public class StartManager : MonoBehaviour
         {
             initializeCheerleaderDisplay();
         }
+
+        // ================================== footer buttons =====================================================================
         // start button | start game
         if ((controls.Player.submit.triggered
              || controls.Player.jump.triggered
@@ -252,7 +245,7 @@ public class StartManager : MonoBehaviour
         }
 
         // ================================== navigation =====================================================================
-
+        // up, option select
         if (controls.UINavigation.Up.triggered && !buttonPressed
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
@@ -266,7 +259,7 @@ public class StartManager : MonoBehaviour
             buttonPressed = false;
         }
 
-        // down arrow navigation
+        // down, option select
         if (controls.UINavigation.Down.triggered && !buttonPressed
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
@@ -280,14 +273,14 @@ public class StartManager : MonoBehaviour
             buttonPressed = false;
         }
 
-        // right arrow on player select
+        // right, go to change options
         if (controls.UINavigation.Right.triggered)
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
                 .GetComponent<Button>().FindSelectableOnRight().gameObject);
         }
 
-        // left arrow navigation on player options
+        // left, return to option select
         if (controls.UINavigation.Left.triggered)
         {
             // check if button exists. if no selectable on left, throws null object exception
@@ -298,7 +291,8 @@ public class StartManager : MonoBehaviour
             }
         }
 
-        // up/down arrow on player options
+        // ================================== change options =============================================================
+        // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed)
         {
             buttonPressed = true;
@@ -329,7 +323,7 @@ public class StartManager : MonoBehaviour
             }
             buttonPressed = false;
         }
-
+        // down, change option
         if (controls.UINavigation.Down.triggered && !buttonPressed)
         {
             buttonPressed = true;
@@ -360,6 +354,15 @@ public class StartManager : MonoBehaviour
             }
             buttonPressed = false;
         }
+    }
+
+    public void disableButtonsNotUsedForTouchInput()
+    {
+        levelSelectButton.enabled = false;
+        trafficSelectButton.enabled = false;
+        playerSelectButton.enabled = false;
+        CheerleaderSelectButton.enabled = false;
+        modeSelectButton.enabled = false;
     }
 
     public void initializeTrafficOptionDisplay()
@@ -850,4 +853,28 @@ public class StartManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
+
+    public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
+
+    public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
+
+    public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
+
+    public static string TrafficSelectOptionName => trafficSelectOptionName;
+
+    public static string StartButtonName => startButtonName;
+
+    public static string StatsMenuButtonName => statsMenuButtonName;
+
+    public static string QuitButtonName => quitButtonName;
+
+    public static string StatsMenuSceneName => statsMenuSceneName;
+
+    public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
+    public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
+    public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
+    public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
+    public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
 }

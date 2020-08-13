@@ -48,6 +48,7 @@ public class TouchInputController : MonoBehaviour
             Debug.Log("disable touch input");
             this.gameObject.SetActive(false);
         }
+        StartManager.instance.disableButtonsNotUsedForTouchInput();
     }
 
     void Update()
@@ -98,17 +99,6 @@ public class TouchInputController : MonoBehaviour
 
                 //Raycast using the Graphics Raycaster and mouse click position
                 m_Raycaster.Raycast(m_PointerEventData, results);
-
-                ////For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-                //int i = 0;
-                //foreach (RaycastResult result in results)
-                //{
-                //    if (result.gameObject.activeInHierarchy)
-                //    {
-                //        Debug.Log("Hit" + i + " : " + result.gameObject.name);
-                //        i++;
-                //    }
-                //}
             }
             // on double tap, perform actions
             if (touch.tapCount == 2)

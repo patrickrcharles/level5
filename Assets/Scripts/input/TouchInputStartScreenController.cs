@@ -62,74 +62,76 @@ public class TouchInputStartScreenController : MonoBehaviour
             // highlight pressed button
             if (touch.phase == TouchPhase.Began)
             {
-                //Set up the new Pointer Event
-                m_PointerEventData = new PointerEventData(m_EventSystem);
-                //Set the Pointer Event Position to that of the mouse position
-                m_PointerEventData.position = Input.mousePosition;
-
-                //Create a list of Raycast Results
-                List<RaycastResult> results = new List<RaycastResult>();
-
-                //Raycast using the Graphics Raycaster and mouse click position
-                m_Raycaster.Raycast(m_PointerEventData, results);
+                selectPressedButton();
             }
 
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
                 buttonPressed = true;
-                //level select
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
-                {
-                    Debug.Log("level");
-                    StartManager.instance.changeSelectedLevelDown();
-                    StartManager.instance.initializeLevelDisplay();
-                }
-                // traffic select
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
-                {
-                    Debug.Log("traffic");
-                    StartManager.instance.changeSelectedTrafficOption();
-                    StartManager.instance.initializeTrafficOptionDisplay();
-                }
-                // player select
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
-                {
-                    Debug.Log("player");
-                    StartManager.instance.changeSelectedPlayerDown();
-                    StartManager.instance.initializePlayerDisplay();
-                }
-                // friend select
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
-                {
-                    Debug.Log("friend");
-                    StartManager.instance.changeSelectedCheerleaderDown();
-                    StartManager.instance.initializeCheerleaderDisplay();
-                }
-                // mode select
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
-                {
-                    Debug.Log("mode");
-                    StartManager.instance.changeSelectedModeDown();
-                    StartManager.instance.intializeModeDisplay();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
-                {
-                    Debug.Log("stats");
-                    StartManager.instance.loadStatsMenu(StartManager.StatsMenuSceneName);
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
-                {
-                    Debug.Log("start");
-                    StartManager.instance.loadScene();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
-                {
-                    Debug.Log("quit");
-                    Application.Quit();
-                }
-                buttonPressed = false;
+                activateDoubleTappedButton();
             }
         }
+    }
+
+    private void activateDoubleTappedButton()
+    {
+        //level select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedLevelDown();
+            StartManager.instance.initializeLevelDisplay();
+        }
+        // traffic select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        {
+            StartManager.instance.changeSelectedTrafficOption();
+            StartManager.instance.initializeTrafficOptionDisplay();
+        }
+        // player select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedPlayerDown();
+            StartManager.instance.initializePlayerDisplay();
+        }
+        // friend select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedCheerleaderDown();
+            StartManager.instance.initializeCheerleaderDisplay();
+        }
+        // mode select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedModeDown();
+            StartManager.instance.intializeModeDisplay();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
+        {
+            StartManager.instance.loadStatsMenu(StartManager.StatsMenuSceneName);
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
+        {
+            StartManager.instance.loadScene();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
+        {
+            Application.Quit();
+        }
+        buttonPressed = false;
+    }
+
+    private void selectPressedButton()
+    {
+        //Set up the new Pointer Event
+        m_PointerEventData = new PointerEventData(m_EventSystem);
+        //Set the Pointer Event Position to that of the mouse position
+        m_PointerEventData.position = Input.mousePosition;
+
+        //Create a list of Raycast Results
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        //Raycast using the Graphics Raycaster and mouse click position
+        m_Raycaster.Raycast(m_PointerEventData, results);
     }
 }
