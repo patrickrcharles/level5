@@ -108,6 +108,16 @@ public class StartManager : MonoBehaviour
 
     bool buttonPressed;
 
+    public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
+
+    public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
+
+    public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
+
+    public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
+
+    public static string TrafficSelectOptionName => trafficSelectOptionName;
+
     private void OnEnable()
     {
         controls.Player.Enable();

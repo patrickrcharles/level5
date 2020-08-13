@@ -54,7 +54,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     void Update()
     {
 
-        if ( Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
@@ -72,13 +72,40 @@ public class TouchInputStartScreenController : MonoBehaviour
 
                 //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
                 int i = 0;
-                foreach (RaycastResult result in results)
+                //foreach (RaycastResult result in results)
+                //{
+                //    if (result.gameObject.activeInHierarchy)
+                //    {
+                //        Debug.Log("Hit" + i + " : " + result.gameObject.name);
+                //        i++;
+                //    }
+                //}
+            }
+
+
+            //Debug.Log(EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName));
+            // on double tap, perform actions
+            if (touch.tapCount == 2)
+            {
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
                 {
-                    if (result.gameObject.activeInHierarchy)
-                    {
-                        Debug.Log("Hit" + i + " : " + result.gameObject.name);
-                        i++;
-                    }
+                    Debug.Log("level");
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+                {
+                    Debug.Log("traffic");
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+                {
+                    Debug.Log("player");
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+                {
+                    Debug.Log("friend");
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+                {
+                    Debug.Log("mode");
                 }
             }
         }
