@@ -29,17 +29,25 @@ public class TouchInputController : MonoBehaviour
     public static TouchInputController instance;
     public bool locked;
 
+    bool pauseExists;
+
     void Awake()
     {
-        instance = this;
-        // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
 
-        //Fetch the Raycaster from the GameObject (the Canvas)
-        m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
-        //Fetch the Event System from the Scene
-        m_EventSystem = GameLevelManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+        if (GameObject.FindObjectOfType<GameLevelManager>() != null)
+        {
+            //Fetch the Raycaster from the GameObject (the Canvas)
+            m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            //Fetch the Event System from the Scene
+            m_EventSystem = GameLevelManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+        }
+        else
+        {
+            Debug.Log("disable touch input");
+            this.gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -47,7 +55,7 @@ public class TouchInputController : MonoBehaviour
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
                 GameLevelManager.instance.PlayerState.touchControlShoot();
@@ -56,6 +64,7 @@ public class TouchInputController : MonoBehaviour
 
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
+
             if (touch.phase == TouchPhase.Moved // finger moving
                 && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe up
@@ -101,10 +110,9 @@ public class TouchInputController : MonoBehaviour
                 //    }
                 //}
             }
+            // on double tap, perform actions
             if (touch.tapCount == 2)
             {
-                Debug.Log("EventSystem.current.currentSelectedGameObject.name : " + EventSystem.current.currentSelectedGameObject.name);
-
                 if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
                 {
                     Pause.instance.reloadScene();
@@ -125,3 +133,4 @@ public class TouchInputController : MonoBehaviour
         }
     }
 }
+

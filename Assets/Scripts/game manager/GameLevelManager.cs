@@ -47,8 +47,10 @@ public class GameLevelManager : MonoBehaviour
 
     private void Awake()
     {
-        // initialize game manger player references
+
         instance = this;
+        // mapped controls
+        controls = new PlayerControls();
 
         //ui touch controls
         if (GameObject.FindGameObjectWithTag("joystick") != null)
@@ -57,8 +59,6 @@ public class GameLevelManager : MonoBehaviour
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
             Debug.Log("GM joystick active: " + joystick.enabled);
         }
-        // mapped controls
-        controls = new PlayerControls();
 
         // if player selected is not null / player not selected
         if (!string.IsNullOrEmpty( GameOptions.playerObjectName)){
@@ -223,13 +223,13 @@ public class GameLevelManager : MonoBehaviour
         controls.Player.Enable();
         controls.UINavigation.Enable();
         controls.Other.Enable();
-        controls.PlayerTouch.Enable();
+        //controls.PlayerTouch.Enable();
     }
     private void OnDisable()
     {
         controls.Player.Disable();
         controls.UINavigation.Disable();
         controls.Other.Disable();
-        controls.PlayerTouch.Disable();
+        //controls.PlayerTouch.Disable();
     }
 }

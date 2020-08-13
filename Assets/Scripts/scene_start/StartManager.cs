@@ -104,6 +104,8 @@ public class StartManager : MonoBehaviour
 
     PlayerControls controls;
 
+    public static StartManager instance;
+
     bool buttonPressed;
 
     private void OnEnable()
@@ -125,6 +127,7 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
+        instance = this;
         controls = new PlayerControls();
         buttonPressed = false;
         // player object with lock texture and unlock text

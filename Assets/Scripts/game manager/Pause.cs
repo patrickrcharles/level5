@@ -215,7 +215,6 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
-        Debug.Log("togglePause()");
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
@@ -229,8 +228,6 @@ public class Pause : MonoBehaviour
             {
                 GameLevelManager.instance.Joystick.enabled = true;
             }
-            Debug.Log("paused : " + paused);
-            Debug.Log("Time.timeScale : " + Time.timeScale);
             return false;
         }
         else
@@ -246,8 +243,6 @@ public class Pause : MonoBehaviour
             {
                 GameLevelManager.instance.Joystick.enabled = false;
             }
-            Debug.Log("paused : " + paused);
-            Debug.Log("Time.timeScale : " + Time.timeScale);
             return true;
         }
     }
