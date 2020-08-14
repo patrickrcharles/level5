@@ -53,7 +53,7 @@ public class TouchInputStartScreenController : MonoBehaviour
 
         if (Input.touchCount > 0 && !buttonPressed)
         {
-            buttonPressed = true;
+            //buttonPressed = true;
             Touch touch = Input.touches[0];
             //foreach (Touch t in Input.touches)
             //{
@@ -102,9 +102,10 @@ public class TouchInputStartScreenController : MonoBehaviour
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
+                Debug.Log(" double tap");
                 activateDoubleTappedButton();
             }
-            buttonPressed = false;
+            //buttonPressed = false;
         }
     }
 
@@ -134,7 +135,6 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     private void activateDoubleTappedButton()
     {
-        buttonPressed = true;
         //level select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {
@@ -177,7 +177,6 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             Application.Quit();
         }
-        buttonPressed = false;
     }
 
     private void selectPressedButton()
