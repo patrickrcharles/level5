@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR.WSA.Input;
+//using UnityEngine.XR.WSA.Input;
 using TouchPhase = UnityEngine.TouchPhase;
 
 public class TouchInputStartScreenController : MonoBehaviour
@@ -44,7 +44,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
+            Touch touch = Input.touches[0];
             // highlight pressed button
             if (touch.phase == TouchPhase.Began)
             {

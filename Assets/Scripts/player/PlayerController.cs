@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("movementVertical " + movementVertical);
             //if (Input.touchCount > 0)
             //{
-            //    touch = Input.GetTouch(0);
+            //    touch = Input.touches[0];
             //    Debug.Log(touch.phase);
             //    Debug.Log(touch.deltaPosition.x);
             //    Debug.Log(touch.deltaPosition.y);
@@ -176,8 +176,8 @@ public class PlayerController : MonoBehaviour
 
             //    if (touch.phase == TouchPhase.Moved)
             //    {
-            //        Vector3 newPosition = Input.GetTouch(0).position - touch.position;
-            //        //touch.position = Input.GetTouch(0).position;
+            //        Vector3 newPosition = Input.touches[0].position - touch.position;
+            //        //touch.position = Input.touches[0].position;
 
             //        movement = new Vector3(newPosition.x, 0, newPosition.y) * movementSpeed * Time.deltaTime;
 

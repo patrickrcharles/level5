@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR.WSA.Input;
 using TouchPhase = UnityEngine.TouchPhase;
 
 public class TouchInputController : MonoBehaviour
@@ -38,7 +37,7 @@ public class TouchInputController : MonoBehaviour
     {
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
+            Touch touch = Input.touches[0];
             if (touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
@@ -70,7 +69,7 @@ public class TouchInputController : MonoBehaviour
         // if paused
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
+            Touch touch = Input.touches[0];
             if (touch.phase == TouchPhase.Began)
             {
                 selectPressedButton();

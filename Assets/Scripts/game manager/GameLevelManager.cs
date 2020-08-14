@@ -55,9 +55,7 @@ public class GameLevelManager : MonoBehaviour
         //ui touch controls
         if (GameObject.FindGameObjectWithTag("joystick") != null)
         {
-            Debug.Log("GM joystick found");
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
-            Debug.Log("GM joystick active: " + joystick.enabled);
         }
 
         // if player selected is not null / player not selected
@@ -114,7 +112,7 @@ public class GameLevelManager : MonoBehaviour
     {
 
         //unlimited
-        QualitySettings.vSyncCount = 0;
+        //QualitySettings.vSyncCount = 0;
 
         //Debug.Log("screen.dpi : " + Screen.dpi);
         //Debug.Log("device model : " + SystemInfo.deviceModel);
@@ -122,7 +120,8 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
 
         //QualitySettings.vSyncCount = 1;
-        //Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
 
         //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
 
