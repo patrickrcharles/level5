@@ -40,6 +40,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
+        prevSelectedGameObject = EventSystem.current.firstSelectedGameObject;
     }
 
     void Update()
@@ -199,7 +200,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         //level select
         if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {
-            StartManager.instance.changeSelectedModeUp();
+            StartManager.instance.changeSelectedLevelUp();
             StartManager.instance.initializeLevelDisplay();
         }
         // traffic select
