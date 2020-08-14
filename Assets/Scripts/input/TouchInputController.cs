@@ -24,7 +24,8 @@ public class TouchInputController : MonoBehaviour
     Touch touch;
 
     public static TouchInputController instance;
-    public bool locked;
+
+    bool buttonPressed;
 
     bool pauseExists;
 
@@ -38,7 +39,7 @@ public class TouchInputController : MonoBehaviour
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
-            if (touch.phase == TouchPhase.Began)
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
                 GameLevelManager.instance.PlayerState.touchControlShoot();
@@ -57,10 +58,10 @@ public class TouchInputController : MonoBehaviour
                 GameLevelManager.instance.PlayerState.TouchControlJump();
             }
 
-            if (touch.phase == TouchPhase.Ended // finger stoppped moving
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
-                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen)
+                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
                 Pause.instance.TogglePause();
             }
@@ -70,20 +71,22 @@ public class TouchInputController : MonoBehaviour
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
-            if (touch.phase == TouchPhase.Began)
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 selectPressedButton();
             }
+
             // on double tap, perform actions
-            if (touch.tapCount == 2)
+            if (touch.tapCount == 2  && touch.phase == TouchPhase.Began && !buttonPressed)
             {
                 activateDoubleTappedButton();
             }
         }
     }
 
-    private static void activateDoubleTappedButton()
+    private void activateDoubleTappedButton()
     {
+        buttonPressed = true;
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
         {
             Pause.instance.reloadScene();
@@ -100,6 +103,7 @@ public class TouchInputController : MonoBehaviour
         {
             Pause.instance.quit();
         }
+        buttonPressed = false;
     }
 
     private void selectPressedButton()

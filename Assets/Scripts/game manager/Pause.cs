@@ -215,6 +215,8 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
+        Debug.Log("TogglePause()");
+
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
