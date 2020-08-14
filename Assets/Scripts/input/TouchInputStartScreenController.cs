@@ -23,6 +23,8 @@ public class TouchInputStartScreenController : MonoBehaviour
     bool buttonPressed;
     [SerializeField]
     GameObject joystickGameObject;
+    [SerializeField]
+    GameObject prevSelectedGameObject;
 
     public static TouchInputStartScreenController instance;
 
@@ -42,20 +44,64 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        // save previous button until a touch is made
+        if (!buttonPressed && Input.touchCount == 0)
         {
-            Touch touch = Input.touches[0];
-            // highlight pressed button
-            if (touch.phase == TouchPhase.Began)
-            {
-                selectPressedButton();
-            }
+            prevSelectedGameObject = EventSystem.current.currentSelectedGameObject;
+        }
 
+        if (Input.touchCount > 0 && !buttonPressed)
+        {
+            buttonPressed = true;
+            // disable eventsystem
+            Touch touch = Input.touches[0];
+            //foreach (Touch t in Input.touches)
+            //{
+            //    Debug.Log(t.fingerId);
+            //}
+            // highlight pressed button
+            //if (touch.phase == TouchPhase.Began)
+            //{
+            //    selectPressedButton();
+            //}
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
+            {
+                startTouchPosition = touch.position;
+            }
+            endTouchPosition = touch.position;
+            swipeDistance = endTouchPosition.y - startTouchPosition.y;
+            // swipe down
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+                && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+                && swipeDistance < 0 // swipe down
+                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+            {
+                Debug.Log("swipe down");
+                swipeDownOnOption();
+                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                {
+                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                }
+            }
+            //swipe up
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+                && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+                && swipeDistance > 0 // swipe down
+                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+            {
+                Debug.Log("swipe up");
+                swipeUpOnOption();
+                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                {
+                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                }
+            }
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
                 activateDoubleTappedButton();
             }
+            buttonPressed = false;
         }
     }
 
@@ -143,5 +189,76 @@ public class TouchInputStartScreenController : MonoBehaviour
 
         //Raycast using the Graphics Raycaster and mouse click position
         m_Raycaster.Raycast(m_PointerEventData, results);
+    }
+
+    private void swipeUpOnOption()
+    {
+        buttonPressed = true;
+        //level select
+        if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedModeUp();
+            StartManager.instance.initializeLevelDisplay();
+        }
+        // traffic select
+        if (prevSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        {
+            StartManager.instance.changeSelectedTrafficOption();
+            StartManager.instance.initializeTrafficOptionDisplay();
+        }
+        // player select
+        if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedPlayerUp();
+            StartManager.instance.initializePlayerDisplay();
+        }
+        // friend select
+        if (prevSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedCheerleaderUp();
+            StartManager.instance.initializeCheerleaderDisplay();
+        }
+        // mode select
+        if (prevSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedModeUp();
+            StartManager.instance.intializeModeDisplay();
+        }
+        buttonPressed = false;
+    }
+    private void swipeDownOnOption()
+    {
+        buttonPressed = true;
+        //level select
+        if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedLevelDown();
+            StartManager.instance.initializeLevelDisplay();
+        }
+        // traffic select
+        if (prevSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        {
+            StartManager.instance.changeSelectedTrafficOption();
+            StartManager.instance.initializeTrafficOptionDisplay();
+        }
+        // player select
+        if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedPlayerDown();
+            StartManager.instance.initializePlayerDisplay();
+        }
+        // friend select
+        if (prevSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedCheerleaderDown();
+            StartManager.instance.initializeCheerleaderDisplay();
+        }
+        // mode select
+        if (prevSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        {
+            StartManager.instance.changeSelectedModeDown();
+            StartManager.instance.intializeModeDisplay();
+        }
+        buttonPressed = false;
     }
 }

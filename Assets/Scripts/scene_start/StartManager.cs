@@ -201,19 +201,22 @@ public class StartManager : MonoBehaviour
     void Update()
     {
         // check for some button not selected
-        if (EventSystem.current.currentSelectedGameObject == null)
+        if (EventSystem.current != null)           
         {
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+            }
+            currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }        
-        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-
+        
         // if player highlighted, display player
-        if (currentHighlightedButton.Equals(playerSelectButtonName))
+        if (currentHighlightedButton.Equals(playerSelectButtonName) || currentHighlightedButton.Equals(playerSelectOptionButtonName))
         {
             initializePlayerDisplay();
         }
         // if cheerleader highlighted, display cheerleader
-        if (currentHighlightedButton.Equals(cheerleaderSelectButtonName))
+        if (currentHighlightedButton.Equals(cheerleaderSelectButtonName) || currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
         {
             initializeCheerleaderDisplay();
         }
