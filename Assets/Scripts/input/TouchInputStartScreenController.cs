@@ -53,7 +53,6 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (Input.touchCount > 0 && !buttonPressed)
         {
             buttonPressed = true;
-            // disable eventsystem
             Touch touch = Input.touches[0];
             //foreach (Touch t in Input.touches)
             //{
@@ -70,27 +69,30 @@ public class TouchInputStartScreenController : MonoBehaviour
             }
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
-            // swipe down
+
+            // swipe down on changeable options
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
-                Debug.Log("swipe down");
+                //change option
                 swipeDownOnOption();
+                // reset previous button to active button
                 if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
                 {
                     EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
                 }
             }
-            //swipe up
+            //swipe up on changeable options
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
-                Debug.Log("swipe up");
+                //change option
                 swipeUpOnOption();
+                // reset previous button to active button
                 if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
                 {
                     EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);

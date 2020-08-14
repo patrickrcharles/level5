@@ -27,7 +27,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
     GameObject joystickGameObject;
 
     public static TouchInputController instance;
-
+    private GameObject prevSelectedGameObject;
 
     void Awake()
     {
@@ -36,15 +36,55 @@ public class TouchInputStatsScreenController : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        // save previous button until a touch is made
+        if (!buttonPressed && Input.touchCount == 0)
+        {
+            prevSelectedGameObject = EventSystem.current.currentSelectedGameObject;
+        }
+
+        if (Input.touchCount > 0 && !buttonPressed)
         {
             Touch touch = Input.touches[0];
             // highlight pressed button
-            if (touch.phase == TouchPhase.Began)
+            //if (touch.phase == TouchPhase.Began)
+            //{
+            //    selectPressedButton();
+            //}
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
-                selectPressedButton();
+                startTouchPosition = touch.position;
             }
+            endTouchPosition = touch.position;
+            swipeDistance = endTouchPosition.y - startTouchPosition.y;
 
+            // swipe down on changeable options
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+                && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+                && swipeDistance < 0 // swipe down
+                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+            {
+                //change option
+                swipeDownOnOption();
+                // reset previous button to active button
+                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                {
+                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                }
+            }
+            //swipe up on changeable options
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+                && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+                && swipeDistance > 0 // swipe down
+                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+            {
+                //change option
+                swipeUpOnOption();
+                // reset previous button to active button
+                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                {
+                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                }
+            }
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {               
@@ -111,5 +151,31 @@ public class TouchInputStatsScreenController : MonoBehaviour
 
         //Raycast using the Graphics Raycaster and mouse click position
         m_Raycaster.Raycast(m_PointerEventData, results);
+    }
+
+
+    private void swipeUpOnOption()
+    {
+        buttonPressed = true;
+        //high score, mode change
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
+        {
+            StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+        }
+        buttonPressed = false;
+    }
+    private void swipeDownOnOption()
+    {
+        buttonPressed = true;
+        //high score, mode change
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
+        {
+            StatsManager.instance.changeSelectedMode("left");
+            StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+        }
+        buttonPressed = false;
     }
 }
