@@ -21,19 +21,19 @@ public class TouchButtonControl : MonoBehaviour, IPointerDownHandler
         }
         if (gameObject.name.Equals(shootButtonName))
         {
-            GameLevelManager.instance.PlayerState.touchControlShoot();
+            //GameLevelManager.instance.PlayerState.touchControlJumpOrShoot();
         }
-        if (gameObject.name.Equals(nextSceneButtonName))
-        {
+        //if (gameObject.name.Equals(nextSceneButtonName))
+        //{
 
-            if ((SceneManager.GetActiveScene().buildIndex + 1) == SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadScene("level_01_scrapyard");
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-        }
+        //    if ((SceneManager.GetActiveScene().buildIndex + 1) == SceneManager.sceneCountInBuildSettings)
+        //    {
+        //        SceneManager.LoadScene("level_01_scrapyard");
+        //    }
+        //    else
+        //    {
+        //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //    }
+        //}
     }
 }

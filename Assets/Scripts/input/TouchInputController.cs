@@ -42,7 +42,7 @@ public class TouchInputController : MonoBehaviour
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
-                GameLevelManager.instance.PlayerState.touchControlShoot();
+                GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
                 //Debug.Log("touch pressure : " + touch.pressure);
             }
 

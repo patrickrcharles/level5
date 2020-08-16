@@ -205,9 +205,44 @@ public class PlayerController : MonoBehaviour
             playerJump();
         }
     }
-
     public void touchControlShoot()
     {
+        // if has ball, is in air, and pressed shoot button.
+        // shoot ball
+        if (inAir
+            && hasBasketball
+            && !IsSetShooter)
+        {
+            CallBallToPlayer.instance.Locked = true;
+            basketball.BasketBallState.Locked = true;
+            checkIsPlayerFacingGoal(); // turns player facing rim
+            Shotmeter.MeterEnded = true;
+            playerShoot();
+        }
+        // call ball
+        if (!hasBasketball
+            && !inAir
+            && basketball.BasketBallState.CanPullBall
+            && !basketball.BasketBallState.Locked
+            && grounded
+            && !CallBallToPlayer.instance.Locked)
+        {
+            CallBallToPlayer.instance.Locked = true;
+            CallBallToPlayer.instance.pullBallToPlayer();
+            CallBallToPlayer.instance.Locked = false;
+        }
+    }
+
+    public void touchControlJumpOrShoot(Vector2 touchPosition)
+    {
+        if (grounded 
+            && !KnockedDown 
+            && hasBasketball
+            && touchPosition.x > (Screen.width / 2))
+        {
+            playerJump();
+        }
+
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
         if (inAir
