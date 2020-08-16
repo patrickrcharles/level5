@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 #if UNITY_EDITOR
 #endif
 
@@ -113,7 +114,7 @@ public class GameLevelManager : MonoBehaviour
 
         //unlimited
         //QualitySettings.vSyncCount = 0;
-
+        //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
         //Debug.Log("screen.dpi : " + Screen.dpi);
         //Debug.Log("device model : " + SystemInfo.deviceModel);
         //Debug.Log("device  name: " + SystemInfo.deviceName);
