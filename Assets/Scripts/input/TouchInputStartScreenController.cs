@@ -53,17 +53,7 @@ public class TouchInputStartScreenController : MonoBehaviour
 
         if (Input.touchCount > 0 && !buttonPressed)
         {
-            //buttonPressed = true;
             Touch touch = Input.touches[0];
-            //foreach (Touch t in Input.touches)
-            //{
-            //    Debug.Log(t.fingerId);
-            //}
-            // highlight pressed button
-            //if (touch.phase == TouchPhase.Began)
-            //{
-            //    selectPressedButton();
-            //}
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
