@@ -392,6 +392,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f72306fb-b9b2-40af-aad2-3c6c153c02de",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "db7f5c47-3050-44e9-8d8f-e3cef86d2d6f",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
