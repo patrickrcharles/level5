@@ -75,11 +75,13 @@ public class GameRules : MonoBehaviour
     float timePlayedStart;
     [SerializeField]
     float timePlayedEnd;
+    int inThePocketActivateValue;
 
     private void Awake()
     {
         instance = this;
         timePlayedStart = Time.time;
+        inThePocketActivateValue = 3;
     }
 
     private void Start()
@@ -424,7 +426,7 @@ public class GameRules : MonoBehaviour
                 + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType
                 + "\nCurrent Consecutive: " + BasketBallShotMade.instance.ConsecutiveShotsMade;
             // in the pocket is active, display text notifier
-            if(BasketBallShotMade.instance.ConsecutiveShotsMade >=5)
+            if(BasketBallShotMade.instance.ConsecutiveShotsMade >= inThePocketActivateValue)
             {
                 displayOtherMessageText.text = "In The Pocket";
             }
@@ -631,4 +633,5 @@ public class GameRules : MonoBehaviour
     public bool GameModeThreePointContest { get => gameModeThreePointContest;  }
     public bool GameModeFourPointContest { get => gameModeFourPointContest;  }
     public bool GameModeAllPointContest { get => gameModeAllPointContest; }
+    public int InThePocketActivateValue { get => inThePocketActivateValue; set => inThePocketActivateValue = value; }
 }

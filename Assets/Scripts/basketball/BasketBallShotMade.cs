@@ -28,8 +28,6 @@ public class BasketBallShotMade : MonoBehaviour
 
     int _expectedShotMade;
     int _expectedShotAttempts;
-    [SerializeField]
-    int _inThePocketActivateValue;
 
     public static BasketBallShotMade instance;
 
@@ -41,9 +39,6 @@ public class BasketBallShotMade : MonoBehaviour
         _currentShotAttempts = 0;
         _expectedShotMade = 1;
         _expectedShotAttempts = 1;
-
-        // # of consec shot made to activate 'in the pocket'
-        _inThePocketActivateValue = 3;
     }
 
     // Use this for initialization
@@ -186,7 +181,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.ThreePointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 4;
                 }
@@ -200,7 +195,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.FourPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 6;
                 }
@@ -214,7 +209,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.SevenPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 10;
                 }
