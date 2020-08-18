@@ -28,8 +28,11 @@ public class BasketBallShotMade : MonoBehaviour
 
     int _expectedShotMade;
     int _expectedShotAttempts;
+    [SerializeField]
+    int _inThePocketActivateValue;
 
     public static BasketBallShotMade instance;
+
 
     private void Awake()
     {
@@ -39,6 +42,8 @@ public class BasketBallShotMade : MonoBehaviour
         _expectedShotMade = 1;
         _expectedShotAttempts = 1;
 
+        // # of consec shot made to activate 'in the pocket'
+        _inThePocketActivateValue = 3;
     }
 
     // Use this for initialization
@@ -181,7 +186,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.ThreePointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 4;
                 }
@@ -195,7 +200,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.FourPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 6;
                 }
@@ -209,7 +214,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.SevenPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= 5 && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= _inThePocketActivateValue && GameOptions.gameModeSelected == 15)
                 {
                     _basketBallStats.TotalPoints += 10;
                 }
