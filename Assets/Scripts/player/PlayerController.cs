@@ -235,6 +235,7 @@ public class PlayerController : MonoBehaviour
 
     public void touchControlJumpOrShoot(Vector2 touchPosition)
     {
+       
         if (grounded 
             && !KnockedDown 
             && hasBasketball
@@ -247,7 +248,8 @@ public class PlayerController : MonoBehaviour
         // shoot ball
         if (inAir
             && hasBasketball
-            && !IsSetShooter)
+            && !IsSetShooter
+            && touchPosition.x > (Screen.width / 2))
         {
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
@@ -261,7 +263,8 @@ public class PlayerController : MonoBehaviour
             && basketball.BasketBallState.CanPullBall
             && !basketball.BasketBallState.Locked
             && grounded
-            && !CallBallToPlayer.instance.Locked)
+            && !CallBallToPlayer.instance.Locked
+            && touchPosition.x > (Screen.width / 2))
         {
             CallBallToPlayer.instance.Locked = true;
             CallBallToPlayer.instance.pullBallToPlayer();
