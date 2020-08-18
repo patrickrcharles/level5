@@ -112,10 +112,10 @@ public class Pause : MonoBehaviour
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
             }
-
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
+            //currentHighlightedButton.GetComponent<Button>().OnSelect(null);
             currentHighlightedButton.GetComponent<Button>().Select();
-            currentHighlightedButton.GetComponent<Button>().OnSelect(null);
+            Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
             // ================== pause menu options ==============================================================
 

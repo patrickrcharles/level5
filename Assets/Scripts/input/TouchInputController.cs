@@ -36,11 +36,13 @@ public class TouchInputController : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
+                Debug.Log("shoot or jump");
                 startTouchPosition = touch.position;
                 GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
                 //Debug.Log("touch pressure : " + touch.pressure);
@@ -54,6 +56,7 @@ public class TouchInputController : MonoBehaviour
                 && swipeDistance > 0 // swipe up
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
             {
+                Debug.Log("swipe up");
                 touch.phase = TouchPhase.Ended;
                 GameLevelManager.instance.PlayerState.TouchControlJump();
             }
@@ -63,6 +66,7 @@ public class TouchInputController : MonoBehaviour
                 && swipeDistance < 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
+                Debug.Log("swipe down");
                 Pause.instance.TogglePause();
             }
         }
@@ -71,8 +75,12 @@ public class TouchInputController : MonoBehaviour
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
+            //Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
+            Debug.Log("current highlight : " + EventSystem.current.currentSelectedGameObject.name);
+
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
+                //Debug.Log("paused tap");
                 selectPressedButton();
             }
 
@@ -108,6 +116,7 @@ public class TouchInputController : MonoBehaviour
 
     private void selectPressedButton()
     {
+        Debug.Log("selectPressedButton()");
         //Set up the new Pointer Event
         m_PointerEventData = new PointerEventData(m_EventSystem);
         //Set the Pointer Event Position to that of the mouse position
@@ -118,6 +127,12 @@ public class TouchInputController : MonoBehaviour
 
         //Raycast using the Graphics Raycaster and mouse click position
         m_Raycaster.Raycast(m_PointerEventData, results);
+
+        //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+        foreach (RaycastResult result in results)
+        {
+            Debug.Log("Hit " + result.gameObject.name);
+        }
     }
 
     private void initializeTouchInputController()
@@ -133,6 +148,10 @@ public class TouchInputController : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
+        //if(GameObject.FindObjectOfType<EventSystem>() != null)
+        //{
+        //    EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+        //}
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
     }
