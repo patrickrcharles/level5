@@ -29,6 +29,7 @@ public class TouchInputController : MonoBehaviour
     bool buttonPressed;
 
     bool pauseExists;
+    private bool tapDetected;
 
     void Awake()
     {
@@ -41,27 +42,26 @@ public class TouchInputController : MonoBehaviour
         //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
-            Touch touch = Input.touches[0];
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
+            touch = Input.touches[0];
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
-                //Debug.Log("shoot or jump");
+                tapDetected = true;
                 startTouchPosition = touch.position;
-                GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
                 //Debug.Log("touch pressure : " + touch.pressure);
             }
 
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
 
-            if (touch.phase == TouchPhase.Moved // finger moving
-                && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
-                && swipeDistance > 0 // swipe up
-                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
-            {
-                //Debug.Log("swipe up");
-                touch.phase = TouchPhase.Ended;
-                GameLevelManager.instance.PlayerState.TouchControlJump();
-            }
+            //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
+            //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
+            //    && swipeDistance > 0 // swipe up
+            //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
+            //{
+            //    //Debug.Log("swipe up");
+            //    touch.phase = TouchPhase.Ended;
+            //    GameLevelManager.instance.PlayerState.TouchControlJump();
+            //}
 
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
@@ -77,7 +77,13 @@ public class TouchInputController : MonoBehaviour
 
     void Update()
     {
-
+        if (tapDetected) 
+        {
+            //Debug.Log("shoot/jump");
+            //startTouchPosition = touch.position;
+            GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
+            tapDetected = false;
+        }
         // if paused
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
