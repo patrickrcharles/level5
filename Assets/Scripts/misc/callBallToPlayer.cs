@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -25,8 +24,8 @@ public class CallBallToPlayer : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerState = GameLevelManager.Instance.PlayerState;
-        basketBall = GameLevelManager.Instance.Basketball;
+        playerState = GameLevelManager.instance.PlayerState;
+        basketBall = GameLevelManager.instance.Basketball;
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         Locked = false;
@@ -37,7 +36,8 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (InputManager.GetButtonDown("Fire1")
+        if (/*InputManager.GetButtonDown("Fire1")*/
+            GameLevelManager.instance.Controls.Player.shoot.triggered
             && !playerState.hasBasketball
             && !playerState.inAir
             //&& !_basketBallState.Thrown
@@ -56,7 +56,7 @@ public class CallBallToPlayer : MonoBehaviour
     }
 
 
-    private void pullBallToPlayer()
+    public void pullBallToPlayer()
     {
         //Debug.Log("pullBallToPlayer()");
         Vector3 tempDirection = basketballRigidBody.transform.position;

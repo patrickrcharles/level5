@@ -57,7 +57,7 @@ public class BehaviorFlash : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameLevelManager.Instance.Player;
+        player = GameLevelManager.instance.Player;
         facingRight = true;
         canMove = true;
         movementSpeed = walkMovementSpeed;

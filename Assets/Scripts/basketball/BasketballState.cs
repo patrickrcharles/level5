@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -48,7 +47,7 @@ public class BasketBallState : MonoBehaviour
     {
 
         // position of basketball infront of player
-        _basketBallPosition = GameLevelManager.Instance.Player.transform.Find("basketBall_position").gameObject;
+        _basketBallPosition = GameLevelManager.instance.Player.transform.Find("basketBall_position").gameObject;
 
         //position to shoot basketball at (middle of rim)
         _basketBallTarget = GameObject.Find("basketBall_target");

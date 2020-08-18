@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -197,11 +196,11 @@ public class GameRules : MonoBehaviour
 
 
             // alert game manager. trigger
-            GameLevelManager.Instance.GameOver = true;
+            GameLevelManager.instance.GameOver = true;
         }
 
         // enable moneyball
-        if (InputManager.GetKeyDown(KeyCode.F))
+        if (GameLevelManager.instance.Controls.Player.action.triggered)
         {
             toggleMoneyBall();
         }

@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
-
 
 public class BasketBall : MonoBehaviour
 {
@@ -37,7 +32,6 @@ public class BasketBall : MonoBehaviour
 
     //GameObject shootProfileObject;
     Text shootProfileText;
-
 
     [Range(20f, 70f)] public float _angle;
 
@@ -71,12 +65,12 @@ public class BasketBall : MonoBehaviour
     {
         instance = this;
 
-        player = GameLevelManager.Instance.Player;
-        playerState = GameLevelManager.Instance.PlayerState;
+        player = GameLevelManager.instance.Player;
+        playerState = GameLevelManager.instance.PlayerState;
         rigidbody = GetComponent<Rigidbody>();
-        basketBallStats = GameLevelManager.Instance.Basketball.GetComponent<BasketBallStats>();
-        basketBallState = GameLevelManager.Instance.Basketball.GetComponent<BasketBallState>();
-        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
+        basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
+        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
@@ -131,57 +125,56 @@ public class BasketBall : MonoBehaviour
             basketBallState.CanPullBall = true;
             basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
         }
-        if (playerState.hasBasketball)
-        {
-            basketBallState.CanPullBall = false;
-        }
+        //if (playerState.hasBasketball)
+        //{
+        //    basketBallState.CanPullBall = false;
+        //}
 
         //if player has ball and hasnt shot
-        if (playerState.hasBasketball && !basketBallState.Thrown)
+        if (playerState.hasBasketball)//&& !basketBallState.Thrown)
         {
+            basketBallState.CanPullBall = false;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+            dropShadow.SetActive(false);
+            playerState.setPlayerAnim("hasBasketball", true);
+            //playerState.setPlayerAnim("walking", false);
+            playerState.setPlayerAnim("moonwalking", false);
+
             // move basketball to launch position and disable sprite
             transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
-            // if grounded
-            if (playerState.grounded)
-            {
-                spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-                dropShadow.SetActive(false);
-                playerState.setPlayerAnim("hasBasketball", true);
-                //playerState.setPlayerAnim("walking", false);
-                playerState.setPlayerAnim("moonwalking", false);
-            }
+
         }
 
-        // if has ball, is in air, and pressed shoot button.
-        if (playerState.inAir
-            && playerState.hasBasketball
-            && InputManager.GetButtonDown("Fire1")
-            //&& playerState.jumpPeakReached
-            && !playerState.IsSetShooter)
-        //&& !basketBallState.Locked)
-        {
-            CallBallToPlayer.instance.Locked = true;
-            basketBallState.Locked = true;
-            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.Shotmeter.MeterEnded = true;
-            shootBasketBall();
-        }
+        //// if has ball, is in air, and pressed shoot button.
+        //if (playerState.inAir
+        //    && playerState.hasBasketball
+        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
+        //    //&& playerState.jumpPeakReached
+        //    && !playerState.IsSetShooter)
+        ////&& !basketBallState.Locked)
+        //{
+        //    CallBallToPlayer.instance.Locked = true;
+        //    basketBallState.Locked = true;
+        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+        //    playerState.Shotmeter.MeterEnded = true;
+        //    shootBasketBall();
+        //}
 
-        // if has ball, is in air, and pressed shoot button.
-        if (!playerState.inAir
-            && playerState.hasBasketball
-            && InputManager.GetButtonDown("Fire1")
-            //&& InputManager.GetButtonDown("Jump")
-            //&& playerState.jumpPeakReached
-            && playerState.IsSetShooter)
-        {
-            basketBallState.Locked = true;
-            playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-            playerState.Shotmeter.MeterEnded = true;
-            shootBasketBall();
-        }
+        //// if has ball, is in air, and pressed shoot button.
+        //if (!playerState.inAir
+        //    && playerState.hasBasketball
+        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
+        //    //&& InputManager.GetButtonDown("Jump")
+        //    //&& playerState.jumpPeakReached
+        //    && playerState.IsSetShooter)
+        //{
+        //    basketBallState.Locked = true;
+        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
+        //    playerState.Shotmeter.MeterEnded = true;
+        //    shootBasketBall();
+        //}
     }
 
     private void updateShooterProfileText()
@@ -259,6 +252,7 @@ public class BasketBall : MonoBehaviour
             && !basketBallState.Thrown)
         {
             playerState.hasBasketball = true;
+            //playerState.setPlayerAnim("hasBasketball", true);
             basketBallState.Thrown = false;
             //playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
@@ -282,25 +276,18 @@ public class BasketBall : MonoBehaviour
             basketBallState.Thrown)
         {
             basketBallState.Thrown = true;
-            playerState.hasBasketball = false;
+            //playerState.hasBasketball = false;
             //basketBallState.Locked = false;
         }
     }
 
     // =================================== shoot ball function =======================================
 
-    private void shootBasketBall()
+    public void shootBasketBall()
     {
-        //Debug.Log("shootBasketBall()");
-        // mostly prevent multiple inputs (button presses)
-        releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
-        // reset ball rotation
-        // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
-        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-        //================== anim stuff 
-        playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false);
+        //playerState.hasBasketball = false;
+        //playerState.setPlayerAnim("hasBasketball", false);
 
         // set side or front shooting animation
         if (playerState.facingFront) // facing straight toward bball goal
@@ -314,13 +301,22 @@ public class BasketBall : MonoBehaviour
             playerState.setPlayerAnimTrigger("basketballShoot");
         }
 
-        // part of in progress game mechanism
-        if (playerState.IsSetShooter)
-        {
-            //Debug.Log("set shooter");
-            playerState.setPlayerAnim("jump", true);
-            playerState.checkIsPlayerFacingGoal();
-        }
+        //Debug.Log("shootBasketBall()");
+        // mostly prevent multiple inputs (button presses)
+        releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
+
+        // reset ball rotation
+        // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        //================== anim stuff 
+
+        //// part of in progress game mechanism
+        //if (playerState.IsSetShooter)
+        //{
+        //    //Debug.Log("set shooter");
+        //    playerState.setPlayerAnim("jump", true);
+        //    playerState.checkIsPlayerFacingGoal();
+        //}
 
         // check for and set money ball
         if (GameRules.instance.MoneyBallEnabled)
@@ -463,6 +459,9 @@ public class BasketBall : MonoBehaviour
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
+
+        playerState.hasBasketball = false;
+        playerState.setPlayerAnim("hasBasketball", false);
         //Debug.Log("Launch ----------- finish()");
     }
 

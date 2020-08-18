@@ -11,7 +11,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void Start()
     {
-        playerState = GameLevelManager.Instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerState;
     }
 
     private void OnTriggerEnter(Collider other)

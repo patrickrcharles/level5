@@ -16,7 +16,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
+        if (GameLevelManager.instance.Basketball != null)
+        {
+            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
+        }
+
         // get attack box reference
         if (gameObject.transform.Find(attackBoxText) != null)
         {
@@ -149,12 +153,12 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     public void enableRigidBodyIsKinematic()
     {
-        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void disableRigidBodyIsKinematic()
     {
-        GameLevelManager.Instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     private void OnTriggerEnter(Collider other)

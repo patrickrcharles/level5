@@ -938,7 +938,7 @@ public class DBHelper : MonoBehaviour
     // return string from specified table by field and userid
     public float updateFloatValueByTableAndField(String tableName, String field, float value)
     {
-        Debug.Log("save to db: " + tableName + "  " + field + "  " + value);
+        //Debug.Log("save to db: " + tableName + "  " + field + "  " + value);
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
         dbconn.Open(); //Open connection to the database.

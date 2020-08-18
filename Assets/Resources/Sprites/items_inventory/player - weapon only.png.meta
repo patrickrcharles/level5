@@ -1,63 +1,165 @@
 fileFormatVersion: 2
 guid: 618fe88a187a56e42ab73a5100a96b81
-timeCreated: 1521681683
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: player - weapon only_0
-    21300002: player - weapon only_1
-    21300004: player - weapon only_2
-    21300006: player - weapon only_3
-    21300008: player - weapon only_4
-    21300010: player - weapon only_5
-    21300012: player - weapon only_6
-    21300014: player - weapon only_7
-    21300016: player - weapon only_8
-    21300018: player - weapon only_9
-    21300020: player - weapon only_10
-    21300022: player - weapon only_11
-    21300024: player - weapon only_12
-    21300026: player - weapon only_13
-    21300028: player - weapon only_14
-    21300030: player - weapon only_15
-    21300032: player - weapon only_16
-    21300034: player - weapon only_17
-    21300036: player - weapon only_18
-    21300038: player - weapon only_19
-    21300040: player - weapon only_20
-    21300042: player - weapon only_21
-    21300044: player - weapon only_22
-    21300046: player - weapon only_23
-    21300048: player - weapon only_24
-    21300050: player - weapon only_25
-    21300052: player - weapon only_26
-    21300054: player - weapon only_27
-    21300056: player - weapon only_28
-    21300058: player - weapon only_29
-    21300060: player - weapon only_30
-    21300062: player - weapon only_31
-    21300064: player - weapon only_32
-    21300066: player - weapon only_33
-    21300068: player - weapon only_34
-    21300070: player - weapon only_35
-    21300072: player - weapon only_36
-    21300074: player - weapon only_37
-    21300076: player - weapon only_38
-    21300078: player - weapon only_39
-    21300080: player - weapon only_40
-    21300082: player - weapon only_41
-    21300084: player - weapon only_42
-    21300086: player - weapon only_43
-    21300088: player - weapon only_44
-    21300090: player - weapon only_45
-    21300092: player - weapon only_46
-    21300094: player - weapon only_47
-    21300096: player - weapon only_48
-    21300098: player - weapon only_49
-    21300100: player - weapon only_50
-    21300102: player - weapon only_51
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: player - weapon only_0
+  - first:
+      213: 21300002
+    second: player - weapon only_1
+  - first:
+      213: 21300004
+    second: player - weapon only_2
+  - first:
+      213: 21300006
+    second: player - weapon only_3
+  - first:
+      213: 21300008
+    second: player - weapon only_4
+  - first:
+      213: 21300010
+    second: player - weapon only_5
+  - first:
+      213: 21300012
+    second: player - weapon only_6
+  - first:
+      213: 21300014
+    second: player - weapon only_7
+  - first:
+      213: 21300016
+    second: player - weapon only_8
+  - first:
+      213: 21300018
+    second: player - weapon only_9
+  - first:
+      213: 21300020
+    second: player - weapon only_10
+  - first:
+      213: 21300022
+    second: player - weapon only_11
+  - first:
+      213: 21300024
+    second: player - weapon only_12
+  - first:
+      213: 21300026
+    second: player - weapon only_13
+  - first:
+      213: 21300028
+    second: player - weapon only_14
+  - first:
+      213: 21300030
+    second: player - weapon only_15
+  - first:
+      213: 21300032
+    second: player - weapon only_16
+  - first:
+      213: 21300034
+    second: player - weapon only_17
+  - first:
+      213: 21300036
+    second: player - weapon only_18
+  - first:
+      213: 21300038
+    second: player - weapon only_19
+  - first:
+      213: 21300040
+    second: player - weapon only_20
+  - first:
+      213: 21300042
+    second: player - weapon only_21
+  - first:
+      213: 21300044
+    second: player - weapon only_22
+  - first:
+      213: 21300046
+    second: player - weapon only_23
+  - first:
+      213: 21300048
+    second: player - weapon only_24
+  - first:
+      213: 21300050
+    second: player - weapon only_25
+  - first:
+      213: 21300052
+    second: player - weapon only_26
+  - first:
+      213: 21300054
+    second: player - weapon only_27
+  - first:
+      213: 21300056
+    second: player - weapon only_28
+  - first:
+      213: 21300058
+    second: player - weapon only_29
+  - first:
+      213: 21300060
+    second: player - weapon only_30
+  - first:
+      213: 21300062
+    second: player - weapon only_31
+  - first:
+      213: 21300064
+    second: player - weapon only_32
+  - first:
+      213: 21300066
+    second: player - weapon only_33
+  - first:
+      213: 21300068
+    second: player - weapon only_34
+  - first:
+      213: 21300070
+    second: player - weapon only_35
+  - first:
+      213: 21300072
+    second: player - weapon only_36
+  - first:
+      213: 21300074
+    second: player - weapon only_37
+  - first:
+      213: 21300076
+    second: player - weapon only_38
+  - first:
+      213: 21300078
+    second: player - weapon only_39
+  - first:
+      213: 21300080
+    second: player - weapon only_40
+  - first:
+      213: 21300082
+    second: player - weapon only_41
+  - first:
+      213: 21300084
+    second: player - weapon only_42
+  - first:
+      213: 21300086
+    second: player - weapon only_43
+  - first:
+      213: 21300088
+    second: player - weapon only_44
+  - first:
+      213: 21300090
+    second: player - weapon only_45
+  - first:
+      213: 21300092
+    second: player - weapon only_46
+  - first:
+      213: 21300094
+    second: player - weapon only_47
+  - first:
+      213: 21300096
+    second: player - weapon only_48
+  - first:
+      213: 21300098
+    second: player - weapon only_49
+  - first:
+      213: 21300100
+    second: player - weapon only_50
+  - first:
+      213: 21300102
+    second: player - weapon only_51
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -75,6 +177,9 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -85,7 +190,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -97,18 +202,23 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -118,7 +228,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Standalone
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -128,7 +240,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: WebGL
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -138,6 +252,31 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 33
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 48
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -155,6 +294,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_1
       rect:
@@ -169,6 +315,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_2
       rect:
@@ -183,6 +336,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_3
       rect:
@@ -197,6 +357,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_4
       rect:
@@ -211,6 +378,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_5
       rect:
@@ -225,6 +399,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_6
       rect:
@@ -239,6 +420,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_7
       rect:
@@ -253,6 +441,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_8
       rect:
@@ -267,6 +462,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_9
       rect:
@@ -281,6 +483,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_10
       rect:
@@ -295,6 +504,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_11
       rect:
@@ -309,6 +525,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_12
       rect:
@@ -323,6 +546,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_13
       rect:
@@ -337,6 +567,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_14
       rect:
@@ -351,6 +588,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_15
       rect:
@@ -365,6 +609,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_16
       rect:
@@ -379,6 +630,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_17
       rect:
@@ -393,6 +651,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_18
       rect:
@@ -407,6 +672,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: player - weapon only_19
       rect:
@@ -421,9 +693,26 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static TeamUtility.IO.InputManager;
+using UnityEngine.UI;
 #if UNITY_EDITOR
 #endif
 
@@ -29,20 +29,38 @@ public class GameLevelManager : MonoBehaviour
 
     public BasketBall Basketball;
     public GameObject BasketballObject;
+    public Vector3 BasketballRimVector;
+
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
 
+    GameObject[] _npcObjects;
+    GameObject[] _vehicleObjects;
+
+
+    PlayerControls controls;
+    [SerializeField]
+    FloatingJoystick joystick;
+
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
 
-    public static GameLevelManager Instance;
+    public static GameLevelManager instance;
 
     private void Awake()
     {
-        // initialize game manger player references
-        Instance = this;
+
+        instance = this;
+        // mapped controls
+        controls = new PlayerControls();
+
+        //ui touch controls
+        if (GameObject.FindGameObjectWithTag("joystick") != null)
+        {
+            joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
+        }
 
         // if player selected is not null / player not selected
-        if(!string.IsNullOrEmpty( GameOptions.playerObjectName)){
+        if (!string.IsNullOrEmpty( GameOptions.playerObjectName)){
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
@@ -87,60 +105,92 @@ public class GameLevelManager : MonoBehaviour
 
         BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = BasketballObject.GetComponent<BasketBall>();
+        BasketballRimVector = GameObject.Find("rim").transform.position;
+
     }
 
     private void Start()
     {
+
+        //unlimited
+        //QualitySettings.vSyncCount = 0;
+        //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
+        //Debug.Log("screen.dpi : " + Screen.dpi);
+        //Debug.Log("device model : " + SystemInfo.deviceModel);
+        //Debug.Log("device  name: " + SystemInfo.deviceName);
+        //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
+
+        //QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+
+        //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
+
+
+        //Debug.Log("quality level : " + QualitySettings.GetQualityLevel());
+        //Debug.Log("quality level : " + QualitySettings.names);
+
         _locked = false;
 
         //set up player/basketball read only references for use in other classes
-
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = Player.GetComponent<PlayerController>();
         Anim = Player.GetComponentInChildren<Animator>();
 
-        //InitializePlayer();
-        //GameOptions.printCurrentValues();
-
         // if an npc is in scene, disable the npc if it is the player selected
         //* this is specific to flash right now
-        GameObject[] _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
-        GameObject[] _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
-        string playerName = GameOptions.playerObjectName;
+        _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
+
+        //string playerName = GameOptions.playerObjectName;
+        if (GameOptions.trafficEnabled)
+        {
+            _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
+
+            // check if player is vehicle in scene
+            foreach (var veh in _vehicleObjects)
+            {
+                if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
+                {
+                    veh.SetActive(false);
+                }
+            }
+        }
         // check if player is npc in scene
         foreach (var npc in _npcObjects)
         {
-            if ( !string.IsNullOrEmpty(playerName) && npc.name.Contains(playerName) )
+            if ( !string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName) )
             {
                 npc.SetActive(false);
             }
         }
-        // check if player is vehicle in scene
-        foreach (var veh in _vehicleObjects)
-        {
-            if (!string.IsNullOrEmpty(playerName) && veh.name.Contains(playerName))
-            {
-                veh.SetActive(false);
-            }
-        }
+        //// check if player is vehicle in scene
+        //foreach (var veh in _vehicleObjects)
+        //{
+        //    if (!string.IsNullOrEmpty(playerName) && veh.name.Contains(playerName))
+        //    {
+        //        veh.SetActive(false);
+        //    }
+        //}
     }
 
     private void Update()
     {
-        //turn on : toggle run, shift +1
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha1)
-            && !_locked)
+        //turn on : toggle run
+        if (Controls.Other.change.enabled
+            && Controls.Other.toggle_run_keyboard.triggered
+            && !_locked
+            && !Pause.instance.Paused)
         {
             _locked = true;
             PlayerState.toggleRun();
             _locked = false;
         }
 
-        //turn off stats, shift + 2
-        if (GetKey(KeyCode.LeftShift)
-            && GetKeyDown(KeyCode.Alpha2)
-            && !_locked)
+        //turn off stats
+        if (Controls.Other.change.enabled
+            && Controls.Other.toggle_stats_keyboard.triggered
+            && !_locked
+            && !Pause.instance.Paused)
         {
             _locked = true;
             BasketBall.instance.toggleUiStats(); 
@@ -165,4 +215,21 @@ public class GameLevelManager : MonoBehaviour
     public Animator Anim { get; private set; }
 
     public bool GameOver { get; set; }
+    public PlayerControls Controls { get => controls; set => controls = value; }
+    public FloatingJoystick Joystick { get => joystick;  }
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+        controls.Other.Enable();
+        //controls.PlayerTouch.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+        controls.Other.Disable();
+        //controls.PlayerTouch.Disable();
+    }
 }

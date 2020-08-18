@@ -35,18 +35,17 @@ public class ShotMeter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shooterProfile = GameLevelManager.Instance.Player.GetComponent<ShooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
-        sliderValueOnPress = GameObject.Find(sliderValueOnPressName).GetComponent<Text>();
+        sliderValueOnPress = transform.Find(sliderValueOnPressName).GetComponent<Text>();
     }
-
 
     // Update is called once per frame
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.Instance.PlayerState.grounded)
+        if (GameLevelManager.instance.PlayerState.grounded)
         {
             slider.value = 0;
         }

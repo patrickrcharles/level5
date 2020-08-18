@@ -42,7 +42,7 @@ public class BasketBallShotMarker : MonoBehaviour
     void Start()
     {
         // get reference for accessing basketball state
-        basketBallState = GameLevelManager.Instance.Basketball.BasketBallState;
+        basketBallState = GameLevelManager.instance.Basketball.BasketBallState;
         displayCurrentMarkerStats = GameObject.Find(displayStatsTextObject).GetComponent<Text>();
         displayCurrentMarkerStats.text = "";
 
@@ -113,8 +113,8 @@ public class BasketBallShotMarker : MonoBehaviour
             // max shot attempst reached
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
-                && !GameLevelManager.Instance.PlayerState.hasBasketball
-                && !GameLevelManager.Instance.PlayerState.inAir
+                && !GameLevelManager.instance.PlayerState.hasBasketball
+                && !GameLevelManager.instance.PlayerState.inAir
                 && !basketBallState.InAir)
             {
                 markerEnabled = false;

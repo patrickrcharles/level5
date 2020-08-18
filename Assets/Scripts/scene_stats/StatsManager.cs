@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using TeamUtility.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -40,7 +38,9 @@ public class StatsManager : MonoBehaviour
 
     [SerializeField]
     List<StatsTableHighScoreRow> highScoreRowsDataList;
+    [SerializeField]
     List<mode> modesList;
+    [SerializeField]
     List<GameObject> highScoreRowsObjectsList;
 
     int defaultModeSelectedIndex;
@@ -52,7 +52,29 @@ public class StatsManager : MonoBehaviour
     const string highScoresRowsName = "high_scores_rows";
     GameObject highScoresRowsObject;
 
+    PlayerControls controls;
+
     public static StatsManager instance;
+
+    public static string ModeSelectButtonName => modeSelectButtonName;
+    public static string AlltimeSelectButtonName => alltimeSelectButtonName;
+    public static string MainMenuButtonName => mainMenuButtonName;
+
+    public static string MainMenuSceneName => mainMenuSceneName;
+
+    // for input system
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+        controls.Other.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+        controls.Other.Disable();
+    }
 
     // store data for each row
     public class mode
@@ -74,6 +96,9 @@ public class StatsManager : MonoBehaviour
     {
         //check for existsing instance of statmanager
         destroyInstanceIfAlreadyExists();
+
+        controls = new PlayerControls();
+
         // find objects/buttons
         modeSelectButtonText = GameObject.Find(modeSelectButtonName).GetComponent<Text>();
         highScoreTableObject = GameObject.Find(highScoreTableName);
@@ -98,8 +123,7 @@ public class StatsManager : MonoBehaviour
         string field = modesList[defaultModeSelectedIndex].modeSelectedHighScoreField;
 
         // get data for default mode to be displayed
-        highScoreRowsDataList =
-            DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
+        highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
     }
 
     private void Start()
@@ -126,7 +150,6 @@ public class StatsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // check for some button not selected
         if (EventSystem.current.currentSelectedGameObject == null)
         {
@@ -144,7 +167,7 @@ public class StatsManager : MonoBehaviour
             highScoreTableObject.SetActive(true);
             allTimeTableObject.SetActive(false);
 
-            if (InputManager.GetKeyDown(KeyCode.LeftArrow) || InputManager.GetKeyDown(KeyCode.A))
+            if (controls.UINavigation.Left.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
@@ -152,7 +175,7 @@ public class StatsManager : MonoBehaviour
                 changeHighScoreDataDisplay();
             }
 
-            if (InputManager.GetKeyDown(KeyCode.RightArrow) || InputManager.GetKeyDown(KeyCode.D))
+            if (controls.UINavigation.Right.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
@@ -160,13 +183,13 @@ public class StatsManager : MonoBehaviour
                 changeHighScoreDataDisplay();
             }
 
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))//|| InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
@@ -179,13 +202,13 @@ public class StatsManager : MonoBehaviour
             highScoreTableObject.SetActive(false);
 
             // up arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))//|| InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
@@ -194,40 +217,38 @@ public class StatsManager : MonoBehaviour
         // main menu button selected
         if (currentHighlightedButton.Equals(mainMenuButtonName))
         {
-            if (InputManager.GetKeyDown(KeyCode.Return)
-             || InputManager.GetKeyDown(KeyCode.Space)
-             || InputManager.GetButtonDown("Fire1"))
+            if (controls.UINavigation.Submit.triggered)
             {
                 loadMainMenu(mainMenuSceneName);
             }
 
             // up arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.UpArrow))// || InputManager.GetKeyDown(KeyCode.W))
+            if (controls.UINavigation.Up.triggered)// || InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
             }
 
             // down arrow navigation
-            if (InputManager.GetKeyDown(KeyCode.DownArrow))// || InputManager.GetKeyDown(KeyCode.S))
+            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
             }
         }
     }
 
-    private static void navigateUp()
+    public static void navigateUp()
     {
         EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
             .GetComponent<Button>().FindSelectableOnUp().gameObject);
     }
 
-    private static void navigateDown()
+    public static void navigateDown()
     {
         EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
             .GetComponent<Button>().FindSelectableOnDown().gameObject);
     }
 
-    private void loadMainMenu(string sceneName)
+    public void loadMainMenu(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -275,7 +296,7 @@ public class StatsManager : MonoBehaviour
         return m2.modeSelectedId.CompareTo(m2.modeSelectedId);
     }
 
-    private void changeSelectedMode(string direction)
+    public void changeSelectedMode(string direction)
     {
         // left option || decrement
         if (direction.ToLower().Equals("left"))
@@ -308,12 +329,12 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    private void changeHighScoreModeNameDisplay()
+    public void changeHighScoreModeNameDisplay()
     {
         modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
-    private void changeHighScoreDataDisplay()
+    public void changeHighScoreDataDisplay()
     {
         // counts number entries returned.
         int index = 0;

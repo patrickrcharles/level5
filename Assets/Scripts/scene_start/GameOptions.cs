@@ -76,19 +76,4 @@ public  class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         applicationVersion = Application.version;
     }
-
-    static public void printCurrentValues()
-    {
-        //Debug.Log("playerSelected : " + playerId);
-        //Debug.Log("levelSected : " + levelSelectedName);
-        //Debug.Log("gameModeSelected : " + gameModeSelected);
-        //Debug.Log("gameModeSelectedName : " + gameModeSelectedName);
-        //Debug.Log("gameModeHasBeenSelected : " + gameModeHasBeenSelected);
-        //Debug.Log("3s : " + gameModeRequiresShotMarkers3s);
-        //Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
-        //Debug.Log("4x : " + gameModeRequiresShotMarkers4s);
-        //Debug.Log("app version : " + applicationVersion);
-        //Debug.Log("date  : " + DateTime.Now);
-        //Debug.Log("os  : " + operatingSystemVersion);
-    }
 }
