@@ -90,7 +90,7 @@ public class Pause : MonoBehaviour
          */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
-            Debug.Log("pause check");
+            //Debug.Log("pause check");
             TogglePause();
         }
         //==========================================================
@@ -115,7 +115,7 @@ public class Pause : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
             //currentHighlightedButton.GetComponent<Button>().OnSelect(null);
             currentHighlightedButton.GetComponent<Button>().Select();
-            Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
+            //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
             // ================== pause menu options ==============================================================
 

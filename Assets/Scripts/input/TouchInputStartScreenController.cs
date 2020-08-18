@@ -41,6 +41,12 @@ public class TouchInputStartScreenController : MonoBehaviour
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
         prevSelectedGameObject = EventSystem.current.firstSelectedGameObject;
+        //Debug.Log("screen width : " + Screen.width);
+
+        if (EventSystem.current == null)
+        {
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+        }
     }
 
     void Update()
@@ -60,13 +66,21 @@ public class TouchInputStartScreenController : MonoBehaviour
             }
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
+            //Debug.Log("touch.tapCount : " + touch.tapCount);
+            //Debug.Log("touch.phase : " + touch.phase);
+            //Debug.Log("Mathf.Abs(swipeDistance) > swipeDownTolerance : " + (Mathf.Abs(swipeDistance) > swipeDownTolerance));
+            //Debug.Log("swipeDistance < 0 : " + (swipeDistance < 0));
+            //Debug.Log("(startTouchPosition.x > (Screen.width / 2)) : " + (startTouchPosition.x > (Screen.width / 2)));
+            //Debug.Log("current button : " + EventSystem.current.currentSelectedGameObject.name);
+
 
             // swipe down on changeable options
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
+                //Debug.Log("swipe down");
                 //change option
                 swipeDownOnOption();
                 // reset previous button to active button
@@ -76,11 +90,12 @@ public class TouchInputStartScreenController : MonoBehaviour
                 }
             }
             //swipe up on changeable options
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
             {
+                //Debug.Log("swipe down");
                 //change option
                 swipeUpOnOption();
                 // reset previous button to active button
@@ -92,7 +107,7 @@ public class TouchInputStartScreenController : MonoBehaviour
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
-                Debug.Log(" double tap");
+                //Debug.Log(" double tap");
                 activateDoubleTappedButton();
             }
             //buttonPressed = false;
