@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 using TouchPhase = UnityEngine.TouchPhase;
 
@@ -34,7 +35,8 @@ public class TouchInputController : MonoBehaviour
         initializeTouchInputController();
     }
 
-    void Update()
+    // changing from Update -> FixedUpdate allows input to be detected at 1/100 as opposed to 1/60 for mobile
+    void FixedUpdate()
     {
         //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
         if (!Pause.instance.Paused && Input.touchCount > 0)
@@ -70,12 +72,17 @@ public class TouchInputController : MonoBehaviour
                 Pause.instance.TogglePause();
             }
         }
+    }
+
+
+    void Update()
+    {
 
         // if paused
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
-            //Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
+            Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
 
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
@@ -84,7 +91,7 @@ public class TouchInputController : MonoBehaviour
             }
 
             // on double tap, perform actions
-            if (touch.tapCount == 2  && touch.phase == TouchPhase.Began && !buttonPressed)
+            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
                 activateDoubleTappedButton();
             }
@@ -97,8 +104,10 @@ public class TouchInputController : MonoBehaviour
         }
     }
 
+
     private void activateDoubleTappedButton()
     {
+        Debug.Log("double tap");
         buttonPressed = true;
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
         {
@@ -119,14 +128,14 @@ public class TouchInputController : MonoBehaviour
         buttonPressed = false;
     }
 
-    // action button (turn on moneyball)
-    private void activateTripleTappedButton()
-    {
-        buttonPressed = true;
-        Debug.Log("triple tap");
-        GameRules.instance.toggleMoneyBall();
-        buttonPressed = false;
-    }
+    //// action button (turn on moneyball)
+    //private void activateTripleTappedButton()
+    //{
+    //    buttonPressed = true;
+    //    Debug.Log("triple tap");
+    //    GameRules.instance.toggleMoneyBall();
+    //    buttonPressed = false;
+    //}
 
     private void selectPressedButton()
     {
