@@ -34,7 +34,7 @@ public class TouchTest : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            touch = Input.GetTouch(0);
+            touch = Input.touches[0];
             //Debug.Log($"{touch.touchId}: {touch.screenPosition},{touch.phase}");
             if (touch.phase == TouchPhase.Moved)
             {
