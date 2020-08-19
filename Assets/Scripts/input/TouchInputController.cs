@@ -88,7 +88,7 @@ public class TouchInputController : MonoBehaviour
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
-            Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
+            //Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
 
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {

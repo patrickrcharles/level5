@@ -134,7 +134,10 @@ public class StatsTableAllTime : MonoBehaviour
         foot = Mathf.FloorToInt((feet - (miles * 5280)));
 
         float percent = miles + ( miles / foot) ;
+        //Debug.Log("percent : " + percent);
+        //Debug.Log("percent.ToString() : " + percent.ToString("#.##") + " miles");
 
-        return percent.ToString("#.##") + " miles";
+        //return percent.ToString("#.##") + " miles";
+        return percent.ToString("00.00") + " miles";
     }
 }
