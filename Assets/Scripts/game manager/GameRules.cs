@@ -50,7 +50,9 @@ public class GameRules : MonoBehaviour
 
     // text objects
     private Text displayScoreText;
+    [SerializeField]
     private Text displayCurrentScoreText;
+    [SerializeField]
     private Text displayHighScoreText;
     private Text displayMoneyText;
     private Text displayMoneyBallText;

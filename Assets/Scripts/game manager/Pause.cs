@@ -54,16 +54,21 @@ public class Pause : MonoBehaviour
             controlsObject.SetActive(false);
         }
  
+
+        EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
+        // init current button
+        currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
+        //disable joystick if active
+    }
+
+    private void Start()
+    {
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
             setBackgroundFade(false);
             setPauseScreen(false);
         }
-        EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
-        // init current button
-        currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
-        //disable joystick if active
     }
 
     // Update is called once per frame
@@ -212,10 +217,19 @@ public class Pause : MonoBehaviour
         //Debug.Log("setPauseScreen");
         //Debug.Log("paused : " + Pause.instance.paused);
         // score display
-        if (paused)
+        //if (paused)
+        //{
+        //    GameRules.instance.DisplayCurrentScoreText.enabled = !value;
+        //    GameRules.instance.DisplayHighScoreText.enabled = !value;
+        //}
+        //if (!paused)
+        //{
+        //    GameRules.instance.DisplayCurrentScoreText.enabled = value;
+        //    GameRules.instance.DisplayHighScoreText.enabled = value;
+        //}
+        if (BasketBall.instance.UiStatsEnabled)
         {
-            GameRules.instance.DisplayCurrentScoreText.enabled = !value;
-            GameRules.instance.DisplayHighScoreText.enabled = !value;
+            BasketBall.instance.toggleUiStats();
         }
 
         loadSceneText.enabled = value;
