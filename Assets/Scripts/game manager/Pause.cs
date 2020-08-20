@@ -54,16 +54,21 @@ public class Pause : MonoBehaviour
             controlsObject.SetActive(false);
         }
  
+
+        EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
+        // init current button
+        currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
+        //disable joystick if active
+    }
+
+    private void Start()
+    {
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
             setBackgroundFade(false);
             setPauseScreen(false);
         }
-        EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
-        // init current button
-        currentHighlightedButton = EventSystem.current.firstSelectedGameObject.gameObject;
-        //disable joystick if active
     }
 
     // Update is called once per frame
@@ -113,7 +118,7 @@ public class Pause : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
             }
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
-            //currentHighlightedButton.GetComponent<Button>().OnSelect(null);
+            currentHighlightedButton.GetComponent<Button>().OnSelect(null);
             currentHighlightedButton.GetComponent<Button>().Select();
             //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
@@ -135,6 +140,14 @@ public class Pause : MonoBehaviour
             //|| InputManager.GetButtonDown("Fire1")))
             {
                 loadstartScreen();
+            }
+            // quit
+            if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
+                && (GameLevelManager.instance.Controls.Player.submit.triggered
+                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+            //|| InputManager.GetButtonDown("Fire1"))
+            {
+                TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
@@ -201,6 +214,24 @@ public class Pause : MonoBehaviour
 
     private void setPauseScreen(bool value)
     {
+        //Debug.Log("setPauseScreen");
+        //Debug.Log("paused : " + Pause.instance.paused);
+        // score display
+        //if (paused)
+        //{
+        //    GameRules.instance.DisplayCurrentScoreText.enabled = !value;
+        //    GameRules.instance.DisplayHighScoreText.enabled = !value;
+        //}
+        //if (!paused)
+        //{
+        //    GameRules.instance.DisplayCurrentScoreText.enabled = value;
+        //    GameRules.instance.DisplayHighScoreText.enabled = value;
+        //}
+        if (BasketBall.instance.UiStatsEnabled)
+        {
+            BasketBall.instance.toggleUiStats();
+        }
+
         loadSceneText.enabled = value;
         loadStartScreenText.enabled = value;
         quitGameText.enabled = value;
