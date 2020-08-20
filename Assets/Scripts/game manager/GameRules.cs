@@ -634,4 +634,6 @@ public class GameRules : MonoBehaviour
     public bool GameModeFourPointContest { get => gameModeFourPointContest;  }
     public bool GameModeAllPointContest { get => gameModeAllPointContest; }
     public int InThePocketActivateValue { get => inThePocketActivateValue; set => inThePocketActivateValue = value; }
+    public Text DisplayCurrentScoreText { get => displayCurrentScoreText; set => displayCurrentScoreText = value; }
+    public Text DisplayHighScoreText { get => displayHighScoreText; set => displayHighScoreText = value; }
 }
