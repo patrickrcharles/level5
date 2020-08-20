@@ -537,17 +537,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""90f75848-37c9-4349-9feb-26834bbdc8a7"",
-                    ""path"": ""<Mouse>/forwardButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""special"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4b6a444d-0f38-4537-8de4-8f415bb511e6"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
