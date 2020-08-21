@@ -76,12 +76,6 @@ public class BehaviorFlash : MonoBehaviour
     }
 
 
-    // not affected by framerate
-    void FixedUpdate()
-    {
-
-    }
-
     void Update()
     {
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
@@ -145,7 +139,8 @@ public class BehaviorFlash : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.name.Contains("flash") && ( other.CompareTag("Player") || other.CompareTag("basketball"))
+        if ((gameObject.name.Contains("flash") || gameObject.name.Contains("mouse") ) 
+            && ( other.CompareTag("Player") || other.CompareTag("basketball") )
             && !ignoreCollision && !movingToTarget)
         {
             movingToTarget = true;
