@@ -201,15 +201,15 @@ public class StartManager : MonoBehaviour
     void Update()
     {
         // check for some button not selected
-        if (EventSystem.current != null)           
+        if (EventSystem.current != null)
         {
             if (EventSystem.current.currentSelectedGameObject == null)
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
             }
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        }        
-        
+        }
+
         // if player highlighted, display player
         if (currentHighlightedButton.Equals(playerSelectButtonName) || currentHighlightedButton.Equals(playerSelectOptionButtonName))
         {
@@ -754,7 +754,10 @@ public class StartManager : MonoBehaviour
             || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
         {
             // load highscores before loading scene
-            PlayerData.instance.loadStatsFromDatabase();
+            if (PlayerData.instance != null)
+            {
+                PlayerData.instance.loadStatsFromDatabase();
+            }
             SceneManager.LoadScene(sceneName);
         }
     }

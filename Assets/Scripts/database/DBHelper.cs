@@ -24,6 +24,8 @@ public class DBHelper : MonoBehaviour
 
     public static DBHelper instance;
 
+    public IDbConnection Dbconn { get => dbconn; set => dbconn = value; }
+
     void Awake()
     {
         instance = this;
