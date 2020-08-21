@@ -66,7 +66,15 @@ public class StatsTableAllTime : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        loadAllTimeStats();
+        if (GameObject.FindGameObjectWithTag("database") != null)
+            try
+            {
+                loadAllTimeStats();
+            }
+            catch
+            {
+                return;
+            }
     }
 
     public void loadAllTimeStats()

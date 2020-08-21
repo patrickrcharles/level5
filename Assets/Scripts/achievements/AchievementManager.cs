@@ -50,7 +50,17 @@ public class AchievementManager : MonoBehaviour
 
     private void Start()
     {
-        loadAchievements();
+        if (GameObject.FindGameObjectWithTag("database") != null)
+        {
+            try
+            {
+                loadAchievements();
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 
     void loadAchievements()

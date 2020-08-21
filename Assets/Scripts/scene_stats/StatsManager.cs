@@ -123,7 +123,17 @@ public class StatsManager : MonoBehaviour
         string field = modesList[defaultModeSelectedIndex].modeSelectedHighScoreField;
 
         // get data for default mode to be displayed
-        highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
+        if (GameObject.FindGameObjectWithTag("database") != null)
+        {
+            try
+            {
+                highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 
     private void Start()
@@ -336,34 +346,44 @@ public class StatsManager : MonoBehaviour
 
     public void changeHighScoreDataDisplay()
     {
-        // counts number entries returned.
-        int index = 0;
-
-        // get highscore field from mode prefab
-        string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
-
-        // get new list of scores based on currently selected game mode
-        highScoreRowsDataList
-            = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId);
-
-        // updates row with new data
-        for (int i = 0; i < highScoreRowsDataList.Count; i++)
+        if (GameObject.FindGameObjectWithTag("database") != null)
         {
-            // set data for prefabs from list retrieved from database
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score.ToString();
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
-            index++;
-        }
-        // empty out rows if scores do not exist or there isnt at least 10
-        for (int i = index; i < highScoreRowsObjectsList.Count; i++)
-        {
-            // set data for prefabs from list retrieved from database
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
-            highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
+            try
+            {
+                // counts number entries returned.
+                int index = 0;
+
+                // get highscore field from mode prefab
+                string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
+
+                // get new list of scores based on currently selected game mode
+                highScoreRowsDataList
+                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId);
+
+                // updates row with new data
+                for (int i = 0; i < highScoreRowsDataList.Count; i++)
+                {
+                    // set data for prefabs from list retrieved from database
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score.ToString();
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
+                    index++;
+                }
+                // empty out rows if scores do not exist or there isnt at least 10
+                for (int i = index; i < highScoreRowsObjectsList.Count; i++)
+                {
+                    // set data for prefabs from list retrieved from database
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
+                }
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 }
