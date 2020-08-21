@@ -354,7 +354,6 @@ public class BasketBall : MonoBehaviour
                 basketBallStats.MoneyBallAttempts++;
             }
         }
-
         // wait for shot meter to finish calculations for accurate launch values
         StartCoroutine(LaunchBasketBall());
 
@@ -411,10 +410,10 @@ public class BasketBall : MonoBehaviour
     }
 
     // =================================== Launch ball function =======================================
-    void Launch()
+    void Launch(GameObject ballPositionAtLaunch)
     {
-
-        Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 projectileXZPos = ballPositionAtLaunch.transform.position;
         Vector3 targetXZPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
             basketBallState.BasketBallTarget.transform.position.y,
             basketBallState.BasketBallTarget.transform.position.z);
@@ -459,7 +458,6 @@ public class BasketBall : MonoBehaviour
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
-
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
         //Debug.Log("Launch ----------- finish()");
@@ -470,10 +468,12 @@ public class BasketBall : MonoBehaviour
     // wair for shotmeter value calculation, launch ball
     IEnumerator LaunchBasketBall()
     {
+        // get position of ball when shot
+        GameObject currentBallPosition = basketBallPosition;
         // wait for shot meter to finish
         yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
         //launch ball to goal      
-        Launch();
+        Launch(basketBallPosition);
     }
 
     // ========================== shot accuracy functions ==========================================
@@ -520,7 +520,6 @@ public class BasketBall : MonoBehaviour
         }
 
         // 100 - slider + 0.6 of (100 - profile accuracy)
-        //Debug.Log("Launch modifier : " + (sliderModifer + (accuracyModifier / 2)) * direction);
         return (sliderModifer + (accuracyModifier * 0.6f)) * direction;
     }
 
