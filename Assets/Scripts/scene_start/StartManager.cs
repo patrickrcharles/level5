@@ -756,7 +756,14 @@ public class StartManager : MonoBehaviour
             // load highscores before loading scene
             if (PlayerData.instance != null)
             {
-                PlayerData.instance.loadStatsFromDatabase();
+                try
+                {
+                    PlayerData.instance.loadStatsFromDatabase();
+                }
+                catch
+                {
+                    return;
+                }
             }
             SceneManager.LoadScene(sceneName);
         }
