@@ -198,6 +198,18 @@ public class Pause : MonoBehaviour
         {
             TogglePause();
         }
+        // load highscores before loading scene
+        if (PlayerData.instance != null)
+        {
+            try
+            {
+                PlayerData.instance.loadStatsFromDatabase();
+            }
+            catch
+            {
+                return;
+            }
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
