@@ -425,7 +425,7 @@ public class BasketBall : MonoBehaviour
         float R = Vector3.Distance(projectileXZPos, targetXZPos);
         float G = Physics.gravity.y;
         float tanAlpha = Mathf.Tan(shooterProfile.ShootAngle * Mathf.Deg2Rad);
-        float H = basketBallState.BasketBallTarget.transform.position.y - transform.position.y;
+        float H = targetXZPos.y - projectileXZPos.y;
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
@@ -469,7 +469,7 @@ public class BasketBall : MonoBehaviour
     IEnumerator LaunchBasketBall()
     {
         // get position of ball when shot
-        GameObject currentBallPosition = basketBallPosition;
+        GameObject currentBallPosition = player.transform.Find("basketBall_position").gameObject;
         // wait for shot meter to finish
         yield return new WaitUntil(() => playerState.Shotmeter.MeterEnded == false);
         //launch ball to goal      
@@ -676,5 +676,5 @@ public class BasketBall : MonoBehaviour
     public BasketBallState BasketBallState => basketBallState;
 
     public bool UiStatsEnabled { get; private set; }
-
+    public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
 }
