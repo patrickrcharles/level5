@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -119,16 +120,22 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("device model : " + SystemInfo.deviceModel);
         //Debug.Log("device  name: " + SystemInfo.deviceName);
         //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
-
+        //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
+
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
-
-
         //Debug.Log("quality level : " + QualitySettings.GetQualityLevel());
         //Debug.Log("quality level : " + QualitySettings.names);
+
+        //Debug.Log("width : " + Screen.width);
+        //Debug.Log("height : " + Screen.height);
+        //int w = Screen.width;
+        //int h = Screen.height;
+        //float num = (float)w/h;
+        //Debug.Log("screen ratio : " + num );
 
         _locked = false;
 

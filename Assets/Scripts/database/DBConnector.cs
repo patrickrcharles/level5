@@ -10,7 +10,7 @@ using System.Collections;
 public class DBConnector : MonoBehaviour
 {
     private int currentPlayerId;
- 
+
     private String connection;
     private String databaseNamePath = "/level5.db";
     private string currentGameVersion;
@@ -49,7 +49,7 @@ public class DBConnector : MonoBehaviour
         dbHelper = gameObject.GetComponent<DBHelper>();
 
         // if database doesnt exist
-        if (!File.Exists(filepath))
+        if (!File.Exists(filepath))//|| !integrityCheck())
         {
             //databaseCreated = false;
             try
@@ -63,37 +63,6 @@ public class DBConnector : MonoBehaviour
                 return;
             }
         }
-
-        //previousGameVersion = "3.1.0";
-        //currentGameVersion = Application.version;
-
-        //// if user table not empty
-        //if (!dbHelper.isTableEmpty(tableNameUser))
-        //{
-        //    previousGameVersion = dbHelper.getStringValueFromTableByFieldAndId("User", "version", 1);
-        //}
-
-        //try // check if old game version
-        //{
-        //    // if database does exist but isnt is outdated schema
-        //    if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))
-        //    {
-        //        databaseCreated = false;
-        //        Debug.Log("if (File.Exists(filepath) && !previousGameVersion.Equals(currentGameVersion))");
-        //        // drop tables
-        //        dropDatabase();
-        //        // create upgraded db
-        //        createDatabase();
-        //    }
-        //}
-        //catch // if db errors, drop tables and create db
-        //{
-        //    Debug.Log("catch : create database");
-        //    // drop tables
-        //    dropDatabase();
-        //    // create upgraded db
-        //    createDatabase();
-        //}
     }
 
     void Start()
@@ -123,6 +92,88 @@ public class DBConnector : MonoBehaviour
         //{
         //    Debug.Log("editor closing, close db conn");
         //    dbconn.Close();
+        //}
+    }
+
+    private bool integrityCheck()
+    {
+        string value = "";
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+
+        //string sqlQuery = "PRAGMA integrity_check";
+        string sqlQuery = "pragma quick_check";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetString(0);
+        }
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        if (value.ToLower() == "ok")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    private void schemaInfo()
+    {
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+
+        //string sqlQuery = "PRAGMA integrity_check";
+        //string sqlQuery = "PRAGMA table_info('Achievements')";
+        string sqlQuery = "PRAGMA main.user_version";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+        }
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        Debug.Log("schema app id: " + value);
+
+        //if (value.ToLower() == "ok")
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    return false;
         //}
     }
 
@@ -345,8 +396,6 @@ public class DBConnector : MonoBehaviour
 
     void dropDatabase()
     {
-
-        //Debug.Log("dropDatabase()");
 
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
