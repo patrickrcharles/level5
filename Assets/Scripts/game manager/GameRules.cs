@@ -89,7 +89,7 @@ public class GameRules : MonoBehaviour
     private void Start()
     {
         gameOver = false;
-        gameModeId = GameOptions.gameModeSelected;
+        gameModeId = GameOptions.gameModeSelectedId;
         timer = GameObject.Find("timer").GetComponent<Timer>();
 
         // components
@@ -196,7 +196,7 @@ public class GameRules : MonoBehaviour
                 ;
                 // check if achievements reached, send bball stats object
                 AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
-                    GameOptions.levelId, GameOptions.gameModeSelected, basketBallStats.TotalPoints, basketBallStats);
+                    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints, basketBallStats);
             }
 
 
