@@ -165,7 +165,7 @@ public class DBHelper : MonoBehaviour
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
            "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled )  " +
-           "Values( '" + GameOptions.gameModeSelected
+           "Values( '" + GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
            + "','" + GameOptions.levelId
@@ -181,6 +181,8 @@ public class DBHelper : MonoBehaviour
            + stats.ShotAttempt + "','"
            + stats.MostConsecutiveShots + "','"
            + trafficEnabled + "')";
+
+        
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();

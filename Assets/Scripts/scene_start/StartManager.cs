@@ -191,7 +191,7 @@ public class StartManager : MonoBehaviour
         GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
-        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
 
         GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
@@ -750,7 +750,7 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             modeSelectedIndex--;
         }
-        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
     }
 
@@ -767,7 +767,7 @@ public class StartManager : MonoBehaviour
             modeSelectedIndex++;
         }
 
-        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
     }
 
@@ -857,7 +857,7 @@ public class StartManager : MonoBehaviour
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
 
 
-        GameOptions.gameModeSelected = modeSelectedData[modeSelectedIndex].ModeId;
+        GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
 
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;

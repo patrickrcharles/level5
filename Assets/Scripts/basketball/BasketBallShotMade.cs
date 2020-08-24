@@ -181,7 +181,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.ThreePointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
                     _basketBallStats.TotalPoints += 4;
                 }
@@ -195,7 +195,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.FourPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
                     _basketBallStats.TotalPoints += 6;
                 }
@@ -209,7 +209,7 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 _basketBallStats.SevenPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
-                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelected == 15)
+                if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
                     _basketBallStats.TotalPoints += 10;
                 }

@@ -14,7 +14,7 @@ public  class GameOptions : MonoBehaviour
     static public String cheerleaderDisplayName;
     static public int playerId;
     static public String levelSelected;
-    static public int gameModeSelected;
+    static public int gameModeSelectedId;
     static public int levelId;
     static public int cheerleaderId;
 
