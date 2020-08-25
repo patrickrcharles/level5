@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -62,10 +63,12 @@ public class StartManager : MonoBehaviour
     //const object names
     private const string startButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
+    private const string optionsButtonName = "options";
     private const string quitButtonName = "quit_game";
 
     // scene name
     private const string statsMenuSceneName = "level_00_stats";
+    private const string optionsMenuSceneName = "level_00_options";
 
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -258,7 +261,15 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadStatsMenu(statsMenuSceneName);
+            loadScene(statsMenuSceneName);
+        }
+
+        if ((controls.Player.submit.triggered
+            || controls.Player.jump.triggered
+            || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(optionsButtonName))
+        {
+            loadScene(optionsMenuSceneName);
         }
 
         // ================================== navigation =====================================================================
@@ -356,7 +367,7 @@ public class StartManager : MonoBehaviour
             //Debug.Log(" change option down");
             buttonPressed = true;
             try
-            {             
+            {
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerDown();
@@ -390,6 +401,7 @@ public class StartManager : MonoBehaviour
             buttonPressed = false;
         }
     }
+
 
     public void disableButtonsNotUsedForTouchInput()
     {
@@ -908,7 +920,7 @@ public class StartManager : MonoBehaviour
         messageText.text = "";
     }
 
-    public void loadStatsMenu(string sceneName)
+    public void loadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
