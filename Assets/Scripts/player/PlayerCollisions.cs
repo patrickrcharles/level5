@@ -35,17 +35,20 @@ public class PlayerCollisions : MonoBehaviour
             && other.CompareTag("knock_down_attack")
             && !playerState.KnockedDown)
         {
-            //Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.name);
-
-            if (playerCanBeKnockedDown)
+            // player can be knocked down and other
+            if (playerCanBeKnockedDown )
             {
                 playerKnockedDown(other.gameObject);
-                VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
-                // if playerData object exists
-                if (PlayerData.instance != null && playerCanBeKnockedDown)
+                // if vehicle, update hit by vehicle stats
+                if (other.transform.parent.parent.CompareTag("vehicle"))
                 {
-                    // add hit by car reference
-                    PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId);
+                    VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
+                    // if playerData object exists
+                    if (PlayerData.instance != null && playerCanBeKnockedDown)
+                    {
+                        // add hit by car reference
+                        PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId);
+                    }
                 }
             }
             else
