@@ -94,16 +94,12 @@ public class PlayerData : MonoBehaviour
         {
             // increase counter
             temp.counter++;
-            //Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle " + vehId + " on level : " + GameOptions.levelDisplayName 
-            //    + " " + temp.counter + " times");
         }
         else // create the vehicle entry
         {
             temp = new HitByCar(vehId);
             hitByCars.Add(temp);
             temp.counter++;
-            //Debug.Log(GameOptions.playerDisplayName + " hit by : vehicle" + vehId + " on level : " 
-            //    + GameOptions.levelDisplayName + " " + temp.counter + " times");
         } 
     }
 
@@ -135,30 +131,6 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    public void resetCurrentPlayerDataInMemory()
-    {
-        Debug.Log("resetCurrentPlayerDataInMemory");
-
-        _totalPoints = 0;
-        _threePointerMade = 0;
-        _fourPointerMade = 0;
-        _sevenPointerMade = 0;
-        _longestShotMade = 0;
-        _totalDistance = 0;
-        _makeThreePointersLowTime = 0;
-        _makeFourPointersLowTime = 0;
-        _makeFourPointersLowTime = 0;
-        _makeThreePointersMoneyBallLowTime = 0;
-        _makeFourPointersMoneyBallLowTime = 0;
-        _makeAllPointersMoneyBallLowTime = 0;
-        LongestShotMadeFreePlay = 0;
-    }
-
-    public void deleteAllSavedData()
-    {
-        // use wth caution. nuclear option
-        PlayerPrefs.DeleteAll();
-    }
 
     public float SevenPointerAttempts =>_sevenPointerAttempts;
    
