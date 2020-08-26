@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BehaviorFlash : MonoBehaviour
+public class BehaviorNpcSmallObstacle : MonoBehaviour
 {
 
     AudioSource moonwalkAudio;
