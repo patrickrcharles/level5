@@ -13,12 +13,6 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _player;
     private PlayerController _playerState;
 
-    //private AudioSource[] allAudioSources;
-
-    private bool _locked;
-
-    //private AudioSource[] allAudioSources;
-
     //BasketBall objects
     private GameObject _basketballPrefab;
     private GameObject _cheerleaderPrefab;
@@ -28,9 +22,9 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _playerSpawnLocation;
     private GameObject _cheerleaderSpawnLocation;
 
-    public BasketBall Basketball;
-    public GameObject BasketballObject;
-    public Vector3 BasketballRimVector;
+    private BasketBall _basketball;
+    private GameObject _basketballObject;
+    private Vector3 _basketballRimVector;
 
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
@@ -38,9 +32,9 @@ public class GameLevelManager : MonoBehaviour
     GameObject[] _npcObjects;
     GameObject[] _vehicleObjects;
 
+    private bool _locked;
 
     PlayerControls controls;
-    [SerializeField]
     FloatingJoystick joystick;
 
     const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
@@ -49,7 +43,6 @@ public class GameLevelManager : MonoBehaviour
 
     private void Awake()
     {
-
         instance = this;
         // mapped controls
         controls = new PlayerControls();
@@ -60,50 +53,20 @@ public class GameLevelManager : MonoBehaviour
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
         }
 
-        // if player selected is not null / player not selected
-        if (!string.IsNullOrEmpty( GameOptions.playerObjectName)){
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
-            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-        }
-        // spawn location
+        // spawn locations
         _playerSpawnLocation = GameObject.Find("player_spawn_location");
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
         _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
 
-        // if player doesnt exists
-        if (GameObject.FindWithTag("Player") == null)
-        {
-            if (_playerClone != null)
-            {    
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                // spawn default character
-                string playerPrefabPath = "Prefabs/characters/players/player_drblood" ;
-                _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-            }
-        }
+        // if player doesnt exists, spawn default Player
+        checkPlayerPrefabExists();
         // if basketball doesnt exists
-        if (GameObject.FindWithTag("basketball") == null)
-        {
-            _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
-            Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
-        }
+        checkBasketballPrefabExists();
         // cheerleader doesnt exists
-        if (GameObject.FindWithTag("cheerleader") == null 
-            && GameOptions.cheerleaderObjectName != null)
-        {
-            string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
-            _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
-
-            if (_cheerleaderClone != null)
-            {
-                Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
-            }
-        }
-
+        checkCheerleaderPrefabExists();
+        // check if player is npc in scene
+        checkPlayerIsNpcInScene();
+        // get necessary references to objects
         BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = BasketballObject.GetComponent<BasketBall>();
         BasketballRimVector = GameObject.Find("rim").transform.position;
@@ -124,6 +87,8 @@ public class GameLevelManager : MonoBehaviour
         //QualitySettings.vSyncCount = 1;
 
         QualitySettings.vSyncCount = 0;
+
+        //Debug.Log(System.DateTime.Now.Hour);
         //Application.targetFrameRate = 60;
 
         //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
@@ -138,46 +103,10 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("screen ratio : " + num );
 
         _locked = false;
-
         //set up player/basketball read only references for use in other classes
         _player = GameObject.FindGameObjectWithTag("Player");
         _playerState = Player.GetComponent<PlayerController>();
         Anim = Player.GetComponentInChildren<Animator>();
-
-        // if an npc is in scene, disable the npc if it is the player selected
-        //* this is specific to flash right now
-        _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
-
-        //string playerName = GameOptions.playerObjectName;
-        if (GameOptions.trafficEnabled)
-        {
-            _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
-
-            // check if player is vehicle in scene
-            foreach (var veh in _vehicleObjects)
-            {
-                if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
-                {
-                    veh.SetActive(false);
-                }
-            }
-        }
-        // check if player is npc in scene
-        foreach (var npc in _npcObjects)
-        {
-            if ( !string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName) )
-            {
-                npc.SetActive(false);
-            }
-        }
-        //// check if player is vehicle in scene
-        //foreach (var veh in _vehicleObjects)
-        //{
-        //    if (!string.IsNullOrEmpty(playerName) && veh.name.Contains(playerName))
-        //    {
-        //        veh.SetActive(false);
-        //    }
-        //}
     }
 
     private void Update()
@@ -203,6 +132,81 @@ public class GameLevelManager : MonoBehaviour
             BasketBall.instance.toggleUiStats(); 
             _locked = false;
         }
+
+    }
+
+    private void checkPlayerIsNpcInScene()
+    {
+        if (GameOptions.trafficEnabled)
+        {
+            _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
+
+            // check if player is vehicle in scene
+            foreach (var veh in _vehicleObjects)
+            {
+                if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
+                {
+                    veh.SetActive(false);
+                }
+            }
+        }
+        _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
+        foreach (var npc in _npcObjects)
+        {
+            if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
+            {
+                npc.SetActive(false);
+            }
+        }
+    }
+
+    private void checkCheerleaderPrefabExists()
+    {
+        if (GameObject.FindWithTag("cheerleader") == null
+            && GameOptions.cheerleaderObjectName != null)
+        {
+            string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
+            _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
+
+            if (_cheerleaderClone != null)
+            {
+                Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
+            }
+        }
+    }
+
+    private void checkBasketballPrefabExists()
+    {
+        if (GameObject.FindWithTag("basketball") == null)
+        {
+            _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
+            Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+        }
+    }
+
+    private void checkPlayerPrefabExists()
+    {
+        // if no player, spawn player
+        if (GameObject.FindWithTag("Player") == null)
+        {
+            if (_playerClone != null)
+            {
+                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                // spawn default character
+                string playerPrefabPath = "Prefabs/characters/players/player_drblood";
+                _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+            }
+        }
+        // if player selected is not null / player not selected / prefab not loaded properly
+        if (!string.IsNullOrEmpty(GameOptions.playerObjectName))
+        {
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
+            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+        }
     }
 
     private string GetCurrentSceneName()
@@ -224,6 +228,9 @@ public class GameLevelManager : MonoBehaviour
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
     public FloatingJoystick Joystick { get => joystick;  }
+    public BasketBall Basketball { get => _basketball; set => _basketball = value; }
+    public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
+    public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
 
     private void OnEnable()
     {
