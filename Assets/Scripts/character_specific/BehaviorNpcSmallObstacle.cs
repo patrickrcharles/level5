@@ -15,8 +15,10 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
     public float chargeSpeed;
 
     public float xMin, xMax, zMin, zMax, yMin, yMax;
-    public bool facingRight, walking;
-    public bool canMove;
+    [SerializeField]
+    public bool facingRight;
+    public bool walking;
+    //public bool canMove;
 
     public GameObject pos1, pos2, pos3;
 
@@ -59,7 +61,7 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
     {
         player = GameLevelManager.instance.Player;
         facingRight = true;
-        canMove = true;
+        //canMove = true;
         movementSpeed = walkMovementSpeed;
         currentSprite = transform.Find("sprite").GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody>();
@@ -81,7 +83,7 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
         //Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
 
-        if(distanceFromStartPos >= maxDistance && movingToTarget )
+        if (distanceFromStartPos >= maxDistance && movingToTarget)
         {
             outsideRange = true;
             insideRange = false;
@@ -103,13 +105,13 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
         }
 
         // if outside area
-        if (outsideRange && !movingToTarget && !locked )
+        if (outsideRange && !movingToTarget && !locked)
         {
             locked = true;
             ignoreCollision = true;
             movingToTarget = true;
 
-            StartCoroutine( waitOutsideRangeForXSeconds( 5));
+            StartCoroutine(waitOutsideRangeForXSeconds(5));
         }
 
 
@@ -129,8 +131,10 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
         }
         //rigidBody.velocity = movement * movementSpeed;
         navmeshAgent.speed = movementSpeed;
-
-        anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
+        if (rigidBody != null)
+        {
+            anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
+        }
 
         ////check if walking
         ////  function will flip sprite if needed
@@ -139,8 +143,9 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((gameObject.name.Contains("flash") || gameObject.name.Contains("mouse") ) 
-            && ( other.CompareTag("Player") || other.CompareTag("basketball") )
+        //if ((gameObject.name.Contains("flash") || gameObject.name.Contains("mouse") || gameObject.name.Contains("ghost")) 
+        if (gameObject.CompareTag("auto_npc")
+            && (other.CompareTag("Player") || other.CompareTag("basketball") || other.CompareTag("knock_down_attack"))
             && !ignoreCollision && !movingToTarget)
         {
             movingToTarget = true;
@@ -150,7 +155,7 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
             Vector3 relativePosition = newVector - oldVector;
 
             if (relativePosition.x < 0 && facingRight)
-            {     
+            {
                 Flip();
             }
             if (relativePosition.x > 0 && !facingRight)
@@ -194,6 +199,15 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
         {
             if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)
             {
+                // if not facing goal, flip
+                if (GameLevelManager.instance.BasketballRimVector.x < 0 && facingRight)
+                {
+                    Flip();
+                }
+                if (GameLevelManager.instance.BasketballRimVector.x > 0 && !facingRight)
+                {
+                    Flip();
+                }
                 return true;
             }
         }

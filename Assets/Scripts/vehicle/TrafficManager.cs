@@ -74,6 +74,7 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
+
     private void loadVehiclePrefabs()
     {
         // where are the prefabs, load them
@@ -101,7 +102,7 @@ public class TrafficManager : MonoBehaviour
         if (trafficManagerExists())
         {
             // get all the objects in folder, create list of the vehicleControllers
-            foreach (GameObject car in _customVehiclePrefabList)
+            foreach (GameObject car in CustomVehiclePrefabList)
             {
                 if (car != null)
                 {
@@ -247,4 +248,5 @@ public class TrafficManager : MonoBehaviour
     public List<VehicleController> VehiclesList { get => _vehiclesList; }
     public List<GameObject> VehiclesPrefabsList { get => _vehiclesPrefabsList; }
     public bool TrafficEnabled { get => trafficEnabled; set => trafficEnabled = value; }
+    public List<GameObject> CustomVehiclePrefabList { get => _customVehiclePrefabList; set => _customVehiclePrefabList = value; }
 }

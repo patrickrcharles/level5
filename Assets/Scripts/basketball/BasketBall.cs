@@ -26,26 +26,21 @@ public class BasketBall : MonoBehaviour
     GameObject dropShadow;
     private Vector3 dropShadowPosition;
 
-    // text objects
-    //GameObject scoreTextObject;
     Text scoreText;
-
-    //GameObject shootProfileObject;
     Text shootProfileText;
-
+    //shoot angle range
     [Range(20f, 70f)] public float _angle;
 
     float releaseVelocityY;
-    float _playerRigidBody;
-    float accuracy;
-    float twoAccuracy;
-    float threeAccuracy;
-    float fourAccuracy;
-    float sevenAccuracy;
-    private float lastShotDistance;
+    //float _playerRigidBody;
+    int  accuracy;
+    int  twoAccuracy;
+    int  threeAccuracy;
+    int  fourAccuracy;
+    int  sevenAccuracy;
+    float  lastShotDistance;
 
     bool playHitRimSound;
-    [SerializeField]
     bool locked;
 
     BasketBallShotMade basketBallShotMade;
@@ -125,10 +120,6 @@ public class BasketBall : MonoBehaviour
             basketBallState.CanPullBall = true;
             basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
         }
-        //if (playerState.hasBasketball)
-        //{
-        //    basketBallState.CanPullBall = false;
-        //}
 
         //if player has ball and hasnt shot
         if (playerState.hasBasketball)//&& !basketBallState.Thrown)
@@ -189,7 +180,7 @@ public class BasketBall : MonoBehaviour
                                 + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
                                 + "7 point accuracy : " + shooterProfile.Accuracy7Pt + "\n"
                                 + "jump : " + shooterProfile.JumpForce + "\n"
-                                + "luck : " + shooterProfile.CriticalPercent + "\n"
+                                + "luck : " + shooterProfile.Luck + "\n"
                                 + "speed : " + shooterProfile.RunSpeed;
     }
 
@@ -238,11 +229,6 @@ public class BasketBall : MonoBehaviour
         {
             playHitRimSound = true;
         }
-
-        //if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground"))
-        //{
-        //    basketBallState.Grounded = false;
-        //}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -257,16 +243,6 @@ public class BasketBall : MonoBehaviour
             //playerState.setPlayerAnim("hasBasketball", true);
             playerState.turnOffMoonWalkAudio();
         }
-
-        //if (gameObject.CompareTag("basketball") && other.CompareTag("ground"))
-        //{
-        //    basketBallState.Grounded = true;
-        //}
-
-        //if (gameObject.CompareTag("basketball") && other.name.Contains("dunk_zone"))
-        //{
-        //    basketBallState.Dunk = true;
-        //}
     }
 
     private void OnTriggerExit(Collider other)
@@ -286,9 +262,6 @@ public class BasketBall : MonoBehaviour
     public void shootBasketBall()
     {
 
-        //playerState.hasBasketball = false;
-        //playerState.setPlayerAnim("hasBasketball", false);
-
         // set side or front shooting animation
         if (playerState.facingFront) // facing straight toward bball goal
         {
@@ -300,8 +273,6 @@ public class BasketBall : MonoBehaviour
             // Debug.Log("anim");
             playerState.setPlayerAnimTrigger("basketballShoot");
         }
-
-        //Debug.Log("shootBasketBall()");
         // mostly prevent multiple inputs (button presses)
         releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
@@ -430,7 +401,7 @@ public class BasketBall : MonoBehaviour
         float Vy = tanAlpha * Vz;
 
         // if rolled critical or shot meter >= 95
-        if (rollForCriticalShotChance(shooterProfile.CriticalPercent)
+        if (rollForCriticalShotChance(shooterProfile.Luck)
            || playerState.Shotmeter.SliderValueOnButtonPress >= 95)
         {
             accuracyModifierX = 0;
@@ -463,7 +434,7 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("Launch ----------- finish()");
     }
 
-    // =========================================================== Functions and Properties ========================================================
+    // ============================ Functions and Properties ==========================================
 
     // wair for shotmeter value calculation, launch ball
     IEnumerator LaunchBasketBall()
@@ -666,15 +637,9 @@ public class BasketBall : MonoBehaviour
 
     // ============================= getters/ setters ======================================
 
-    public float LastShotDistance
-    {
-        get => lastShotDistance;
-        set => lastShotDistance = value;
-    }
-
+    public float LastShotDistance { get => lastShotDistance; set => lastShotDistance = value; }
     public BasketBallStats BasketBallStats => basketBallStats;
     public BasketBallState BasketBallState => basketBallState;
-
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
 }
