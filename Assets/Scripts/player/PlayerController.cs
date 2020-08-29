@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public bool hasBasketball;
 
     // #note this is work a work in progress feature. it works but it's bugged
+    [SerializeField]
     private bool isSetShooter;
     public bool IsSetShooter => isSetShooter;
     public bool canMove; // #todo add player knock downs, this could be used
@@ -608,7 +609,7 @@ public class PlayerController : MonoBehaviour
         shooterProfile.RunSpeed = GameOptions.runSpeed;
         shooterProfile.RunSpeed = GameOptions.runSpeedHasBall;
         shooterProfile.JumpForce = GameOptions.jumpForce;
-        shooterProfile.CriticalPercent = GameOptions.criticalPercent;
+        shooterProfile.Luck = GameOptions.criticalPercent;
         shooterProfile.ShootAngle = GameOptions.shootAngle;
         shooterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
         shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
