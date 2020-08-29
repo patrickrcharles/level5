@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,7 +11,9 @@ public class GameLevelManager : MonoBehaviour
 {
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
+    [SerializeField]
     private GameObject _player;
+    [SerializeField]
     private PlayerController _playerState;
 
     //BasketBall objects
@@ -64,18 +67,17 @@ public class GameLevelManager : MonoBehaviour
         checkBasketballPrefabExists();
         // cheerleader doesnt exists
         checkCheerleaderPrefabExists();
-        // check if player is npc in scene
+        //// check if player is npc in scene
         checkPlayerIsNpcInScene();
         // get necessary references to objects
+        //StartCoroutine( SetMajorObjectReferences() );
         BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = BasketballObject.GetComponent<BasketBall>();
         BasketballRimVector = GameObject.Find("rim").transform.position;
-
     }
 
     private void Start()
     {
-
         //unlimited
         //QualitySettings.vSyncCount = 0;
         //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
@@ -104,8 +106,35 @@ public class GameLevelManager : MonoBehaviour
 
         _locked = false;
         //set up player/basketball read only references for use in other classes
+        if(GameObject.FindWithTag("Player") == null)
+        {
+            Debug.Log("null player");
+        }
+
+        _player = GameObject.FindWithTag("Player");
+        _playerState = _player.GetComponent<PlayerController>();
+        Anim = Player.GetComponentInChildren<Animator>();
+    }
+
+    IEnumerator SetMajorObjectReferences()
+    {
+        yield return new WaitUntil(() => GameObject.FindWithTag("basketball") != null);
+        BasketballObject = GameObject.FindWithTag("basketball");
+
+        yield return new WaitUntil(() => BasketballObject.GetComponent<BasketBall>() != null);
+        Basketball = BasketballObject.GetComponent<BasketBall>();
+
+        yield return new WaitUntil(() => GameObject.Find("rim").transform.position != null);
+        BasketballRimVector = GameObject.Find("rim").transform.position;
+
+        //set up player/basketball read only references for use in other classes
+        yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerState = Player.GetComponent<PlayerController>();
+
+        yield return new WaitUntil(() => _player.GetComponent<PlayerController>() != null);
+        _playerState = _player.GetComponent<PlayerController>();
+
+        yield return new WaitUntil(() => Player.GetComponentInChildren<Animator>() != null);
         Anim = Player.GetComponentInChildren<Animator>();
     }
 
@@ -137,6 +166,8 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkPlayerIsNpcInScene()
     {
+        //Debug.Log("checkPlayerIsNpcInScene() : traffic : "+ GameOptions.trafficEnabled);
+        // check if player is 'a vehicle' ex. Sam on skateboard, Rad Tony on horse
         if (GameOptions.trafficEnabled)
         {
             _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
@@ -144,17 +175,22 @@ public class GameLevelManager : MonoBehaviour
             // check if player is vehicle in scene
             foreach (var veh in _vehicleObjects)
             {
+                //Debug.Log("veh  : " + veh.name);
+                //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
                 if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
                 {
+                    Debug.Log("disable veh  : " + veh.name);
                     veh.SetActive(false);
                 }
             }
         }
+        // check if player is an npc, ex. ??? on slab
         _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
         foreach (var npc in _npcObjects)
         {
             if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
             {
+                Debug.Log("disable npc  : " + npc.name);
                 npc.SetActive(false);
             }
         }
@@ -186,12 +222,20 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkPlayerPrefabExists()
     {
+        // if player selected is not null / player not selected
+        if (!string.IsNullOrEmpty(GameOptions.playerObjectName))
+        {
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
+            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+        }
+
         // if no player, spawn player
         if (GameObject.FindWithTag("Player") == null)
         {
             if (_playerClone != null)
             {
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+                //Debug.Log("player spawned : "+ _playerClone.name);
             }
             else
             {
@@ -199,13 +243,8 @@ public class GameLevelManager : MonoBehaviour
                 string playerPrefabPath = "Prefabs/characters/players/player_drblood";
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+                //Debug.Log("player spawned : " + _playerClone.name);
             }
-        }
-        // if player selected is not null / player not selected / prefab not loaded properly
-        if (!string.IsNullOrEmpty(GameOptions.playerObjectName))
-        {
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
-            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
         }
     }
 
