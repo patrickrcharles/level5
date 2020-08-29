@@ -44,6 +44,9 @@ public class PlayerData : MonoBehaviour
     private float _fourPointContestScore;
     private float _allPointContestScore;
 
+    private int _currentExperience;
+    private int _currentLevel;
+
     public static PlayerData instance;
     public List<HitByCar> hitByCars;
 
@@ -128,6 +131,12 @@ public class PlayerData : MonoBehaviour
             _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC");
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
+
+            // get current experience and level
+            CurrentExperience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile","experience", GameOptions.playerId);
+            CurrentLevel = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "level", GameOptions.playerId);
+
+            Debug.Log("exp : " + CurrentExperience + "  level : " + CurrentLevel);
         }
     }
 
@@ -182,4 +191,6 @@ public class PlayerData : MonoBehaviour
     public float ThreePointContestScore { get => _threePointContestScore; set => _threePointContestScore = value; }
     public float FourPointContestScore { get => _fourPointContestScore; set => _fourPointContestScore = value; }
     public float AllPointContestScore { get => _allPointContestScore; set => _allPointContestScore = value; }
+    public int CurrentExperience { get => _currentExperience; set => _currentExperience = value; }
+    public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
 }

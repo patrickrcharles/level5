@@ -48,6 +48,7 @@ public class DBConnector : MonoBehaviour
         filepath = Application.persistentDataPath + databaseNamePath;
         dbHelper = gameObject.GetComponent<DBHelper>();
 
+        createDatabase();
         // if database doesnt exist
         if (!File.Exists(filepath))//|| !integrityCheck())
         {
@@ -211,6 +212,11 @@ public class DBConnector : MonoBehaviour
         dbHelper.UpdateAchievementStats();
     }
 
+    public void savePlayerProfileProgression(float expGained)
+    {
+        dbHelper.UpdatePlayerProfileProgression(expGained);
+    }
+
     public void savePlayerAllTimeStats(BasketBallStats stats)
     {
         dbHelper.UpdateAllTimeStats(stats);
@@ -350,7 +356,7 @@ public class DBConnector : MonoBehaviour
             "vehicleId  INTEGER UNIQUE, " +
             "count INTEGER );" +
 
-            "CREATE TABLE Achievements(" +
+            "CREATE TABLE if not exists Achievements(" +
             "aid   INTEGER PRIMARY KEY, " +
             "charid   INTEGER," +
             "levelid   INTEGER," +
@@ -366,6 +372,24 @@ public class DBConnector : MonoBehaviour
             "activevalue_progress_float    REAL," +
             "islocked  INTEGER );" +
 
+            "CREATE TABLE if not exists CharacterProfile(" +
+            "id   INTEGER PRIMARY KEY, " +
+            "playerName   TEXT," +
+            "objectName   TEXT," +
+            "charid   INTEGER," +
+            "accuracy2   INTEGER," +
+            "accuracy3   INTEGER," +
+            "accuracy4   INTEGER," +
+            "accuracy7   INTEGER," +
+            "jump   float," +
+            "speed   float," +
+            "runSpeed   float," +
+            "runSpeedHasBall   float," +
+            "luck   INTEGER," +
+            "shootAngle   INTEGER," +
+            "experience   INTEGER," +
+            "level   INTEGER);" +
+
         "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +
             "userName  INTEGER, " +
@@ -376,7 +400,7 @@ public class DBConnector : MonoBehaviour
             "password  TEXT, " +
             "version   TEXT, " +
             "os    TEXT, " +
-            "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);");
+            "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);"); ;
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
@@ -393,6 +417,7 @@ public class DBConnector : MonoBehaviour
         //databaseCreated = true;
 
     }
+
 
     void dropDatabase()
     {
@@ -420,6 +445,119 @@ public class DBConnector : MonoBehaviour
         dbcmd = null;
         dbconn.Close();
         dbconn = null;
+    }
+
+    public void dropDatabaseTable(string tableName)
+    {
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            // DROP TABLE [IF EXISTS] [schema_name.]table_name;
+            string sqlQuery = String.Format(
+                "DROP TABLE if exists " + tableName + ";");
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch
+        {
+            return;
+        }
+    }
+
+    public bool tableExists(string tableName)
+    {
+
+        int count = 0;
+        string value = null;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery = String.Format(
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + tableName + "';");
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetString(0);
+            count++;
+        }
+
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        // if correct table name is returned and at least 1 table names exists
+        if (count > 0 && value.Equals(tableName))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void createTableCharacterProfile()
+    {
+        //Debug.Log("createDatabase()");
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists CharacterProfile(" +
+                "id   INTEGER PRIMARY KEY, " +
+                "charid   INTEGER," +
+                "playerName   TEXT," +
+                "objectName   TEXT," +
+                "accuracy2   INTEGER," +
+                "accuracy3   INTEGER," +
+                "accuracy4   INTEGER," +
+                "accuracy7   INTEGER," +
+                "jump   float," +
+                "speed   float," +
+                "runSpeed   float," +
+                "runSpeedHasBall   float," +
+                "luck   INTEGER," +
+                "shootAngle   INTEGER," +
+                "experience   INTEGER," +
+                "level   INTEGER);");
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbconn.Close();
+            dbconn = null;
+
+            dbcmd.Dispose();
+            dbcmd = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch
+        {
+            return;
+        }
     }
 
     public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }

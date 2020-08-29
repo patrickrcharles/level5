@@ -9,9 +9,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private float money;
     [SerializeField]
-    private int experience;
+    private int currentExperience;
     [SerializeField]
-    private int level;
+    private int currentLevel;
 
     public static PlayerStats instance;
 
@@ -31,13 +31,13 @@ public class PlayerStats : MonoBehaviour
 
     public int Experience
     {
-        get => experience;
-        set => experience = value;
+        get => currentExperience;
+        set => currentExperience = value;
     }
 
     public int Level
     {
-        get => level;
-        set => level = value;
+        get => currentLevel;
+        set => currentLevel = value;
     }
 }

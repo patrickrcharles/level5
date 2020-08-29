@@ -1,30 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 public class BasketBallStats : MonoBehaviour
 {
     private int _playerId;
-    private string _playerName;    
-    
+    private string _playerName;
+
     private int _levelId;
     private string _levelName;
 
+    private int _experienceGained;
+
     private int _totalPoints;
-    private float _twoPointerMade;
-    private float _threePointerMade;
-    private float _fourPointerMade;
-    private float _sevenPointerMade;
-    private float _moneyBallMade;
+    private int  _twoPointerMade;
+    private int  _threePointerMade;
+    private int  _fourPointerMade;
+    private int  _sevenPointerMade;
+    private int  _moneyBallMade;
 
-    private float _twoPointerAttempts;
-    private float _threePointerAttempts;
-    private float _fourPointerAttempts;
-    private float _sevenPointerAttempts;
-    private float _moneyBallAttempts;
+    private int  _twoPointerAttempts;
+    private int  _threePointerAttempts;
+    private int  _fourPointerAttempts;
+    private int  _sevenPointerAttempts;
+    private int  _moneyBallAttempts;
 
-    private float _shotAttempt;
-    private float _shotMade;
+    private int  _shotAttempt;
+    private int  _shotMade;
     private float _longestShotMade;
     private float _totalDistance;
 
@@ -36,9 +39,10 @@ public class BasketBallStats : MonoBehaviour
     private float _makeFourPointersMoneyBallLowTime;
     private float _makeAllPointersMoneyBallLowTime;
 
-    private float _criticalRolled;
+    private int _criticalRolled;
+    private int _mostConsecutiveShots;
+
     private float _timePlayed;
-    private float _mostConsecutiveShots;
 
     //init from game options
     void Start()
@@ -47,6 +51,36 @@ public class BasketBallStats : MonoBehaviour
         // id and name use to construct key that will be stored
         PlayerId = GameOptions.playerId;
         PlayerName = GameOptions.playerObjectName;
+    }
+
+    public int getExperienceGainedFromSession()
+    {
+        int experience = 0;
+        experience += TotalPoints * 10;
+        Debug.Log("TotalPoints : " + TotalPoints * 10);
+
+        experience += (TwoPointerMade * 20);
+        Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 20));
+
+        experience += (ThreePointerMade * 30);
+        Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 30));
+
+        experience += (FourPointerMade * 40);
+        Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 40));
+
+        experience += (SevenPointerMade * 70);
+        Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 70));
+
+        experience += Mathf.RoundToInt(TotalDistance);
+        Debug.Log("TotalDistance : " + TotalDistance);
+
+        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
+        experience += MostConsecutiveShots * 50;
+
+        ExperienceGained = experience;
+        Debug.Log("experience gained : " + ExperienceGained);
+
+        return ExperienceGained;
     }
 
     public float MakeThreePointersMoneyBallLowTime
@@ -85,19 +119,19 @@ public class BasketBallStats : MonoBehaviour
         set => _makeAllPointersLowTime = value;
     }
 
-    public float CriticalRolled
+    public int CriticalRolled
     {
         get => _criticalRolled;
         set => _criticalRolled = value;
     }
 
-    public float ShotAttempt
+    public int ShotAttempt
     {
         get => _shotAttempt;
         set => _shotAttempt = value;
     }
 
-    public float ShotMade
+    public int ShotMade
     {
         get => _shotMade;
         set => _shotMade = value;
@@ -133,61 +167,61 @@ public class BasketBallStats : MonoBehaviour
         set => _totalPoints = value;
     }
 
-    public float TwoPointerMade
+    public int  TwoPointerMade
     {
         get => _twoPointerMade;
         set => _twoPointerMade = value;
     }
 
-    public float ThreePointerMade
+    public int  ThreePointerMade
     {
         get => _threePointerMade;
         set => _threePointerMade = value;
     }
 
-    public float FourPointerMade
+    public int  FourPointerMade
     {
         get => _fourPointerMade;
         set => _fourPointerMade = value;
     }
 
-    public float TwoPointerAttempts
+    public int  TwoPointerAttempts
     {
         get => _twoPointerAttempts;
         set => _twoPointerAttempts = value;
     }
 
-    public float ThreePointerAttempts
+    public int  ThreePointerAttempts
     {
         get => _threePointerAttempts;
         set => _threePointerAttempts = value;
     }
 
-    public float FourPointerAttempts
+    public int  FourPointerAttempts
     {
         get => _fourPointerAttempts;
         set => _fourPointerAttempts = value;
     }
-    public float SevenPointerMade
+    public int  SevenPointerMade
     {
         get => _sevenPointerMade;
         set => _sevenPointerMade = value;
     }
 
-    public float SevenPointerAttempts
+    public int  SevenPointerAttempts
     {
         get => _sevenPointerAttempts;
         set => _sevenPointerAttempts = value;
     }
 
 
-    public float MoneyBallMade
+    public int  MoneyBallMade
     {
         get => _moneyBallMade;
         set => _moneyBallMade = value;
     }
 
-    public float MoneyBallAttempts
+    public int  MoneyBallAttempts
     {
         get => _moneyBallAttempts;
         set => _moneyBallAttempts = value;
@@ -198,8 +232,14 @@ public class BasketBallStats : MonoBehaviour
         get => _timePlayed;
         set => _timePlayed = value;
     }
-    public float MostConsecutiveShots 
-    { get => _mostConsecutiveShots;
-      set => _mostConsecutiveShots = value; 
+    public int MostConsecutiveShots
+    {
+        get => _mostConsecutiveShots;
+        set => _mostConsecutiveShots = value;
+    }
+    public int ExperienceGained
+    {
+        get => _experienceGained;
+        set => _experienceGained = value;
     }
 }

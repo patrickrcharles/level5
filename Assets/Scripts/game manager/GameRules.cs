@@ -192,8 +192,10 @@ public class GameRules : MonoBehaviour
 
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.saveHitByCarGameStats();
+                DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
+
                 /*DBConnector.instance.saveAchievementStats()*/
-                ;
+
                 // check if achievements reached, send bball stats object
                 AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
                     GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints, basketBallStats);
@@ -356,7 +358,7 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 6)
             {
                 displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance).ToString("0.00")
-                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim).ToString("0.00");
+                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
             }
             if (gameModeId == 7)
@@ -525,7 +527,8 @@ public class GameRules : MonoBehaviour
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
                          + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft."
-                         + "most consecutive shots : " + basketBallStats.MostConsecutiveShots;
+                         + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
+                         + "experience gained : " + basketBallStats.getExperienceGainedFromSession();
         return scoreText;
     }
 

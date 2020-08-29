@@ -12,11 +12,11 @@ public class ShooterProfile : MonoBehaviour
     [SerializeField] private Sprite playerPortrait;
     [SerializeField] private GameObject shooterProfileObject;
 
-    [SerializeField] private float jumpStatFloor;
-    [SerializeField] private float jumpStatCeiling;
+    private float jumpStatFloor = 3.5f;
+    private float jumpStatCeiling = 6;
 
-    [SerializeField] private float speedStatFloor;
-    [SerializeField] private float speedStatCeiling;
+    private float speedStatFloor = 2;
+    private float speedStatCeiling = 6;
 
     [SerializeField] private float accuracy2pt;
     [SerializeField] private float accuracy3pt;
@@ -70,7 +70,7 @@ public class ShooterProfile : MonoBehaviour
         Accuracy7Pt = GameOptions.accuracy7pt;
 
         JumpForce = GameOptions.jumpForce;
-        CriticalPercent = GameOptions.criticalPercent;
+        Luck = GameOptions.criticalPercent;
         RunSpeed = GameOptions.runSpeed;
         Speed = GameOptions.speed;
     }
@@ -215,7 +215,7 @@ public class ShooterProfile : MonoBehaviour
     //    set => release = value;
     //}
 
-    public float CriticalPercent
+    public float Luck
     {
         get => luck;
         set => luck = value;

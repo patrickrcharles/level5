@@ -17,6 +17,7 @@ public class DBHelper : MonoBehaviour
     private const String allTimeStatsTableName = "AllTimeStats";
     private const String hitByCarTableName = "HitByCar";
     private const String achievementTableName = "Achievements";
+    private const String characterProfileTableName = "CharacterProfile";
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -182,7 +183,7 @@ public class DBHelper : MonoBehaviour
            + stats.MostConsecutiveShots + "','"
            + trafficEnabled + "')";
 
-        
+
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -194,6 +195,83 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
     }
+
+    internal void UpdatePlayerProfileProgression(float expGained)
+    {
+        Debug.Log("UpdatePlayerProfileProgression : " + expGained);
+        Debug.Log("     total : " + (PlayerData.instance.CurrentExperience + expGained));
+        //Debug.Log("     charid : " + GameOptions.playerId);
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery1 =
+           "UPDATE "+ characterProfileTableName 
+           + " SET experience = " + (PlayerData.instance.CurrentExperience + expGained) 
+           + " WHERE charid = " + GameOptions.playerId;
+        //Debug.Log(sqlQuery1);
+
+        dbcmd.CommandText = sqlQuery1;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+    }
+
+
+    // insert current game's stats and score
+    public void InsertCharacterProfile(List<ShooterProfile> shooterProfileList)
+    {
+
+        var dbconn = new SqliteConnection(connection);
+        using (dbconn)
+        {
+            dbconn.Open(); //Open connection to the database.
+            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            {
+                using (SqliteCommand cmd = dbconn.CreateCommand())
+                {
+                    cmd.Transaction = tr;
+                    foreach (ShooterProfile shooter in shooterProfileList)
+                    {
+                            string sqlQuery =
+                            "Insert INTO "
+                            + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
+                            "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level) "
+                            + " Values('" + shooter.PlayerId 
+                            + "', '" + shooter.PlayerDisplayName
+                            + "', '" + shooter.PlayerObjectName
+                            + "', '" + (shooter.Accuracy2Pt + 60)
+                            + "', '" + (shooter.Accuracy3Pt + 60)
+                            + "', '" + (shooter.Accuracy4Pt + 60)
+                            + "', '" + (shooter.Accuracy7Pt + 60)
+                            + "', '" + shooter.JumpForce
+                            + "', '" + shooter.Speed
+                            + "', '" + shooter.RunSpeed
+                            + "', '" + shooter.RunSpeedHasBall
+                            + "', '" + shooter.Luck
+                            + "', '" + shooter.ShootAngle
+                            + "', '" + shooter.Experience
+                            + "', '" + shooter.Level
+                            + "')";
+
+                        cmd.CommandText = sqlQuery;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                tr.Commit();
+            }
+            dbconn.Close();
+        }
+    }
+
+
 
     internal BasketBallStats getAllTimeStats()
     {
@@ -229,7 +307,7 @@ public class DBHelper : MonoBehaviour
                 prevStats.MoneyBallAttempts = reader.GetInt32(9);
                 prevStats.TotalPoints = reader.GetInt32(10);
                 prevStats.TotalDistance = reader.GetFloat(11);
-                prevStats.LongestShotMade = reader.GetFloat(12);              
+                prevStats.LongestShotMade = reader.GetFloat(12);
                 prevStats.TimePlayed = reader.GetFloat(13);
             }
         }
@@ -331,6 +409,58 @@ public class DBHelper : MonoBehaviour
         return achieveStats;
     }
 
+    public List<ShooterProfile> getCharacterProfileStats()
+    {
+        List<ShooterProfile> characterStats = new List<ShooterProfile>();
+
+        String sqlQuery = "";
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        if (!isTableEmpty(characterProfileTableName))
+        {
+            sqlQuery = "Select charid, playerName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed," 
+                + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level" 
+                + " From " + characterProfileTableName;
+ 
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                ShooterProfile temp = new ShooterProfile();
+
+                temp.PlayerId = reader.GetInt32(0);
+                temp.PlayerDisplayName = reader.GetString(1);
+                temp.Accuracy2Pt = reader.GetInt32(2);
+                temp.Accuracy3Pt = reader.GetInt32(3);
+                temp.Accuracy4Pt = reader.GetInt32(4);
+                temp.Accuracy7Pt = reader.GetInt32(5);
+                temp.JumpForce = reader.GetFloat(6);
+                temp.Speed = reader.GetFloat(7);
+                temp.RunSpeed = reader.GetFloat(8);
+                temp.RunSpeedHasBall = reader.GetFloat(9);
+                temp.Luck = reader.GetInt32(10);
+                temp.ShootAngle = reader.GetInt32(11);
+                temp.Experience = reader.GetInt32(12);
+                temp.Level = reader.GetInt32(13);
+
+                //Debug.Log("db aid" + aid + " islocked : " + islocked);
+                //Achievement temp = Achievement(aid, activateInt, progressInt, islocked);
+                characterStats.Add(temp);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        return characterStats;
+    }
+
     internal void UpdateAllTimeStats(BasketBallStats stats)
     {
         String sqlQuery = "";
@@ -397,6 +527,30 @@ public class DBHelper : MonoBehaviour
         dbconn.Close();
         dbconn = null;
     }
+
+    //internal void UpdatePlayerProfileStats()
+    //{
+
+    //    IDbConnection dbconn;
+    //    dbconn = (IDbConnection)new SqliteConnection(connection);
+    //    dbconn.Open(); //Open connection to the database.
+    //    IDbCommand dbcmd = dbconn.CreateCommand();
+
+    //    string sqlQuery ="UPDATE " + characterProfileTableName + " SET experience = " + (GameLevelManager.instance.PlayerState.sho) + " WHERE vehicleId = " + hbc.vehicleId;
+
+    //    Debug.Log(sqlQuery);
+
+
+    //    dbcmd.CommandText = sqlQuery;
+    //    IDataReader reader = dbcmd.ExecuteReader();
+    //    reader.Close();
+
+    //    reader = null;
+    //    dbcmd.Dispose();
+    //    dbcmd = null;
+    //    dbconn.Close();
+    //    dbconn = null;
+    //}
 
     internal void UpdateHitByCarStats()
     {
@@ -506,8 +660,8 @@ public class DBHelper : MonoBehaviour
                             sqlQuery =
                             "Insert INTO "
                             + achievementTableName + " ( activevalue_int, activevalue_progress_int, islocked) "
-                            + " Values('" + prefabAchievement.ActivationValueInt + "', '" 
-                            + prefabAchievement.ActivationValueProgressionInt + "', '" 
+                            + " Values('" + prefabAchievement.ActivationValueInt + "', '"
+                            + prefabAchievement.ActivationValueProgressionInt + "', '"
                             + unlockAchievement + "')";
                         }
                         // check if sql query is empty/null. time saving method (skip query if not necessary to run)
@@ -622,7 +776,7 @@ public class DBHelper : MonoBehaviour
 
 
     // return int from specified table by field and userid
-    public int getIntValueFromTableByFieldAndId(String tableName, String field, int userid)
+    public int getIntValueFromTableByFieldAndCharId(String tableName, String field, int charid)
     {
         int value = 0;
 
@@ -631,7 +785,9 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = " + userid;
+        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE charid = " + charid;
+
+        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -730,7 +886,7 @@ public class DBHelper : MonoBehaviour
         IDbCommand dbcmd = dbconn.CreateCommand();
 
         // game modes that require float values/ low time as high score
-        if (modeid > 4 && modeid < 14 && modeid !=6)
+        if (modeid > 4 && modeid < 14 && modeid != 6)
         {
             sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
         }
@@ -769,10 +925,10 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
 
         // if less than 10 values in list, add empty values
-        if(listOfValues.Count < 10)
+        if (listOfValues.Count < 10)
         {
             int numToAdd = 10 - listOfValues.Count;
-            for(int i = 0; i < numToAdd; i++)
+            for (int i = 0; i < numToAdd; i++)
             {
                 listOfValues.Add(new StatsTableHighScoreRow("", "", "", ""));
             }
