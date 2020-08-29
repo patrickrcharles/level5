@@ -40,7 +40,7 @@ public class PlayerCollisions : MonoBehaviour
             {
                 playerKnockedDown(other.gameObject);
                 // if vehicle, update hit by vehicle stats
-                if (other.transform.parent.parent.CompareTag("vehicle"))
+                if (other.transform.parent.CompareTag("vehicle") )
                 {
                     VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
                     // if playerData object exists
