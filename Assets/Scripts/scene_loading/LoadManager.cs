@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,39 +13,46 @@ public class LoadManager : MonoBehaviour
     //list of all shooter profiles with player data
     [SerializeField]
     private List<ShooterProfile> playerSelectedData;
-
+    public List<ShooterProfile> PlayerSelectedData { get => playerSelectedData; }
     // list off cheerleader profile data
     [SerializeField]
     private List<StartScreenCheerleaderSelected> cheerleaderSelectedData;
-
+    public List<StartScreenCheerleaderSelected> CheerleaderSelectedData { get => cheerleaderSelectedData; }
     // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
+    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData; }
 
     //mode selected objects
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
+    public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int cheerleaderSelectedIndex;
 
-    [SerializeField]
-    GameObject playerSelectedIsLockedObject;
-
-    [SerializeField]
-    GameObject cheerleaderSelectedIsLockedObject;
-
     bool CharacterProfileTableExists = false;
     bool CharacterProfileTableCreated = false;
+
+    public static LoadManager instance;
+
+    internal bool playerDataLoaded = false;
+    internal bool cheerleaderDataLoaded = false;
+    internal bool levelDataLoaded = false;
+    internal bool modeDataLoaded;
+
+    const string startSceneName = "level_00_start";
 
     //private Text gameModeSelectText;
     void Awake()
     {
+        instance = this;
+
         // if CharacterProfile table does exist
-        if (DBConnector.instance.tableExists("CharacterProfile") )
-        {            
+        if (DBConnector.instance.tableExists("CharacterProfile"))
+        {
             CharacterProfileTableExists = true;
         }
         // if CharacterProfile table doesnt exist, create table
@@ -66,46 +72,157 @@ public class LoadManager : MonoBehaviour
         // insert default player profiles + table did not already exits
         if (CharacterProfileTableCreated && !CharacterProfileTableExists)
         {
-            loadDefaultPlayerShooterProfiles();
+            playerSelectedData = loadDefaultPlayerShooterProfiles();
             DBHelper.instance.InsertCharacterProfile(playerSelectedData);
         }
         //table already exists + does NOT require default records
         if (!CharacterProfileTableCreated && CharacterProfileTableExists)
         {
-            Debug.Log("Player profile data already exists");
+            playerSelectedData = loadPlayerSelectDataList();
+        }
+
+        cheerleaderSelectedData = loadCheerleaderSelectDataList();
+        levelSelectedData = loadLevelSelectDataList();
+        modeSelectedData = loadModeSelectDataList();
+
+    }
+
+    private void Update()
+    {
+        if (AchievementManager.instance.achievementsLoaded
+            && LoadedData.instance.dataLoaded)
+        {
+            SceneManager.LoadScene(startSceneName);
         }
     }
 
-
-    private void loadDefaultPlayerShooterProfiles()
+    private List<ShooterProfile> loadPlayerSelectDataList()
     {
-        string path = "Prefabs/start_menu/default_shooter_profiles";
+        List<ShooterProfile> dbShootStatsList = DBHelper.instance.getCharacterProfileStats();
+        List<ShooterProfile> shooterList = new List<ShooterProfile>();
+
+        string path = "Prefabs/menu_start/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
         foreach (GameObject obj in objects)
         {
             ShooterProfile temp = obj.GetComponent<ShooterProfile>();
-            playerSelectedData.Add(temp);
+
+            // load stats from DB, but load portrait from prefab
+            //dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PlayerPortrait = temp.PlayerPortrait;
+            temp.Accuracy2Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy2Pt;
+            temp.Accuracy3Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy3Pt;
+            temp.Accuracy4Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy4Pt;
+            temp.Accuracy7Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy7Pt;
+            temp.Speed = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Speed;
+            temp.RunSpeed = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).RunSpeed;
+            temp.RunSpeedHasBall = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).RunSpeedHasBall;
+            temp.Luck = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Luck;
+            temp.ShootAngle = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).ShootAngle;
+            temp.Experience = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Experience;
+            temp.Level = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Level;
+
+            shooterList.Add(temp);
         }
         // sort list by  character id
-        playerSelectedData.Sort(sortByPlayerId);
+        shooterList.Sort(sortByPlayerId);
+
+        playerDataLoaded = true;
+
+        return shooterList;
     }
 
-    private void loadCheerleaderSelectDataList()
-    {
 
-        string path = "Prefabs/start_menu/cheerleader_selected_object";
+    private List<ShooterProfile> loadDefaultPlayerShooterProfiles()
+    {
+        List<ShooterProfile> shooterList = new List<ShooterProfile>();
+
+        string path = "Prefabs/menu_start/default_shooter_profiles";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
-        //Debug.Log("objects : " + objects.Length);
         foreach (GameObject obj in objects)
         {
-            StartScreenCheerleaderSelected temp = obj.GetComponentInChildren<StartScreenCheerleaderSelected>();
-            //Debug.Log(" temp : " + temp.UnlockCharacterText);
-            cheerleaderSelectedData.Add(temp);
+            ShooterProfile temp = obj.GetComponent<ShooterProfile>();
+            shooterList.Add(temp);
         }
         // sort list by  character id
-        cheerleaderSelectedData.Sort(sortByCheerleaderId);
+        shooterList.Sort(sortByPlayerId);
+
+        if (shooterList.Count == objects.Length)
+        {
+            playerDataLoaded = true;
+        }
+
+        return shooterList;
+    }
+
+    private List<StartScreenCheerleaderSelected> loadCheerleaderSelectDataList()
+    {
+        List<StartScreenCheerleaderSelected> cheerList = new List<StartScreenCheerleaderSelected>();
+
+        string path = "Prefabs/menu_start/cheerleader_selected_object";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            StartScreenCheerleaderSelected temp = obj.GetComponent<StartScreenCheerleaderSelected>();
+            cheerList.Add(temp);
+        }
+        // sort list by  character id
+        cheerList.Sort(sortByCheerleaderId);
+
+        if (cheerList.Count == objects.Length)
+        {
+            cheerleaderDataLoaded = true;
+        }
+        return cheerList;
+    }
+
+    private List<StartScreenLevelSelected> loadLevelSelectDataList()
+    {
+        List<StartScreenLevelSelected> levelList = new List<StartScreenLevelSelected>();
+
+        string path = "Prefabs/menu_start/level_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
+            levelList.Add(temp);
+        }
+
+        // sort list by  level id
+        levelList.Sort(sortByLevelId);
+
+        if (levelList.Count == objects.Length)
+        {
+            levelDataLoaded = true;
+        }
+
+        return levelList;
+    }
+
+    private List<StartScreenModeSelected> loadModeSelectDataList()
+    {
+        List<StartScreenModeSelected> modeList = new List<StartScreenModeSelected>();
+
+        string path = "Prefabs/menu_start/mode_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
+            modeList.Add(temp);
+        }
+        // sort list by  mode id
+        modeList.Sort(sortByModeId);
+
+        if (modeList.Count == objects.Length)
+        {
+            modeDataLoaded = true;
+        }
+
+        return modeList;
     }
 
     static int sortByPlayerId(ShooterProfile p1, ShooterProfile p2)
@@ -126,43 +243,6 @@ public class LoadManager : MonoBehaviour
     static int sortByModeId(StartScreenModeSelected m1, StartScreenModeSelected m2)
     {
         return m1.ModeId.CompareTo(m2.ModeId);
-    }
-
-    private void loadLevelSelectDataList()
-    {
-        //Debug.Log("loadPlayerSelectDataList()");
-
-        string path = "Prefabs/start_menu/level_selected_objects";
-        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-
-        foreach (GameObject obj in objects)
-        {
-            StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
-            levelSelectedData.Add(temp);
-        }
-        // sort list by  level id
-        levelSelectedData.Sort(sortByLevelId);
-    }
-
-    private void loadModeSelectDataList()
-    {
-        //Debug.Log("loadModeSelectDataList()");
-
-        string path = "Prefabs/start_menu/mode_selected_objects";
-        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-
-        foreach (GameObject obj in objects)
-        {
-            StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
-            modeSelectedData.Add(temp);
-        }
-        // sort list by  mode id
-        modeSelectedData.Sort(sortByModeId);
-
-        //foreach (StartScreenModeSelected s in modeSelectedData)
-        //{
-        //    Debug.Log(" mode id : " + s.ModeId);
-        //}
     }
 
 
