@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
         ////controls = new PlayerControls();
         //Debug.Log("joystick found   active: " + joystick.enabled);
 
-        //moonwalkAudio = GetComponent<AudioSource>();
+        moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
@@ -520,6 +520,10 @@ public class PlayerController : MonoBehaviour
                 if (runningToggle)
                 {
                     anim.SetBool("moonwalking", true);
+                    if (!hasBasketball)
+                    {
+                        moonwalkAudio.enabled = true;
+                    }
                 }
             }
         }
@@ -528,6 +532,7 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("walking", false);
             anim.SetBool("moonwalking", false);
+            moonwalkAudio.enabled = false;
             running = false;
         }
 
@@ -599,7 +604,7 @@ public class PlayerController : MonoBehaviour
     //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
     public void turnOffMoonWalkAudio()
     {
-        // moonwalkAudio.enabled = false;
+        moonwalkAudio.enabled = false;
     }
 
     //*** need to update this
@@ -609,7 +614,7 @@ public class PlayerController : MonoBehaviour
         shooterProfile.RunSpeed = GameOptions.runSpeed;
         shooterProfile.RunSpeed = GameOptions.runSpeedHasBall;
         shooterProfile.JumpForce = GameOptions.jumpForce;
-        shooterProfile.Luck = GameOptions.criticalPercent;
+        shooterProfile.Luck = GameOptions.luck;
         shooterProfile.ShootAngle = GameOptions.shootAngle;
         shooterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
         shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
