@@ -35,7 +35,7 @@ public class BasketBallState : MonoBehaviour
     private int _onShootShotMarkerId;
 
     [SerializeField]
-    private float _ballDistanceFromRim;
+    private float _playerDistanceFromRim;
 
     private GameObject _basketBallPosition;
     private GameObject _basketBallTarget;
@@ -58,7 +58,7 @@ public class BasketBallState : MonoBehaviour
     void Update()
     {
 
-        BallDistanceFromRim = Vector3.Distance(transform.position, _basketBallTarget.transform.position);
+        PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
 
         // is player on  marker  +  is marker required for game mode
         if (GameRules.instance.PositionMarkersRequired)
@@ -67,7 +67,7 @@ public class BasketBallState : MonoBehaviour
         }
 
 
-        if (BallDistanceFromRim < ThreePointDistance)
+        if (PlayerDistanceFromRim < ThreePointDistance)
         {
             TwoPoints = true;
             _currentShotType = 2;
@@ -77,7 +77,7 @@ public class BasketBallState : MonoBehaviour
             TwoPoints = false;
         }
 
-        if (BallDistanceFromRim > ThreePointDistance && BallDistanceFromRim < FourPointDistance)
+        if (PlayerDistanceFromRim > ThreePointDistance && PlayerDistanceFromRim < FourPointDistance)
         {
             ThreePoints = true;
             _currentShotType = 3;
@@ -87,7 +87,7 @@ public class BasketBallState : MonoBehaviour
             ThreePoints = false;
         }
 
-        if (BallDistanceFromRim > FourPointDistance && BallDistanceFromRim < SevenPointDistance)
+        if (PlayerDistanceFromRim > FourPointDistance && PlayerDistanceFromRim < SevenPointDistance)
         {
             FourPoints = true;
             _currentShotType = 4;
@@ -97,7 +97,7 @@ public class BasketBallState : MonoBehaviour
             FourPoints = false;
         }
 
-        if (BallDistanceFromRim > SevenPointDistance)
+        if (PlayerDistanceFromRim > SevenPointDistance)
         {
             SevenPoints = true;
             _currentShotType = 7;
@@ -243,10 +243,10 @@ public class BasketBallState : MonoBehaviour
         get => _grounded;
         set => _grounded = value;
     }
-    public float BallDistanceFromRim
+    public float PlayerDistanceFromRim
     {
-        get => _ballDistanceFromRim;
-        set => _ballDistanceFromRim = value;
+        get => _playerDistanceFromRim;
+        set => _playerDistanceFromRim = value;
     }
 
     public GameObject BasketBallPosition
