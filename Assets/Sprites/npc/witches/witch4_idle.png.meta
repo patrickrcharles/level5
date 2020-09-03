@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: b513b6d2707f74a4191cbe55f88209c5
+guid: 9f727eef81b0dd640b79ba2e3084d6e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: witch_idle_0
+      213: 7278402520839040270
+    second: witch4_idle_0
   - first:
-      213: 21300002
-    second: witch_idle_1
+      213: 8255984719346008830
+    second: witch4_idle_1
   - first:
-      213: 21300004
-    second: witch_idle_2
+      213: -8125695342114087579
+    second: witch4_idle_2
   - first:
-      213: 21300006
-    second: witch_idle_3
+      213: -7669413889095450519
+    second: witch4_idle_3
   - first:
-      213: 21300008
-    second: witch_idle_4
+      213: -2370251870849047440
+    second: witch4_idle_4
   - first:
-      213: 21300010
-    second: witch_idle_5
+      213: 6163808938027366769
+    second: witch4_idle_5
   - first:
-      213: 21300012
-    second: witch_idle_6
+      213: 2979505941654388156
+    second: witch4_idle_6
   - first:
-      213: 21300014
-    second: witch_idle_7
+      213: -6396958432316597573
+    second: witch4_idle_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -61,7 +61,7 @@ TextureImporter:
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -83,7 +83,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -110,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
+    buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -122,22 +122,10 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: 33
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -145,173 +133,185 @@ TextureImporter:
     overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: witch_idle_0
+      name: witch4_idle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 576
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02305410000000000800000000000000
-      internalID: 21300000
+      spriteID: e0d2be2b784120560800000000000000
+      internalID: 7278402520839040270
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_1
+      name: witch4_idle_1
       rect:
         serializedVersion: 2
         x: 192
         y: 576
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22305410000000000800000000000000
-      internalID: 21300002
+      spriteID: ef20ca33c56239270800000000000000
+      internalID: 8255984719346008830
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_2
+      name: witch4_idle_2
       rect:
         serializedVersion: 2
         x: 384
         y: 576
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42305410000000000800000000000000
-      internalID: 21300004
+      spriteID: 56d5e3c532bbb3f80800000000000000
+      internalID: -8125695342114087579
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_3
+      name: witch4_idle_3
       rect:
         serializedVersion: 2
         x: 576
         y: 576
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62305410000000000800000000000000
-      internalID: 21300006
+      spriteID: 960c401c3b4c09590800000000000000
+      internalID: -7669413889095450519
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_4
+      name: witch4_idle_4
       rect:
         serializedVersion: 2
         x: 0
         y: 384
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82305410000000000800000000000000
-      internalID: 21300008
+      spriteID: 07466d94b7c2b1fd0800000000000000
+      internalID: -2370251870849047440
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_5
+      name: witch4_idle_5
       rect:
         serializedVersion: 2
         x: 192
         y: 384
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2305410000000000800000000000000
-      internalID: 21300010
+      spriteID: 179bf76629f3a8550800000000000000
+      internalID: 6163808938027366769
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_6
+      name: witch4_idle_6
       rect:
         serializedVersion: 2
         x: 384
         y: 384
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2305410000000000800000000000000
-      internalID: 21300012
+      spriteID: cbdb97a2ed4595920800000000000000
+      internalID: 2979505941654388156
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witch_idle_7
+      name: witch4_idle_7
       rect:
         serializedVersion: 2
         x: 576
         y: 384
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2305410000000000800000000000000
-      internalID: 21300014
+      spriteID: bba54d6c2307937a0800000000000000
+      internalID: -6396958432316597573
       vertices: []
       indices: 
       edges: []
@@ -319,7 +319,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
