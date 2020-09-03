@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class ShooterProfile : MonoBehaviour
+public class CharacterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
 
@@ -39,10 +37,13 @@ public class ShooterProfile : MonoBehaviour
 
     [SerializeField] private int level;
     [SerializeField] private int experience;
+    [SerializeField] private int pointsAvailable;
+    [SerializeField] private int pointsUsed;
     [SerializeField] private decimal money;
     [SerializeField] private bool isLocked;
     //[SerializeField] private int achievementId;
     [SerializeField] private string unlockCharacterText;
+
 
     void Start()
     {
@@ -54,25 +55,72 @@ public class ShooterProfile : MonoBehaviour
         }
     }
 
+    //private void intializeShooterStatsFromProfile()
+    //{
+
+    //    //Debug.Log("initializeStats()");
+    //    //this = LoadedData.instance.getSelectedCharacterProfile(GameOptions.playerId);
+    //    //playerObjectName = GameOptions.playerObjectName;
+    //    //playerDisplayName = GameOptions.playerDisplayName;
+    //    //playerId = GameOptions.playerId;
+
+    //    //runSpeedHasBall = GameOptions.runSpeedHasBall;
+
+    //    //Accuracy2Pt = GameOptions.accuracy2pt;
+    //    //Accuracy3Pt = GameOptions.accuracy3pt;
+    //    //Accuracy4Pt = GameOptions.accuracy4pt;
+    //    //Accuracy7Pt = GameOptions.accuracy7pt;
+
+    //    //JumpForce = GameOptions.jumpForce;
+    //    //Luck = GameOptions.luck;
+    //    //RunSpeed = GameOptions.runSpeed;
+    //    //Speed = GameOptions.speed;
+
+    //    //experience = GameOptions.playerExperience;
+    //    //experience = GameOptions.playerLevel;
+    //}
+
     private void intializeShooterStatsFromProfile()
     {
-        //Debug.Log("initializeStats()");
+        Debug.Log("initializeStats()");
 
-        playerObjectName = GameOptions.playerObjectName;
-        playerDisplayName = GameOptions.playerDisplayName;
-        playerId = GameOptions.playerId;
+        CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.playerId);
 
-        runSpeedHasBall = GameOptions.runSpeedHasBall;
+        playerObjectName = temp.playerObjectName;
+        playerDisplayName = temp.playerDisplayName;
+        playerId = temp.playerId;
 
-        Accuracy2Pt = GameOptions.accuracy2pt;
-        Accuracy3Pt = GameOptions.accuracy3pt;
-        Accuracy4Pt = GameOptions.accuracy4pt;
-        Accuracy7Pt = GameOptions.accuracy7pt;
+        Speed = temp.speed;
+        RunSpeed = temp.runSpeed;
+        runSpeedHasBall = temp.runSpeedHasBall;
 
-        JumpForce = GameOptions.jumpForce;
-        Luck = GameOptions.criticalPercent;
-        RunSpeed = GameOptions.runSpeed;
-        Speed = GameOptions.speed;
+        JumpForce = temp.jumpForce;
+        shootAngle = temp.shootAngle;
+
+        Accuracy2Pt = temp.accuracy2pt;
+        Accuracy3Pt = temp.accuracy3pt;
+        Accuracy4Pt = temp.accuracy4pt;
+        Accuracy7Pt = temp.accuracy7pt;
+
+        experience = temp.Experience;
+        level = temp.Level;
+        pointsAvailable = temp.PointsAvailable;
+        pointsUsed = temp.PointsUsed;
+            
+        // if 3/4/All point contest, disable Luck/citical %
+        if (GameOptions.gameModeThreePointContest
+            || GameOptions.gameModeFourPointContest
+            || GameOptions.gameModeAllPointContest)
+        {
+            Luck = 0;
+        }
+        else
+        {
+            Luck = temp.Luck;
+        }
+
+        // destroy loaded data after updating stats 
+        Destroy(LoadedData.instance.gameObject);
     }
 
     public float calculateJumpValueToPercent()
@@ -131,24 +179,6 @@ public class ShooterProfile : MonoBehaviour
         set => playerObjectName = value;
     }
 
-    //public GameObject ShooterProfileObject
-    //{
-    //    get => shooterProfileObject;
-    //    set => shooterProfileObject = value;
-    //}
-
-    //public float JumpStatFloor
-    //{
-    //    get => jumpStatFloor;
-    //    set => jumpStatFloor = value;
-    //}
-
-    //public float JumpStatCeiling
-    //{
-    //    get => jumpStatCeiling;
-    //    set => jumpStatCeiling = value;
-    //}
-
     public float Accuracy2Pt
     {
         get => accuracy2pt;
@@ -173,12 +203,6 @@ public class ShooterProfile : MonoBehaviour
         set => accuracy7pt = value;
     }
 
-    //public string ShooterProfilePrefabName
-    //{
-    //    get => shooterProfilePrefabName;
-    //    set => shooterProfilePrefabName = value;
-    //}
-
     public float JumpForce
     {
         get => jumpForce;
@@ -197,23 +221,6 @@ public class ShooterProfile : MonoBehaviour
         set => runSpeed = value;
     }
 
-    //public float HangTime
-    //{
-    //    get => hangTime;
-    //    set => hangTime = value;
-    //}
-
-    //public float Range
-    //{
-    //    get => range;
-    //    set => range = value;
-    //}
-
-    //public float Release
-    //{
-    //    get => release;
-    //    set => release = value;
-    //}
 
     public float Luck
     {
@@ -229,4 +236,6 @@ public class ShooterProfile : MonoBehaviour
     public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
     public bool IsLocked { get => isLocked; set => isLocked = value; }
     public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
+    public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
+    public int PointsUsed { get => pointsUsed; set => pointsUsed = value; }
 }
