@@ -11,7 +11,7 @@ public class BasketBall : MonoBehaviour
     PlayerController playerState;
     new Rigidbody rigidbody;
     AudioSource audioSource;
-    ShooterProfile shooterProfile;
+    CharacterProfile shooterProfile;
     [SerializeField]
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
@@ -65,7 +65,7 @@ public class BasketBall : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
@@ -89,6 +89,7 @@ public class BasketBall : MonoBehaviour
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
         if (GameObject.Find("ui_stats") != null)
         {
+
             shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
             scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
             if (UiStatsEnabled)
@@ -175,10 +176,10 @@ public class BasketBall : MonoBehaviour
                                 //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
                                 // " ft.\n"
                                   "shooter : " + shooterProfile.PlayerDisplayName + "\n"
-                                + "2 point accuracy : " + shooterProfile.Accuracy2Pt + "\n"
-                                + "3 point accuracy : " + shooterProfile.Accuracy3Pt + "\n"
-                                + "4 point accuracy : " + shooterProfile.Accuracy4Pt + "\n"
-                                + "7 point accuracy : " + shooterProfile.Accuracy7Pt + "\n"
+                                + "2 point accuracy : " + (shooterProfile.Accuracy2Pt) + "\n"
+                                + "3 point accuracy : " + (shooterProfile.Accuracy3Pt ) + "\n"
+                                + "4 point accuracy : " + (shooterProfile.Accuracy4Pt ) + "\n"
+                                + "7 point accuracy : " + (shooterProfile.Accuracy7Pt ) + "\n"
                                 + "jump : " + shooterProfile.JumpForce + "\n"
                                 + "luck : " + shooterProfile.Luck + "\n"
                                 + "speed : " + shooterProfile.RunSpeed;
@@ -340,17 +341,17 @@ public class BasketBall : MonoBehaviour
         //basketBallState.InAir = true;
         //basketBallState.Locked = false;
 
-        // update ui stats if necessary
-        if (UiStatsEnabled)
-        {
-            updateScoreText();
-            updateShooterProfileText();
-        }
-        else
-        {
-            scoreText.text = "";
-            shootProfileText.text = "";
-        }
+        //// update ui stats if necessary
+        //if (UiStatsEnabled)
+        //{
+        //    updateScoreText();
+        //    updateShooterProfileText();
+        //}
+        //else
+        //{
+        //    scoreText.text = "";
+        //    shootProfileText.text = "";
+        //}
     }
 
     private void updateBasketBallStateShotTypeOnShoot()
@@ -561,7 +562,7 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.CriticalRolled > 0)
         {
-            accuracy = basketBallStats.CriticalRolled / basketBallStats.ShotAttempt;
+            float accuracy = (float)basketBallStats.CriticalRolled / basketBallStats.ShotAttempt;
             return (accuracy * 100);
         }
         else
@@ -587,8 +588,8 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.TwoPointerAttempts > 0)
         {
-            twoAccuracy = basketBallStats.TwoPointerMade / basketBallStats.TwoPointerAttempts;
-            return (twoAccuracy * 100);
+            float accuracy = (float)basketBallStats.TwoPointerMade / basketBallStats.TwoPointerAttempts;
+            return (accuracy * 100);
         }
         else
         {
@@ -600,8 +601,8 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.ThreePointerAttempts > 0)
         {
-            threeAccuracy = basketBallStats.ThreePointerMade / basketBallStats.ThreePointerAttempts;
-            return (threeAccuracy * 100);
+            float accuracy = (float)basketBallStats.ThreePointerMade / basketBallStats.ThreePointerAttempts;
+            return (accuracy * 100);
         }
         else
         {
@@ -613,8 +614,8 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.FourPointerAttempts > 0)
         {
-            fourAccuracy = basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
-            return (fourAccuracy * 100);
+            float accuracy = (float)basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
+            return (accuracy * 100);
         }
         else
         {
@@ -626,8 +627,8 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.SevenPointerAttempts > 0)
         {
-            sevenAccuracy = basketBallStats.SevenPointerMade / basketBallStats.SevenPointerAttempts;
-            return (sevenAccuracy * 100);
+            float accuracy = (float)basketBallStats.SevenPointerMade / basketBallStats.SevenPointerAttempts;
+            return (accuracy * 100);
         }
         else
         {
