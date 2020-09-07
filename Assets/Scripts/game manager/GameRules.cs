@@ -167,6 +167,8 @@ public class GameRules : MonoBehaviour
         // game over. pause / display end game / save
         if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
+            Debug.Log("===== GAME OVER");
+            Debug.Log("***** game mode : " + GameOptions.gameModeSelectedId);
             //Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
@@ -182,7 +184,7 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             //save if at leat 1 minte played
-            if (GameObject.Find("database") != null)//&& basketBallStats.TimePlayed > 60)
+            if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
                 if (gameModeId != 99)
@@ -352,13 +354,13 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 5)
             {
                 displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade).ToString("0.00")
-                    + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim).ToString("00.00");
+                    + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
             }
             if (gameModeId == 6)
             {
                 displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance).ToString("0.00")
-                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("0.00");
+                + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("0.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.TotalDistance.ToString("0.00");
             }
             if (gameModeId == 7)
@@ -408,7 +410,7 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 99)
             {
                 displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade).ToString("0.00")
-                                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.BallDistanceFromRim * 6).ToString("00.00");
+                                                                 + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");
                 displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
                 // if longest shot > saved longest shot
                 if ((BasketBall.instance.BasketBallStats.LongestShotMade) > PlayerData.instance.LongestShotMadeFreePlay)
@@ -526,7 +528,7 @@ public class GameRules : MonoBehaviour
                          + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                          + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
                          + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft."
+                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
                          + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
                          + "experience gained : " + basketBallStats.getExperienceGainedFromSession();
         return scoreText;
