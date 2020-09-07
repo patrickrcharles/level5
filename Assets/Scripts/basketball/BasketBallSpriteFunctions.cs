@@ -140,7 +140,17 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     }
     public void playSfxHitMetalBang()
     {
-        audioSource.PlayOneShot(SFXBB.instance.metalBang,0.8f);
+        audioSource.PlayOneShot(SFXBB.instance.metalBang);
+    }
+
+    public void playSfxStoneCold()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.stoneCold);
+    }
+
+    public void playSfxChopWood()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.chopWood);
     }
 
     public void enableAttackBox()
