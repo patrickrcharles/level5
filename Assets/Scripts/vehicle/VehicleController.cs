@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,14 +17,14 @@ public class VehicleController : MonoBehaviour
     public Vector3 currentTarget;
     public string direction;
 
-    int currentTargetIndex;
-    int defaultTargetIndex = 0;
-    const string vehiclePosMarkersTag = "vehicle_position_marker";
+    //int currentTargetIndex;
+    //int defaultTargetIndex = 0;
+    //const string vehiclePosMarkersTag = "vehicle_position_marker";
 
     NavMeshAgent navMeshAgent;
-    GameObject spawnPoint;
+    //GameObject spawnPoint;
     Animator animator;
-    new Rigidbody rigidbody;
+    private Rigidbody rigidbody;
 
 
     public bool facingRight;

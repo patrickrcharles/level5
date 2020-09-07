@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
-    ShooterProfile shooterProfile;
+    CharacterProfile characterProfile;
     BasketBall basketball;
     private ShotMeter shotmeter;
 
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
-        shooterProfile = GetComponent<ShooterProfile>();
+        characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
         //joystick = GameLevelManager.instance.Joystick;
@@ -118,18 +118,13 @@ public class PlayerController : MonoBehaviour
         // bball rim vector, used for relative positioning
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
-        //// #note used for testing scenes
-        //if (GameOptions.gameModeHasBeenSelected)
-        //{
-        //    setShooterProfileStats();
-        //}
-
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
         canMove = true;
-        movementSpeed = shooterProfile.Speed;
+        movementSpeed = characterProfile.Speed;
         runningToggle = true;
+
     }
 
     // not affected by framerate
@@ -159,38 +154,6 @@ public class PlayerController : MonoBehaviour
                 movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
             }
-
-            //Input Sytem 1.0.0 Touch controls variables-------------------------------------------------------------- -
-            //movementHorizontal = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().x;
-            //movementVertical = GameLevelManager.Instance.Controls.PlayerTouch.movement.ReadValue<Vector2>().y;
-
-            //Debug.Log("movementHorizontal " + movementHorizontal);
-            //Debug.Log("movementVertical " + movementVertical);
-            //if (Input.touchCount > 0)
-            //{
-            //    touch = Input.touches[0];
-            //    Debug.Log(touch.phase);
-            //    Debug.Log(touch.deltaPosition.x);
-            //    Debug.Log(touch.deltaPosition.y);
-            //    Debug.Log(touch.position);
-            //    Debug.Log(touch.radius);
-
-            //    if (touch.phase == TouchPhase.Moved)
-            //    {
-            //        Vector3 newPosition = Input.touches[0].position - touch.position;
-            //        //touch.position = Input.touches[0].position;
-
-            //        movement = new Vector3(newPosition.x, 0, newPosition.y) * movementSpeed * Time.deltaTime;
-
-            //        if (touch.phase == TouchPhase.Ended)
-            //        {
-            //            Debug.Log("TouchPhase.Ended ");
-            //            rigidBody.velocity = Vector2.zero;
-            //        }
-            //    }
-
-            //}
-
 
             //-----------------------------------------------------------------------------------------------------
             rigidBody.MovePosition(transform.position + movement);
@@ -391,12 +354,12 @@ public class PlayerController : MonoBehaviour
             && !inAir
             && !KnockedDown)
         {
-                movementSpeed = shooterProfile.Speed;
+                movementSpeed = characterProfile.Speed;
         }
         // if run state
         if (currentState == run ) //|| (runningToggle || running) )
         {
-            movementSpeed = shooterProfile.RunSpeed; ;
+            movementSpeed = characterProfile.RunSpeed; ;
         }
         // inair state
         if (inAir)
@@ -498,7 +461,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isSetShooter)
         {
-            rigidBody.velocity = (Vector3.up * shooterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
+            rigidBody.velocity = (Vector3.up * characterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
         }
 
         //jumpStartTime = Time.time;
@@ -610,16 +573,16 @@ public class PlayerController : MonoBehaviour
     //*** need to update this
     void setShooterProfileStats()
     {
-        shooterProfile.Speed = GameOptions.speed;
-        shooterProfile.RunSpeed = GameOptions.runSpeed;
-        shooterProfile.RunSpeed = GameOptions.runSpeedHasBall;
-        shooterProfile.JumpForce = GameOptions.jumpForce;
-        shooterProfile.Luck = GameOptions.luck;
-        shooterProfile.ShootAngle = GameOptions.shootAngle;
-        shooterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
-        shooterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
-        shooterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
-        shooterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
+        characterProfile.Speed = GameOptions.speed;
+        characterProfile.RunSpeed = GameOptions.runSpeed;
+        characterProfile.RunSpeed = GameOptions.runSpeedHasBall;
+        characterProfile.JumpForce = GameOptions.jumpForce;
+        characterProfile.Luck = GameOptions.luck;
+        characterProfile.ShootAngle = GameOptions.shootAngle;
+        characterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
+        characterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
+        characterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
+        characterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
     }
 
     public bool grounded

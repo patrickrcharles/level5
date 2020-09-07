@@ -192,7 +192,7 @@ public class cameraUpdater : MonoBehaviour
         }
     }
 
-    private void toggleCameraOnGoal()
+    public void toggleCameraOnGoal()
     {
         onGoalCameraEnabled = !onGoalCameraEnabled;
         if (onGoalCameraEnabled)
