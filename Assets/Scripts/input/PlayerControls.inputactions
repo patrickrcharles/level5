@@ -1246,17 +1246,6 @@
                 },
                 {
                     "name": "",
-                    "id": "82a73772-a011-47d9-a9e1-6068fbe90bf8",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b9ecb624-910b-456d-9613-a758f72dfc25",
                     "path": "<Gamepad>/select",
                     "interactions": "",
@@ -1292,6 +1281,17 @@
                     "name": "",
                     "id": "f407e39e-9523-42ad-bfb7-4d754021d16a",
                     "path": "<HID::Sony PLAYSTATION(R)3 Controller>/button9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "063b9ecc-aa67-42b2-86da-7b0703180855",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
