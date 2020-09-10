@@ -1,42 +1,44 @@
-﻿using System;
-using System.Collections;
+﻿
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
+/* This class is used to store Player data from the database such as high scores
+ * and data that will be used to update high scores and inserted into database
+ */
+
 public class PlayerData : MonoBehaviour
 {
-    private BasketBallStats basketBallStats;
+    //private BasketBallStats basketBallStats;
 
     private int _playerId;
-    private  string _playerName;
+    private string _playerName;
 
-    private  float _totalPoints;
-    private  float _totalPointsBonus;
-    private  float _twoPointerMade;
-    private  float _threePointerMade;
-    private  float _sevenPointerMade;
+    private float _totalPoints;
+    private float _totalPointsBonus;
+    private float _twoPointerMade;
+    private float _threePointerMade;
+    private float _sevenPointerMade;
 
-    private  float _fourPointerMade;
-    private  float _twoPointerAttempts;
-    private  float _threePointerAttempts;
-    private  float _fourPointerAttempts;
-    private  float _sevenPointerAttempts;
+    private float _fourPointerMade;
+    private float _twoPointerAttempts;
+    private float _threePointerAttempts;
+    private float _fourPointerAttempts;
+    private float _sevenPointerAttempts;
 
-    private  float _shotAttempt;
-    private  float _shotMade;
-    private  float _longestShotMade;
-    private  float _longestShotMadeFreePlay;
-    private  float _totalDistance;
+    private float _shotAttempt;
+    private float _shotMade;
+    private float _longestShotMade;
+    private float _longestShotMadeFreePlay;
+    private float _totalDistance;
 
-    private  float _makeThreePointersLowTime;
-    private  float _makeFourPointersLowTime;
-    private  float _makeAllPointersLowTime;
+    private float _makeThreePointersLowTime;
+    private float _makeFourPointersLowTime;
+    private float _makeAllPointersLowTime;
 
-    private  float _makeThreePointersMoneyBallLowTime;
-    private  float _makeFourPointersMoneyBallLowTime;
-    private  float _makeAllPointersMoneyBallLowTime;
+    private float _makeThreePointersMoneyBallLowTime;
+    private float _makeFourPointersMoneyBallLowTime;
+    private float _makeAllPointersMoneyBallLowTime;
 
     private int _mostConsecutiveShots;
 
@@ -44,8 +46,14 @@ public class PlayerData : MonoBehaviour
     private float _fourPointContestScore;
     private float _allPointContestScore;
 
+    [SerializeField]
     private int _currentExperience;
+    [SerializeField]
     private int _currentLevel;
+    [SerializeField]
+    private int _updatePointsAvailable;
+    [SerializeField]
+    private int _updatePointsUsed;
 
     public static PlayerData instance;
     public List<HitByCar> hitByCars;
@@ -68,7 +76,6 @@ public class PlayerData : MonoBehaviour
 
     void Awake()
     {
-
         DontDestroyOnLoad(gameObject);
         if (instance == null)
         {
@@ -78,12 +85,14 @@ public class PlayerData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     private void Start()
     {
+
         hitByCars = new List<HitByCar>();
-        if (GameObject.Find("database") != null)
+        if (GameObject.FindGameObjectsWithTag("database") != null)
         {
             loadStatsFromDatabase();
         }
@@ -103,12 +112,12 @@ public class PlayerData : MonoBehaviour
             temp = new HitByCar(vehId);
             hitByCars.Add(temp);
             temp.counter++;
-        } 
+        }
     }
 
     public void loadStatsFromDatabase()
     {
-        //Debug.Log("load from database");
+        Debug.Log("load from database");
 
         if (DBHelper.instance != null)
         {
@@ -131,18 +140,12 @@ public class PlayerData : MonoBehaviour
             _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC");
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
-
-            // get current experience and level
-            CurrentExperience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile","experience", GameOptions.playerId);
-            CurrentLevel = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "level", GameOptions.playerId);
-
-            Debug.Log("exp : " + CurrentExperience + "  level : " + CurrentLevel);
         }
+
     }
 
+    public float SevenPointerAttempts => _sevenPointerAttempts;
 
-    public float SevenPointerAttempts =>_sevenPointerAttempts;
-   
     public int PlayerId => _playerId;
 
     public string PlayerName => _playerName;
@@ -193,4 +196,5 @@ public class PlayerData : MonoBehaviour
     public float AllPointContestScore { get => _allPointContestScore; set => _allPointContestScore = value; }
     public int CurrentExperience { get => _currentExperience; set => _currentExperience = value; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
+    public int UpdatePointsAvailable { get => _updatePointsAvailable; set => _updatePointsAvailable = value; }
 }
