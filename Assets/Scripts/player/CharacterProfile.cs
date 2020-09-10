@@ -55,30 +55,6 @@ public class CharacterProfile : MonoBehaviour
         }
     }
 
-    //private void intializeShooterStatsFromProfile()
-    //{
-
-    //    //Debug.Log("initializeStats()");
-    //    //this = LoadedData.instance.getSelectedCharacterProfile(GameOptions.playerId);
-    //    //playerObjectName = GameOptions.playerObjectName;
-    //    //playerDisplayName = GameOptions.playerDisplayName;
-    //    //playerId = GameOptions.playerId;
-
-    //    //runSpeedHasBall = GameOptions.runSpeedHasBall;
-
-    //    //Accuracy2Pt = GameOptions.accuracy2pt;
-    //    //Accuracy3Pt = GameOptions.accuracy3pt;
-    //    //Accuracy4Pt = GameOptions.accuracy4pt;
-    //    //Accuracy7Pt = GameOptions.accuracy7pt;
-
-    //    //JumpForce = GameOptions.jumpForce;
-    //    //Luck = GameOptions.luck;
-    //    //RunSpeed = GameOptions.runSpeed;
-    //    //Speed = GameOptions.speed;
-
-    //    //experience = GameOptions.playerExperience;
-    //    //experience = GameOptions.playerLevel;
-    //}
 
     private void intializeShooterStatsFromProfile()
     {
@@ -120,7 +96,17 @@ public class CharacterProfile : MonoBehaviour
         }
 
         // destroy loaded data after updating stats 
-        Destroy(LoadedData.instance.gameObject);
+        if (LoadedData.instance != null)
+        {
+            try
+            {
+                Destroy(LoadedData.instance.gameObject);
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 
     public float calculateJumpValueToPercent()
