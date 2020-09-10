@@ -1,6 +1,8 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,12 +14,12 @@ public class LoadManager : MonoBehaviour
 
     //list of all shooter profiles with player data
     [SerializeField]
-    private List<ShooterProfile> playerSelectedData;
-    public List<ShooterProfile> PlayerSelectedData { get => playerSelectedData; }
+    private List<CharacterProfile> playerSelectedData;
+    public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; }
     // list off cheerleader profile data
     [SerializeField]
-    private List<StartScreenCheerleaderSelected> cheerleaderSelectedData;
-    public List<StartScreenCheerleaderSelected> CheerleaderSelectedData { get => cheerleaderSelectedData; }
+    private List<CheerleaderProfile> cheerleaderSelectedData;
+    public List<CheerleaderProfile> CheerleaderSelectedData { get => cheerleaderSelectedData; }
     // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
@@ -41,17 +43,21 @@ public class LoadManager : MonoBehaviour
     internal bool playerDataLoaded = false;
     internal bool cheerleaderDataLoaded = false;
     internal bool levelDataLoaded = false;
-    internal bool modeDataLoaded;
+    internal bool modeDataLoaded = false;
 
     const string startSceneName = "level_00_start";
 
-    //private Text gameModeSelectText;
+    bool isLocked = false;
+    private bool CheerleaderProfileTableExists;
+    private bool CheerleaderProfileTableCreated;
+
     void Awake()
     {
         instance = this;
 
         // if CharacterProfile table does exist
-        if (DBConnector.instance.tableExists("CharacterProfile"))
+        if (DBConnector.instance.tableExists("CharacterProfile")
+            && !DBHelper.instance.isTableEmpty("CharacterProfile"))
         {
             CharacterProfileTableExists = true;
         }
@@ -64,11 +70,48 @@ public class LoadManager : MonoBehaviour
             DBConnector.instance.createTableCharacterProfile();
             CharacterProfileTableCreated = true;
         }
-    }
+
+        if (DBConnector.instance.tableExists("CheerleaderProfile")
+            && !DBHelper.instance.isTableEmpty("CheerleaderProfile"))
+        {
+            CheerleaderProfileTableExists = true;
+        }
+        // if CharacterProfile table doesnt exist, create table
+        else
+        {
+            // drop table just in case of error
+            DBConnector.instance.dropDatabaseTable("CheerleaderProfile");
+            //create table
+            DBConnector.instance.createTableCheerleaderProfile();
+            CheerleaderProfileTableCreated = true;
+        }
+
+
+            // if CharacterProfile table does exist
+            //if (DBConnector.instance.tableExists("Achievements")
+            //    && !DBHelper.instance.isTableEmpty("Achievements"))
+            //{
+            //    CharacterProfileTableExists = true;
+            //}
+            //// if CharacterProfile table doesnt exist, create table
+            //else
+            //{
+            //    // drop table just in case of error
+            //    DBConnector.instance.dropDatabaseTable("Achievements");
+            //    //create table
+            //    //DBConnector.instance.createTableCharacterProfile();
+            //    DBConnector.instance.createTableAchievements();
+            //    CharacterProfileTableCreated = true;
+            //}
+        }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        // WAIT FOR ACHIEVEMENT MANAGER
+        // NEED UNLOCK TEXT FOR LOADING PLAYER /CHEERLEADER DATA
+
         // insert default player profiles + table did not already exits
         if (CharacterProfileTableCreated && !CharacterProfileTableExists)
         {
@@ -81,35 +124,85 @@ public class LoadManager : MonoBehaviour
             playerSelectedData = loadPlayerSelectDataList();
         }
 
-        cheerleaderSelectedData = loadCheerleaderSelectDataList();
+        // =============================================================================
+        // insert default cheerleader profiles + table did not already exits
+        if (CheerleaderProfileTableCreated && !CheerleaderProfileTableExists)
+        {
+            // load default data from prefabs
+            cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
+            // insert default into DB
+            DBHelper.instance.InsertCheerleaderProfile(cheerleaderSelectedData);
+        }
+
+        //table already exists + does NOT require default records
+        if (!CheerleaderProfileTableCreated && CheerleaderProfileTableExists)
+        {
+            cheerleaderSelectedData = loadCheerleaderSelectDataList();
+        }
+        //cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
+
         levelSelectedData = loadLevelSelectDataList();
         modeSelectedData = loadModeSelectDataList();
 
     }
 
+
     private void Update()
     {
+        //Debug.Log("AchievementManager.instance.achievementsLoaded : " + AchievementManager.instance.achievementsLoaded);
+
         if (AchievementManager.instance.achievementsLoaded
-            && LoadedData.instance.dataLoaded)
+            && LoadedData.instance.DataLoaded)
         {
             SceneManager.LoadScene(startSceneName);
         }
     }
 
-    private List<ShooterProfile> loadPlayerSelectDataList()
+    IEnumerator InsertNewCharacterToDB(CharacterProfile character)
     {
-        List<ShooterProfile> dbShootStatsList = DBHelper.instance.getCharacterProfileStats();
-        List<ShooterProfile> shooterList = new List<ShooterProfile>();
+        DBHelper.instance.InsertCharacterProfile(character);
+        yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
+        Debug.Log("player record inserted");
+    }
+
+    IEnumerator InsertNewCheerleaderToDB(CheerleaderProfile cheerleader)
+    {
+        DBHelper.instance.InsertCheerleaderProfile(cheerleader);
+        yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
+        Debug.Log("cheerleader record inserted");
+    }
+
+    private List<CharacterProfile> loadPlayerSelectDataList()
+    {
+        Debug.Log("loadPlayerSelectDataList()");
+        List<CharacterProfile> dbShootStatsList = DBHelper.instance.getCharacterProfileStats();
+        List<CharacterProfile> shooterList = new List<CharacterProfile>();
 
         string path = "Prefabs/menu_start/player_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
         foreach (GameObject obj in objects)
         {
-            ShooterProfile temp = obj.GetComponent<ShooterProfile>();
+            /*
+             * if prefab is not in DB, insert
+             * ex. create new character, need to auto insert into db
+             */
+            CharacterProfile temp = obj.GetComponent<CharacterProfile>();
+
+            // if character not in database, but prefab exists -- insert into DB and add to list
+            if (!dbShootStatsList.Any(item => item.PlayerId == temp.PlayerId))
+            {
+                isLocked = true;
+                // get default profile for chracter to be inserted
+                string defaultPath = "Prefabs/menu_start/default_shooter_profiles/player_selected_"+temp.PlayerObjectName;
+                CharacterProfile defaultTemp = Resources.Load<GameObject>(defaultPath).GetComponent<CharacterProfile>();
+                // insert to DB
+                StartCoroutine(InsertNewCharacterToDB(defaultTemp));
+                // add to current list to be loaded
+                dbShootStatsList.Add(temp);
+            }
 
             // load stats from DB, but load portrait from prefab
-            //dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PlayerPortrait = temp.PlayerPortrait;
             temp.Accuracy2Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy2Pt;
             temp.Accuracy3Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy3Pt;
             temp.Accuracy4Pt = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Accuracy4Pt;
@@ -121,28 +214,59 @@ public class LoadManager : MonoBehaviour
             temp.ShootAngle = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).ShootAngle;
             temp.Experience = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Experience;
             temp.Level = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Level;
+            temp.PointsAvailable = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsAvailable;
+            temp.PointsUsed = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsUsed;
+            temp.IsLocked = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).IsLocked;
 
             shooterList.Add(temp);
+
         }
         // sort list by  character id
         shooterList.Sort(sortByPlayerId);
 
-        playerDataLoaded = true;
-
+        if (shooterList.Count == objects.Length)
+        {
+            playerDataLoaded = true;
+        }
+        Debug.Log("playerDataLoaded : " + playerDataLoaded);
         return shooterList;
     }
 
 
-    private List<ShooterProfile> loadDefaultPlayerShooterProfiles()
+    private List<CheerleaderProfile> loadDefaultCheerleaderProfiles()
     {
-        List<ShooterProfile> shooterList = new List<ShooterProfile>();
+        List<CheerleaderProfile> cheerList = new List<CheerleaderProfile>();
+
+        string path = "Prefabs/menu_start/cheerleader_default_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+
+        foreach (GameObject obj in objects)
+        {
+            CheerleaderProfile temp = obj.GetComponent<CheerleaderProfile>();
+            cheerList.Add(temp);
+        }
+        // sort list by  character id
+        cheerList.Sort(sortByCheerleaderId);
+
+        Debug.Log("***************************  cheerList.Count : " + cheerList.Count + "   objects.Length : " + objects.Length);
+
+        if (cheerList.Count == objects.Length)
+        {
+            cheerleaderDataLoaded = true;
+        }
+        return cheerList;
+    }
+
+    private List<CharacterProfile> loadDefaultPlayerShooterProfiles()
+    {
+        List<CharacterProfile> shooterList = new List<CharacterProfile>();
 
         string path = "Prefabs/menu_start/default_shooter_profiles";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
         foreach (GameObject obj in objects)
         {
-            ShooterProfile temp = obj.GetComponent<ShooterProfile>();
+            CharacterProfile temp = obj.GetComponent<CharacterProfile>();
             shooterList.Add(temp);
         }
         // sort list by  character id
@@ -152,20 +276,51 @@ public class LoadManager : MonoBehaviour
         {
             playerDataLoaded = true;
         }
-
+        Debug.Log("playerDataLoaded : " + playerDataLoaded);
         return shooterList;
     }
 
-    private List<StartScreenCheerleaderSelected> loadCheerleaderSelectDataList()
-    {
-        List<StartScreenCheerleaderSelected> cheerList = new List<StartScreenCheerleaderSelected>();
+    private List<CheerleaderProfile> loadCheerleaderSelectDataList()
+    {  
+        Debug.Log("---------------  loadCheerleaderSelectDataList()");
+        List<CheerleaderProfile> dbCheerList = DBHelper.instance.getCheerleaderProfileStats();
+        List<CheerleaderProfile> cheerList = new List<CheerleaderProfile>();
 
         string path = "Prefabs/menu_start/cheerleader_selected_object";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
         foreach (GameObject obj in objects)
         {
-            StartScreenCheerleaderSelected temp = obj.GetComponent<StartScreenCheerleaderSelected>();
+            CheerleaderProfile temp = obj.GetComponent<CheerleaderProfile>();
+
+            // if character not in database, but prefab exists -- insert into DB and add to list
+            if (!dbCheerList.Any(item => item.CheerleaderId == temp.CheerleaderId))
+            {
+                isLocked = true;
+                // get default profile for chracter to be inserted
+                string defaultPath = "Prefabs/menu_start/cheerleader_default_objects/cheerleader_selected_" 
+                    + temp.CheerleaderId.ToString("00") + "_" + temp.CheerleaderObjectName;
+
+                Debug.Log("defaultPath : " +  defaultPath);
+
+                CheerleaderProfile defaultTemp = Resources.Load<GameObject>(defaultPath).GetComponent<CheerleaderProfile>();
+                // insert to DB
+                StartCoroutine(InsertNewCheerleaderToDB(defaultTemp));
+                // add to current list to be loaded
+                dbCheerList.Add(temp);
+            }
+
+            // load stats from DB, but load portrait from prefab
+            temp.CheerleaderId = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderId;
+            temp.CheerleaderDisplayName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderDisplayName;
+            temp.CheerleaderObjectName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderObjectName;
+            temp.UnlockCharacterText = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).UnlockCharacterText;
+
+            temp.IsLocked = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).IsLocked;
+            /*
+             * Portrait should already be loaded from prefab
+             */
+
             cheerList.Add(temp);
         }
         // sort list by  character id
@@ -175,6 +330,8 @@ public class LoadManager : MonoBehaviour
         {
             cheerleaderDataLoaded = true;
         }
+        Debug.Log("cheerleaderDataLoaded : " + cheerleaderDataLoaded);
+
         return cheerList;
     }
 
@@ -225,12 +382,12 @@ public class LoadManager : MonoBehaviour
         return modeList;
     }
 
-    static int sortByPlayerId(ShooterProfile p1, ShooterProfile p2)
+    static int sortByPlayerId(CharacterProfile p1, CharacterProfile p2)
     {
         return p1.PlayerId.CompareTo(p2.PlayerId);
     }
 
-    static int sortByCheerleaderId(StartScreenCheerleaderSelected p1, StartScreenCheerleaderSelected p2)
+    static int sortByCheerleaderId(CheerleaderProfile p1, CheerleaderProfile p2)
     {
         return p1.CheerleaderId.CompareTo(p2.CheerleaderId);
     }
@@ -254,3 +411,4 @@ public class LoadManager : MonoBehaviour
     }
 
 }
+

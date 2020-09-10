@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -8,10 +9,10 @@ public class LoadedData : MonoBehaviour
 {
     // load start screen data for players/ friend/ mode /level
     [SerializeField]
-    private List<ShooterProfile> playerSelectedData;
+    private List<CharacterProfile> playerSelectedData;
     // list off cheerleader profile data
     [SerializeField]
-    private List<StartScreenCheerleaderSelected> cheerleaderSelectedData;
+    private List<CheerleaderProfile> cheerleaderSelectedData;
     // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
@@ -19,10 +20,11 @@ public class LoadedData : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
-    internal bool dataLoaded;
+    private bool dataLoaded;
+
+    CharacterProfile currentPlayer;
 
     public static LoadedData instance;
-
 
     void Awake()
     {
@@ -39,10 +41,12 @@ public class LoadedData : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoadStartScreenData());
+
     }
 
     IEnumerator LoadStartScreenData()
     {
+
         yield return new WaitUntil(() => LoadManager.instance.playerDataLoaded);
         playerSelectedData = LoadManager.instance.PlayerSelectedData;
 
@@ -64,9 +68,18 @@ public class LoadedData : MonoBehaviour
         }
     }
 
-    public List<ShooterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
-    public List<StartScreenCheerleaderSelected> CheerleaderSelectedData { get => cheerleaderSelectedData; set => cheerleaderSelectedData = value; }
-    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData; set => levelSelectedData = value; }
-    public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; set => modeSelectedData = value; }
+    public CharacterProfile getSelectedCharacterProfile(int charid)
+    {
+        CharacterProfile temp = new CharacterProfile();
 
+        temp = playerSelectedData.Find(x => x.PlayerId == charid);
+
+        return temp;
+    }
+
+    public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData;  }
+    public List<CheerleaderProfile> CheerleaderSelectedData { get => cheerleaderSelectedData; }
+    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData;  }
+    public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData;  }
+    public bool DataLoaded { get => dataLoaded; }
 }
