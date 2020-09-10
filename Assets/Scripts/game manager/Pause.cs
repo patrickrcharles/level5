@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     // main flag
+    [SerializeField]
     private bool paused;
 
     //fade texture to obscure background
@@ -63,6 +64,13 @@ public class Pause : MonoBehaviour
 
     private void Start()
     {
+        /*pause game
+         *disable fade + footer
+         *display press start message
+         *wait for input 
+         *(on imput) disable message + set time scale = 1
+         */
+
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -95,7 +103,7 @@ public class Pause : MonoBehaviour
          */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
-            //Debug.Log("pause check");
+            Debug.Log("TogglePause");
             TogglePause();
         }
         //==========================================================
@@ -126,8 +134,7 @@ public class Pause : MonoBehaviour
 
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1")))
             {
                 reloadScene();
@@ -135,24 +142,23 @@ public class Pause : MonoBehaviour
 
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1")))
             {
+                Debug.Log("load start scene");
                 loadstartScreen();
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1"))
             {
+                Debug.Log("toggle pause");
                 TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1"))
             {
                 quit();

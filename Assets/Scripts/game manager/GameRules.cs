@@ -200,7 +200,7 @@ public class GameRules : MonoBehaviour
 
                 // check if achievements reached, send bball stats object
                 AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
-                    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints, basketBallStats);
+                    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
             }
 
 

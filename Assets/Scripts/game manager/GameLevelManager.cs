@@ -15,6 +15,7 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _player;
     [SerializeField]
     private PlayerController _playerState;
+    private CharacterProfile _playerShooterProfile;
 
     //BasketBall objects
     private GameObject _basketballPrefab;
@@ -89,6 +90,16 @@ public class GameLevelManager : MonoBehaviour
         //QualitySettings.vSyncCount = 1;
 
         QualitySettings.vSyncCount = 0;
+
+        //disable lighting if necessary
+        // something like if gameoptions.lightingenabled
+        //Light[] lights = GameObject.FindObjectsOfType<Light>();
+        //foreach (Light l in lights)
+        //{
+        //    Debug.Log("disable : " + l.name);
+        //    l.enabled = false;
+        //}
+        //RenderSettings.ambientLight = Color.white;
 
         //Debug.Log(System.DateTime.Now.Hour);
         //Application.targetFrameRate = 60;
@@ -227,15 +238,17 @@ public class GameLevelManager : MonoBehaviour
         {
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+            Debug.Log("load prefab");
         }
 
+        //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
         // if no player, spawn player
         if (GameObject.FindWithTag("Player") == null)
         {
             if (_playerClone != null)
             {
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                //Debug.Log("player spawned : "+ _playerClone.name);
+                Debug.Log("player spawned : "+ _playerClone.name);
             }
             else
             {
@@ -243,7 +256,7 @@ public class GameLevelManager : MonoBehaviour
                 string playerPrefabPath = "Prefabs/characters/players/player_drblood";
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                //Debug.Log("player spawned : " + _playerClone.name);
+                Debug.Log("player spawned : " + _playerClone.name);
             }
         }
     }
@@ -270,6 +283,7 @@ public class GameLevelManager : MonoBehaviour
     public BasketBall Basketball { get => _basketball; set => _basketball = value; }
     public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
+    public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
 
     private void OnEnable()
     {
