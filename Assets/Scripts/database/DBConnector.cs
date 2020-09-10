@@ -9,8 +9,6 @@ using System.Collections;
 
 public class DBConnector : MonoBehaviour
 {
-    private int currentPlayerId;
-
     private String connection;
     private String databaseNamePath = "/level5.db";
     private string currentGameVersion;
@@ -21,6 +19,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameAllTimeStats = "AllTimeStats";
     const String tableNameUser = "User";
     const String tableNameAchievements = "Achievements";
+    const String tableNameCharacterProfile = "CharacterProfile";
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -72,6 +71,7 @@ public class DBConnector : MonoBehaviour
         //create default user 
         if (dbHelper.isTableEmpty(tableNameUser))
         {
+            Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
             dbHelper.InsertDefaultUserRecord();
         }
 
@@ -80,10 +80,10 @@ public class DBConnector : MonoBehaviour
 
         // check for achievement manager
         // note - create game manager constants list for things like this
-        if (GameObject.Find("achievement_manager") != null)
-        {
-            StartCoroutine(updateAchievements());
-        }
+        //if (GameObject.Find("achievement_manager") != null)
+        //{
+        //    StartCoroutine(updateAchievements());
+        //}
     }
 
     private void Update()
@@ -178,24 +178,24 @@ public class DBConnector : MonoBehaviour
         //}
     }
 
-    IEnumerator updateAchievements()
-    {
-        // wait for achievement list to be created
-        yield return new WaitUntil(() => AchievementManager.instance.ListCreated == true);
+    //IEnumerator updateAchievements()
+    //{
+    //    // wait for achievement list to be created
+    //    yield return new WaitUntil(() => AchievementManager.instance.ListCreated == true);
 
-        // check if dbhelper is null and if achievement table is null
-        if (dbHelper != null)
-        {
-            try
-            {
-                dbHelper.UpdateAchievementStats();
-            }
-            catch
-            {
-                Debug.Log("exception : dbhelper == null");
-            }
-        }
-    }
+    //    // check if dbhelper is null and if achievement table is null
+    //    if (dbHelper != null )
+    //    {
+    //        try
+    //        {
+    //            dbHelper.UpdateAchievementStats();
+    //        }
+    //        catch
+    //        {
+    //            Debug.Log("exception : dbhelper == null");
+    //        }
+    //    }
+    //}
 
     public void savePlayerGameStats(BasketBallStats stats)
     {
@@ -222,71 +222,6 @@ public class DBConnector : MonoBehaviour
         dbHelper.UpdateAllTimeStats(stats);
     }
 
-    // strip string to convert to an int that can be used for comparisons with enum (int)var
-    int getCurrentGameVersionToInt(String version)
-    {
-        // parse out ".", convert to int
-        var temp = Regex.Replace(version, "[.]", "");
-        var versionInt = Int16.Parse(temp);
-
-        return versionInt;
-    }
-    // have high scores been transferred already. checks flag in User table
-    int getPrevHighScoreInserted()
-    {
-        int value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetInt32(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-    // set high sores transferred flag to true
-    int setPrevHighScoreInsertedTrue()
-    {
-        int value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "Update User set prevScoresInserted  = 1 ";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetInt32(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
     // set user's current device in User table
     void SetCurrentUserDevice()
     {
@@ -359,6 +294,7 @@ public class DBConnector : MonoBehaviour
             "CREATE TABLE if not exists Achievements(" +
             "aid   INTEGER PRIMARY KEY, " +
             "charid   INTEGER," +
+            "cheerid   INTEGER," +
             "levelid   INTEGER," +
             "modeid    INTEGER," +
             "name  TEXT," +
@@ -387,8 +323,18 @@ public class DBConnector : MonoBehaviour
             "runSpeedHasBall   float," +
             "luck   INTEGER," +
             "shootAngle   INTEGER," +
-            "experience   INTEGER," +
-            "level   INTEGER);" +
+            "experience   INTEGER DEFAULT 0," +
+            "level   INTEGER DEFAULT 0," +
+            "pointsAvailable   INTEGER DEFAULT 0," +
+            "pointsUsed   INTEGER DEFAULT 0," +
+            "isLocked   INTEGER DEFAULT 0);" +
+
+            "CREATE TABLE if not exists CheerleaderProfile(" +
+            "cid   INTEGER PRIMARY KEY, " +
+            "name   TEXT NOT NULL," +
+            "objectName   TEXT NOT NULL," +
+            "unlockText   TEXT NOT NULL," +
+            "islocked  INTEGER DEFAULT 1);" + 
 
         "CREATE TABLE if not exists User( " +
             "id    INTEGER PRIMARY KEY, " +
@@ -400,7 +346,7 @@ public class DBConnector : MonoBehaviour
             "password  TEXT, " +
             "version   TEXT, " +
             "os    TEXT, " +
-            "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);"); ;
+            "prevScoresInserted  INTEGER DEFAULT 0 NOT NULL);");
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
@@ -415,7 +361,6 @@ public class DBConnector : MonoBehaviour
         GC.WaitForPendingFinalizers();
 
         //databaseCreated = true;
-
     }
 
 
@@ -527,8 +472,8 @@ public class DBConnector : MonoBehaviour
                 "CREATE TABLE if not exists CharacterProfile(" +
                 "id   INTEGER PRIMARY KEY, " +
                 "charid   INTEGER," +
-                "playerName   TEXT," +
-                "objectName   TEXT," +
+                "playerName   TEXT NOT NULL," +
+                "objectName   TEXT NOT NULL," +
                 "accuracy2   INTEGER," +
                 "accuracy3   INTEGER," +
                 "accuracy4   INTEGER," +
@@ -539,8 +484,11 @@ public class DBConnector : MonoBehaviour
                 "runSpeedHasBall   float," +
                 "luck   INTEGER," +
                 "shootAngle   INTEGER," +
-                "experience   INTEGER," +
-                "level   INTEGER);");
+                "experience   INTEGER DEFAULT 0," +
+                "level   INTEGER DEFAULT 0," +
+                "pointsAvailable   INTEGER DEFAULT 0," +
+                "pointsUsed   INTEGER DEFAULT 0," +
+                "isLocked   INTEGER DEFAULT 1);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -558,6 +506,73 @@ public class DBConnector : MonoBehaviour
         {
             return;
         }
+    }
+
+    public void createTableAchievements()
+    {
+
+        Debug.Log("createTableAchievements");
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery =
+            "CREATE TABLE if not exists Achievements(" +
+            "aid   INTEGER PRIMARY KEY, " +
+            "charid   INTEGER DEFAULT 0," +
+            "cheerid   INTEGER DEFAULT 0," +
+            "levelid   INTEGER DEFAULT 0," +
+            "modeid    INTEGER DEFAULT 0," +
+            "name  TEXT NOT NULL," +
+            "description   TEXT NOT NULL," +
+            "required_charid   INTEGER DEFAULT 0," +
+            "required_levelid  INTEGER DEFAULT 0," +
+            "required_modeid   INTEGER DEFAULT 0," +
+            "activevalue_int   INTEGER DEFAULT 0," +
+            "activevalue_float REAL DEFAULT 0," +
+            "activevalue_progress_int  INTEGER DEFAULT 0," +
+            "activevalue_progress_float    REAL DEFAULT 0," +
+            "islocked  INTEGER DEFAULT 1);";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+    }
+
+
+    public void createTableCheerleaderProfile()
+    {
+
+        Debug.Log(" public void createTableCheerleaderProfile()");
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQuery =
+            "CREATE TABLE if not exists CheerleaderProfile(" +
+            "cid   INTEGER PRIMARY KEY, " +
+            "name   TEXT NOT NULL," +
+            "objectName   TEXT NOT NULL," +
+            "unlockText   TEXT NOT NULL," +
+            "islocked  INTEGER DEFAULT 1);";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
     }
 
     public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }
