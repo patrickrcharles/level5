@@ -77,16 +77,22 @@ public class Achievement : MonoBehaviour
     [SerializeField]
     bool isLocked;
 
-    public int PlayerId { get => playerId; set => playerId = value; }
+    public int PlayerId { get => playerId; }
     public bool IsLocked { get => isLocked; set => isLocked = value; }
-    public string AchievementDescription { get => achievementDescription; set => achievementDescription = value; }
-    public int CheerleaderId { get => cheerleaderId; set => cheerleaderId = value; }
-    public int ActivationValueInt { get => activationValueInt; set => activationValueInt = value; }
+    public string AchievementDescription { get => achievementDescription;  }
+    public int CheerleaderId { get => cheerleaderId;  }
+    public int ActivationValueInt { get => activationValueInt; }
     public int ActivationValueProgressionInt { get => activationValueProgressionInt; set => activationValueProgressionInt = value; }
-    public float ActivationValueFloat { get => activationValueFloat; set => activationValueFloat = value; }
-    public float ActivationValueProgressionFloat { get => activationValueProgressionFloat; set => activationValueProgressionFloat = value; }
-    public bool Count { get => count; set => count = value; }
-    public bool IsProgressiveCount { get => isProgressiveCount; set => isProgressiveCount = value; }
+    public float ActivationValueFloat { get => activationValueFloat;  }
+    public float ActivationValueProgressionFloat { get => activationValueProgressionFloat;  }
+    public bool Count { get => count;  }
+    public bool IsProgressiveCount { get => isProgressiveCount;  }
+    public int ModeId { get => modeId;  }
+    public int PlayerRequiredToUseId { get => playerRequiredToUseId;  }
+    public int CheerleaderRequiredToUseId { get => cheerleaderRequiredToUseId;  }
+    public int LevelRequiredToUseId { get => levelRequiredToUseId;  }
+    public int ModeRequiredToUseId { get => modeRequiredToUseId; }
+    public int LevelId { get => levelId; set => levelId = value; }
 
     // new achievement object
     public Achievement(int aid,int activateInt, int progressValue, int islockedValue)
@@ -105,7 +111,7 @@ public class Achievement : MonoBehaviour
         }
     }
 
-    public void checkUnlockConditions(int playid, int cheerid, int lid, int mid, int activateValue, BasketBallStats basketBallStats)
+    public void checkUnlockConditions(int playid, int cheerid, int lid, int mid, int activateValue)
     {
         bool condition1 = false;
         bool condition2 = false;
@@ -202,11 +208,6 @@ public class Achievement : MonoBehaviour
                 }
             }
         }
-        //// if achievement unlocked, display notification
-        //if(isLocked == false)
-        //{
-        //    StartCoroutine(displayAchievementUnlockNotification(3));
-        //}
     }
 
     public bool checkActivateValue(int activateValue)
