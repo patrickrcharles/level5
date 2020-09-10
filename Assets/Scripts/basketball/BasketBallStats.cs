@@ -56,26 +56,26 @@ public class BasketBallStats : MonoBehaviour
     public int getExperienceGainedFromSession()
     {
         int experience = 0;
-        experience += TotalPoints * 10;
-        Debug.Log("TotalPoints : " + TotalPoints * 10);
+        //experience += TotalPoints * 10;
+        //Debug.Log("TotalPoints : " + TotalPoints);
 
-        experience += (TwoPointerMade * 20);
-        Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 20));
+        experience += (TwoPointerMade * 10);
+        Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 10));
 
-        experience += (ThreePointerMade * 30);
-        Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 30));
+        experience += (ThreePointerMade * 15);
+        Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 15));
 
-        experience += (FourPointerMade * 40);
-        Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 40));
+        experience += (FourPointerMade * 20);
+        Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 20));
 
-        experience += (SevenPointerMade * 70);
-        Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 70));
+        experience += (SevenPointerMade * 35);
+        Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 35));
 
-        experience += Mathf.RoundToInt(TotalDistance);
-        Debug.Log("TotalDistance : " + TotalDistance);
+        experience += Mathf.RoundToInt(TotalDistance * 0.5f);
+        Debug.Log("TotalDistance : " + TotalDistance * 0.5f);
 
-        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
-        experience += MostConsecutiveShots * 50;
+        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 25);
+        experience += (MostConsecutiveShots * 25);
 
         ExperienceGained = experience;
         Debug.Log("experience gained : " + ExperienceGained);
