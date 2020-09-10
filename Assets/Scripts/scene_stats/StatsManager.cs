@@ -110,9 +110,12 @@ public class StatsManager : MonoBehaviour
 
         // get mode ids and display names. mode ids will be used for queries to display data
         modesList = getModeSelectDataList();
+
         defaultModeSelectedIndex = 0;
         currentModeSelectedIndex = defaultModeSelectedIndex;
 
+        Debug.Log("defaultModeSelectedIndex : " + defaultModeSelectedIndex);
+        Debug.Log("modesList[defaultModeSelectedIndex] : " + modesList[defaultModeSelectedIndex].modeSelectedName);
         // set default game mode name
         modeSelectButtonText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
 
@@ -281,13 +284,14 @@ public class StatsManager : MonoBehaviour
     {
         List<mode> tempList = new List<mode>();
 
-        string path = "Prefabs/start_menu/mode_selected_objects";
+        string path = "Prefabs/menu_start/mode_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-        //Debug.Log(objects.Length);
+        Debug.Log(objects.Length);
 
         foreach (GameObject obj in objects)
         {
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
+            Debug.Log(temp.ModelDisplayName);
             // add to list
             if (!temp.ModelDisplayName.ToLower().Contains("free")) // exclude freeplay
             {
