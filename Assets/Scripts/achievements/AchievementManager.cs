@@ -68,12 +68,14 @@ public class AchievementManager : MonoBehaviour
                 // achievement table exists
                 if (DBConnector.instance.tableExists("Achievements"))
                 {
+                    Debug.Log("                                                     Achievements table exists ");
                     StartCoroutine(LoadAchievements());
                 }
                 else
                 {
                     // create achievement table
                     // retry load
+                    Debug.Log("                                                     Achievements table DOESNT exists ");
                     DBConnector.instance.createTableAchievements();
                     StartCoroutine(LoadAchievements());
                 }
@@ -88,7 +90,10 @@ public class AchievementManager : MonoBehaviour
 
     IEnumerator LoadAchievements()
     {
+        Debug.Log("LoadAchievements()");
         // wait until load manager is finished
+        Debug.Log("wait for playerdata");
+        yield return new WaitUntil(() => LoadedData.instance != null);
         yield return new WaitUntil(() => LoadedData.instance.DataLoaded == true);
         loadAchievementsFromPrefabs();
         resolveAchievementConflicts();
