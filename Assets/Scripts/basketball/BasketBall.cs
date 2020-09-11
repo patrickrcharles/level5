@@ -176,13 +176,15 @@ public class BasketBall : MonoBehaviour
                                 //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
                                 // " ft.\n"
                                   "shooter : " + characterProfile.PlayerDisplayName + "\n"
-                                + "2 point accuracy : " + (characterProfile.Accuracy2Pt) + "\n"
-                                + "3 point accuracy : " + (characterProfile.Accuracy3Pt ) + "\n"
-                                + "4 point accuracy : " + (characterProfile.Accuracy4Pt ) + "\n"
-                                + "7 point accuracy : " + (characterProfile.Accuracy7Pt ) + "\n"
+                                + "2 point : " + (characterProfile.Accuracy2Pt) + "\n"
+                                + "3 point : " + (characterProfile.Accuracy3Pt) + "\n"
+                                + "4 point : " + (characterProfile.Accuracy4Pt) + "\n"
+                                + "7 point : " + (characterProfile.Accuracy7Pt) + "\n"
+                                + "speed : " + characterProfile.RunSpeed + "\n"
                                 + "jump : " + characterProfile.JumpForce + "\n"
-                                + "luck : " + characterProfile.Luck + "\n"
-                                + "speed : " + characterProfile.RunSpeed;
+                                + "range : " + characterProfile.Range + "\n"
+                                + "release : " + characterProfile.Release + "\n"
+                                + "luck : " + characterProfile.Luck;
     }
 
     // =========================================================== Collisions ========================================================
@@ -419,8 +421,11 @@ public class BasketBall : MonoBehaviour
             accuracyModifierX = getAccuracyModifier();
             accuracyModifierY = getReleaseModifier();
         }
-
         accuracyModifierZ = getRangeModifier();
+
+        Debug.Log("X modifier : " + accuracyModifierX);
+        Debug.Log("Y modifier : " + accuracyModifierY);
+        Debug.Log("Z modifier : " + accuracyModifierZ);
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy +  accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -468,8 +473,8 @@ public class BasketBall : MonoBehaviour
         Random random = new Random();
         float percent = random.Next(1, 100);
 
-        Debug.Log("roll for range critical : " + percent);
-        Debug.Log("percent <= maxPercent : " + (percent <= maxPercent));
+        //Debug.Log("roll for range critical : " + percent);
+        Debug.Log("=============== range citical : " + (percent <= maxPercent));
 
         if (percent <= maxPercent)
         {
@@ -539,8 +544,8 @@ public class BasketBall : MonoBehaviour
         // should 1/2 of modifer
         float maxChance = modifier * 100;
 
-        Debug.Log("modifier : " + modifier);
-        Debug.Log("maxChance : " + maxChance);
+        //Debug.Log("Z modifier : " + modifier);
+        //Debug.Log("maxChance : " + maxChance);
 
 
         if (modifier >= 1 || rollForCriticalRangeChance(maxChance))
@@ -563,8 +568,8 @@ public class BasketBall : MonoBehaviour
         float accuracyModifier = 0;
         accuracyModifier = (100 - characterProfile.Release) * 0.01f;
 
-        Debug.Log("accuracyModifier : " + accuracyModifier);
-        Debug.Log(" (sliderModifer + (accuracyModifier * 0.4f)) * direction : " + (sliderModifer + (accuracyModifier * 0.6f)) * direction);
+        //Debug.Log("accuracyModifier : " + accuracyModifier);
+        //Debug.Log("Y modifier : " + (sliderModifer + (accuracyModifier * 0.4f)) * direction);
 
         return (sliderModifer + (accuracyModifier * 0.4f)) * direction;
     }
