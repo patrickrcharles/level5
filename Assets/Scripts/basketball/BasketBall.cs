@@ -417,12 +417,13 @@ public class BasketBall : MonoBehaviour
         else
         {
             accuracyModifierX = getAccuracyModifier();
+            accuracyModifierY = getReleaseModifier();
         }
 
         accuracyModifierZ = getRangeModifier();
 
         float xVector = 0 + accuracyModifierX;
-        float yVector = Vy; //+ accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float yVector = Vy +  accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz - accuracyModifierZ; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
@@ -477,6 +478,21 @@ public class BasketBall : MonoBehaviour
         return false;
     }
 
+    bool rollForCriticalReleaseChance(float maxPercent)
+    {
+        Random random = new Random();
+        float percent = random.Next(1, 100);
+
+        Debug.Log("roll for range critical : " + percent);
+        Debug.Log("percent <= maxPercent : " + (percent <= maxPercent));
+
+        if (percent <= maxPercent)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegative();
@@ -488,7 +504,7 @@ public class BasketBall : MonoBehaviour
 
         if (basketBallState.TwoPoints)
         {
-            accuracyModifier = (100 - characterProfile.Accuracy2Pt) * 0.001f;
+            accuracyModifier = (100 - characterProfile.Accuracy2Pt) * 0.01f;
         }
 
         if (basketBallState.ThreePoints)
@@ -514,8 +530,9 @@ public class BasketBall : MonoBehaviour
     private float getRangeModifier()
     {
         int direction = 1;
+        // range divided by distance to get %
+        // ex. range 50 ft / shot distance 100 = 50% change of reaching rim
         float rangeAccuracy = (float)(characterProfile.Range / (lastShotDistance * 6));
-
         float modifier = (rangeAccuracy * direction);
 
         // send max percent change
@@ -534,6 +551,22 @@ public class BasketBall : MonoBehaviour
         {
             return modifier;
         }
+    }
+
+    private float getReleaseModifier()
+    {
+        int direction = getRandomPositiveOrNegative();
+        //int direction = 1; //for testing to do stat analysis
+        int slider = Mathf.CeilToInt(playerState.Shotmeter.SliderValueOnButtonPress);
+
+        float sliderModifer = (100 - slider) * 0.01f;
+        float accuracyModifier = 0;
+        accuracyModifier = (100 - characterProfile.Release) * 0.01f;
+
+        Debug.Log("accuracyModifier : " + accuracyModifier);
+        Debug.Log(" (sliderModifer + (accuracyModifier * 0.4f)) * direction : " + (sliderModifer + (accuracyModifier * 0.6f)) * direction);
+
+        return (sliderModifer + (accuracyModifier * 0.4f)) * direction;
     }
 
     private int getRandomPositiveOrNegative()
