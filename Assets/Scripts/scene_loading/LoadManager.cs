@@ -216,6 +216,8 @@ public class LoadManager : MonoBehaviour
             temp.Level = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Level;
             temp.PointsAvailable = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsAvailable;
             temp.PointsUsed = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsUsed;
+            temp.Range = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Range;
+            temp.Release = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Release;
             temp.IsLocked = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).IsLocked;
 
             shooterList.Add(temp);

@@ -11,7 +11,7 @@ public class BasketBall : MonoBehaviour
     PlayerController playerState;
     new Rigidbody rigidbody;
     AudioSource audioSource;
-    CharacterProfile shooterProfile;
+    CharacterProfile characterProfile;
     [SerializeField]
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
@@ -65,7 +65,7 @@ public class BasketBall : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+        characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
@@ -175,14 +175,14 @@ public class BasketBall : MonoBehaviour
                                 //+ "shot distance : " +
                                 //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
                                 // " ft.\n"
-                                  "shooter : " + shooterProfile.PlayerDisplayName + "\n"
-                                + "2 point accuracy : " + (shooterProfile.Accuracy2Pt) + "\n"
-                                + "3 point accuracy : " + (shooterProfile.Accuracy3Pt ) + "\n"
-                                + "4 point accuracy : " + (shooterProfile.Accuracy4Pt ) + "\n"
-                                + "7 point accuracy : " + (shooterProfile.Accuracy7Pt ) + "\n"
-                                + "jump : " + shooterProfile.JumpForce + "\n"
-                                + "luck : " + shooterProfile.Luck + "\n"
-                                + "speed : " + shooterProfile.RunSpeed;
+                                  "shooter : " + characterProfile.PlayerDisplayName + "\n"
+                                + "2 point accuracy : " + (characterProfile.Accuracy2Pt) + "\n"
+                                + "3 point accuracy : " + (characterProfile.Accuracy3Pt ) + "\n"
+                                + "4 point accuracy : " + (characterProfile.Accuracy4Pt ) + "\n"
+                                + "7 point accuracy : " + (characterProfile.Accuracy7Pt ) + "\n"
+                                + "jump : " + characterProfile.JumpForce + "\n"
+                                + "luck : " + characterProfile.Luck + "\n"
+                                + "speed : " + characterProfile.RunSpeed;
     }
 
     // =========================================================== Collisions ========================================================
@@ -396,18 +396,17 @@ public class BasketBall : MonoBehaviour
         // shorthands for the formula
         float R = Vector3.Distance(projectileXZPos, targetXZPos);
         float G = Physics.gravity.y;
-        float tanAlpha = Mathf.Tan(shooterProfile.ShootAngle * Mathf.Deg2Rad);
+        float tanAlpha = Mathf.Tan(characterProfile.ShootAngle * Mathf.Deg2Rad);
         float H = targetXZPos.y - projectileXZPos.y;
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
         // if rolled critical or shot meter >= 95
-        if (rollForCriticalShotChance(shooterProfile.Luck)
+        if (rollForCriticalShotChance(characterProfile.Luck)
            || playerState.Shotmeter.SliderValueOnButtonPress >= 95)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
-            accuracyModifierZ = 0;
 
             // npc performs critical success action 
             if (BehaviorNpcCritical.instance != null)
@@ -420,12 +419,14 @@ public class BasketBall : MonoBehaviour
             accuracyModifierX = getAccuracyModifier();
         }
 
+        accuracyModifierZ = getRangeModifier();
+
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy; //+ accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
-        float zVector = Vz; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
+        float zVector = Vz - accuracyModifierZ; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
-        Vector3 localVelocity = new Vector3(xVector, Vy, Vz);
+        Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
@@ -461,6 +462,20 @@ public class BasketBall : MonoBehaviour
 
         return false;
     }
+    bool rollForCriticalRangeChance(float maxPercent)
+    {
+        Random random = new Random();
+        float percent = random.Next(1, 100);
+
+        Debug.Log("roll for range critical : " + percent);
+        Debug.Log("percent <= maxPercent : " + (percent <= maxPercent));
+
+        if (percent <= maxPercent)
+        {
+            return true;
+        }
+        return false;
+    }
 
     private float getAccuracyModifier()
     {
@@ -473,26 +488,52 @@ public class BasketBall : MonoBehaviour
 
         if (basketBallState.TwoPoints)
         {
-            accuracyModifier = (100 - shooterProfile.Accuracy2Pt) * 0.001f;
+            accuracyModifier = (100 - characterProfile.Accuracy2Pt) * 0.001f;
         }
 
         if (basketBallState.ThreePoints)
         {
-            accuracyModifier = (100 - shooterProfile.Accuracy3Pt) * 0.01f;
+            accuracyModifier = (100 - characterProfile.Accuracy3Pt) * 0.01f;
         }
 
         if (basketBallState.FourPoints)
         {
-            accuracyModifier = (100 - shooterProfile.Accuracy4Pt) * 0.01f;
+            accuracyModifier = (100 - characterProfile.Accuracy4Pt) * 0.01f;
         }
 
         if (basketBallState.SevenPoints)
         {
-            accuracyModifier = (100 - shooterProfile.Accuracy7Pt) * 0.01f;
+            accuracyModifier = (100 - characterProfile.Accuracy7Pt) * 0.01f;
         }
 
         // 100 - slider + 0.6 of (100 - profile accuracy)
         return (sliderModifer + (accuracyModifier * 0.6f)) * direction;
+    }
+
+
+    private float getRangeModifier()
+    {
+        int direction = 1;
+        float rangeAccuracy = (float)(characterProfile.Range / (lastShotDistance * 6));
+
+        float modifier = (rangeAccuracy * direction);
+
+        // send max percent change
+        // should 1/2 of modifer
+        float maxChance = modifier * 100;
+
+        Debug.Log("modifier : " + modifier);
+        Debug.Log("maxChance : " + maxChance);
+
+
+        if (modifier >= 1 || rollForCriticalRangeChance(maxChance))
+        {
+            return 0;
+        }
+        else
+        {
+            return modifier;
+        }
     }
 
     private int getRandomPositiveOrNegative()

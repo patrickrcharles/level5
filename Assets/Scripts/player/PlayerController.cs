@@ -300,7 +300,7 @@ public class PlayerController : MonoBehaviour
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
 
-        //playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
+        playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
         if ((GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held

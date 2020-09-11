@@ -327,6 +327,8 @@ public class DBConnector : MonoBehaviour
             "level   INTEGER DEFAULT 0," +
             "pointsAvailable   INTEGER DEFAULT 0," +
             "pointsUsed   INTEGER DEFAULT 0," +
+            "range   INTEGER DEFAULT 0," +
+            "release   INTEGER DEFAULT 0," +
             "isLocked   INTEGER DEFAULT 0);" +
 
             "CREATE TABLE if not exists CheerleaderProfile(" +
@@ -488,6 +490,8 @@ public class DBConnector : MonoBehaviour
                 "level   INTEGER DEFAULT 0," +
                 "pointsAvailable   INTEGER DEFAULT 0," +
                 "pointsUsed   INTEGER DEFAULT 0," +
+                "range   INTEGER DEFAULT 0," +
+                "release   INTEGER DEFAULT 0," +
                 "isLocked   INTEGER DEFAULT 1);");
 
             dbcmd.CommandText = sqlQuery;

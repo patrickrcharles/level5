@@ -669,6 +669,8 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+                + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
+                + playerSelectedData[playerSelectedIndex].Release.ToString("F0") + "\n"
                 //+ playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
 

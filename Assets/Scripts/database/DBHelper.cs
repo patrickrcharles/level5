@@ -295,7 +295,7 @@ public class DBHelper : MonoBehaviour
                         string sqlQuery =
                         "Insert INTO "
                         + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
-                        "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, isLocked) "
+                        "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked) "
                         + " Values('" + shooter.PlayerId
                         + "', '" + shooter.PlayerDisplayName
                         + "', '" + shooter.PlayerObjectName
@@ -313,6 +313,8 @@ public class DBHelper : MonoBehaviour
                         + "', '" + shooter.Level
                         + "', '" + shooter.PointsAvailable
                         + "', '" + shooter.PointsUsed
+                        + "', '" + shooter.Range
+                        + "', '" + (shooter.Release + 60)
                         + "', '" + Convert.ToInt32(shooter.IsLocked)
                         + "')";
 
@@ -342,7 +344,7 @@ public class DBHelper : MonoBehaviour
                     string sqlQuery =
                     "Insert INTO "
                     + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
-                    "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed) "
+                    "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release) "
                     + " Values('" + character.PlayerId
                     + "', '" + character.PlayerDisplayName
                     + "', '" + character.PlayerObjectName
@@ -360,6 +362,8 @@ public class DBHelper : MonoBehaviour
                     + "', '" + character.Level
                     + "', '" + character.PointsAvailable
                     + "', '" + character.PointsUsed
+                    + "', '" + character.Range
+                    + "', '" + (character.Release + 60)
                     + "')";
 
                     cmd.CommandText = sqlQuery;
@@ -542,7 +546,7 @@ public class DBHelper : MonoBehaviour
         if (!isTableEmpty(characterProfileTableName))
         {
             sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
-                + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, isLocked"
+                + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
                 + " From " + characterProfileTableName;
 
             dbcmd.CommandText = sqlQuery;
@@ -569,7 +573,9 @@ public class DBHelper : MonoBehaviour
                 temp.Level = reader.GetInt32(14);
                 temp.PointsAvailable = reader.GetInt32(15);
                 temp.PointsUsed = reader.GetInt32(16);
-                temp.IsLocked = Convert.ToBoolean(reader.GetValue(17));
+                temp.Range = reader.GetInt32(17);
+                temp.Release = reader.GetInt32(18);
+                temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
 
                 //Debug.Log("db aid" + aid + " islocked : " + islocked);
                 //Achievement temp = Achievement(aid, activateInt, progressInt, islocked);

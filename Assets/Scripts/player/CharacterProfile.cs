@@ -28,9 +28,10 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private float runSpeedHasBall;
 
     [SerializeField] private float runSpeed;
-    //[SerializeField] private float hangTime;
-    //[SerializeField] private float range;
-    //[SerializeField] private float release;
+
+    [SerializeField] private float range;
+    [SerializeField] private float release;
+
     [SerializeField] private float luck;
 
     [SerializeField] private float shootAngle;
@@ -77,6 +78,10 @@ public class CharacterProfile : MonoBehaviour
         Accuracy3Pt = temp.accuracy3pt;
         Accuracy4Pt = temp.accuracy4pt;
         Accuracy7Pt = temp.accuracy7pt;
+        
+        Range = temp.range;
+        Release = temp.release;
+        Debug.Log("range : " + range + " realse : "+ Release);
 
         experience = temp.Experience;
         level = temp.Level;
@@ -224,4 +229,6 @@ public class CharacterProfile : MonoBehaviour
     public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
     public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
     public int PointsUsed { get => pointsUsed; set => pointsUsed = value; }
+    public float Range { get => range; set => range = value; }
+    public float Release { get => release; set => release = value; }
 }
