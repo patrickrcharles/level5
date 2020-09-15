@@ -67,6 +67,9 @@ public class PlayerCollisions : MonoBehaviour
     void playerKnockedDown(GameObject playerKnockedDown)
     {
         playerState.KnockedDown = true;
+        playerState.hasBasketball = false;
+        playerState.setPlayerAnim("hasBasketball", false);
+
     }
     void playerAvoidKnockDown(GameObject playerAvoidKnocked)
     {

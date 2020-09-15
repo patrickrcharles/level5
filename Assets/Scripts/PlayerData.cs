@@ -197,4 +197,5 @@ public class PlayerData : MonoBehaviour
     public int CurrentExperience { get => _currentExperience; set => _currentExperience = value; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public int UpdatePointsAvailable { get => _updatePointsAvailable; set => _updatePointsAvailable = value; }
+    public int UpdatePointsUsed { get => _updatePointsUsed; set => _updatePointsUsed = value; }
 }

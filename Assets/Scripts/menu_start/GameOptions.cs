@@ -64,6 +64,8 @@ public  class GameOptions : MonoBehaviour
     static public int cheerleaderSelectedIndex = 0;
     static public bool trafficEnabled = false;
 
+    static public string previousSceneName;
+
     //static public int playerExperience;
     //static public int playerLevel;
     //static public int playerUpdatePointsAvailable;

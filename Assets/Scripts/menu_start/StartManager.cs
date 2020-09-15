@@ -71,11 +71,12 @@ public class StartManager : MonoBehaviour
     private const string quitButtonName = "quit_game";
     private const string optionsMenuButtonName = "options_menu";
     private const string updateMenuButtonName = "update_menu";
-
     private const string updatePointsAvailable = "update_points_available";
 
     // scene name
     private const string statsMenuSceneName = "level_00_stats";
+    private const string loadScreenSceneName = "level_00_loading";
+    private const string progressionScreenSceneName = "level_00_progression";
 
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -109,7 +110,6 @@ public class StartManager : MonoBehaviour
     private const string trafficSelectButtonName = "traffic_select";
     private const string trafficSelectOptionName = "traffic_select_option";
 
-    private const string loadScreenSceneName = "level_00_loading";
 
     [SerializeField]
     private bool trafficEnabled;
@@ -239,6 +239,14 @@ public class StartManager : MonoBehaviour
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
             loadStatsMenu(statsMenuSceneName);
+        }
+
+        // stats menu button | load stats menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(updateMenuButtonName))
+        {
+            loadStatsMenu(progressionScreenSceneName);
         }
 
         // ================================== navigation =====================================================================
@@ -667,16 +675,15 @@ public class StartManager : MonoBehaviour
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
+                + playerSelectedData[playerSelectedIndex].Release.ToString("F0") + "\n"
+                + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + " ft\n"
                 + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-                + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
-                + playerSelectedData[playerSelectedIndex].Release.ToString("F0") + "\n"
-                //+ playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
 
             //Debug.Log("=================================================================");
-            playerSelectedData[playerSelectedIndex].Level = playerSelectedData[playerSelectedIndex].Experience / 3000;
-            int nextlvl = ((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience;
+            playerSelectedData[playerSelectedIndex].Level = playerSelectedData[playerSelectedIndex].Experience / 2000;
+            int nextlvl = ((playerSelectedData[playerSelectedIndex].Level + 1) * 2000) - playerSelectedData[playerSelectedIndex].Experience;
             //Debug.Log("experience : " + playerSelectedData[playerSelectedIndex].Experience);
             //Debug.Log("points available : " + playerSelectedData[playerSelectedIndex].PointsAvailable);
             //Debug.Log("level : " + playerSelectedData[playerSelectedIndex].Level);
@@ -735,7 +742,7 @@ public class StartManager : MonoBehaviour
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
             PlayerData.instance.CurrentLevel = playerSelectedData[playerSelectedIndex].Level;
             PlayerData.instance.UpdatePointsAvailable = playerSelectedData[playerSelectedIndex].PointsAvailable;
-            PlayerData.instance.UpdatePointsAvailable = playerSelectedData[playerSelectedIndex].PointsUsed;
+            PlayerData.instance.UpdatePointsUsed = playerSelectedData[playerSelectedIndex].PointsUsed;
 
             SceneManager.LoadScene(sceneName);
         }
