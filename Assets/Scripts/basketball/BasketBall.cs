@@ -33,12 +33,12 @@ public class BasketBall : MonoBehaviour
 
     float releaseVelocityY;
     //float _playerRigidBody;
-    int  accuracy;
-    int  twoAccuracy;
-    int  threeAccuracy;
-    int  fourAccuracy;
-    int  sevenAccuracy;
-    float  lastShotDistance;
+    int accuracy;
+    int twoAccuracy;
+    int threeAccuracy;
+    int fourAccuracy;
+    int sevenAccuracy;
+    float lastShotDistance;
 
     bool playHitRimSound;
     bool locked;
@@ -403,32 +403,59 @@ public class BasketBall : MonoBehaviour
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
 
-        // if rolled critical or shot meter >= 95
-        if (rollForCriticalShotChance(characterProfile.Luck)
-           || playerState.Shotmeter.SliderValueOnButtonPress >= 95)
+        bool critical = rollForCriticalShotChance(characterProfile.Luck);
+        Debug.Log("------------------START SEQUENCE");
+        // if rolled critical
+        if (critical)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
-
+            Debug.Log("------------------ CRITICAL");
             // npc performs critical success action 
+        }
+        Debug.Log("X modifier : " + accuracyModifierX);
+        Debug.Log("Y modifier : " + accuracyModifierY);
+        // if >= 95 and NOT critical (release stat factored in)
+        if (playerState.Shotmeter.SliderValueOnButtonPress >= 95 
+            && !critical)
+        {
+            Debug.Log("------------------ METER >= 95");
+            accuracyModifierX = 0;
+            accuracyModifierY = getReleaseModifier();
+        }
+        Debug.Log("X modifier : " + accuracyModifierX);
+        Debug.Log("Y modifier : " + accuracyModifierY);
+        // NOT critical and NOT >= 95 (get X, Y modifiers)
+        if (playerState.Shotmeter.SliderValueOnButtonPress < 95
+            && !critical)
+        {
+            Debug.Log("------------------ Add X + Y modifer");
+            accuracyModifierX = getAccuracyModifier();
+            accuracyModifierY = getReleaseModifier();
+            Debug.Log("X modifier : " + accuracyModifierX);
+            Debug.Log("Y modifier : " + accuracyModifierY);
+        }
+        Debug.Log("X modifier : " + accuracyModifierX);
+        Debug.Log("Y modifier : " + accuracyModifierY);
+
+        // range modifier always factors in
+        accuracyModifierZ = getRangeModifier();
+
+        if (accuracyModifierX == 0 && accuracyModifierY == 0 && accuracyModifierZ == 0)
+        {
+            Debug.Log("------------------ CHEERLEADER ACTION");
             if (BehaviorNpcCritical.instance != null)
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
         }
-        else
-        {
-            accuracyModifierX = getAccuracyModifier();
-            accuracyModifierY = getReleaseModifier();
-        }
-        accuracyModifierZ = getRangeModifier();
 
         Debug.Log("X modifier : " + accuracyModifierX);
         Debug.Log("Y modifier : " + accuracyModifierY);
         Debug.Log("Z modifier : " + accuracyModifierZ);
 
         float xVector = 0 + accuracyModifierX;
-        float yVector = Vy +  accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz - accuracyModifierZ; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
         // create the velocity vector in local space and get it in global space
@@ -488,8 +515,8 @@ public class BasketBall : MonoBehaviour
         Random random = new Random();
         float percent = random.Next(1, 100);
 
-        Debug.Log("roll for range critical : " + percent);
-        Debug.Log("percent <= maxPercent : " + (percent <= maxPercent));
+        Debug.Log("***** random : " + percent + " <= " + maxPercent + " : " + (percent <= maxPercent));
+        //Debug.Log("***** percent <= maxPercent : " + (percent <= maxPercent));
 
         if (percent <= maxPercent)
         {
@@ -504,7 +531,7 @@ public class BasketBall : MonoBehaviour
         //int direction = 1; //for testing to do stat analysis
         int slider = Mathf.CeilToInt(playerState.Shotmeter.SliderValueOnButtonPress);
 
-        float sliderModifer = (100 - slider) * 0.01f;
+        float sliderModifer = (100 - slider) * 0.025f;
         float accuracyModifier = 0;
 
         if (basketBallState.TwoPoints)
@@ -514,7 +541,7 @@ public class BasketBall : MonoBehaviour
 
         if (basketBallState.ThreePoints)
         {
-            accuracyModifier = (100 - characterProfile.Accuracy3Pt) * 0.01f;
+            accuracyModifier = (100 - characterProfile.Accuracy3Pt) * 0.02f;
         }
 
         if (basketBallState.FourPoints)
@@ -528,7 +555,8 @@ public class BasketBall : MonoBehaviour
         }
 
         // 100 - slider + 0.6 of (100 - profile accuracy)
-        return (sliderModifer + (accuracyModifier * 0.6f)) * direction;
+        Debug.Log("X getAccuracyModifier() : " + (sliderModifer + accuracyModifier  ) * direction);
+        return (sliderModifer + accuracyModifier) * direction;
     }
 
 
@@ -562,16 +590,33 @@ public class BasketBall : MonoBehaviour
     {
         int direction = getRandomPositiveOrNegative();
         //int direction = 1; //for testing to do stat analysis
-        int slider = Mathf.CeilToInt(playerState.Shotmeter.SliderValueOnButtonPress);
+        //int slider = Mathf.CeilToInt(playerState.Shotmeter.SliderValueOnButtonPress);
 
-        float sliderModifer = (100 - slider) * 0.01f;
+        //float sliderModifer = (100 - slider) * 0.01f;
         float accuracyModifier = 0;
+
         accuracyModifier = (100 - characterProfile.Release) * 0.01f;
 
-        //Debug.Log("accuracyModifier : " + accuracyModifier);
-        //Debug.Log("Y modifier : " + (sliderModifer + (accuracyModifier * 0.4f)) * direction);
+        //Debug.Log("----- characterProfile.Release : " + characterProfile.Release);
+        //Debug.Log("----- slider : " + slider);
+        //Debug.Log("----- sliderModifer : " + sliderModifer);
+        Debug.Log("----- raw Y accuracyModifier : " + accuracyModifier);
+        Debug.Log("----- Y modifier : " + (accuracyModifier * 0.75f) * direction);
 
-        return (sliderModifer + (accuracyModifier * 0.4f)) * direction;
+        //int maxChance = (int)(100 - characterProfile.Release);
+        //Debug.Log("----- maxChance : " + maxChance);
+        //float maxChance = modifier * 100;
+
+        // get random chance for removing release modifier
+        // ex if release = 85, 15% chance to remove modifiers
+        if (rollForCriticalReleaseChance(characterProfile.Release))
+        {
+            return 0;
+        }
+        else
+        {
+            return ((accuracyModifier * 0.75f)) * direction;
+        }
     }
 
     private int getRandomPositiveOrNegative()
@@ -633,7 +678,8 @@ public class BasketBall : MonoBehaviour
                          (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
                          "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt
                          + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
-                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade;
+                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade + "\n"
+                         + "current exp : " + basketBallStats.getExperienceGainedFromSession();
     }
 
     // ============================= convert to percentages ======================================

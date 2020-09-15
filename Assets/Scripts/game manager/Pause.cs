@@ -170,7 +170,8 @@ public class Pause : MonoBehaviour
     {
         Debug.Log("quit");
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null &&
+           (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
         }
@@ -179,8 +180,12 @@ public class Pause : MonoBehaviour
 
     public void loadstartScreen()
     {
+        Debug.Log("loadstartScreen()");
+
+        // if database = null, i could spawn a DB object
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null && 
+           ( GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
         }
@@ -193,7 +198,8 @@ public class Pause : MonoBehaviour
     public void reloadScene()
     {
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null
+            && (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
             //make sure new high scores (if any) are loaded
@@ -221,6 +227,7 @@ public class Pause : MonoBehaviour
 
     private static void updateFreePlayStats()
     {
+        Debug.Log("---------------------- updateFreePlayStats");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats
@@ -228,6 +235,7 @@ public class Pause : MonoBehaviour
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
         //DBConnector.instance.saveHitByCarGameStats(PlayerData.instance.HitByCars);
+        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
     }
 
     private void setPauseScreen(bool value)

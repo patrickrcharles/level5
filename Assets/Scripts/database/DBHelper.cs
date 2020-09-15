@@ -241,15 +241,22 @@ public class DBHelper : MonoBehaviour
         Debug.Log("PlayerData.instance.Level : " + PlayerData.instance.CurrentLevel);
         Debug.Log("     total : " + (PlayerData.instance.CurrentExperience + expGained));
 
-        int prevLevel = PlayerData.instance.CurrentExperience / 3000;
-        int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 3000));
+        int prevLevel = PlayerData.instance.CurrentExperience / 2000;
+        int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 2000));
 
         if (currentLevel > prevLevel)
         {
             Debug.Log("you gained a level");
             PlayerData.instance.UpdatePointsAvailable++;
         }
+
         int updatePointsAvailable = PlayerData.instance.UpdatePointsAvailable;
+        int updatePointsUsed = PlayerData.instance.UpdatePointsUsed;
+
+        if (!( (updatePointsAvailable + updatePointsUsed) == currentLevel) )
+        {
+            updatePointsAvailable = currentLevel - updatePointsUsed;
+        }
 
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -314,7 +321,7 @@ public class DBHelper : MonoBehaviour
                         + "', '" + shooter.PointsAvailable
                         + "', '" + shooter.PointsUsed
                         + "', '" + shooter.Range
-                        + "', '" + (shooter.Release + 60)
+                        + "', '" + (shooter.Release + 70)
                         + "', '" + Convert.ToInt32(shooter.IsLocked)
                         + "')";
 
@@ -363,7 +370,7 @@ public class DBHelper : MonoBehaviour
                     + "', '" + character.PointsAvailable
                     + "', '" + character.PointsUsed
                     + "', '" + character.Range
-                    + "', '" + (character.Release + 60)
+                    + "', '" + (character.Release + 70)
                     + "')";
 
                     cmd.CommandText = sqlQuery;

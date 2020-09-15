@@ -59,26 +59,32 @@ public class BasketBallStats : MonoBehaviour
         //experience += TotalPoints * 10;
         //Debug.Log("TotalPoints : " + TotalPoints);
 
-        experience += (TwoPointerMade * 10);
+        experience += (TwoPointerMade * 20);
         Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 10));
 
-        experience += (ThreePointerMade * 15);
+        experience += (ThreePointerMade * 30);
         Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 15));
 
-        experience += (FourPointerMade * 20);
+        experience += (FourPointerMade * 40);
         Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 20));
 
-        experience += (SevenPointerMade * 35);
+        experience += (SevenPointerMade * 70);
         Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 35));
 
         experience += Mathf.RoundToInt(TotalDistance * 0.5f);
         Debug.Log("TotalDistance : " + TotalDistance * 0.5f);
 
-        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 25);
+        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
         experience += (MostConsecutiveShots * 25);
 
         ExperienceGained = experience;
         Debug.Log("experience gained : " + ExperienceGained);
+
+        //if(GameOptions.gameModeSelectedId == 99)
+        //{
+        //    ExperienceGained = (ExperienceGained / 2);
+        //}
+        Debug.Log("modeid : " + GameOptions.gameModeSelectedId + " ExperienceGained : " + ExperienceGained);
 
         return ExperienceGained;
     }
