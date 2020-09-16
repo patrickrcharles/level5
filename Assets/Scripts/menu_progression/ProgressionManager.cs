@@ -214,35 +214,40 @@ public class ProgressionManager : MonoBehaviour
         // save button triggered
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(saveButtonName))
         {
-            // enable confirmation object
-            // set selected object to confirm button
             confirmationDialogueBox.SetActive(true);
-
             EventSystem.current.SetSelectedGameObject(GameObject.Find(confirmButtonName).gameObject);
         }
-        // save button triggered
+        // reset button triggered
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(resetButtonName))
         {
             // enable confirmation object
             // set selected object to confirm button
             confirmationDialogueBox.SetActive(true);
 
+            // reset stats
             EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
         }
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName))
         {
-            // save values
-            // disable dialogue
-            // set default selected button
+
+            // new progressionState --> playerselecetdata[playerSelectedIndex]
+            // dbhelper save characterprofile
+            // reload data from database
+            // initialize display
+            playerSelectedData[playerSelectedIndex].Accuracy3Pt = progressionState.Accuracy3;
+            playerSelectedData[playerSelectedIndex].Accuracy4Pt = progressionState.Accuracy4;
+            playerSelectedData[playerSelectedIndex].Accuracy7Pt = progressionState.Accuracy7;
+            playerSelectedData[playerSelectedIndex].Range = progressionState.Range;
+            playerSelectedData[playerSelectedIndex].Release = progressionState.Release;
+            playerSelectedData[playerSelectedIndex].Luck = progressionState.Luck;
 
             confirmationDialogueBox.SetActive(false);
             EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
         }
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName))
         {
-            // save values
-            // disable dialogue
-            // set default selected button
+            
+            // do nothing, continue state
 
             confirmationDialogueBox.SetActive(false);
             EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
