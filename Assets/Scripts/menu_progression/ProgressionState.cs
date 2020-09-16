@@ -73,9 +73,8 @@ public class ProgressionState  : MonoBehaviour
 
         pointsAvailable = 0;
         level = 0;
-        level = 0;
+        experience = 0;
 
         playerId = 0;
-
     }
 }
