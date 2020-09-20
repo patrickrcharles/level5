@@ -151,6 +151,11 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     public void playSfxChopWood()
     {
         audioSource.PlayOneShot(SFXBB.instance.chopWood);
+    }    
+    
+    public void playSfxShootGun()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.shootGun);
     }
 
     public void enableAttackBox()
