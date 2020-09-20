@@ -31,6 +31,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip metalBang;
     public AudioClip stoneCold;
     public AudioClip chopWood;
+    public AudioClip shootGun;
 
     public AudioClip unlockAchievement;
     
