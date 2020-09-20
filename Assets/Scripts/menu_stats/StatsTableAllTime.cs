@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
@@ -11,7 +12,6 @@ public class StatsTableAllTime : MonoBehaviour
     const string fourName = "four_points";
     const string sevenName = "seven_points";
     const string moneyballName = "moneyball";
-    const string hitByCarName = "hit_by_car";
     const string totalDistanceName = "total_distance";
     const string totalShotsName = "total_shots";
     const string totalPointsName = "total_points";
@@ -27,7 +27,6 @@ public class StatsTableAllTime : MonoBehaviour
     const string sevenAttemptDBField = "sevenAtt";
     const string moneyballMadeDBField = "moneyBallMade";
     const string moneyballAttemptDBField = "moneyBallAtt";
-    const string hitByCarDBField = "count"; // table 'HitByCar' do count of count table
     const string totalDistanceDBField = "totalDistance";
     const string totalPointsDBField = "totalPoints";
     const string timePlayedDBField = "timePlayed";
@@ -38,7 +37,6 @@ public class StatsTableAllTime : MonoBehaviour
     Text fourText;
     Text sevenText;
     Text moneyBallText;
-    Text hitByCarText;
     Text totalDistanceText;
     Text totalShotsText;
     Text totalPointsText;
@@ -55,7 +53,6 @@ public class StatsTableAllTime : MonoBehaviour
         fourText = GameObject.Find(fourName).transform.GetChild(1).GetComponent<Text>();
         sevenText = GameObject.Find(sevenName).transform.GetChild(1).GetComponent<Text>();
         moneyBallText = GameObject.Find(moneyballName).transform.GetChild(1).GetComponent<Text>();
-        hitByCarText = GameObject.Find(hitByCarName).transform.GetChild(1).GetComponent<Text>();
         totalDistanceText = GameObject.Find(totalDistanceName).transform.GetChild(1).GetComponent<Text>();
         totalShotsText = GameObject.Find(totalShotsName).transform.GetChild(1).GetComponent<Text>();
         totalPointsText = GameObject.Find(totalPointsName).transform.GetChild(1).GetComponent<Text>();
@@ -71,8 +68,9 @@ public class StatsTableAllTime : MonoBehaviour
             {
                 loadAllTimeStats();
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
     }
@@ -100,8 +98,6 @@ public class StatsTableAllTime : MonoBehaviour
 
         int points = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", totalPointsDBField);
         float played = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", timePlayedDBField);
-
-        hitByCarText.text = DBHelper.instance.getIntSumByTableByField("HitByCar", hitByCarDBField).ToString();
 
         twoText.text = twoM + " / " + twoA + "  " + divideIntsReturnFloatPercentage(twoM, twoA).ToString("00.00") + "%";
         threeText.text = threeM + " / " + threeA + "  " + divideIntsReturnFloatPercentage(threeM, threeA).ToString("00.00") + "%";
@@ -136,14 +132,10 @@ public class StatsTableAllTime : MonoBehaviour
     {
         float miles;
         float foot;
-        //float secs;
 
         miles = Mathf.FloorToInt(feet / 5280);
         foot = Mathf.FloorToInt((feet - (miles * 5280)));
-
         float percent = miles + ( miles / foot) ;
-        //Debug.Log("percent : " + percent);
-        //Debug.Log("percent.ToString() : " + percent.ToString("#.##") + " miles");
 
         //return percent.ToString("#.##") + " miles";
         return percent.ToString("00.00") + " miles";

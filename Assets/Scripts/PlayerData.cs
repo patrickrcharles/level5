@@ -9,8 +9,6 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    //private BasketBallStats basketBallStats;
-
     private int _playerId;
     private string _playerName;
 
@@ -56,23 +54,6 @@ public class PlayerData : MonoBehaviour
     private int _updatePointsUsed;
 
     public static PlayerData instance;
-    public List<HitByCar> hitByCars;
-
-    public class HitByCar
-    {
-        public int vehicleId;
-        public int counter = 0;
-
-        public HitByCar(int vehId)
-        {
-            vehicleId = vehId;
-        }
-        public HitByCar(int vehId, int count)
-        {
-            vehicleId = vehId;
-            counter = count;
-        }
-    }
 
     void Awake()
     {
@@ -85,33 +66,13 @@ public class PlayerData : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
     private void Start()
     {
-
-        hitByCars = new List<HitByCar>();
         if (GameObject.FindGameObjectsWithTag("database") != null)
         {
             loadStatsFromDatabase();
-        }
-    }
-
-    public void AddHitByCarInstanceToList(int vehId)
-    {
-        // if vehicle entry exists, eg, hit by this vehicleId already
-        HitByCar temp = hitByCars.Where(x => x.vehicleId == vehId).SingleOrDefault();
-        if (temp != null) // if not hit by this car
-        {
-            // increase counter
-            temp.counter++;
-        }
-        else // create the vehicle entry
-        {
-            temp = new HitByCar(vehId);
-            hitByCars.Add(temp);
-            temp.counter++;
         }
     }
 
@@ -141,7 +102,6 @@ public class PlayerData : MonoBehaviour
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
         }
-
     }
 
     public float SevenPointerAttempts => _sevenPointerAttempts;
@@ -187,8 +147,6 @@ public class PlayerData : MonoBehaviour
     public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
 
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
-
-    public List<HitByCar> HitByCars { get; set; }
     public int MostConsecutiveShots { get => _mostConsecutiveShots; set => _mostConsecutiveShots = value; }
     public float TotalPointsBonus { get => _totalPointsBonus; set => _totalPointsBonus = value; }
     public float ThreePointContestScore { get => _threePointContestScore; set => _threePointContestScore = value; }

@@ -39,17 +39,6 @@ public class PlayerCollisions : MonoBehaviour
             if (playerCanBeKnockedDown )
             {
                 playerKnockedDown(other.gameObject);
-                // if vehicle, update hit by vehicle stats
-                if (other.transform.parent.CompareTag("vehicle") )
-                {
-                    VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
-                    // if playerData object exists
-                    if (PlayerData.instance != null && playerCanBeKnockedDown)
-                    {
-                        // add hit by car reference
-                        PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId);
-                    }
-                }
             }
             else
             {
@@ -69,7 +58,6 @@ public class PlayerCollisions : MonoBehaviour
         playerState.KnockedDown = true;
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
-
     }
     void playerAvoidKnockDown(GameObject playerAvoidKnocked)
     {

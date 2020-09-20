@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -191,7 +192,7 @@ public class Pause : MonoBehaviour
         }
 
         // start screen should be first scene in build
-        SceneManager.LoadScene("level_00_start");
+        SceneManager.LoadScene("level_00_loading");
         //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
     }
 
@@ -217,8 +218,9 @@ public class Pause : MonoBehaviour
             {
                 PlayerData.instance.loadStatsFromDatabase();
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }
@@ -234,25 +236,12 @@ public class Pause : MonoBehaviour
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
-        //DBConnector.instance.saveHitByCarGameStats(PlayerData.instance.HitByCars);
         DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
     }
 
     private void setPauseScreen(bool value)
     {
-        //Debug.Log("setPauseScreen");
-        //Debug.Log("paused : " + Pause.instance.paused);
-        // score display
-        //if (paused)
-        //{
-        //    GameRules.instance.DisplayCurrentScoreText.enabled = !value;
-        //    GameRules.instance.DisplayHighScoreText.enabled = !value;
-        //}
-        //if (!paused)
-        //{
-        //    GameRules.instance.DisplayCurrentScoreText.enabled = value;
-        //    GameRules.instance.DisplayHighScoreText.enabled = value;
-        //}
+        // if ui stats enables, trn off
         if (BasketBall.instance.UiStatsEnabled)
         {
             BasketBall.instance.toggleUiStats();
