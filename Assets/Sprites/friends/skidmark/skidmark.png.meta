@@ -11,6 +11,18 @@ TextureImporter:
   - first:
       213: -2174214973442944208
     second: dan_2
+  - first:
+      213: -4153102874185025549
+    second: skidmark_0
+  - first:
+      213: -5940898588092676622
+    second: skidmark_1
+  - first:
+      213: 4516489690485330748
+    second: skidmark_2
+  - first:
+      213: 9141865296631781299
+    second: skidmark_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -134,7 +146,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dan_0
+      name: skidmark_0
       rect:
         serializedVersion: 2
         x: 0
@@ -148,14 +160,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 479b9a129d7359200800000000000000
-      internalID: 186116365317945716
+      spriteID: 3f73c84a0f63d56c0800000000000000
+      internalID: -4153102874185025549
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dan_1
+      name: skidmark_1
       rect:
         serializedVersion: 2
         x: 128
@@ -169,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8dcc7c08d58a49f0800000000000000
-      internalID: -483426847019971185
+      spriteID: 2f5cd1ad530bd8da0800000000000000
+      internalID: -5940898588092676622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dan_2
+      name: skidmark_2
       rect:
         serializedVersion: 2
         x: 256
@@ -190,8 +202,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 033199a4003a3d1e0800000000000000
-      internalID: -2174214973442944208
+      spriteID: c339711b17bcdae30800000000000000
+      internalID: 4516489690485330748
       vertices: []
       indices: 
       edges: []
