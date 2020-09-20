@@ -546,6 +546,17 @@
                 },
                 {
                     "name": "",
+                    "id": "11597ec6-833a-4e78-a3ea-94a3cc87947d",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "special",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bdbc1388-3d92-42e6-90bd-732a17b1f8bf",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
@@ -1336,6 +1347,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "toggle_character_unlock",
+                    "type": "Button",
+                    "id": "3f68784b-e375-47cd-8072-7d0b3a3c0770",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -1479,6 +1498,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "toggle_camera_keyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9d11dcf-1c5f-434b-9b08-29c64002a8d2",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "toggle_character_unlock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
