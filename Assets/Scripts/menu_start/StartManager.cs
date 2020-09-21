@@ -760,8 +760,10 @@ public class StartManager : MonoBehaviour
             // turn off text display after 5 seconds
             StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
         }
+        // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
         if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free"))
+            || (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free") 
+                && !modeSelectedData[modeSelectedIndex].ArcadeModeActive) )
         {
             // load player progression info
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
@@ -841,6 +843,8 @@ public class StartManager : MonoBehaviour
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
         GameOptions.trafficEnabled = trafficEnabled;
+
+        GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
     }
 
     // ============================  message display ==============================
