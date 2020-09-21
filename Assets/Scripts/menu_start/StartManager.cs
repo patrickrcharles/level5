@@ -189,8 +189,22 @@ public class StartManager : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
 
-        // if player highlighted, display player
-        if (currentHighlightedButton.Equals(playerSelectButtonName) || currentHighlightedButton.Equals(playerSelectOptionButtonName))
+        //// if player highlighted, display player
+        //if (currentHighlightedButton.Equals(playerSelectButtonName) 
+        //    || currentHighlightedButton.Equals(playerSelectOptionButtonName)
+        //    || )
+        //{
+        //    try
+        //    {
+        //        initializePlayerDisplay();
+        //    }
+        //    catch
+        //    {
+        //        return;
+        //    }
+        //}
+        //// if cheerleader highlighted, display cheerleader
+        if (!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
         {
             try
             {
@@ -201,7 +215,7 @@ public class StartManager : MonoBehaviour
                 return;
             }
         }
-        // if cheerleader highlighted, display cheerleader
+
         if (currentHighlightedButton.Equals(cheerleaderSelectButtonName) || currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
         {
             try
@@ -213,7 +227,6 @@ public class StartManager : MonoBehaviour
                 return;
             }
         }
-
         // ================================== footer buttons =====================================================================
         // start button | start game
         if ((controls.UINavigation.Submit.triggered
@@ -224,7 +237,7 @@ public class StartManager : MonoBehaviour
             //{
             //    Destroy(GameObject.Find("LoadedData").gameObject);
             //}
-            loadScene();
+            loadGame();
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -238,7 +251,7 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadStatsMenu(statsMenuSceneName);
+            loadMenu(statsMenuSceneName);
         }
 
         // stats menu button | load stats menu
@@ -246,7 +259,8 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(updateMenuButtonName))
         {
-            loadStatsMenu(progressionScreenSceneName);
+            GameOptions.playerSelectedIndex = playerSelectedIndex;
+            loadMenu(progressionScreenSceneName);
         }
 
         // ================================== navigation =====================================================================
@@ -388,7 +402,6 @@ public class StartManager : MonoBehaviour
         {
             s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
             s.Level = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "level", s.PlayerId);
-            //Debug.Log("level : " + s.Level + " experience : " + s.Experience);
         }
     }
 
@@ -427,7 +440,6 @@ public class StartManager : MonoBehaviour
     IEnumerator InitializeDisplay()
     {
         yield return new WaitUntil(() => dataLoaded) ;
-        Debug.Log("start manager InitializeDisplay");
 
         // display default data
         initializeCheerleaderDisplay();
@@ -568,7 +580,7 @@ public class StartManager : MonoBehaviour
             if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
             {
                 // get achievement progress for display
-                Achievement tempAchieve = 
+                Achievement tempAchieve =
                     AchievementManager.instance.AchievementList
                     .Find(x => x.CheerleaderId == cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId);
 
@@ -580,7 +592,7 @@ public class StartManager : MonoBehaviour
             }
             // if player is locked or free play mode selected
             if (!cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked
-                || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
+                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free"))
             {
                 //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
                 cheerleaderSelectedIsLockedObject.SetActive(false);
@@ -595,8 +607,9 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
             GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
         }
-        catch
+        catch (Exception e)
         {
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -604,7 +617,7 @@ public class StartManager : MonoBehaviour
     public void intializeModeDisplay()
     {
         modeSelectOptionText = GameObject.Find(modeSelectOptionButtonName).GetComponent<Text>();
-        modeSelectOptionText.text = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+        modeSelectOptionText.text = modeSelectedData[modeSelectedIndex].ModeDisplayName;
 
         ModeSelectOptionDescriptionText = GameObject.Find(modeSelectDescriptionObjectName).GetComponent<Text>();
         ModeSelectOptionDescriptionText.text = modeSelectedData[modeSelectedIndex].ModeDescription;
@@ -625,18 +638,7 @@ public class StartManager : MonoBehaviour
             playerProgressionCategoryText.enabled = true;
             playerProgressionStatsText.enabled = true;
 
-            // check if players is locked
-            //foreach (CharacterProfile sp in playerSelectedData)
-            //{
-            //    if (AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId) != null)
-            //    {
-            //        Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == sp.PlayerId);
-            //        sp.IsLocked = tempAchieve.IsLocked;
-            //        sp.UnlockCharacterText = tempAchieve.AchievementDescription;
-            //        //Debug.Log(tempAchieve.achievementName + " islocked : " + tempAchieve.IsLocked);
-            //    }
-            //}
-
+            //Debug.Log("***************************************** 1");
             if (playerSelectedData[playerSelectedIndex].IsLocked)
             {
                 // get player achievement status
@@ -659,17 +661,25 @@ public class StartManager : MonoBehaviour
                 }
             }
 
+            //Debug.Log("***************************************** 2");
+
             // if player is locked or free play mode selected
             if (!playerSelectedData[playerSelectedIndex].IsLocked
-                || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
+                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free"))
             {
                 //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
                 playerSelectedIsLockedObject.SetActive(false);
                 playerSelectUnlockText.text = "";
             }
 
+
+            //Debug.Log("***************************************** 3");
+
             playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
             playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
+
+
+            //Debug.Log("***************************************** 4");
 
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
@@ -681,9 +691,19 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
 
-            //Debug.Log("=================================================================");
-            playerSelectedData[playerSelectedIndex].Level = playerSelectedData[playerSelectedIndex].Experience / 2000;
-            int nextlvl = ((playerSelectedData[playerSelectedIndex].Level + 1) * 2000) - playerSelectedData[playerSelectedIndex].Experience;
+
+            //Debug.Log("***************************************** 5");
+
+            /*
+             * FAILS HERE
+             */
+
+            playerSelectedData[playerSelectedIndex].Level = 
+                (playerSelectedData[playerSelectedIndex].Experience / 3000);
+            int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
+
+
+            //Debug.Log("***************************************** 6");
             //Debug.Log("experience : " + playerSelectedData[playerSelectedIndex].Experience);
             //Debug.Log("points available : " + playerSelectedData[playerSelectedIndex].PointsAvailable);
             //Debug.Log("level : " + playerSelectedData[playerSelectedIndex].Level);
@@ -693,6 +713,10 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].Experience.ToString("F0") + "\n"
                 + nextlvl.ToString("F0") + "\n" ;
 
+            //Debug.Log("====================================playerProgressionUpdatePointsText.text : " + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString());
+
+
+            //Debug.Log("***************************************** 7");
             // player points avaiable for upgrade
             if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
             {
@@ -703,17 +727,19 @@ public class StartManager : MonoBehaviour
                 playerProgressionUpdatePointsText.text = "";
             }
 
+            //Debug.Log("***************************************** 7");
             GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         }
         catch
         {
+            Debug.Log("CATCH ----------------------");
             return;
         }
     }
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
-    public void loadScene()
+    public void loadGame()
     {
         // tells character profile to load profile from LoadedData.instance
         GameOptions.gameModeHasBeenSelected = true;
@@ -727,17 +753,16 @@ public class StartManager : MonoBehaviour
 
         // check if Player selected is locked
         if ((playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            && !modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
+            && !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free"))
         {
             Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
             messageText.text = " Bruh, it's locked. pick something else";
             // turn off text display after 5 seconds
-            StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+            StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
         }
         if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            || modeSelectedData[modeSelectedIndex].ModelDisplayName.ToLower().Contains("free"))
+            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free"))
         {
-            Debug.Log("load scene");
             // load player progression info
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
             PlayerData.instance.CurrentLevel = playerSelectedData[playerSelectedIndex].Level;
@@ -748,7 +773,7 @@ public class StartManager : MonoBehaviour
         }
     }
 
-    public void loadStatsMenu(string sceneName)
+    public void loadMenu(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -775,7 +800,7 @@ public class StartManager : MonoBehaviour
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
-        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
 
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
         GameOptions.gameModeRequiresCounter = modeSelectedData[modeSelectedIndex].ModeRequiresCounter;
@@ -935,7 +960,7 @@ public class StartManager : MonoBehaviour
             modeSelectedIndex--;
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
-        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
     }
 
     public void changeSelectedModeDown()
@@ -952,7 +977,7 @@ public class StartManager : MonoBehaviour
         }
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
-        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModelDisplayName;
+        GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
     }
 
     // ============================  public var references  ==============================
