@@ -204,7 +204,8 @@ public class StartManager : MonoBehaviour
         //    }
         //}
         //// if cheerleader highlighted, display cheerleader
-        if (!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+        if ((!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)) 
+            && dataLoaded)
         {
             try
             {
@@ -727,13 +728,13 @@ public class StartManager : MonoBehaviour
                 playerProgressionUpdatePointsText.text = "";
             }
 
-            //Debug.Log("***************************************** 7");
+            //Debug.Log("***************************************** 8");
             GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         }
-        catch
+        catch(Exception e)
         {
-            Debug.Log("CATCH ----------------------");
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
