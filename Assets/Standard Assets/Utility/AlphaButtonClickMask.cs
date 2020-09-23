@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class AlphaButtonClickMask : MonoBehaviour, ICanvasRaycastFilter 
 {
@@ -19,7 +20,7 @@ public class AlphaButtonClickMask : MonoBehaviour, ICanvasRaycastFilter
             {
                 tex.GetPixels32();
             }
-            catch (UnityException e)
+            catch (Exception e)
             {
                 Debug.LogError(e.Message);
                 isInvalid = true;
