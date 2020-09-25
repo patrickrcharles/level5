@@ -17,6 +17,30 @@ TextureImporter:
   - first:
       213: 21300008
     second: jessica - take photo_4
+  - first:
+      213: -487627935353266959
+    second: jessica - take photo_0
+  - first:
+      213: -7643522491869151580
+    second: jessica - take photo_1
+  - first:
+      213: -2998534024858518764
+    second: jessica - take photo_2
+  - first:
+      213: 3466095598931726052
+    second: jessica - take photo_3
+  - first:
+      213: 6422877083417624765
+    second: jessica - take photo_4
+  - first:
+      213: -6926015693783154318
+    second: jessica - take photo_5
+  - first:
+      213: -6706882744796557786
+    second: jessica - take photo_6
+  - first:
+      213: 7635997968931554896
+    second: jessica - take photo_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -147,15 +171,15 @@ TextureImporter:
         y: 192
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02305410000000000800000000000000
-      internalID: 21300000
+      spriteID: 1fc16b2f9f89b39f0800000000000000
+      internalID: -487627935353266959
       vertices: []
       indices: 
       edges: []
@@ -168,15 +192,15 @@ TextureImporter:
         y: 192
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22305410000000000800000000000000
-      internalID: 21300002
+      spriteID: 4ae3e6f6ac0cce590800000000000000
+      internalID: -7643522491869151580
       vertices: []
       indices: 
       edges: []
@@ -189,15 +213,15 @@ TextureImporter:
         y: 192
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42305410000000000800000000000000
-      internalID: 21300004
+      spriteID: 41bb269f0311366d0800000000000000
+      internalID: -2998534024858518764
       vertices: []
       indices: 
       edges: []
@@ -210,36 +234,15 @@ TextureImporter:
         y: 192
         width: 192
         height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62305410000000000800000000000000
-      internalID: 21300006
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jessica - take photo_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 192
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.333}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 82305410000000000800000000000000
-      internalID: 21300008
+      spriteID: 4eeced3459b0a1030800000000000000
+      internalID: 3466095598931726052
       vertices: []
       indices: 
       edges: []
@@ -247,7 +250,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 16b50901d5e4a4045ad94f418c2acad0
     internalID: 0
     vertices: []
     indices: 

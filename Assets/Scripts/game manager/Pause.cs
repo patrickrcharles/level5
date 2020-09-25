@@ -104,7 +104,7 @@ public class Pause : MonoBehaviour
          */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
-            Debug.Log("TogglePause");
+            //Debug.Log("TogglePause");
             TogglePause();
         }
         //==========================================================
@@ -181,7 +181,7 @@ public class Pause : MonoBehaviour
 
     public void loadstartScreen()
     {
-        Debug.Log("loadstartScreen()");
+        //Debug.Log("loadstartScreen()");
 
         // if database = null, i could spawn a DB object
         // update all time stats
