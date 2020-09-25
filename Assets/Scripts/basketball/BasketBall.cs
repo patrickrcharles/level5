@@ -530,8 +530,8 @@ public class BasketBall : MonoBehaviour
         Random random = new Random();
         float percent = random.Next(1, 100);
 
-        Debug.Log("***** random : " + percent + " <= " + maxPercent + " : " + (percent <= maxPercent));
-        Debug.Log("***** percent <= maxPercent : " + (percent <= maxPercent));
+        //Debug.Log("***** random : " + percent + " <= " + maxPercent + " : " + (percent <= maxPercent));
+        //Debug.Log("***** percent <= maxPercent : " + (percent <= maxPercent));
 
         if (percent <= maxPercent)
         {
@@ -637,7 +637,7 @@ public class BasketBall : MonoBehaviour
         }
         else
         {
-            Debug.Log("---------- RELEASE MODIFIER : " + ((accuracyModifier * 0.75f)) * direction);
+            //Debug.Log("---------- RELEASE MODIFIER : " + ((accuracyModifier * 0.75f)) * direction);
             return ((accuracyModifier * 0.75f)) * direction;
         }
     }

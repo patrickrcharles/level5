@@ -146,7 +146,7 @@ public class Pause : MonoBehaviour
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1")))
             {
-                Debug.Log("load start scene");
+                //Debug.Log("load start scene");
                 loadstartScreen();
             }
             // quit
@@ -154,7 +154,7 @@ public class Pause : MonoBehaviour
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1"))
             {
-                Debug.Log("toggle pause");
+                //Debug.Log("toggle pause");
                 TogglePause();
             }
             // quit

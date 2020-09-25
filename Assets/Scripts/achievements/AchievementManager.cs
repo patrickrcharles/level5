@@ -231,14 +231,14 @@ public class AchievementManager : MonoBehaviour
         string achText = "";
         bool achUnlocked = false;
 
-        Debug.Log("---------------------------checkAllAchievements()");
+        //Debug.Log("---------------------------checkAllAchievements()");
         foreach (Achievement ach in AchievementList)
         {
-            Debug.Log("Achievement : " + ach.achievementName + " unlocked : " + ach.IsLocked);
+            //Debug.Log("Achievement : " + ach.achievementName + " unlocked : " + ach.IsLocked);
             // if achievement is locked
             if (ach.IsLocked)
             {
-                Debug.Log("if (ach.IsLocked) ");
+                //Debug.Log("if (ach.IsLocked) ");
                 ach.checkUnlockConditions( pid, cid, lid, mid, activateValue);
 
                 // if achievement is unlocked
@@ -251,11 +251,11 @@ public class AchievementManager : MonoBehaviour
                     DBHelper.instance.updateIntValueFromTableByFieldAndId("Achievements", "islocked", 0, "aid", ach.achievementId);
                 }
             }
-            Debug.Log("     checkAllAchievements :  ach.name : " + ach.name + "\nach.islocked : "+ ach.IsLocked);
+            //Debug.Log("     checkAllAchievements :  ach.name : " + ach.name + "\nach.islocked : "+ ach.IsLocked);
         }
         if (achUnlocked)
         {
-            Debug.Log("if (achUnlocked)");
+            //Debug.Log("if (achUnlocked)");
             StartCoroutine(displayAchievementUnlockNotification(3, achText));
         }
 

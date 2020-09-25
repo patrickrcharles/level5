@@ -167,8 +167,8 @@ public class GameRules : MonoBehaviour
         // game over. pause / display end game / save
         if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
         {
-            Debug.Log("===== GAME OVER");
-            Debug.Log("***** game mode : " + GameOptions.gameModeSelectedId);
+            //Debug.Log("===== GAME OVER");
+            //Debug.Log("***** game mode : " + GameOptions.gameModeSelectedId);
             //Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";

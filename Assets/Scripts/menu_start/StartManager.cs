@@ -398,7 +398,7 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
-        Debug.Log("updateLevelAndExperienceFromDatabase");
+        //Debug.Log("updateLevelAndExperienceFromDatabase");
         foreach (CharacterProfile s in playerSelectedData)
         {
             s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
@@ -752,10 +752,10 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        Debug.Log("load game");
-        Debug.Log("scene name : " + sceneName);
-        Debug.Log("playerSelectedData[playerSelectedIndex].IsLocked : " + playerSelectedData[playerSelectedIndex].IsLocked);
-        Debug.Log("cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked : " + cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked);
+        //Debug.Log("load game");
+        //Debug.Log("scene name : " + sceneName);
+        //Debug.Log("playerSelectedData[playerSelectedIndex].IsLocked : " + playerSelectedData[playerSelectedIndex].IsLocked);
+        //Debug.Log("cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked : " + cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked);
 
         //// check if Player selected is locked
         //if ((playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)

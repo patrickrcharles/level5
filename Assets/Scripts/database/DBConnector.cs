@@ -92,7 +92,7 @@ public class DBConnector : MonoBehaviour
         {
             if (dbHelper.isTableEmpty(tableNameUser))
             {
-                Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
+                //Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
                 dbHelper.InsertDefaultUserRecord();
             }
         }
@@ -391,8 +391,6 @@ public class DBConnector : MonoBehaviour
             "password  TEXT, " +
             "version   TEXT, " +
             "os    TEXT );");
-
-        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();

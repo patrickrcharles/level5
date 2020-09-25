@@ -496,7 +496,7 @@ public class ProgressionManager : MonoBehaviour
 
     IEnumerator InitializeDisplay()
     {
-        Debug.Log("------------------------------- start manager InitializeDisplay");
+        //Debug.Log("------------------------------- start manager InitializeDisplay");
         yield return new WaitUntil(() => dataLoaded);
 
         // display default data

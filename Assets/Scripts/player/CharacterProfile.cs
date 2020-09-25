@@ -57,7 +57,7 @@ public class CharacterProfile : MonoBehaviour
         }
         if (GameOptions.arcadeModeEnabled)
         {
-            Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
+            //Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
             Accuracy2Pt = 100;
             Accuracy3Pt = 100;
             Accuracy4Pt = 100;
@@ -71,7 +71,7 @@ public class CharacterProfile : MonoBehaviour
 
     private void intializeShooterStatsFromProfile()
     {
-        Debug.Log("initializeStats()");
+        //Debug.Log("initializeStats()");
 
         CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.playerId);
 
@@ -93,7 +93,7 @@ public class CharacterProfile : MonoBehaviour
         
         Range = temp.range;
         Release = temp.release;
-        Debug.Log("range : " + range + " realse : "+ Release);
+        //Debug.Log("range : " + range + " realse : "+ Release);
 
         experience = temp.Experience;
         level = temp.Level;

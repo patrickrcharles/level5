@@ -611,7 +611,7 @@ public class DBHelper : MonoBehaviour
                     temp.Range = reader.GetInt32(17);
                     temp.Release = reader.GetInt32(18);
                     temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
-                    Debug.Log("player.islocked : " + temp.IsLocked);
+                    //Debug.Log("player.islocked : " + temp.IsLocked);
 
                     //Debug.Log("db aid" + aid + " islocked : " + islocked);
                     //Achievement temp = Achievement(aid, activateInt, progressInt, islocked);
@@ -706,7 +706,7 @@ public class DBHelper : MonoBehaviour
            stats.TimePlayed + "','" +
            stats.LongestShotMade + "')";
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
         }
         else
         {

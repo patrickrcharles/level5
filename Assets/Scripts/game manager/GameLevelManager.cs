@@ -107,6 +107,7 @@ public class GameLevelManager : MonoBehaviour
         //QualitySettings.vSyncCount = 1;
 
         QualitySettings.vSyncCount = 0;
+        //Application.targetFrameRate = 60;
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled
@@ -255,7 +256,7 @@ public class GameLevelManager : MonoBehaviour
         {
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-            Debug.Log("load prefab");
+            //Debug.Log("load prefab");
         }
 
         //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
