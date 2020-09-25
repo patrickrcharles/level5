@@ -1362,7 +1362,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""toggle_character_unlock"",
+                    ""name"": ""toggle_character_max_stats"",
                     ""type"": ""Button"",
                     ""id"": ""3f68784b-e375-47cd-8072-7d0b3a3c0770"",
                     ""expectedControlType"": ""Button"",
@@ -1521,7 +1521,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""toggle_character_unlock"",
+                    ""action"": ""toggle_character_max_stats"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1564,7 +1564,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Other_toggle_run_keyboard = m_Other.FindAction("toggle_run_keyboard", throwIfNotFound: true);
         m_Other_toggle_stats_keyboard = m_Other.FindAction("toggle_stats_keyboard", throwIfNotFound: true);
         m_Other_toggle_camera_keyboard = m_Other.FindAction("toggle_camera_keyboard", throwIfNotFound: true);
-        m_Other_toggle_character_unlock = m_Other.FindAction("toggle_character_unlock", throwIfNotFound: true);
+        m_Other_toggle_character_max_stats = m_Other.FindAction("toggle_character_max_stats", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1869,7 +1869,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Other_toggle_run_keyboard;
     private readonly InputAction m_Other_toggle_stats_keyboard;
     private readonly InputAction m_Other_toggle_camera_keyboard;
-    private readonly InputAction m_Other_toggle_character_unlock;
+    private readonly InputAction m_Other_toggle_character_max_stats;
     public struct OtherActions
     {
         private @PlayerControls m_Wrapper;
@@ -1878,7 +1878,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @toggle_run_keyboard => m_Wrapper.m_Other_toggle_run_keyboard;
         public InputAction @toggle_stats_keyboard => m_Wrapper.m_Other_toggle_stats_keyboard;
         public InputAction @toggle_camera_keyboard => m_Wrapper.m_Other_toggle_camera_keyboard;
-        public InputAction @toggle_character_unlock => m_Wrapper.m_Other_toggle_character_unlock;
+        public InputAction @toggle_character_max_stats => m_Wrapper.m_Other_toggle_character_max_stats;
         public InputActionMap Get() { return m_Wrapper.m_Other; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1900,9 +1900,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @toggle_camera_keyboard.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
-                @toggle_character_unlock.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_unlock;
-                @toggle_character_unlock.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_unlock;
-                @toggle_character_unlock.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_unlock;
+                @toggle_character_max_stats.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
+                @toggle_character_max_stats.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
+                @toggle_character_max_stats.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
             }
             m_Wrapper.m_OtherActionsCallbackInterface = instance;
             if (instance != null)
@@ -1919,9 +1919,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @toggle_camera_keyboard.started += instance.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.performed += instance.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.canceled += instance.OnToggle_camera_keyboard;
-                @toggle_character_unlock.started += instance.OnToggle_character_unlock;
-                @toggle_character_unlock.performed += instance.OnToggle_character_unlock;
-                @toggle_character_unlock.canceled += instance.OnToggle_character_unlock;
+                @toggle_character_max_stats.started += instance.OnToggle_character_max_stats;
+                @toggle_character_max_stats.performed += instance.OnToggle_character_max_stats;
+                @toggle_character_max_stats.canceled += instance.OnToggle_character_max_stats;
             }
         }
     }
@@ -1963,6 +1963,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnToggle_run_keyboard(InputAction.CallbackContext context);
         void OnToggle_stats_keyboard(InputAction.CallbackContext context);
         void OnToggle_camera_keyboard(InputAction.CallbackContext context);
-        void OnToggle_character_unlock(InputAction.CallbackContext context);
+        void OnToggle_character_max_stats(InputAction.CallbackContext context);
     }
 }

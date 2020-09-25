@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class ProgressionState  : MonoBehaviour
 {
-    int addTo3;
-    int addTo4;
-    int addTo7;
-    int pointsAvailable;
-    int pointsUsedThisSession;
+    [SerializeField] int addTo3;
+    [SerializeField] int addTo4;
+    [SerializeField] int addTo7;
 
-    int accuracy3;
-    int accuracy4;
-    int accuracy7;
+    [SerializeField] int addToLuck;
+    [SerializeField] int addToRange;
+    [SerializeField] int addToRelease;
 
-    int range;
-    int release;
-    int luck;
-    int level;
-    int experience;
+    [SerializeField] int pointsAvailable;
+    [SerializeField] int pointsUsedThisSession;
 
-    int playerId;
+    [SerializeField] int accuracy3;
+    [SerializeField] int accuracy4;
+    [SerializeField] int accuracy7;
+
+    [SerializeField] int range;
+    [SerializeField] int release;
+    [SerializeField] int luck;
+    [SerializeField] int level;
+    [SerializeField] int experience;
+
+    [SerializeField] int playerId;
 
     public static ProgressionState instance;
 
@@ -37,6 +42,9 @@ public class ProgressionState  : MonoBehaviour
     public int Luck { get => luck; set => luck = value; }
     public int Level { get => level; set => level = value; }
     public int Experience { get => experience; set => experience = value; }
+    public int AddToLuck { get => addToLuck; set => addToLuck = value; }
+    public int AddToRange { get => addToRange; set => addToRange = value; }
+    public int AddToRelease { get => addToRelease; set => addToRelease = value; }
 
     private void Awake()
     {

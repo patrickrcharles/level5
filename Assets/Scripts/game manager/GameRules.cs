@@ -121,7 +121,7 @@ public class GameRules : MonoBehaviour
         }
         else
         {
-            setTimer(120);
+            setTimer(180);
         }
 
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
@@ -201,14 +201,12 @@ public class GameRules : MonoBehaviour
                 AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
                     GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
             }
-
-
             // alert game manager. trigger
             GameLevelManager.instance.GameOver = true;
         }
 
-        // enable moneyball
-        if (GameLevelManager.instance.Controls.Player.action.triggered)
+        // enable moneyball if game requires moneyball
+        if (GameLevelManager.instance.Controls.Player.action.triggered && GameModeRequiresMoneyBall)
         {
             toggleMoneyBall();
         }
@@ -217,8 +215,13 @@ public class GameRules : MonoBehaviour
         if (GameModeRequiresMoneyBall && PlayerStats.instance.Money < 5)
         {
             moneyBallEnabled = false;
+            //displayMoneyBallText.text = "";
+        }
+        if (!moneyBallEnabled)
+        {
             displayMoneyBallText.text = "";
         }
+
     }
 
     public void setTimePlayed()

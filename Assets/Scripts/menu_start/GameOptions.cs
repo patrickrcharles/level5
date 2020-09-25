@@ -33,8 +33,8 @@ public  class GameOptions : MonoBehaviour
     static public float runSpeedHasBall;
    // static public float range;
    // static public float release;
-    static public float luck;
-    static public float shootAngle;
+    static public int luck;
+    static public int shootAngle;
 
     // game mode flags for game rules
     static public bool gameModeHasBeenSelected;
@@ -65,6 +65,7 @@ public  class GameOptions : MonoBehaviour
     static public bool trafficEnabled = false;
 
     static public string previousSceneName;
+    static public bool arcadeModeEnabled;
 
     //static public int playerExperience;
     //static public int playerLevel;

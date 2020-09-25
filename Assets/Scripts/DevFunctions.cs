@@ -17,15 +17,14 @@ public class DevFunctions : MonoBehaviour
     private void Update()
     {
         if(GameLevelManager.instance.Controls.Other.change.enabled 
-            && GameLevelManager.instance.Controls.Other.toggle_character_unlock.triggered)
+            && GameLevelManager.instance.Controls.Other.toggle_character_max_stats.triggered)
         {
-            Debug.Log(" unlock character stats");
             player.Accuracy2Pt = 100;
             player.Accuracy3Pt = 100;
             player.Accuracy4Pt = 100;
             player.Accuracy7Pt = 100;
             player.Release = 100;
-            player.Range = 1000;
+            player.Range = 100;
             player.Luck = 10;
         }
     }

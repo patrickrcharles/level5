@@ -20,7 +20,7 @@ public class LoadedData : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
-    private bool dataLoaded;
+    [SerializeField] private bool dataLoaded;
 
     CharacterProfile currentPlayer;
 

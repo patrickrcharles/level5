@@ -1349,7 +1349,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "toggle_character_unlock",
+                    "name": "toggle_character_max_stats",
                     "type": "Button",
                     "id": "3f68784b-e375-47cd-8072-7d0b3a3c0770",
                     "expectedControlType": "Button",
@@ -1508,7 +1508,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "toggle_character_unlock",
+                    "action": "toggle_character_max_stats",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

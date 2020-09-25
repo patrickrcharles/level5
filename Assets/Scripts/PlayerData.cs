@@ -78,7 +78,7 @@ public class PlayerData : MonoBehaviour
 
     public void loadStatsFromDatabase()
     {
-        Debug.Log("load from database");
+        Debug.Log("Player Data -- load from database -- high scores");
 
         if (DBHelper.instance != null)
         {

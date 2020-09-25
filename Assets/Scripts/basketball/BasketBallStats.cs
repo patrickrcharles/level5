@@ -60,31 +60,35 @@ public class BasketBallStats : MonoBehaviour
         //Debug.Log("TotalPoints : " + TotalPoints);
 
         experience += (TwoPointerMade * 20);
-        Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 10));
+        //Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 10));
 
         experience += (ThreePointerMade * 30);
-        Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 15));
+        //Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 15));
 
         experience += (FourPointerMade * 40);
-        Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 20));
+        //Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 20));
 
         experience += (SevenPointerMade * 70);
-        Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 35));
+        //Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 35));
 
         experience += Mathf.RoundToInt(TotalDistance * 0.5f);
-        Debug.Log("TotalDistance : " + TotalDistance * 0.5f);
+        //Debug.Log("TotalDistance : " + TotalDistance * 0.5f);
 
-        Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
+        //Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
         experience += (MostConsecutiveShots * 25);
 
-        ExperienceGained = experience;
-        Debug.Log("experience gained : " + ExperienceGained);
+        //Debug.Log("TotalPoints : " + TotalPoints);
+        experience += TotalPoints;
 
-        //if(GameOptions.gameModeSelectedId == 99)
-        //{
-        //    ExperienceGained = (ExperienceGained / 2);
-        //}
-        Debug.Log("modeid : " + GameOptions.gameModeSelectedId + " ExperienceGained : " + ExperienceGained);
+        ExperienceGained = experience;
+        //Debug.Log("experience gained : " + ExperienceGained);
+        //Debug.Log("modeid : " + GameOptions.gameModeSelectedId + " ExperienceGained : " + ExperienceGained);
+
+        // if arcade mode, 0 out experience
+        if (GameOptions.arcadeModeEnabled)
+        {
+            ExperienceGained = 0;
+        }
 
         return ExperienceGained;
     }

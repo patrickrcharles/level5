@@ -19,7 +19,7 @@ public class RangeMeter : MonoBehaviour
     const string statsTextName = "slider_stats_text";
 
     [SerializeField]
-    float range;
+    //float range;
 
     // Start is called before the first frame update
     void Start()
@@ -29,16 +29,16 @@ public class RangeMeter : MonoBehaviour
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
         statText = GameObject.Find(statsTextName).GetComponent<Text>();
 
-        range = characterProfile.Range;
+        //range = characterProfile.Range;
 
-        statText.text = "range:" + range + " ft";
+        statText.text = "range:" + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
     }
 
     void setSliderValue()
     {
-        slider.value = (range / (GameLevelManager.instance.PlayerState.playerDistanceFromRim * 6)) * 100;
+        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerState.playerDistanceFromRim * 6)) * 100;
         sliderText.text = slider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
     }

@@ -12,9 +12,9 @@ public class BasketBall : MonoBehaviour
     new Rigidbody rigidbody;
     AudioSource audioSource;
     CharacterProfile characterProfile;
-    [SerializeField]
     BasketBallState basketBallState;
     BasketBallStats basketBallStats;
+    Animator anim;
 
     GameObject basketBallSprite;
     GameObject playerDunkPos;
@@ -33,8 +33,8 @@ public class BasketBall : MonoBehaviour
 
     float releaseVelocityY;
     //float _playerRigidBody;
-    int accuracy;
-    int twoAccuracy;
+    float accuracy;
+    float twoAccuracy;
     int threeAccuracy;
     int fourAccuracy;
     int sevenAccuracy;
@@ -54,6 +54,9 @@ public class BasketBall : MonoBehaviour
 
     public static BasketBall instance;
 
+    [SerializeField] float bballRelativePositioning;
+    bool facingRight = true;
+
     // =========================================================== Start() ========================================================
     // Use this for initialization
     void Start()
@@ -69,6 +72,7 @@ public class BasketBall : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
+        anim = GetComponentInChildren<Animator>();
 
         //basketball drop shadow
         dropShadow = transform.root.Find("drop shadow").gameObject;
@@ -103,6 +107,8 @@ public class BasketBall : MonoBehaviour
                 shootProfileText.text = "";
             }
         }
+        InvokeRepeating("checkIsBallFacingGoal", 0 , 0.5f);
+        InvokeRepeating("displayUiStats", 0 , 0.5f);
     }
 
     // =========================================================== Update() ========================================================
@@ -110,6 +116,9 @@ public class BasketBall : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // get speed for basketball animation
+        //checkIsBallFacingGoal();
+
         // drop shadow lock to bball transform on the ground
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
@@ -169,21 +178,41 @@ public class BasketBall : MonoBehaviour
         //}
     }
 
+    public void checkIsBallFacingGoal()
+    {
+        anim.SetFloat("speed", rigidbody.velocity.sqrMagnitude);
+        //bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - rigidbody.position.x;
+
+        if (rigidbody.velocity.x > 0 && !facingRight)
+        {
+            Flip();
+        }
+
+        if (rigidbody.velocity.x < 0f && facingRight)
+        {
+            Flip();
+        }
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 thisScale = transform.localScale;
+        thisScale.x *= -1;
+        transform.localScale = thisScale;
+    }
+
     private void updateShooterProfileText()
     {
-        shootProfileText.text = //"distance : " + (Math.Round(basketBallState.BallDistanceFromRim, 2)) + "\n"
-                                //+ "shot distance : " +
-                                //(Math.Round(basketBallState.BallDistanceFromRim, 2) * 6f).ToString("0.00") +
-                                // " ft.\n"
-                                  "shooter : " + characterProfile.PlayerDisplayName + "\n"
+        shootProfileText.text = characterProfile.PlayerDisplayName + "\n"
                                 + "2 point : " + (characterProfile.Accuracy2Pt) + "\n"
                                 + "3 point : " + (characterProfile.Accuracy3Pt) + "\n"
                                 + "4 point : " + (characterProfile.Accuracy4Pt) + "\n"
                                 + "7 point : " + (characterProfile.Accuracy7Pt) + "\n"
+                                + "release : " + characterProfile.Release + "\n"
+                                + "range : " + characterProfile.Range + "\n"
                                 + "speed : " + characterProfile.RunSpeed + "\n"
                                 + "jump : " + characterProfile.JumpForce + "\n"
-                                + "range : " + characterProfile.Range + "\n"
-                                + "release : " + characterProfile.Release + "\n"
                                 + "luck : " + characterProfile.Luck;
     }
 
@@ -404,55 +433,41 @@ public class BasketBall : MonoBehaviour
         float Vy = tanAlpha * Vz;
 
         bool critical = rollForCriticalShotChance(characterProfile.Luck);
-        Debug.Log("------------------START SEQUENCE");
+        //Debug.Log("------------------START SEQUENCE");
         // if rolled critical
         if (critical)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
-            Debug.Log("------------------ CRITICAL");
+            //Debug.Log("------------------ CRITICAL");
             // npc performs critical success action 
         }
-        Debug.Log("X modifier : " + accuracyModifierX);
-        Debug.Log("Y modifier : " + accuracyModifierY);
         // if >= 95 and NOT critical (release stat factored in)
         if (playerState.Shotmeter.SliderValueOnButtonPress >= 95 
             && !critical)
         {
-            Debug.Log("------------------ METER >= 95");
+            //Debug.Log("------------------ METER >= 95");
             accuracyModifierX = 0;
             accuracyModifierY = getReleaseModifier();
         }
-        Debug.Log("X modifier : " + accuracyModifierX);
-        Debug.Log("Y modifier : " + accuracyModifierY);
         // NOT critical and NOT >= 95 (get X, Y modifiers)
         if (playerState.Shotmeter.SliderValueOnButtonPress < 95
             && !critical)
         {
-            Debug.Log("------------------ Add X + Y modifer");
             accuracyModifierX = getAccuracyModifier();
             accuracyModifierY = getReleaseModifier();
-            Debug.Log("X modifier : " + accuracyModifierX);
-            Debug.Log("Y modifier : " + accuracyModifierY);
         }
-        Debug.Log("X modifier : " + accuracyModifierX);
-        Debug.Log("Y modifier : " + accuracyModifierY);
-
         // range modifier always factors in
         accuracyModifierZ = getRangeModifier();
 
         if (accuracyModifierX == 0 && accuracyModifierY == 0 && accuracyModifierZ == 0)
         {
-            Debug.Log("------------------ CHEERLEADER ACTION");
+            //Debug.Log("------------------ CHEERLEADER ACTION");
             if (BehaviorNpcCritical.instance != null)
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
         }
-
-        Debug.Log("X modifier : " + accuracyModifierX);
-        Debug.Log("Y modifier : " + accuracyModifierY);
-        Debug.Log("Z modifier : " + accuracyModifierZ);
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -501,7 +516,7 @@ public class BasketBall : MonoBehaviour
         float percent = random.Next(1, 100);
 
         //Debug.Log("roll for range critical : " + percent);
-        Debug.Log("=============== range citical : " + (percent <= maxPercent));
+        //Debug.Log("=============== range citical : " + (percent <= maxPercent));
 
         if (percent <= maxPercent)
         {
@@ -516,7 +531,7 @@ public class BasketBall : MonoBehaviour
         float percent = random.Next(1, 100);
 
         Debug.Log("***** random : " + percent + " <= " + maxPercent + " : " + (percent <= maxPercent));
-        //Debug.Log("***** percent <= maxPercent : " + (percent <= maxPercent));
+        Debug.Log("***** percent <= maxPercent : " + (percent <= maxPercent));
 
         if (percent <= maxPercent)
         {
@@ -553,10 +568,16 @@ public class BasketBall : MonoBehaviour
         {
             accuracyModifier = (100 - characterProfile.Accuracy7Pt) * 0.01f;
         }
+        //Debug.Log(" =========================================================== ");
+        //Debug.Log("     slider : "+ sliderModifer);
+        //Debug.Log("     accuracyModifier : " + accuracyModifier);
+        //Debug.Log("     accuracyModifier * slider  : " + (accuracyModifier * sliderModifer));
 
-        // 100 - slider + 0.6 of (100 - profile accuracy)
-        Debug.Log("X getAccuracyModifier() : " + (sliderModifer + accuracyModifier  ) * direction);
-        return (sliderModifer + accuracyModifier) * direction;
+
+        //// 100 - slider + 0.6 of (100 - profile accuracy)
+        //Debug.Log("     X getAccuracyModifier() : " + ((sliderModifer + (accuracyModifier * sliderModifer)) * direction));
+        //Debug.Log(" =========================================================== ");
+        return ((sliderModifer + (accuracyModifier * sliderModifer)) * direction);
     }
 
 
@@ -600,8 +621,8 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("----- characterProfile.Release : " + characterProfile.Release);
         //Debug.Log("----- slider : " + slider);
         //Debug.Log("----- sliderModifer : " + sliderModifer);
-        Debug.Log("----- raw Y accuracyModifier : " + accuracyModifier);
-        Debug.Log("----- Y modifier : " + (accuracyModifier * 0.75f) * direction);
+        //Debug.Log("----- raw Y accuracyModifier : " + accuracyModifier);
+        //Debug.Log("----- Y modifier : " + (accuracyModifier * 0.75f) * direction);
 
         //int maxChance = (int)(100 - characterProfile.Release);
         //Debug.Log("----- maxChance : " + maxChance);
@@ -611,10 +632,12 @@ public class BasketBall : MonoBehaviour
         // ex if release = 85, 15% chance to remove modifiers
         if (rollForCriticalReleaseChance(characterProfile.Release))
         {
+            //Debug.Log("---------- RELEASE CRITICAL  ");
             return 0;
         }
         else
         {
+            Debug.Log("---------- RELEASE MODIFIER : " + ((accuracyModifier * 0.75f)) * direction);
             return ((accuracyModifier * 0.75f)) * direction;
         }
     }
@@ -631,25 +654,43 @@ public class BasketBall : MonoBehaviour
 
     // ========================== ui display ===============================
 
+    public bool displayUiStats()
+    {
+        if (UiStatsEnabled)
+        {
+            updateScoreText();
+            updateShooterProfileText();
+            return true;
+        }
+        else
+        {
+            scoreText.text = "";
+            shootProfileText.text = "";
+            return false;
+        }
+    }
+
     public void toggleUiStats()
     {
         UiStatsEnabled = !UiStatsEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "ui stats = " + UiStatsEnabled;
 
-        if (UiStatsEnabled)
-        {
-            updateScoreText();
-            updateShooterProfileText();
-        }
-        else
-        {
-            scoreText.text = "";
-            shootProfileText.text = "";
-        }
+        //if (UiStatsEnabled)
+        //{
+        //    updateScoreText();
+        //    updateShooterProfileText();
+        //    return true;
+        //}
+        //else
+        //{
+        //    scoreText.text = "";
+        //    shootProfileText.text = "";
+        //    return false;
+        //}
 
         // turn off text display after 5 seconds
-        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
     }
 
     public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
@@ -683,6 +724,8 @@ public class BasketBall : MonoBehaviour
     }
 
     // ============================= convert to percentages ======================================
+    // * NOTE : cast to float has to be (float) num1 / num2 to work;
+    //  this format will not work for some reason -- (float)(num1 / num2 to work);
     public float getCriticalPercentage()
     {
         if (basketBallStats.CriticalRolled > 0)
@@ -700,7 +743,8 @@ public class BasketBall : MonoBehaviour
     {
         if (basketBallStats.ShotAttempt > 0)
         {
-            accuracy = basketBallStats.ShotMade / basketBallStats.ShotAttempt;
+            accuracy = (float)basketBallStats.ShotMade / basketBallStats.ShotAttempt;
+            //Debug.Log("======================== total accuracy : " + accuracy);
             return (accuracy * 100);
         }
         else
@@ -714,6 +758,7 @@ public class BasketBall : MonoBehaviour
         if (basketBallStats.TwoPointerAttempts > 0)
         {
             float accuracy = (float)basketBallStats.TwoPointerMade / basketBallStats.TwoPointerAttempts;
+            //Debug.Log("======================== 2 accuracy : " + accuracy);
             return (accuracy * 100);
         }
         else

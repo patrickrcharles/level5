@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -114,10 +115,10 @@ public class StatsManager : MonoBehaviour
         defaultModeSelectedIndex = 0;
         currentModeSelectedIndex = defaultModeSelectedIndex;
 
-        Debug.Log("defaultModeSelectedIndex : " + defaultModeSelectedIndex);
-        Debug.Log("modesList[defaultModeSelectedIndex] : " + modesList[defaultModeSelectedIndex].modeSelectedName);
         // set default game mode name
         modeSelectButtonText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
+        //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedName);
+        //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedId);
 
         // row prefab to be instantiated
         highScoreRowPrefab = Resources.Load(highScoreRowPrefabPath) as GameObject;
@@ -132,8 +133,9 @@ public class StatsManager : MonoBehaviour
             {
                 highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId);
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }
@@ -286,16 +288,21 @@ public class StatsManager : MonoBehaviour
 
         string path = "Prefabs/menu_start/mode_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-        Debug.Log(objects.Length);
+        //Debug.Log(objects.Length);
 
         foreach (GameObject obj in objects)
         {
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
-            Debug.Log(temp.ModelDisplayName);
+
+            //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(free) : " + !temp.ModeDisplayName.ToLower().Contains("free"));
+            //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(arcade) : " + !temp.ModeDisplayName.ToLower().Contains("arcade"));
+
             // add to list
-            if (!temp.ModelDisplayName.ToLower().Contains("free")) // exclude freeplay
+            if (!temp.ModeDisplayName.ToLower().Contains("free") 
+                && !temp.ModeDisplayName.ToLower().Contains("arcade")) // exclude freeplay
             {
-                tempList.Add(new mode(temp.ModeId, temp.ModelDisplayName, temp.HighScoreField));
+                tempList.Add(new mode(temp.ModeId, temp.ModeDisplayName, temp.HighScoreField));
+                
             }
         }
 
@@ -384,8 +391,9 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }

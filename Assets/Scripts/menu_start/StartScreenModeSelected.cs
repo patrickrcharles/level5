@@ -6,7 +6,7 @@ public class StartScreenModeSelected : MonoBehaviour
 {
 
     [SerializeField] private int modeId;
-    [SerializeField] private string modelDisplayName;
+    [SerializeField] private string modeDisplayName;
     [SerializeField] private string modeObjectName;
     [SerializeField] private string modeDescription;
     [SerializeField] private bool modeRequiresCounter;
@@ -25,6 +25,8 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool modeRequiresConsecutiveShots;
 
     [SerializeField] private string highScoreField;
+
+    [SerializeField] private bool arcadeModeActive;
 
 
 
@@ -57,9 +59,9 @@ public class StartScreenModeSelected : MonoBehaviour
         get => modeId;
     }
 
-    public string ModelDisplayName
+    public string ModeDisplayName
     {
-        get => modelDisplayName;
+        get => modeDisplayName;
     }
 
     public string ModeObjectName
@@ -77,4 +79,5 @@ public class StartScreenModeSelected : MonoBehaviour
     public bool GameModeFourPointContest { get => gameModeFourPointContest; set => gameModeFourPointContest = value; }
     public bool GameModeAllPointContest { get => gameModeAllPointContest; set => gameModeAllPointContest = value; }
     public float CustomTimer { get => customTimer; set => customTimer = value; }
+    public bool ArcadeModeActive { get => arcadeModeActive; set => arcadeModeActive = value; }
 }

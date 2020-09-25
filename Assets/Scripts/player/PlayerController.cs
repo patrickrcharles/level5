@@ -198,8 +198,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void touchControlJumpOrShoot(Vector2 touchPosition)
-    {
-       
+    {      
         if (grounded 
             && !KnockedDown 
             && hasBasketball
@@ -207,7 +206,6 @@ public class PlayerController : MonoBehaviour
         {
             playerJump();
         }
-
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
         if (inAir
@@ -239,20 +237,6 @@ public class PlayerController : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
-        //if (GameLevelManager.Instance.Controls.PlayerTouch.jump.triggered)
-        //{
-        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    messageText.text = " touch input jump";
-        //    // turn off text display after 5 seconds
-        //    StartCoroutine(basketball.turnOffMessageLogDisplayAfterSeconds(2));
-        //}
-        //if (GameLevelManager.Instance.Controls.PlayerTouch.shoot.triggered)
-        //{
-        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    messageText.text = " touch input shoot";
-        //    // turn off text display after 5 seconds
-        //    StartCoroutine(basketball.turnOffMessageLogDisplayAfterSeconds(2));
-        //}
         // knocked down
         if ((KnockedDown || KnockedDown_Alternate1) && !locked)
         {
@@ -287,8 +271,6 @@ public class PlayerController : MonoBehaviour
         }
         if (!grounded) // player in air
         {
-            //dropShadow.transform.position = new Vector3(transform.root.position.x, transform.root.position.y,
-            //    transform.root.position.z);
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
             transform.root.position.z);
         }
@@ -571,19 +553,19 @@ public class PlayerController : MonoBehaviour
     }
 
     //*** need to update this
-    void setShooterProfileStats()
-    {
-        characterProfile.Speed = GameOptions.speed;
-        characterProfile.RunSpeed = GameOptions.runSpeed;
-        characterProfile.RunSpeed = GameOptions.runSpeedHasBall;
-        characterProfile.JumpForce = GameOptions.jumpForce;
-        characterProfile.Luck = GameOptions.luck;
-        characterProfile.ShootAngle = GameOptions.shootAngle;
-        characterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
-        characterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
-        characterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
-        characterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
-    }
+    //void setShooterProfileStats()
+    //{
+    //    characterProfile.Speed = GameOptions.speed;
+    //    characterProfile.RunSpeed = GameOptions.runSpeed;
+    //    characterProfile.RunSpeed = GameOptions.runSpeedHasBall;
+    //    characterProfile.JumpForce = GameOptions.jumpForce;
+    //    characterProfile.Luck = GameOptions.luck;
+    //    characterProfile.ShootAngle = GameOptions.shootAngle;
+    //    characterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
+    //    characterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
+    //    characterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
+    //    characterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
+    //}
 
     public bool grounded
     {
@@ -652,6 +634,6 @@ public class PlayerController : MonoBehaviour
         messageText.text = "running toggle = " + runningToggle;
 
         // turn off text display after 5 seconds
-        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(5));
+        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
     }
 }

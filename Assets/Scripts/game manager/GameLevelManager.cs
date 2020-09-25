@@ -15,6 +15,7 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _player;
     [SerializeField]
     private PlayerController _playerState;
+    [SerializeField]
     private CharacterProfile _playerShooterProfile;
 
     //BasketBall objects
@@ -27,7 +28,7 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _cheerleaderSpawnLocation;
 
     private BasketBall _basketball;
-    private GameObject _basketballObject;
+    //private GameObject _basketballObject;
     private Vector3 _basketballRimVector;
 
     private GameObject _playerClone;
@@ -36,14 +37,28 @@ public class GameLevelManager : MonoBehaviour
     GameObject[] _npcObjects;
     GameObject[] _vehicleObjects;
 
-    private bool _locked;
-
     PlayerControls controls;
     FloatingJoystick joystick;
 
-    const string basketBallPrefabPath = "Prefabs/basketball/basketball_nba";
+    const string basketBallPrefabPath = "Prefabs/basketball/basketball";
 
     public static GameLevelManager instance;
+    private bool _locked;
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+        controls.Other.Enable();
+        //controls.PlayerTouch.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+        controls.Other.Disable();
+        //controls.PlayerTouch.Disable();
+    }
 
     private void Awake()
     {
@@ -72,13 +87,15 @@ public class GameLevelManager : MonoBehaviour
         checkPlayerIsNpcInScene();
         // get necessary references to objects
         //StartCoroutine( SetMajorObjectReferences() );
-        BasketballObject = GameObject.FindWithTag("basketball");
-        Basketball = BasketballObject.GetComponent<BasketBall>();
+        //BasketballObject = GameObject.FindWithTag("basketball");
+        Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
         BasketballRimVector = GameObject.Find("rim").transform.position;
     }
 
     private void Start()
     {
+        // return to this if n
+        GameOptions.previousSceneName = "level_00_start";
         //unlimited
         //QualitySettings.vSyncCount = 0;
         //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
@@ -117,37 +134,38 @@ public class GameLevelManager : MonoBehaviour
 
         _locked = false;
         //set up player/basketball read only references for use in other classes
-        if(GameObject.FindWithTag("Player") == null)
+        if (GameObject.FindWithTag("Player") == null)
         {
             Debug.Log("null player");
         }
 
         _player = GameObject.FindWithTag("Player");
         _playerState = _player.GetComponent<PlayerController>();
+        _playerShooterProfile = _player.GetComponent<CharacterProfile>();
         Anim = Player.GetComponentInChildren<Animator>();
     }
 
-    IEnumerator SetMajorObjectReferences()
-    {
-        yield return new WaitUntil(() => GameObject.FindWithTag("basketball") != null);
-        BasketballObject = GameObject.FindWithTag("basketball");
+    //IEnumerator SetMajorObjectReferences()
+    //{
+    //    yield return new WaitUntil(() => GameObject.FindWithTag("basketball") != null);
+    //    BasketballObject = GameObject.FindWithTag("basketball");
 
-        yield return new WaitUntil(() => BasketballObject.GetComponent<BasketBall>() != null);
-        Basketball = BasketballObject.GetComponent<BasketBall>();
+    //    yield return new WaitUntil(() => BasketballObject.GetComponent<BasketBall>() != null);
+    //    Basketball = BasketballObject.GetComponent<BasketBall>();
 
-        yield return new WaitUntil(() => GameObject.Find("rim").transform.position != null);
-        BasketballRimVector = GameObject.Find("rim").transform.position;
+    //    yield return new WaitUntil(() => GameObject.Find("rim").transform.position != null);
+    //    BasketballRimVector = GameObject.Find("rim").transform.position;
 
-        //set up player/basketball read only references for use in other classes
-        yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
-        _player = GameObject.FindGameObjectWithTag("Player");
+    //    //set up player/basketball read only references for use in other classes
+    //    yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
+    //    _player = GameObject.FindGameObjectWithTag("Player");
 
-        yield return new WaitUntil(() => _player.GetComponent<PlayerController>() != null);
-        _playerState = _player.GetComponent<PlayerController>();
+    //    yield return new WaitUntil(() => _player.GetComponent<PlayerController>() != null);
+    //    _playerState = _player.GetComponent<PlayerController>();
 
-        yield return new WaitUntil(() => Player.GetComponentInChildren<Animator>() != null);
-        Anim = Player.GetComponentInChildren<Animator>();
-    }
+    //    yield return new WaitUntil(() => Player.GetComponentInChildren<Animator>() != null);
+    //    Anim = Player.GetComponentInChildren<Animator>();
+    //}
 
     private void Update()
     {
@@ -169,10 +187,9 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            BasketBall.instance.toggleUiStats(); 
+            BasketBall.instance.toggleUiStats();
             _locked = false;
         }
-
     }
 
     private void checkPlayerIsNpcInScene()
@@ -248,28 +265,29 @@ public class GameLevelManager : MonoBehaviour
             if (_playerClone != null)
             {
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                Debug.Log("player spawned : "+ _playerClone.name);
+                //Debug.Log("player spawned : " + _playerClone.name);
             }
             else
             {
                 // spawn default character
                 string playerPrefabPath = "Prefabs/characters/players/player_drblood";
+                //Debug.Log("playerPrefabPath : " + playerPrefabPath);
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+                //Debug.Log("_playerClone : " + _playerClone);
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                Debug.Log("player spawned : " + _playerClone.name);
             }
         }
     }
 
-    private string GetCurrentSceneName()
-    {
-        return SceneManager.GetActiveScene().name;
-    }
+    //private string GetCurrentSceneName()
+    //{
+    //    return SceneManager.GetActiveScene().name;
+    //}
 
-    private void Quit()
-    {
-        Application.Quit();
-    }
+    //private void Quit()
+    //{
+    //    Application.Quit();
+    //}
 
     public GameObject Player => _player;
 
@@ -279,24 +297,10 @@ public class GameLevelManager : MonoBehaviour
 
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
-    public FloatingJoystick Joystick { get => joystick;  }
+    public FloatingJoystick Joystick { get => joystick; }
     public BasketBall Basketball { get => _basketball; set => _basketball = value; }
-    public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
+    //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
 
-    private void OnEnable()
-    {
-        controls.Player.Enable();
-        controls.UINavigation.Enable();
-        controls.Other.Enable();
-        //controls.PlayerTouch.Enable();
-    }
-    private void OnDisable()
-    {
-        controls.Player.Disable();
-        controls.UINavigation.Disable();
-        controls.Other.Disable();
-        //controls.PlayerTouch.Disable();
-    }
 }

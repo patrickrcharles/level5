@@ -172,11 +172,11 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
         {
-            StartManager.instance.loadStatsMenu(StartManager.StatsMenuSceneName);
+            StartManager.instance.loadMenu(StartManager.StatsMenuSceneName);
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
         {
-            StartManager.instance.loadScene();
+            StartManager.instance.loadGame();
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
         {

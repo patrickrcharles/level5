@@ -93,7 +93,7 @@ public class StatsTableAllTime : MonoBehaviour
         int mbA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballAttemptDBField);
 
         float dist = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", totalDistanceDBField);
-        Debug.Log("total distance : " + dist);
+
         int shotsM = twoM + threeM + fourM + sevenM;
         int shotsA = twoA + threeA + fourA + sevenA;
 

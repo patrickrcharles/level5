@@ -56,7 +56,9 @@ public class ProgressionManager : MonoBehaviour
     private const string optionsMenuButtonName = "options_menu";
 
     // scene name
-    private const string statsMenuSceneName = "level_00_stats";
+    private const string sceneStatsName = "level_00_stats";
+    private const string sceneLoadingName = "level_00_loading";
+    private const string sceneStartName = "level_00_start";
 
     // button names
     private const string playerSelectButtonName = "player_select_button";
@@ -78,28 +80,27 @@ public class ProgressionManager : MonoBehaviour
     private const string rangeBonusName = "range_bonus";
     private const string luckBonusName = "luck_bonus";
 
-    private const string loadScreenSceneName = "level_00_loading";
-
     private const string confirmButtonName = "confirm_button";
     private const string cancelButtonName = "cancel_button";
     private const string saveButtonName = "save_button";
     private const string resetButtonName = "reset_button";
 
     private int playerSelectedIndex;
+    [SerializeField] int experienceRequiredForNextLevel;
 
     public PlayerControls controls;
-
-    //public CharacterUpdateState characterUpdateState;
-
     public static ProgressionManager instance;
 
-    ProgressionState progressionState = new ProgressionState();
-
+    ProgressionState progressionState;
+    // flags
     bool buttonPressed = false;
     bool dataLoaded = false;
 
+    // confirm save dialogue
     bool confirmationDialogueBoxEnabled = false;
     GameObject confirmationDialogueBox;
+
+    public int ExperienceRequiredForNextLevel { get => experienceRequiredForNextLevel; set => experienceRequiredForNextLevel = value; }
 
     enum UpdateType
     {
@@ -128,6 +129,7 @@ public class ProgressionManager : MonoBehaviour
         confirmationDialogueBox = GameObject.Find("confirm_update");
         confirmationDialogueBox.SetActive(confirmationDialogueBoxEnabled);
 
+        progressionState = GetComponent<ProgressionState>();
         // dont destroy on load / check for duplicate instance
         //destroyInstanceIfAlreadyExists();
         StartCoroutine(getLoadedData());
@@ -138,16 +140,12 @@ public class ProgressionManager : MonoBehaviour
 
         //default index for player selected
         playerSelectedIndex = GameOptions.playerSelectedIndex;
-
-        // update experience and levels
-        // recommended here because experience will be gained after every game played
-        StartCoroutine(UpdateLevelAndExperienceFromDatabase());
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        // default display
         StartCoroutine(InitializeDisplay());
     }
 
@@ -170,7 +168,7 @@ public class ProgressionManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            loadScene();
+            loadScene(sceneStartName );
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -184,7 +182,7 @@ public class ProgressionManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadScene(statsMenuSceneName);
+            loadScene(sceneStatsName);
         }
 
         // ================================== navigation =====================================================================
@@ -222,37 +220,56 @@ public class ProgressionManager : MonoBehaviour
         {
             // enable confirmation object
             // set selected object to confirm button
-            confirmationDialogueBox.SetActive(true);
+            //confirmationDialogueBox.SetActive(true);
+
+            resetUpdatePoints();
+            // reset player state
+            progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
+            // display
+            initializePlayerDisplay();
 
             // reset stats
-            EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
+            EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
         }
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName))
         {
 
-            // new progressionState --> playerselecetdata[playerSelectedIndex]
-            // dbhelper save characterprofile
-            // reload data from database
-            // initialize display
             playerSelectedData[playerSelectedIndex].Accuracy3Pt = progressionState.Accuracy3;
             playerSelectedData[playerSelectedIndex].Accuracy4Pt = progressionState.Accuracy4;
             playerSelectedData[playerSelectedIndex].Accuracy7Pt = progressionState.Accuracy7;
             playerSelectedData[playerSelectedIndex].Range = progressionState.Range;
             playerSelectedData[playerSelectedIndex].Release = progressionState.Release;
             playerSelectedData[playerSelectedIndex].Luck = progressionState.Luck;
+            playerSelectedData[playerSelectedIndex].PointsAvailable = progressionState.PointsAvailable;
 
+            progressionState.PointsUsedThisSession =
+                progressionState.AddTo3
+                + progressionState.AddTo4
+                + progressionState.AddTo7;
+
+            playerSelectedData[playerSelectedIndex].PointsUsed += progressionState.PointsUsedThisSession;
+
+            // save to DB
+            DBHelper.instance.UpdateCharacterProfile(playerSelectedData[playerSelectedIndex]);
+            // disable pop up
             confirmationDialogueBox.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
+            // reset points
+            resetUpdatePoints();
+            // reset player state
+            progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
+            // display
+            initializePlayerDisplay();
+            EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
         }
+        // cancel popup
         if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName))
         {
             
             // do nothing, continue state
 
             confirmationDialogueBox.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(GameObject.Find(saveButtonName).gameObject);
+            EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
         }
-
         // ================================== change options =============================================================
         // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed
@@ -264,8 +281,9 @@ public class ProgressionManager : MonoBehaviour
                 changeSelectedPlayerUp();
                 initializePlayerDisplay();
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
             buttonPressed = false;
@@ -280,8 +298,9 @@ public class ProgressionManager : MonoBehaviour
                 changeSelectedPlayerDown();
                 initializePlayerDisplay();
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
             buttonPressed = false;
@@ -304,6 +323,7 @@ public class ProgressionManager : MonoBehaviour
             {
                 updateSevenAccuracy(UpdateType.Add);
             }
+            initializePlayerDisplay();
             buttonPressed = false;
         }
         // subtract a point
@@ -323,6 +343,7 @@ public class ProgressionManager : MonoBehaviour
             {
                 updateSevenAccuracy(UpdateType.Subtract);
             }
+            initializePlayerDisplay();
             buttonPressed = false;
         }
     }
@@ -331,7 +352,7 @@ public class ProgressionManager : MonoBehaviour
         //int originalPointsAvailable = progressionState.AddTo3 + progressionState.AddTo4 + progressionState.AddTo7;
         progressionState.AddTo3 = 0;
         progressionState.AddTo4 = 0;
-        progressionState.AddTo4 = 0;
+        progressionState.AddTo7 = 0;
 
         progressionState.Accuracy3 = 0;
         progressionState.Accuracy4 = 0;
@@ -346,7 +367,7 @@ public class ProgressionManager : MonoBehaviour
         addTo7Text.text = "--";
 
         progressionState.PointsAvailable = 0;
-        //progressionState.PointsAvailable = originalPointsAvailable;
+        progressionState.PointsUsedThisSession = 0;
     }
 
     private void updateThreeAccuracy(UpdateType updateType)
@@ -358,6 +379,7 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo3++;
                     addTo3Text.text = (progressionState.AddTo3) > 0 ? ("+" + progressionState.AddTo3.ToString()) : ("--");
                     progressionState.PointsAvailable--;
+                    progressionState.PointsUsedThisSession++;
 
                     break;
                 }
@@ -366,11 +388,12 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo3--;
                     addTo3Text.text = (progressionState.AddTo3) > 0 ? ("+" + progressionState.AddTo3.ToString()) : ("--");
                     progressionState.PointsAvailable++;
+                    progressionState.PointsUsedThisSession--;
                     break;
                 }
             default: break;
         }
-        initializePlayerDisplay();
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
     }
     private void updateFourAccuracy(UpdateType updateType)
     {
@@ -381,6 +404,7 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo4++;
                     addTo4Text.text = (progressionState.AddTo4) > 0 ? ("+" + progressionState.AddTo4.ToString()) : ("--");
                     progressionState.PointsAvailable--;
+                    progressionState.PointsUsedThisSession++;
                     break;
                 }
             case UpdateType.Subtract:
@@ -388,11 +412,12 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo4--;
                     addTo4Text.text = (progressionState.AddTo4) > 0 ? ("+" + progressionState.AddTo4.ToString()) : ("--");
                     progressionState.PointsAvailable++;
+                    progressionState.PointsUsedThisSession--;
                     break;
                 }
             default: break;
         }
-        initializePlayerDisplay();
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
     }
     private void updateSevenAccuracy(UpdateType updateType)
     {
@@ -403,6 +428,7 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo7++;
                     addTo7Text.text = (progressionState.AddTo7) > 0 ? ("+" + progressionState.AddTo7.ToString()) : ("--");
                     progressionState.PointsAvailable--;
+                    progressionState.PointsUsedThisSession++;
 
                     break;
                 }
@@ -411,11 +437,12 @@ public class ProgressionManager : MonoBehaviour
                     progressionState.AddTo7--;
                     addTo7Text.text = (progressionState.AddTo7) > 0 ? ("+" + progressionState.AddTo7.ToString()) : ("--");
                     progressionState.PointsAvailable++;
+                    progressionState.PointsUsedThisSession--;
                     break;
                 }
             default: break;
         }
-        initializePlayerDisplay();
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
     }
 
 
@@ -428,7 +455,6 @@ public class ProgressionManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
-        Debug.Log("updateLevelAndExperienceFromDatabase");
         foreach (CharacterProfile s in playerSelectedData)
         {
             s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
@@ -458,7 +484,7 @@ public class ProgressionManager : MonoBehaviour
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
                 GameOptions.previousSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(loadScreenSceneName);
+                SceneManager.LoadScene(sceneLoadingName);
             }
             else
             {
@@ -472,9 +498,14 @@ public class ProgressionManager : MonoBehaviour
     {
         Debug.Log("------------------------------- start manager InitializeDisplay");
         yield return new WaitUntil(() => dataLoaded);
+
         // display default data
         progressionState.clearState();
+        // get default character loaded to progression state
         progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
+        // load static upgrade statistics
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+        // init display
         initializePlayerDisplay();
 
     }
@@ -521,47 +552,49 @@ public class ProgressionManager : MonoBehaviour
     {
         try
         {
+            // name and portrait
+            playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+            playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
 
-            // use original player data. static data
-            int lastUpdate = playerSelectedData[playerSelectedIndex].Level - playerSelectedData[playerSelectedIndex].PointsAvailable;
-            int luckPointsAvailable = (playerSelectedData[playerSelectedIndex].Level / 3) - (lastUpdate / 3);
-
-            if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
+            // update text display static update stats (range, release, luck)
+            //if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)  
+            
+            if (progressionState.PointsUsedThisSession > 0)
             {
-                bonusReleaseText.text = "+" + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
-                bonusRangeText.text = "+" + (playerSelectedData[playerSelectedIndex].PointsAvailable * 5).ToString();
+                bonusReleaseText.text = "+" + progressionState.AddToRelease;
+                bonusRangeText.text = "+" + progressionState.AddToRange;
+                bonusLuckText.text = "+" + progressionState.AddToLuck;
             }
             else
             {
                 bonusReleaseText.text = "";
                 bonusRangeText.text = "";
+                bonusLuckText.text = "";
             }
-            // luck point only available every 3rd level
-            bonusLuckText.text = luckPointsAvailable == 0
-                ? bonusLuckText.text = ""
-                : "+" + luckPointsAvailable.ToString();
+            //// luck point only available every 3rd level
+            //bonusLuckText.text = progressionState.AddToLuck == 0
+            //    ? bonusLuckText.text = ""
+            //    : "+" + progressionState.AddToLuck.ToString();
 
-            progressionRange.text = (playerSelectedData[playerSelectedIndex].Range
-                + playerSelectedData[playerSelectedIndex].PointsAvailable * 5).ToString("F0") + " ft";
-            progressionRelease.text = (playerSelectedData[playerSelectedIndex].Release
-                + playerSelectedData[playerSelectedIndex].PointsAvailable).ToString("F0");
+            // set text displays
+            progressionRange.text = progressionState.Range.ToString("F0") + " ft";
+            progressionRelease.text = progressionState.Release.ToString("F0");
+            progressionLuck.text = progressionState.Luck.ToString("F0");
 
             progressionSpeed.text = playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0");
             progressionJump.text = playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0");
-            progressionLuck.text = (playerSelectedData[playerSelectedIndex].Luck + luckPointsAvailable).ToString("F0");
-            playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-            playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
-
-            //bonusReleaseText.text = playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
-            //bonusRangeText.text = (playerSelectedData[playerSelectedIndex].PointsAvailable * 5).ToString();
 
             //use progression state data. dynamic data
-            progression3Accuracy.text = (progressionState.Accuracy3 + progressionState.AddTo3).ToString("F0");
-            progression4Accuracy.text = (progressionState.Accuracy4 + progressionState.AddTo4).ToString("F0");
-            progression7Accuracy.text = (progressionState.Accuracy7 + progressionState.AddTo7).ToString("F0");
+            //progression3Accuracy.text = (progressionState.Accuracy3 + progressionState.AddTo3).ToString("F0");
+            //progression4Accuracy.text = (progressionState.Accuracy4 + progressionState.AddTo4).ToString("F0");
+            //progression7Accuracy.text = (progressionState.Accuracy7 + progressionState.AddTo7).ToString("F0");
 
-            progressionState.Level = progressionState.Experience / 2000;
-            int nextlvl = ((progressionState.Level + 1) * 2000) - progressionState.Experience;
+            progression3Accuracy.text = progressionState.Accuracy3.ToString("F0");
+            progression4Accuracy.text = progressionState.Accuracy4.ToString("F0");
+            progression7Accuracy.text = progressionState.Accuracy7 .ToString("F0");
+
+            progressionState.Level = progressionState.Experience / experienceRequiredForNextLevel;
+            int nextlvl = ((progressionState.Level + 1) * experienceRequiredForNextLevel) - progressionState.Experience;
 
             playerProgressionStatsText.text = progressionState.Level.ToString("F0") + "\n"
                 + progressionState.Experience.ToString("F0") + "\n"
@@ -569,41 +602,56 @@ public class ProgressionManager : MonoBehaviour
 
             playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
 
-            //// player points avaiable for upgrade
-            //if (progressionState.PointsAvailable > 0)
-            //{
-            //    playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
-
-            //}
-            //else
-            //{
-            //    playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
-            //}
 
             GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
-        catch
+        catch (Exception e)
         {
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
 
+    private void updateStaticCharacterStatistics( CharacterProfile originalCharState)
+    {
+        //Debug.Log("updateStaticCharacterStatistics");
+        int lastUpdate = originalCharState.Level - originalCharState.PointsAvailable;
+        int luckPointsAvailable = (originalCharState.Level / 3) - (lastUpdate / 3);
+
+        if ( progressionState.PointsUsedThisSession <= luckPointsAvailable )
+        {
+            progressionState.AddToLuck = progressionState.PointsUsedThisSession;
+        }
+
+        progressionState.Luck = originalCharState.Luck + progressionState.AddToLuck;
+
+        progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+        progressionState.AddToRelease = progressionState.PointsUsedThisSession;
+
+        progressionState.Range = (int)(originalCharState.Range + progressionState.AddToRange);
+        progressionState.Release = (int)(originalCharState.Release + progressionState.AddToRelease);
+
+        progressionState.Accuracy3 = (int)(originalCharState.Accuracy3Pt + progressionState.AddTo3);
+        progressionState.Accuracy4 = (int)(originalCharState.Accuracy4Pt + progressionState.AddTo4);
+        progressionState.Accuracy7 = (int)(originalCharState.Accuracy7Pt + progressionState.AddTo7);
+    }
+
     public void loadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    // ============================  message display ==============================
-    // used in this context to display if item is locked
+    //// ============================  message display ==============================
+    //// used in this context to display if item is locked
 
-    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "";
-    }
+    //public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    //{
+    //    yield return new WaitForSecondsRealtime(seconds);
+    //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+    //    messageText.text = "";
+    //}
 
     // ============================  navigation functions ==============================
     public void changeSelectedPlayerUp()
@@ -616,7 +664,10 @@ public class ProgressionManager : MonoBehaviour
             ? playerSelectedData.Count - 1
             : playerSelectedIndex -= 1);
 
+        // init update state
         progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
+        // update static statistsics
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
     }
     public void changeSelectedPlayerDown()
     {
@@ -632,6 +683,10 @@ public class ProgressionManager : MonoBehaviour
             ? playerSelectedIndex = 0
             : playerSelectedIndex += 1);
 
+        // init update state
         progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
+        //update static statistsics
+        updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+
     }
 }

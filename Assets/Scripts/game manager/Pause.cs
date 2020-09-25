@@ -229,7 +229,7 @@ public class Pause : MonoBehaviour
 
     private static void updateFreePlayStats()
     {
-        Debug.Log("---------------------- updateFreePlayStats");
+        //Debug.Log("---------------------- updateFreePlayStats");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats

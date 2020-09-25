@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 
 public class CharacterProfile : MonoBehaviour
@@ -13,8 +14,8 @@ public class CharacterProfile : MonoBehaviour
     private float jumpStatFloor = 3.5f;
     private float jumpStatCeiling = 6;
 
-    private float speedStatFloor = 2;
-    private float speedStatCeiling = 6;
+    private float speedStatFloor = 2.5f;
+    private float speedStatCeiling = 6.5f;
 
     [SerializeField] private float accuracy2pt;
     [SerializeField] private float accuracy3pt;
@@ -29,12 +30,12 @@ public class CharacterProfile : MonoBehaviour
 
     [SerializeField] private float runSpeed;
 
-    [SerializeField] private float range;
-    [SerializeField] private float release;
+    [SerializeField] private int range;
+    [SerializeField] private int release;
 
-    [SerializeField] private float luck;
+    [SerializeField] private int luck;
 
-    [SerializeField] private float shootAngle;
+    [SerializeField] private int shootAngle;
 
     [SerializeField] private int level;
     [SerializeField] private int experience;
@@ -53,6 +54,17 @@ public class CharacterProfile : MonoBehaviour
         {
             //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
+        }
+        if (GameOptions.arcadeModeEnabled)
+        {
+            Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
+            Accuracy2Pt = 100;
+            Accuracy3Pt = 100;
+            Accuracy4Pt = 100;
+            Accuracy7Pt = 100;
+            Release = 100;
+            Range = 100;
+            Luck = 10;
         }
     }
 
@@ -107,8 +119,9 @@ public class CharacterProfile : MonoBehaviour
             {
                 Destroy(LoadedData.instance.gameObject);
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }
@@ -213,13 +226,13 @@ public class CharacterProfile : MonoBehaviour
     }
 
 
-    public float Luck
+    public int Luck
     {
         get => luck;
         set => luck = value;
     }
 
-    public float ShootAngle
+    public int ShootAngle
     {
         get => shootAngle;
         set => shootAngle = value;
@@ -229,6 +242,6 @@ public class CharacterProfile : MonoBehaviour
     public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
     public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
     public int PointsUsed { get => pointsUsed; set => pointsUsed = value; }
-    public float Range { get => range; set => range = value; }
-    public float Release { get => release; set => release = value; }
+    public int Range { get => range; set => range = value; }
+    public int Release { get => release; set => release = value; }
 }
