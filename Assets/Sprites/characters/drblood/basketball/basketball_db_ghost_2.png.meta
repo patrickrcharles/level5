@@ -1,22 +1,37 @@
 fileFormatVersion: 2
-guid: c3f9c0995d604414a959276416bc1808
+guid: c0aeefc2cc54f3c479d9baf98438f2c8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8517286003303885947
-    second: probe_droid_0
+      213: -6723669814895340213
+    second: basketball_db_ghost_2_0
   - first:
-      213: 365085978754508151
-    second: probe_droid_1
+      213: -1306269401756046138
+    second: basketball_db_ghost_2_1
   - first:
-      213: 658707579142614703
-    second: probe_droid_2
+      213: -4041327088594326972
+    second: basketball_db_ghost_2_2
   - first:
-      213: 3830482660488230988
-    second: probe_droid_3
+      213: 9195294989656385033
+    second: basketball_db_ghost_2_3
   - first:
-      213: -4829636094718507547
-    second: probe_droid_4
+      213: -3499461393201162233
+    second: basketball_db_ghost_2_4
+  - first:
+      213: 1128288710630625292
+    second: basketball_db_ghost_2_5
+  - first:
+      213: -3326738512623000842
+    second: basketball_db_ghost_2_6
+  - first:
+      213: -8182129692190051200
+    second: basketball_db_ghost_2_7
+  - first:
+      213: -7851557796981565596
+    second: basketball_db_ghost_2_8
+  - first:
+      213: 8680455027314233370
+    second: basketball_db_ghost_2_9
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -52,7 +67,7 @@ TextureImporter:
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -63,7 +78,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -74,7 +89,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -116,12 +131,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -140,13 +155,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: probe_droid_0
+      name: basketball_db_ghost_2_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
-        width: 192
-        height: 192
+        y: 512
+        width: 128
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,20 +169,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f33d564d3462db04ca9d5bfc5e86282f
-      internalID: -8517286003303885947
+      spriteID: b4595284de9b0b2a0800000000000000
+      internalID: -6723669814895340213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: probe_droid_1
+      name: basketball_db_ghost_2_1
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
-        width: 192
-        height: 192
+        x: 128
+        y: 512
+        width: 128
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,20 +190,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3cbbb8ef143383469b33e5983e7c5d7
-      internalID: 365085978754508151
+      spriteID: 6cc6e5766e23fdde0800000000000000
+      internalID: -1306269401756046138
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: probe_droid_2
+      name: basketball_db_ghost_2_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44aeb2fbc625ae7c0800000000000000
+      internalID: -4041327088594326972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: basketball_db_ghost_2_3
       rect:
         serializedVersion: 2
         x: 384
-        y: 192
-        width: 192
-        height: 192
+        y: 512
+        width: 128
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,20 +232,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c72642dc140485b49be26c685c273aad
-      internalID: 658707579142614703
+      spriteID: 906e56703104c9f70800000000000000
+      internalID: 9195294989656385033
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: probe_droid_3
+      name: basketball_db_ghost_2_4
       rect:
         serializedVersion: 2
-        x: 576
-        y: 192
-        width: 192
-        height: 192
+        x: 0
+        y: 384
+        width: 128
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,20 +253,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e49ace2fe59c71d46b627c4a18014242
-      internalID: 3830482660488230988
+      spriteID: 7081d01676a6f6fc0800000000000000
+      internalID: -3499461393201162233
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: probe_droid_4
+      name: basketball_db_ghost_2_5
       rect:
         serializedVersion: 2
-        x: 768
-        y: 192
-        width: 192
-        height: 192
+        x: 0
+        y: 256
+        width: 128
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -238,8 +274,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01ef6e567b7edca4fb237cd0de0391db
-      internalID: -4829636094718507547
+      spriteID: c00d839ba9c78af00800000000000000
+      internalID: 1128288710630625292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: basketball_db_ghost_2_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f2ae76d2fc05d1d0800000000000000
+      internalID: -3326738512623000842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: basketball_db_ghost_2_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 084f5de456c337e80800000000000000
+      internalID: -8182129692190051200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: basketball_db_ghost_2_8
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 467177178c9a90390800000000000000
+      internalID: -7851557796981565596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: basketball_db_ghost_2_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1091d73bdb277870800000000000000
+      internalID: 8680455027314233370
       vertices: []
       indices: 
       edges: []
@@ -247,7 +367,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 426913002e7f40e4eaab30b1c5447bc3
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
