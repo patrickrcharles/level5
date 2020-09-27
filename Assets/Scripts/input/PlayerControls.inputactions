@@ -1355,6 +1355,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "toggle_fps_counter",
+                    "type": "Button",
+                    "id": "5aa24f3a-13a8-4e6a-8ecd-05f33f2b159d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -1509,6 +1517,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "toggle_character_max_stats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7886735-cddc-435d-991d-d66d52795ddb",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "toggle_fps_counter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
