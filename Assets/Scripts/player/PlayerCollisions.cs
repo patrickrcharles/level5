@@ -18,7 +18,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (gameObject.CompareTag("playerHitbox")
             && other.CompareTag("knock_down_attack2")
-            && !playerState.KnockedDown_Alternate1)
+            && !playerState.KnockedDown_Alternate)
         {
             if (playerCanBeKnockedDown)
             {
@@ -50,7 +50,7 @@ public class PlayerCollisions : MonoBehaviour
 
     void playerKnockedDown_Alternate(GameObject playerKnockedDown)
     {
-        playerState.KnockedDown_Alternate1 = true;
+        playerState.KnockedDown_Alternate = true;
     }
 
     void playerKnockedDown(GameObject playerKnockedDown)

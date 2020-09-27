@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     private bool _inAir;
     private bool _grounded;
     private bool _knockedDown;
-    private bool _knockedDown_alternate1;
+    private bool _knockedDown_alternate;
     private bool _avoidedKnockDown;
 
     [SerializeField]
@@ -238,12 +238,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // knocked down
-        if ((KnockedDown || KnockedDown_Alternate1) && !locked)
+        if ((KnockedDown || KnockedDown_Alternate) && !locked)
         {
             locked = true;
             rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
             // if alternate knockdown animation
-            if (KnockedDown_Alternate1)
+            if (KnockedDown_Alternate)
             {
                 StartCoroutine(PlayerKnockedDown("knockedDown_alternate"));
             }
@@ -519,7 +519,7 @@ public class PlayerController : MonoBehaviour
 
         anim.SetBool(knockDownAnim, false);
         KnockedDown = false;
-        KnockedDown_Alternate1 = false;
+        KnockedDown_Alternate = false;
 
         locked = false;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -624,10 +624,10 @@ public class PlayerController : MonoBehaviour
         get => _avoidedKnockDown;
         set => _avoidedKnockDown = value;
     }
-    public bool KnockedDown_Alternate1
+    public bool KnockedDown_Alternate
     {
-        get => _knockedDown_alternate1;
-        set => _knockedDown_alternate1 = value;
+        get => _knockedDown_alternate;
+        set => _knockedDown_alternate = value;
     }
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
     public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
