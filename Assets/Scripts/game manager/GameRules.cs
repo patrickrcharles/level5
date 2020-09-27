@@ -411,14 +411,22 @@ public class GameRules : MonoBehaviour
             }
             if (gameModeId == 99)
             {
-                displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade).ToString("0.00")
+                displayCurrentScoreText.text = "longest shot : " + (basketBallStats.LongestShotMade).ToString("0.00")
                                                                  + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");
-                displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
+                if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+                {
+                    displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00") 
+                        +"\nexp gained : "+ basketBallStats.getExperienceGainedFromSession();
+                }
+                else
+                {
+                    displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00");
+                }
                 // if longest shot > saved longest shot
                 if ((BasketBall.instance.BasketBallStats.LongestShotMade) > PlayerData.instance.LongestShotMadeFreePlay)
                 {
                     //PlayerData.instance.saveStats();
-                    PlayerData.instance.LongestShotMadeFreePlay = BasketBall.instance.BasketBallStats.LongestShotMade;
+                    PlayerData.instance.LongestShotMadeFreePlay = basketBallStats.LongestShotMade;
                     // save to db
                     DBHelper.instance.updateFloatValueByTableAndField("AllTimeStats", "longestShot", PlayerData.instance.LongestShotMadeFreePlay);
                 }
