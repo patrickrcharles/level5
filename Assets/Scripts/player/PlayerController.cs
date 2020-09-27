@@ -339,9 +339,14 @@ public class PlayerController : MonoBehaviour
                 movementSpeed = characterProfile.Speed;
         }
         // if run state
-        if (currentState == run ) //|| (runningToggle || running) )
+        if (currentState == run && !hasBasketball) //|| (runningToggle || running) )
         {
             movementSpeed = characterProfile.RunSpeed; ;
+        }
+        // if run state
+        if (currentState == bWalk && hasBasketball) //|| (runningToggle || running) )
+        {
+            movementSpeed = characterProfile.RunSpeedHasBall; ;
         }
         // inair state
         if (inAir)
@@ -625,6 +630,7 @@ public class PlayerController : MonoBehaviour
         set => _knockedDown_alternate1 = value;
     }
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
+    public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()
