@@ -26,8 +26,9 @@ public class PlayerData : MonoBehaviour
 
     private float _shotAttempt;
     private float _shotMade;
-    private float _longestShotMade;
-    private float _longestShotMadeFreePlay;
+    [SerializeField] private float _longestShotMade;
+    [SerializeField] private float _longestShotMadeFreePlay;
+    [SerializeField] private float _longestShotMadeArcade;
     private float _totalDistance;
 
     private float _makeThreePointersLowTime;
@@ -87,7 +88,10 @@ public class PlayerData : MonoBehaviour
             _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");
             _fourPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 3, "DESC");
             _sevenPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 4, "DESC");
-            _longestShotMade = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 5, "DESC");
+
+            _longestShotMadeFreePlay = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 99, "DESC");
+            _longestShotMadeArcade = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "longestShot", 98, "DESC");
+
             _totalDistance = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "totalDistance", 6, "DESC");
             _makeThreePointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 7, "ASC");
             _makeFourPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 8, "ASC");
@@ -156,4 +160,5 @@ public class PlayerData : MonoBehaviour
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public int UpdatePointsAvailable { get => _updatePointsAvailable; set => _updatePointsAvailable = value; }
     public int UpdatePointsUsed { get => _updatePointsUsed; set => _updatePointsUsed = value; }
+    public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }

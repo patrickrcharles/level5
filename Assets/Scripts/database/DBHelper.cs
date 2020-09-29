@@ -1081,7 +1081,7 @@ public class DBHelper : MonoBehaviour
         IDbCommand dbcmd = dbconn.CreateCommand();
 
         // game modes that require float values/ low time as high score
-        if (modeid > 4 && modeid < 14 && modeid != 6)
+        if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
         {
             sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
         }
@@ -1096,7 +1096,7 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             // game modes that require float values
-            if (modeid > 4 && modeid < 14)
+            if ((modeid > 4 && modeid < 14) || modeid == 99 )
             {
                 score = reader.GetFloat(0).ToString();
             }

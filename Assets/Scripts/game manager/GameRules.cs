@@ -353,12 +353,12 @@ public class GameRules : MonoBehaviour
                                                             + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
                 displayHighScoreText.text = "high score : " + PlayerData.instance.SevenPointerMade;
             }
-            if (gameModeId == 5)
-            {
-                displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade).ToString("0.00")
-                    + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim).ToString("00.00");
-                displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
-            }
+            //if (gameModeId == 5)
+            //{
+            //    displayCurrentScoreText.text = "longest shot : " + (BasketBall.instance.BasketBallStats.LongestShotMade).ToString("0.00")
+            //        + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim).ToString("00.00");
+            //    displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMade.ToString("0.00");
+            //}
             if (gameModeId == 6)
             {
                 displayCurrentScoreText.text = "total distance : " + (BasketBall.instance.BasketBallStats.TotalDistance).ToString("0.00")
@@ -409,7 +409,7 @@ public class GameRules : MonoBehaviour
                 displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersMoneyBallLowTime;
                 displayMoneyText.text = "$" + PlayerStats.instance.Money;
             }
-            if (gameModeId == 99)
+            if (gameModeId == 99 || gameModeId == 98)
             {
                 displayCurrentScoreText.text = "longest shot : " + (basketBallStats.LongestShotMade).ToString("0.00")
                                                                  + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");

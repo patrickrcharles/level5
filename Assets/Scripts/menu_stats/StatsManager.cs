@@ -297,12 +297,16 @@ public class StatsManager : MonoBehaviour
             //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(free) : " + !temp.ModeDisplayName.ToLower().Contains("free"));
             //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(arcade) : " + !temp.ModeDisplayName.ToLower().Contains("arcade"));
 
-            // add to list
-            if (!temp.ModeDisplayName.ToLower().Contains("free") 
-                && !temp.ModeDisplayName.ToLower().Contains("arcade")) // exclude freeplay
+            //// add to list
+            //if (!temp.ModeDisplayName.ToLower().Contains("free") 
+            //    && !temp.ModeDisplayName.ToLower().Contains("arcade")) // exclude freeplay
+            //{
+            //    tempList.Add(new mode(temp.ModeId, temp.ModeDisplayName, temp.HighScoreField));
+
+            //}
+            if (temp.ModeId != 98)
             {
                 tempList.Add(new mode(temp.ModeId, temp.ModeDisplayName, temp.HighScoreField));
-                
             }
         }
 
