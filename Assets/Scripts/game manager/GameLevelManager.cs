@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 #if UNITY_EDITOR
@@ -107,6 +108,7 @@ public class GameLevelManager : MonoBehaviour
         //QualitySettings.vSyncCount = 1;
 
         QualitySettings.vSyncCount = 0;
+
         //Application.targetFrameRate = 60;
 
         //disable lighting if necessary
@@ -256,7 +258,8 @@ public class GameLevelManager : MonoBehaviour
         {
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-            //Debug.Log("load prefab");
+            //Debug.Log("load prefab");y analyticsvalidotr not working
+
         }
 
         //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
