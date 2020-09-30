@@ -26,6 +26,12 @@ public class SFXBB : MonoBehaviour {
     public AudioClip chainRattle;
     public AudioClip deathRay;
     public AudioClip probeCritical;
+    public AudioClip yellYeah1;
+    public AudioClip yellYeah2;
+    public AudioClip metalBang;
+    public AudioClip stoneCold;
+    public AudioClip chopWood;
+    public AudioClip shootGun;
 
     public AudioClip unlockAchievement;
     

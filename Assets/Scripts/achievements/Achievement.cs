@@ -14,9 +14,12 @@ public class Achievement : MonoBehaviour
     private string achievementDescription;
 
     [SerializeField]
-    bool characterUnlock;
+    private string experienceGained;
+
     [SerializeField]
-    bool cheerleaderUnlock;
+    public bool characterUnlock;
+    [SerializeField]
+    public bool cheerleaderUnlock;
     [SerializeField]
     bool levelUnlock;
     [SerializeField]
@@ -77,40 +80,65 @@ public class Achievement : MonoBehaviour
     [SerializeField]
     bool isLocked;
 
-    public int PlayerId { get => playerId; set => playerId = value; }
-    public bool IsLocked { get => isLocked; set => isLocked = value; }
+    public int AchievementId { get => achievementId; set => achievementId = value; }
+    public string AchievementName { get => achievementName; set => achievementName = value; }
     public string AchievementDescription { get => achievementDescription; set => achievementDescription = value; }
+    public string ExperienceGained { get => experienceGained; set => experienceGained = value; }
+    public bool CharacterUnlock { get => characterUnlock; set => characterUnlock = value; }
+    public bool CheerleaderUnlock { get => cheerleaderUnlock; set => cheerleaderUnlock = value; }
+    public bool LevelUnlock { get => levelUnlock; set => levelUnlock = value; }
+    public bool ModeUnlock { get => modeUnlock; set => modeUnlock = value; }
+    public bool OtherUnlock { get => otherUnlock; set => otherUnlock = value; }
+    public int PlayerId { get => playerId; set => playerId = value; }
     public int CheerleaderId { get => cheerleaderId; set => cheerleaderId = value; }
+    public int LevelId { get => levelId; set => levelId = value; }
+    public int ModeId { get => modeId; set => modeId = value; }
     public int ActivationValueInt { get => activationValueInt; set => activationValueInt = value; }
-    public int ActivationValueProgressionInt { get => activationValueProgressionInt; set => activationValueProgressionInt = value; }
     public float ActivationValueFloat { get => activationValueFloat; set => activationValueFloat = value; }
+    public int ActivationValueProgressionInt { get => activationValueProgressionInt; set => activationValueProgressionInt = value; }
     public float ActivationValueProgressionFloat { get => activationValueProgressionFloat; set => activationValueProgressionFloat = value; }
+    public bool Consecutive { get => consecutive; set => consecutive = value; }
     public bool Count { get => count; set => count = value; }
     public bool IsProgressiveCount { get => isProgressiveCount; set => isProgressiveCount = value; }
+    public bool IsProgressiveTime { get => isProgressiveTime; set => isProgressiveTime = value; }
+    public bool Time { get => time; set => time = value; }
+    public bool Three { get => three; set => three = value; }
+    public bool Four { get => four; set => four = value; }
+    public bool Seven { get => seven; set => seven = value; }
+    public int PlayerRequiredToUseId { get => playerRequiredToUseId; set => playerRequiredToUseId = value; }
+    public int CheerleaderRequiredToUseId { get => cheerleaderRequiredToUseId; set => cheerleaderRequiredToUseId = value; }
+    public int LevelRequiredToUseId { get => levelRequiredToUseId; set => levelRequiredToUseId = value; }
+    public int ModeRequiredToUseId { get => modeRequiredToUseId; set => modeRequiredToUseId = value; }
+    public bool IsLocked { get => isLocked; set => isLocked = value; }
 
     // new achievement object
-    public Achievement(int aid,int activateInt, int progressValue, int islockedValue)
-    {
-        achievementId = aid;
-        activationValueInt = activateInt;
-        activationValueProgressionInt = progressValue;
+    //public Achievement(int aid, string name, string description, int activateInt, int progressValue, int islockedValue)
+    //{
+    //    achievementId = aid;
+    //    activationValueInt = activateInt;
+    //    activationValueProgressionInt = progressValue;
+    //    achievementName = name;
+    //    achievementDescription = description;
 
-        if (islockedValue == 1)
-        {
-            IsLocked = true;
-        }
-        if (islockedValue == 0)
-        {
-            IsLocked = false;
-        }
-    }
+    //    if (islockedValue == 1)
+    //    {
+    //        IsLocked = true;
+    //    }
+    //    if (islockedValue == 0)
+    //    {
+    //        IsLocked = false;
+    //    }
+    //}
+    public Achievement() { }
 
-    public void checkUnlockConditions(int playid, int cheerid, int lid, int mid, int activateValue, BasketBallStats basketBallStats)
+    public void checkUnlockConditions(int playid, int cheerid, int lid, int mid, int activateValue)
     {
         bool condition1 = false;
         bool condition2 = false;
         bool condition3 = false;
 
+        Debug.Log("checkUnlockConditions(  " + playid + ", " + cheerid + " , " + lid + " , " + mid + " , " + activateValue);
+        Debug.Log("     characterUnlock : " + characterUnlock + "  cheerUnlock : " + cheerleaderUnlock);
         // if unlocks character and islocked
         if (IsLocked && characterUnlock)
         {
@@ -143,18 +171,22 @@ public class Achievement : MonoBehaviour
         // if unlocks cheerleader and islocked
         if (IsLocked && cheerleaderUnlock)
         {
+            Debug.Log("         cheerleader unlock  ");
             // cheerleader unlock :  if requires count but isnt progressive counter
             if (count && !isProgressiveCount)
             {
+                Debug.Log("         if (count && !isProgressiveCount)");
                 if (checkCheerleaderUnlockConditions(cheerid, lid, mid, ref condition1, ref condition2, ref condition3)
                     && checkActivateValue(activateValue))
                 {
+                    Debug.Log("         if (checkCheerleaderUnlockConditions(cheerid, lid, mid, ref condition1, ref condition2, ref condition3) && checkActivateValue(activateValue))");
                     IsLocked = false;
                 }
             }
             // cheerleader unlock : if requires count but is progressive counter
             if (count && isProgressiveCount)
             {
+                Debug.Log("         if (count && isProgressiveCount)");
                 // if conditions met and value met :: unlock
                 if (checkCheerleaderUnlockConditions(cheerid, lid, mid, ref condition1, ref condition2, ref condition3))
                 {
@@ -202,11 +234,7 @@ public class Achievement : MonoBehaviour
                 }
             }
         }
-        //// if achievement unlocked, display notification
-        //if(isLocked == false)
-        //{
-        //    StartCoroutine(displayAchievementUnlockNotification(3));
-        //}
+
     }
 
     public bool checkActivateValue(int activateValue)
@@ -248,11 +276,14 @@ public class Achievement : MonoBehaviour
         bool activate = false;
         int totalValue = activateValue + activationValueProgressionInt;
 
+        Debug.Log("activatevalue : " + activateValue);
+        Debug.Log("totalValue : " + totalValue);
         if (LESS_THAN)
         {
             if (totalValue < activationValueInt)
             {
                 activate = true;
+                Debug.Log("return true");
             }
         }
         if (GREATER_THAN)
@@ -261,6 +292,7 @@ public class Achievement : MonoBehaviour
             {
                 activate = true;
                 activationValueProgressionInt += activateValue;
+                Debug.Log("return true");
             }
             // if less than activation, add to progressive value
             if (totalValue < activationValueInt)
@@ -280,6 +312,7 @@ public class Achievement : MonoBehaviour
             if (totalValue >= activationValueInt)
             {
                 activate = true;
+                Debug.Log("return true");
             }
         }
         return activate;

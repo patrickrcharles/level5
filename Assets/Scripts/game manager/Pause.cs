@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     // main flag
+    [SerializeField]
     private bool paused;
 
     //fade texture to obscure background
@@ -63,6 +65,13 @@ public class Pause : MonoBehaviour
 
     private void Start()
     {
+        /*pause game
+         *disable fade + footer
+         *display press start message
+         *wait for input 
+         *(on imput) disable message + set time scale = 1
+         */
+
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -95,7 +104,7 @@ public class Pause : MonoBehaviour
          */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
-            //Debug.Log("pause check");
+            //Debug.Log("TogglePause");
             TogglePause();
         }
         //==========================================================
@@ -126,8 +135,7 @@ public class Pause : MonoBehaviour
 
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1")))
             {
                 reloadScene();
@@ -135,24 +143,23 @@ public class Pause : MonoBehaviour
 
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1")))
             {
+                //Debug.Log("load start scene");
                 loadstartScreen();
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1"))
             {
+                //Debug.Log("toggle pause");
                 TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && (GameLevelManager.instance.Controls.Player.submit.triggered
-                    || GameLevelManager.instance.Controls.Player.jump.triggered))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             //|| InputManager.GetButtonDown("Fire1"))
             {
                 quit();
@@ -164,7 +171,8 @@ public class Pause : MonoBehaviour
     {
         Debug.Log("quit");
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null &&
+           (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
         }
@@ -173,21 +181,26 @@ public class Pause : MonoBehaviour
 
     public void loadstartScreen()
     {
+        //Debug.Log("loadstartScreen()");
+
+        // if database = null, i could spawn a DB object
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null && 
+           ( GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
         }
 
         // start screen should be first scene in build
-        SceneManager.LoadScene("level_00_start");
+        SceneManager.LoadScene("level_00_loading");
         //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
     }
 
     public void reloadScene()
     {
         // update all time stats
-        if (DBConnector.instance != null && GameOptions.gameModeSelectedName.ToLower().Contains("free"))
+        if (DBConnector.instance != null
+            && (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
             //make sure new high scores (if any) are loaded
@@ -198,35 +211,37 @@ public class Pause : MonoBehaviour
         {
             TogglePause();
         }
+        // load highscores before loading scene
+        if (PlayerData.instance != null)
+        {
+            try
+            {
+                PlayerData.instance.loadStatsFromDatabase();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                return;
+            }
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private static void updateFreePlayStats()
     {
+        //Debug.Log("---------------------- updateFreePlayStats");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats
         DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
-        //DBConnector.instance.saveHitByCarGameStats(PlayerData.instance.HitByCars);
+        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
     }
 
     private void setPauseScreen(bool value)
     {
-        //Debug.Log("setPauseScreen");
-        //Debug.Log("paused : " + Pause.instance.paused);
-        // score display
-        //if (paused)
-        //{
-        //    GameRules.instance.DisplayCurrentScoreText.enabled = !value;
-        //    GameRules.instance.DisplayHighScoreText.enabled = !value;
-        //}
-        //if (!paused)
-        //{
-        //    GameRules.instance.DisplayCurrentScoreText.enabled = value;
-        //    GameRules.instance.DisplayHighScoreText.enabled = value;
-        //}
+        // if ui stats enables, trn off
         if (BasketBall.instance.UiStatsEnabled)
         {
             BasketBall.instance.toggleUiStats();

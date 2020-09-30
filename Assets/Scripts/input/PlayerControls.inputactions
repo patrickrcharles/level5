@@ -546,6 +546,17 @@
                 },
                 {
                     "name": "",
+                    "id": "11597ec6-833a-4e78-a3ea-94a3cc87947d",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "special",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bdbc1388-3d92-42e6-90bd-732a17b1f8bf",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
@@ -1246,17 +1257,6 @@
                 },
                 {
                     "name": "",
-                    "id": "82a73772-a011-47d9-a9e1-6068fbe90bf8",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b9ecb624-910b-456d-9613-a758f72dfc25",
                     "path": "<Gamepad>/select",
                     "interactions": "",
@@ -1298,6 +1298,17 @@
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "063b9ecc-aa67-42b2-86da-7b0703180855",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1333,6 +1344,22 @@
                     "name": "toggle_camera_keyboard",
                     "type": "Button",
                     "id": "7007229e-e676-4c68-8ae0-fce1fc835d33",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "toggle_character_max_stats",
+                    "type": "Button",
+                    "id": "3f68784b-e375-47cd-8072-7d0b3a3c0770",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "toggle_fps_counter",
+                    "type": "Button",
+                    "id": "5aa24f3a-13a8-4e6a-8ecd-05f33f2b159d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -1479,6 +1506,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "toggle_camera_keyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9d11dcf-1c5f-434b-9b08-29c64002a8d2",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "toggle_character_max_stats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7886735-cddc-435d-991d-d66d52795ddb",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "toggle_fps_counter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

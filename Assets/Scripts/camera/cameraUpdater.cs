@@ -62,15 +62,40 @@ public class cameraUpdater : MonoBehaviour
 
     private void Awake()
     {
+        //// get weather system object reference
+        //foreach (Transform t in gameObject.transform)
+        //{
+        //    //Debug.Log("transform name : " + t.name + "  transform tage : "+ t.tag);
+        //    //#hack
+        //    if (t.CompareTag("weather_system") && !t.name.Contains("goal"))
+        //    {
+        //        weatherSystemObject = t.gameObject;
+        //        if (requiresWeatherSystem)
+        //        {
+        //            Debug.Log("WEATHER ACTIVE -- \ntransform name : " + t.name + "  transform tage : " + t.tag);
+        //            weatherSystemObject.SetActive(true);
+        //        }
+        //        else
+        //        {
+        //            weatherSystemObject.SetActive(false);
+        //        }
+        //    }
+        //}
+    }
+
+    void Start()
+    {
         // get weather system object reference
         foreach (Transform t in gameObject.transform)
         {
+            //Debug.Log("transform name : " + t.name + "  transform tage : "+ t.tag);
             //#hack
             if (t.CompareTag("weather_system") && !t.name.Contains("goal"))
             {
                 weatherSystemObject = t.gameObject;
                 if (requiresWeatherSystem)
                 {
+                    //Debug.Log("WEATHER ACTIVE -- \ntransform name : " + t.name + "  transform tage : " + t.tag);
                     weatherSystemObject.SetActive(true);
                 }
                 else
@@ -79,10 +104,6 @@ public class cameraUpdater : MonoBehaviour
                 }
             }
         }
-    }
-
-    void Start()
-    {
 
         basketBallRim = GameLevelManager.instance.BasketballRimVector;
 
@@ -192,7 +213,7 @@ public class cameraUpdater : MonoBehaviour
         }
     }
 
-    private void toggleCameraOnGoal()
+    public void toggleCameraOnGoal()
     {
         onGoalCameraEnabled = !onGoalCameraEnabled;
         if (onGoalCameraEnabled)

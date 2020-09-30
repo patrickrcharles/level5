@@ -1,0 +1,718 @@
+fileFormatVersion: 2
+guid: 608a4806fe78a2e48882f2f3875a981d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: trees_256_light_0
+  - first:
+      213: 21300002
+    second: trees_256_light_1
+  - first:
+      213: 21300004
+    second: trees_256_light_2
+  - first:
+      213: 21300006
+    second: trees_256_light_3
+  - first:
+      213: 21300008
+    second: trees_256_light_4
+  - first:
+      213: 21300010
+    second: trees_256_light_5
+  - first:
+      213: 21300012
+    second: trees_256_light_6
+  - first:
+      213: 21300014
+    second: trees_256_light_7
+  - first:
+      213: 21300016
+    second: trees_256_light_8
+  - first:
+      213: 21300018
+    second: trees_256_light_9
+  - first:
+      213: 21300020
+    second: trees_256_light_10
+  - first:
+      213: 21300022
+    second: trees_256_light_11
+  - first:
+      213: 21300024
+    second: trees_256_light_12
+  - first:
+      213: 21300026
+    second: trees_256_light_13
+  - first:
+      213: 21300028
+    second: trees_256_light_14
+  - first:
+      213: 21300030
+    second: trees_256_light_15
+  - first:
+      213: 8417403379771364952
+    second: trees_light_0
+  - first:
+      213: 1572848945829112045
+    second: trees_light_1
+  - first:
+      213: -1571755965560574449
+    second: trees_light_2
+  - first:
+      213: -3115530636827800777
+    second: trees_light_3
+  - first:
+      213: -4487648851370501992
+    second: trees_light_4
+  - first:
+      213: -9005711254138847338
+    second: trees_light_5
+  - first:
+      213: 9021086641810639963
+    second: trees_light_6
+  - first:
+      213: 3619766757129150185
+    second: trees_light_7
+  - first:
+      213: 7258030077187257284
+    second: trees_light_8
+  - first:
+      213: -7118743615839621104
+    second: trees_light_9
+  - first:
+      213: -3426311956008135124
+    second: trees_light_10
+  - first:
+      213: 3922677969726731413
+    second: trees_light_11
+  - first:
+      213: 7374147544596343338
+    second: trees_light_12
+  - first:
+      213: 7092619244631009475
+    second: trees_light_13
+  - first:
+      213: 2818008582242324874
+    second: trees_light_14
+  - first:
+      213: 582276153017153362
+    second: trees_light_15
+  - first:
+      213: -1668122511585692595
+    second: trees_light_16
+  - first:
+      213: 5009738417473785597
+    second: trees_light_17
+  - first:
+      213: -3558368120575559180
+    second: trees_light_18
+  - first:
+      213: 7050535117889419135
+    second: trees_light_19
+  - first:
+      213: 8718355912948159825
+    second: trees_light_20
+  - first:
+      213: -6446283926436476007
+    second: trees_light_21
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 70
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 70
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 70
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 47
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: trees_light_0
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 1791
+        width: 152
+        height: 257
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 856d17ec6cf90d470800000000000000
+      internalID: 8417403379771364952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1790
+        width: 256
+        height: 256
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de8ed7d68c1e3d510800000000000000
+      internalID: 1572848945829112045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_2
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 1792
+        width: 191
+        height: 256
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0e292fd640003ae0800000000000000
+      internalID: -1571755965560574449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_3
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 1792
+        width: 256
+        height: 255
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73b4801846963c4d0800000000000000
+      internalID: -3115530636827800777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_4
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1536
+        width: 256
+        height: 222
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8981f51752ba8b1c0800000000000000
+      internalID: -4487648851370501992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_5
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 1750
+        width: 9
+        height: 7
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69ff0532459450380800000000000000
+      internalID: -9005711254138847338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_6
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 1754
+        width: 6
+        height: 4
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5c05254186513d70800000000000000
+      internalID: 9021086641810639963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1279
+        width: 259
+        height: 455
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ee5370ffaefb3230800000000000000
+      internalID: 3619766757129150185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_8
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 1541
+        width: 191
+        height: 121
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c3f8d786e3b9b460800000000000000
+      internalID: 7258030077187257284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_9
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 1598
+        width: 11
+        height: 6
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 010bccae564253d90800000000000000
+      internalID: -7118743615839621104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_10
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 1287
+        width: 255
+        height: 183
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c26167ced6b4370d0800000000000000
+      internalID: -3426311956008135124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_11
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 1020
+        width: 494
+        height: 516
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 594ffc984d6207630800000000000000
+      internalID: 3922677969726731413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_12
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 1024
+        width: 188
+        height: 252
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2aebf43f1c365660800000000000000
+      internalID: 7374147544596343338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_13
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 1025
+        width: 198
+        height: 255
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c8a45bef9b0e6260800000000000000
+      internalID: 7092619244631009475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_14
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 512
+        width: 387
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a815e8600e39b1720800000000000000
+      internalID: 2818008582242324874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_15
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 794
+        width: 13
+        height: 17
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 257b4cd7319a41800800000000000000
+      internalID: 582276153017153362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_16
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 512
+        width: 464
+        height: 507
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d443a1fe963a9d8e0800000000000000
+      internalID: -1668122511585692595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_17
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 772
+        width: 10
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfe07274c8a268540800000000000000
+      internalID: 5009738417473785597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_18
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 776
+        width: 6
+        height: 8
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f9f4012c032e9ec0800000000000000
+      internalID: -3558368120575559180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_19
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 736
+        width: 8
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f77373a955888d160800000000000000
+      internalID: 7050535117889419135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_20
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 319
+        height: 516
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15593b0d282ddf870800000000000000
+      internalID: 8718355912948159825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trees_light_21
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 0
+        width: 514
+        height: 316
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99b817b3ce23a86a0800000000000000
+      internalID: -6446283926436476007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: a6e2b39f482d71a4f83586a01ad86863
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

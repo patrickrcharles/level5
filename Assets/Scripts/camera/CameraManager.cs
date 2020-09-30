@@ -65,6 +65,7 @@ public class CameraManager : MonoBehaviour
             if (GameOptions.levelDisplayName != null &&  GameOptions.levelDisplayName.ToLower().Contains("norf"))
             {
                 Cameras[i].GetComponent<cameraUpdater>().RequiresWeatherSystem = true;
+                //Debug.Log("level requires WEATHER");
             }
 
             if (Cameras[i].name.Contains("perspective_1"))

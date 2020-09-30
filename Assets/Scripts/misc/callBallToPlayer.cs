@@ -64,13 +64,13 @@ public class CallBallToPlayer : MonoBehaviour
         basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
 
-    public void toggleCallBallToPlayer()
-    {
-        canBallToPlayerEnabled = !canBallToPlayerEnabled;
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "call ball to player = " + canBallToPlayerEnabled + "\nhigh score saving disabled";
+    //public void toggleCallBallToPlayer()
+    //{
+    //    canBallToPlayerEnabled = !canBallToPlayerEnabled;
+    //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+    //    messageText.text = "call ball to player = " + canBallToPlayerEnabled + "\nhigh score saving disabled";
 
-        // turn off text display after 5 seconds
-        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(5));
-    }
+    //    // turn off text display after 5 seconds
+    //    StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
+    //}
 }

@@ -18,7 +18,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (gameObject.CompareTag("playerHitbox")
             && other.CompareTag("knock_down_attack2")
-            && !playerState.KnockedDown_Alternate1)
+            && !playerState.KnockedDown_Alternate)
         {
             if (playerCanBeKnockedDown)
             {
@@ -35,18 +35,10 @@ public class PlayerCollisions : MonoBehaviour
             && other.CompareTag("knock_down_attack")
             && !playerState.KnockedDown)
         {
-            //Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.name);
-
-            if (playerCanBeKnockedDown)
+            // player can be knocked down and other
+            if (playerCanBeKnockedDown )
             {
                 playerKnockedDown(other.gameObject);
-                VehicleController vehicleController = other.gameObject.transform.parent.GetComponent<VehicleController>();
-                // if playerData object exists
-                if (PlayerData.instance != null && playerCanBeKnockedDown)
-                {
-                    // add hit by car reference
-                    PlayerData.instance.AddHitByCarInstanceToList(vehicleController.VehicleId);
-                }
             }
             else
             {
@@ -58,12 +50,14 @@ public class PlayerCollisions : MonoBehaviour
 
     void playerKnockedDown_Alternate(GameObject playerKnockedDown)
     {
-        playerState.KnockedDown_Alternate1 = true;
+        playerState.KnockedDown_Alternate = true;
     }
 
     void playerKnockedDown(GameObject playerKnockedDown)
     {
         playerState.KnockedDown = true;
+        playerState.hasBasketball = false;
+        playerState.setPlayerAnim("hasBasketball", false);
     }
     void playerAvoidKnockDown(GameObject playerAvoidKnocked)
     {

@@ -51,7 +51,7 @@ public class Timer : MonoBehaviour
         else
         {
             // timer is 2 minutes
-            timeStart = 120;
+            timeStart = 180;
         }
 
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;

@@ -13,7 +13,7 @@ public class ShotMeter : MonoBehaviour
     float sliderValueOnButtonPress;
     public float SliderValueOnButtonPress => sliderValueOnButtonPress;
 
-    ShooterProfile shooterProfile;
+    CharacterProfile shooterProfile;
     Slider slider;
     public Slider Slider => slider;
 
@@ -35,7 +35,7 @@ public class ShotMeter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shooterProfile = GameLevelManager.instance.Player.GetComponent<ShooterProfile>();
+        shooterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
         sliderValueOnPress = transform.Find(sliderValueOnPressName).GetComponent<Text>();
@@ -53,11 +53,6 @@ public class ShotMeter : MonoBehaviour
         if (meterStarted && !locked)
         {
             locked = true;
-        }
-
-        if (meterEnded)
-        {
-            locked = false;
         }
 
         // this just to move the slider
@@ -87,6 +82,8 @@ public class ShotMeter : MonoBehaviour
         // this is to set the values and text display. it is separate from the above code
         if (meterEnded)
         {
+            locked = false;
+
             sliderValueOnButtonPress = Mathf.CeilToInt(( ( (Time.time - meterStartTime) / (meterFillTime) * 100) ) );
 
             if (sliderValueOnButtonPress >= 100)

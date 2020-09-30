@@ -559,6 +559,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""11597ec6-833a-4e78-a3ea-94a3cc87947d"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""bdbc1388-3d92-42e6-90bd-732a17b1f8bf"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -1259,17 +1270,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""82a73772-a011-47d9-a9e1-6068fbe90bf8"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""b9ecb624-910b-456d-9613-a758f72dfc25"",
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
@@ -1311,6 +1311,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""063b9ecc-aa67-42b2-86da-7b0703180855"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1346,6 +1357,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""toggle_camera_keyboard"",
                     ""type"": ""Button"",
                     ""id"": ""7007229e-e676-4c68-8ae0-fce1fc835d33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""toggle_character_max_stats"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f68784b-e375-47cd-8072-7d0b3a3c0770"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""toggle_fps_counter"",
+                    ""type"": ""Button"",
+                    ""id"": ""5aa24f3a-13a8-4e6a-8ecd-05f33f2b159d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1494,6 +1521,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""toggle_camera_keyboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9d11dcf-1c5f-434b-9b08-29c64002a8d2"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""toggle_character_max_stats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7886735-cddc-435d-991d-d66d52795ddb"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""toggle_fps_counter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1534,6 +1583,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Other_toggle_run_keyboard = m_Other.FindAction("toggle_run_keyboard", throwIfNotFound: true);
         m_Other_toggle_stats_keyboard = m_Other.FindAction("toggle_stats_keyboard", throwIfNotFound: true);
         m_Other_toggle_camera_keyboard = m_Other.FindAction("toggle_camera_keyboard", throwIfNotFound: true);
+        m_Other_toggle_character_max_stats = m_Other.FindAction("toggle_character_max_stats", throwIfNotFound: true);
+        m_Other_toggle_fps_counter = m_Other.FindAction("toggle_fps_counter", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1838,6 +1889,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Other_toggle_run_keyboard;
     private readonly InputAction m_Other_toggle_stats_keyboard;
     private readonly InputAction m_Other_toggle_camera_keyboard;
+    private readonly InputAction m_Other_toggle_character_max_stats;
+    private readonly InputAction m_Other_toggle_fps_counter;
     public struct OtherActions
     {
         private @PlayerControls m_Wrapper;
@@ -1846,6 +1899,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @toggle_run_keyboard => m_Wrapper.m_Other_toggle_run_keyboard;
         public InputAction @toggle_stats_keyboard => m_Wrapper.m_Other_toggle_stats_keyboard;
         public InputAction @toggle_camera_keyboard => m_Wrapper.m_Other_toggle_camera_keyboard;
+        public InputAction @toggle_character_max_stats => m_Wrapper.m_Other_toggle_character_max_stats;
+        public InputAction @toggle_fps_counter => m_Wrapper.m_Other_toggle_fps_counter;
         public InputActionMap Get() { return m_Wrapper.m_Other; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1867,6 +1922,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @toggle_camera_keyboard.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_camera_keyboard;
+                @toggle_character_max_stats.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
+                @toggle_character_max_stats.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
+                @toggle_character_max_stats.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_character_max_stats;
+                @toggle_fps_counter.started -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_fps_counter;
+                @toggle_fps_counter.performed -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_fps_counter;
+                @toggle_fps_counter.canceled -= m_Wrapper.m_OtherActionsCallbackInterface.OnToggle_fps_counter;
             }
             m_Wrapper.m_OtherActionsCallbackInterface = instance;
             if (instance != null)
@@ -1883,6 +1944,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @toggle_camera_keyboard.started += instance.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.performed += instance.OnToggle_camera_keyboard;
                 @toggle_camera_keyboard.canceled += instance.OnToggle_camera_keyboard;
+                @toggle_character_max_stats.started += instance.OnToggle_character_max_stats;
+                @toggle_character_max_stats.performed += instance.OnToggle_character_max_stats;
+                @toggle_character_max_stats.canceled += instance.OnToggle_character_max_stats;
+                @toggle_fps_counter.started += instance.OnToggle_fps_counter;
+                @toggle_fps_counter.performed += instance.OnToggle_fps_counter;
+                @toggle_fps_counter.canceled += instance.OnToggle_fps_counter;
             }
         }
     }
@@ -1924,5 +1991,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnToggle_run_keyboard(InputAction.CallbackContext context);
         void OnToggle_stats_keyboard(InputAction.CallbackContext context);
         void OnToggle_camera_keyboard(InputAction.CallbackContext context);
+        void OnToggle_character_max_stats(InputAction.CallbackContext context);
+        void OnToggle_fps_counter(InputAction.CallbackContext context);
     }
 }
