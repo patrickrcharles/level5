@@ -128,6 +128,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     public PlayerControls controls;
 
+    [SerializeField]
     public static StartManager instance;
 
     bool buttonPressed = false;
@@ -149,8 +150,11 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
+        Debug.Log("start manager awake");
+        instance = this;
         // dont destroy on load / check for duplicate instance
         //destroyInstanceIfAlreadyExists();
+
         StartCoroutine(getLoadedData());
 
         controls = new PlayerControls();

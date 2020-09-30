@@ -96,7 +96,9 @@ public class StatsManager : MonoBehaviour
     void Awake()
     {
         //check for existsing instance of statmanager
-        destroyInstanceIfAlreadyExists();
+        //destroyInstanceIfAlreadyExists();
+
+        instance = this;
 
         controls = new PlayerControls();
 

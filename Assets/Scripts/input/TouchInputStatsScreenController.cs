@@ -106,9 +106,11 @@ public class TouchInputStatsScreenController : MonoBehaviour
         if (GameObject.FindObjectOfType<StatsManager>() != null)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
-            m_Raycaster = StatsManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            //m_Raycaster = StatsManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            m_Raycaster = GameObject.Find("stats_manager").GetComponentInChildren<GraphicRaycaster>();
             //Fetch the Event System from the Scene
-            m_EventSystem = StatsManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+            //m_EventSystem = StatsManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+            m_EventSystem = GameObject.Find("stats_manager").GetComponentInChildren<EventSystem>();
         }
         // else, this is not the startscreen and disable object
         else

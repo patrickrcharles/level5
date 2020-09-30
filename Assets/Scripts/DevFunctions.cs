@@ -18,11 +18,11 @@ public class DevFunctions : MonoBehaviour
         player = GameLevelManager.instance.PlayerShooterProfile;
         debugText = GameObject.Find("debug_text").GetComponent<Text>();
 
-        if (GameLevelManager.instance != null)
-        {
-            fpsCounter = GameObject.Find("fps_counter");
-            fpsCounter.SetActive(false);
-        }
+        //if (GameLevelManager.instance != null)
+        //{
+        //    fpsCounter = GameObject.Find("fps_counter");
+        //    fpsCounter.SetActive(false);
+        //}
     }
 
 

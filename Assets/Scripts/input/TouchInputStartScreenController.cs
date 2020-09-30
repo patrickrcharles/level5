@@ -37,6 +37,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     private void Start()
     {
         StartManager.instance.disableButtonsNotUsedForTouchInput();
+
         // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
@@ -127,9 +128,10 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (GameObject.FindObjectOfType<StartManager>() != null)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
-            m_Raycaster = StartManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            //m_Raycaster = StartManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            m_Raycaster = GameObject.Find("startScreen").GetComponentInChildren<GraphicRaycaster>();
             //Fetch the Event System from the Scene
-            m_EventSystem = StartManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+            m_EventSystem = GameObject.Find("startScreen").GetComponentInChildren<EventSystem>();
         }
         // else, this is not the startscreen and disable object
         else
@@ -239,6 +241,10 @@ public class TouchInputStartScreenController : MonoBehaviour
         //level select
         if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {
+            if(StartManager.instance == null)
+            {
+                Debug.Log("start manager instance = null");
+            }
             StartManager.instance.changeSelectedLevelDown();
             StartManager.instance.initializeLevelDisplay();
         }
