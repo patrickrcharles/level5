@@ -587,9 +587,11 @@ public class DBHelper : MonoBehaviour
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
+                //CharacterProfile temp = new CharacterProfile();
                 while (reader.Read())
                 {
                     CharacterProfile temp = new CharacterProfile();
+                    //CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
 
                     temp.PlayerId = reader.GetInt32(0);
                     temp.PlayerDisplayName = reader.GetString(1);

@@ -23,6 +23,17 @@ public class Pause : MonoBehaviour
     private Text cancelMenuText;
     private Text quitGameText;
 
+    // pause options
+    private Text toggleCameraText;
+    private Text toggleUiStatsText;
+    private Text toggleMaxStatsText;
+    private Text toggleFpsText;
+
+    const string toggleCameraName = "toggle_camera";
+    const string toggleUiStatsName = "toggle_stats";
+    const string toggleMaxStatsName = "toggle_max_stats";
+    const string toggleFpsName = "toggle_fps";
+
     //ui buttons
     private Button loadSceneButton;
     private Button loadStartScreenButton;
@@ -40,6 +51,7 @@ public class Pause : MonoBehaviour
         instance = this;
         //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
         fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
+
         loadSceneText = GameObject.Find("load_scene").GetComponent<Text>();
         cancelMenuText = GameObject.Find("cancel_menu").GetComponent<Text>();
         loadStartScreenText = GameObject.Find("load_start").GetComponent<Text>();
@@ -50,6 +62,11 @@ public class Pause : MonoBehaviour
         cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
         controlsObject = GameObject.Find("controls").gameObject;
+
+        //toggleCameraText = GameObject.Find(toggleCameraName).GetComponent<Text>();
+        toggleUiStatsText = GameObject.Find(toggleUiStatsName).GetComponent<Text>();
+        toggleMaxStatsText = GameObject.Find(toggleMaxStatsName).GetComponent<Text>();
+        toggleFpsText = GameObject.Find(toggleFpsName).GetComponent<Text>();
 
         if(controlsObject != null)
         {
@@ -241,11 +258,11 @@ public class Pause : MonoBehaviour
 
     private void setPauseScreen(bool value)
     {
-        // if ui stats enables, trn off
-        if (BasketBall.instance.UiStatsEnabled)
-        {
-            BasketBall.instance.toggleUiStats();
-        }
+        //// if ui stats enables, trn off
+        //if (BasketBall.instance.UiStatsEnabled && paused)
+        //{
+        //    BasketBall.instance.toggleUiStats();
+        //}
 
         loadSceneText.enabled = value;
         loadStartScreenText.enabled = value;
@@ -257,6 +274,11 @@ public class Pause : MonoBehaviour
         cancelMenuButton.enabled = value;
         quitGameButton.enabled = value;
         controlsObject.SetActive(value);
+
+        //toggleCameraText.enabled = value;
+        toggleFpsText.enabled = value;
+        toggleMaxStatsText.enabled = value;
+        toggleUiStatsText.enabled = value;
     }
 
     public bool TogglePause()
@@ -311,6 +333,14 @@ public class Pause : MonoBehaviour
     public Button LoadStartScreenButton { get => loadStartScreenButton; set => loadStartScreenButton = value; }
     public Button CancelMenuButton { get => cancelMenuButton; set => cancelMenuButton = value; }
     public Button QuitGameButton { get => quitGameButton; set => quitGameButton = value; }
+
+    public static string ToggleCameraName => toggleCameraName;
+
+    public static string ToggleUiStatsName => toggleUiStatsName;
+
+    public static string ToggleMaxStatsName => toggleMaxStatsName;
+
+    public static string ToggleFpsName => toggleFpsName;
 
     private string getCurrentSceneName()
     {

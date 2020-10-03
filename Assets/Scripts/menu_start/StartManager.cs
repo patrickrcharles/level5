@@ -150,7 +150,6 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
-        Debug.Log("start manager awake");
         instance = this;
         // dont destroy on load / check for duplicate instance
         //destroyInstanceIfAlreadyExists();
@@ -267,6 +266,14 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(progressionScreenSceneName);
         }
+        //// stats menu button | load stats menu
+        //if ((controls.UINavigation.Submit.triggered
+        //     || controls.Player.shoot.triggered)
+        //    && currentHighlightedButton.Equals(progressionScreenSceneName))
+        //{
+        //    loadMenu(progressionScreenSceneName);
+        //}
+
 
         // ================================== navigation =====================================================================
         // up, option select
@@ -789,6 +796,8 @@ public class StartManager : MonoBehaviour
 
     public void loadMenu(string sceneName)
     {
+        Debug.Log("load scene : " + sceneName);
+
         SceneManager.LoadScene(sceneName);
     }
 
@@ -1022,4 +1031,8 @@ public class StartManager : MonoBehaviour
     public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
     public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
     public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
+
+    public static string ProgressionScreenSceneName => progressionScreenSceneName;
+
+    public static string UpdateMenuButtonName => updateMenuButtonName;
 }

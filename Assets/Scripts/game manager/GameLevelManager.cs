@@ -107,21 +107,22 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled
-        Light[] lights = GameObject.FindObjectsOfType<Light>();
-        if(lights.Length > 0)
-        {
-            foreach (Light light in lights)
-            {
-                //Debug.Log("disable : " + light.name);
-                light.enabled = false;
-            }
-            RenderSettings.ambientLight = Color.white;
-        }
+
+        //Light[] lights = GameObject.FindObjectsOfType<Light>();
+        //if(lights.Length > 0)
+        //{
+        //    foreach (Light light in lights)
+        //    {
+        //        //Debug.Log("disable : " + light.name);
+        //        light.enabled = false;
+        //    }
+        //    RenderSettings.ambientLight = Color.white;
+        //}
 
 
         //Debug.Log(System.DateTime.Now.Hour);

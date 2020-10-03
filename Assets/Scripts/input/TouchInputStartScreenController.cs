@@ -67,13 +67,6 @@ public class TouchInputStartScreenController : MonoBehaviour
             }
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
-            //Debug.Log("touch.tapCount : " + touch.tapCount);
-            //Debug.Log("touch.phase : " + touch.phase);
-            //Debug.Log("Mathf.Abs(swipeDistance) > swipeDownTolerance : " + (Mathf.Abs(swipeDistance) > swipeDownTolerance));
-            //Debug.Log("swipeDistance < 0 : " + (swipeDistance < 0));
-            //Debug.Log("(startTouchPosition.x > (Screen.width / 2)) : " + (startTouchPosition.x > (Screen.width / 2)));
-            //Debug.Log("current button : " + EventSystem.current.currentSelectedGameObject.name);
-
 
             // swipe down on changeable options
             if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
@@ -179,6 +172,11 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
         {
             StartManager.instance.loadGame();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
+        {
+            //Debug.Log("load prgression screen");
+            StartManager.instance.loadMenu(StartManager.ProgressionScreenSceneName);
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
         {

@@ -68,6 +68,7 @@ public class CharacterProfile : MonoBehaviour
         }
     }
 
+    public  CharacterProfile(){}
 
     private void intializeShooterStatsFromProfile()
     {

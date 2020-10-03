@@ -656,6 +656,7 @@ public class BasketBall : MonoBehaviour
 
     public bool displayUiStats()
     {
+        //Debug.Log("displayUiStats() -- UiStatsEnabled : "+ UiStatsEnabled);
         if (UiStatsEnabled)
         {
             updateScoreText();
@@ -675,6 +676,8 @@ public class BasketBall : MonoBehaviour
         UiStatsEnabled = !UiStatsEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "ui stats = " + UiStatsEnabled;
+
+        Debug.Log("------------------------------------------------ UiStatsEnabled : " + UiStatsEnabled);
 
         //if (UiStatsEnabled)
         //{

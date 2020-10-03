@@ -47,10 +47,10 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
-  alignment: 0
+  spriteMeshType: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -107,7 +107,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 33
+    textureFormat: -1
     textureCompression: 3
     compressionQuality: 50
     crunchedCompression: 0
@@ -134,19 +134,19 @@ TextureImporter:
       name: scrapyard_gate_0
       rect:
         serializedVersion: 2
-        x: 66
+        x: 37
         y: 0
-        width: 440
+        width: 442
         height: 225
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5fdeba9502e65aae0800000000000000
-      internalID: -1538702612454707723
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
