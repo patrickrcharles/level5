@@ -1,8 +1,7 @@
 ﻿
- using UnityEngine;
- using System.Collections;
+using UnityEngine;
 
- public class cameraUpdaterOrthographic : MonoBehaviour
+public class cameraUpdaterOrthographic : MonoBehaviour
 {
 
     public Transform player;
@@ -25,8 +24,6 @@
 
     public float startZoomDistance;
 
-
-
     void Start()
     {
         basketBallRim = GameLevelManager.instance.BasketballRimVector;
@@ -44,46 +41,46 @@
         player = GameLevelManager.instance.Player.transform;
         //relCameraPos = player.position - transform.position;
 
-       //Debug.Log("camera Y : " + cam.transform.position.y);
+        //Debug.Log("camera Y : " + cam.transform.position.y);
 
     }
-    
 
-    void Update()
-    {
-        //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        //playerPos = new Vector3(player.position.x,
-        //    0, player.position.z);
-        //camPos = new Vector3(cam.transform.position.x,
-        //    0, cam.transform.root.position.z);
+    //void Update()
+    //{
+    //    //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        //rimPos = new Vector3(basketBallRim.x,
-        //    0, basketBallRim.z);
+    //    //playerPos = new Vector3(player.position.x,
+    //    //    0, player.position.z);
+    //    //camPos = new Vector3(cam.transform.position.x,
+    //    //    0, cam.transform.root.position.z);
 
-        //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
-        //distanceRimFromPlayer = basketBallRim.z - playerPos.z;
-        //if ((player != null))
-        //{
-        //    transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
-        //                                   //cam.transform.position.y,
-        //                                   cam.transform.position.y ,
-        //                                    cam.transform.position.z);
-        //}
+    //    //rimPos = new Vector3(basketBallRim.x,
+    //    //    0, basketBallRim.z);
 
-        //Debug.Log("camera Y : "+ cam.transform.position.y);
-        //if (distanceRimFromPlayer > startZoomDistance 
-        //    && !cameraZoomedOut)
-        //    //&& cam.transform.position.z > zMin)
-        //{
-        //    zoomOut();
-        //}
-        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
-        //{
-        //    zoomIn();
-        //}
+    //    //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
+    //    //distanceRimFromPlayer = basketBallRim.z - playerPos.z;
+    //    //if ((player != null))
+    //    //{
+    //    //    transform.position = new Vector3(Mathf.Clamp(player.position.x, xMin, xMax),
+    //    //                                   //cam.transform.position.y,
+    //    //                                   cam.transform.position.y ,
+    //    //                                    cam.transform.position.z);
+    //    //}
 
-    }
+    //    //Debug.Log("camera Y : "+ cam.transform.position.y);
+    //    //if (distanceRimFromPlayer > startZoomDistance 
+    //    //    && !cameraZoomedOut)
+    //    //    //&& cam.transform.position.z > zMin)
+    //    //{
+    //    //    zoomOut();
+    //    //}
+    //    //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
+    //    //{
+    //    //    zoomIn();
+    //    //}
+
+    //}
 
     void FixedUpdate()
     {

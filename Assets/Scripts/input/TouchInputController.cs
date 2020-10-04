@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using TouchPhase = UnityEngine.TouchPhase;
 
@@ -39,49 +37,49 @@ public class TouchInputController : MonoBehaviour
     }
 
     // changing from Update -> FixedUpdate allows input to be detected at 1/100 as opposed to 1/60 for mobile
-    void FixedUpdate()
-    {
-        //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
-        //if (!Pause.instance.Paused && Input.touchCount > 0)
-        //{
-        //    Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
-        //    touch = Input.touches[0];
-        //    if (touch.tapCount == 1
-        //        && touch.phase == TouchPhase.Began
-        //        && !buttonPressed)
-        //    {
-        //        Debug.Log("----------------------------------Input.touchCount > 0");
-        //        Debug.Log("     buttonPressed : " + buttonPressed);
-        //        Debug.Log("     touch.tapCount : " + touch.tapCount);
-        //        Debug.Log("     touch.phase : " + touch.phase);
-        //        tapDetected = true;
-        //        startTouchPosition = touch.position;
-        //        Debug.Log("tapDetected : " + tapDetected);
-        //    }
+    //void FixedUpdate()
+    //{
+    //    //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+    //    //if (!Pause.instance.Paused && Input.touchCount > 0)
+    //    //{
+    //    //    Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
+    //    //    touch = Input.touches[0];
+    //    //    if (touch.tapCount == 1
+    //    //        && touch.phase == TouchPhase.Began
+    //    //        && !buttonPressed)
+    //    //    {
+    //    //        Debug.Log("----------------------------------Input.touchCount > 0");
+    //    //        Debug.Log("     buttonPressed : " + buttonPressed);
+    //    //        Debug.Log("     touch.tapCount : " + touch.tapCount);
+    //    //        Debug.Log("     touch.phase : " + touch.phase);
+    //    //        tapDetected = true;
+    //    //        startTouchPosition = touch.position;
+    //    //        Debug.Log("tapDetected : " + tapDetected);
+    //    //    }
 
-        //    endTouchPosition = touch.position;
-        //    swipeDistance = endTouchPosition.y - startTouchPosition.y;
+    //    //    endTouchPosition = touch.position;
+    //    //    swipeDistance = endTouchPosition.y - startTouchPosition.y;
 
-        //    //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
-        //    //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
-        //    //    && swipeDistance > 0 // swipe up
-        //    //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
-        //    //{
-        //    //    //Debug.Log("swipe up");
-        //    //    touch.phase = TouchPhase.Ended;
-        //    //    GameLevelManager.instance.PlayerState.TouchControlJump();
-        //    //}
+    //    //    //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
+    //    //    //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
+    //    //    //    && swipeDistance > 0 // swipe up
+    //    //    //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
+    //    //    //{
+    //    //    //    //Debug.Log("swipe up");
+    //    //    //    touch.phase = TouchPhase.Ended;
+    //    //    //    GameLevelManager.instance.PlayerState.TouchControlJump();
+    //    //    //}
 
-        //    if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
-        //        && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
-        //        && swipeDistance < 0 // swipe down
-        //        && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
-        //    {
-        //        //Debug.Log("swipe down");
-        //        Pause.instance.TogglePause();
-        //    }
-        //}
-    }
+    //    //    if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+    //    //        && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+    //    //        && swipeDistance < 0 // swipe down
+    //    //        && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+    //    //    {
+    //    //        //Debug.Log("swipe down");
+    //    //        Pause.instance.TogglePause();
+    //    //    }
+    //    //}
+    //}
 
 
     void Update()
@@ -147,7 +145,7 @@ public class TouchInputController : MonoBehaviour
             //    messageText.text = "graphics api : " + SystemInfo.graphicsDeviceType;
             //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
 
-               
+
             //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceName);
             //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceType);
             //    //Debug.Log("graphics api : " + SystemInfo.graphicsMemorySize);
@@ -198,32 +196,32 @@ public class TouchInputController : MonoBehaviour
 
     private void activateDoubleTappedButton()
     {
-        Debug.Log("double tap");
+        //Debug.Log("double tap");
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name)
             && !buttonPressed)
         {
-            Debug.Log("reload");
+            //Debug.Log("reload");
             Pause.instance.reloadScene();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name)
             && !buttonPressed)
         {
-            Debug.Log("start screen");
+            //Debug.Log("start screen");
             Pause.instance.loadstartScreen();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name)
             && !buttonPressed)
         {
-            Debug.Log("cancel/un pause");
+            //Debug.Log("cancel/un pause");
             Pause.instance.TogglePause();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name)
             && !buttonPressed)
         {
-            Debug.Log("quit");
+            //Debug.Log("quit");
             Pause.instance.quit();
             buttonPressed = true;
         }
@@ -231,28 +229,28 @@ public class TouchInputController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleCameraName)
             && !buttonPressed)
         {
-            Debug.Log("toggle camera");
+            //Debug.Log("toggle camera");
             CameraManager.instance.switchCamera();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleFpsName)
             && !buttonPressed)
         {
-            Debug.Log("toggle fps");
+            //Debug.Log("toggle fps");
             DevFunctions.instance.ToggleFpsCounter();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleMaxStatsName)
             && !buttonPressed)
         {
-            Debug.Log("set max stats");
+            //Debug.Log("set max stats");
             DevFunctions.instance.setMaxPlayerStats();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleUiStatsName)
             && !buttonPressed)
         {
-            Debug.Log("toggle stats");
+            //Debug.Log("toggle stats");
             BasketBall.instance.toggleUiStats();
             buttonPressed = true;
         }

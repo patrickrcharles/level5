@@ -1,6 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -57,33 +55,33 @@ public class AchievementManager : MonoBehaviour
          * else load into list
          */
         // DB object exists
-        if (GameObject.FindGameObjectWithTag("database") != null )
+        if (GameObject.FindGameObjectWithTag("database") != null)
         {
             //Debug.Log(" database object exists ");
 
             //if LoadManager is through loading data lists
             // should be in a coroutine with a waituntil this is true
-            try
-            {
-                // achievement table exists
-                if (DBConnector.instance.tableExists("Achievements"))
-                {
-                    //LoadAchievements();
-                }
-                else
-                {
-                    // create achievement table
-                    // retry load
-                    //Debug.Log("Achievements table DOESNT exists ");
-                    //DBConnector.instance.createTableAchievements();
-                    //LoadAchievements();
-                }
-            }
-            catch
-            {
-                Debug.Log(" ERROR : Loading Achievements");
-                return;
-            }
+            //try
+            //{
+            //    // achievement table exists
+            //    if (DBConnector.instance.tableExists("Achievements"))
+            //    {
+            //        //LoadAchievements();
+            //    }
+            //    else
+            //    {
+            //        // create achievement table
+            //        // retry load
+            //        //Debug.Log("Achievements table DOESNT exists ");
+            //        //DBConnector.instance.createTableAchievements();
+            //        //LoadAchievements();
+            //    }
+            //}
+            //catch
+            //{
+            //    Debug.Log(" ERROR : Loading Achievements");
+            //    return;
+            //}
             achievementsLoaded = true;
         }
     }
@@ -139,10 +137,10 @@ public class AchievementManager : MonoBehaviour
                 }
             }
             Debug.Log("**********************************************************************");
-            Debug.Log("     cheer name : "+ c.CheerleaderDisplayName + "  islocked : "+ c.IsLocked);
+            Debug.Log("     cheer name : " + c.CheerleaderDisplayName + "  islocked : " + c.IsLocked);
         }
         //achievementsLoaded = true;
-        achievementsLoaded = true;
+        //achievementsLoaded = true;
     }
 
 
@@ -190,7 +188,7 @@ public class AchievementManager : MonoBehaviour
             // load progress/locked data
             if (databaseAchieveList.Any(x => x.achievementId == a.achievementId))
             {
-                a.ActivationValueProgressionInt = databaseAchieveList.Find(x => x.achievementId == a.achievementId).ActivationValueProgressionInt ;
+                a.ActivationValueProgressionInt = databaseAchieveList.Find(x => x.achievementId == a.achievementId).ActivationValueProgressionInt;
                 a.IsLocked = databaseAchieveList.Find(x => x.achievementId == a.achievementId).IsLocked;
                 if (!a.IsLocked)
                 {
@@ -239,7 +237,7 @@ public class AchievementManager : MonoBehaviour
             if (ach.IsLocked)
             {
                 //Debug.Log("if (ach.IsLocked) ");
-                ach.checkUnlockConditions( pid, cid, lid, mid, activateValue);
+                ach.checkUnlockConditions(pid, cid, lid, mid, activateValue);
 
                 // if achievement is unlocked
                 if (!ach.IsLocked)
@@ -281,7 +279,7 @@ public class AchievementManager : MonoBehaviour
                 {
                     achText += "\n" + a.achievementName;
                     achUnlocked = true;
-                    Debug.Log("******************************************  Unlocked : " + a.achievementName );
+                    Debug.Log("******************************************  Unlocked : " + a.achievementName);
                     // update database
                     //DBHelper.instance.updateIntValueFromTableByFieldAndAchievementID("Achievements", "islocked", 0, ach.achievementId);
                     DBHelper.instance.updateIntValueFromTableByFieldAndId("Achievements", "islocked", 0, "aid", a.achievementId);

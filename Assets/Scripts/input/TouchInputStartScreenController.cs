@@ -239,7 +239,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         //level select
         if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {
-            if(StartManager.instance == null)
+            if (StartManager.instance == null)
             {
                 Debug.Log("start manager instance = null");
             }

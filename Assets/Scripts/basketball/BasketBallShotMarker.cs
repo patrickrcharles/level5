@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Timeline;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BasketBallShotMarker : MonoBehaviour
@@ -181,7 +178,7 @@ public class BasketBallShotMarker : MonoBehaviour
     private void setDisplayText()
     {
         // if player on marker and markers necessary for game mode and IS 3,4,All point contest
-        if (PlayerOnMarker && markerEnabled 
+        if (PlayerOnMarker && markerEnabled
             && (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))
@@ -192,7 +189,7 @@ public class BasketBallShotMarker : MonoBehaviour
                                              + "remaining : " + (maxShotAttempt - ShotAttempt);
         }
         // if player on marker and markers necessary for game mode and NOT 3,4,All point contest
-        if (PlayerOnMarker && markerEnabled 
+        if (PlayerOnMarker && markerEnabled
             && !(GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))

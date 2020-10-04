@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 public class StatsTableAllTime : MonoBehaviour
@@ -85,7 +82,7 @@ public class StatsTableAllTime : MonoBehaviour
 
         int fourM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", fourDBField);
         int fourA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", fourAttemptDBField);
-        
+
         int sevenM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sevenDBField);
         int sevenA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sevenAttemptDBField);
 
@@ -112,7 +109,7 @@ public class StatsTableAllTime : MonoBehaviour
         timePlayedText.text = convertSecondsToHoursAndMinutes(played);
     }
 
-    float divideIntsReturnFloatPercentage(int divisor, int dividend )
+    float divideIntsReturnFloatPercentage(int divisor, int dividend)
     {
         return ((float)divisor / (float)dividend * 100);
     }
@@ -124,7 +121,7 @@ public class StatsTableAllTime : MonoBehaviour
         //float secs;
 
         hours = Mathf.FloorToInt(seconds / 3600);
-        minutes = Mathf.FloorToInt((seconds - (hours * 3600))/60);
+        minutes = Mathf.FloorToInt((seconds - (hours * 3600)) / 60);
 
         return hours.ToString("###") + " hrs " + minutes.ToString("00") + " mins";
     }
@@ -136,7 +133,7 @@ public class StatsTableAllTime : MonoBehaviour
 
         miles = Mathf.FloorToInt(feet / 5280);
         foot = Mathf.FloorToInt((feet - (miles * 5280)));
-        float percent = miles + ( foot / 5280) ;
+        float percent = miles + (foot / 5280);
 
         return percent.ToString("00.00") + " miles";
     }

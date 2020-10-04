@@ -87,7 +87,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
             }
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
-            {               
+            {
                 activateDoubleTappedButton();
             }
         }

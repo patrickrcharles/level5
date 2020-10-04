@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public  class GameOptions : MonoBehaviour
+public class GameOptions : MonoBehaviour
 {
     static public string applicationVersion;
     static public string operatingSystemVersion;
@@ -31,8 +31,8 @@ public  class GameOptions : MonoBehaviour
     static public float speed;
     static public float runSpeed;
     static public float runSpeedHasBall;
-   // static public float range;
-   // static public float release;
+    // static public float range;
+    // static public float release;
     static public int luck;
     static public int shootAngle;
 
@@ -76,10 +76,5 @@ public  class GameOptions : MonoBehaviour
     {
         levelSelectedName = SceneManager.GetActiveScene().name;
         applicationVersion = Application.version;
-    }
-
-    private void Start()
-    {
-
     }
 }

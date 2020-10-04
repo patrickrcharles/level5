@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -84,7 +83,7 @@ public class ShotMeter : MonoBehaviour
         {
             locked = false;
 
-            sliderValueOnButtonPress = Mathf.CeilToInt(( ( (Time.time - meterStartTime) / (meterFillTime) * 100) ) );
+            sliderValueOnButtonPress = Mathf.CeilToInt((((Time.time - meterStartTime) / (meterFillTime) * 100)));
 
             if (sliderValueOnButtonPress >= 100)
             {

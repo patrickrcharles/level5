@@ -1,11 +1,10 @@
 ﻿
-using UnityEngine;
 using Mono.Data.Sqlite;
-using System.Data;
 using System;
+using System.Data;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class DBConnector : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class DBConnector : MonoBehaviour
     //private String currentGameVersion = "3.3.2";
     //private String previousGameVersion = "3.3.1";
     private String filepath;
+    //private string filepathBackup;
 
     // table names
     const String tableNameAchievements = "Achievements";
@@ -23,17 +23,35 @@ public class DBConnector : MonoBehaviour
     const String tableNameHighScores = "HighScores";
     const String tableNameUser = "User";
 
+    const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
+
     private string currentDatabaseAppVersion;
+
+    Text messageText;
+
 
     IDbCommand dbcmd;
     IDataReader reader;
     private IDbConnection dbconn;
+
+    bool databaseCreated = false;
+    public bool DatabaseCreated { get => databaseCreated; }
 
     DBHelper dbHelper;
     public static DBConnector instance;
 
     void Awake()
     {
+        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //Debug.Log(SystemInfo.deviceModel);
+        //Debug.Log(SystemInfo.deviceType);
+        //Debug.Log(SystemInfo.deviceName);
+        //Debug.Log(SystemInfo.device);
+
+        messageText.text += "\n" + SystemInfo.deviceName.ToString();
+        messageText.text += "\n" + SystemInfo.deviceModel.ToString();
+        messageText.text += "\n" + SystemInfo.processorType.ToString();
+
         // keep Database object persistent
         DontDestroyOnLoad(gameObject);
         if (instance == null)
@@ -45,13 +63,29 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
-        connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
-        dbHelper = gameObject.GetComponent<DBHelper>();
+        //connection = "URI = " + filepath; //Path to database
+        connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
+        //filepathBackup = Application.streamingAssetsPath + databaseNamePath;
+        //Debug.Log("filepath : " + filepath);
+        //Debug.Log("connection : " + connection);
+
+        messageText.text += "\n" + filepath;
+        messageText.text += "\n" + connection;
+
+
+
+        //connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
+        //filepath = Application.persistentDataPath + databaseNamePath;
+        dbHelper = gameObject.GetComponent<DBHelper>();
+    }
+
+    void Start()
+    {
         //// create database / add tables if not exist
         if (File.Exists(filepath))
-            //|| !Application.version.Equals(getDatabaseVersion()))// && integrityCheck())
+        //|| !Application.version.Equals(getDatabaseVersion()))// && integrityCheck())
         {
             createDatabase();
             //try
@@ -65,9 +99,9 @@ public class DBConnector : MonoBehaviour
             //}
         }
         // if database doesnt exist
-        if (!File.Exists(filepath)) 
-            //|| !integrityCheck()
-            //|| !Application.version.Equals(getDatabaseVersion()))
+        if (!File.Exists(filepath))
+        //|| !integrityCheck()
+        //|| !Application.version.Equals(getDatabaseVersion()))
         {
             //databaseCreated = false;
             try
@@ -79,13 +113,11 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
+                messageText.text += "\n" + e;
                 return;
             }
         }
-    }
-
-    void Start()
-    {
+        VerifyDatabase();
 
         //create default user 
         if (tableExists(tableNameUser))
@@ -99,6 +131,48 @@ public class DBConnector : MonoBehaviour
 
         // get device user is currently using
         SetCurrentUserDevice();
+    }
+
+    private void VerifyDatabase()
+    {
+        string version = "";
+
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            //string os = SystemInfo.operatingSystem;
+
+            String sqlQuery = verifyDatabaseSqlQuery;
+
+            //Debug.Log("sqlQuery : " + sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                version = reader.GetString(0);
+                //Debug.Log(version);
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            //databaseCreated = true;
+            //Debug.Log("databaseCreated : " + databaseCreated);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+        }
     }
 
 
@@ -138,9 +212,10 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
+                messageText.text += "\n" + e;
             }
         }
-        Debug.Log("db version : "+ version);
+        Debug.Log("db version : " + version);
         return version;
     }
 
@@ -189,7 +264,8 @@ public class DBConnector : MonoBehaviour
         int value = 0;
 
         IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
+        string cs = "Data Source=:memory:";
+        dbconn = (IDbConnection)new SqliteConnection(cs);
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
@@ -289,150 +365,176 @@ public class DBConnector : MonoBehaviour
     void createDatabase()
     {
         //Debug.Log("createDatabase()");
+        messageText.text += "\n" + "createDatabase()";
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
 
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
+            dbconn.Open();
+            messageText.text += "\n" + "dbconn.Open();";
 
-        string sqlQuery = String.Format(
-            "CREATE TABLE if not exists HighScores(" +
-            "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "playerid  INTEGER," +
-            "modeid    INTEGER, " +
-            "characterid   INTEGER, " +
-            "character   TEXT, " +
-            "levelid   INTEGER, " +
-            "level    TEXT, " +
-            "os    TEXT, " +
-            "version   TEXT, " +
-            "date  TEXT, " +
-            "time  REAL, " +
-            "totalPoints   INTEGER, " +
-            "longestShot   REAL, " +
-            "totalDistance REAL, " +
-            "maxShotMade   INTEGER, " +
-            "maxShotAtt    INTEGER, " +
-            "consecutiveShots   INTEGER," +
-            "trafficEnabled	INTEGER); " +
+            dbcmd = dbconn.CreateCommand();
+            messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
 
-            "CREATE TABLE if not exists AllTimeStats(" +
-            "twoMade   INTEGER, " +
-            "twoAtt    INTEGER, " +
-            "threeMade INTEGER, " +
-            "threeAtt  INTEGER, " +
-            "fourMade  INTEGER, " +
-            "fourAtt   INTEGER, " +
-            "sevenMade INTEGER, " +
-            "sevenAtt  INTEGER, " +
-            "moneyBallMade INTEGER, " +
-            "moneyBallAtt  INTEGER, " +
-            "totalPoints  INTEGER, " +
-            "totalDistance REAL, " +
-            "longestShot REAL, " +
-            "timePlayed    REAL);" +
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists HighScores(" +
+                "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "playerid  INTEGER," +
+                "modeid    INTEGER, " +
+                "characterid   INTEGER, " +
+                "character   TEXT, " +
+                "levelid   INTEGER, " +
+                "level    TEXT, " +
+                "os    TEXT, " +
+                "version   TEXT, " +
+                "date  TEXT, " +
+                "time  REAL, " +
+                "totalPoints   INTEGER, " +
+                "longestShot   REAL, " +
+                "totalDistance REAL, " +
+                "maxShotMade   INTEGER, " +
+                "maxShotAtt    INTEGER, " +
+                "consecutiveShots   INTEGER," +
+                "trafficEnabled	INTEGER); " +
 
-            "CREATE TABLE if not exists Achievements(" +
-            "aid   INTEGER PRIMARY KEY, " +
-            "charid   INTEGER DEFAULT 0 ," +
-            "cheerid   INTEGER DEFAULT 0 ," +
-            "levelid   INTEGER DEFAULT 0 ," +
-            "modeid    INTEGER DEFAULT 0 ," +
-            "name  TEXT NOT NULL," +
-            "description   TEXT NOT NULL," +
-            "required_charid   INTEGER DEFAULT 0 ," +
-            "required_cheerid   INTEGER DEFAULT 0 ," +
-            "required_levelid  INTEGER DEFAULT 0 ," +
-            "required_modeid   INTEGER DEFAULT 0 ," +
-            "activevalue_int   INTEGER DEFAULT 0 ," +
-            "activevalue_float REAL," +
-            "activevalue_progress_int  INTEGER DEFAULT 0 ," +
-            "activevalue_progress_float  REAL," +
-            "islocked  INTEGER DEFAULT 0 );" +
-            //"islocked  INTEGER INTEGER DEFAULT 1 );" +
+                "CREATE TABLE if not exists AllTimeStats(" +
+                "twoMade   INTEGER, " +
+                "twoAtt    INTEGER, " +
+                "threeMade INTEGER, " +
+                "threeAtt  INTEGER, " +
+                "fourMade  INTEGER, " +
+                "fourAtt   INTEGER, " +
+                "sevenMade INTEGER, " +
+                "sevenAtt  INTEGER, " +
+                "moneyBallMade INTEGER, " +
+                "moneyBallAtt  INTEGER, " +
+                "totalPoints  INTEGER, " +
+                "totalDistance REAL, " +
+                "longestShot REAL, " +
+                "timePlayed    REAL);" +
 
-            "CREATE TABLE if not exists CharacterProfile(" +
-            "id   INTEGER PRIMARY KEY, " +
-            "playerName   TEXT," +
-            "objectName   TEXT," +
-            "charid   INTEGER," +
-            "accuracy2   INTEGER," +
-            "accuracy3   INTEGER," +
-            "accuracy4   INTEGER," +
-            "accuracy7   INTEGER," +
-            "jump   float," +
-            "speed   float," +
-            "runSpeed   float," +
-            "runSpeedHasBall   float," +
-            "luck   INTEGER," +
-            "shootAngle   INTEGER," +
-            "experience   INTEGER DEFAULT 0," +
-            "level   INTEGER DEFAULT 0," +
-            "pointsAvailable   INTEGER DEFAULT 0," +
-            "pointsUsed   INTEGER DEFAULT 0," +
-            "range   INTEGER DEFAULT 0," +
-            "release   INTEGER DEFAULT 0," +
-            "isLocked   INTEGER DEFAULT 0);" +
+                "CREATE TABLE if not exists Achievements(" +
+                "aid   INTEGER PRIMARY KEY, " +
+                "charid   INTEGER DEFAULT 0 ," +
+                "cheerid   INTEGER DEFAULT 0 ," +
+                "levelid   INTEGER DEFAULT 0 ," +
+                "modeid    INTEGER DEFAULT 0 ," +
+                "name  TEXT NOT NULL," +
+                "description   TEXT NOT NULL," +
+                "required_charid   INTEGER DEFAULT 0 ," +
+                "required_cheerid   INTEGER DEFAULT 0 ," +
+                "required_levelid  INTEGER DEFAULT 0 ," +
+                "required_modeid   INTEGER DEFAULT 0 ," +
+                "activevalue_int   INTEGER DEFAULT 0 ," +
+                "activevalue_float REAL," +
+                "activevalue_progress_int  INTEGER DEFAULT 0 ," +
+                "activevalue_progress_float  REAL," +
+                "islocked  INTEGER DEFAULT 0 );" +
+                //"islocked  INTEGER INTEGER DEFAULT 1 );" +
 
-            "CREATE TABLE if not exists CheerleaderProfile(" +
-            "cid   INTEGER PRIMARY KEY, " +
-            "name   TEXT NOT NULL," +
-            "objectName   TEXT NOT NULL," +
-            "unlockText   TEXT NOT NULL," +
-            "islocked  INTEGER DEFAULT 0);" +
-            //"islocked  INTEGER DEFAULT 1);" +
+                "CREATE TABLE if not exists CharacterProfile(" +
+                "id   INTEGER PRIMARY KEY, " +
+                "playerName   TEXT," +
+                "objectName   TEXT," +
+                "charid   INTEGER," +
+                "accuracy2   INTEGER," +
+                "accuracy3   INTEGER," +
+                "accuracy4   INTEGER," +
+                "accuracy7   INTEGER," +
+                "jump   float," +
+                "speed   float," +
+                "runSpeed   float," +
+                "runSpeedHasBall   float," +
+                "luck   INTEGER," +
+                "shootAngle   INTEGER," +
+                "experience   INTEGER DEFAULT 0," +
+                "level   INTEGER DEFAULT 0," +
+                "pointsAvailable   INTEGER DEFAULT 0," +
+                "pointsUsed   INTEGER DEFAULT 0," +
+                "range   INTEGER DEFAULT 0," +
+                "release   INTEGER DEFAULT 0," +
+                "isLocked   INTEGER DEFAULT 0);" +
 
-            "CREATE TABLE if not exists User( " +
-            "id    INTEGER PRIMARY KEY, " +
-            "userName  INTEGER, " +
-            "firstName TEXT, " +
-            "middleName    INTEGER, " +
-            "lastName  INTEGER, " +
-            "email TEXT, " +
-            "password  TEXT, " +
-            "version   TEXT, " +
-            "os    TEXT );");
+                "CREATE TABLE if not exists CheerleaderProfile(" +
+                "cid   INTEGER PRIMARY KEY, " +
+                "name   TEXT NOT NULL," +
+                "objectName   TEXT NOT NULL," +
+                "unlockText   TEXT NOT NULL," +
+                "islocked  INTEGER DEFAULT 0);" +
+                //"islocked  INTEGER DEFAULT 1);" +
 
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
+                "CREATE TABLE if not exists User( " +
+                "id    INTEGER PRIMARY KEY, " +
+                "userName  INTEGER, " +
+                "firstName TEXT, " +
+                "middleName    INTEGER, " +
+                "lastName  INTEGER, " +
+                "email TEXT, " +
+                "password  TEXT, " +
+                "version   TEXT, " +
+                "os    TEXT);");
 
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
 
-        dbcmd.Dispose();
-        dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
 
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
+            dbcmd.Dispose();
+            dbcmd = null;
 
-        //databaseCreated = true;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            //VerifyDatabase();
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            SendEmail.instance.SendEmailOnEvent("ERROR : create database", messageText.text);
+            return;
+        }
     }
 
 
     void dropDatabase()
     {
         Debug.Log("drop database");
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
 
-        // DROP TABLE [IF EXISTS] [schema_name.]table_name;
-        string sqlQuery = String.Format(
-            "DROP TABLE if exists Achievements; " +
-            "DROP TABLE if exists AllTimeStats; " +
-            "DROP TABLE if exists CharacterProfile; " +
-            "DROP TABLE if exists CheerleaderProfile; " +
-            "DROP TABLE if exists HighScores; " +
-            "DROP TABLE if exists User; ");
+            // DROP TABLE [IF EXISTS] [schema_name.]table_name;
+            string sqlQuery = String.Format(
+                "DROP TABLE if exists Achievements; " +
+                "DROP TABLE if exists AllTimeStats; " +
+                "DROP TABLE if exists CharacterProfile; " +
+                "DROP TABLE if exists CheerleaderProfile; " +
+                "DROP TABLE if exists HighScores; " +
+                "DROP TABLE if exists User; ");
 
-        Debug.Log(sqlQuery);
+            Debug.Log(sqlQuery);
 
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
 
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            SendEmail.instance.SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
+            return;
+        }
     }
 
     public void dropDatabaseTable(string tableName)
@@ -458,6 +560,9 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            string text = "ERROR : dropDatabaseTable(" + tableName + ")";
+            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
             return;
         }
     }
@@ -537,7 +642,7 @@ public class DBConnector : MonoBehaviour
                 "isLocked   INTEGER DEFAULT 0);");
             //"isLocked   INTEGER DEFAULT 1);");
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -554,6 +659,9 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            string text = "createTableCharacterProfile()";
+            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
             return;
         }
     }
@@ -562,73 +670,91 @@ public class DBConnector : MonoBehaviour
     {
 
         Debug.Log("createTableAchievements");
+        try
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery =
-            "CREATE TABLE if not exists Achievements(" +
-            "aid   INTEGER PRIMARY KEY, " +
-            "charid   INTEGER DEFAULT 0," +
-            "cheerid   INTEGER DEFAULT 0," +
-            "levelid   INTEGER DEFAULT 0," +
-            "modeid    INTEGER DEFAULT 0," +
-            "name  TEXT NOT NULL," +
-            "description   TEXT NOT NULL," +
-            "required_charid   INTEGER DEFAULT 0," +
-            "required_cheerid   INTEGER DEFAULT 0," +
-            "required_levelid  INTEGER DEFAULT 0," +
-            "required_modeid   INTEGER DEFAULT 0," +
-            "activevalue_int   INTEGER DEFAULT 0," +
-            "activevalue_float REAL DEFAULT 0," +
-            "activevalue_progress_int  INTEGER DEFAULT 0," +
-            "activevalue_progress_float    REAL DEFAULT 0," +
-            "islocked  INTEGER DEFAULT 0);";
+            string sqlQuery =
+                "CREATE TABLE if not exists Achievements(" +
+                "aid   INTEGER PRIMARY KEY, " +
+                "charid   INTEGER DEFAULT 0," +
+                "cheerid   INTEGER DEFAULT 0," +
+                "levelid   INTEGER DEFAULT 0," +
+                "modeid    INTEGER DEFAULT 0," +
+                "name  TEXT NOT NULL," +
+                "description   TEXT NOT NULL," +
+                "required_charid   INTEGER DEFAULT 0," +
+                "required_cheerid   INTEGER DEFAULT 0," +
+                "required_levelid  INTEGER DEFAULT 0," +
+                "required_modeid   INTEGER DEFAULT 0," +
+                "activevalue_int   INTEGER DEFAULT 0," +
+                "activevalue_float REAL DEFAULT 0," +
+                "activevalue_progress_int  INTEGER DEFAULT 0," +
+                "activevalue_progress_float    REAL DEFAULT 0," +
+                "islocked  INTEGER DEFAULT 0);";
             //"islocked  INTEGER DEFAULT 1);";
 
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            string text = "createTableCharacterProfile()";
+            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            return;
+        }
     }
 
 
     public void createTableCheerleaderProfile()
     {
+        try
+        {
+            //Debug.Log(" public void createTableCheerleaderProfile()");
 
-        Debug.Log(" public void createTableCheerleaderProfile()");
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery =
-            "CREATE TABLE if not exists CheerleaderProfile(" +
-            "cid   INTEGER PRIMARY KEY, " +
-            "name   TEXT NOT NULL," +
-            "objectName   TEXT NOT NULL," +
-            "unlockText   TEXT NOT NULL," +
-            "islocked  INTEGER DEFAULT 0);";
+            string sqlQuery =
+                "CREATE TABLE if not exists CheerleaderProfile(" +
+                "cid   INTEGER PRIMARY KEY, " +
+                "name   TEXT NOT NULL," +
+                "objectName   TEXT NOT NULL," +
+                "unlockText   TEXT NOT NULL," +
+                "islocked  INTEGER DEFAULT 0);";
             //"islocked  INTEGER DEFAULT 1);";
 
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            messageText.text += "\n" + e;
+            string text = "createTableCheerleaderProfile()";
+            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            return;
+        }
     }
-
-    //public bool DatabaseCreated { get => databaseCreated; set => databaseCreated = value; }
 }
 
 

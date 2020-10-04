@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BehaviorNpcCritical : MonoBehaviour
@@ -42,7 +41,7 @@ public class BehaviorNpcCritical : MonoBehaviour
     IEnumerator wait(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
-       //Debug.Log("jessica take photo");
+        //Debug.Log("jessica take photo");
         anim.Play("critical_success");
         audioSource.PlayOneShot(SFXBB.instance.cameraFlash);
     }
@@ -53,12 +52,12 @@ public class BehaviorNpcCritical : MonoBehaviour
     }
 
 
-    public bool rollForPhotoChance( float maxPercent)
+    public bool rollForPhotoChance(float maxPercent)
     {
         float percent = Random.Range(1, 100);
-        if(percent <= maxPercent)
+        if (percent <= maxPercent)
         {
-           //Debug.Log(" jessica takes a photo");
+            //Debug.Log(" jessica takes a photo");
             return true;
         }
         return false;

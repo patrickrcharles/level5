@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +25,8 @@ public class DevFunctions : MonoBehaviour
 
         if (GameLevelManager.instance != null)
         {
-            fpsCounter = GameObject.Find("fps_counter");
+            //fpsCounter = GameObject.Find("fps_counter");
+            fpsCounter = GameObject.Find("LiteFPSCounter");
             fpsCounter.SetActive(false);
         }
     }
@@ -59,6 +59,9 @@ public class DevFunctions : MonoBehaviour
         player.Release = 100;
         player.Range = 100;
         player.Luck = 10;
+
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "max player stats enabled";
     }
 
     public void ToggleFpsCounter()
@@ -73,5 +76,12 @@ public class DevFunctions : MonoBehaviour
         {
             fpsCounter.SetActive(false);
         }
+    }
+
+    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "";
     }
 }

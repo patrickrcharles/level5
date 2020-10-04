@@ -1,7 +1,6 @@
 ﻿
 using System;
 using UnityEngine;
-using System.Collections;
 
 public class cameraUpdater : MonoBehaviour
 {
@@ -56,32 +55,9 @@ public class cameraUpdater : MonoBehaviour
     // GM if( level requires weather ) --> for each cam, requires weather = true;
     // Cam Update if(requires weather) weather.setActive(true)
     [SerializeField]
-    GameObject weatherSystemObject; 
+    GameObject weatherSystemObject;
     bool requiresWeatherSystem;
     public bool RequiresWeatherSystem { get => requiresWeatherSystem; set => requiresWeatherSystem = value; }
-
-    private void Awake()
-    {
-        //// get weather system object reference
-        //foreach (Transform t in gameObject.transform)
-        //{
-        //    //Debug.Log("transform name : " + t.name + "  transform tage : "+ t.tag);
-        //    //#hack
-        //    if (t.CompareTag("weather_system") && !t.name.Contains("goal"))
-        //    {
-        //        weatherSystemObject = t.gameObject;
-        //        if (requiresWeatherSystem)
-        //        {
-        //            Debug.Log("WEATHER ACTIVE -- \ntransform name : " + t.name + "  transform tage : " + t.tag);
-        //            weatherSystemObject.SetActive(true);
-        //        }
-        //        else
-        //        {
-        //            weatherSystemObject.SetActive(false);
-        //        }
-        //    }
-        //}
-    }
 
     void Start()
     {
@@ -141,7 +117,7 @@ public class cameraUpdater : MonoBehaviour
         //distanceRimFromPlayer = rimPos.z - playerPos.z;
         //distanceRimFromPlayer = basketBallRim.z - playerPos.z;
         // for secondary camera
-        playerDistanceFromRimX = basketBallRim.x -  player.transform.position.x;
+        playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
     }
 
@@ -162,20 +138,20 @@ public class cameraUpdater : MonoBehaviour
             }
         }
 
-        if(!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
+        if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
         {
             CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
             onGoalCameraEnabled = false;
         }
 
         // * note change var to player distance because each camera is in a different spot
-        if ( Math.Abs(playerDistanceFromRimX) > 8  && !onGoalCameraEnabled
+        if (Math.Abs(playerDistanceFromRimX) > 8 && !onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed)
         {
             toggleCameraOnGoal();
         }
 
-        if (Math.Abs(playerDistanceFromRimX) < 8  && onGoalCameraEnabled
+        if (Math.Abs(playerDistanceFromRimX) < 8 && onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed)
         {
             toggleCameraOnGoal();
@@ -316,7 +292,7 @@ public class cameraUpdater : MonoBehaviour
         if (cam.name.Contains("goal"))
         {
             isLockOnGoalCamera = true;
-            transform.position = basketBallRim  +  lockOnGoalCameraOffset;
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
         }
         else
         {

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,9 +17,9 @@ public class inputManager : MonoBehaviour
     Button currentButton;
 
     KeyCode currentKey;
-    int i=0;
+    int i = 0;
 
-    float buttonPressedTime=0, endTime=0;
+    float buttonPressedTime = 0, endTime = 0;
 
     string currentSelectedObjectName;
 
@@ -33,9 +32,9 @@ public class inputManager : MonoBehaviour
     {
 
         //button = GetComponent<Button>();
-        
 
-        for(int i = 0; i < displayCurrentButtonSettings.Capacity; i++)
+
+        for (int i = 0; i < displayCurrentButtonSettings.Capacity; i++)
         {
             if (displayCurrentButtonSettings[i] != null)
             {
@@ -69,7 +68,7 @@ public class inputManager : MonoBehaviour
 
         }
         // still have 10 seconds, any key pressed, change button already selected and NOT enter or escape
-        if (Time.time < endTime && Input.anyKeyDown && changeButtonPressed 
+        if (Time.time < endTime && Input.anyKeyDown && changeButtonPressed
             && !Input.GetButtonDown("Cancel") && !Input.GetButtonDown("Submit"))
         {
 
@@ -103,7 +102,7 @@ public class inputManager : MonoBehaviour
 
 
             //get pressed key
-            Debug.Log("time : " + Time.time );
+            Debug.Log("time : " + Time.time);
 
         }
         if ((Time.time > endTime && changeButtonPressed) || Input.GetKey(cancel))
@@ -141,7 +140,7 @@ public class inputManager : MonoBehaviour
         for (int i = 0; i < buttonNames.Capacity; i++)
         {
             Debug.Log("     for(int i = 0; i < buttonNames.Capacity; i++)");
-            if (currentObject == buttonNames[i] && buttonNames[i] !=null)
+            if (currentObject == buttonNames[i] && buttonNames[i] != null)
             {
                 Debug.Log("buttonNames[i] : " + buttonNames[i]);
                 Debug.Log("button pressed index : " + i);

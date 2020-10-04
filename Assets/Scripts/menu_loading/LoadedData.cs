@@ -1,9 +1,6 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.SceneManagement;
 
 public class LoadedData : MonoBehaviour
 {
@@ -49,16 +46,12 @@ public class LoadedData : MonoBehaviour
 
         yield return new WaitUntil(() => LoadManager.instance.playerDataLoaded);
         playerSelectedData = LoadManager.instance.PlayerSelectedData;
-
         yield return new WaitUntil(() => LoadManager.instance.cheerleaderDataLoaded);
         cheerleaderSelectedData = LoadManager.instance.CheerleaderSelectedData;
-
         yield return new WaitUntil(() => LoadManager.instance.levelDataLoaded);
         levelSelectedData = LoadManager.instance.LevelSelectedData;
-
         yield return new WaitUntil(() => LoadManager.instance.modeDataLoaded);
         modeSelectedData = LoadManager.instance.ModeSelectedData;
-
         if (playerSelectedData != null
             && cheerleaderSelectedData != null
             && levelSelectedData != null
@@ -78,9 +71,9 @@ public class LoadedData : MonoBehaviour
         return temp;
     }
 
-    public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData;  }
+    public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; }
     public List<CheerleaderProfile> CheerleaderSelectedData { get => cheerleaderSelectedData; }
-    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData;  }
-    public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData;  }
+    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData; }
+    public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
     public bool DataLoaded { get => dataLoaded; }
 }

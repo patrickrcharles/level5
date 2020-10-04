@@ -68,7 +68,7 @@ public class CharacterProfile : MonoBehaviour
         }
     }
 
-    public  CharacterProfile(){}
+    public CharacterProfile() { }
 
     private void intializeShooterStatsFromProfile()
     {
@@ -91,7 +91,7 @@ public class CharacterProfile : MonoBehaviour
         Accuracy3Pt = temp.accuracy3pt;
         Accuracy4Pt = temp.accuracy4pt;
         Accuracy7Pt = temp.accuracy7pt;
-        
+
         Range = temp.range;
         Release = temp.release;
         //Debug.Log("range : " + range + " realse : "+ Release);
@@ -100,7 +100,7 @@ public class CharacterProfile : MonoBehaviour
         level = temp.Level;
         pointsAvailable = temp.PointsAvailable;
         pointsUsed = temp.PointsUsed;
-            
+
         // if 3/4/All point contest, disable Luck/citical %
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest

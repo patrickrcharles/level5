@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
@@ -42,7 +40,7 @@ public class PickupObject : MonoBehaviour
         decimal cents = random.Next(1, 100);
 
         //Debug.Log("rand change: "+ (float)(Math.Round(cents, 2)) / 100);
-        return  (float)(Math.Round(cents, 2))/100;
+        return (float)(Math.Round(cents, 2)) / 100;
     }
 
     public string Name

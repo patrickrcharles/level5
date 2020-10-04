@@ -2,7 +2,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -68,11 +67,11 @@ public class Pause : MonoBehaviour
         toggleMaxStatsText = GameObject.Find(toggleMaxStatsName).GetComponent<Text>();
         toggleFpsText = GameObject.Find(toggleFpsName).GetComponent<Text>();
 
-        if(controlsObject != null)
+        if (controlsObject != null)
         {
             controlsObject.SetActive(false);
         }
- 
+
 
         EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
         // init current button
@@ -202,8 +201,8 @@ public class Pause : MonoBehaviour
 
         // if database = null, i could spawn a DB object
         // update all time stats
-        if (DBConnector.instance != null && 
-           ( GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
+        if (DBConnector.instance != null &&
+           (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
         {
             updateFreePlayStats();
         }

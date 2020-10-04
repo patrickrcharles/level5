@@ -66,7 +66,7 @@ public class BehaviorPrimo : MonoBehaviour
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
         //Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
 
-        if(distanceFromStartPos >= maxDistance  )
+        if (distanceFromStartPos >= maxDistance)
         {
             outsideRange = true;
             insideRange = false;
@@ -80,9 +80,9 @@ public class BehaviorPrimo : MonoBehaviour
         }
 
         // navmesh has no target and inside range
-        if (pathComplete() && !outsideRange && !reachedDestination )
+        if (pathComplete() && !outsideRange && !reachedDestination)
         {
-           //Debug.Log("       if (pathComplete() && !outsideRange )");
+            //Debug.Log("       if (pathComplete() && !outsideRange )");
             reachedDestination = true;
             movingToTarget = false;
             ignoreCollision = false;
@@ -95,13 +95,13 @@ public class BehaviorPrimo : MonoBehaviour
         }
 
         // if outside area
-        if (outsideRange && !movingToTarget && !locked && followPlayer )
+        if (outsideRange && !movingToTarget && !locked && followPlayer)
         {
             locked = true;
             ignoreCollision = true;
             movingToTarget = true;
 
-            StartCoroutine( waitOutsideRangeForXSeconds( 1));
+            StartCoroutine(waitOutsideRangeForXSeconds(1));
         }
 
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -130,7 +130,7 @@ public class BehaviorPrimo : MonoBehaviour
     IEnumerator PrimoSleepInRandomXSeconds()
     {
         int randomTimeToSleep = RandomNumber(7, 20);
-        yield  return new WaitForSecondsRealtime(randomTimeToSleep);
+        yield return new WaitForSecondsRealtime(randomTimeToSleep);
         isSleeping = true;
         anim.SetBool("sleep", true);
         locked = false;
@@ -153,7 +153,7 @@ public class BehaviorPrimo : MonoBehaviour
         }
         // if primo initial collsion with player, follow player
         if (gameObject.name.Contains("primo")
-            && (other.CompareTag("Player") 
+            && (other.CompareTag("Player")
             && !movingToTarget
             && !followPlayer))
         {

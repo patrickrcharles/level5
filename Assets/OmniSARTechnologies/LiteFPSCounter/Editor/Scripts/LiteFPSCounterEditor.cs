@@ -5,17 +5,16 @@
 // Copyright  : OmniSAR Technologies
 //
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-using UnityEditor;
 using OmniSARTechnologies.Helper;
+using UnityEditor;
+using UnityEngine;
 
-namespace OmniSARTechnologies.LiteFPSCounter {
+namespace OmniSARTechnologies.LiteFPSCounter
+{
     [CustomEditor(typeof(LiteFPSCounter))]
     [CanEditMultipleObjects]
-    public class LiteFPSCounterEditor : Editor {
+    public class LiteFPSCounterEditor : Editor
+    {
         private const string PackageName = "Lite FPS Counter";
         private const string GameObjectMenuRoot = "GameObject/OmniSAR Technologies/" + PackageName + "/";
         private const string HeaderGraphicPath = "Assets/OmniSARTechnologies/LiteFPSCounter/Editor/Resources/UI/Header/lite-fps-counter-header.png";
@@ -29,24 +28,29 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         private static Texture m_HeaderTex = null;
         private static Rect m_HeaderTileTexCoords;
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             m_DynamicInfoText = serializedObject.FindProperty("dynamicInfoText");
             m_StaticInfoText = serializedObject.FindProperty("staticInfoText");
 
             m_HeaderTex = (Texture2D)AssetDatabase.LoadMainAssetAtPath(HeaderGraphicPath);
-            if (null == m_HeaderTex) {
+            if (null == m_HeaderTex)
+            {
                 return;
             }
 
             m_HeaderTileTexCoords = new Rect(0, 0, HeaderGraphicTileWidth / (m_HeaderTex.width - 1), 1);
         }
 
-        public static void DrawComponentHeader() {
-            if (!m_HeaderTex) {
+        public static void DrawComponentHeader()
+        {
+            if (!m_HeaderTex)
+            {
                 return;
             }
 
-            GUILayout.BeginHorizontal(); {
+            GUILayout.BeginHorizontal();
+            {
                 Rect drawingAreaRect = EditorGUILayout.GetControlRect(GUILayout.MaxHeight(34));
 
                 Rect headerRect = new Rect(
@@ -64,19 +68,23 @@ namespace OmniSARTechnologies.LiteFPSCounter {
                 headerImageTileRect.x = m_HeaderTex.width + 1;
                 headerImageTileRect.width = headerRect.width - headerImageRect.width;
                 GUI.DrawTextureWithTexCoords(headerImageTileRect, m_HeaderTex, m_HeaderTileTexCoords);
-            } GUILayout.EndHorizontal();
+            }
+            GUILayout.EndHorizontal();
         }
 
-        private void DrawUIOptions<T>(SerializedProperty headerProperty) {
+        private void DrawUIOptions<T>(SerializedProperty headerProperty)
+        {
             HeaderAttribute header = EditorGUIHelper.Attributes.GetSerializedPropertyFirstAttribute<T, HeaderAttribute>(headerProperty);
-            if (null != header) {
+            if (null != header)
+            {
                 m_GUIOptionsFolded = EditorGUILayout.Foldout(
                     m_GUIOptionsFolded,
                     header.header,
                     m_GUIOptionsFolded ? EditorGUIHelper.Styles.boldFoldout : EditorStyles.foldout
                 );
 
-                if (!m_GUIOptionsFolded) {
+                if (!m_GUIOptionsFolded)
+                {
                     return;
                 }
             }
@@ -84,20 +92,24 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             EditorGUIHelper.Drawing.DrawMultiValueObjectField<T>(m_DynamicInfoText);
             EditorGUIHelper.Drawing.DrawMultiValueObjectField<T>(m_StaticInfoText);
 
-            if (null != header) {
+            if (null != header)
+            {
                 EditorGUILayout.Separator();
             }
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             DrawComponentHeader();
             DrawUIOptions<LiteFPSCounter>(m_DynamicInfoText);
         }
 
-        private static bool CreateGameObject(string prefabName, string commandName, string packageName) {
+        private static bool CreateGameObject(string prefabName, string commandName, string packageName)
+        {
             string[] assets = AssetDatabase.FindAssets(prefabName + " t:Prefab");
 
-            if (null == assets) {
+            if (null == assets)
+            {
                 Debug.LogWarning(
                     ColorHelper.ColorText(
                         string.Format(
@@ -114,7 +126,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
                 return false;
             }
 
-            if (assets.Length < 1) {
+            if (assets.Length < 1)
+            {
                 Debug.LogWarning(
                     ColorHelper.ColorText(
                         string.Format(
@@ -134,7 +147,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             string prefabPath = AssetDatabase.GUIDToAssetPath(assets[0]);
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
 
-            if (!prefab) {
+            if (!prefab)
+            {
                 Debug.LogWarning(
                     ColorHelper.ColorText(
                         string.Format(
@@ -154,7 +168,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             GameObject go = Instantiate(prefab, Selection.activeGameObject ? Selection.activeGameObject.transform : null);
             go.name = prefabName;
 
-            if (!go) {
+            if (!go)
+            {
                 Debug.LogWarning(
                     ColorHelper.ColorText(
                         string.Format(
@@ -187,8 +202,9 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             return true;
         }
 
-        [MenuItem(GameObjectMenuRoot + "Lite FPS Counter", priority = 10)] 
-        private static bool CreateLiteFPSCounterGameObject() {
+        [MenuItem(GameObjectMenuRoot + "Lite FPS Counter", priority = 10)]
+        private static bool CreateLiteFPSCounterGameObject()
+        {
             return CreateGameObject(
                 "LiteFPSCounter",
                 "Lite FPS Counter",

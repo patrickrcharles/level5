@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using Touch = UnityEngine.Touch;
 
 public class PlayerController : MonoBehaviour
@@ -91,13 +91,13 @@ public class PlayerController : MonoBehaviour
 
     //PlayerControls controls;
 
-    private void Awake()
-    {
-        //joystick = GameLevelManager.instance.Joystick;
-        //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
-        ////controls = new PlayerControls();
-        //Debug.Log("joystick found   active: " + joystick.enabled);
-    }
+    //private void Awake()
+    //{
+    //    //joystick = GameLevelManager.instance.Joystick;
+    //    //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
+    //    ////controls = new PlayerControls();
+    //    //Debug.Log("joystick found   active: " + joystick.enabled);
+    //}
 
     void Start()
     {
@@ -198,9 +198,9 @@ public class PlayerController : MonoBehaviour
     }
 
     public void touchControlJumpOrShoot(Vector2 touchPosition)
-    {      
-        if (grounded 
-            && !KnockedDown 
+    {
+        if (grounded
+            && !KnockedDown
             && hasBasketball
             && touchPosition.x > (Screen.width / 2))
         {
@@ -336,7 +336,7 @@ public class PlayerController : MonoBehaviour
             && !inAir
             && !KnockedDown)
         {
-                movementSpeed = characterProfile.Speed;
+            movementSpeed = characterProfile.Speed;
         }
         // if run state
         if (currentState == run && !hasBasketball) //|| (runningToggle || running) )

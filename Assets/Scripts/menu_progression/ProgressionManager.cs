@@ -203,7 +203,7 @@ public class ProgressionManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            loadScene(sceneStartName );
+            loadScene(sceneStartName);
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -434,7 +434,7 @@ public class ProgressionManager : MonoBehaviour
         progressionState.Accuracy3 = 0;
         progressionState.Accuracy4 = 0;
         progressionState.Accuracy7 = 0;
-        
+
         progressionState.Luck = 0;
         progressionState.Range = 0;
         progressionState.Release = 0;
@@ -642,7 +642,7 @@ public class ProgressionManager : MonoBehaviour
 
             // update text display static update stats (range, release, luck)
             //if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)  
-            
+
             if (progressionState.PointsUsedThisSession > 0)
             {
                 bonusReleaseText.text = "+" + progressionState.AddToRelease;
@@ -675,7 +675,7 @@ public class ProgressionManager : MonoBehaviour
 
             progression3Accuracy.text = progressionState.Accuracy3.ToString("F0");
             progression4Accuracy.text = progressionState.Accuracy4.ToString("F0");
-            progression7Accuracy.text = progressionState.Accuracy7 .ToString("F0");
+            progression7Accuracy.text = progressionState.Accuracy7.ToString("F0");
 
             progressionState.Level = progressionState.Experience / experienceRequiredForNextLevel;
             int nextlvl = ((progressionState.Level + 1) * experienceRequiredForNextLevel) - progressionState.Experience;
@@ -698,14 +698,14 @@ public class ProgressionManager : MonoBehaviour
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
 
-    private void updateStaticCharacterStatistics( CharacterProfile originalCharState)
+    private void updateStaticCharacterStatistics(CharacterProfile originalCharState)
     {
         //Debug.Log("updateStaticCharacterStatistics");
 
         int lastUpdate = originalCharState.Level - originalCharState.PointsAvailable;
         int luckPointsAvailable = (originalCharState.Level / 3) - (lastUpdate / 3);
 
-        if ( progressionState.PointsUsedThisSession <= luckPointsAvailable )
+        if (progressionState.PointsUsedThisSession <= luckPointsAvailable)
         {
             progressionState.AddToLuck = progressionState.PointsUsedThisSession;
         }

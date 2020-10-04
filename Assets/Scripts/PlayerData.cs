@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 /* This class is used to store Player data from the database such as high scores
  * and data that will be used to update high scores and inserted into database
@@ -9,50 +6,50 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    private int _playerId;
-    private string _playerName;
+    private int _playerId = 0;
+    private string _playerName = "";
 
-    private float _totalPoints;
-    private float _totalPointsBonus;
-    private float _twoPointerMade;
-    private float _threePointerMade;
-    private float _sevenPointerMade;
+    private float _totalPoints = 0;
+    private float _totalPointsBonus = 0;
+    private float _twoPointerMade = 0;
+    private float _threePointerMade = 0;
+    private float _sevenPointerMade = 0;
 
-    private float _fourPointerMade;
-    private float _twoPointerAttempts;
-    private float _threePointerAttempts;
-    private float _fourPointerAttempts;
-    private float _sevenPointerAttempts;
+    private float _fourPointerMade = 0;
+    private float _twoPointerAttempts = 0;
+    private float _threePointerAttempts = 0;
+    private float _fourPointerAttempts = 0;
+    private float _sevenPointerAttempts = 0;
 
-    private float _shotAttempt;
-    private float _shotMade;
-    [SerializeField] private float _longestShotMade;
-    [SerializeField] private float _longestShotMadeFreePlay;
-    [SerializeField] private float _longestShotMadeArcade;
-    private float _totalDistance;
+    //private float _shotAttempt = 0;
+    //private float _shotMade = 0;
+    //private float _longestShotMade = 0;
+    private float _longestShotMadeFreePlay = 0;
+    private float _longestShotMadeArcade = 0;
+    private float _totalDistance = 0;
 
-    private float _makeThreePointersLowTime;
-    private float _makeFourPointersLowTime;
-    private float _makeAllPointersLowTime;
+    private float _makeThreePointersLowTime = 0;
+    private float _makeFourPointersLowTime = 0;
+    private float _makeAllPointersLowTime = 0;
 
-    private float _makeThreePointersMoneyBallLowTime;
-    private float _makeFourPointersMoneyBallLowTime;
-    private float _makeAllPointersMoneyBallLowTime;
+    private float _makeThreePointersMoneyBallLowTime = 0;
+    private float _makeFourPointersMoneyBallLowTime = 0;
+    private float _makeAllPointersMoneyBallLowTime = 0;
 
-    private int _mostConsecutiveShots;
+    private int _mostConsecutiveShots = 0;
 
-    private float _threePointContestScore;
-    private float _fourPointContestScore;
-    private float _allPointContestScore;
+    private float _threePointContestScore = 0;
+    private float _fourPointContestScore = 0;
+    private float _allPointContestScore = 0;
 
     [SerializeField]
-    private int _currentExperience;
+    private int _currentExperience = 0;
     [SerializeField]
-    private int _currentLevel;
+    private int _currentLevel = 0;
     [SerializeField]
-    private int _updatePointsAvailable;
+    private int _updatePointsAvailable = 0;
     [SerializeField]
-    private int _updatePointsUsed;
+    private int _updatePointsUsed = 0;
 
     public static PlayerData instance;
 
@@ -108,33 +105,33 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    public float SevenPointerAttempts => _sevenPointerAttempts;
+    //public float SevenPointerAttempts => _sevenPointerAttempts;
 
-    public int PlayerId => _playerId;
+    //public int PlayerId => _playerId;
 
-    public string PlayerName => _playerName;
+    //public string PlayerName => _playerName;
 
     public float TotalPoints => _totalPoints;
 
-    public float TwoPointerMade => _twoPointerMade;
+    //public float TwoPointerMade => _twoPointerMade;
 
     public float ThreePointerMade => _threePointerMade;
 
     public float FourPointerMade => _fourPointerMade;
 
-    public float TwoPointerAttempts => _twoPointerAttempts;
+    //public float TwoPointerAttempts => _twoPointerAttempts;
 
-    public float ThreePointerAttempts => _threePointerAttempts;
+    //public float ThreePointerAttempts => _threePointerAttempts;
 
-    public float FourPointerAttempts => _fourPointerAttempts;
+    //public float FourPointerAttempts => _fourPointerAttempts;
 
     public float SevenPointerMade => _sevenPointerMade;
 
-    public float ShotAttempt => _shotAttempt;
+    //public float ShotAttempt => _shotAttempt;
 
-    public float ShotMade => _shotMade;
+    //public float ShotMade => _shotMade;
 
-    public float LongestShotMade => _longestShotMade;
+    //public float LongestShotMade => _longestShotMade;
 
     public float TotalDistance => _totalDistance;
 
@@ -160,5 +157,5 @@ public class PlayerData : MonoBehaviour
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public int UpdatePointsAvailable { get => _updatePointsAvailable; set => _updatePointsAvailable = value; }
     public int UpdatePointsUsed { get => _updatePointsUsed; set => _updatePointsUsed = value; }
-    public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
+    //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }

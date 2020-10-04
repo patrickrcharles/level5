@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+﻿using UnityEngine;
 #if UNITY_EDITOR
 #endif
 
@@ -107,7 +101,7 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
 
         //disable lighting if necessary
