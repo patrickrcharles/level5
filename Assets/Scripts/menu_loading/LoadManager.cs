@@ -81,6 +81,8 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator verifyCharacterProfileTable()
     {
+
+        yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
         yield return new WaitUntil(() => AchievementManager.instance != null);
         yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
@@ -104,6 +106,7 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator verifyCheerleaderProfileTable()
     {
+        yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
         yield return new WaitUntil(() => AchievementManager.instance != null);
         yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
@@ -127,6 +130,7 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator LoadGameData()
     {
+        yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
         yield return new WaitUntil(() => AchievementManager.instance != null);
         yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 

@@ -4,6 +4,7 @@ using System;
 using System.Data;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DBConnector : MonoBehaviour
@@ -42,16 +43,6 @@ public class DBConnector : MonoBehaviour
 
     void Awake()
     {
-        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //Debug.Log(SystemInfo.deviceModel);
-        //Debug.Log(SystemInfo.deviceType);
-        //Debug.Log(SystemInfo.deviceName);
-        //Debug.Log(SystemInfo.device);
-
-        messageText.text += "\n" + SystemInfo.deviceName.ToString();
-        messageText.text += "\n" + SystemInfo.deviceModel.ToString();
-        messageText.text += "\n" + SystemInfo.processorType.ToString();
-
         // keep Database object persistent
         DontDestroyOnLoad(gameObject);
         if (instance == null)
@@ -63,50 +54,48 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
+
         filepath = Application.persistentDataPath + databaseNamePath;
-        //connection = "URI = " + filepath; //Path to database
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
-        //filepathBackup = Application.streamingAssetsPath + databaseNamePath;
-        //Debug.Log("filepath : " + filepath);
-        //Debug.Log("connection : " + connection);
-
-        messageText.text += "\n" + filepath;
-        messageText.text += "\n" + connection;
-
-
-
-        //connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
-        //filepath = Application.persistentDataPath + databaseNamePath;
         dbHelper = gameObject.GetComponent<DBHelper>();
     }
 
     void Start()
     {
+        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+
+        messageText.text += "\n" + SystemInfo.deviceName.ToString();
+        messageText.text += "\n" + SystemInfo.deviceModel.ToString();
+        messageText.text += "\n" + SystemInfo.processorType.ToString();
+        messageText.text += "\n" + filepath;
+        messageText.text += "\n" + connection;
+
         //// create database / add tables if not exist
         if (File.Exists(filepath))
         //|| !Application.version.Equals(getDatabaseVersion()))// && integrityCheck())
         {
-            createDatabase();
-            //try
-            //{
-            //    createDatabase();
-            //}
-            //catch (Exception e)
-            //{
-            //    Debug.Log("ERROR : " + e);
-            //    return;
-            //}
+            try
+            {
+                createDatabase();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                messageText.text += "\n" + e;
+                SendEmail.instance.SendEmailOnEvent("ERROR : create database", messageText.text);
+                return;
+            }
         }
         // if database doesnt exist
         if (!File.Exists(filepath))
         //|| !integrityCheck()
         //|| !Application.version.Equals(getDatabaseVersion()))
         {
-            //databaseCreated = false;
             try
             {
-                //Debug.Log("create database");
+                SqliteConnection.CreateFile(filepath);
+                Debug.Log("create file / !existed");
                 dropDatabase();
                 createDatabase();
             }
@@ -114,10 +103,11 @@ public class DBConnector : MonoBehaviour
             {
                 Debug.Log("ERROR : " + e);
                 messageText.text += "\n" + e;
+                SendEmail.instance.SendEmailOnEvent("ERROR : create database", messageText.text);
                 return;
             }
         }
-        VerifyDatabase();
+        //VerifyDatabase();
 
         //create default user 
         if (tableExists(tableNameUser))
@@ -359,6 +349,8 @@ public class DBConnector : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
         dbconn.Close();
+
+        databaseCreated = true;
     }
 
     // create tables if not created
@@ -493,8 +485,6 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            SendEmail.instance.SendEmailOnEvent("ERROR : create database", messageText.text);
             return;
         }
     }
@@ -662,7 +652,8 @@ public class DBConnector : MonoBehaviour
             messageText.text += "\n" + e;
             string text = "createTableCharacterProfile()";
             SendEmail.instance.SendEmailOnEvent(text, e.ToString());
-            return;
+            
+            //return;
         }
     }
 
