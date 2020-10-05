@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class BehaviorVehicleLawnmower : MonoBehaviour
@@ -78,7 +76,7 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        relativePosition = currentTarget.x - transform.position.x; 
+        relativePosition = currentTarget.x - transform.position.x;
 
         if (!movingToTarget)
         {
@@ -87,7 +85,7 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
 
         if (pathComplete())
         {
-            if (currentTargetIndex >= returnPositions.Length-1)
+            if (currentTargetIndex >= returnPositions.Length - 1)
             {
                 currentTargetIndex = 0;
                 currentTarget = returnPositions[currentTargetIndex].transform.position;
@@ -95,7 +93,7 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
             else
             {
                 currentTargetIndex += 1;
-                currentTarget = returnPositions[currentTargetIndex ].transform.position;
+                currentTarget = returnPositions[currentTargetIndex].transform.position;
             }
         }
         if (relativePosition < 0 && facingRight)

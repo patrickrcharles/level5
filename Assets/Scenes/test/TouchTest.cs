@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
+﻿using UnityEngine;
 //using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using Touch = UnityEngine.Touch;
 
@@ -54,8 +51,8 @@ public class TouchTest : MonoBehaviour
             }
         }
     }
-    }
-  
+}
+
 
 
 

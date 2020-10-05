@@ -11,25 +11,30 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace OmniSARTechnologies.Helper {
+namespace OmniSARTechnologies.Helper
+{
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public sealed class DisplayNameAttribute : PropertyAttribute {
+    public sealed class DisplayNameAttribute : PropertyAttribute
+    {
         public readonly string displayName;
 
-        public DisplayNameAttribute(string displayName) {
+        public DisplayNameAttribute(string displayName)
+        {
             this.displayName = displayName;
         }
     }
 
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = true)]
-    public sealed class WhatsThisAttribute : PropertyAttribute {
+    public sealed class WhatsThisAttribute : PropertyAttribute
+    {
         public readonly string message;
 #if UNITY_EDITOR
         public readonly MessageType messageType;
 #endif
 
 #if UNITY_EDITOR
-        public WhatsThisAttribute(string message, MessageType messageType = MessageType.None) {
+        public WhatsThisAttribute(string message, MessageType messageType = MessageType.None)
+        {
             this.message = message;
             this.messageType = messageType;
         }
@@ -41,10 +46,12 @@ namespace OmniSARTechnologies.Helper {
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public sealed class DocsAttribute : PropertyAttribute {
+    public sealed class DocsAttribute : PropertyAttribute
+    {
         public readonly string text;
 
-        public DocsAttribute(string text = default(string)) {
+        public DocsAttribute(string text = default(string))
+        {
             this.text = text;
         }
     }

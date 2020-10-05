@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerCollisions : MonoBehaviour
 {
@@ -36,7 +34,7 @@ public class PlayerCollisions : MonoBehaviour
             && !playerState.KnockedDown)
         {
             // player can be knocked down and other
-            if (playerCanBeKnockedDown )
+            if (playerCanBeKnockedDown)
             {
                 playerKnockedDown(other.gameObject);
             }

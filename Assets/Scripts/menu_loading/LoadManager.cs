@@ -41,9 +41,9 @@ public class LoadManager : MonoBehaviour
     public static LoadManager instance;
 
     [SerializeField] internal bool playerDataLoaded = false;
-    [SerializeField]  internal bool cheerleaderDataLoaded = false;
+    [SerializeField] internal bool cheerleaderDataLoaded = false;
     [SerializeField] internal bool levelDataLoaded = false;
-    [SerializeField]  internal bool modeDataLoaded = false;
+    [SerializeField] internal bool modeDataLoaded = false;
 
     const string startSceneName = "level_00_start";
 
@@ -54,20 +54,10 @@ public class LoadManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        StartCoroutine( verifyCharacterProfileTable() );
-        StartCoroutine( verifyCheerleaderProfileTable() );
-        StartCoroutine( LoadGameData() );
+        StartCoroutine(verifyCharacterProfileTable());
+        StartCoroutine(verifyCheerleaderProfileTable());
+        StartCoroutine(LoadGameData());
     }
-
-
-    //void Start()
-    //{
-
-    //    // WAIT FOR ACHIEVEMENT MANAGER
-    //    // NEED UNLOCK TEXT FOR LOADING PLAYER /CHEERLEADER DATA
-
-
-    //}
 
     private void Update()
     {
@@ -93,6 +83,7 @@ public class LoadManager : MonoBehaviour
     {
         yield return new WaitUntil(() => AchievementManager.instance != null);
         yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
+
 
         // if CharacterProfile table does exist
         if (DBConnector.instance.tableExists("CharacterProfile")
@@ -130,6 +121,7 @@ public class LoadManager : MonoBehaviour
             DBConnector.instance.createTableCheerleaderProfile();
             CheerleaderProfileTableCreated = true;
         }
+
     }
 
 
@@ -260,7 +252,7 @@ public class LoadManager : MonoBehaviour
         // sort list by  character id
         cheerList.Sort(sortByCheerleaderId);
 
-        Debug.Log("***************************  cheerList.Count : " + cheerList.Count + "   objects.Length : " + objects.Length);
+        //Debug.Log("***************************  cheerList.Count : " + cheerList.Count + "   objects.Length : " + objects.Length);
 
         if (cheerList.Count == objects.Length)
         {

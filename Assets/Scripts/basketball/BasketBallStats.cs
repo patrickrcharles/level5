@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
+﻿using UnityEngine;
 
 public class BasketBallStats : MonoBehaviour
 {
@@ -14,20 +11,20 @@ public class BasketBallStats : MonoBehaviour
     private int _experienceGained;
 
     private int _totalPoints;
-    private int  _twoPointerMade;
-    private int  _threePointerMade;
-    private int  _fourPointerMade;
-    private int  _sevenPointerMade;
-    private int  _moneyBallMade;
+    private int _twoPointerMade;
+    private int _threePointerMade;
+    private int _fourPointerMade;
+    private int _sevenPointerMade;
+    private int _moneyBallMade;
 
-    private int  _twoPointerAttempts;
-    private int  _threePointerAttempts;
-    private int  _fourPointerAttempts;
-    private int  _sevenPointerAttempts;
-    private int  _moneyBallAttempts;
+    private int _twoPointerAttempts;
+    private int _threePointerAttempts;
+    private int _fourPointerAttempts;
+    private int _sevenPointerAttempts;
+    private int _moneyBallAttempts;
 
-    private int  _shotAttempt;
-    private int  _shotMade;
+    private int _shotAttempt;
+    private int _shotMade;
     private float _longestShotMade;
     private float _totalDistance;
 
@@ -177,61 +174,61 @@ public class BasketBallStats : MonoBehaviour
         set => _totalPoints = value;
     }
 
-    public int  TwoPointerMade
+    public int TwoPointerMade
     {
         get => _twoPointerMade;
         set => _twoPointerMade = value;
     }
 
-    public int  ThreePointerMade
+    public int ThreePointerMade
     {
         get => _threePointerMade;
         set => _threePointerMade = value;
     }
 
-    public int  FourPointerMade
+    public int FourPointerMade
     {
         get => _fourPointerMade;
         set => _fourPointerMade = value;
     }
 
-    public int  TwoPointerAttempts
+    public int TwoPointerAttempts
     {
         get => _twoPointerAttempts;
         set => _twoPointerAttempts = value;
     }
 
-    public int  ThreePointerAttempts
+    public int ThreePointerAttempts
     {
         get => _threePointerAttempts;
         set => _threePointerAttempts = value;
     }
 
-    public int  FourPointerAttempts
+    public int FourPointerAttempts
     {
         get => _fourPointerAttempts;
         set => _fourPointerAttempts = value;
     }
-    public int  SevenPointerMade
+    public int SevenPointerMade
     {
         get => _sevenPointerMade;
         set => _sevenPointerMade = value;
     }
 
-    public int  SevenPointerAttempts
+    public int SevenPointerAttempts
     {
         get => _sevenPointerAttempts;
         set => _sevenPointerAttempts = value;
     }
 
 
-    public int  MoneyBallMade
+    public int MoneyBallMade
     {
         get => _moneyBallMade;
         set => _moneyBallMade = value;
     }
 
-    public int  MoneyBallAttempts
+    public int MoneyBallAttempts
     {
         get => _moneyBallAttempts;
         set => _moneyBallAttempts = value;

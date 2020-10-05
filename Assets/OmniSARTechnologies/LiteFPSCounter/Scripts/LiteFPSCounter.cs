@@ -7,19 +7,18 @@
 //
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 using OmniSARTechnologies.Helper;
 
-namespace OmniSARTechnologies.LiteFPSCounter {
+namespace OmniSARTechnologies.LiteFPSCounter
+{
     [SelectionBase]
     [DisallowMultipleComponent]
-    public class LiteFPSCounter : MonoBehaviour {
+    public class LiteFPSCounter : MonoBehaviour
+    {
         /// <summary>
         /// Reference to a Text component where the dynamic info will be displayed.
         /// <para></para>
@@ -52,8 +51,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Registered frame time within the update interval.
         /// </summary>
-        public float frameTime {
-            get {
+        public float frameTime
+        {
+            get
+            {
                 return m_FrameTime;
             }
         }
@@ -62,8 +63,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Minimum registered frame time within the update interval.
         /// </summary>
-        public float minFrameTime {
-            get {
+        public float minFrameTime
+        {
+            get
+            {
                 return m_MinFrameTime;
             }
         }
@@ -72,8 +75,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Maximum registered frame time within the update interval.
         /// </summary>
-        public float maxFrameTime {
-            get {
+        public float maxFrameTime
+        {
+            get
+            {
                 return m_MaxFrameTime;
             }
         }
@@ -82,8 +87,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Fluctuation of the registered frame time within the update interval.
         /// </summary>
-        public float frameTimeFlutuation {
-            get {
+        public float frameTimeFlutuation
+        {
+            get
+            {
                 return m_FrameTimeFlutuation;
             }
         }
@@ -92,8 +99,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Registered framerate within the update interval.
         /// </summary>
-        public float frameRate {
-            get {
+        public float frameRate
+        {
+            get
+            {
                 return m_FrameRate;
             }
         }
@@ -102,8 +111,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Minimum registered framerate within the update interval.
         /// </summary>
-        public float minFrameRate {
-            get {
+        public float minFrameRate
+        {
+            get
+            {
                 return m_MinFrameRate;
             }
         }
@@ -112,8 +123,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Maximum registered framerate within the update interval.
         /// </summary>
-        public float maxFrameRate {
-            get {
+        public float maxFrameRate
+        {
+            get
+            {
                 return m_MaxFrameRate;
             }
         }
@@ -122,8 +135,10 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// <summary>
         /// Framerate fluctuation within the update interval.
         /// </summary>
-        public float frameRateFlutuation {
-            get {
+        public float frameRateFlutuation
+        {
+            get
+            {
                 return m_FrameRateFlutuation;
             }
         }
@@ -155,7 +170,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// The initialization only targets the component's internal data.
         /// </remarks>
         /// </summary>
-        public void Initialize() {
+        public void Initialize()
+        {
             Reset();
             UpdateInternals();
         }
@@ -168,29 +184,34 @@ namespace OmniSARTechnologies.LiteFPSCounter {
         /// This does not reset the component's inspector state.
         /// </remarks>
         /// </summary>
-        public void Reset() {
+        public void Reset()
+        {
             ResetProbingData();
 
             m_LastUpdateTime = Time.realtimeSinceStartup;
         }
 
-        private void Start() {
+        private void Start()
+        {
             Initialize();
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             Initialize();
         }
 
-        public void UpdateInternals() {
+        public void UpdateInternals()
+        {
             UpdateStaticContentAndData();
         }
 
-        private void UpdateStaticContentAndData() {
+        private void UpdateStaticContentAndData()
+        {
             m_DynamicConfigurationFormat = string.Format(
-                "{0} FPS {1} ms {2}"   + Environment.NewLine +
-                "{3} FPS {4} ms {5}"   + Environment.NewLine +
-                "{6} FPS {7} ms {8}"   + Environment.NewLine +
+                "{0} FPS {1} ms {2}" + Environment.NewLine +
+                "{3} FPS {4} ms {5}" + Environment.NewLine +
+                "{6} FPS {7} ms {8}" + Environment.NewLine +
                 "{9} FPS {10} ms {11}",
 
                 ColorHelper.ColorText("{0}", m_FPSFieldsColor),
@@ -210,7 +231,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
                 ColorHelper.ColorText("∿", m_FPSFluctuationFieldsColor)
             );
 
-            if (!staticInfoText) {
+            if (!staticInfoText)
+            {
                 return;
             }
 
@@ -229,29 +251,34 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             );
         }
 
-        private void UpdateDynamicContent() {
-            if (!dynamicInfoText) {
+        private void UpdateDynamicContent()
+        {
+            if (!dynamicInfoText)
+            {
                 return;
             }
 
             dynamicInfoText.text = string.Format(
                 m_DynamicConfigurationFormat,
-                m_FrameRate.ToString("F1"),           (m_FrameTime * 1000.0f).ToString("F1"),
-                m_MinFrameRate.ToString("F1"),        (m_MaxFrameTime * 1000.0f).ToString("F1"),
-                m_MaxFrameRate.ToString("F1"),        (m_MinFrameTime * 1000.0f).ToString("F1"),
+                m_FrameRate.ToString("F1"), (m_FrameTime * 1000.0f).ToString("F1"),
+                m_MinFrameRate.ToString("F1"), (m_MaxFrameTime * 1000.0f).ToString("F1"),
+                m_MaxFrameRate.ToString("F1"), (m_MinFrameTime * 1000.0f).ToString("F1"),
                 m_FrameRateFlutuation.ToString("F1"), (m_FrameTimeFlutuation * 1000.0f).ToString("F1")
             );
         }
 
-        private void ResetProbingData() {
+        private void ResetProbingData()
+        {
             m_MinFrameTime = float.MaxValue;
             m_MaxFrameTime = float.MinValue;
             m_AccumulatedTime = 0.0f;
             m_AccumulatedFrames = 0;
         }
 
-        private void UpdateFPS() {
-            if (!dynamicInfoText) {
+        private void UpdateFPS()
+        {
+            if (!dynamicInfoText)
+            {
                 return;
             }
 
@@ -260,28 +287,34 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             m_AccumulatedTime += deltaTime;
             m_AccumulatedFrames++;
 
-            if (deltaTime < MinTime) {
+            if (deltaTime < MinTime)
+            {
                 deltaTime = MinTime;
             }
 
-            if (deltaTime < m_MinFrameTime) {
+            if (deltaTime < m_MinFrameTime)
+            {
                 m_MinFrameTime = deltaTime;
             }
 
-            if (deltaTime > m_MaxFrameTime) {
+            if (deltaTime > m_MaxFrameTime)
+            {
                 m_MaxFrameTime = deltaTime;
             }
 
             float nowTime = Time.realtimeSinceStartup;
-            if (nowTime - m_LastUpdateTime < UpdateInterval) {
+            if (nowTime - m_LastUpdateTime < UpdateInterval)
+            {
                 return;
             }
 
-            if (m_AccumulatedTime < MinTime) {
+            if (m_AccumulatedTime < MinTime)
+            {
                 m_AccumulatedTime = MinTime;
             }
 
-            if (m_AccumulatedFrames < 1) {
+            if (m_AccumulatedFrames < 1)
+            {
                 m_AccumulatedFrames = 1;
             }
 
@@ -300,7 +333,8 @@ namespace OmniSARTechnologies.LiteFPSCounter {
             m_LastUpdateTime = nowTime;
         }
 
-        private void Update() {
+        private void Update()
+        {
             UpdateFPS();
         }
     }

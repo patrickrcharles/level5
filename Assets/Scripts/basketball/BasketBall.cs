@@ -9,7 +9,7 @@ public class BasketBall : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     PlayerController playerState;
-    new Rigidbody rigidbody;
+    Rigidbody rigidbody;
     AudioSource audioSource;
     CharacterProfile characterProfile;
     BasketBallState basketBallState;
@@ -107,8 +107,8 @@ public class BasketBall : MonoBehaviour
                 shootProfileText.text = "";
             }
         }
-        InvokeRepeating("checkIsBallFacingGoal", 0 , 0.5f);
-        InvokeRepeating("displayUiStats", 0 , 0.5f);
+        InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
+        InvokeRepeating("displayUiStats", 0, 0.5f);
     }
 
     // =========================================================== Update() ========================================================
@@ -443,7 +443,7 @@ public class BasketBall : MonoBehaviour
             // npc performs critical success action 
         }
         // if >= 95 and NOT critical (release stat factored in)
-        if (playerState.Shotmeter.SliderValueOnButtonPress >= 95 
+        if (playerState.Shotmeter.SliderValueOnButtonPress >= 95
             && !critical)
         {
             //Debug.Log("------------------ METER >= 95");
@@ -656,6 +656,7 @@ public class BasketBall : MonoBehaviour
 
     public bool displayUiStats()
     {
+        //Debug.Log("displayUiStats() -- UiStatsEnabled : "+ UiStatsEnabled);
         if (UiStatsEnabled)
         {
             updateScoreText();
@@ -675,6 +676,8 @@ public class BasketBall : MonoBehaviour
         UiStatsEnabled = !UiStatsEnabled;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "ui stats = " + UiStatsEnabled;
+
+        Debug.Log("------------------------------------------------ UiStatsEnabled : " + UiStatsEnabled);
 
         //if (UiStatsEnabled)
         //{

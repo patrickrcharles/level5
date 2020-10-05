@@ -10,16 +10,19 @@
 
 using UnityEngine;
 
-namespace OmniSARTechnologies.Helper {
+namespace OmniSARTechnologies.Helper
+{
 #if ___EXECUTE_IN_EDITOR___
     [ExecuteInEditMode]
 #endif // ___EXECUTE_IN_EDITOR___
-    public class TransformRotate : MonoBehaviour {
+    public class TransformRotate : MonoBehaviour
+    {
         public Vector3 eulerAnglesSpeed;
 
-        private void Update() {
-            transform.RotateAround(transform.position, Vector3.right,   eulerAnglesSpeed.x * Time.deltaTime);
-            transform.RotateAround(transform.position, Vector3.up,      eulerAnglesSpeed.y * Time.deltaTime);
+        private void Update()
+        {
+            transform.RotateAround(transform.position, Vector3.right, eulerAnglesSpeed.x * Time.deltaTime);
+            transform.RotateAround(transform.position, Vector3.up, eulerAnglesSpeed.y * Time.deltaTime);
             transform.RotateAround(transform.position, Vector3.forward, eulerAnglesSpeed.z * Time.deltaTime);
         }
     }

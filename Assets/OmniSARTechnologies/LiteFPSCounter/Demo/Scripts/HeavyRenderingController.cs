@@ -1,18 +1,18 @@
-﻿///
+﻿using OmniSARTechnologies.Helper;
+///
 // Heavy Rendering Controller
 //
 // Author     : Alex Tuduran
 // Copyright  : OmniSAR Technologies
 //
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using OmniSARTechnologies.Helper;
 
-namespace OmniSARTechnologies.LiteFPSCounter.Examples {
-    public class HeavyRenderingController : MonoBehaviour {
+namespace OmniSARTechnologies.LiteFPSCounter.Examples
+{
+    public class HeavyRenderingController : MonoBehaviour
+    {
         public Material heavyRenderingMaterial;
 
         [Range(0, 1)]
@@ -22,22 +22,27 @@ namespace OmniSARTechnologies.LiteFPSCounter.Examples {
         public Slider complexitySlider;
         public Gradient complexityHeatMap;
 
-        public float GetComplexity() {
-            if (!heavyRenderingMaterial) {
+        public float GetComplexity()
+        {
+            if (!heavyRenderingMaterial)
+            {
                 return 0.0f;
             }
 
             return Mathf.Clamp01(heavyRenderingMaterial.GetFloat("_Complexity"));
         }
 
-        public void SetComplexity(float value) {
+        public void SetComplexity(float value)
+        {
             complexity = value;
 
-            if (heavyRenderingMaterial) {
+            if (heavyRenderingMaterial)
+            {
                 heavyRenderingMaterial.SetFloat("_Complexity", Mathf.Clamp01(complexity));
             }
 
-            if (complexityText) {
+            if (complexityText)
+            {
                 complexityText.text = string.Format(
                     "Material Complexity: {0}",
                     ColorHelper.ColorText(
@@ -48,15 +53,18 @@ namespace OmniSARTechnologies.LiteFPSCounter.Examples {
             }
         }
 
-        public void UpdateComplexity() {
+        public void UpdateComplexity()
+        {
             SetComplexity(complexitySlider ? complexitySlider.value : complexity);
         }
 
-        private void Start() {
+        private void Start()
+        {
             UpdateComplexity();
         }
 
-        private void OnValidate() {
+        private void OnValidate()
+        {
             UpdateComplexity();
         }
     }

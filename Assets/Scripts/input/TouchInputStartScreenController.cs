@@ -37,6 +37,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     private void Start()
     {
         StartManager.instance.disableButtonsNotUsedForTouchInput();
+
         // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
@@ -66,13 +67,6 @@ public class TouchInputStartScreenController : MonoBehaviour
             }
             endTouchPosition = touch.position;
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
-            //Debug.Log("touch.tapCount : " + touch.tapCount);
-            //Debug.Log("touch.phase : " + touch.phase);
-            //Debug.Log("Mathf.Abs(swipeDistance) > swipeDownTolerance : " + (Mathf.Abs(swipeDistance) > swipeDownTolerance));
-            //Debug.Log("swipeDistance < 0 : " + (swipeDistance < 0));
-            //Debug.Log("(startTouchPosition.x > (Screen.width / 2)) : " + (startTouchPosition.x > (Screen.width / 2)));
-            //Debug.Log("current button : " + EventSystem.current.currentSelectedGameObject.name);
-
 
             // swipe down on changeable options
             if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
@@ -127,9 +121,10 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (GameObject.FindObjectOfType<StartManager>() != null)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
-            m_Raycaster = StartManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            //m_Raycaster = StartManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+            m_Raycaster = GameObject.Find("startScreen").GetComponentInChildren<GraphicRaycaster>();
             //Fetch the Event System from the Scene
-            m_EventSystem = StartManager.instance.gameObject.GetComponentInChildren<EventSystem>();
+            m_EventSystem = GameObject.Find("startScreen").GetComponentInChildren<EventSystem>();
         }
         // else, this is not the startscreen and disable object
         else
@@ -177,6 +172,11 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
         {
             StartManager.instance.loadGame();
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
+        {
+            //Debug.Log("load prgression screen");
+            StartManager.instance.loadMenu(StartManager.ProgressionScreenSceneName);
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
         {
@@ -239,6 +239,10 @@ public class TouchInputStartScreenController : MonoBehaviour
         //level select
         if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
         {
+            if (StartManager.instance == null)
+            {
+                Debug.Log("start manager instance = null");
+            }
             StartManager.instance.changeSelectedLevelDown();
             StartManager.instance.initializeLevelDisplay();
         }

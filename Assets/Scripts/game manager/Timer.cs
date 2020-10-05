@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using TMPro;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
@@ -41,8 +35,8 @@ public class Timer : MonoBehaviour
     {
 
         // if requires custom timer
-        if (GameOptions.gameModeThreePointContest 
-            || GameOptions.gameModeFourPointContest 
+        if (GameOptions.gameModeThreePointContest
+            || GameOptions.gameModeFourPointContest
             || GameOptions.gameModeAllPointContest)
         {
             timeStart = GameOptions.customTimer;
@@ -105,7 +99,7 @@ public class Timer : MonoBehaviour
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
             // not consecutive game mode
-            if (!BasketBall.instance.BasketBallState.InAir 
+            if (!BasketBall.instance.BasketBallState.InAir
                 // player in air, has ball
                 && !(GameLevelManager.instance.PlayerState.hasBasketball && GameLevelManager.instance.PlayerState.inAir)
                 // not consecutive shots game mode

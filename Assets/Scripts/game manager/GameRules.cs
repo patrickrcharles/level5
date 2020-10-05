@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class GameRules : MonoBehaviour
 {
@@ -415,8 +413,8 @@ public class GameRules : MonoBehaviour
                                                                  + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");
                 if (GameOptions.gameModeSelectedName.ToLower().Contains("free"))
                 {
-                    displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00") 
-                        +"\nexp gained : "+ basketBallStats.getExperienceGainedFromSession();
+                    displayHighScoreText.text = "high score : " + PlayerData.instance.LongestShotMadeFreePlay.ToString("0.00")
+                        + "\nexp gained : " + basketBallStats.getExperienceGainedFromSession();
                 }
                 else
                 {

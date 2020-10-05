@@ -5,22 +5,25 @@
 // Copyright  : OmniSAR Technologies
 //
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace OmniSARTechnologies.LiteFPSCounter.Examples {
-    public class SimpleSceneSwitcher : MonoBehaviour {
+namespace OmniSARTechnologies.LiteFPSCounter.Examples
+{
+    public class SimpleSceneSwitcher : MonoBehaviour
+    {
         public Text sceneNameText;
 
-        private void Start() {
+        private void Start()
+        {
             UpdateSceneNameText();
         }
 
-        public void ChangeActiveScene(int buildIndexOffset) {
-            if (SceneManager.sceneCountInBuildSettings < 1) {
+        public void ChangeActiveScene(int buildIndexOffset)
+        {
+            if (SceneManager.sceneCountInBuildSettings < 1)
+            {
                 return;
             }
 
@@ -34,8 +37,10 @@ namespace OmniSARTechnologies.LiteFPSCounter.Examples {
             UpdateSceneNameText();
         }
 
-        private void UpdateSceneNameText() {
-            if (!sceneNameText) {
+        private void UpdateSceneNameText()
+        {
+            if (!sceneNameText)
+            {
                 return;
             }
 

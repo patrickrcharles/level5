@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class Achievement : MonoBehaviour
 {
@@ -153,7 +149,7 @@ public class Achievement : MonoBehaviour
             // other unlock : if requires count but is progressive counter
             if (count && isProgressiveCount)
             {
-                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3))            
+                if (checkPlayerUnlockConditions(playid, lid, mid, ref condition1, ref condition2, ref condition3))
                 {
                     // if progressive activate value reached
                     if (checkActivateValueProgressive(activateValue))

@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+﻿using UnityEngine;
 #if UNITY_EDITOR
 #endif
 
@@ -107,19 +101,23 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 0;
-
-        //Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled
+
         //Light[] lights = GameObject.FindObjectsOfType<Light>();
-        //foreach (Light l in lights)
+        //if(lights.Length > 0)
         //{
-        //    Debug.Log("disable : " + l.name);
-        //    l.enabled = false;
+        //    foreach (Light light in lights)
+        //    {
+        //        //Debug.Log("disable : " + light.name);
+        //        light.enabled = false;
+        //    }
+        //    RenderSettings.ambientLight = Color.white;
         //}
-        //RenderSettings.ambientLight = Color.white;
+
 
         //Debug.Log(System.DateTime.Now.Hour);
         //Application.targetFrameRate = 60;

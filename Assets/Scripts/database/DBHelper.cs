@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using Mono.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net;
-using Mono.Data.Sqlite;
 using UnityEngine;
-using Object = System.Object;
 
 public class DBHelper : MonoBehaviour
 {
@@ -14,7 +11,6 @@ public class DBHelper : MonoBehaviour
     private String connection;
     private String databaseNamePath = "/level5.db";
     private String filepath;
-
     private const String allTimeStatsTableName = "AllTimeStats";
     private const String achievementTableName = "Achievements";
     private const String characterProfileTableName = "CharacterProfile";
@@ -34,8 +30,10 @@ public class DBHelper : MonoBehaviour
     void Awake()
     {
         instance = this;
-        connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
         filepath = Application.persistentDataPath + databaseNamePath;
+        //filepath = Application.streamingAssetsPath + databaseNamePath;
+        connection = "Data source=" + filepath; //Path to database
+
     }
 
     // check if specified table is emoty
@@ -250,7 +248,7 @@ public class DBHelper : MonoBehaviour
         int updatePointsUsed = PlayerData.instance.UpdatePointsUsed;
 
         // course correction if points available/used dont line up
-        if (!( (updatePointsAvailable + updatePointsUsed) == currentLevel) )
+        if (!((updatePointsAvailable + updatePointsUsed) == currentLevel))
         {
             updatePointsAvailable = currentLevel - updatePointsUsed;
         }
@@ -302,7 +300,7 @@ public class DBHelper : MonoBehaviour
                         + " Values('" + shooter.PlayerId
                         + "', '" + shooter.PlayerDisplayName
                         + "', '" + shooter.PlayerObjectName
-                        + "', '" + shooter.Accuracy2Pt 
+                        + "', '" + shooter.Accuracy2Pt
                         + "', '" + shooter.Accuracy3Pt
                         + "', '" + shooter.Accuracy4Pt
                         + "', '" + shooter.Accuracy7Pt
@@ -353,10 +351,10 @@ public class DBHelper : MonoBehaviour
                     + " Values('" + character.PlayerId
                     + "', '" + character.PlayerDisplayName
                     + "', '" + character.PlayerObjectName
-                    + "', '" + character.Accuracy2Pt 
-                    + "', '" + character.Accuracy3Pt 
-                    + "', '" + character.Accuracy4Pt 
-                    + "', '" + character.Accuracy7Pt 
+                    + "', '" + character.Accuracy2Pt
+                    + "', '" + character.Accuracy3Pt
+                    + "', '" + character.Accuracy4Pt
+                    + "', '" + character.Accuracy7Pt
                     + "', '" + character.JumpForce
                     + "', '" + character.Speed
                     + "', '" + character.RunSpeed
@@ -444,8 +442,8 @@ public class DBHelper : MonoBehaviour
                     + " Values('" + cheerleader.CheerleaderId
                     + "', '" + cheerleader.CheerleaderDisplayName
                     + "', '" + cheerleader.CheerleaderObjectName
-                    + "', '" + cheerleader.UnlockCharacterText 
-                    + "', '" + Convert.ToInt32( cheerleader.IsLocked)
+                    + "', '" + cheerleader.UnlockCharacterText
+                    + "', '" + Convert.ToInt32(cheerleader.IsLocked)
                     + "')";
 
                     cmd.CommandText = sqlQuery;
@@ -501,7 +499,7 @@ public class DBHelper : MonoBehaviour
         Destroy(prevStats, 5);
         return prevStats;
     }
-  
+
     /*
      * gets achievements current in database
      */
@@ -517,12 +515,12 @@ public class DBHelper : MonoBehaviour
 
         if (!isTableEmpty(achievementTableName))
         {
-            sqlQuery = "Select aid, charid, cheerid, levelid, modeid, name, description, " 
-                + "required_charid, required_cheerid, required_levelid, required_modeid, " 
+            sqlQuery = "Select aid, charid, cheerid, levelid, modeid, name, description, "
+                + "required_charid, required_cheerid, required_levelid, required_modeid, "
                 + " activevalue_int, activevalue_progress_int, islocked From " + achievementTableName;
             //Debug.Log(sqlQuery);
 
-          
+
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
 
@@ -551,7 +549,7 @@ public class DBHelper : MonoBehaviour
 
                 achievement.ActivationValueInt = (!reader.IsDBNull(11) ? reader.GetInt32(11) : 0);
                 achievement.ActivationValueProgressionInt = (!reader.IsDBNull(12) ? reader.GetInt32(12) : 0);
-                achievement.IsLocked = Convert.ToBoolean(!reader.IsDBNull(13) ?  reader.GetInt32(13) :  0);
+                achievement.IsLocked = Convert.ToBoolean(!reader.IsDBNull(13) ? reader.GetInt32(13) : 0);
 
                 achieveStats.Add(achievement);
             }
@@ -587,9 +585,11 @@ public class DBHelper : MonoBehaviour
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
+                //CharacterProfile temp = new CharacterProfile();
                 while (reader.Read())
                 {
                     CharacterProfile temp = new CharacterProfile();
+                    //CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
 
                     temp.PlayerId = reader.GetInt32(0);
                     temp.PlayerDisplayName = reader.GetString(1);
@@ -626,10 +626,10 @@ public class DBHelper : MonoBehaviour
             }
             return characterStats;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            return new List<CharacterProfile>(); 
+            return new List<CharacterProfile>();
         }
     }
 
@@ -760,10 +760,10 @@ public class DBHelper : MonoBehaviour
 
                     string sqlQuery =
                          "Insert INTO "
-                         + achievementTableName 
+                         + achievementTableName
                          + " ( aid, charid, cheerid, levelid, modeid, name, description, required_charid, required_cheerid,  required_levelid, "
                          + "required_modeid, activevalue_int, activevalue_float, activevalue_progress_int,activevalue_progress_float, islocked) "
-                         + " Values('" + newAchievement.achievementId + "', '" 
+                         + " Values('" + newAchievement.achievementId + "', '"
                          + newAchievement.PlayerId + "', '"
                          + newAchievement.CheerleaderId + "', '"
                          + newAchievement.LevelId + "', '"
@@ -1096,7 +1096,7 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             // game modes that require float values
-            if ((modeid > 4 && modeid < 14) || modeid == 99 )
+            if ((modeid > 4 && modeid < 14) || modeid == 99)
             {
                 score = reader.GetFloat(0).ToString();
             }
@@ -1370,9 +1370,9 @@ public class DBHelper : MonoBehaviour
 
         //string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
 
-        string sqlQuery = "UPDATE " + tableName + 
-        " SET " + field + "  = " + value + 
-        " WHERE "+ idName + " = " + idValue;
+        string sqlQuery = "UPDATE " + tableName +
+        " SET " + field + "  = " + value +
+        " WHERE " + idName + " = " + idValue;
 
         Debug.Log(sqlQuery);
 

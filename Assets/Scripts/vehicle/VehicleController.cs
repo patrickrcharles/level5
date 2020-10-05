@@ -49,7 +49,7 @@ public class VehicleController : MonoBehaviour
         relativePositioning = bballRimVector.x - gameObject.transform.position.x;
 
         // determine which way Gameobject is facing
-        if(transform.localScale.x > 0)
+        if (transform.localScale.x > 0)
         {
             facingRight = true;
         }

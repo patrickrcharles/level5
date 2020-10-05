@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class interact_jdrac : MonoBehaviour {
+public class interact_jdrac : MonoBehaviour
+{
 
     Text text;
     public List<string> phrases = new List<string>();
@@ -12,27 +12,17 @@ public class interact_jdrac : MonoBehaviour {
     public GameObject textObject;
     GameObject rootGameObject;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
 
         text = textObject.GetComponent<Text>();
-        
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    void Awake()
-    {
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(gameObject.tag == "enemyBystander" && other.tag == "playerHitbox")
+        if (gameObject.CompareTag("enemyBystander") && other.CompareTag("playerHitbox")) ;
         {
             ranNum = Random.Range(0, 6);
             /*
@@ -43,7 +33,7 @@ public class interact_jdrac : MonoBehaviour {
                 //Debug.Log(" phrases[" + i + "] : " + phrases[i]);
             }
             */
-            text.text= phrases[ranNum];
+            text.text = phrases[ranNum];
         }
 
     }

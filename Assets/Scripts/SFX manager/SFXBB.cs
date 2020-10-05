@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SFXBB : MonoBehaviour {
+public class SFXBB : MonoBehaviour
+{
 
     private AudioSource audioSource;
 
@@ -34,7 +33,7 @@ public class SFXBB : MonoBehaviour {
     public AudioClip shootGun;
 
     public AudioClip unlockAchievement;
-    
+
 
     //public List<AudioClip> vanMusicPlayList;
 

@@ -62,7 +62,7 @@ public class CameraManager : MonoBehaviour
             // #review for better way to make this more generic
             // if level requires weather system. currently only this level so can hardcode
             // doesnt work unless game options display name set
-            if (GameOptions.levelDisplayName != null &&  GameOptions.levelDisplayName.ToLower().Contains("norf"))
+            if (GameOptions.levelDisplayName != null && GameOptions.levelDisplayName.ToLower().Contains("norf"))
             {
                 Cameras[i].GetComponent<cameraUpdater>().RequiresWeatherSystem = true;
                 //Debug.Log("level requires WEATHER");
@@ -72,6 +72,7 @@ public class CameraManager : MonoBehaviour
             {
                 currentCameraIndex = i;
                 Cameras[i].SetActive(true);
+                //Cameras[i].GetComponent<Camera>().enabled = true;
                 numberOfCameras++;
             }
             //if (i == defaultCameraIndex)
@@ -82,6 +83,7 @@ public class CameraManager : MonoBehaviour
             if (!Cameras[i].name.Contains("perspective"))
             {
                 Cameras[i].SetActive(false);
+                //Cameras[i].GetComponent<Camera>().enabled = false;
                 numberOfCameras++;
             }
             //if (Cameras[i].name.Contains("follow_ball"))
@@ -93,6 +95,7 @@ public class CameraManager : MonoBehaviour
             {
                 cameraOnGoalIndex = i;
                 Cameras[i].SetActive(false);
+                //Cameras[i].GetComponent<Camera>().enabled = false;
                 //numberOfCameras--;
             }
         }
@@ -103,7 +106,7 @@ public class CameraManager : MonoBehaviour
         //}
     }
 
-    void switchCamera()
+    public void switchCamera()
     {
         //Debug.Log("**************************************************** switch camera :   current cam : " + cameras[currentCameraIndex].name);
         //Debug.Log(" --------------------------------------------------- currentCameraIndex : " + currentCameraIndex);
@@ -127,25 +130,27 @@ public class CameraManager : MonoBehaviour
             if (i == currentCameraIndex)
             {
                 //Debug.Log("     if (i == currentCameraIndex)        camera[i] : "+ cameras[i].activeSelf);
+                //Cameras[i].SetActive(true);
                 Cameras[i].SetActive(true);
+                //Cameras[i].GetComponent<Camera>().enabled = true;
             }
             if (i != currentCameraIndex)
             {
                 //Debug.Log("     if (i != currentCameraIndex)        camera[i] : " + cameras[i].activeSelf);
                 Cameras[i].SetActive(false);
+                //Cameras[i].GetComponent<Camera>().enabled = false;
             }
             if (Cameras[i].name.Contains("goal"))
             {
                 cameraOnGoalIndex = i;
                 Cameras[i].SetActive(false);
+                //Cameras[i].GetComponent<Camera>().enabled = false;
                 //numberOfCameras--;
             }
         }
 
-        //foreach (GameObject cam in cameras)
-        //{
-        //    Debug.Log(cam.name + " is active : " + cam.activeSelf);
-        //}
+        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
+
         locked = false;
     }
 

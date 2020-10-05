@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BasketBallSpriteFunctions : MonoBehaviour
 {
@@ -151,8 +149,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     public void playSfxChopWood()
     {
         audioSource.PlayOneShot(SFXBB.instance.chopWood);
-    }    
-    
+    }
+
     public void playSfxShootGun()
     {
         audioSource.PlayOneShot(SFXBB.instance.shootGun);

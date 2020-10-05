@@ -128,6 +128,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     public PlayerControls controls;
 
+    [SerializeField]
     public static StartManager instance;
 
     bool buttonPressed = false;
@@ -149,8 +150,10 @@ public class StartManager : MonoBehaviour
     //private Text gameModeSelectText;
     void Awake()
     {
+        instance = this;
         // dont destroy on load / check for duplicate instance
         //destroyInstanceIfAlreadyExists();
+
         StartCoroutine(getLoadedData());
 
         controls = new PlayerControls();
@@ -204,7 +207,7 @@ public class StartManager : MonoBehaviour
         //    }
         //}
         //// if cheerleader highlighted, display cheerleader
-        if ((!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)) 
+        if ((!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
             && dataLoaded)
         {
             try
@@ -263,6 +266,14 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(progressionScreenSceneName);
         }
+        //// stats menu button | load stats menu
+        //if ((controls.UINavigation.Submit.triggered
+        //     || controls.Player.shoot.triggered)
+        //    && currentHighlightedButton.Equals(progressionScreenSceneName))
+        //{
+        //    loadMenu(progressionScreenSceneName);
+        //}
+
 
         // ================================== navigation =====================================================================
         // up, option select
@@ -440,7 +451,7 @@ public class StartManager : MonoBehaviour
 
     IEnumerator InitializeDisplay()
     {
-        yield return new WaitUntil(() => dataLoaded) ;
+        yield return new WaitUntil(() => dataLoaded);
 
         // display default data
         initializeCheerleaderDisplay();
@@ -501,7 +512,7 @@ public class StartManager : MonoBehaviour
         int randNum = random.Next(1, 3);
         //Debug.Log("*************************************** rand num value : " + randNum);
 
-        if(randNum == 1)
+        if (randNum == 1)
         {
             return "wob1";
         }
@@ -701,7 +712,7 @@ public class StartManager : MonoBehaviour
              * FAILS HERE
              */
 
-            playerSelectedData[playerSelectedIndex].Level = 
+            playerSelectedData[playerSelectedIndex].Level =
                 (playerSelectedData[playerSelectedIndex].Experience / 3000);
             int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
 
@@ -714,7 +725,7 @@ public class StartManager : MonoBehaviour
 
             playerProgressionStatsText.text = playerSelectedData[playerSelectedIndex].Level.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Experience.ToString("F0") + "\n"
-                + nextlvl.ToString("F0") + "\n" ;
+                + nextlvl.ToString("F0") + "\n";
 
             //Debug.Log("====================================playerProgressionUpdatePointsText.text : " + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString());
 
@@ -734,7 +745,7 @@ public class StartManager : MonoBehaviour
             GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
             return;
@@ -770,8 +781,8 @@ public class StartManager : MonoBehaviour
 
         // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
         if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free") 
-            ||  modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade") )
+            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
+            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
         {
             // load player progression info
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
@@ -785,6 +796,8 @@ public class StartManager : MonoBehaviour
 
     public void loadMenu(string sceneName)
     {
+        //Debug.Log("load scene : " + sceneName);
+
         SceneManager.LoadScene(sceneName);
     }
 
@@ -1018,4 +1031,8 @@ public class StartManager : MonoBehaviour
     public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
     public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
     public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
+
+    public static string ProgressionScreenSceneName => progressionScreenSceneName;
+
+    public static string UpdateMenuButtonName => updateMenuButtonName;
 }

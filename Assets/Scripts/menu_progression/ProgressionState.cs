@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ProgressionState  : MonoBehaviour
+public class ProgressionState : MonoBehaviour
 {
     [SerializeField] int addTo3;
     [SerializeField] int addTo4;

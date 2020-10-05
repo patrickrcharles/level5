@@ -1,8 +1,8 @@
 ﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 using TouchPhase = UnityEngine.TouchPhase;
 
@@ -37,17 +37,68 @@ public class TouchInputController : MonoBehaviour
     }
 
     // changing from Update -> FixedUpdate allows input to be detected at 1/100 as opposed to 1/60 for mobile
-    void FixedUpdate()
+    //void FixedUpdate()
+    //{
+    //    //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+    //    //if (!Pause.instance.Paused && Input.touchCount > 0)
+    //    //{
+    //    //    Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
+    //    //    touch = Input.touches[0];
+    //    //    if (touch.tapCount == 1
+    //    //        && touch.phase == TouchPhase.Began
+    //    //        && !buttonPressed)
+    //    //    {
+    //    //        Debug.Log("----------------------------------Input.touchCount > 0");
+    //    //        Debug.Log("     buttonPressed : " + buttonPressed);
+    //    //        Debug.Log("     touch.tapCount : " + touch.tapCount);
+    //    //        Debug.Log("     touch.phase : " + touch.phase);
+    //    //        tapDetected = true;
+    //    //        startTouchPosition = touch.position;
+    //    //        Debug.Log("tapDetected : " + tapDetected);
+    //    //    }
+
+    //    //    endTouchPosition = touch.position;
+    //    //    swipeDistance = endTouchPosition.y - startTouchPosition.y;
+
+    //    //    //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
+    //    //    //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
+    //    //    //    && swipeDistance > 0 // swipe up
+    //    //    //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
+    //    //    //{
+    //    //    //    //Debug.Log("swipe up");
+    //    //    //    touch.phase = TouchPhase.Ended;
+    //    //    //    GameLevelManager.instance.PlayerState.TouchControlJump();
+    //    //    //}
+
+    //    //    if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+    //    //        && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+    //    //        && swipeDistance < 0 // swipe down
+    //    //        && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+    //    //    {
+    //    //        //Debug.Log("swipe down");
+    //    //        Pause.instance.TogglePause();
+    //    //    }
+    //    //}
+    //}
+
+
+    void Update()
     {
-        //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
+            //Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
             touch = Input.touches[0];
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Began && !buttonPressed)
+            if (touch.tapCount == 1
+                && touch.phase == TouchPhase.Began
+                && !buttonPressed)
             {
+                //Debug.Log("----------------------------------Input.touchCount > 0");
+                //Debug.Log("     buttonPressed : " + buttonPressed);
+                //Debug.Log("     touch.tapCount : " + touch.tapCount);
+                //Debug.Log("     touch.phase : " + touch.phase);
                 tapDetected = true;
                 startTouchPosition = touch.position;
-                //Debug.Log("touch pressure : " + touch.pressure);
+                //Debug.Log("tapDetected : " + tapDetected);
             }
 
             endTouchPosition = touch.position;
@@ -66,20 +117,52 @@ public class TouchInputController : MonoBehaviour
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
-                && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
+                && startTouchPosition.x > (Screen.width / 2) // if swipe on right 1/2 of screen)) 
+                && startTouchPosition.x > (Screen.height / 2)) // if swipe on right 1/2 of screen)) 
             {
                 //Debug.Log("swipe down");
                 Pause.instance.TogglePause();
             }
+
+            //if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            //    && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+            //    && swipeDistance < 0 // swipe down
+            //    && startTouchPosition.x < (Screen.width / 2) // if swipe on right 1/2 of screen)) 
+            //    && startTouchPosition.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) 
+            //{
+            //    //Debug.Log("current camera : " + Camera.current.name);
+            //    //Debug.Log("Camera.main : " + Camera.main);
+            //    //foreach (Camera c in Camera.allCameras)
+            //    //{
+            //    //    Debug.Log("     camera : " + c.name);
+            //    //}
+            //    ////Debug.Log("swipe down");
+            //    //foreach (GameObject c in CameraManager.instance.Cameras)
+            //    //{
+            //    //    Debug.Log("    " + c.name + "active : " + c.activeInHierarchy);
+            //    //}
+            //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+            //    messageText.text = "graphics api : " + SystemInfo.graphicsDeviceType;
+            //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
+
+
+            //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceName);
+            //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceType);
+            //    //Debug.Log("graphics api : " + SystemInfo.graphicsMemorySize);
+            //    //Debug.Log("graphics api : " + SystemInfo.processorType);
+            //    //Debug.Log("graphics api : " + SystemInfo.systemMemorySize);
+
+            //    //ColorHelper.ColorText(SystemInfo.graphicsDeviceName, m_GPUFieldsColor),
+            //    //ColorHelper.ColorText("[" + SystemInfo.graphicsDeviceType.ToString() + "]", m_GPUDetailFieldsColor),
+            //    //ColorHelper.ColorText(SystemInfo.graphicsMemorySize.ToString(), m_GPUFieldsColor),
+            //    //ColorHelper.ColorText(SystemInfo.processorType, m_CPUFieldsColor),
+            //    //ColorHelper.ColorText(SystemInfo.systemMemorySize.ToString(), m_CPUFieldsColor),
+            //    //ColorHelper.ColorText(SystemInfo.operatingSystem, m_SysFieldsColor)
+            //}
         }
-    }
-
-
-    void Update()
-    {
-        if (tapDetected) 
+        if (tapDetected)
         {
-            //Debug.Log("shoot/jump");
+            Debug.Log("shoot/jump");
             //startTouchPosition = touch.position;
             GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
             tapDetected = false;
@@ -113,25 +196,72 @@ public class TouchInputController : MonoBehaviour
 
     private void activateDoubleTappedButton()
     {
-        Debug.Log("double tap");
-        buttonPressed = true;
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name))
+        //Debug.Log("double tap");
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name)
+            && !buttonPressed)
         {
+            //Debug.Log("reload");
             Pause.instance.reloadScene();
+            buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name)
+            && !buttonPressed)
         {
+            //Debug.Log("start screen");
             Pause.instance.loadstartScreen();
+            buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name)
+            && !buttonPressed)
         {
+            //Debug.Log("cancel/un pause");
             Pause.instance.TogglePause();
+            buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name)
+            && !buttonPressed)
         {
+            //Debug.Log("quit");
             Pause.instance.quit();
+            buttonPressed = true;
+        }
+        // new stuff
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleCameraName)
+            && !buttonPressed)
+        {
+            //Debug.Log("toggle camera");
+            CameraManager.instance.switchCamera();
+            buttonPressed = true;
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleFpsName)
+            && !buttonPressed)
+        {
+            //Debug.Log("toggle fps");
+            DevFunctions.instance.ToggleFpsCounter();
+            buttonPressed = true;
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleMaxStatsName)
+            && !buttonPressed)
+        {
+            //Debug.Log("set max stats");
+            DevFunctions.instance.setMaxPlayerStats();
+            buttonPressed = true;
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleUiStatsName)
+            && !buttonPressed)
+        {
+            //Debug.Log("toggle stats");
+            BasketBall.instance.toggleUiStats();
+            buttonPressed = true;
         }
         buttonPressed = false;
+    }
+
+    public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "";
     }
 
     //// action button (turn on moneyball)

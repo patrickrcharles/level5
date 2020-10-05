@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class timeOfDay : MonoBehaviour {
+public class timeOfDay : MonoBehaviour
+{
 
 
     [SerializeField] float dayOpacity, sunsetOpacity, nightOpacity, sunriseOpacity;
@@ -15,7 +15,7 @@ public class timeOfDay : MonoBehaviour {
     public float transitionRate, transitionTime;
 
     [SerializeField]
-    float startTime, backgroundTransitionFrequency ;
+    float startTime, backgroundTransitionFrequency;
 
     //note: for sprite renderer;
     // 1f = 100 percent opacity 
@@ -27,18 +27,19 @@ public class timeOfDay : MonoBehaviour {
     // the slab only at night
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
 
-       
+
         daySpriteRenderer = dayObject.GetComponentInChildren<SpriteRenderer>();
         sunsetSpriteRenderer = sunsetObject.GetComponentInChildren<SpriteRenderer>();
-        sunriseSpriteRenderer = sunriseObject.GetComponentInChildren<SpriteRenderer>(); 
+        sunriseSpriteRenderer = sunriseObject.GetComponentInChildren<SpriteRenderer>();
         nightSpriteRenderer = nightObject.GetComponentInChildren<SpriteRenderer>();
 
         dayOpacity = 1;
         sunsetOpacity = 1;
         nightOpacity = 1;
-        sunriseOpacity = 1;  
+        sunriseOpacity = 1;
 
         /*layer order :
          * 1 - day
@@ -125,7 +126,7 @@ public class timeOfDay : MonoBehaviour {
             sunset = true;
             sunsetOpacity = 1;
             dayOpacity = 0;
-            
+
             //opacity = 1;
         }
         else
@@ -135,7 +136,7 @@ public class timeOfDay : MonoBehaviour {
     }
     IEnumerator SunsetToNightTransition(float rateOfTransition, float totalTimeForTransition)
     {
-        sunsetOpacity -= (rateOfTransition / 100) ;
+        sunsetOpacity -= (rateOfTransition / 100);
 
         //Debug.Log("IEnumerator SunsetToNightTransition(float rateOfTransition, float totalTimeForTransition)");
         //Debug.Log("opacity : " + sunsetOpacity);
@@ -161,7 +162,7 @@ public class timeOfDay : MonoBehaviour {
     }
     IEnumerator NightToSunriseTransition(float rateOfTransition, float totalTimeForTransition)
     {
-        nightOpacity -= (rateOfTransition / 100) ;
+        nightOpacity -= (rateOfTransition / 100);
 
         //Debug.Log("IEnumerator NightToSunriseTransition(float rateOfTransition, float totalTimeForTransition)");
         //Debug.Log("opacity : " + nightOpacity);
@@ -170,7 +171,7 @@ public class timeOfDay : MonoBehaviour {
 
         nightSpriteRenderer.color = new Color(1f, 1f, 1f, nightOpacity);
 
-        if (nightOpacity <= 0 )
+        if (nightOpacity <= 0)
         {
             transitionInProgress = false;
             night = false;
@@ -187,7 +188,7 @@ public class timeOfDay : MonoBehaviour {
     }
     IEnumerator SunriseToDayTransition(float rateOfTransition, float totalTimeForTransition)
     {
-        dayOpacity += (rateOfTransition / 100) ;
+        dayOpacity += (rateOfTransition / 100);
 
         //Debug.Log("IEnumerator SunriseToDayTransition(float rateOfTransition, float totalTimeForTransition)");
         //Debug.Log("opacity : " + dayOpacity);
@@ -196,7 +197,7 @@ public class timeOfDay : MonoBehaviour {
 
         daySpriteRenderer.color = new Color(1f, 1f, 1f, dayOpacity);
 
-        if (dayOpacity >= 1 )
+        if (dayOpacity >= 1)
         {
             transitionInProgress = false;
             sunrise = false;
