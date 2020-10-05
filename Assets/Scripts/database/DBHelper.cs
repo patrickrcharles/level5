@@ -347,7 +347,7 @@ public class DBHelper : MonoBehaviour
                     string sqlQuery =
                     "Insert INTO "
                     + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
-                    "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release) "
+                    "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, islocked) "
                     + " Values('" + character.PlayerId
                     + "', '" + character.PlayerDisplayName
                     + "', '" + character.PlayerObjectName
@@ -588,6 +588,7 @@ public class DBHelper : MonoBehaviour
                 //CharacterProfile temp = new CharacterProfile();
                 while (reader.Read())
                 {
+                    //CharacterProfile temp = null;
                     CharacterProfile temp = new CharacterProfile();
                     //CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
 
