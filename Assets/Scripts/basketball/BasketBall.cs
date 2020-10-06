@@ -481,7 +481,9 @@ public class BasketBall : MonoBehaviour
         rigidbody.velocity = globalVelocity;
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
-        //Debug.Log("Launch ----------- finish()");
+
+        // analytics
+        AnaylticsManager.PlayerShoot(playerState.Shotmeter.SliderValueOnButtonPress);
     }
 
     // ============================ Functions and Properties ==========================================

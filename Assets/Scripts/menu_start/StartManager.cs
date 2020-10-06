@@ -175,6 +175,7 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AnaylticsManager.MenuStartLoaded();
         StartCoroutine(InitializeDisplay());
     }
 

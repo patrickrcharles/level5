@@ -84,7 +84,6 @@ public class ShotMeter : MonoBehaviour
             locked = false;
 
             sliderValueOnButtonPress = Mathf.CeilToInt((((Time.time - meterStartTime) / (meterFillTime) * 100)));
-
             if (sliderValueOnButtonPress >= 100)
             {
                 // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75

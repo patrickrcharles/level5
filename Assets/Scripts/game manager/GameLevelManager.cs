@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Analytics;
 #if UNITY_EDITOR
 #endif
 
@@ -103,6 +104,8 @@ public class GameLevelManager : MonoBehaviour
 
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
+
+        AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled

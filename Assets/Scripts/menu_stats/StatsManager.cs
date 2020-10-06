@@ -145,6 +145,8 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
+        AnaylticsManager.MenuStatsLoaded();
+
         // create rows dor data display
         for (int i = 0; i < highScoreRowsDataList.Count; i++)
         {
