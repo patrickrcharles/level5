@@ -17,7 +17,6 @@ public class SunglassesCollision : MonoBehaviour
     {
         if (other.CompareTag("Player") && !sunglassesDisabled)
         {
-            Debug.Log("collision : sunglasses + Player");
             sunglassesDisabled = true;
             TheyLiveManager.instance.TheyLiveEnabled = true;
             spriteRenderer.enabled = false;
