@@ -22,7 +22,7 @@ public class interact_jdrac : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag("enemyBystander") && other.CompareTag("playerHitbox")) ;
+        if (gameObject.CompareTag("enemyBystander") && other.CompareTag("playerHitbox")) 
         {
             ranNum = Random.Range(0, 6);
             /*

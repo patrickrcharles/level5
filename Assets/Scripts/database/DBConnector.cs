@@ -551,7 +551,7 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             messageText.text += "\n" + e;
-            string text = "ERROR : dropDatabaseTable(" + tableName + ")";
+            //string text = "ERROR : dropDatabaseTable(" + tableName + ")";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
@@ -650,10 +650,10 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             messageText.text += "\n" + e;
-            string text = "createTableCharacterProfile()";
+            //string text = "createTableCharacterProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-            
-            //return;
+
+            return;
         }
     }
 
@@ -701,7 +701,7 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             messageText.text += "\n" + e;
-            string text = "createTableCharacterProfile()";
+            //string text = "createTableCharacterProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
@@ -741,7 +741,7 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             messageText.text += "\n" + e;
-            string text = "createTableCheerleaderProfile()";
+            //string text = "createTableCheerleaderProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
