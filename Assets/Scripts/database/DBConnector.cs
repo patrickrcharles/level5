@@ -109,18 +109,18 @@ public class DBConnector : MonoBehaviour
         }
         //VerifyDatabase();
 
-        //create default user 
-        if (tableExists(tableNameUser))
-        {
-            if (dbHelper.isTableEmpty(tableNameUser))
-            {
-                //Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
-                dbHelper.InsertDefaultUserRecord();
-            }
-        }
+        ////create default user 
+        //if (tableExists(tableNameUser))
+        //{
+        //    if (dbHelper.isTableEmpty(tableNameUser))
+        //    {
+        //        //Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
+        //        dbHelper.InsertDefaultUserRecord();
+        //    }
+        //}
 
-        // get device user is currently using
-        SetCurrentUserDevice();
+        //// get device user is currently using
+        //SetCurrentUserDevice();
     }
 
     private void VerifyDatabase()
@@ -155,7 +155,7 @@ public class DBConnector : MonoBehaviour
             dbconn.Close();
             dbconn = null;
 
-            //databaseCreated = true;
+            databaseCreated = true;
             //Debug.Log("databaseCreated : " + databaseCreated);
         }
         catch (Exception e)
@@ -453,19 +453,19 @@ public class DBConnector : MonoBehaviour
                 "name   TEXT NOT NULL," +
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
-                "islocked  INTEGER DEFAULT 0);" +
+                "islocked  INTEGER DEFAULT 0);");
                 //"islocked  INTEGER DEFAULT 1);" +
 
-                "CREATE TABLE if not exists User( " +
-                "id    INTEGER PRIMARY KEY, " +
-                "userName  INTEGER, " +
-                "firstName TEXT, " +
-                "middleName    INTEGER, " +
-                "lastName  INTEGER, " +
-                "email TEXT, " +
-                "password  TEXT, " +
-                "version   TEXT, " +
-                "os    TEXT);");
+                //"CREATE TABLE if not exists User( " +
+                //"id    INTEGER PRIMARY KEY, " +
+                //"userName  INTEGER, " +
+                //"firstName TEXT, " +
+                //"middleName    INTEGER, " +
+                //"lastName  INTEGER, " +
+                //"email TEXT, " +
+                //"password  TEXT, " +
+                //"version   TEXT, " +
+                //"os    TEXT);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -479,14 +479,14 @@ public class DBConnector : MonoBehaviour
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            //VerifyDatabase();
+            VerifyDatabase();
 
         }
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
             return;
-        }
+        } 
     }
 
 
@@ -505,8 +505,8 @@ public class DBConnector : MonoBehaviour
                 "DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists CharacterProfile; " +
                 "DROP TABLE if exists CheerleaderProfile; " +
-                "DROP TABLE if exists HighScores; " +
-                "DROP TABLE if exists User; ");
+                "DROP TABLE if exists HighScores; ");
+                //"DROP TABLE if exists User; ");
 
             Debug.Log(sqlQuery);
 
