@@ -32,7 +32,7 @@ TextureImporter:
   maxTextureSize: 32
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: 0
     mipBias: -100
     wrapU: -1
@@ -89,7 +89,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 32
     resizeAlgorithm: 0
-    textureFormat: 33
+    textureFormat: 31
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -103,7 +103,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: 65
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1

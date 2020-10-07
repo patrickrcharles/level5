@@ -102,8 +102,10 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
+
+        //Screen.SetResolution(1280, 720, true);
 
         AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
 
