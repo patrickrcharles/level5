@@ -102,50 +102,13 @@ public class GameLevelManager : MonoBehaviour
     {
         // return to this if n
         GameOptions.previousSceneName = "level_00_start";
-        //unlimited
-        //QualitySettings.vSyncCount = 0;
-        //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
-        //Debug.Log("screen.dpi : " + Screen.dpi);
-        //Debug.Log("device model : " + SystemInfo.deviceModel);
-        //Debug.Log("device  name: " + SystemInfo.deviceName);
-        //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
-        //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
-        //QualitySettings.vSyncCount = 1;
 
-        //standaloneInputModule = EventSystem.current.gameObject.GetComponent<StandaloneInputModule>();
-        //inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
 
-        //#if UNITY_ANDROID && !UNITY_EDITOR
-        //        Debug.Log("if android");
-        //        QualitySettings.vSyncCount = 1;
-        //        Application.targetFrameRate = 60;
-        //        inputSystemUIInputModule.DeactivateModule();
-        //        inputSystemUIInputModule.enabled = false;
-        //        standaloneInputModule.ActivateModule();
-
-        //#endif
-
-        //#if UNITY_STANDALONE || UNITY_EDITOR
-        //        Debug.Log("if editor");
-        //        QualitySettings.vSyncCount = 0;
-        //        standaloneInputModule.DeactivateModule();
-        //        standaloneInputModule.enabled = false;
-        //        inputSystemUIInputModule.ActivateModule();
-
-        //#endif
-
-        //Debug.Log(GameOptions.levelSelectedName);
         // analytic event
         if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
         {
             AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
         }
-
-
-        // Print out the architecture of the running process.
-        // We can use the Environment property Is64BitProcess along with SystemInfo.processorType to figure it out.
-        // Do a case insensitive string check.
-
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled

@@ -80,7 +80,6 @@ public class GameOptions : MonoBehaviour
         levelSelectedName = SceneManager.GetActiveScene().name;
         applicationVersion = Application.version;
 
-        Debug.Log("************************************************get architecture info");
         if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
         {
             if (Environment.Is64BitProcess)

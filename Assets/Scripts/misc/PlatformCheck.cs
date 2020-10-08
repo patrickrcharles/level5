@@ -14,26 +14,13 @@ public class PlatformCheck : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        //Debug.Log("Awake");
-        //DontDestroyOnLoad(gameObject);
-        //if (instance == null)
-        //{
-        //    instance = this;
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-
         if (EventSystem.current.gameObject.GetComponent<StandaloneInputModule>() != null)
         {
-            Debug.Log("StandaloneInputModule>() != null");
             standaloneInputModule = EventSystem.current.gameObject.GetComponent<StandaloneInputModule>();
         }
 
         if (EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>() != null)
         {
-            Debug.Log("InputSystemUIInputModule>() != null");
             inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
         }
 

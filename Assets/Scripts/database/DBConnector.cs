@@ -63,13 +63,15 @@ public class DBConnector : MonoBehaviour
 
     void Start()
     {
-        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-
-        messageText.text += "\n" + SystemInfo.deviceName.ToString();
-        messageText.text += "\n" + SystemInfo.deviceModel.ToString();
-        messageText.text += "\n" + SystemInfo.processorType.ToString();
-        messageText.text += "\n" + filepath;
-        messageText.text += "\n" + connection;
+        //if (GameObject.Find("messageDisplay") != null)
+        //{
+        //    //messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //    //messageText.text += "\n" + SystemInfo.deviceName.ToString();
+        //    //messageText.text += "\n" + SystemInfo.deviceModel.ToString();
+        //    //messageText.text += "\n" + SystemInfo.processorType.ToString();
+        //    //messageText.text += "\n" + filepath;
+        //    //messageText.text += "\n" + connection;
+        //}
 
         //// create database / add tables if not exist
         if (File.Exists(filepath))
@@ -82,8 +84,8 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", messageText.text);
+                //messageText.text += "\n" + e;
+                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
@@ -102,8 +104,8 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", messageText.text);
+                //messageText.text += "\n" + e;
+                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
@@ -161,7 +163,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
         }
     }
 
@@ -202,7 +204,7 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                messageText.text += "\n" + e;
+                //messageText.text += "\n" + e;
             }
         }
         Debug.Log("db version : " + version);
@@ -357,17 +359,17 @@ public class DBConnector : MonoBehaviour
     void createDatabase()
     {
         //Debug.Log("createDatabase()");
-        messageText.text += "\n" + "createDatabase()";
+        //messageText.text += "\n" + "createDatabase()";
         try
         {
             dbconn = new SqliteConnection(connection);
-            messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
+            //messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
 
             dbconn.Open();
-            messageText.text += "\n" + "dbconn.Open();";
+            //messageText.text += "\n" + "dbconn.Open();";
 
             dbcmd = dbconn.CreateCommand();
-            messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
+            //messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
 
             string sqlQuery = String.Format(
                 "CREATE TABLE if not exists HighScores(" +
@@ -521,7 +523,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
             //SendEmail.instance.//SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
             return;
         }
@@ -550,7 +552,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
             //string text = "ERROR : dropDatabaseTable(" + tableName + ")";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
@@ -649,7 +651,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
             //string text = "createTableCharacterProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
 
@@ -700,7 +702,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
             //string text = "createTableCharacterProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
@@ -740,7 +742,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
             //string text = "createTableCheerleaderProfile()";
             //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
