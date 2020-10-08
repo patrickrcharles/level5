@@ -133,27 +133,20 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown)
         {
-            // touch controls variables -----------------------------------------------------------------------
-            if (GameLevelManager.instance.Joystick != null)
-            {
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+
                 movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
                 movementVertical = GameLevelManager.instance.Joystick.Vertical;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
-            }
+#endif
 
-            // Input Sytem 1.0.0 controls variables ---------------------------------------------------------------
-            //if (joystick == null)
-            //{
-            //    movementInput = GameLevelManager.Instance.Controls.Player.movement.ReadValue<Vector2>();
-            //    movement = new Vector3(movementInput.x, 0, movementInput.y) * movementSpeed * Time.deltaTime;
+#if UNITY_STANDALONE || UNITY_EDITOR 
 
-            //}
-            if (GameLevelManager.instance.Joystick == null)
-            {
                 movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
                 movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
-            }
+#endif
 
             //-----------------------------------------------------------------------------------------------------
             rigidBody.MovePosition(transform.position + movement);
@@ -161,39 +154,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     public void TouchControlJump()
     {
         if (grounded && !KnockedDown)
         {
             playerJump();
-        }
-    }
-    public void touchControlShoot()
-    {
-        // if has ball, is in air, and pressed shoot button.
-        // shoot ball
-        if (inAir
-            && hasBasketball
-            && !IsSetShooter)
-        {
-            CallBallToPlayer.instance.Locked = true;
-            basketball.BasketBallState.Locked = true;
-            checkIsPlayerFacingGoal(); // turns player facing rim
-            Shotmeter.MeterEnded = true;
-            playerShoot();
-        }
-        // call ball
-        if (!hasBasketball
-            && !inAir
-            && basketball.BasketBallState.CanPullBall
-            && !basketball.BasketBallState.Locked
-            && grounded
-            && !CallBallToPlayer.instance.Locked)
-        {
-            CallBallToPlayer.instance.Locked = true;
-            CallBallToPlayer.instance.pullBallToPlayer();
-            CallBallToPlayer.instance.Locked = false;
         }
     }
 

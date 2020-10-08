@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,14 +68,59 @@ public class GameOptions : MonoBehaviour
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
 
-    //static public int playerExperience;
-    //static public int playerLevel;
-    //static public int playerUpdatePointsAvailable;
-    //static public int playerUpdatePointsUsed;
+    static public bool architectureIs64bit;
+    static public bool architectureIs32bit;
+    static public bool architectureIsAndroid;
 
-    void Awake()
+    static public bool architectureInfoLoaded = false;
+
+
+    void Start()
     {
         levelSelectedName = SceneManager.GetActiveScene().name;
         applicationVersion = Application.version;
+
+        Debug.Log("************************************************get architecture info");
+        if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                Debug.Log("ARM64");
+                GameOptions.architectureIs32bit = false;
+                GameOptions.architectureIs64bit = true;
+                GameOptions.architectureIsAndroid = true;
+            }
+
+            else
+            {
+                Debug.Log("ARM");
+                GameOptions.architectureIs32bit = true;
+                GameOptions.architectureIs64bit = false;
+                GameOptions.architectureIsAndroid = true;
+            }
+        }
+        else
+        {
+            // Must be in the x86 family.
+            if (Environment.Is64BitProcess)
+            {
+                Debug.Log("x86_64");
+                GameOptions.architectureIs32bit = false;
+                GameOptions.architectureIs64bit = true;
+                GameOptions.architectureIsAndroid = false;
+            }
+            else
+            {
+                Debug.Log("x86");
+                GameOptions.architectureIs32bit = true;
+                GameOptions.architectureIs64bit = false;
+                GameOptions.architectureIsAndroid = false;
+            }
+            Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
+            Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
+            Debug.Log("android : " + GameOptions.architectureIsAndroid);
+        }
+        architectureInfoLoaded = true;
+        Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
     }
 }

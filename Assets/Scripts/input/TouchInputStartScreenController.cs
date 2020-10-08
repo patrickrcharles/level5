@@ -8,7 +8,7 @@ using TouchPhase = UnityEngine.TouchPhase;
 
 public class TouchInputStartScreenController : MonoBehaviour
 {
-
+#if UNITY_ANDROID && !UNITY_EDITOR
     private Vector2 startTouchPosition, endTouchPosition;
 
     float swipeUpTolerance;
@@ -272,4 +272,5 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
         buttonPressed = false;
     }
+#endif
 }

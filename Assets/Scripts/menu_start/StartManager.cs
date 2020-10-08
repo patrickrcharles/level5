@@ -151,8 +151,6 @@ public class StartManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        // dont destroy on load / check for duplicate instance
-        //destroyInstanceIfAlreadyExists();
 
         StartCoroutine(getLoadedData());
 

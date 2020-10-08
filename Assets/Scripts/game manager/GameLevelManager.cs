@@ -1,5 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Globalization;
+using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 #if UNITY_EDITOR
 #endif
 
@@ -40,6 +45,11 @@ public class GameLevelManager : MonoBehaviour
 
     public static GameLevelManager instance;
     private bool _locked;
+
+
+    //[SerializeField] InputSystemUIInputModule inputSystemUIInputModule;
+    //[SerializeField] StandaloneInputModule standaloneInputModule;
+    //[SerializeField] EventSystem eventSystem;
 
     private void OnEnable()
     {
@@ -102,12 +112,40 @@ public class GameLevelManager : MonoBehaviour
         //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
         //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        //standaloneInputModule = EventSystem.current.gameObject.GetComponent<StandaloneInputModule>();
+        //inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
 
-        //Screen.SetResolution(1280, 720, true);
+        //#if UNITY_ANDROID && !UNITY_EDITOR
+        //        Debug.Log("if android");
+        //        QualitySettings.vSyncCount = 1;
+        //        Application.targetFrameRate = 60;
+        //        inputSystemUIInputModule.DeactivateModule();
+        //        inputSystemUIInputModule.enabled = false;
+        //        standaloneInputModule.ActivateModule();
 
-        AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
+        //#endif
+
+        //#if UNITY_STANDALONE || UNITY_EDITOR
+        //        Debug.Log("if editor");
+        //        QualitySettings.vSyncCount = 0;
+        //        standaloneInputModule.DeactivateModule();
+        //        standaloneInputModule.enabled = false;
+        //        inputSystemUIInputModule.ActivateModule();
+
+        //#endif
+
+        //Debug.Log(GameOptions.levelSelectedName);
+        // analytic event
+        if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
+        {
+            AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
+        }
+
+
+        // Print out the architecture of the running process.
+        // We can use the Environment property Is64BitProcess along with SystemInfo.processorType to figure it out.
+        // Do a case insensitive string check.
+
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled
@@ -123,20 +161,6 @@ public class GameLevelManager : MonoBehaviour
         //    RenderSettings.ambientLight = Color.white;
         //}
 
-
-        //Debug.Log(System.DateTime.Now.Hour);
-        //Application.targetFrameRate = 60;
-
-        //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
-        //Debug.Log("quality level : " + QualitySettings.GetQualityLevel());
-        //Debug.Log("quality level : " + QualitySettings.names);
-
-        //Debug.Log("width : " + Screen.width);
-        //Debug.Log("height : " + Screen.height);
-        //int w = Screen.width;
-        //int h = Screen.height;
-        //float num = (float)w/h;
-        //Debug.Log("screen ratio : " + num );
 
         _locked = false;
         //set up player/basketball read only references for use in other classes

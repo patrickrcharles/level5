@@ -54,9 +54,11 @@ public class LoadManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        StartCoroutine(verifyCharacterProfileTable());
-        StartCoroutine(verifyCheerleaderProfileTable());
-        StartCoroutine(LoadGameData());
+
+        StartCoroutine(LoadAllData());
+        //StartCoroutine(verifyCharacterProfileTable());
+        //StartCoroutine(verifyCheerleaderProfileTable());
+        //StartCoroutine(LoadGameData());
     }
 
     private void Update()
@@ -79,9 +81,17 @@ public class LoadManager : MonoBehaviour
         }
     }
 
+    IEnumerator LoadAllData()
+    {
+        yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
+        Debug.Log("LoadAllData : architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
+        StartCoroutine(verifyCharacterProfileTable());
+        StartCoroutine(verifyCheerleaderProfileTable());
+        StartCoroutine(LoadGameData());
+    }
+
     IEnumerator verifyCharacterProfileTable()
     {
-
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
         yield return new WaitUntil(() => AchievementManager.instance != null);
         yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);

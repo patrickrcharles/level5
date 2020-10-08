@@ -27,7 +27,7 @@ public class CallBallToPlayer : MonoBehaviour
         Locked = false;
 
         canBallToPlayerEnabled = true;
-        pullSpeed = 2.3f;
+        pullSpeed = 2.0f;
     }
 
     private void LateUpdate()
