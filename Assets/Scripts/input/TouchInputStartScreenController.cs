@@ -21,9 +21,9 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     Touch touch;
     bool buttonPressed;
-    [SerializeField]
+
     GameObject joystickGameObject;
-    [SerializeField]
+
     GameObject prevSelectedGameObject;
 
     public static TouchInputStartScreenController instance;

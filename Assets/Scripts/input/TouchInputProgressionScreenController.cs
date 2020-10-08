@@ -16,9 +16,9 @@ public class TouchInputProgressionScreenController : MonoBehaviour
 
     Touch touch;
     bool buttonPressed;
-    [SerializeField]
+
     GameObject joystickGameObject;
-    [SerializeField]
+
     GameObject prevSelectedGameObject;
 
     public static TouchInputProgressionScreenController instance;

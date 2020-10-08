@@ -28,6 +28,7 @@ public class PlatformCheck : MonoBehaviour
         Debug.Log("if android");
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
+
         ////inputSystemUIInputModule.DeactivateModule();
         inputSystemUIInputModule.enabled = false;
         //standaloneInputModule.ActivateModule();
