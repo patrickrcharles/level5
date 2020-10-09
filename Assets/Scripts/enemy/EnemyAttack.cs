@@ -15,14 +15,10 @@ public class EnemyAttack : MonoBehaviour
 
     public void enableAttackBox()
     {
-        Debug.Log("enableAttackBox");
         attackBox.SetActive(true);
     }
     public void disableAttackBox()
     {
-        Debug.Log("disableAttackBox");
         attackBox.SetActive(false);
     }
-
-
 }

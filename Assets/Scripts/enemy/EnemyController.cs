@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -61,7 +62,7 @@ public class EnemyController : MonoBehaviour
         canAttack = true;
         if(attackCooldown == 0)
         {
-            attackCooldown = 1.0f;
+            attackCooldown = 1.5f;
         }
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }
@@ -81,7 +82,11 @@ public class EnemyController : MonoBehaviour
 
         if (GameLevelManager.instance.PlayerState.KnockedDown || !canAttack)
         {
+            Debug.Log(" enemy should be idle");
             stateIdle = true;
+            Debug.Log("     stateIdle : " + stateIdle);
+            Debug.Log("     stateWalk : " + stateWalk);
+
         }
         else
         {
@@ -98,7 +103,8 @@ public class EnemyController : MonoBehaviour
             Flip();
         }
         // ================== animation walk state ==========================
-        if (rigidBody.velocity.sqrMagnitude > 0)
+        //if (rigidBody.velocity.sqrMagnitude > 0)
+        if (stateWalk)
         {
             anim.SetBool("walk", true);
         }
@@ -108,7 +114,8 @@ public class EnemyController : MonoBehaviour
         }
         // ================== animation attack state ==========================
         if( math.abs(relativePositionToPlayer) < minDistanceToAttack 
-            && canAttack && !stateIdle)
+            && canAttack 
+            && !stateIdle)
         {
             // attack
             Debug.Log("enemy attack");

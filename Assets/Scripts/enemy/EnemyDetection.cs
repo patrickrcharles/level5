@@ -14,7 +14,7 @@ public class EnemyDetection : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player detected");
+            //Debug.Log("player detected");
             Debug.Log("go to player");
             enemyController.StatePursue = true;
         }
@@ -24,7 +24,7 @@ public class EnemyDetection : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("pursuit ended");
+            //Debug.Log("pursuit ended");
             enemyController.StatePursue = false;
         }
     }
