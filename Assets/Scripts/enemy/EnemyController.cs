@@ -1,10 +1,7 @@
-﻿using System;
+﻿
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
