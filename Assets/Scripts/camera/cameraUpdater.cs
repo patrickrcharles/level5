@@ -105,38 +105,20 @@ public class cameraUpdater : MonoBehaviour
     {
         //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        playerPos = new Vector3(player.transform.position.x,
-            0, player.transform.position.z);
-        //camPos = new Vector3(cam.transform.position.x,
-        //    0, cam.transform.root.position.z);
-        //rimPos = new Vector3(basketBallRim.x,
-        //    0, basketBallRim.z);
+        //playerPos = new Vector3(player.transform.position.x,
+        //    0, player.transform.position.z);
+        ////camPos = new Vector3(cam.transform.position.x,
+        ////    0, cam.transform.root.position.z);
+        ////rimPos = new Vector3(basketBallRim.x,
+        ////    0, basketBallRim.z);
 
-        //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
-        // for zoom
-        //distanceRimFromPlayer = rimPos.z - playerPos.z;
-        //distanceRimFromPlayer = basketBallRim.z - playerPos.z;
-        // for secondary camera
+        ////distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
+        //// for zoom
+        ////distanceRimFromPlayer = rimPos.z - playerPos.z;
+        ////distanceRimFromPlayer = basketBallRim.z - playerPos.z;
+        //// for secondary camera
         playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
-    }
-
-    void FixedUpdate()
-    {
-
-        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
-        {
-            // * note change var to player distance because each camera is in a different spot
-            if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
-                && !((playerDistanceFromRimX < -6.8 || playerDistanceFromRimX > 6.8)))
-            {
-                updatePositionNearGoal();
-            }
-            else
-            {
-                updatePositionOnPlayer();
-            }
-        }
 
         if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
         {
@@ -156,7 +138,42 @@ public class cameraUpdater : MonoBehaviour
         {
             toggleCameraOnGoal();
         }
+        if (isLockOnGoalCamera)
+        {
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
+        }
 
+
+        //if (distanceRimFromPlayer > startZoomDistance
+        //    && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
+        ////&& cam.transform.position.z > zMin)
+        //{
+        //    zoomOut();
+        //}
+        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
+        //{
+        //    zoomIn();
+        //
+
+    }
+
+    void FixedUpdate()
+    {
+
+
+        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
+        {
+            // * note change var to player distance because each camera is in a different spot
+            if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
+                && !((playerDistanceFromRimX < -6.8 || playerDistanceFromRimX > 6.8)))
+            {
+                updatePositionNearGoal();
+            }
+            else
+            {
+                updatePositionOnPlayer();
+            }
+        }
 
         if ((player != null) && isOrthoGraphic && !isFollowBallCamera && !isLockOnGoalCamera)
         {
@@ -170,22 +187,6 @@ public class cameraUpdater : MonoBehaviour
             transform.position = new Vector3(BasketBall.instance.transform.position.x,
                  BasketBall.instance.transform.position.y + 0.5f,
                  BasketBall.instance.transform.position.z - 2);
-        }
-
-        //if (distanceRimFromPlayer > startZoomDistance
-        //    && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
-        ////&& cam.transform.position.z > zMin)
-        //{
-        //    zoomOut();
-        //}
-        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
-        //{
-        //    zoomIn();
-        //}
-
-        if (isLockOnGoalCamera)
-        {
-            transform.position = basketBallRim + lockOnGoalCameraOffset;
         }
     }
 

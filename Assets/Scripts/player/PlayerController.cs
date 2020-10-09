@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.UI;
 using Touch = UnityEngine.Touch;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
     private bool _jump;
     private bool _inAir;
     private bool _grounded;
+    [SerializeField]
     private bool _knockedDown;
     private bool _knockedDown_alternate;
     private bool _avoidedKnockDown;
@@ -86,6 +88,8 @@ public class PlayerController : MonoBehaviour
 
     float movementHorizontal;
     float movementVertical;
+
+    bool jumpTrigger = false;
 
     Touch touch;
 
@@ -133,7 +137,7 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown)
         {
-
+         
 #if UNITY_ANDROID && !UNITY_EDITOR
 
                 movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
@@ -145,12 +149,19 @@ public class PlayerController : MonoBehaviour
 
                 movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
                 movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
-                movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
+                movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
 #endif
 
             //-----------------------------------------------------------------------------------------------------
             rigidBody.MovePosition(transform.position + movement);
+            //movement = targetPosition * (movementSpeed * Time.deltaTime);
+            //rigidBody.MovePosition(transform.position + movement);
             isWalking(movement);
+        }
+        if (jumpTrigger)
+        {
+            jumpTrigger = false;
+            playerJump();
         }
     }
 
@@ -327,7 +338,8 @@ public class PlayerController : MonoBehaviour
             && !KnockedDown)
         //&& !isSetShooter))
         {
-            playerJump();
+            //playerJump();
+            jumpTrigger = true;
         }
 
         //    if (
@@ -409,11 +421,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     public void playerJump()
     {
         if (!isSetShooter)
         {
-            rigidBody.velocity = (Vector3.up * characterProfile.JumpForce); // + (Vector3.forward * rigidBody.velocity.x);
+            rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+
+            //rigidBody.velocity.y = Mathf.Sqrt(characterProfile.JumpForce * -2f * Physics.gravity.y);
+            //rigidBody.AddForce(new Vector3(0, characterProfile.JumpForce, 0), ForceMode.VelocityChange); // + (Vector3.forward * rigidBody.velocity.x);
+            //transform.Translate(Vector3.up * characterProfile.JumpForce * Time.smoothDeltaTime);
         }
 
         //jumpStartTime = Time.time;
@@ -521,21 +538,6 @@ public class PlayerController : MonoBehaviour
     {
         moonwalkAudio.enabled = false;
     }
-
-    //*** need to update this
-    //void setShooterProfileStats()
-    //{
-    //    characterProfile.Speed = GameOptions.speed;
-    //    characterProfile.RunSpeed = GameOptions.runSpeed;
-    //    characterProfile.RunSpeed = GameOptions.runSpeedHasBall;
-    //    characterProfile.JumpForce = GameOptions.jumpForce;
-    //    characterProfile.Luck = GameOptions.luck;
-    //    characterProfile.ShootAngle = GameOptions.shootAngle;
-    //    characterProfile.Accuracy2Pt = GameOptions.accuracy2pt;
-    //    characterProfile.Accuracy3Pt = GameOptions.accuracy3pt;
-    //    characterProfile.Accuracy4Pt = GameOptions.accuracy4pt;
-    //    characterProfile.Accuracy7Pt = GameOptions.accuracy7pt;
-    //}
 
     public bool grounded
     {

@@ -30,9 +30,12 @@ public class PlayerCollisions : MonoBehaviour
         }
         // if collsion between hitbox and vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
-            && other.CompareTag("knock_down_attack")
-            && !playerState.KnockedDown)
+            && (other.CompareTag("knock_down_attack") || other.CompareTag("enemyAttackBox") 
+            && !playerState.KnockedDown))
         {
+            Debug.Log("this : " + gameObject.name + "  other : " + other.name);
+            Debug.Log("playerState.KnockedDown : " + playerState.KnockedDown );
+
             // player can be knocked down and other
             if (playerCanBeKnockedDown)
             {

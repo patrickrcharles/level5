@@ -39,6 +39,7 @@ public class BasketBall : MonoBehaviour
     int fourAccuracy;
     int sevenAccuracy;
     float lastShotDistance;
+    float maxSpeed = 0f;
 
     bool playHitRimSound;
     bool locked;
@@ -90,6 +91,9 @@ public class BasketBall : MonoBehaviour
 
         //todo: move to game manager
         UiStatsEnabled = false;
+
+        // cap ball speed
+        maxSpeed = 25f;
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
         if (GameObject.Find("ui_stats") != null)
         {
@@ -119,6 +123,10 @@ public class BasketBall : MonoBehaviour
         // get speed for basketball animation
         //checkIsBallFacingGoal();
 
+        if (rigidbody.velocity.magnitude > maxSpeed)
+        {
+            rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
+        }
         // drop shadow lock to bball transform on the ground
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
