@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     static int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
     static int bIdle = Animator.StringToHash("base.movement.basketball_idle");
     static int knockedDownState = Animator.StringToHash("base.knockedDown");
+    static int specialState = Animator.StringToHash("base.special");
 
     // get/set for following at bottom of class
     private bool _facingRight;
@@ -137,7 +138,7 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown)
         {
-         
+
 #if UNITY_ANDROID && !UNITY_EDITOR
 
                 movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
@@ -145,24 +146,22 @@ public class PlayerController : MonoBehaviour
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
 #endif
 
-#if UNITY_STANDALONE || UNITY_EDITOR 
+#if UNITY_STANDALONE || UNITY_EDITOR
 
                 movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
                 movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                 movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
 #endif
 
-            //-----------------------------------------------------------------------------------------------------
-            rigidBody.MovePosition(transform.position + movement);
+            if (currentState != specialState)
+            {
+                rigidBody.MovePosition(transform.position + movement);
+                isWalking(movement);
+            }
+
             //movement = targetPosition * (movementSpeed * Time.deltaTime);
             //rigidBody.MovePosition(transform.position + movement);
-            isWalking(movement);
         }
-        //if (jumpTrigger)
-        //{
-        //    jumpTrigger = false;
-        //    playerJump();
-        //}
     }
 
     public void TouchControlJump()
@@ -216,12 +215,13 @@ public class PlayerController : MonoBehaviour
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
+
         // knocked down
         if ((KnockedDown || KnockedDown_Alternate) && !locked)
         {
             locked = true;
             rigidBody.constraints = 
-                RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+                RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
             // if alternate knockdown animation
             if (KnockedDown_Alternate)
             {

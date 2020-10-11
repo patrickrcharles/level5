@@ -50,7 +50,6 @@ public class PlayerCollisions : MonoBehaviour
         if (gameObject.CompareTag("attack_box")
             && other.CompareTag("enemy"))
         {
-            Debug.Log("******************************************************** Player attacks enemy");
             // turn off enemy sight for 2 seconds
             other.GetComponent<EnemyDetection>().TurnOffEnemySight(2);
         }

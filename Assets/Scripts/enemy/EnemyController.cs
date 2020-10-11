@@ -99,7 +99,6 @@ public class EnemyController : MonoBehaviour
             && canAttack)
         {
             stateAttack = true;
-            Debug.Log("============================================================== state attack : " + stateAttack);
         }
         else
         {
