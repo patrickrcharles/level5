@@ -4,7 +4,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
     const string attackBoxText = "attack_box";
-    const string hitboxBoxText = "playerHitbox";
+    const string hitboxBoxText = "hitbox";
 
     [SerializeField]
     GameObject attackBox;
@@ -20,9 +20,9 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         }
 
         // get attack box reference
-        if (gameObject.transform.Find(attackBoxText) != null)
+        if (gameObject.transform.parent.Find(attackBoxText) != null)
         {
-            attackBox = gameObject.transform.Find(attackBoxText).gameObject;
+            attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
             disableAttackBox();
         }
         else
@@ -32,7 +32,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         // find hitbox
         if (gameObject.transform.parent.Find(hitboxBoxText) != null)
         {
-            hitBox = gameObject.transform.Find(hitboxBoxText).gameObject;
+            hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
         }
         else
         {

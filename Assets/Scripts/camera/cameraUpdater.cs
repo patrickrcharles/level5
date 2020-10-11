@@ -159,8 +159,6 @@ public class cameraUpdater : MonoBehaviour
 
     void FixedUpdate()
     {
-
-
         if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             // * note change var to player distance because each camera is in a different spot

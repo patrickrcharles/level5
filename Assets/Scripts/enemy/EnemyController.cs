@@ -5,39 +5,24 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float walkMovementSpeed;
-    public float runMovementSpeed;
-    public float attackMovementSpeed;
-    public float punchCooldown;
-    public float chargeSpeed;
-
-    [SerializeField]
-    public bool facingRight;
-
-    float distanceFromStartPos;
-    bool locked;
-    //GameObject player;
-
-    private float movementSpeed;
-    private Rigidbody rigidBody;
-    public SpriteRenderer currentSprite;
-
     Animator anim;
+    private Rigidbody rigidBody;
+    [SerializeField]
+    EnemyDetection enemyDetection;
 
-    public float maxDistance;
-
-    private GameObject[] returnPositions;
-
-    public bool stateWalk = false;
-    public bool stateIdle = false;
-    public bool stateAttack = false;
-    public bool canAttack;
-
+    // how long after attacking the enemy can attack again
     public float attackCooldown;
-
+    // target for enemy to move to
     private Vector3 targetPosition;
 
     Vector3 movement;
+    private float movementSpeed;
+    public float walkMovementSpeed;
+    public float runMovementSpeed;
+    public float attackMovementSpeed;
+
+    [SerializeField]
+    public bool facingRight;
     [SerializeField]
     private float relativePositionToPlayer;
     [SerializeField]
@@ -45,9 +30,21 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private float minDistanceToAttack;
 
+    private AnimatorStateInfo currentStateInfo;
+    static int currentState;
+    static int AnimatorState_Attack = Animator.StringToHash("base.attack");
+    static int AnimatorState_Walk = Animator.StringToHash("base.walk");
+    static int AnimatorState_Idle = Animator.StringToHash("base.idle");
 
+    public bool stateWalk = false;
+    public bool stateIdle = false;
+    public bool stateAttack = false;
 
-    public bool StatePursue { get => stateWalk; set => stateWalk = value; }
+    public bool canAttack;
+
+    public bool StateWalk { get => stateWalk; set => stateWalk = value; }
+    public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
+    public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
 
     // Use this for initialization
     void Start()
@@ -56,17 +53,19 @@ public class EnemyController : MonoBehaviour
         movementSpeed = walkMovementSpeed;
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        enemyDetection = gameObject.GetComponent<EnemyDetection>();
+
         canAttack = true;
-        if(attackCooldown == 0)
+        if (attackCooldown == 0)
         {
-            attackCooldown = 1.5f;
+            attackCooldown = 1f;
         }
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }
 
     private void FixedUpdate()
     {
-        if (stateWalk  && !stateIdle)
+        if (stateWalk)
         {
             pursuePlayer();
         }
@@ -74,30 +73,47 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
+        currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        currentState = currentStateInfo.fullPathHash;
+
         // ================== enemy facing player ==========================
         relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
 
-        if (GameLevelManager.instance.PlayerState.KnockedDown || !canAttack)
+        // ================== enemy idle ==========================
+        if ((GameLevelManager.instance.PlayerState.KnockedDown
+            || !canAttack
+            || !enemyDetection.PlayerSighted)
+            && currentState != AnimatorState_Attack)
         {
-            Debug.Log(" enemy should be idle");
             stateIdle = true;
-            Debug.Log("     stateIdle : " + stateIdle);
-            Debug.Log("     stateWalk : " + stateWalk);
-
+            //if idle stop rigidbody
+            rigidBody.velocity = Vector3.zero;
         }
         else
         {
             stateIdle = false;
         }
-
-
-        if (relativePositionToPlayer < 0 && facingRight)
+        // ================== enemy attack state ==========================
+        if (math.abs(relativePositionToPlayer) < minDistanceToAttack
+            && canAttack)
         {
-            Flip();
+            stateAttack = true;
+            Debug.Log("============================================================== state attack : " + stateAttack);
         }
-        if (relativePositionToPlayer > 0 && !facingRight)
+        else
         {
-            Flip();
+            stateAttack = false;
+        }
+        // ================== enemy walk state ==========================
+        if (enemyDetection.PlayerSighted
+            && !stateAttack)
+        {
+            stateWalk = true;
+        }
+        else
+        {
+            stateWalk = false;
         }
         // ================== animation walk state ==========================
         //if (rigidBody.velocity.sqrMagnitude > 0)
@@ -109,58 +125,20 @@ public class EnemyController : MonoBehaviour
         {
             anim.SetBool("walk", false);
         }
-        // ================== animation attack state ==========================
-        if( math.abs(relativePositionToPlayer) < minDistanceToAttack 
-            && canAttack 
-            && !stateIdle)
+        if (stateAttack)
         {
-            // attack
-            Debug.Log("enemy attack");
             anim.SetTrigger("attack");
+            FreezeEnemyPosition();
             StartCoroutine(AttackCooldown(attackCooldown));
         }
-
-        //if (statePursue)
-        //{
-        //    pursuePlayer();
-        //}
-        //if (!statePursue && navmeshAgent.speed > 0)
-        //{
-        //    navmeshAgent.ResetPath();
-        //}
-        //distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
-        ////Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
-
-        //if (distanceFromStartPos >= maxDistance && movingToTarget)
-        //{
-        //    outsideRange = true;
-        //    insideRange = false;
-        //    //Debug.Log("if(distanceFromStartPos > maxDistance && !movingToTarget)");
-        //}
-
-        //if (distanceFromStartPos < maxDistance && movingToTarget)
-        //{
-        //    outsideRange = false;
-        //    insideRange = true;
-        //    //Debug.Log("if (distanceFromStartPos <= maxDistance)");
-        //}
-
-        //// navmesh has no target and inside range
-        //if (pathComplete())
-        //{
-        //    movingToTarget = false;
-        //    ignoreCollision = false;
-        //}
-
-        //// if outside area
-        //if (outsideRange && !movingToTarget && !locked)
-        //{
-        //    locked = true;
-        //    ignoreCollision = true;
-        //    movingToTarget = true;
-
-        //    StartCoroutine(waitOutsideRangeForXSeconds(5));
-        //}
+        if (relativePositionToPlayer < 0 && facingRight)
+        {
+            Flip();
+        }
+        if (relativePositionToPlayer > 0 && !facingRight)
+        {
+            Flip();
+        }
 
 
         //currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -189,30 +167,53 @@ public class EnemyController : MonoBehaviour
         //isWalking(navmeshAgent.velocity.magnitude);
     }
 
-    //protected bool pathComplete()
+    //void UpdateStateTruthTable()
     //{
-    //    if (Vector3.Distance(navmeshAgent.destination, navmeshAgent.transform.position) <= navmeshAgent.stoppingDistance)
+    //    if (stateAttack)
     //    {
-    //        if (!navmeshAgent.hasPath || navmeshAgent.velocity.sqrMagnitude == 0f)
-    //        {
-    //            // if not facing goal, flip
-    //            if (GameLevelManager.instance.BasketballRimVector.x < 0 && facingRight)
-    //            {
-    //                Flip();
-    //            }
-    //            if (GameLevelManager.instance.BasketballRimVector.x > 0 && !facingRight)
-    //            {
-    //                Flip();
-    //            }
-    //            return true;
-    //        }
+    //        stateIdle = false;
+    //        stateWalk = false;
     //    }
-    //    return false;
+    //    if (stateIdle)
+    //    {
+    //        stateAttack
+    //    }
+    //    if (stateWalk)
+    //    {
+
+    //    }
     //}
+
+    public void FreezeEnemyPosition()
+    {
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+            | RigidbodyConstraints.FreezeRotationZ
+            | RigidbodyConstraints.FreezeRotationY
+            | RigidbodyConstraints.FreezePositionY
+            | RigidbodyConstraints.FreezePositionZ
+            | RigidbodyConstraints.FreezePositionX;
+    }
+
+    public void UnFreezeEnemyPosition()
+    {
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+            | RigidbodyConstraints.FreezeRotationZ
+            | RigidbodyConstraints.FreezeRotationY
+            | RigidbodyConstraints.FreezePositionY;
+    }
 
     IEnumerator AttackCooldown(float seconds)
     {
+
         canAttack = false;
+        // wait for animator state to get to attack 
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
+        // wait for animation to finish
+        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
+        stateAttack = false;
+        // enemy can move again
+        UnFreezeEnemyPosition();
+        //wait for cooldown
         yield return new WaitForSecondsRealtime(seconds);
         canAttack = true;
     }
@@ -245,11 +246,7 @@ public class EnemyController : MonoBehaviour
         anim.SetBool(animationName, isTrue);
     }
 
-    //IEnumerator setWaitForXSeconds(float seconds)
-    //{
-    //    yield return new WaitForSecondsRealtime(seconds);
-    //    waiting = false;
-    //}
+
 
     int RandomNumber(int min, int max)
     {
@@ -263,11 +260,11 @@ public class EnemyController : MonoBehaviour
     {
         targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
         movement = targetPosition * (movementSpeed * Time.deltaTime);
-        rigidBody.MovePosition(transform.position + movement );
+        rigidBody.MovePosition(transform.position + movement);
     }
 
     public void UpdateDistanceFromPlayer()
     {
-        distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position , transform.position);
+        distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
     }
 }

@@ -1,31 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyDetection : MonoBehaviour
 {
     EnemyController enemyController;
+    [SerializeField]
+    bool playerSighted;
+    public float enemySightDistance;
+
+    public bool PlayerSighted { get => playerSighted; set => playerSighted = value; }
 
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        if(enemySightDistance == 0)
         {
-            //Debug.Log("player detected");
-            Debug.Log("go to player");
-            enemyController.StatePursue = true;
+            enemySightDistance = 5;
+        }
+        InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
+    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        //Debug.Log("player detected");
+    //        Debug.Log("go to player");
+    //        PlayerSighted = true;
+    //    }
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("playerHitbox"))
+    //    {
+    //        //Debug.Log("pursuit ended");
+    //        PlayerSighted = false;
+    //    }
+    //}
+
+    void CheckPlayerDistance()
+    {
+        if(enemyController.DistanceFromPlayer < enemySightDistance)
+        {
+            playerSighted = true; 
+        }
+        if (enemyController.DistanceFromPlayer >= enemySightDistance)
+        {
+            playerSighted = false;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void TurnOffEnemySight(float seconds)
     {
-        if (other.CompareTag("Player"))
-        {
-            //Debug.Log("pursuit ended");
-            enemyController.StatePursue = false;
-        }
+        StartCoroutine(DelayEnemmySight(seconds));
+    }
+
+    IEnumerator DelayEnemmySight(float seconds)
+    {
+        PlayerSighted = false;
+        yield return new WaitForSeconds(seconds);
+        PlayerSighted = true;
     }
 }

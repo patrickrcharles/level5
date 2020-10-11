@@ -33,8 +33,8 @@ public class PlayerCollisions : MonoBehaviour
             && (other.CompareTag("knock_down_attack") || other.CompareTag("enemyAttackBox") 
             && !playerState.KnockedDown))
         {
-            Debug.Log("this : " + gameObject.name + "  other : " + other.name);
-            Debug.Log("playerState.KnockedDown : " + playerState.KnockedDown );
+            //Debug.Log("this : " + gameObject.name + "  other : " + other.name);
+            //Debug.Log("playerState.KnockedDown : " + playerState.KnockedDown );
 
             // player can be knocked down and other
             if (playerCanBeKnockedDown)
@@ -46,6 +46,13 @@ public class PlayerCollisions : MonoBehaviour
                 // avoid knockdown scenario
                 playerAvoidKnockDown(other.gameObject);
             }
+        }
+        if (gameObject.CompareTag("attack_box")
+            && other.CompareTag("enemy"))
+        {
+            Debug.Log("******************************************************** Player attacks enemy");
+            // turn off enemy sight for 2 seconds
+            other.GetComponent<EnemyDetection>().TurnOffEnemySight(2);
         }
     }
 

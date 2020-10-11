@@ -115,9 +115,9 @@ public class GameOptions : MonoBehaviour
                 GameOptions.architectureIs64bit = false;
                 GameOptions.architectureIsAndroid = false;
             }
-            Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
-            Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
-            Debug.Log("android : " + GameOptions.architectureIsAndroid);
+            //Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
+            //Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
+            //Debug.Log("android : " + GameOptions.architectureIsAndroid);
         }
         architectureInfoLoaded = true;
         Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
