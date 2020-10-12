@@ -16,31 +16,14 @@ public class EnemyDetection : MonoBehaviour
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
-        if(enemySightDistance == 0)
+        if (enemySightDistance == 0)
         {
             enemySightDistance = 5;
         }
         //enemyDetectionEnabled = true;
         InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
+        InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        //Debug.Log("player detected");
-    //        Debug.Log("go to player");
-    //        PlayerSighted = true;
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.CompareTag("playerHitbox"))
-    //    {
-    //        //Debug.Log("pursuit ended");
-    //        PlayerSighted = false;
-    //    }
-    //}
 
     void CheckPlayerDistance()
     {
@@ -67,5 +50,20 @@ public class EnemyDetection : MonoBehaviour
         playerSighted = false;
         yield return new WaitForSeconds(seconds);
         enemyDetectionEnabled = true;
+    }
+
+    void CheckReturnToPatrolStatus()
+    {
+        if (enemyController.stateIdle 
+            && gameObject.transform.position != enemyController.OriginalPosition
+            && !playerSighted
+            && enemyDetectionEnabled)
+        {
+            enemyController.statePatrol = true;
+        }
+        else
+        {
+            enemyController.statePatrol = false;
+        }
     }
 }

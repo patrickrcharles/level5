@@ -39,12 +39,15 @@ public class EnemyController : MonoBehaviour
     public bool stateWalk = false;
     public bool stateIdle = false;
     public bool stateAttack = false;
+    public bool statePatrol = false;
 
     public bool canAttack;
 
+    Vector3 originalPosition;
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }
     public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
     public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
+    public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
 
     // Use this for initialization
     void Start()
@@ -54,7 +57,7 @@ public class EnemyController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
-
+        originalPosition = gameObject.transform.position;
         canAttack = true;
         if (attackCooldown == 0)
         {
@@ -68,6 +71,10 @@ public class EnemyController : MonoBehaviour
         if (stateWalk)
         {
             pursuePlayer();
+        }
+        if (statePatrol)
+        {
+            returnToPatrol();
         }
     }
 
@@ -138,50 +145,7 @@ public class EnemyController : MonoBehaviour
         {
             Flip();
         }
-
-
-        //currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        //currentState = currentStateInfo.fullPathHash;
-
-        //// ----- control speed based on commands----------
-
-        //if (currentState == idleState || currentState == walkState
-        //|| currentState == idleState2)
-        //{
-        //    movementSpeed = walkMovementSpeed;
-        //}
-        //else
-        //{
-        //    movementSpeed = runMovementSpeed;
-        //}
-        ////rigidBody.velocity = movement * movementSpeed;
-        //navmeshAgent.speed = movementSpeed;
-        //if (rigidBody != null)
-        //{
-        //    anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
-        //}
-
-        ////check if walking
-        ////  function will flip sprite if needed
-        //isWalking(navmeshAgent.velocity.magnitude);
     }
-
-    //void UpdateStateTruthTable()
-    //{
-    //    if (stateAttack)
-    //    {
-    //        stateIdle = false;
-    //        stateWalk = false;
-    //    }
-    //    if (stateIdle)
-    //    {
-    //        stateAttack
-    //    }
-    //    if (stateWalk)
-    //    {
-
-    //    }
-    //}
 
     public void FreezeEnemyPosition()
     {
@@ -216,19 +180,18 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSecondsRealtime(seconds);
         canAttack = true;
     }
-
-    void isWalking(float speed)
-    {
-        // if moving
-        if (speed > 0)
-        {
-            anim.SetBool("run", true);
-        }
-        else
-        {
-            anim.SetBool("run", false);
-        }
-    }
+    //void isWalking(float speed)
+    //{
+    //    // if moving
+    //    if (speed > 0)
+    //    {
+    //        anim.SetBool("run", true);
+    //    }
+    //    else
+    //    {
+    //        anim.SetBool("run", false);
+    //    }
+    //}
 
     void Flip()
     {
@@ -239,27 +202,39 @@ public class EnemyController : MonoBehaviour
         transform.localScale = thisScale;
     }
 
+    //public void setPlayerAnim(string animationName, bool isTrue)
+    //{
+    //    anim.SetBool(animationName, isTrue);
+    //}
 
-    public void setPlayerAnim(string animationName, bool isTrue)
-    {
-        anim.SetBool(animationName, isTrue);
-    }
-
-
-
-    int RandomNumber(int min, int max)
-    {
-        System.Random rnd = new System.Random();
-        int randNum = rnd.Next(min, max);
-        //Debug.Log("generate randNum : " + randNum);
-        return randNum;
-    }
+    //int RandomNumber(int min, int max)
+    //{
+    //    System.Random rnd = new System.Random();
+    //    int randNum = rnd.Next(min, max);
+    //    //Debug.Log("generate randNum : " + randNum);
+    //    return randNum;
+    //}
 
     public void pursuePlayer()
     {
         targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
+    }
+    public void returnToPatrol()
+    {
+        Debug.Log(gameObject.name + "  is returning to Vector3  : " + originalPosition);
+        if (Vector3.Distance(gameObject.transform.position, OriginalPosition) > 1)
+        {
+
+            targetPosition = (originalPosition - transform.position).normalized;
+            movement = targetPosition * (movementSpeed * Time.deltaTime);
+            rigidBody.MovePosition(transform.position + movement);
+        }
+        else
+        {
+            statePatrol = false;
+        }
     }
 
     public void UpdateDistanceFromPlayer()

@@ -43,7 +43,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         {
             disableAttackBox();
         }
-
+        // check if attack box is active and should not be
+        InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
     }
 
     public void playSfxBasketballDribbling()
@@ -201,4 +202,12 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         }
     }
 
+    void CheckAttackBoxActiveStatus()
+    {
+        if (!GameLevelManager.instance.PlayerState.IsSpecialState()
+            && attackBox.activeSelf)
+        {
+            attackBox.SetActive(false);
+        }
+    }
 }

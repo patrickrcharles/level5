@@ -48,10 +48,10 @@ public class PlayerCollisions : MonoBehaviour
             }
         }
         if (gameObject.CompareTag("attack_box")
-            && other.CompareTag("enemy"))
+            && other.CompareTag("enemyHitbox"))
         {
             // turn off enemy sight for 2 seconds
-            other.GetComponent<EnemyDetection>().TurnOffEnemySight(2);
+            other.transform.parent.GetComponent<EnemyDetection>().TurnOffEnemySight(2);
         }
     }
 

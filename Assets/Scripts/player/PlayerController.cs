@@ -609,4 +609,9 @@ public class PlayerController : MonoBehaviour
         // turn off text display after 5 seconds
         StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
     }
+
+    public bool IsSpecialState()
+    {
+        return currentState == specialState;
+    }
 }
