@@ -245,6 +245,22 @@ public class EnemyController : MonoBehaviour
         //anim.ResetTrigger("exitAnimation");
     }
 
+    public IEnumerator knockedDown()
+    {
+        stateKnockDown = true;
+        FreezeEnemyPosition();
+        //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
+        playAnimation("knockdown");
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
+        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        yield return new WaitForSecondsRealtime(knockDownTime);
+        anim.SetTrigger("exitAnimation");
+        UnFreezeEnemyPosition();
+        stateKnockDown = false;
+        //Debug.Log("knockdown time finished");
+        //anim.ResetTrigger("exitAnimation");
+    }
+
     //int RandomNumber(int min, int max)
     //{
     //    System.Random rnd = new System.Random();

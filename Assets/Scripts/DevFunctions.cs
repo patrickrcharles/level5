@@ -69,7 +69,8 @@ public class DevFunctions : MonoBehaviour
             //enemyController.playAnimation("enemy_generic_lightning");
             if (enemyController.SpriteRenderer.isVisible)
             {
-                StartCoroutine(enemyController.struckByLighning());
+                //StartCoroutine(enemyController.struckByLighning());
+                StartCoroutine(enemyController.knockedDown());
             }
             //enemyController.GetComponentInChildren<Animator>().Play("enemy_generic_lightning");
             //Debug.Log("test lighting animation");
