@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class DevFunctions : MonoBehaviour
     [SerializeField] CharacterProfile player;
     [SerializeField] Text debugText;
     [SerializeField] GameObject fpsCounter;
+    [SerializeField] GameObject[] enemies;
 
     public static DevFunctions instance;
 
@@ -44,10 +46,34 @@ public class DevFunctions : MonoBehaviour
         {
             ToggleFpsCounter();
         }
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            testLightningStrike();
+        }
 
         //debugText.text = GameLevelManager.instance.PlayerState.RigidBody.velocity.magnitude.ToString();
         //debugText.text = GameLevelManager.instance.PlayerState.MovementSpeed.ToString();
         //+"\n"+ GameLevelManager.instance.PlayerState.CurrentStateInfo;
+    }
+
+    private void testLightningStrike()
+    {
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
+        //Debug.Log("tets lighting animation");
+        //GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            EnemyController enemyController = enemy.GetComponent<EnemyController>();
+            //enemyController.playAnimation("lightning");
+            //enemyController.playAnimation("lightning");
+            //enemyController.playAnimation("enemy_generic_lightning");
+            if (enemyController.SpriteRenderer.isVisible)
+            {
+                StartCoroutine(enemyController.struckByLighning());
+            }
+            //enemyController.GetComponentInChildren<Animator>().Play("enemy_generic_lightning");
+            //Debug.Log("test lighting animation");
+        }
     }
 
     public void setMaxPlayerStats()
