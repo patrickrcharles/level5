@@ -12,6 +12,7 @@ public class BasketBallSpriteFunctions : MonoBehaviour
     [SerializeField]
     GameObject hitBox;
 
+    [SerializeField] Animator animOnCamera;
     private void Start()
     {
         if (GameLevelManager.instance.Basketball != null)
@@ -20,7 +21,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         }
 
         // get attack box reference
-        if (gameObject.transform.parent.Find(attackBoxText) != null)
+        if (gameObject.transform.parent.Find(attackBoxText) != null
+            && !transform.root.CompareTag("enemy"))
         {
             attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
             disableAttackBox();
@@ -30,7 +32,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
             attackBox = null;
         }
         // find hitbox
-        if (gameObject.transform.parent.Find(hitboxBoxText) != null)
+        if (gameObject.transform.parent.Find(hitboxBoxText) != null
+            && !transform.root.CompareTag("enemy"))
         {
             hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
         }
@@ -39,12 +42,19 @@ public class BasketBallSpriteFunctions : MonoBehaviour
             hitBox = null;
         }
 
-        if (attackBox != null)
+        if (attackBox != null
+            && !transform.root.CompareTag("enemy"))
         {
             disableAttackBox();
         }
+
+        animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
+
         // check if attack box is active and should not be
-        InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+        if (!transform.root.CompareTag("enemy"))
+        {
+            InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+        }
     }
 
     public void playSfxBasketballDribbling()
@@ -159,12 +169,18 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     public void enableAttackBox()
     {
-        attackBox.SetActive(true);
+        if (attackBox != null)
+        {
+            attackBox.SetActive(true);
+        }
     }
 
     public void disableAttackBox()
     {
-        attackBox.SetActive(false);
+        if (attackBox != null)
+        {
+            attackBox.SetActive(false);
+        }
     }
 
     public void enableHitBox()
@@ -209,5 +225,9 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         {
             attackBox.SetActive(false);
         }
+    }
+    private void playAnimationCameraFlash()
+    {
+        animOnCamera.Play("camera_flash");
     }
 }
