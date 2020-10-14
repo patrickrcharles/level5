@@ -13,8 +13,8 @@ public class RangeMeter : MonoBehaviour
     [SerializeField]
     Text sliderText;
     Text statText;
-    const string sliderTextName = "slider_value_text";
-    const string statsTextName = "slider_stats_text";
+    const string sliderTextName = "range_slider_value_text";
+    const string statsTextName = "range_slider_stats_text";
 
     [SerializeField]
     //float range;
