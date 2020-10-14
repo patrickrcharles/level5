@@ -383,17 +383,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d89cc26f-3e73-4462-b8d4-ad5e004b8a98"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""53ee70ca-a722-4040-8dc3-ab9a6bb223e4"",
                     ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button4"",
                     ""interactions"": """",
