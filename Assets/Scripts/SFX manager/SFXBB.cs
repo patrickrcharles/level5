@@ -18,6 +18,7 @@ public class SFXBB : MonoBehaviour
     public AudioClip lightningStrike;
     public AudioClip rimShot;
     public AudioClip knockedDown;
+    public AudioClip blocked;
     public AudioClip skateGrind;
     public AudioClip glitch;
     public AudioClip turnIntoBat;
@@ -31,6 +32,7 @@ public class SFXBB : MonoBehaviour
     public AudioClip stoneCold;
     public AudioClip chopWood;
     public AudioClip shootGun;
+    public AudioClip takeDamage;
 
     public AudioClip unlockAchievement;
 
