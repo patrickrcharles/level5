@@ -48,6 +48,10 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
+    bool playerInLineOfSight = false; 
+    public float lineOfSight;
+    public float lineOfSightVariance;
+
     public bool canAttack;
 
     Vector3 originalPosition;
@@ -68,14 +72,11 @@ public class EnemyController : MonoBehaviour
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
         originalPosition = gameObject.transform.position;
         canAttack = true;
-        if(attackCooldown == 0)
-        {
-            attackCooldown = 1f;
-        }
-        if(knockDownTime == 0)
-        {
-            knockDownTime = 2f;
-        }
+
+        if(attackCooldown == 0){ attackCooldown = 1f; }
+        if(knockDownTime == 0){ knockDownTime = 2f; }
+        if(lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
+
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }
 
@@ -119,6 +120,7 @@ public class EnemyController : MonoBehaviour
         }
         // ================== enemy attack state ==========================
         if (math.abs(relativePositionToPlayer) < minDistanceToAttack
+            && math.abs(lineOfSight) <= lineOfSightVariance
             && canAttack)
         {
             stateAttack = true;
@@ -247,12 +249,32 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator knockedDown()
     {
+        Debug.Log("public IEnumerator knockedDown() -----------------------------------------------------------------");
+        stateKnockDown = true;
+        FreezeEnemyPosition();
+        //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
+        anim.SetBool("knockdown",true);
+        playAnimation("knockdown");
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
+        //yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        yield return new WaitForSecondsRealtime(knockDownTime);
+        //anim.SetTrigger("exitAnimation");
+        UnFreezeEnemyPosition();
+        anim.SetBool("knockdown", false);
+        stateKnockDown = false;
+        //Debug.Log("knockdown time finished");
+        //anim.ResetTrigger("exitAnimation");
+    }
+
+    public IEnumerator takeDamage()
+    {
         stateKnockDown = true;
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         playAnimation("knockdown");
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
-        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
         yield return new WaitForSecondsRealtime(knockDownTime);
         anim.SetTrigger("exitAnimation");
         UnFreezeEnemyPosition();
@@ -294,5 +316,6 @@ public class EnemyController : MonoBehaviour
     public void UpdateDistanceFromPlayer()
     {
         distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
+        lineOfSight = GameLevelManager.instance.Player.transform.position.z -transform.position.z;
     }
 }
