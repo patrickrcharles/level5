@@ -3,18 +3,25 @@
 public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
-    const string attackBoxText = "attack_box";
+    const string attackBoxText = "attackBox";
     const string hitboxBoxText = "hitbox";
 
     [SerializeField]
     GameObject attackBox;
+    [SerializeField]
+    bool attackBoxEnabled;
 
     [SerializeField]
     GameObject hitBox;
 
+    PlayerController playerController;
+
     [SerializeField] Animator animOnCamera;
+    private bool hitBoxEnabled;
+
     private void Start()
     {
+        playerController = GameLevelManager.instance.PlayerState;
         if (GameLevelManager.instance.Basketball != null)
         {
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
@@ -24,7 +31,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         if (gameObject.transform.parent.Find(attackBoxText) != null
             && !transform.root.CompareTag("enemy"))
         {
-            attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+            //attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+            attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
             disableAttackBox();
         }
         else
@@ -51,9 +59,18 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
 
         // check if attack box is active and should not be
-        if (!transform.root.CompareTag("enemy"))
+
+        //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+    }
+    private void Update()
+    {
+        if (playerController.CurrentState != playerController.AttackState && attackBoxEnabled)
         {
-            InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+            disableAttackBox();
+        }
+        if (playerController.CurrentState != playerController.BlockState && hitBoxEnabled)
+        {
+            disableHitBox();
         }
     }
 
@@ -101,6 +118,10 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.rimShot);
     }
     public void playSfxKnockedDown()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+    }
+    public void playSfxTakeDamage()
     {
         audioSource.PlayOneShot(SFXBB.instance.knockedDown);
     }
@@ -169,28 +190,30 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     public void enableAttackBox()
     {
-        if (attackBox != null)
-        {
-            attackBox.SetActive(true);
-        }
+
+        attackBox.SetActive(true);
+        attackBoxEnabled = true;
+
     }
 
     public void disableAttackBox()
     {
-        if (attackBox != null)
-        {
-            attackBox.SetActive(false);
-        }
+
+        attackBox.SetActive(false);
+        attackBoxEnabled = false;
+
     }
 
     public void enableHitBox()
     {
         hitBox.SetActive(true);
+        hitBoxEnabled = true;
     }
 
     public void disableHitBox()
     {
         hitBox.SetActive(false);
+        hitBoxEnabled = false;
     }
 
     public void enableRigidBodyIsKinematic()
@@ -226,8 +249,8 @@ public class BasketBallSpriteFunctions : MonoBehaviour
             attackBox.SetActive(false);
         }
     }
-    private void playAnimationCameraFlash()
-    {
-        animOnCamera.Play("camera_flash");
-    }
+    //private void playAnimationCameraFlash()
+    //{
+    //    animOnCamera.Play("camera_flash");
+    //}
 }

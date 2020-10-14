@@ -16,15 +16,19 @@ public class PlayerController : MonoBehaviour
     GameObject dropShadow;
     AudioSource moonwalkAudio;
     SpriteRenderer spriteRenderer;
-    private Rigidbody rigidBody;
+    Rigidbody rigidBody;
     CharacterProfile characterProfile;
     BasketBall basketball;
-    private ShotMeter shotmeter;
+    ShotMeter shotmeter;
 
     // walk speed #review can potentially remove
     private float movementSpeed;
     [SerializeField]
     private float inAirSpeed; // leave serialized
+    [SerializeField]
+    private float attackSpeed; // leave serialized
+    [SerializeField]
+    private float blockSpeed; // leave serialized
 
     // player state bools
     private bool running;
@@ -32,11 +36,11 @@ public class PlayerController : MonoBehaviour
     public bool hasBasketball;
 
     // #note this is work a work in progress feature. it works but it's bugged
-    [SerializeField]
-    private bool isSetShooter;
-    public bool IsSetShooter => isSetShooter;
-    public bool canMove; // #todo add player knock downs, this could be used
-                         // will be useful for when play knockdowns implemented
+    //[SerializeField]
+    //private bool isSetShooter;
+    //public bool IsSetShooter => isSetShooter;
+    //public bool canMove; // #todo add player knock downs, this could be used
+    //                     // will be useful for when play knockdowns implemented
     public GameObject playerHitbox;
 
     Vector3 bballRimVector;
@@ -46,14 +50,17 @@ public class PlayerController : MonoBehaviour
 
 
     // control movement speed based on state
-    static int currentState;
-    static int idleState = Animator.StringToHash("base.idle");
-    static int walkState = Animator.StringToHash("base.movement.walk");
-    static int run = Animator.StringToHash("base.movement.run");
-    static int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
-    static int bIdle = Animator.StringToHash("base.movement.basketball_idle");
-    static int knockedDownState = Animator.StringToHash("base.knockedDown");
-    static int specialState = Animator.StringToHash("base.special");
+    int currentState;
+    int idleState = Animator.StringToHash("base.idle");
+    int walkState = Animator.StringToHash("base.movement.walk");
+    int run = Animator.StringToHash("base.movement.run");
+    int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
+    int bIdle = Animator.StringToHash("base.movement.basketball_idle");
+    int knockedDownState = Animator.StringToHash("base.knockedDown");
+    int takeDamageState = Animator.StringToHash("base.takeDamage");
+    int specialState = Animator.StringToHash("base.special");
+    int attackState = Animator.StringToHash("base.attack.attack");
+    int blockState = Animator.StringToHash("base.attack.block");
 
     // get/set for following at bottom of class
     private bool _facingRight;
@@ -65,10 +72,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool _knockedDown;
     private bool _knockedDown_alternate;
+    [SerializeField]
+    private bool _takeDamage;
     private bool _avoidedKnockDown;
+    [SerializeField]
+    private bool canAttack;
+    [SerializeField]
+    private bool canBlock;
 
     [SerializeField]
     float _knockDownTime;
+    [SerializeField]
+    float _takeDamageTime;
 
     //#review no longer use, but some it could be useful
     public float initialHeight, finalHeight;
@@ -79,13 +94,8 @@ public class PlayerController : MonoBehaviour
     public float jumpStartTime;
     public float jumpEndTime;
 
-    Vector2 movementInput;
+    //Vector2 movementInput;
     Vector3 movement;
-
-    // for touch controls
-    //public FloatingJoystick joystick;
-    //public Button jumpButton;
-    //public Button shootButton;
 
     float movementHorizontal;
     float movementVertical;
@@ -94,31 +104,15 @@ public class PlayerController : MonoBehaviour
 
     Touch touch;
 
-    //PlayerControls controls;
-
-    //private void Awake()
-    //{
-    //    //joystick = GameLevelManager.instance.Joystick;
-    //    //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
-    //    ////controls = new PlayerControls();
-    //    //Debug.Log("joystick found   active: " + joystick.enabled);
-    //}
-
     void Start()
     {
-        //joystick = GameLevelManager.instance.Joystick;
-        //Debug.Log("GameLevelManager.instance.Joystick : " + GameLevelManager.instance.Joystick.enabled);
-        ////controls = new PlayerControls();
-        //Debug.Log("joystick found   active: " + joystick.enabled);
 
-        moonwalkAudio = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
-        //joystick = GameLevelManager.instance.Joystick;
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
@@ -126,9 +120,12 @@ public class PlayerController : MonoBehaviour
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         playerHitbox.SetActive(true);
         facingRight = true;
-        canMove = true;
+        //canMove = true;
         movementSpeed = characterProfile.Speed;
         runningToggle = true;
+        if (_knockDownTime == 0) { _knockDownTime = 1.5f; }
+        if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
+        if (attackSpeed == 0) { attackSpeed = 0.5f; }
 
     }
 
@@ -185,7 +182,7 @@ public class PlayerController : MonoBehaviour
         // shoot ball
         if (inAir
             && hasBasketball
-            && !IsSetShooter
+            //&& !IsSetShooter
             && touchPosition.x > (Screen.width / 2))
         {
             CallBallToPlayer.instance.Locked = true;
@@ -217,31 +214,29 @@ public class PlayerController : MonoBehaviour
         currentState = currentStateInfo.fullPathHash;
 
         // knocked down
-        if ((KnockedDown || KnockedDown_Alternate) && !locked)
+        if (KnockedDown && !locked)
         {
+            Debug.Log("playercontroller :: knockdown");
             locked = true;
-            rigidBody.constraints = 
-                RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-            // if alternate knockdown animation
-            if (KnockedDown_Alternate)
-            {
-                StartCoroutine(PlayerKnockedDown("knockedDown_alternate"));
-            }
-            else
-            {
-                StartCoroutine(PlayerKnockedDown("knockedDown"));
-            }
+            StartCoroutine(PlayerKnockedDown());
         }
-        // avoid knockdown
-        if (AvoidedKnockDown && !locked)
+        if (!KnockedDown && TakeDamage && !locked)
         {
+            Debug.Log("playercontroller :: takedamage");
             locked = true;
-            //rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+            StartCoroutine(PlayerTakeDamage());
+        }
 
-            // coroutine that holds animation with WaitUntil knock down time is through
-            //StartCoroutine(PlayerAvoidKnockedDown());
-            PlayerAvoidKnockedDown();
-        }
+        //// avoid knockdown
+        //if (AvoidedKnockDown && !locked)
+        //{
+        //    locked = true;
+        //    //rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        //    // coroutine that holds animation with WaitUntil knock down time is through
+        //    //StartCoroutine(PlayerAvoidKnockedDown());
+        //    PlayerAvoidKnockedDown();
+        //}
 
         // keep drop shadow on ground at all times
         if (grounded)
@@ -261,12 +256,13 @@ public class PlayerController : MonoBehaviour
         playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
 
         // if run input or run toggle on
-        if ((GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
-            && canMove
+        if (GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
             && !inAir
             && !KnockedDown
-            && !locked))
+            && rigidBody.velocity.magnitude > 0.1f
+            && !locked)
         {
+            Debug.Log("rigidBody.velocity.sqrMagnitude : " + rigidBody.velocity.sqrMagnitude);
             running = true;
             anim.SetBool("moonwalking", true);
         }
@@ -324,41 +320,44 @@ public class PlayerController : MonoBehaviour
         {
             movementSpeed = characterProfile.RunSpeedHasBall; ;
         }
+        if (currentState == attackState || currentState == blockState)
+        {
+            movementSpeed = attackSpeed;
+        }
         // inair state
         if (inAir)
         {
             checkIsPlayerFacingGoal();
             movementSpeed = inAirSpeed;
         }
+        if (grounded
+            && !KnockedDown
+            && !hasBasketball
+            && !inAir)
+        {
+            canAttack = true;
+            canBlock = true;
+        }
+        else
+        {
+            canBlock = false;
+            canAttack = false;
+        }
 
         //------------------ jump -----------------------------------
         if (GameLevelManager.instance.Controls.Player.jump.triggered
-            && !GameLevelManager.instance.Controls.Player.shoot.triggered
+            //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
+            && hasBasketball
             && grounded
             && !KnockedDown)
-        //&& !isSetShooter))
         {
             playerJump();
-            //jumpTrigger = true;
         }
-
-        //    if (
-        //GameLevelManager.Instance.Controls.Player.jump.triggered
-        //&& !GameLevelManager.Instance.Controls.Player.shoot.triggered
-        //&& grounded
-        //&& !KnockedDown)
-        //    //&& !isSetShooter))
-        //    {
-        //        playerJump();
-        //    }
-
         //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
         if (inAir
             && hasBasketball
-            && GameLevelManager.instance.Controls.Player.shoot.triggered
-            && !IsSetShooter)
-        //&& !basketBallState.Locked)
+            && GameLevelManager.instance.Controls.Player.shoot.triggered)
         {
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
@@ -366,18 +365,43 @@ public class PlayerController : MonoBehaviour
             Shotmeter.MeterEnded = true;
             playerShoot();
         }
+        //------------------ attack -----------------------------------
 
-        // if has ball, is in air, and pressed shoot button.
-        if (!inAir
-            && hasBasketball
-            && GameLevelManager.instance.Controls.Player.shoot.triggered
-            && IsSetShooter)
+        if (GameLevelManager.instance.Controls.Player.shoot.triggered
+            && GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
+            && !hasBasketball
+            && canAttack)
         {
-            basketball.BasketBallState.Locked = true;
-            checkIsPlayerFacingGoal(); // turns player facing rim
-            Shotmeter.MeterEnded = true;
-            playerShoot();
+            playerAttack();
         }
+        else
+        {
+            anim.SetBool("attack", false);
+        }
+
+        if (GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
+            //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
+            && !hasBasketball
+            && canBlock)
+        {
+            playerBlock();
+        }
+        else
+        {
+            anim.SetBool("block", false);
+        }
+
+        //// if has ball, is in air, and pressed shoot button.
+        //if (!inAir
+        //    && hasBasketball
+        //    && GameLevelManager.instance.Controls.Player.shoot.triggered
+        //    && IsSetShooter)
+        //{
+        //    basketball.BasketBallState.Locked = true;
+        //    checkIsPlayerFacingGoal(); // turns player facing rim
+        //    Shotmeter.MeterEnded = true;
+        //    playerShoot();
+        //}
 
         //------------------ special -----------------------------------
         if (GameLevelManager.instance.Controls.Player.special.triggered
@@ -396,6 +420,20 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
+    }
+
+    public void playerAttack()
+    {
+        Debug.Log("player attack");
+        anim.Play("attack");
+    }
+
+    public void playerBlock()
+    {
+        Debug.Log("player block");
+        //anim.Play("block");
+        anim.SetBool("block", true);
+        //basketball.shootBasketBall();
     }
 
     public void playerShoot()
@@ -424,15 +462,15 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
-        if (!isSetShooter)
-        {
-            rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        //if (!isSetShooter)
+        //{
+        //    rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
 
-            //rigidBody.velocity.y = Mathf.Sqrt(characterProfile.JumpForce * -2f * Physics.gravity.y);
-            //rigidBody.AddForce(new Vector3(0, characterProfile.JumpForce, 0), ForceMode.VelocityChange); // + (Vector3.forward * rigidBody.velocity.x);
-            //transform.Translate(Vector3.up * characterProfile.JumpForce * Time.smoothDeltaTime);
-        }
-
+        //    //rigidBody.velocity.y = Mathf.Sqrt(characterProfile.JumpForce * -2f * Physics.gravity.y);
+        //    //rigidBody.AddForce(new Vector3(0, characterProfile.JumpForce, 0), ForceMode.VelocityChange); // + (Vector3.forward * rigidBody.velocity.x);
+        //    //transform.Translate(Vector3.up * characterProfile.JumpForce * Time.smoothDeltaTime);
+        //}
+        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;
@@ -452,10 +490,10 @@ public class PlayerController : MonoBehaviour
                 if (runningToggle)
                 {
                     anim.SetBool("moonwalking", true);
-                    if (!hasBasketball)
-                    {
-                        moonwalkAudio.enabled = true;
-                    }
+                    //if (!hasBasketball)
+                    //{
+                    //    moonwalkAudio.enabled = true;
+                    //}
                 }
             }
         }
@@ -464,17 +502,17 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("walking", false);
             anim.SetBool("moonwalking", false);
-            moonwalkAudio.enabled = false;
+            //moonwalkAudio.enabled = false;
             running = false;
         }
 
         // player moving right, not facing right
-        if (movement.x > 0 && !facingRight && canMove)
+        if (movement.x > 0 && !facingRight)//&& canMove)
         {
             Flip();
         }
         // player moving left, and facing right
-        if (movement.x < 0f && facingRight && canMove)
+        if (movement.x < 0f && facingRight)//&& canMove)
         {
             Flip();
         }
@@ -488,22 +526,51 @@ public class PlayerController : MonoBehaviour
         transform.localScale = thisScale;
     }
 
-    // ------------------------------- Knocked down -------------------------------------------------------
-    public IEnumerator PlayerKnockedDown(string knockDownAnim)
-    {
-        float startTime = Time.time;
-        float endTime = startTime + _knockDownTime;
+    // ------------------------------- take damage -------------------------------------------------------
 
-        anim.SetBool(knockDownAnim, true);
-        anim.Play(knockDownAnim);
+    public IEnumerator PlayerTakeDamage()
+    {
+        Debug.Log("PlayerTakeDamage");
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        anim.SetBool("takeDamage", true);
+        anim.Play("takeDamage");
+
+        float startTime = Time.time;
+        float endTime = startTime + _takeDamageTime;
 
         yield return new WaitUntil(() => Time.time > endTime);
-        anim.SetBool(knockDownAnim, false);
-        yield return new WaitUntil(() => currentState != knockedDownState);
-        KnockedDown = false;
-        KnockedDown_Alternate = false;
+        anim.SetBool("takeDamage", false);
+        yield return new WaitUntil(() => currentState != takeDamageState);
 
+        TakeDamage = false;
+        KnockedDown = false;
         locked = false;
+
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    public IEnumerator PlayerKnockedDown()
+    {
+        Debug.Log("PlayerKnockedDown");
+        rigidBody.constraints =
+    RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        anim.SetBool("knockedDown", true);
+        anim.Play("knockedDown");
+        //yield return new WaitUntil(() => currentState == knockedDownState); // anim started
+
+        float startTime = Time.time;
+        float endTime = startTime + _knockDownTime;
+        yield return new WaitUntil(() => Time.time > endTime);
+        anim.SetBool("knockedDown", false);
+        yield return new WaitUntil(() => currentState != knockedDownState);
+
+        KnockedDown = false;
+        TakeDamage = false;
+        locked = false;
+
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
@@ -533,11 +600,11 @@ public class PlayerController : MonoBehaviour
         anim.Play(animationName);
     }
 
-    //can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
-    public void turnOffMoonWalkAudio()
-    {
-        moonwalkAudio.enabled = false;
-    }
+    ////can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
+    //public void turnOffMoonWalkAudio()
+    //{
+    //    moonwalkAudio.enabled = false;
+    //}
 
     public bool grounded
     {
@@ -598,6 +665,10 @@ public class PlayerController : MonoBehaviour
     }
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
     public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
+    public bool TakeDamage { get => _takeDamage; set => _takeDamage = value; }
+    public int CurrentState { get => currentState; set => currentState = value; }
+    public int AttackState { get => attackState; set => attackState = value; }
+    public int BlockState { get => blockState; set => blockState = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

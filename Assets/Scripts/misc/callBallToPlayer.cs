@@ -32,16 +32,13 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (/*InputManager.GetButtonDown("Fire1")*/
-            GameLevelManager.instance.Controls.Player.shoot.triggered
+        if (GameLevelManager.instance.Controls.Player.shoot.triggered
+            && GameLevelManager.instance.Controls.Other.change.ReadValue<float>() == 0
+            && GameLevelManager.instance.PlayerState.CurrentState != GameLevelManager.instance.PlayerState.BlockState
             && !playerState.hasBasketball
-            && !playerState.inAir
-            //&& !_basketBallState.Thrown
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked
-            //&& !_basketBallState.InAir
             && playerState.grounded
-            //&& canBallToPlayerEnabled
             && !Locked)
         {
             //Debug.Log("call ball input read");

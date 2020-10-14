@@ -153,7 +153,6 @@ public class BasketBall : MonoBehaviour
             transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
-
         }
 
         //// if has ball, is in air, and pressed shoot button.
@@ -281,7 +280,7 @@ public class BasketBall : MonoBehaviour
             //playerState.setPlayerAnim("hasBasketball", true);
             basketBallState.Thrown = false;
             //playerState.setPlayerAnim("hasBasketball", true);
-            playerState.turnOffMoonWalkAudio();
+            //playerState.turnOffMoonWalkAudio();
         }
     }
 
