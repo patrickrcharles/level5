@@ -1,34 +1,25 @@
 fileFormatVersion: 2
-guid: 9155654d6a3656f49a5e776f423e784c
+guid: 4c001f31f0c27ff48b32ef1434cb8a4a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: dr blood - fall_0
+      213: -8850554189785906955
+    second: drblood_attack_0
   - first:
-      213: 21300002
-    second: dr blood - fall_1
+      213: -4091528780651694201
+    second: drblood_attack_1
   - first:
-      213: 21300004
-    second: dr blood - fall_2
+      213: 2585971074454871034
+    second: drblood_attack_2
   - first:
-      213: 21300006
-    second: dr blood - fall_3
+      213: 5093826174357528760
+    second: drblood_attack_3
   - first:
-      213: -9183514200588694602
-    second: db_fall_0
+      213: -571724899377761450
+    second: drblood_attack_4
   - first:
-      213: -4837644242664272432
-    second: db_fall_1
-  - first:
-      213: -6105903798351272940
-    second: db_fall_2
-  - first:
-      213: -1914829326567210640
-    second: db_fall_3
-  - first:
-      213: -2342062270133050678
-    second: db_fall_4
+      213: -4776592417894421011
+    second: drblood_attack_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -60,7 +51,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: 16
+    aniso: -1
     mipBias: -100
     wrapU: 1
     wrapV: 1
@@ -71,8 +62,8 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 7
-  spritePivot: {x: 0.5, y: 0}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
@@ -86,15 +77,15 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 100
+    textureCompression: 1
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -105,20 +96,8 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 100
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 100
+    textureCompression: 1
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -129,8 +108,8 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 100
+    textureCompression: 1
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -141,22 +120,34 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 65
-    textureCompression: 2
-    compressionQuality: 100
+    textureCompression: 1
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: db_fall_0
+      name: drblood_attack_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
+        y: 384
         width: 128
         height: 128
       alignment: 7
@@ -166,18 +157,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6bbc72cad7a9d8080800000000000000
-      internalID: -9183514200588694602
+      spriteID: 5f0477c4bd38c2580800000000000000
+      internalID: -8850554189785906955
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_fall_1
+      name: drblood_attack_1
       rect:
         serializedVersion: 2
         x: 128
-        y: 128
+        y: 384
         width: 128
         height: 128
       alignment: 7
@@ -187,18 +178,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0dd4846313c3ddcb0800000000000000
-      internalID: -4837644242664272432
+      spriteID: 787f7f87048f737c0800000000000000
+      internalID: -4091528780651694201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_fall_2
+      name: drblood_attack_2
       rect:
         serializedVersion: 2
         x: 256
-        y: 128
+        y: 384
         width: 128
         height: 128
       alignment: 7
@@ -208,39 +199,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 414609a88d8734ba0800000000000000
-      internalID: -6105903798351272940
+      spriteID: afb515cbdf633e320800000000000000
+      internalID: 2585971074454871034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_fall_3
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07106786fd82d65e0800000000000000
-      internalID: -1914829326567210640
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: db_fall_4
+      name: drblood_attack_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 256
         width: 128
         height: 128
       alignment: 7
@@ -250,8 +220,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac2efda26c25f7fd0800000000000000
-      internalID: -2342062270133050678
+      spriteID: 8b0ea26dae7e0b640800000000000000
+      internalID: 5093826174357528760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_attack_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 653b75fab33d018f0800000000000000
+      internalID: -571724899377761450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_attack_5
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ded249ed08226bdb0800000000000000
+      internalID: -4776592417894421011
       vertices: []
       indices: 
       edges: []
@@ -259,7 +271,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 28359ecb534d0d94290a4008eceb7a90
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
