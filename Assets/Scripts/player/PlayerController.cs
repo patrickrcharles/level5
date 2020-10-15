@@ -424,13 +424,13 @@ public class PlayerController : MonoBehaviour
 
     public void playerAttack()
     {
-        Debug.Log("player attack");
+        //Debug.Log("player attack");
         anim.Play("attack");
     }
 
     public void playerBlock()
     {
-        Debug.Log("player block");
+        //Debug.Log("player block");
         //anim.Play("block");
         anim.SetBool("block", true);
         //basketball.shootBasketBall();
@@ -534,8 +534,9 @@ public class PlayerController : MonoBehaviour
         rigidBody.constraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
-        anim.SetBool("takeDamage", true);
         anim.Play("takeDamage");
+        //anim.SetBool("takeDamage", true);
+
 
         float startTime = Time.time;
         float endTime = startTime + _takeDamageTime;
@@ -555,7 +556,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("PlayerKnockedDown");
         rigidBody.constraints =
-    RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
         anim.SetBool("knockedDown", true);
         anim.Play("knockedDown");
@@ -669,6 +670,7 @@ public class PlayerController : MonoBehaviour
     public int CurrentState { get => currentState; set => currentState = value; }
     public int AttackState { get => attackState; set => attackState = value; }
     public int BlockState { get => blockState; set => blockState = value; }
+    public int SpecialState { get => specialState; set => specialState = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

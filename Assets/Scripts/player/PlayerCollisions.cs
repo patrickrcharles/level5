@@ -33,7 +33,7 @@ public class PlayerCollisions : MonoBehaviour
                 // player can be knocked down and other
                 if (playerCanBeKnockedDown && other.GetComponent<EnemyAttackBox>().knockDownAttack)
                 {
-                    Debug.Log("     enemy used knockdown attack");
+                    //Debug.Log("     enemy used knockdown attack");
                     playerKnockedDown();
                 }
                 else
@@ -51,7 +51,7 @@ public class PlayerCollisions : MonoBehaviour
                 SFXBB.instance.playSFX(SFXBB.instance.blocked);
             }
         }
-        if (gameObject.CompareTag("attack_box")
+        if (gameObject.CompareTag("playerAttackBox")
             && other.CompareTag("enemyHitbox"))
         {
             // turn off enemy sight for 2 seconds
