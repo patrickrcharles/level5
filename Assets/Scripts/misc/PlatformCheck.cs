@@ -40,10 +40,7 @@ public class PlatformCheck : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         //standaloneInputModule.DeactivateModule();
         standaloneInputModule.enabled = false;
-
         //inputSystemUIInputModule.ActivateModule();
-        
-
 #endif
     }
 
