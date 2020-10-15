@@ -4,12 +4,17 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 {
     private AudioSource audioSource;
     const string attackBoxText = "attackBox";
+    const string attackBoxSpecialText = "attackBoxSpecial";
     const string hitboxBoxText = "hitbox";
 
     [SerializeField]
     GameObject attackBox;
     [SerializeField]
+    GameObject attackBoxSpecial;
+    [SerializeField]
     bool attackBoxEnabled;
+    [SerializeField]
+    bool attackBoxSpecialEnabled;
 
     [SerializeField]
     GameObject hitBox;
@@ -27,37 +32,26 @@ public class BasketBallSpriteFunctions : MonoBehaviour
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         }
 
-        // get attack box reference
-        if (gameObject.transform.parent.Find(attackBoxText) != null
-            && !transform.root.CompareTag("enemy"))
-        {
-            //attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
-            attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
-            disableAttackBox();
-        }
-        else
-        {
-            attackBox = null;
-        }
-        // find hitbox
-        if (gameObject.transform.parent.Find(hitboxBoxText) != null
-            && !transform.root.CompareTag("enemy"))
-        {
-            hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
-        }
-        else
-        {
-            hitBox = null;
-        }
-
-        if (attackBox != null
-            && !transform.root.CompareTag("enemy"))
-        {
-            disableAttackBox();
-        }
-
+        //// get attack box reference
+        //if (gameObject.transform.parent.Find(attackBoxText) != null
+        //    && !transform.root.CompareTag("enemy"))
+        //{
+        //    //attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
+        //    attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
+        //    disableAttackBox();
+        //}
+        //else
+        //{
+        //    attackBox = null;
+        //}
+        //attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
+        attackBox = transform.Find(attackBoxText).gameObject;
+        attackBoxSpecial = transform.Find(attackBoxSpecialText).gameObject;
+        hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
 
+        disableAttackBox();
+        disableAttackBoxSpecial();
         // check if attack box is active and should not be
 
         //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
@@ -71,6 +65,10 @@ public class BasketBallSpriteFunctions : MonoBehaviour
         if (playerController.CurrentState != playerController.BlockState && hitBoxEnabled)
         {
             disableHitBox();
+        }
+        if (playerController.CurrentState != playerController.SpecialState && attackBoxSpecialEnabled)
+        {
+            disableAttackBoxSpecial();
         }
     }
 
@@ -190,18 +188,25 @@ public class BasketBallSpriteFunctions : MonoBehaviour
 
     public void enableAttackBox()
     {
-
         attackBox.SetActive(true);
         attackBoxEnabled = true;
-
     }
 
     public void disableAttackBox()
     {
-
         attackBox.SetActive(false);
         attackBoxEnabled = false;
+    }
+    public void enableAttackBoxSpecial()
+    {
+        attackBoxSpecial.SetActive(true);
+        attackBoxSpecialEnabled = true;
+    }
 
+    public void disableAttackBoxSpecial()
+    {
+        attackBoxSpecial.SetActive(false);
+        attackBoxSpecialEnabled = false;
     }
 
     public void enableHitBox()
