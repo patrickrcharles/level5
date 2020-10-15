@@ -14,15 +14,15 @@ public class EnemyCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.tag);
+        //Debug.Log("this.tag : " + gameObject.tag + "  other.tag : " + other.tag);
 
-        if(gameObject.CompareTag("enemyHitbox") 
+        if (gameObject.CompareTag("enemyHitbox")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("knock_down_attack")))
         {
-            Debug.Log("------------------------------- player attacked enemy");
-            if (other.CompareTag("knock_down_attack") || other.GetComponent<PlayerAttackBox>().knockDownAttack )
+            //Debug.Log("------------------------------- player attacked enemy");
+            if (other.CompareTag("knock_down_attack") || other.GetComponent<PlayerAttackBox>().knockDownAttack)
             {
-                Debug.Log("     player used knockdown attack");
+                //Debug.Log("     player used knockdown attack");
                 enemyKnockedDown();
             }
             else
@@ -32,18 +32,34 @@ public class EnemyCollisions : MonoBehaviour
                 enemyTakeDamage();
             }
         }
+        if (gameObject.CompareTag("enemyHitbox")
+            && (other.CompareTag("playerAttackBox") && other.name == "attackBoxSpecial"))
+        {
+            Debug.Log("------------------------------- "+  other.name +" hit "+ gameObject.name +" enemy with special enemy");
+            //if (other.CompareTag("knock_down_attack") || other.GetComponent<PlayerAttackBox>().knockDownAttack)
+            //{
+            //    //Debug.Log("     player used knockdown attack");
+            //    enemyKnockedDown();
+            //}
+            //else
+            //{
+            //    // avoid knockdown scenario
+            //    //playerAvoidKnockDown(other.gameObject);
+            //    enemyTakeDamage();
+            //}
+        }
     }
 
 
     void enemyTakeDamage()
     {
-        Debug.Log("enemyKnockedDown()");
-        enemyController.takeDamage();
+        //Debug.Log("enemyKnockedDown()");
+        StartCoroutine( enemyController.takeDamage());
     }
 
     void enemyKnockedDown()
     {
-        Debug.Log("enemyKnockedDown()");
-        StartCoroutine( enemyController.knockedDown());
+        //Debug.Log("enemyKnockedDown()");
+        StartCoroutine(enemyController.knockedDown());
     }
 }

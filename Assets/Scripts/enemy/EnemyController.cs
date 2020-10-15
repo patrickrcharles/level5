@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour
     private float minDistanceToAttack;
     [SerializeField]
     private float knockDownTime;
+    [SerializeField]
+    private float takeDamageTime;
 
     const string lightningAnimName = "lightning";
 
@@ -48,11 +50,12 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    bool playerInLineOfSight = false; 
+    bool playerInLineOfSight = false;
     public float lineOfSight;
     public float lineOfSightVariance;
 
     public bool canAttack;
+    bool inAttackQueue;
 
     Vector3 originalPosition;
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }
@@ -60,6 +63,7 @@ public class EnemyController : MonoBehaviour
     public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
+    public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
 
     // Use this for initialization
     void Start()
@@ -73,16 +77,17 @@ public class EnemyController : MonoBehaviour
         originalPosition = gameObject.transform.position;
         canAttack = true;
 
-        if(attackCooldown == 0){ attackCooldown = 1f; }
-        if(knockDownTime == 0){ knockDownTime = 2f; }
-        if(lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
+        if (attackCooldown == 0) { attackCooldown = 1f; }
+        if (knockDownTime == 0) { knockDownTime = 2f; }
+        if (lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
+        if (takeDamageTime == 0) { lineOfSightVariance = 0.2f; }
 
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }
 
     private void FixedUpdate()
     {
-        if (stateWalk) 
+        if (stateWalk && currentState != AnimatorState_Knockdown)
         {
             pursuePlayer();
         }
@@ -134,6 +139,7 @@ public class EnemyController : MonoBehaviour
             && !stateAttack
             && canAttack)
         {
+
             stateWalk = true;
         }
         else
@@ -236,35 +242,51 @@ public class EnemyController : MonoBehaviour
         stateKnockDown = true;
         FreezeEnemyPosition();
         GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
-        playAnimation("lightning");
-        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
-        yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
-        yield return new WaitForSecondsRealtime(knockDownTime);
-        anim.SetTrigger("exitAnimation");
-        UnFreezeEnemyPosition();
-        stateKnockDown = false;
+        anim.Play("lightning");
+        //playAnimation("lightning");
+        //yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
+        //yield return new WaitForSecondsRealtime(knockDownTime);
+        //anim.SetTrigger("exitAnimation");
+        //UnFreezeEnemyPosition();
+        //stateKnockDown = false;
         //Debug.Log("knockdown time finished");
         //anim.ResetTrigger("exitAnimation");
+        //stateKnockDown = true;
+        //FreezeEnemyPosition();
+        //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
+        //stateKnockDown = true;
+        anim.SetBool("knockdown", true);
+        //playAnimation("knockdown");
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
+        //yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        yield return new WaitForSecondsRealtime(knockDownTime);
+        //anim.SetTrigger("exitAnimation");
+        anim.SetBool("knockdown", false);
+        UnFreezeEnemyPosition();
+        stateKnockDown = false;
+        Debug.Log("currenstate : " + currentState);
     }
 
     public IEnumerator knockedDown()
     {
-        Debug.Log("public IEnumerator knockedDown() -----------------------------------------------------------------");
+        //Debug.Log("public IEnumerator knockedDown() -----------------------------------------------------------------");
         stateKnockDown = true;
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
-        anim.SetBool("knockdown",true);
+        anim.SetBool("knockdown", true);
         playAnimation("knockdown");
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
         //yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
         yield return new WaitForSecondsRealtime(knockDownTime);
         //anim.SetTrigger("exitAnimation");
-        UnFreezeEnemyPosition();
         anim.SetBool("knockdown", false);
-        stateKnockDown = false;
         //Debug.Log("knockdown time finished");
         //anim.ResetTrigger("exitAnimation");
+        UnFreezeEnemyPosition();
+        stateKnockDown = false;
     }
 
     public IEnumerator takeDamage()
@@ -272,14 +294,14 @@ public class EnemyController : MonoBehaviour
         stateKnockDown = true;
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
-        playAnimation("knockdown");
+        anim.SetBool("takeDamage", true);
+        playAnimation("takeDamage");
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
-        yield return new WaitForSecondsRealtime(knockDownTime);
-        anim.SetTrigger("exitAnimation");
+        yield return new WaitForSecondsRealtime(takeDamageTime);
+        anim.SetBool("takeDamage", false);
         UnFreezeEnemyPosition();
         stateKnockDown = false;
-        //Debug.Log("knockdown time finished");
         //anim.ResetTrigger("exitAnimation");
     }
 
@@ -316,6 +338,6 @@ public class EnemyController : MonoBehaviour
     public void UpdateDistanceFromPlayer()
     {
         distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
-        lineOfSight = GameLevelManager.instance.Player.transform.position.z -transform.position.z;
+        lineOfSight = GameLevelManager.instance.Player.transform.position.z - transform.position.z;
     }
 }

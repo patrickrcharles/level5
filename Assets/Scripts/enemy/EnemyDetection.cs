@@ -27,10 +27,11 @@ public class EnemyDetection : MonoBehaviour
 
     void CheckPlayerDistance()
     {
-        if(enemyController.DistanceFromPlayer < enemySightDistance 
+        if (enemyController.DistanceFromPlayer < enemySightDistance
             && enemyDetectionEnabled)
         {
-            playerSighted = true; 
+
+            playerSighted = true;
         }
         if (enemyController.DistanceFromPlayer >= enemySightDistance
             && enemyDetectionEnabled)
@@ -54,7 +55,7 @@ public class EnemyDetection : MonoBehaviour
 
     void CheckReturnToPatrolStatus()
     {
-        if (enemyController.stateIdle 
+        if (enemyController.stateIdle
             && gameObject.transform.position != enemyController.OriginalPosition
             && !playerSighted
             && enemyDetectionEnabled)
