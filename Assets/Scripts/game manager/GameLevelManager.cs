@@ -14,10 +14,10 @@ public class GameLevelManager : MonoBehaviour
     // that can be retrieved across all scripts
     [SerializeField]
     private GameObject _player;
-    [SerializeField]
     private PlayerController _playerState;
-    [SerializeField]
     private CharacterProfile _playerShooterProfile;
+    [SerializeField]
+    private PlayerAttackQueue _playerAttackQueue;
 
     //BasketBall objects
     private GameObject _basketballPrefab;
@@ -135,6 +135,8 @@ public class GameLevelManager : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         _playerState = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
+        _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
+
         Anim = Player.GetComponentInChildren<Animator>();
     }
 
@@ -296,5 +298,5 @@ public class GameLevelManager : MonoBehaviour
     //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
-
+    public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
 }
