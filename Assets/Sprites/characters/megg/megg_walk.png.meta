@@ -83,6 +83,9 @@ TextureImporter:
   - first:
       213: 5388322384180921097
     second: megg_walk_26
+  - first:
+      213: 2399823570021059202
+    second: megg_walk_27
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -768,6 +771,27 @@ TextureImporter:
       bones: []
       spriteID: 74158bccf8038514baec0f67acfeae23
       internalID: 5388322384180921097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: megg_walk_27
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28a07b672d2ed4120800000000000000
+      internalID: 2399823570021059202
       vertices: []
       indices: 
       edges: []
