@@ -1,37 +1,25 @@
 fileFormatVersion: 2
-guid: b9f799c5f4615f74aa5c682da813a6b6
+guid: f69aecc5538511449886e07996a9c46b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: thom clothesline_0
+      213: 140472136041441105
+    second: thom_rudeawakening_0
   - first:
-      213: 21300002
-    second: thom clothesline_1
+      213: 4783443565536312955
+    second: thom_rudeawakening_1
   - first:
-      213: 21300004
-    second: thom clothesline_2
+      213: 6184618499387913192
+    second: thom_rudeawakening_2
   - first:
-      213: 21300006
-    second: thom clothesline_3
+      213: 4818434707812713418
+    second: thom_rudeawakening_3
   - first:
-      213: 21300008
-    second: thom clothesline_4
+      213: 4564426414212540920
+    second: thom_rudeawakening_4
   - first:
-      213: 5528441022845255286
-    second: thom clothesline_0
-  - first:
-      213: -3131939846389147473
-    second: thom clothesline_1
-  - first:
-      213: 2687582798564834272
-    second: thom clothesline_2
-  - first:
-      213: -2163047451464563194
-    second: thom clothesline_3
-  - first:
-      213: -5916434723719765258
-    second: thom clothesline_4
+      213: 5371980349808620671
+    second: thom_rudeawakening_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,14 +77,14 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,31 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -144,24 +108,36 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 50
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thom clothesline_0
+      name: thom_rudeawakening_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 128
-        height: 128
+        y: 192
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67e7360c1d7f8bc40800000000000000
-      internalID: 5528441022845255286
+      spriteID: 1572799d9ae03f100800000000000000
+      internalID: 140472136041441105
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thom clothesline_1
+      name: thom_rudeawakening_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
+        x: 192
+        y: 192
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa8551ead4d1984d0800000000000000
-      internalID: -3131939846389147473
+      spriteID: b7e7bee3494326240800000000000000
+      internalID: 4783443565536312955
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thom clothesline_2
+      name: thom_rudeawakening_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
+        x: 384
+        y: 192
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -211,20 +187,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0eb38ecd0563c4520800000000000000
-      internalID: 2687582798564834272
+      spriteID: 8e37357f1cd24d550800000000000000
+      internalID: 6184618499387913192
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thom clothesline_4
+      name: thom_rudeawakening_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -232,8 +208,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82305410000000000800000000000000
-      internalID: 21300008
+      spriteID: ac3079c66d48ed240800000000000000
+      internalID: 4818434707812713418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thom_rudeawakening_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f96c8ee3a9185f30800000000000000
+      internalID: 4564426414212540920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thom_rudeawakening_5
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f74b8ba8aab1d8a40800000000000000
+      internalID: 5371980349808620671
       vertices: []
       indices: 
       edges: []
@@ -241,7 +259,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: a999104607f08494e9e4684501f0ef7f
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
