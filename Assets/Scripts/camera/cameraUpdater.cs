@@ -159,6 +159,32 @@ public class cameraUpdater : MonoBehaviour
 
     void FixedUpdate()
     {
+        playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
+        playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+
+        if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
+        {
+            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
+            onGoalCameraEnabled = false;
+        }
+
+        // * note change var to player distance because each camera is in a different spot
+        if (Math.Abs(playerDistanceFromRimX) > 8 && !onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+
+        if (Math.Abs(playerDistanceFromRimX) < 8 && onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+        if (isLockOnGoalCamera)
+        {
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
+        }
+
         if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             // * note change var to player distance because each camera is in a different spot
@@ -217,39 +243,39 @@ public class cameraUpdater : MonoBehaviour
         transform.position = smoothedPosition;
     }
 
-    private void zoomOut()
-    {
-        if (ZoomAmount == -20)
-        {
-            cameraZoomedOut = true;
-        }
-        else
-        {
-            cameraZoomedOut = false;
-        }
+    //private void zoomOut()
+    //{
+    //    if (ZoomAmount == -20)
+    //    {
+    //        cameraZoomedOut = true;
+    //    }
+    //    else
+    //    {
+    //        cameraZoomedOut = false;
+    //    }
 
-        //Debug.Log("zoom out camera");
-        ZoomAmount -= .5f;
-        //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
-        ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
-        var translate = Mathf.Min(Mathf.Abs(-1), MaxToClamp - Mathf.Abs(ZoomAmount));
-        gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(-1));
-    }
+    //    //Debug.Log("zoom out camera");
+    //    ZoomAmount -= .5f;
+    //    //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
+    //    ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
+    //    var translate = Mathf.Min(Mathf.Abs(-1), MaxToClamp - Mathf.Abs(ZoomAmount));
+    //    gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(-1));
+    //}
 
 
-    private void zoomIn()
-    {
-        if (ZoomAmount == 0.5f)
-        {
-            cameraZoomedOut = false;
-        }
-        //Debug.Log("zoom in camera");
-        ZoomAmount += .5f;
-        //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
-        ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
-        var translate = Mathf.Min(Mathf.Abs(1), MaxToClamp - Mathf.Abs(ZoomAmount));
-        gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(1));
-    }
+    //private void zoomIn()
+    //{
+    //    if (ZoomAmount == 0.5f)
+    //    {
+    //        cameraZoomedOut = false;
+    //    }
+    //    //Debug.Log("zoom in camera");
+    //    ZoomAmount += .5f;
+    //    //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
+    //    ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
+    //    var translate = Mathf.Min(Mathf.Abs(1), MaxToClamp - Mathf.Abs(ZoomAmount));
+    //    gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(1));
+    //}
 
     void setCamera()
     {
