@@ -17,34 +17,34 @@ public class BasketBall : MonoBehaviour
     Animator anim;
 
     GameObject basketBallSprite;
-    GameObject playerDunkPos;
-    GameObject bplayerDunkPos;
+    //GameObject playerDunkPos;
+    //GameObject bplayerDunkPos;
     GameObject basketBallPosition;
     GameObject basketBallTarget;
 
     GameObject player;
     GameObject dropShadow;
-    private Vector3 dropShadowPosition;
+    //private Vector3 dropShadowPosition;
 
     Text scoreText;
     Text shootProfileText;
     //shoot angle range
-    [Range(20f, 70f)] public float _angle;
+    //[Range(20f, 70f)] public float _angle;
 
     float releaseVelocityY;
     //float _playerRigidBody;
     float accuracy;
-    float twoAccuracy;
-    int threeAccuracy;
-    int fourAccuracy;
-    int sevenAccuracy;
+    //float twoAccuracy;
+    //int threeAccuracy;
+    //int fourAccuracy;
+    //int sevenAccuracy;
     float lastShotDistance;
-    float maxSpeed = 0f;
+    float maxBasketballSpeed = 0f;
 
     bool playHitRimSound;
     bool locked;
 
-    BasketBallShotMade basketBallShotMade;
+    //BasketBallShotMade basketBallShotMade;
 
     [SerializeField]
     float accuracyModifierX;
@@ -55,7 +55,7 @@ public class BasketBall : MonoBehaviour
 
     public static BasketBall instance;
 
-    [SerializeField] float bballRelativePositioning;
+    //[SerializeField] float bballRelativePositioning;
     bool facingRight = true;
 
     // =========================================================== Start() ========================================================
@@ -72,12 +72,12 @@ public class BasketBall : MonoBehaviour
         characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-        basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
+        //basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
         anim = GetComponentInChildren<Animator>();
 
         //basketball drop shadow
         dropShadow = transform.root.Find("drop shadow").gameObject;
-        dropShadowPosition = dropShadow.transform.position;
+        //dropShadowPosition = dropShadow.transform.position;
 
         //objects
         basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
@@ -93,7 +93,7 @@ public class BasketBall : MonoBehaviour
         UiStatsEnabled = false;
 
         // cap ball speed
-        maxSpeed = 25f;
+        maxBasketballSpeed = 25f;
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
         if (GameObject.Find("ui_stats") != null)
         {
@@ -123,9 +123,9 @@ public class BasketBall : MonoBehaviour
         // get speed for basketball animation
         //checkIsBallFacingGoal();
 
-        if (rigidbody.velocity.magnitude > maxSpeed)
+        if (rigidbody.velocity.magnitude > maxBasketballSpeed)
         {
-            rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
+            rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
         }
         // drop shadow lock to bball transform on the ground
         dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
