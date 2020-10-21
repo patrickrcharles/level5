@@ -273,7 +273,7 @@ public class EnemyController : MonoBehaviour
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.SetBool("takeDamage", true);
-        //playAnimation("takeDamage");
+        playAnimation("takeDamage");
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
         yield return new WaitForSecondsRealtime(takeDamageTime);
@@ -295,7 +295,9 @@ public class EnemyController : MonoBehaviour
     {
         targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
         movement = targetPosition * (movementSpeed * Time.deltaTime);
+        //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
+        //transform.Translate(movement);
     }
     public void returnToPatrol()
     {
@@ -304,7 +306,8 @@ public class EnemyController : MonoBehaviour
         {
 
             targetPosition = (originalPosition - transform.position).normalized;
-            movement = targetPosition * (movementSpeed * Time.deltaTime);
+            movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
+            //movement = targetPosition * (movementSpeed * Time.deltaTime);
             rigidBody.MovePosition(transform.position + movement);
         }
         else
