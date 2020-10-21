@@ -7,51 +7,76 @@ public class PlayerAnimationEvents : MonoBehaviour
     const string attackBoxSpecialText = "attackBoxSpecial";
     const string hitboxBoxText = "hitbox";
 
-    [SerializeField]
     GameObject attackBox;
-    [SerializeField]
     GameObject attackBoxSpecial;
+    GameObject hitBox;
     [SerializeField]
+    GameObject projectileLaserPrefab;
+    GameObject projectileBulletPrefab;
+    GameObject projectileMolotovPrefab;
+    [SerializeField]
+    GameObject projectileSpawn;
+
     bool attackBoxEnabled;
-    [SerializeField]
     bool attackBoxSpecialEnabled;
 
-    [SerializeField]
-    GameObject hitBox;
-
+    Animator animOnCamera;
     PlayerController playerController;
 
-    [SerializeField] Animator animOnCamera;
     private bool hitBoxEnabled;
 
     private void Start()
     {
+        if (transform.Find("projectileSpawn") != null)
+        {
+            projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser") as GameObject;
+            projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
+            projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
+            projectileSpawn = transform.Find("projectileSpawn").gameObject;
+        }
+
         playerController = GameLevelManager.instance.PlayerState;
         if (GameLevelManager.instance.Basketball != null)
         {
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         }
+        if (transform.Find(attackBoxText)!= null)
+        {
+            attackBox = transform.Find(attackBoxText).gameObject;        
+            disableAttackBox();
+        }
+        else
+        {
+            attackBox = null;
+        }
+        if (transform.Find(attackBoxSpecialText) != null)
+        {
+            attackBoxSpecial = transform.Find(attackBoxSpecialText).gameObject;
+            disableAttackBoxSpecial();
+        }
+        else
+        {
+            attackBoxSpecial = null;
+        }
+        if (gameObject.transform.parent.Find(hitboxBoxText) != null)
+        {
+            hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
+        }
+        else
+        {
+            hitBox = null;
+        }
+        if (GameObject.Find("camera_flash").GetComponent<Animator>() != null)
+        {
+            animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
+        }
+        else
+        {
+            animOnCamera = null;
+        }
 
-        //// get attack box reference
-        //if (gameObject.transform.parent.Find(attackBoxText) != null
-        //    && !transform.root.CompareTag("enemy"))
-        //{
-        //    //attackBox = gameObject.transform.parent.Find(attackBoxText).gameObject;
-        //    attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
-        //    disableAttackBox();
-        //}
-        //else
-        //{
-        //    attackBox = null;
-        //}
-        //attackBox = GameLevelManager.instance.Player.transform.Find(attackBoxText).gameObject;
-        attackBox = transform.Find(attackBoxText).gameObject;
-        attackBoxSpecial = transform.Find(attackBoxSpecialText).gameObject;
-        hitBox = gameObject.transform.parent.Find(hitboxBoxText).gameObject;
-        animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
 
-        disableAttackBox();
-        disableAttackBoxSpecial();
+
         // check if attack box is active and should not be
 
         //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
@@ -72,20 +97,48 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
     }
 
-    public void applyForceToDirectionFacingKickFlip()
+    public void instantiateProjectileLazer()
+    {
+        Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileBullet()
+    {
+        Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileMolotov()
+    {
+        Instantiate(projectileMolotovPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+
+    public void applyForceToDirectionFacingKickFlip(float force)
     {
         // get direction facing
         if (playerController.facingRight)
         {
             //apply to X
-            playerController.RigidBody.AddForce(3.5f, 2.5f, 0, ForceMode.VelocityChange);
+            playerController.RigidBody.AddForce(force, force, 0, ForceMode.VelocityChange);
         }
         if (!playerController.facingRight)
         {
-            playerController.RigidBody.AddForce(-3.5f, 2.5f, 0, ForceMode.VelocityChange);
+            playerController.RigidBody.AddForce(-force, force, 0, ForceMode.VelocityChange);
         }
         // apply for in x direction
 
+    }
+
+    public void applyForceToDirectionFacingProjectile(float force)
+    {
+        // get direction facing
+        if (playerController.facingRight)
+        {
+            //apply to X
+            playerController.RigidBody.AddForce(force, 0, 0, ForceMode.VelocityChange);
+        }
+        if (!playerController.facingRight)
+        {
+            playerController.RigidBody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
     }
 
     public void applyForceToDirectionFacing()
@@ -101,7 +154,6 @@ public class PlayerAnimationEvents : MonoBehaviour
             playerController.RigidBody.AddForce(-2.5f, 1.5f, 0, ForceMode.VelocityChange);
         }
         // apply for in x direction
-
     }
 
 
@@ -268,11 +320,11 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         if (gameObject.CompareTag("hanger") && other.gameObject.CompareTag("basketball"))
         {
-            //Debug.Log(" game obejct : " + gameObject.tag + "  other : " + other.tag);
-            gameObject.GetComponentInChildren<Animator>().SetTrigger("hit");
+            Debug.Log(" game obejct : " + gameObject.tag + "  other : " + other.tag);
+            gameObject.GetComponent<Animator>().SetTrigger("hit");
         }
 
-        if (gameObject.transform.parent.name.Contains("mega_robot") && other.gameObject.CompareTag(hitboxBoxText))
+        if (gameObject.transform.parent.name.Contains("mega_robot") && other.gameObject.CompareTag("playerHitbox"))
         {
             //Debug.Log(" game obejct : " + gameObject.name + "  other : " + other.tag);
             gameObject.GetComponent<Animator>().SetTrigger("attack");
