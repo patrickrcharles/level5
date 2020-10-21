@@ -155,6 +155,20 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
         // apply for in x direction
     }
+    public void applyForceToXDirectionFacing(float Xforce)
+    {
+        // get direction facing
+        if (playerController.facingRight)
+        {
+            //apply to X
+            playerController.RigidBody.AddForce(Xforce, 0, 0, ForceMode.VelocityChange);
+        }
+        if (!playerController.facingRight)
+        {
+            playerController.RigidBody.AddForce(-Xforce, 0, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+    }
 
 
     public void playSfxBasketballDribbling()
