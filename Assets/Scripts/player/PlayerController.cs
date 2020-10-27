@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     int blockState = Animator.StringToHash("base.attack.block");
 
     // get/set for following at bottom of class
+    [SerializeField]
     private bool _facingRight;
     private bool _facingFront;
     private bool _locked;
@@ -435,12 +436,16 @@ public class PlayerController : MonoBehaviour
     }
     public void checkIsPlayerFacingGoal()
     {
-        if (bballRelativePositioning > 0 && !facingRight && currentState != specialState)
+        if (bballRelativePositioning > 0 && !facingRight 
+            && currentState != specialState
+            && currentState != attackState)
         {
             Flip();
         }
 
-        if (bballRelativePositioning < 0f && facingRight && currentState != specialState)
+        if (bballRelativePositioning < 0f && facingRight 
+            && currentState != specialState
+            && currentState != attackState)
         {
             Flip();
         }
