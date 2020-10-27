@@ -7,12 +7,17 @@ public class PlayerAnimationEvents : MonoBehaviour
     const string attackBoxSpecialText = "attackBoxSpecial";
     const string hitboxBoxText = "hitbox";
 
+    [SerializeField]
     GameObject attackBox;
+    [SerializeField]
     GameObject attackBoxSpecial;
+    [SerializeField]
     GameObject hitBox;
     [SerializeField]
     GameObject projectileLaserPrefab;
+    [SerializeField]
     GameObject projectileBulletPrefab;
+    [SerializeField]
     GameObject projectileMolotovPrefab;
     [SerializeField]
     GameObject projectileSpawn;
@@ -74,16 +79,15 @@ public class PlayerAnimationEvents : MonoBehaviour
         {
             animOnCamera = null;
         }
-
-
-
         // check if attack box is active and should not be
 
         //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
     }
     private void Update()
     {
-        if (playerController.CurrentState != playerController.AttackState && attackBoxEnabled)
+        if (playerController.CurrentState != playerController.AttackState 
+            && playerController.CurrentState != playerController.SpecialState
+            && attackBoxEnabled)
         {
             disableAttackBox();
         }
@@ -91,7 +95,9 @@ public class PlayerAnimationEvents : MonoBehaviour
         {
             disableHitBox();
         }
-        if (playerController.CurrentState != playerController.SpecialState && attackBoxSpecialEnabled)
+        if (playerController.CurrentState != playerController.SpecialState
+            && playerController.CurrentState != playerController.AttackState
+            && attackBoxSpecialEnabled)
         {
             disableAttackBoxSpecial();
         }
@@ -128,17 +134,14 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void applyForceToDirectionFacingProjectile(float force)
     {
-        // get direction facing
         if (playerController.facingRight)
         {
-            //apply to X
             playerController.RigidBody.AddForce(force, 0, 0, ForceMode.VelocityChange);
         }
         if (!playerController.facingRight)
         {
             playerController.RigidBody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
         }
-        // apply for in x direction
     }
 
     public void applyForceToDirectionFacing()
@@ -146,14 +149,12 @@ public class PlayerAnimationEvents : MonoBehaviour
         // get direction facing
         if (playerController.facingRight)
         {
-            //apply to X
             playerController.RigidBody.AddForce(2.5f, 1.5f, 0, ForceMode.VelocityChange);
         }
         if(!playerController.facingRight)
         {
             playerController.RigidBody.AddForce(-2.5f, 1.5f, 0, ForceMode.VelocityChange);
         }
-        // apply for in x direction
     }
     public void applyForceToXDirectionFacing(float Xforce)
     {
@@ -284,17 +285,23 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         audioSource.PlayOneShot(SFXBB.instance.shootGun);
     }
+    public void playSfxShotgunRack()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.shotgunRack);
+    }
 
     public void enableAttackBox()
     {
         attackBox.SetActive(true);
         attackBoxEnabled = true;
+        Debug.Log("enable attack box");
     }
 
     public void disableAttackBox()
     {
         attackBox.SetActive(false);
         attackBoxEnabled = false;
+        Debug.Log("disable attack box");
     }
     public void enableAttackBoxSpecial()
     {
