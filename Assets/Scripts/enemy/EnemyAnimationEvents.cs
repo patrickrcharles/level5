@@ -83,6 +83,10 @@ public class EnemyAnimationEvents : MonoBehaviour
     {
         audioSource.PlayOneShot(SFXBB.instance.knockedDown);
     }
+    public void playSfxTakeDamage()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.takeDamage);
+    }
 
     public void playSfxSkateGrind()
     {
