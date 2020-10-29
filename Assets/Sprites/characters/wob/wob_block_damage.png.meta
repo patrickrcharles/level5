@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 2356de558b800624686edfc22fd60775
+guid: 91e25eb077e969748b5cf3c718bc7214
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1892694830009278542
-    second: wob2_walk_0
+      213: -4550671703149436425
+    second: wob_block_damage_0
   - first:
-      213: 6092907900508231709
-    second: wob2_walk_1
+      213: -2159964066528404184
+    second: wob_block_damage_1
   - first:
-      213: -460933223908659689
-    second: wob2_walk_2
+      213: -8776179665931828037
+    second: wob_block_damage_2
   - first:
-      213: 7749598199089061461
-    second: wob2_walk_3
+      213: -2904727750643310708
+    second: wob_block_damage_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -78,7 +78,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,19 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,7 +125,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob2_walk_0
+      name: wob_block_damage_0
       rect:
         serializedVersion: 2
         x: 0
@@ -151,14 +139,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e40ebe28be3344a10800000000000000
-      internalID: 1892694830009278542
+      spriteID: 7f12b5c4234c8d0c0800000000000000
+      internalID: -4550671703149436425
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_1
+      name: wob_block_damage_1
       rect:
         serializedVersion: 2
         x: 128
@@ -172,14 +160,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d18d6f2347b5e8450800000000000000
-      internalID: 6092907900508231709
+      spriteID: 82d57fe10244602e0800000000000000
+      internalID: -2159964066528404184
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_2
+      name: wob_block_damage_2
       rect:
         serializedVersion: 2
         x: 256
@@ -193,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71eafbbccaf6a99f0800000000000000
-      internalID: -460933223908659689
+      spriteID: bb4802f871fb43680800000000000000
+      internalID: -8776179665931828037
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_3
+      name: wob_block_damage_3
       rect:
         serializedVersion: 2
         x: 384
@@ -214,8 +202,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55ed5b0c08a1c8b60800000000000000
-      internalID: 7749598199089061461
+      spriteID: c8f9fad208550b7d0800000000000000
+      internalID: -2904727750643310708
       vertices: []
       indices: 
       edges: []

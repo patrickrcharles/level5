@@ -1,19 +1,28 @@
 fileFormatVersion: 2
-guid: 2356de558b800624686edfc22fd60775
+guid: d370090f38dc1b345b4e9f200895ca72
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1892694830009278542
-    second: wob2_walk_0
+      213: -7514692333989017206
+    second: wob2_attack_kick_0
   - first:
-      213: 6092907900508231709
-    second: wob2_walk_1
+      213: -1405913437236415159
+    second: wob2_attack_kick_1
   - first:
-      213: -460933223908659689
-    second: wob2_walk_2
+      213: 2630369689178713072
+    second: wob2_attack_kick_2
   - first:
-      213: 7749598199089061461
-    second: wob2_walk_3
+      213: 6869456336996836771
+    second: wob2_attack_kick_3
+  - first:
+      213: 4576206922488520505
+    second: wob2_attack_kick_4
+  - first:
+      213: -1969734703073376581
+    second: wob2_attack_kick_5
+  - first:
+      213: -7444187488067470434
+    second: wob2_attack_kick_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -78,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,19 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +111,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +123,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,7 +134,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob2_walk_0
+      name: wob2_attack_kick_0
       rect:
         serializedVersion: 2
         x: 0
@@ -151,17 +148,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e40ebe28be3344a10800000000000000
-      internalID: 1892694830009278542
+      spriteID: a89cb34032376b790800000000000000
+      internalID: -7514692333989017206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_1
+      name: wob2_attack_kick_1
       rect:
         serializedVersion: 2
-        x: 128
+        x: 192
         y: 128
         width: 128
         height: 128
@@ -172,39 +169,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d18d6f2347b5e8450800000000000000
-      internalID: 6092907900508231709
+      spriteID: 945339c7d213d7ce0800000000000000
+      internalID: -1405913437236415159
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 71eafbbccaf6a99f0800000000000000
-      internalID: -460933223908659689
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wob2_walk_3
+      name: wob2_attack_kick_2
       rect:
         serializedVersion: 2
         x: 384
         y: 128
+        width: 192
+        height: 128
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fba377cb43f08420800000000000000
+      internalID: 2630369689178713072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_attack_kick_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
         width: 128
         height: 128
       alignment: 7
@@ -214,8 +211,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55ed5b0c08a1c8b60800000000000000
-      internalID: 7749598199089061461
+      spriteID: 3a5a0ce7426355f50800000000000000
+      internalID: 6869456336996836771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_attack_kick_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93f9c9143f3f18f30800000000000000
+      internalID: 4576206922488520505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_attack_kick_5
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb64d8149b81aa4e0800000000000000
+      internalID: -1969734703073376581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_attack_kick_6
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9bb45cabeee0b890800000000000000
+      internalID: -7444187488067470434
       vertices: []
       indices: 
       edges: []

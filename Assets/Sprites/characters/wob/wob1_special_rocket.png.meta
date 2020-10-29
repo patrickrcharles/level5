@@ -1,19 +1,43 @@
 fileFormatVersion: 2
-guid: 2356de558b800624686edfc22fd60775
+guid: e0cbf2235961d7544af2d00a846e7e80
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1892694830009278542
-    second: wob2_walk_0
+      213: 7537672767555217687
+    second: wob1_special_rocket_0
   - first:
-      213: 6092907900508231709
-    second: wob2_walk_1
+      213: 7670187546633272636
+    second: wob1_special_rocket_1
   - first:
-      213: -460933223908659689
-    second: wob2_walk_2
+      213: -8925682312283291790
+    second: wob1_special_rocket_2
   - first:
-      213: 7749598199089061461
-    second: wob2_walk_3
+      213: 430535093657164115
+    second: wob1_special_rocket_3
+  - first:
+      213: 8170672429760366795
+    second: wob1_special_rocket_4
+  - first:
+      213: -5995956481061873924
+    second: wob1_special_rocket_5
+  - first:
+      213: 3796795772665329060
+    second: wob1_special_rocket_6
+  - first:
+      213: -504211557316809903
+    second: wob1_special_rocket_7
+  - first:
+      213: -4157394030046299179
+    second: wob1_special_rocket_8
+  - first:
+      213: -8285152845590438164
+    second: wob1_special_rocket_9
+  - first:
+      213: 3894645752106116147
+    second: wob1_special_rocket_10
+  - first:
+      213: 9118318193248825277
+    second: wob1_special_rocket_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -78,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,19 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +126,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +138,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,12 +149,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob2_walk_0
+      name: wob1_special_rocket_0
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 128
+        width: 256
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -151,40 +163,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e40ebe28be3344a10800000000000000
-      internalID: 1892694830009278542
+      spriteID: 719a34f12713b9860800000000000000
+      internalID: 7537672767555217687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d18d6f2347b5e8450800000000000000
-      internalID: 6092907900508231709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wob2_walk_2
+      name: wob1_special_rocket_1
       rect:
         serializedVersion: 2
         x: 256
         y: 128
-        width: 128
+        width: 256
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -193,19 +184,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71eafbbccaf6a99f0800000000000000
-      internalID: -460933223908659689
+      spriteID: c3d73bd6feaf17a60800000000000000
+      internalID: 7670187546633272636
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob2_walk_3
+      name: wob1_special_rocket_2
       rect:
         serializedVersion: 2
-        x: 384
+        x: 512
         y: 128
-        width: 128
+        width: 256
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -214,8 +205,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55ed5b0c08a1c8b60800000000000000
-      internalID: 7749598199089061461
+      spriteID: 27ffd5e2a3b912480800000000000000
+      internalID: -8925682312283291790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_special_rocket_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35956c8f26199f500800000000000000
+      internalID: 430535093657164115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_special_rocket_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc8c1f7e84f046170800000000000000
+      internalID: 8170672429760366795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_special_rocket_5
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf61b9139551acca0800000000000000
+      internalID: -5995956481061873924
       vertices: []
       indices: 
       edges: []
