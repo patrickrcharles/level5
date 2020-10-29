@@ -20,6 +20,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileMolotovPrefab;
     [SerializeField]
+    GameObject projectileRocketPrefab;
+    [SerializeField]
     GameObject projectileSpawn;
 
     bool attackBoxEnabled;
@@ -37,6 +39,7 @@ public class PlayerAnimationEvents : MonoBehaviour
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser") as GameObject;
             projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
+            projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
 
@@ -114,6 +117,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void instantiateProjectileMolotov()
     {
         Instantiate(projectileMolotovPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileRocket()
+    {
+        Instantiate(projectileRocketPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
     public void applyForceToDirectionFacingKickFlip(float force)
@@ -258,13 +265,9 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         audioSource.PlayOneShot(SFXBB.instance.probeCritical);
     }
-    public void playSfxYell1()
+    public void playSfxVampireHiss()
     {
-        audioSource.PlayOneShot(SFXBB.instance.yellYeah1, 0.3f);
-    }
-    public void playSfxYell2()
-    {
-        audioSource.PlayOneShot(SFXBB.instance.yellYeah2, 0.3f);
+        audioSource.PlayOneShot(SFXBB.instance.vampireHiss);
     }
     public void playSfxHitMetalBang()
     {
@@ -288,6 +291,14 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void playSfxShotgunRack()
     {
         audioSource.PlayOneShot(SFXBB.instance.shotgunRack);
+    }
+    public void playSfxProjectileRocket()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.projectileRocket);
+    }
+    public void playSfxWhipCrack()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.whipCrack);
     }
 
     public void enableAttackBox()
