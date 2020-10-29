@@ -26,6 +26,18 @@ TextureImporter:
   - first:
       213: 9050413552748582262
     second: van_with_gremlin_7
+  - first:
+      213: 6480938839638750260
+    second: van_0
+  - first:
+      213: 3243338895404281992
+    second: van_1
+  - first:
+      213: 7378069325737697851
+    second: van_2
+  - first:
+      213: -952509691286560368
+    second: van_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -125,7 +137,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 65
+    textureFormat: 48
     textureCompression: 1
     compressionQuality: 75
     crunchedCompression: 0
@@ -149,91 +161,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: van_with_gremlin_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 896
-        width: 384
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b4c570c4667cb674e8ec6029f21a64fb
-      internalID: -945395015234780173
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: van_with_gremlin_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 768
-        width: 384
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0ebdc6a75a53fad419c90e266b4317a1
-      internalID: -8752035828250984233
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: van_with_gremlin_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 640
-        width: 384
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6bca4b18ec0c7d141b23ed7cdd95ffb5
-      internalID: -3878940929250326967
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: van_with_gremlin_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 512
-        width: 384
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cb5dd723fc7972c40846d545b89e6b70
-      internalID: -344406733622455557
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: van_with_gremlin_4
+      name: van_0
       rect:
         serializedVersion: 2
         x: 0
@@ -247,14 +175,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5bca5e0ba2554624fbbaa30db7bb7cc2
-      internalID: 8989413699048087672
+      spriteID: 43433b3898be0f950800000000000000
+      internalID: 6480938839638750260
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: van_with_gremlin_5
+      name: van_1
       rect:
         serializedVersion: 2
         x: 0
@@ -268,14 +196,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 342cc08850b7fd844b922419e3b4b3b3
-      internalID: 8026486551067097011
+      spriteID: 880b7ca9a87a20d20800000000000000
+      internalID: 3243338895404281992
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: van_with_gremlin_6
+      name: van_2
       rect:
         serializedVersion: 2
         x: 0
@@ -289,14 +217,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d1f01572e59ec44d9f5fdd704e21dd4
-      internalID: 4140459467471349221
+      spriteID: b322dc806fa246660800000000000000
+      internalID: 7378069325737697851
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: van_with_gremlin_7
+      name: van_3
       rect:
         serializedVersion: 2
         x: 0
@@ -310,8 +238,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2907e0121ae5764ab434cc1a7e3597b
-      internalID: 9050413552748582262
+      spriteID: 0916fbd7b7108c2f0800000000000000
+      internalID: -952509691286560368
       vertices: []
       indices: 
       edges: []
