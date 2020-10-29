@@ -1,19 +1,43 @@
 fileFormatVersion: 2
-guid: 668aee52e7dd38d4884d983f4b0a1a81
+guid: 8e03710eaa374734fb355d470884d45e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5611366786306318287
-    second: wob1_walk_0
+      213: -9186432372022879885
+    second: wob2_special_whip_0
   - first:
-      213: -5216652540899342027
-    second: wob1_walk_1
+      213: 8874213074973557384
+    second: wob2_special_whip_1
   - first:
-      213: 5912179312286458817
-    second: wob1_walk_2
+      213: -7030175407609403941
+    second: wob2_special_whip_2
   - first:
-      213: -8146623094333725871
-    second: wob1_walk_3
+      213: 3173375910078822858
+    second: wob2_special_whip_3
+  - first:
+      213: 3502441451808332752
+    second: wob2_special_whip_4
+  - first:
+      213: -4460772544806217274
+    second: wob2_special_whip_5
+  - first:
+      213: 6164037247808367756
+    second: wob2_special_whip_6
+  - first:
+      213: 151522808435394166
+    second: wob2_special_whip_7
+  - first:
+      213: 3629570098017116460
+    second: wob2_special_whip_8
+  - first:
+      213: 8602723471314641402
+    second: wob2_special_whip_9
+  - first:
+      213: 4791231780531545280
+    second: wob2_special_whip_10
+  - first:
+      213: -5996745931329168995
+    second: wob2_special_whip_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -78,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,19 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +126,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +138,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,85 +149,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob1_walk_0
+      name: wob2_special_whip_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3795d60fd6c338080800000000000000
+      internalID: -9186432372022879885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8820dea26c9872b70800000000000000
+      internalID: 8874213074973557384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.666, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd521c8d6bccf6e90800000000000000
+      internalID: -7030175407609403941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.666, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac9b703b3981a0c20800000000000000
+      internalID: 3173375910078822858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_4
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 128
+        width: 384
         height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13069cd53ab6022b0800000000000000
-      internalID: -5611366786306318287
+      spriteID: 0db93a591fb2b9030800000000000000
+      internalID: 3502441451808332752
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5394e0f272aba97b0800000000000000
-      internalID: -5216652540899342027
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wob1_walk_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1c36f3da2c74c0250800000000000000
-      internalID: 5912179312286458817
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wob1_walk_3
+      name: wob2_special_whip_5
       rect:
         serializedVersion: 2
         x: 384
         y: 128
-        width: 128
+        width: 384
         height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 153ae37557161fe80800000000000000
-      internalID: -8146623094333725871
+      spriteID: 6c9920331072812c0800000000000000
+      internalID: -4460772544806217274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8ce4e9e73f0b8550800000000000000
+      internalID: 6164037247808367756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob2_special_whip_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 384
+        height: 128
+      alignment: 9
+      pivot: {x: 0.333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 676492401315a1200800000000000000
+      internalID: 151522808435394166
       vertices: []
       indices: 
       edges: []

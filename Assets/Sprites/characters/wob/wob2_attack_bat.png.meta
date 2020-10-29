@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 668aee52e7dd38d4884d983f4b0a1a81
+guid: f027c2c31fc1ce940b79280bf189477b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5611366786306318287
-    second: wob1_walk_0
+      213: -3020497654375772068
+    second: wob1_attack_bat_0
   - first:
-      213: -5216652540899342027
-    second: wob1_walk_1
+      213: 5733944968414774335
+    second: wob1_attack_bat_1
   - first:
-      213: 5912179312286458817
-    second: wob1_walk_2
+      213: -239171298000871753
+    second: wob1_attack_bat_2
   - first:
-      213: -8146623094333725871
-    second: wob1_walk_3
+      213: -4243233101972125198
+    second: wob1_attack_bat_3
+  - first:
+      213: -7450987900388637400
+    second: wob1_attack_bat_4
+  - first:
+      213: -4116334332883396585
+    second: wob1_attack_bat_5
+  - first:
+      213: 7552245964859511602
+    second: wob1_attack_bat_6
+  - first:
+      213: -1719773667372082197
+    second: wob1_attack_bat_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -78,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,19 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +126,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,7 +137,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob1_walk_0
+      name: wob1_attack_bat_0
       rect:
         serializedVersion: 2
         x: 0
@@ -151,14 +151,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13069cd53ab6022b0800000000000000
-      internalID: -5611366786306318287
+      spriteID: c50180af2690516d0800000000000000
+      internalID: -3020497654375772068
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_1
+      name: wob1_attack_bat_1
       rect:
         serializedVersion: 2
         x: 128
@@ -172,14 +172,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5394e0f272aba97b0800000000000000
-      internalID: -5216652540899342027
+      spriteID: f34400ca190139f40800000000000000
+      internalID: 5733944968414774335
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_2
+      name: wob1_attack_bat_2
       rect:
         serializedVersion: 2
         x: 256
@@ -193,14 +193,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c36f3da2c74c0250800000000000000
-      internalID: 5912179312286458817
+      spriteID: 7be503eb8fa4eacf0800000000000000
+      internalID: -239171298000871753
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_3
+      name: wob1_attack_bat_3
       rect:
         serializedVersion: 2
         x: 384
@@ -214,8 +214,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 153ae37557161fe80800000000000000
-      internalID: -8146623094333725871
+      spriteID: 2f9c5c1b9f10d15c0800000000000000
+      internalID: -4243233101972125198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_attack_bat_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8250a9b4bf5c89890800000000000000
+      internalID: -7450987900388637400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_attack_bat_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7189db7cbb7dfd6c0800000000000000
+      internalID: -4116334332883396585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_attack_bat_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23314d701b7fec860800000000000000
+      internalID: 7552245964859511602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wob1_attack_bat_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: beb573616f22228e0800000000000000
+      internalID: -1719773667372082197
       vertices: []
       indices: 
       edges: []
