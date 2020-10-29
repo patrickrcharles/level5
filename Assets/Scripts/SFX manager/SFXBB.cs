@@ -33,6 +33,8 @@ public class SFXBB : MonoBehaviour
     public AudioClip takeDamage;
     public AudioClip shotgunRack;
     public AudioClip vampireHiss;
+    public AudioClip projectileRocket;
+    public AudioClip whipCrack;
 
     public AudioClip unlockAchievement;
 
