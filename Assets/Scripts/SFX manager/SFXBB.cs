@@ -35,6 +35,7 @@ public class SFXBB : MonoBehaviour
     public AudioClip vampireHiss;
     public AudioClip projectileRocket;
     public AudioClip whipCrack;
+    public AudioClip shootAutomaticAK47;
 
     public AudioClip unlockAchievement;
 
