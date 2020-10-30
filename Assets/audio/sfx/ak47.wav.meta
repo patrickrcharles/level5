@@ -18,7 +18,14 @@ AudioImporter:
       compressionFormat: 1
       quality: 1
       conversionMode: 0
-  forceToMono: 1
+    7:
+      loadType: 0
+      sampleRateSetting: 1
+      sampleRateOverride: 44100
+      compressionFormat: 1
+      quality: 0.75
+      conversionMode: 0
+  forceToMono: 0
   normalize: 1
   preloadAudioData: 1
   loadInBackground: 0
