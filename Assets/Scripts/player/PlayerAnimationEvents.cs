@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityStandardAssets.Effects;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
@@ -114,6 +116,22 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
+
+    public void instantiateProjectileAutomaticBullet(int numOfBullets)
+    {
+        StartCoroutine(ShootAutomaticWeapon(numOfBullets));
+        //Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+
+    IEnumerator ShootAutomaticWeapon(int numBullets)
+    {
+        for(int i = 0; i < numBullets; i++)
+        {
+            instantiateProjectileBullet();
+            yield return new WaitForSeconds(0.1f);
+        }
+    }   
+
     public void instantiateProjectileMolotov()
     {
         Instantiate(projectileMolotovPrefab, projectileSpawn.transform.position, Quaternion.identity);
@@ -299,6 +317,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void playSfxWhipCrack()
     {
         audioSource.PlayOneShot(SFXBB.instance.whipCrack);
+    }
+    public void playSfxAK47()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.shootAutomaticAK47);
     }
 
     public void enableAttackBox()
