@@ -24,7 +24,11 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileRocketPrefab;
     [SerializeField]
+    GameObject projectileCigarettePrefab;
+    [SerializeField]
     GameObject projectileSpawn;
+    [SerializeField]
+    CapsuleCollider capsuleCollider;
 
     bool attackBoxEnabled;
     bool attackBoxSpecialEnabled;
@@ -42,7 +46,12 @@ public class PlayerAnimationEvents : MonoBehaviour
             projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
             projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;
+            projectileCigarettePrefab = Resources.Load("Prefabs/projectile/projectile_cigarette") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
+        }
+        if (transform.root.GetComponent<CapsuleCollider>() != null)
+        {
+            capsuleCollider = transform.root.GetComponent<CapsuleCollider>();
         }
 
         playerController = GameLevelManager.instance.PlayerState;
@@ -136,12 +145,17 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         Instantiate(projectileMolotovPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
+    public void instantiateProjectileCigarette()
+    {
+        Instantiate(projectileCigarettePrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
     public void instantiateProjectileRocket()
     {
         Instantiate(projectileRocketPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
-    public void applyForceToDirectionFacingKickFlip(float force)
+
+    public void applyForceToDirectionFacingXAndY(float force)
     {
         // get direction facing
         if (playerController.facingRight)
@@ -196,6 +210,81 @@ public class PlayerAnimationEvents : MonoBehaviour
         // apply for in x direction
     }
 
+    public void applyForceToXDirectionNotFacing(float Xforce)
+    {
+        Debug.Log("force : " + Xforce);
+        // get direction facing
+        if (playerController.facingRight)
+        {
+            //apply to X
+            playerController.RigidBody.AddForce(-Xforce, 2, 0, ForceMode.VelocityChange);
+        }
+        if (!playerController.facingRight)
+        {
+            playerController.RigidBody.AddForce(Xforce, 2, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+    }
+
+
+    public void enableAttackBox()
+    {
+        attackBox.SetActive(true);
+        attackBoxEnabled = true;
+        Debug.Log("enable attack box");
+    }
+
+    public void disableAttackBox()
+    {
+        attackBox.SetActive(false);
+        attackBoxEnabled = false;
+        Debug.Log("disable attack box");
+    }
+    public void enableAttackBoxSpecial()
+    {
+        attackBoxSpecial.SetActive(true);
+        attackBoxSpecialEnabled = true;
+    }
+
+    public void disableAttackBoxSpecial()
+    {
+        attackBoxSpecial.SetActive(false);
+        attackBoxSpecialEnabled = false;
+    }
+
+    public void enableHitBox()
+    {
+        hitBox.SetActive(true);
+        hitBoxEnabled = true;
+    }
+
+    public void disableHitBox()
+    {
+        hitBox.SetActive(false);
+        hitBoxEnabled = false;
+    }
+
+    //public void enableCapsuleCollider()
+    //{
+    //    capsuleCollider.enabled = true;
+    //    //capsuleColliderEnabled = true;
+    //}
+
+    //public void disableCapsuleCollider()
+    //{
+    //    capsuleCollider.enabled = false;
+    //    //capsuleColliderEnabled = false;
+    //}
+
+    public void enableRigidBodyIsKinematic()
+    {
+        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    public void disableRigidBodyIsKinematic()
+    {
+        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+    }
 
     public void playSfxBasketballDribbling()
     {
@@ -323,52 +412,6 @@ public class PlayerAnimationEvents : MonoBehaviour
         audioSource.PlayOneShot(SFXBB.instance.shootAutomaticAK47);
     }
 
-    public void enableAttackBox()
-    {
-        attackBox.SetActive(true);
-        attackBoxEnabled = true;
-        Debug.Log("enable attack box");
-    }
-
-    public void disableAttackBox()
-    {
-        attackBox.SetActive(false);
-        attackBoxEnabled = false;
-        Debug.Log("disable attack box");
-    }
-    public void enableAttackBoxSpecial()
-    {
-        attackBoxSpecial.SetActive(true);
-        attackBoxSpecialEnabled = true;
-    }
-
-    public void disableAttackBoxSpecial()
-    {
-        attackBoxSpecial.SetActive(false);
-        attackBoxSpecialEnabled = false;
-    }
-
-    public void enableHitBox()
-    {
-        hitBox.SetActive(true);
-        hitBoxEnabled = true;
-    }
-
-    public void disableHitBox()
-    {
-        hitBox.SetActive(false);
-        hitBoxEnabled = false;
-    }
-
-    public void enableRigidBodyIsKinematic()
-    {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = true;
-    }
-
-    public void disableRigidBodyIsKinematic()
-    {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
