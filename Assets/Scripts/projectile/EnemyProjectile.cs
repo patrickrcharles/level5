@@ -24,40 +24,27 @@ public class EnemyProjectile : MonoBehaviour
             applyForceToDirectionFacingProjectile(projectileForce);
             Destroy(transform.root.gameObject, lifetime);
         }
-        if (thrownProjectile && !impactProjectile)
+        if (thrownProjectile && impactProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForceThrown);
             impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_explosion") as GameObject;
             //Destroy(transform.root.gameObject, lifetime);
         }
-        if (!thrownProjectile && impactProjectile)
+        if (!thrownProjectile && !impactProjectile)
         {
             Destroy(transform.root.gameObject, lifetime);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("collision between : " + gameObject.name + " and " + other.name);
-    //    if (other.CompareTag("enemyHitbox"))
-    //    {
-    //        Debug.Log("destroy " + transform.root.gameObject.name);
-    //        Destroy(transform.root.gameObject);
-    //        //Debug.Log("destroy " + transform.root.gameObject.name);
-    //    }
-    //}
 
     public void applyForceToDirectionFacingProjectile(float force)
     {
         // get direction facing
         if (facingRight)
         {
-            Debug.Log(" shoot right");
             rigidbody.AddForce(force, 0, 0, ForceMode.VelocityChange);
         }
         if (!facingRight)
         {
-            Debug.Log(" shoot left");
             rigidbody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
         }
     }
@@ -78,21 +65,17 @@ public class EnemyProjectile : MonoBehaviour
         Destroy(transform.root.gameObject);
     }
 
-
-
     private void OnTriggerEnter(Collider other)
     {
         // destroy thrown projectile on impact
-        if (thrownProjectile 
-            && !impactProjectile
-            && (other.CompareTag("ground") || other.CompareTag("enemyHitbox")))
+        if (thrownProjectile // thrown projectile          
+            && !impactProjectile // does NOT explode on impact. bullet, laser, etc        
+            && (other.CompareTag("ground") || other.CompareTag("enemyHitbox"))) // if hit ground or enemy
         {
-            Debug.Log("collision between : " + gameObject.name + " and " + other.name);
+            // get position of impact to instantiate explosion object
             Vector3 transformAtImpact = gameObject.transform.position;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
             // explode object
-            //Debug.Log("projectile should explode");
-            //Debug.Log("instantiate fire object");
             Instantiate(impactExplosionPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
