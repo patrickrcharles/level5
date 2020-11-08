@@ -7,6 +7,13 @@ public class EnemyAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject attackBox;
 
+    [SerializeField]
+    GameObject projectileLaserPrefab;
+    [SerializeField]
+    GameObject projectileSpawn;
+    [SerializeField]
+    EnemyController enemyController;
+
     private AudioSource audioSource;
 
     private void Start()
@@ -15,6 +22,12 @@ public class EnemyAnimationEvents : MonoBehaviour
         {
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         }
+        if(transform.Find("projectileSpawn") != null)
+        {
+            projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
+            projectileSpawn = transform.Find("projectileSpawn").gameObject;
+        }
+        enemyController = transform.parent.GetComponent<EnemyController>();
 
         attackBox = transform.parent.Find("attackBox").gameObject;
         disableAttackBox();
@@ -34,6 +47,15 @@ public class EnemyAnimationEvents : MonoBehaviour
         {
             attackBox.SetActive(false);
         }
+    }
+
+    public void instantiateProjectileLazer()
+    {
+        //EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
+        projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        //enemyProjectile.facingRight = enemyController.facingRight;
+
+        Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
     public void playSfxBasketballDribbling()
