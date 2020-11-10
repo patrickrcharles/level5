@@ -341,6 +341,7 @@ public class PlayerController : MonoBehaviour
             canAttack = false;
         }
 
+#if UNITY_STANDALONE || UNITY_EDITOR
         //------------------ jump -----------------------------------
         if (GameLevelManager.instance.Controls.Player.jump.triggered
             //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
@@ -392,7 +393,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            anim.SetBool("block", false);
+            // double check touch input not being used
+            if(!TouchInputController.instance.HoldDetected)
+            {
+                anim.SetBool("block", false);
+            }
         }
 
         //------------------ special -----------------------------------
@@ -412,6 +417,7 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
+#endif
     }
 
     public void playerAttack()
@@ -430,7 +436,7 @@ public class PlayerController : MonoBehaviour
         basketball.shootBasketBall();
     }
 
-    private void playerSpecial()
+    public void playerSpecial()
     {
         playAnim("special");
     }
@@ -644,6 +650,11 @@ public class PlayerController : MonoBehaviour
     public int BlockState { get => blockState; set => blockState = value; }
     public int SpecialState { get => specialState; set => specialState = value; }
     public bool facingRight { get => _facingRight; set => _facingRight = value; }
+    public bool CanAttack { get => canAttack; set => canAttack = value; }
+    public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
+    public bool CanBlock { get => canBlock; set => canBlock = value; }
+    public Animator Anim { get => anim; set => anim = value; }
+    public bool PlayerCanBlock1 { get => playerCanBlock; set => playerCanBlock = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()
