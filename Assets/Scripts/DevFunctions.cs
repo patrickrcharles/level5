@@ -61,7 +61,7 @@ public class DevFunctions : MonoBehaviour
         Debug.Log("InstantiateRob()");
 
         GameObject _playerSpawnLocation = GameObject.Find("player_spawn_location");
-        string playerPrefabPath = "Prefabs/characters/npc_specific/npc_rob";
+        string playerPrefabPath = "Prefabs/characters/players/npc_specific/npc_rob";
         GameObject _playerClone = Resources.Load(playerPrefabPath) as GameObject;
 
         Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
