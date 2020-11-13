@@ -5,7 +5,7 @@ public class BasketBallState : MonoBehaviour
 {
     // constant values that have to be hardcoded
     private const float _threePointDistance = 3.8f;
-    private const float _fourPointDistance = 5.2f;
+    private const float _fourPointDistance = 6.8f;
     private const float _sevenPointDistance = 16.7f;
 
     private bool _twoPoints;
