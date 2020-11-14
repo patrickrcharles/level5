@@ -32,8 +32,6 @@ public class DevFunctions : MonoBehaviour
             fpsCounter.SetActive(false);
         }
     }
-
-
     private void Update()
     {
         if (GameLevelManager.instance.Controls.Other.change.enabled
