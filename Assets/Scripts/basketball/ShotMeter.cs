@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class ShotMeter : MonoBehaviour
 {
     private const string sliderValueOnPressName = "slider_value_text";
+    private const string sliderMessageName = "slider_message_text";
     [SerializeField]
     private Text sliderValueOnPress;
+    [SerializeField]
+    private Text sliderMessageText;
 
     float sliderValueOnButtonPress;
     public float SliderValueOnButtonPress => sliderValueOnButtonPress;
@@ -31,13 +34,19 @@ public class ShotMeter : MonoBehaviour
     public float meterFillTime;
     bool locked;
 
+    public static ShotMeter instance;
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         shooterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
         sliderValueOnPress = transform.Find(sliderValueOnPressName).GetComponent<Text>();
+        sliderValueOnPress.text = "";
+        sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
+        sliderMessageText.text = "";
     }
 
     // Update is called once per frame
@@ -139,10 +148,22 @@ public class ShotMeter : MonoBehaviour
         StartCoroutine(toggleSliderValueOnPressText(2, message));
     }
 
+    public void displaySliderMessageText(String message)
+    {
+
+        StartCoroutine(toggleSliderMessageText(2, message));
+    }
+
     IEnumerator toggleSliderValueOnPressText(float seconds, String message)
     {
         sliderValueOnPress.text = message;
         yield return new WaitForSeconds(seconds);
         sliderValueOnPress.text = "";
+    }
+    IEnumerator toggleSliderMessageText(float seconds, String message)
+    {
+        sliderMessageText.text = message;
+        yield return new WaitForSeconds(seconds);
+        sliderMessageText.text = "";
     }
 }
