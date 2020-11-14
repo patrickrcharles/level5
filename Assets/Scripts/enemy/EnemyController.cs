@@ -107,10 +107,10 @@ public class EnemyController : MonoBehaviour
         // ================== enemy facing player ==========================
         relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
 
-        if (!anim.isActiveAndEnabled)
-        {
-            Debug.Log("aniamtor is inactive");
-        }
+        //if (!anim.isActiveAndEnabled)
+        //{
+        //    Debug.Log("aniamtor is inactive");
+        //}
         // ================== enemy idle ==========================
         if ((GameLevelManager.instance.PlayerState.KnockedDown
             || !canAttack
