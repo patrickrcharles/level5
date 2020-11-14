@@ -103,20 +103,7 @@ public class cameraUpdater : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        //playerPos = new Vector3(player.transform.position.x,
-        //    0, player.transform.position.z);
-        ////camPos = new Vector3(cam.transform.position.x,
-        ////    0, cam.transform.root.position.z);
-        ////rimPos = new Vector3(basketBallRim.x,
-        ////    0, basketBallRim.z);
-
-        ////distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
-        //// for zoom
-        ////distanceRimFromPlayer = rimPos.z - playerPos.z;
-        ////distanceRimFromPlayer = basketBallRim.z - playerPos.z;
-        //// for secondary camera
         playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
 
@@ -169,13 +156,13 @@ public class cameraUpdater : MonoBehaviour
         }
 
         // * note change var to player distance because each camera is in a different spot
-        if (Math.Abs(playerDistanceFromRimX) > 8 && !onGoalCameraEnabled
+        if (Math.Abs(playerDistanceFromRimX) > 8.5f && !onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed)
         {
             toggleCameraOnGoal();
         }
 
-        if (Math.Abs(playerDistanceFromRimX) < 8 && onGoalCameraEnabled
+        if (Math.Abs(playerDistanceFromRimX) < 8.5f && onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed)
         {
             toggleCameraOnGoal();
@@ -188,8 +175,8 @@ public class cameraUpdater : MonoBehaviour
         if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             // * note change var to player distance because each camera is in a different spot
-            if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
-                && !((playerDistanceFromRimX < -6.8 || playerDistanceFromRimX > 6.8)))
+            if ((playerDistanceFromRimX < -7 || playerDistanceFromRimX > 7)
+                && !((playerDistanceFromRimX < -8 || playerDistanceFromRimX > 8)))
             {
                 updatePositionNearGoal();
             }
