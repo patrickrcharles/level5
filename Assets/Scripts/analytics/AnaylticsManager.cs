@@ -68,4 +68,41 @@ public static class AnaylticsManager
             }
             );
     }
+
+    public static void PointsScoredEnemiesEnabled(BasketBallStats basketBallStats)
+    {
+        string eventName = "points scored : enemies enabled";
+        AnalyticsResult analyticsResult =
+            Analytics.CustomEvent(eventName,
+            new Dictionary<string, object>
+            {
+                {"game mode", GameOptions.gameModeSelectedName },
+                {"player", GameOptions.playerDisplayName },
+                {"cheerleader", GameOptions.cheerleaderDisplayName },
+                {"points", basketBallStats.TotalPoints },
+                {"accuracy", (basketBallStats.ShotMade / basketBallStats.ShotAttempt).ToString("##.####") },
+                {"deviceType", SystemInfo.deviceType },
+                {"deviceModel", SystemInfo.deviceModel },
+                {"OperatingSystem", SystemInfo.operatingSystem }
+            }
+            );
+    }
+    public static void PointsScoredEnemiesDisabled(BasketBallStats basketBallStats)
+    {
+        string eventName = "points scored : enemies disabled";
+        AnalyticsResult analyticsResult =
+            Analytics.CustomEvent(eventName,
+            new Dictionary<string, object>
+            {
+                {"game mode", GameOptions.gameModeSelectedName },
+                {"player", GameOptions.playerDisplayName },
+                {"cheerleader", GameOptions.cheerleaderDisplayName },
+                {"points", basketBallStats.TotalPoints },
+                {"accuracy", (basketBallStats.ShotMade / basketBallStats.ShotAttempt).ToString("##.####") },
+                {"deviceType", SystemInfo.deviceType },
+                {"deviceModel", SystemInfo.deviceModel },
+                {"OperatingSystem", SystemInfo.operatingSystem }
+            }
+            );
+    }
 }
