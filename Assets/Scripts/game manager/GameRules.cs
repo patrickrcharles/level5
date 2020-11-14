@@ -199,6 +199,15 @@ public class GameRules : MonoBehaviour
                 AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
                     GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
             }
+            if (GameOptions.enemiesEnabled)
+            {
+                AnaylticsManager.PointsScoredEnemiesEnabled(basketBallStats);
+            }
+            else
+            {
+                AnaylticsManager.PointsScoredEnemiesDisabled(basketBallStats);
+            }
+
             // alert game manager. trigger
             GameLevelManager.instance.GameOver = true;
         }
