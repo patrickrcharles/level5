@@ -154,35 +154,6 @@ public class BasketBall : MonoBehaviour
                 basketBallState.BasketBallPosition.transform.position.y,
                 basketBallState.BasketBallPosition.transform.position.z);
         }
-
-        //// if has ball, is in air, and pressed shoot button.
-        //if (playerState.inAir
-        //    && playerState.hasBasketball
-        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
-        //    //&& playerState.jumpPeakReached
-        //    && !playerState.IsSetShooter)
-        ////&& !basketBallState.Locked)
-        //{
-        //    CallBallToPlayer.instance.Locked = true;
-        //    basketBallState.Locked = true;
-        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-        //    playerState.Shotmeter.MeterEnded = true;
-        //    shootBasketBall();
-        //}
-
-        //// if has ball, is in air, and pressed shoot button.
-        //if (!playerState.inAir
-        //    && playerState.hasBasketball
-        //    && GameLevelManager.Instance.Controls.Player.shoot.triggered
-        //    //&& InputManager.GetButtonDown("Jump")
-        //    //&& playerState.jumpPeakReached
-        //    && playerState.IsSetShooter)
-        //{
-        //    basketBallState.Locked = true;
-        //    playerState.checkIsPlayerFacingGoal(); // turns player facing rim
-        //    playerState.Shotmeter.MeterEnded = true;
-        //    shootBasketBall();
-        //}
     }
 
     public void checkIsBallFacingGoal()
@@ -442,12 +413,14 @@ public class BasketBall : MonoBehaviour
         bool critical = rollForCriticalShotChance(characterProfile.Luck);
         //Debug.Log("------------------START SEQUENCE");
         // if rolled critical
+        string shotMeterMessage = "";
         if (critical)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
             //Debug.Log("------------------ CRITICAL");
             // npc performs critical success action 
+            shotMeterMessage = "critical";
         }
         // if >= 95 and NOT critical (release stat factored in)
         if (playerState.Shotmeter.SliderValueOnButtonPress >= 95
@@ -456,6 +429,8 @@ public class BasketBall : MonoBehaviour
             //Debug.Log("------------------ METER >= 95");
             accuracyModifierX = 0;
             accuracyModifierY = getReleaseModifier();
+            accuracyModifierZ = 0;
+            shotMeterMessage = ">=95 Y/Zmod";
         }
         // NOT critical and NOT >= 95 (get X, Y modifiers)
         if (playerState.Shotmeter.SliderValueOnButtonPress < 95
@@ -463,6 +438,7 @@ public class BasketBall : MonoBehaviour
         {
             accuracyModifierX = getAccuracyModifier();
             accuracyModifierY = getReleaseModifier();
+            shotMeterMessage = "<95 X/Y/Zmod";
         }
         // range modifier always factors in
         accuracyModifierZ = getRangeModifier();
@@ -474,7 +450,18 @@ public class BasketBall : MonoBehaviour
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
+            // shot meter message 
+            if(critical)
+            {
+                shotMeterMessage = "critical -swish";
+            }
+            else
+            {
+                shotMeterMessage = "no mod -swish";
+            }
         }
+
+        ShotMeter.instance.displaySliderMessageText(shotMeterMessage);
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
