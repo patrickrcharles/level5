@@ -64,6 +64,7 @@ public class GameOptions : MonoBehaviour
     static public int modeSelectedIndex = 0;
     static public int cheerleaderSelectedIndex = 0;
     static public bool trafficEnabled = false;
+    static public bool enemiesEnabled = false;
 
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
@@ -74,7 +75,6 @@ public class GameOptions : MonoBehaviour
 
     static public bool architectureInfoLoaded = false;
 
-
     void Start()
     {
         levelSelectedName = SceneManager.GetActiveScene().name;
@@ -84,7 +84,7 @@ public class GameOptions : MonoBehaviour
         {
             if (Environment.Is64BitProcess)
             {
-                Debug.Log("ARM64");
+                //Debug.Log("ARM64");
                 GameOptions.architectureIs32bit = false;
                 GameOptions.architectureIs64bit = true;
                 GameOptions.architectureIsAndroid = true;
@@ -92,7 +92,7 @@ public class GameOptions : MonoBehaviour
 
             else
             {
-                Debug.Log("ARM");
+                //Debug.Log("ARM");
                 GameOptions.architectureIs32bit = true;
                 GameOptions.architectureIs64bit = false;
                 GameOptions.architectureIsAndroid = true;
@@ -103,14 +103,14 @@ public class GameOptions : MonoBehaviour
             // Must be in the x86 family.
             if (Environment.Is64BitProcess)
             {
-                Debug.Log("x86_64");
+                //Debug.Log("x86_64");
                 GameOptions.architectureIs32bit = false;
                 GameOptions.architectureIs64bit = true;
                 GameOptions.architectureIsAndroid = false;
             }
             else
             {
-                Debug.Log("x86");
+                //Debug.Log("x86");
                 GameOptions.architectureIs32bit = true;
                 GameOptions.architectureIs64bit = false;
                 GameOptions.architectureIsAndroid = false;

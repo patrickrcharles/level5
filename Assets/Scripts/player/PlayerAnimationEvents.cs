@@ -231,14 +231,14 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         attackBox.SetActive(true);
         attackBoxEnabled = true;
-        Debug.Log("enable attack box");
+        //Debug.Log("enable attack box");
     }
 
     public void disableAttackBox()
     {
         attackBox.SetActive(false);
         attackBoxEnabled = false;
-        Debug.Log("disable attack box");
+        //Debug.Log("disable attack box");
     }
     public void enableAttackBoxSpecial()
     {

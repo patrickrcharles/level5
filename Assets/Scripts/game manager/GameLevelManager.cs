@@ -140,27 +140,6 @@ public class GameLevelManager : MonoBehaviour
         Anim = Player.GetComponentInChildren<Animator>();
     }
 
-    //IEnumerator SetMajorObjectReferences()
-    //{
-    //    yield return new WaitUntil(() => GameObject.FindWithTag("basketball") != null);
-    //    BasketballObject = GameObject.FindWithTag("basketball");
-
-    //    yield return new WaitUntil(() => BasketballObject.GetComponent<BasketBall>() != null);
-    //    Basketball = BasketballObject.GetComponent<BasketBall>();
-
-    //    yield return new WaitUntil(() => GameObject.Find("rim").transform.position != null);
-    //    BasketballRimVector = GameObject.Find("rim").transform.position;
-
-    //    //set up player/basketball read only references for use in other classes
-    //    yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
-    //    _player = GameObject.FindGameObjectWithTag("Player");
-
-    //    yield return new WaitUntil(() => _player.GetComponent<PlayerController>() != null);
-    //    _playerState = _player.GetComponent<PlayerController>();
-
-    //    yield return new WaitUntil(() => Player.GetComponentInChildren<Animator>() != null);
-    //    Anim = Player.GetComponentInChildren<Animator>();
-    //}
 
     private void Update()
     {
@@ -202,7 +181,7 @@ public class GameLevelManager : MonoBehaviour
                 //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
                 if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
                 {
-                    Debug.Log("disable veh  : " + veh.name);
+                    //Debug.Log("disable veh  : " + veh.name);
                     veh.SetActive(false);
                 }
             }
@@ -213,7 +192,7 @@ public class GameLevelManager : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
             {
-                Debug.Log("disable npc  : " + npc.name);
+                //Debug.Log("disable npc  : " + npc.name);
                 npc.SetActive(false);
             }
         }

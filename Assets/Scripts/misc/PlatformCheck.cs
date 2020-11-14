@@ -36,13 +36,11 @@ public class PlatformCheck : MonoBehaviour
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
-        Debug.Log("if editor");
+        //Debug.Log("if editor");
         QualitySettings.vSyncCount = 0;
         //standaloneInputModule.DeactivateModule();
         standaloneInputModule.enabled = false;
         //inputSystemUIInputModule.ActivateModule();
 #endif
     }
-
-
 }

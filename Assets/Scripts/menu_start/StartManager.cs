@@ -163,7 +163,7 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
-        trafficEnabled = GameOptions.trafficEnabled;
+        trafficEnabled = GameOptions.enemiesEnabled;
 
         // update experience and levels
         // recommended here because experience will be gained after every game played
@@ -353,6 +353,7 @@ public class StartManager : MonoBehaviour
                 }
                 if (currentHighlightedButton.Equals(trafficSelectOptionName))
                 {
+                    // disabled for now. default : OFF
                     changeSelectedTrafficOption();
                     initializeTrafficOptionDisplay();
                 }
@@ -852,7 +853,7 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderId = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId;
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
 
-        GameOptions.trafficEnabled = trafficEnabled;
+        //GameOptions.trafficEnabled = trafficEnabled;
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
@@ -862,7 +863,8 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderSelectedIndex = cheerleaderSelectedIndex;
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
-        GameOptions.trafficEnabled = trafficEnabled;
+        //GameOptions.trafficEnabled = trafficEnabled;
+        GameOptions.enemiesEnabled = trafficEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
     }
