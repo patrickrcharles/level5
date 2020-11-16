@@ -103,7 +103,6 @@ public class GameLevelManager : MonoBehaviour
         // return to this if n
         GameOptions.previousSceneName = "level_00_start";
 
-
         // analytic event
         if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
         {
