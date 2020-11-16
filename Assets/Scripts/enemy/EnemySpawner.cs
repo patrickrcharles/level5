@@ -23,5 +23,10 @@ public class EnemySpawner : MonoBehaviour
                 //enemyPrefabs[i].transform.position = spawnPositions[i].transform.position;
             }
         }
+        // this needs to second option or enabling it will spawn enemies
+        else if (GameObject.FindGameObjectWithTag("enemy") != null)
+        {
+            GameOptions.enemiesEnabled = true;
+        }
     }
 }
