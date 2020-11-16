@@ -368,7 +368,8 @@ public class PlayerController : MonoBehaviour
         if (GameLevelManager.instance.Controls.Player.shoot.triggered
             && GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
             && !hasBasketball
-            && canAttack)
+            && canAttack
+            && GameOptions.enemiesEnabled)
         {
             playerAttack();
         }
@@ -380,7 +381,8 @@ public class PlayerController : MonoBehaviour
         if (GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
             //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
             && !hasBasketball
-            && canBlock)
+            && canBlock
+            && GameOptions.enemiesEnabled)
         {
             if (playerCanBlock)
             {
@@ -404,7 +406,8 @@ public class PlayerController : MonoBehaviour
         if (GameLevelManager.instance.Controls.Player.special.triggered
             && !inAir
             && grounded
-            && !KnockedDown)
+            && !KnockedDown
+            && GameOptions.enemiesEnabled)
         {
             playerSpecial();
         }
