@@ -5,7 +5,7 @@ public class BasketBallState : MonoBehaviour
 {
     // constant values that have to be hardcoded
     private const float _threePointDistance = 3.8f;
-    private const float _fourPointDistance = 6.8f;
+    private const float _fourPointDistance = 6.4f;
     private const float _sevenPointDistance = 16.7f;
 
     private bool _twoPoints;
@@ -55,6 +55,7 @@ public class BasketBallState : MonoBehaviour
     {
 
         PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
+        //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 
         // is player on  marker  +  is marker required for game mode
         if (GameRules.instance.PositionMarkersRequired)
@@ -239,6 +240,7 @@ public class BasketBallState : MonoBehaviour
         get => _grounded;
         set => _grounded = value;
     }
+
     public float PlayerDistanceFromRim
     {
         get => _playerDistanceFromRim;
