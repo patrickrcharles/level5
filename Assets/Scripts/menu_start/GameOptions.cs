@@ -120,6 +120,6 @@ public class GameOptions : MonoBehaviour
             //Debug.Log("android : " + GameOptions.architectureIsAndroid);
         }
         architectureInfoLoaded = true;
-        Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
+        //Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
     }
 }

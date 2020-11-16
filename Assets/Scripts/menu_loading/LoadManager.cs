@@ -84,7 +84,7 @@ public class LoadManager : MonoBehaviour
     IEnumerator LoadAllData()
     {
         yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
-        Debug.Log("LoadAllData : architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
+        //Debug.Log("LoadAllData : architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
         StartCoroutine(verifyCharacterProfileTable());
         StartCoroutine(verifyCheerleaderProfileTable());
         StartCoroutine(LoadGameData());

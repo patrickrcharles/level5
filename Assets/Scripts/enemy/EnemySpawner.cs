@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
             // position transform relative to basketball goal
             basketBallGoalPosition = GameObject.Find("rim");
             transform.position = new Vector3(basketBallGoalPosition.transform.position.x, 0, basketBallGoalPosition.transform.position.z);
-            Debug.Log(spawnPositions.Capacity);
+            //Debug.Log(spawnPositions.Capacity);
 
             for (int i = 0; i < spawnPositions.Capacity; i++)
             {

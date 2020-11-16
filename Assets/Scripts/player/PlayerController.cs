@@ -515,7 +515,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerTakeDamage()
     {
-        Debug.Log("PlayerTakeDamage");
+        //Debug.Log("PlayerTakeDamage");
         rigidBody.constraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
@@ -537,7 +537,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerKnockedDown()
     {
-        Debug.Log("PlayerKnockedDown");
+        //Debug.Log("PlayerKnockedDown");
         rigidBody.constraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
