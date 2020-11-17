@@ -74,13 +74,12 @@ public class GameOptions : MonoBehaviour
     static public bool architectureIsAndroid;
 
     static public bool architectureInfoLoaded = false;
-
     static public bool hardcoreModeEnabled = false;
 
-    private void Awake()
-    {
-        //hardcoreModeEnabled = true;
-    }
+    //private void Awake()
+    //{
+    //    hardcoreModeEnabled = true;
+    //}
 
     void Start()
     {

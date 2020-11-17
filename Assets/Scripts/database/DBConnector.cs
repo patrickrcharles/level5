@@ -390,7 +390,8 @@ public class DBConnector : MonoBehaviour
                 "maxShotMade   INTEGER, " +
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
-                "trafficEnabled	INTEGER); " +
+                "trafficEnabled	INTEGER " +
+                "hardcoreEnabled INTEGER); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +

@@ -161,10 +161,15 @@ public class DBHelper : MonoBehaviour
         {
             trafficEnabled = 1;
         }
+        int hardcoreEnabled = 0;
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            hardcoreEnabled = 1;
+        }
 
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled )  " +
+           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled )  " +
            "Values( '" + GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
@@ -180,7 +185,8 @@ public class DBHelper : MonoBehaviour
            + stats.ShotMade + "','"
            + stats.ShotAttempt + "','"
            + stats.MostConsecutiveShots + "','"
-           + trafficEnabled + "')";
+           + trafficEnabled + "','"
+           + hardcoreEnabled + "')";
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -408,8 +414,6 @@ public class DBHelper : MonoBehaviour
                     + ", pointsAvailable = " + character.PointsAvailable
                     + ", pointsUsed = " + character.PointsUsed
                     + " WHERE charid = " + character.PlayerId;
-
-                    Debug.Log(sqlQuery);
 
                     cmd.CommandText = sqlQuery;
                     cmd.ExecuteNonQuery();
@@ -1073,6 +1077,8 @@ public class DBHelper : MonoBehaviour
         string character;
         string level;
         string date;
+        string hardcore = "";
+        int hardcoreEnabled = 0;
 
         string sqlQuery = "";
 
@@ -1084,11 +1090,12 @@ public class DBHelper : MonoBehaviour
         // game modes that require float values/ low time as high score
         if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+
         }
         else
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
         }
 
         dbcmd.CommandText = sqlQuery;
@@ -1108,8 +1115,27 @@ public class DBHelper : MonoBehaviour
             character = reader.GetString(1);
             level = reader.GetString(2);
             date = reader.GetString(3);
+            // null check
+            if (reader.IsDBNull(4))
+            {
+                hardcoreEnabled = 0;
+            }
+            else
+            {
+                hardcoreEnabled = reader.GetInt32(4);
+            }
+
+            if (hardcoreEnabled != 0)
+            {
+                hardcore = "yes";
+            }
+            else
+            {
+                hardcore = "no";
+            }
+
             // add to list
-            listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date));
+            listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore));
             //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
         }
 
@@ -1126,7 +1152,7 @@ public class DBHelper : MonoBehaviour
             int numToAdd = 10 - listOfValues.Count;
             for (int i = 0; i < numToAdd; i++)
             {
-                listOfValues.Add(new StatsTableHighScoreRow("", "", "", ""));
+                listOfValues.Add(new StatsTableHighScoreRow("", "", "", "", ""));
             }
         }
 
