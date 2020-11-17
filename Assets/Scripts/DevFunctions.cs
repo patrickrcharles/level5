@@ -8,9 +8,10 @@ public class DevFunctions : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] CharacterProfile player;
-    [SerializeField] Text debugText;
+    //[SerializeField] Text debugText;
     [SerializeField] GameObject fpsCounter;
     [SerializeField] GameObject[] enemies;
+    [SerializeField] Text messageText;
 
     public static DevFunctions instance;
 
@@ -23,7 +24,8 @@ public class DevFunctions : MonoBehaviour
     private void Start()
     {
         player = GameLevelManager.instance.PlayerShooterProfile;
-        debugText = GameObject.Find("debug_text").GetComponent<Text>();
+        //debugText = GameObject.Find("debug_text").GetComponent<Text>();
+        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
 
         if (GameLevelManager.instance != null)
         {
@@ -88,6 +90,7 @@ public class DevFunctions : MonoBehaviour
 
     public void setMaxPlayerStats()
     {
+
         player.Accuracy2Pt = 100;
         player.Accuracy3Pt = 100;
         player.Accuracy4Pt = 100;
@@ -96,8 +99,9 @@ public class DevFunctions : MonoBehaviour
         player.Range = 100;
         player.Luck = 10;
 
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        //Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "max player stats enabled";
+        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
     }
 
     public void ToggleFpsCounter()
@@ -116,8 +120,8 @@ public class DevFunctions : MonoBehaviour
 
     public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)
     {
-        yield return new WaitForSecondsRealtime(seconds);
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        yield return new WaitForSeconds(seconds);
+        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
     }
 }
