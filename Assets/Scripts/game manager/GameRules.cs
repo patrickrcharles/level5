@@ -553,7 +553,7 @@ public class GameRules : MonoBehaviour
 
     public bool isGameOver()
     {
-        Debug.Log("isGameOver()");
+        //Debug.Log("isGameOver()");
         // if all shot markers are cleared
         if (MarkersRemaining <= 0)
         {
