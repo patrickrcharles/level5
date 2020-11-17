@@ -34,6 +34,11 @@ public class ShotMeter : MonoBehaviour
     public float meterFillTime;
     bool locked;
 
+    public GameObject meterRed;
+    public GameObject meterYellow;
+    public GameObject meterGreen;
+    public GameObject meterHandle;
+
     public static ShotMeter instance;
 
     // Start is called before the first frame update
@@ -47,6 +52,14 @@ public class ShotMeter : MonoBehaviour
         sliderValueOnPress.text = "";
         sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
         sliderMessageText.text = "";
+
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            meterRed.SetActive(false);
+            meterYellow.SetActive(false);
+            meterGreen.SetActive(false);
+            meterHandle.SetActive(false);
+        }
     }
 
     // Update is called once per frame

@@ -39,7 +39,8 @@ public class CallBallToPlayer : MonoBehaviour
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked
             && playerState.grounded
-            && !Locked)
+            && !Locked
+            && !GameOptions.hardcoreModeEnabled)
         {
             //Debug.Log("call ball input read");
             Locked = true;

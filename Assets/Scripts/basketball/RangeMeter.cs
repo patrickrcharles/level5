@@ -32,6 +32,11 @@ public class RangeMeter : MonoBehaviour
         statText.text = "range:" + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
+
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     void setSliderValue()

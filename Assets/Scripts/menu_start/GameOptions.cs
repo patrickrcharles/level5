@@ -41,7 +41,7 @@ public class GameOptions : MonoBehaviour
     static public bool gameModeHasBeenSelected;
     static public bool gameModeRequiresCounter;
     static public bool gameModeRequiresCountDown;
-    // if game requires ,arkers be active
+    // if game requires markers be active
     // 3 / 4 point contest / moneyball / etc
     static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
@@ -74,6 +74,13 @@ public class GameOptions : MonoBehaviour
     static public bool architectureIsAndroid;
 
     static public bool architectureInfoLoaded = false;
+
+    static public bool hardcoreModeEnabled = false;
+
+    private void Awake()
+    {
+        //hardcoreModeEnabled = true;
+    }
 
     void Start()
     {
