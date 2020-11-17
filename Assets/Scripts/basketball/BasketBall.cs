@@ -28,6 +28,7 @@ public class BasketBall : MonoBehaviour
 
     Text scoreText;
     Text shootProfileText;
+    GameObject uiStatsBackground;
     //shoot angle range
     //[Range(20f, 70f)] public float _angle;
 
@@ -100,15 +101,19 @@ public class BasketBall : MonoBehaviour
 
             shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
             scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
+            uiStatsBackground = GameObject.Find("textBackground");
+
             if (UiStatsEnabled)
             {
                 updateScoreText();
                 updateShooterProfileText();
+                uiStatsBackground.SetActive(true);
             }
             else
             {
                 scoreText.text = "";
                 shootProfileText.text = "";
+                uiStatsBackground.SetActive(false); 
             }
         }
         InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
@@ -657,12 +662,14 @@ public class BasketBall : MonoBehaviour
         {
             updateScoreText();
             updateShooterProfileText();
+            uiStatsBackground.SetActive(true);
             return true;
         }
         else
         {
             scoreText.text = "";
             shootProfileText.text = "";
+            uiStatsBackground.SetActive(false);
             return false;
         }
     }
@@ -673,7 +680,7 @@ public class BasketBall : MonoBehaviour
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "ui stats = " + UiStatsEnabled;
 
-        Debug.Log("------------------------------------------------ UiStatsEnabled : " + UiStatsEnabled);
+        //Debug.Log("------------------------------------------------ UiStatsEnabled : " + UiStatsEnabled);
 
         //if (UiStatsEnabled)
         //{
