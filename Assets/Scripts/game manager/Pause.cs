@@ -42,6 +42,8 @@ public class Pause : MonoBehaviour
     private GameObject currentHighlightedButton;
 
     GameObject controlsObject;
+    GameObject controlsMobileObject;
+    GameObject controlsDesktopObject;
 
     public static Pause instance;
 
@@ -61,6 +63,8 @@ public class Pause : MonoBehaviour
         cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
         controlsObject = GameObject.Find("controls").gameObject;
+        controlsMobileObject = GameObject.Find("control_key_mobile").gameObject;
+        controlsDesktopObject = GameObject.Find("control_key_desktop").gameObject;
 
         //toggleCameraText = GameObject.Find(toggleCameraName).GetComponent<Text>();
         toggleUiStatsText = GameObject.Find(toggleUiStatsName).GetComponent<Text>();
@@ -70,6 +74,17 @@ public class Pause : MonoBehaviour
         if (controlsObject != null)
         {
             controlsObject.SetActive(false);
+
+        #if UNITY_ANDROID && !UNITY_EDITOR
+            controlsDesktopObject.SetActive(false);
+            controlsMobileObject.SetActive(true);
+        #endif
+
+        #if UNITY_STANDALONE || UNITY_EDITOR
+            controlsDesktopObject.SetActive(true);
+            controlsMobileObject.SetActive(false);
+        #endif
+
         }
 
 
