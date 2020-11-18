@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -25,8 +24,10 @@ public class PlatformCheck : MonoBehaviour
         }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+//#if UNITY_ANDROID 
         Debug.Log("if android");
-        QualitySettings.vSyncCount = 1;
+        //QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
         ////inputSystemUIInputModule.DeactivateModule();
