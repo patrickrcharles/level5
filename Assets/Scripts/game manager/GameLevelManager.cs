@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
-#if UNITY_EDITOR
-#endif
 
 public class GameLevelManager : MonoBehaviour
 {
