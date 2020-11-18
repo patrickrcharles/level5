@@ -4,17 +4,13 @@ using System;
 using System.Data;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DBConnector : MonoBehaviour
 {
     private String connection;
     private String databaseNamePath = "/level5.db";
-    //private String currentGameVersion = "3.3.2";
-    //private String previousGameVersion = "3.3.1";
     private String filepath;
-    //private string filepathBackup;
 
     // table names
     const String tableNameAchievements = "Achievements";
@@ -23,13 +19,11 @@ public class DBConnector : MonoBehaviour
     const String tableNameCheerleaderProfile = "CheerleaderProfile";
     const String tableNameHighScores = "HighScores";
     const String tableNameUser = "User";
-
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private string currentDatabaseAppVersion;
+    private const int currentDatabaseAppVersion = 1;
 
     Text messageText;
-
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -64,16 +58,6 @@ public class DBConnector : MonoBehaviour
 
     void Start()
     {
-        //if (GameObject.Find("messageDisplay") != null)
-        //{
-        //    //messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    //messageText.text += "\n" + SystemInfo.deviceName.ToString();
-        //    //messageText.text += "\n" + SystemInfo.deviceModel.ToString();
-        //    //messageText.text += "\n" + SystemInfo.processorType.ToString();
-        //    //messageText.text += "\n" + filepath;
-        //    //messageText.text += "\n" + connection;
-        //}
-
         //// create database / add tables if not exist
         if (File.Exists(filepath))
         //|| !Application.version.Equals(getDatabaseVersion()))// && integrityCheck())
@@ -91,7 +75,7 @@ public class DBConnector : MonoBehaviour
             }
         }
         // if database doesnt exist
-        if (!File.Exists(filepath))
+        if (!File.Exists(filepath) )
         //|| !integrityCheck()
         //|| !Application.version.Equals(getDatabaseVersion()))
         {
@@ -110,20 +94,16 @@ public class DBConnector : MonoBehaviour
                 return;
             }
         }
-        //VerifyDatabase();
+        if(getDatabaseVersion() != currentDatabaseAppVersion)
+        {
+            //Debug.Log("db version mismatch : ");
+            //Debug.Log("     current db version : " + getDatabaseVersion());
+            //Debug.Log("     new db version : " + currentDatabaseAppVersion);
+            dropDatabase();
+            createDatabase();
+            setDatabaseVersion();
+        }
 
-        ////create default user 
-        //if (tableExists(tableNameUser))
-        //{
-        //    if (dbHelper.isTableEmpty(tableNameUser))
-        //    {
-        //        //Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
-        //        dbHelper.InsertDefaultUserRecord();
-        //    }
-        //}
-
-        //// get device user is currently using
-        //SetCurrentUserDevice();
     }
 
     private void VerifyDatabase()
@@ -169,48 +149,47 @@ public class DBConnector : MonoBehaviour
     }
 
 
-    private string getDatabaseVersion()
-    {
-        string version = "";
+    //private string getDatabaseVersion()
+    //{
+    //    string version = "";
 
-        if (tableExists("User"))
-        {
-            try
-            {
-                dbconn = new SqliteConnection(connection);
-                dbconn.Open();
-                dbcmd = dbconn.CreateCommand();
+    //    if (tableExists("User"))
+    //    {
+    //        try
+    //        {
+    //            dbconn = new SqliteConnection(connection);
+    //            dbconn.Open();
+    //            dbcmd = dbconn.CreateCommand();
 
-                //string os = SystemInfo.operatingSystem;
+    //            //string os = SystemInfo.operatingSystem;
 
-                String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
+    //            String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
 
-                //Debug.Log("sqlQuery : " + sqlQuery);
+    //            //Debug.Log("sqlQuery : " + sqlQuery);
 
-                dbcmd.CommandText = sqlQuery;
-                IDataReader reader = dbcmd.ExecuteReader();
+    //            dbcmd.CommandText = sqlQuery;
+    //            IDataReader reader = dbcmd.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    version = reader.GetString(0);
-                }
+    //            while (reader.Read())
+    //            {
+    //                version = reader.GetString(0);
+    //            }
 
-                reader.Close();
-                reader = null;
-                dbcmd.Dispose();
-                dbcmd = null;
-                dbconn.Close();
-                dbconn = null;
-            }
-            catch (Exception e)
-            {
-                Debug.Log("ERROR : " + e);
-                //messageText.text += "\n" + e;
-            }
-        }
-        Debug.Log("db version : " + version);
-        return version;
-    }
+    //            reader.Close();
+    //            reader = null;
+    //            dbcmd.Dispose();
+    //            dbcmd = null;
+    //            dbconn.Close();
+    //            dbconn = null;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.Log("ERROR : " + e);
+    //            //messageText.text += "\n" + e;
+    //        }
+    //    }
+    //    return version;
+    //}
 
     private bool integrityCheck()
     {
@@ -252,21 +231,15 @@ public class DBConnector : MonoBehaviour
     }
 
 
-    private void schemaInfo()
+    private int getDatabaseVersion()
     {
         int value = 0;
 
+        string sqlQuery = "PRAGMA user_version";
         IDbConnection dbconn;
-        string cs = "Data Source=:memory:";
-        dbconn = (IDbConnection)new SqliteConnection(cs);
+        dbconn = (IDbConnection)new SqliteConnection(connection);
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
-
-        //string sqlQuery = "PRAGMA integrity_check";
-        //string sqlQuery = "PRAGMA table_info('Achievements')";
-        string sqlQuery = "PRAGMA main.user_version";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -274,6 +247,7 @@ public class DBConnector : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
+            //Debug.Log("pragma version : " + value);
         }
 
         reader.Close();
@@ -283,16 +257,34 @@ public class DBConnector : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
-        Debug.Log("schema app id: " + value);
+        return value;
+    }
 
-        //if (value.ToLower() == "ok")
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
+    private void setDatabaseVersion()
+    {
+
+        dbconn = new SqliteConnection(connection);
+        dbconn.Open();
+        dbcmd = dbconn.CreateCommand();
+
+        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+
+        //string sqlQuery = "PRAGMA integrity_check";
+        //string sqlQuery = "PRAGMA table_info('Achievements')";
+        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion +"'";
+
+        dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteScalar();
+
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        Debug.Log("db version : ");
+        Debug.Log("     current db version : " + getDatabaseVersion());
+        //Debug.Log("     sqlite getversion : " + dbconn.);
+        Debug.Log("     new db version : " + currentDatabaseAppVersion);
     }
 
     //IEnumerator updateAchievements()
