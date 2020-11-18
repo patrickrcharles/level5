@@ -147,6 +147,14 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
         }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+        }
+
+
+        
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -213,6 +221,11 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
         }
+        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -251,6 +264,11 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
         }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
