@@ -1078,4 +1078,6 @@ public class StartManager : MonoBehaviour
     public static string ProgressionScreenSceneName => progressionScreenSceneName;
 
     public static string UpdateMenuButtonName => updateMenuButtonName;
+
+    public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
 }
