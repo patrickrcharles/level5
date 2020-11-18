@@ -1481,18 +1481,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""08d05f50-e234-4837-a69b-9ea65680546f"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""toggle_camera_keyboard"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""be0668f0-6c2d-45e6-ba98-07ddbe1905e9"",
-                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1514,7 +1503,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d9d11dcf-1c5f-434b-9b08-29c64002a8d2"",
-                    ""path"": ""<Keyboard>/4"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""toggle_character_max_stats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""befb95ec-546b-45a7-8064-84ab935b740c"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1530,6 +1530,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""toggle_fps_counter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3e1f3d3-a4cf-43d4-aed0-3440cb3aa1e8"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button14"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""toggle_character_max_stats"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }

@@ -164,11 +164,6 @@ public class PlayerController : MonoBehaviour
                 transform.Translate(movement);
                 isWalking(movement);
             }
-            //// jump
-            //if (jumpTrigger)
-            //{
-
-            //}
         }
     }
 
