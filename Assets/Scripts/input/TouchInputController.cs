@@ -127,7 +127,7 @@ public class TouchInputController : MonoBehaviour
                 //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
                 && !buttonPressed
                 && startTouchPosition1.x < (Screen.width / 2) // if swipe on right 1/2 of screen)) 
-                && startTouchPosition1.x < (Screen.height / 2)
+                //&& startTouchPosition1.x < (Screen.height / 2)
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
             {
                 hold1Detected = true;
@@ -137,7 +137,7 @@ public class TouchInputController : MonoBehaviour
                     playerController.playerBlock();
                 }
             }
-            if(touch1.phase == TouchPhase.Ended && GameOptions.enemiesEnabled)
+            if(touch1.phase == TouchPhase.Ended)
             {
                 hold1Detected = false;
                 playerController.Anim.SetBool("block", false);
