@@ -56,6 +56,7 @@ public class DBConnector : MonoBehaviour
 
 
         filepath = Application.persistentDataPath + databaseNamePath;
+        //Debug.Log(filepath);
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
         dbHelper = gameObject.GetComponent<DBHelper>();
@@ -97,7 +98,7 @@ public class DBConnector : MonoBehaviour
             try
             {
                 SqliteConnection.CreateFile(filepath);
-                Debug.Log("create file / !existed");
+                //Debug.Log("create file / !existed");
                 dropDatabase();
                 createDatabase();
             }
@@ -390,7 +391,7 @@ public class DBConnector : MonoBehaviour
                 "maxShotMade   INTEGER, " +
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
-                "trafficEnabled	INTEGER " +
+                "trafficEnabled	INTEGER," +
                 "hardcoreEnabled INTEGER); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
@@ -511,7 +512,7 @@ public class DBConnector : MonoBehaviour
                 "DROP TABLE if exists HighScores; ");
                 //"DROP TABLE if exists User; ");
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -603,7 +604,7 @@ public class DBConnector : MonoBehaviour
 
     public void createTableCharacterProfile()
     {
-        Debug.Log("createDatabase()");
+        //Debug.Log("createDatabase()");
         try
         {
             dbconn = new SqliteConnection(connection);
