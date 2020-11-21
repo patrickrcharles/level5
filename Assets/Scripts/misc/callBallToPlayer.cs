@@ -26,7 +26,7 @@ public class CallBallToPlayer : MonoBehaviour
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         Locked = false;
 
-        canBallToPlayerEnabled = true;
+        //canBallToPlayerEnabled = true;
         pullSpeed = 2.0f;
     }
 
