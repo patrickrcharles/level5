@@ -68,7 +68,6 @@ public class TouchInputController : MonoBehaviour
     //#if UNITY_ANDROID && !UNITY_EDITOR
     void Update()
     {
-
         // not paused + touch
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
@@ -95,6 +94,31 @@ public class TouchInputController : MonoBehaviour
             else
             { tap1Detected = false; }
 
+            // ====================== touch 1 : hold  =====================================
+            //Touch 1 is hold + bottom left screen
+            if (touch1.tapCount == 1
+                && touch1.phase == TouchPhase.Stationary
+                //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
+                && !buttonPressed
+                && touch1.position.x < (Screen.width / 2)
+                && touch1.position.y > (Screen.height / 2)
+                //&& startTouchPosition1.x < (Screen.height / 2)
+                && playerController.PlayerCanBlock
+                && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
+            {
+                hold1Detected = true;
+                startTouchPosition1 = touch1.position;
+                if (playerController.CanBlock && !playerController.hasBasketball)
+                {
+                    playerController.playerBlock();
+                }
+            }
+            if (touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
+            {
+                hold1Detected = false;
+                playerController.Anim.SetBool("block", false);
+            }
+
             // ====================== touch 2 : tap  =====================================
             if (touch2.tapCount == 1
                 && touch2.phase == TouchPhase.Began
@@ -109,7 +133,7 @@ public class TouchInputController : MonoBehaviour
                 tap2Detected = false;
             }
 
-            // ====================== touch : double tap  =====================================
+            // ====================== touch 1 : double tap  =====================================
             if (touch1.tapCount == 2 && touch1.phase == TouchPhase.Began)
             {
                 doubleTap1Detected = true;
@@ -119,39 +143,17 @@ public class TouchInputController : MonoBehaviour
                 doubleTap1Detected = false;
             }
 
+            // ====================== touch 2 : double tap  =====================================
             if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
             {
+                //Debug.Log("double tap 2");
                 doubleTap2Detected = true;
-                touchLastTap = Time.time;
+                //touchLastTap = Time.time;
                 //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
             }
-            else
+            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Ended)
             {
                 doubleTap2Detected = false;
-            }
-
-            // ====================== touch 1 : hold  =====================================
-            //Touch 1 is hold + bottom left screen
-            if (touch1.tapCount == 1
-                && touch1.phase == TouchPhase.Stationary
-                //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
-                && !buttonPressed
-                && touch1.position.x < (Screen.width / 2)
-                && touch1.position.y > (Screen.height / 2)
-                //&& startTouchPosition1.x < (Screen.height / 2)
-                && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
-            {
-                hold1Detected = true;
-                startTouchPosition1 = touch1.position;
-                if (playerController.CanBlock && !playerController.hasBasketball)
-                {
-                    playerController.playerBlock();
-                }
-            }
-            if (touch1.phase == TouchPhase.Ended)
-            {
-                hold1Detected = false;
-                playerController.Anim.SetBool("block", false);
             }
             // ====================== touch 2  =====================================
 
@@ -165,29 +167,32 @@ public class TouchInputController : MonoBehaviour
                 // ====================== touch 2 + tap =====================================
                 if (tap2Detected && !doubleTap2Detected)
                 {
+                    //Debug.Log("tap2Detected && !doubleTap2Detected");
                     buttonPressed = true;
                     if (!playerController.hasBasketball && playerController.CanAttack)
                     {
                         //Debug.Log("player attack ");
-                        playerController.playerAttack();
                         tap2Detected = false;
+                        playerController.playerAttack();
                     }
+                    buttonPressed = false;
                 }
                 // ====================== touch 2 + double tap =====================================
                 if (!tap2Detected && doubleTap2Detected)
                 {
+                    Debug.Log("!tap2Detected && doubleTap2Detected");
                     buttonPressed = true;
                     if (!playerController.inAir
                         && playerController.grounded
                         && !playerController.KnockedDown)
                     {
                         //Debug.Log("player special attack ");
-                        playerController.playerSpecial();
                         doubleTap2Detected = false;
                         hold1Detected = false;
+                        playerController.playerSpecial();
                     }
+                    buttonPressed = false;
                 }
-                buttonPressed = false;
             }
             // ====================== touch 1 swipe distance  =====================================
 
