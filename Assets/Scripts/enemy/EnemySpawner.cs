@@ -16,8 +16,14 @@ public class EnemySpawner : MonoBehaviour
             basketBallGoalPosition = GameObject.Find("rim");
             transform.position = new Vector3(basketBallGoalPosition.transform.position.x, 0, basketBallGoalPosition.transform.position.z);
             //Debug.Log(spawnPositions.Capacity);
-
-            for (int i = 0; i < spawnPositions.Capacity; i++)
+            int numEnemiesToSpawn = 0;
+#if UNITY_STANDALONE || UNITY_EDITOR
+            numEnemiesToSpawn = spawnPositions.Capacity;
+#endif
+#if UNITY_ANDROID
+            numEnemiesToSpawn = 3;
+#endif
+            for (int i = 0; i < numEnemiesToSpawn; i++)
             {
                 Instantiate(enemyPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
                 //enemyPrefabs[i].transform.position = spawnPositions[i].transform.position;
