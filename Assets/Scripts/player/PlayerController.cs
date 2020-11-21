@@ -104,7 +104,10 @@ public class PlayerController : MonoBehaviour
 
     float movementHorizontal;
     float movementVertical;
+    Vector2 startTouchPosition = new Vector2(0, 0);
 
+    public float screenXRange;
+    public float screenYRange;
 
     bool jumpTrigger = false;
 
@@ -134,7 +137,12 @@ public class PlayerController : MonoBehaviour
         //if (attackSpeed == 0) { attackSpeed = 0f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
-    }
+        screenXRange = Screen.width / 8;
+        screenYRange = Screen.height / 8;
+
+        Debug.Log("screenXRange" + screenXRange);
+        Debug.Log("screenYRange" + screenYRange);
+}
 
     // not affected by framerate
     void FixedUpdate()
@@ -143,11 +151,87 @@ public class PlayerController : MonoBehaviour
         if (!KnockedDown)
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
+            if (Input.touchCount > 0
+                && touch.position.x < (Screen.width / 2)
+                && touch.position.y < (Screen.height / 2))
+            {
+                Touch touch = Input.touches[0];
+                if (touch.phase == TouchPhase.Began)
+                {
+                    startTouchPosition = touch.position;
+                }
+                if (touch.position.x < (Screen.width / 2)
+                    && touch.position.y < (Screen.height / 2)
+                    && (touch.phase == TouchPhase.Moved  ))/*|| touch.phase == TouchPhase.Began))*/
+                {
+                    //if(touch.position.x - startTouchPosition.x > 0) { movementHorizontal = 1; };
+                    //if(touch.position.x - startTouchPosition.x < 0) { movementHorizontal = -1; };
+                    //if(touch.position.y - startTouchPosition.y > 0) { movementVertical = 1; };
+                    //if(touch.position.y - startTouchPosition.y < 0) { movementVertical = -1; };
+                    //Debug.Log("touch.position.x - startTouchPosition.x : " + (touch.position.normalized - startTouchPosition.normalized));
+                    //Debug.Log("touch.deltaPosition.normalized - startTouchPosition.x : " + (touch.deltaPosition.normalized - startTouchPosition.normalized));
+                    //Debug.Log("touch.deltaPosition.normalized : " + (touch.deltaPosition.normalized));
+                    //Debug.Log("touch.deltaPosition.normalized.x : " + (touch.deltaPosition.normalized.x));
+                    //Debug.Log("touch.deltaPosition : " + (touch.deltaPosition));
+                    ////Debug.Log("start - current : " + (startTouchPosition - touch.position));
+                    //Debug.Log("current - start : " + (touch.position - startTouchPosition));
+                    //Debug.Log("current - start normal : " + (touch.position.normalized - startTouchPosition.normalized));
+                    //Debug.Log("touch.phase : " + touch.phase);
+                    //if(touch.deltaPosition.normalized == (0 ,0 ))
+                    //movementHorizontal = (touch.position.normalized.x - startTouchPosition.normalized.x);
+                    //movementVertical = (touch.position.normalized.y - startTouchPosition.normalized.y);            
 
-                        movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
-                        movementVertical = GameLevelManager.instance.Joystick.Vertical;
-                        movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.deltaTime;
-                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * movementSpeed * Time.fixedDeltaTime;
+                    //movementHorizontal = (touch.position.normalized.x - startTouchPosition.normalized.x);
+                    //movementVertical = (touch.position.normalized.y - startTouchPosition.normalized.y);
+
+                    // this is the one that works
+                    movementHorizontal = touch.deltaPosition.normalized.x;
+                    movementVertical = touch.deltaPosition.normalized.y;
+                    Debug.Log("delta shift : " + touch.deltaPosition.normalized);
+
+                    Debug.Log("X range percent : " + (touch.position.x - startTouchPosition.x) / screenXRange);
+                    Debug.Log("Y range percent : " + (touch.position.y - startTouchPosition.y) / screenYRange);
+
+                    float XrangePercent = Mathf.Abs((touch.position.x - startTouchPosition.x) / screenXRange);
+                    float YrangePercent = Mathf.Abs((touch.position.y - startTouchPosition.y) / screenYRange);
+
+                    if (XrangePercent < 1)
+                    {
+                        movementHorizontal *=  XrangePercent;
+                        Debug.Log("movementHorizontal : " + movementHorizontal);
+                    }
+                    if (XrangePercent >= 1)
+                    {
+                        //movementHorizontal = touch.deltaPosition.normalized.x;
+                        Debug.Log("movementHorizontal : " + movementHorizontal);
+                    }
+                    if (YrangePercent < 1)
+                    {
+                        movementVertical *=  YrangePercent;
+                        Debug.Log("movementVertical : " + movementVertical);
+                    }
+                    if (YrangePercent >= 1)
+                    {
+                        //movementVertical = touch.deltaPosition.normalized.y;
+                        Debug.Log("movementVertical : " + movementVertical);
+                    }
+
+                }
+            }
+            if (Input.touchCount == 0)
+            {
+                movementHorizontal = 0;
+                movementVertical = 0;
+            }
+            //else
+            //{
+            //    Debug.Log("touch.phase : " + touch.phase);
+            //    movementHorizontal = 0;
+            //    movementVertical = 0;
+            //}
+
+            ////#if UNITY_ANDROID && !UNITY_EDITOR
+            ////#if UNITY_ANDROID 
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
@@ -155,14 +239,19 @@ public class PlayerController : MonoBehaviour
                         movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
                         movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                         movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            //            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
 #endif
+
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
+
 
             if (currentState != specialState)
             {
                 //rigidBody.MovePosition(transform.position + movement);
                 transform.Translate(movement);
-                isWalking(movement);
+                //isWalking(movement);
+                isWalking(movementHorizontal, movementVertical);
             }
         }
     }
@@ -204,7 +293,8 @@ public class PlayerController : MonoBehaviour
             && !basketball.BasketBallState.Locked
             && grounded
             && !CallBallToPlayer.instance.Locked
-            && touchPosition.x > (Screen.width / 2))
+            && touchPosition.x > (Screen.width / 2)
+            && !GameOptions.hardcoreModeEnabled)
         {
             CallBallToPlayer.instance.Locked = true;
             CallBallToPlayer.instance.pullBallToPlayer();
@@ -215,6 +305,7 @@ public class PlayerController : MonoBehaviour
     // Update :: once once per frame
     void Update()
     {
+
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
@@ -440,14 +531,14 @@ public class PlayerController : MonoBehaviour
     }
     public void checkIsPlayerFacingGoal()
     {
-        if (bballRelativePositioning > 0 && !facingRight 
+        if (bballRelativePositioning > 0 && !facingRight
             && currentState != specialState
             && currentState != attackState)
         {
             Flip();
         }
 
-        if (bballRelativePositioning < 0f && facingRight 
+        if (bballRelativePositioning < 0f && facingRight
             && currentState != specialState
             && currentState != attackState)
         {
@@ -464,10 +555,12 @@ public class PlayerController : MonoBehaviour
     }
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
-    void isWalking(Vector3 movement)
+    //void isWalking(Vector3 movement)
+    void isWalking(float horizontal, float vertical)
     {
         // if moving
-        if (movement.x > 0f || movement.x < 0f || movement.z > 0f || movement.z < 0f)
+        //if (horizontal > 0f || horizontal < 0f || vertical > 0f || vertical < 0f)
+        if (horizontal != 0 || vertical != 0f)
         {
             // not in air
             if (!inAir) // dont want walking animation playing while inAir
@@ -490,12 +583,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // player moving right, not facing right
-        if (movement.x > 0 && !facingRight)//&& canMove)
+        if (horizontal > 0 && !facingRight)//&& canMove)
         {
             Flip();
         }
         // player moving left, and facing right
-        if (movement.x < 0f && facingRight)//&& canMove)
+        if (horizontal < 0f && facingRight)//&& canMove)
         {
             Flip();
         }

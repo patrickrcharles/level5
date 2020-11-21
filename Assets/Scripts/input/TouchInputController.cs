@@ -65,7 +65,7 @@ public class TouchInputController : MonoBehaviour
         playerController = GameLevelManager.instance.PlayerState;
     }
 
-//#if UNITY_ANDROID && !UNITY_EDITOR
+    //#if UNITY_ANDROID && !UNITY_EDITOR
     void Update()
     {
 
@@ -80,8 +80,8 @@ public class TouchInputController : MonoBehaviour
                 touch2 = Input.touches[1];
             }
             else
-            { 
-                touch1 = Input.touches[0]; 
+            {
+                touch1 = Input.touches[0];
             }
 
             // ====================== touch 1 : tap  =====================================
@@ -93,7 +93,7 @@ public class TouchInputController : MonoBehaviour
                 startTouchPosition1 = touch1.position;
             }
             else
-            { tap1Detected = false;}
+            { tap1Detected = false; }
 
             // ====================== touch 2 : tap  =====================================
             if (touch2.tapCount == 1
@@ -104,21 +104,31 @@ public class TouchInputController : MonoBehaviour
                 startTouchPosition2 = touch2.position;
                 touchfirstTap = Time.time;
             }
-            else{ tap2Detected = false; }
+            else
+            {
+                tap2Detected = false;
+            }
 
             // ====================== touch : double tap  =====================================
-            if (touch1.tapCount == 2) 
-            { 
+            if (touch1.tapCount == 2 && touch1.phase == TouchPhase.Began)
+            {
                 doubleTap1Detected = true;
             }
-            else { doubleTap1Detected = false; }
+            else
+            {
+                doubleTap1Detected = false;
+            }
 
-            if (touch2.tapCount == 2) { 
+            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
+            {
                 doubleTap2Detected = true;
                 touchLastTap = Time.time;
-                Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
+                //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
             }
-            else { doubleTap2Detected = false; }
+            else
+            {
+                doubleTap2Detected = false;
+            }
 
             // ====================== touch 1 : hold  =====================================
             //Touch 1 is hold + bottom left screen
@@ -126,7 +136,8 @@ public class TouchInputController : MonoBehaviour
                 && touch1.phase == TouchPhase.Stationary
                 //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
                 && !buttonPressed
-                && startTouchPosition1.x < (Screen.width / 2) // if swipe on right 1/2 of screen)) 
+                && touch1.position.x < (Screen.width / 2)
+                && touch1.position.y > (Screen.height / 2)
                 //&& startTouchPosition1.x < (Screen.height / 2)
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
             {
@@ -137,7 +148,7 @@ public class TouchInputController : MonoBehaviour
                     playerController.playerBlock();
                 }
             }
-            if(touch1.phase == TouchPhase.Ended)
+            if (touch1.phase == TouchPhase.Ended)
             {
                 hold1Detected = false;
                 playerController.Anim.SetBool("block", false);
@@ -149,20 +160,23 @@ public class TouchInputController : MonoBehaviour
                 && !buttonPressed
                 && startTouchPosition2.x > (Screen.width / 2)
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) 
-                //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
+                                               //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
             {
                 // ====================== touch 2 + tap =====================================
                 if (tap2Detected && !doubleTap2Detected)
                 {
+                    buttonPressed = true;
                     if (!playerController.hasBasketball && playerController.CanAttack)
                     {
                         //Debug.Log("player attack ");
                         playerController.playerAttack();
+                        tap2Detected = false;
                     }
                 }
                 // ====================== touch 2 + double tap =====================================
                 if (!tap2Detected && doubleTap2Detected)
                 {
+                    buttonPressed = true;
                     if (!playerController.inAir
                         && playerController.grounded
                         && !playerController.KnockedDown)
@@ -170,8 +184,10 @@ public class TouchInputController : MonoBehaviour
                         //Debug.Log("player special attack ");
                         playerController.playerSpecial();
                         doubleTap2Detected = false;
+                        hold1Detected = false;
                     }
                 }
+                buttonPressed = false;
             }
             // ====================== touch 1 swipe distance  =====================================
 
@@ -214,7 +230,7 @@ public class TouchInputController : MonoBehaviour
             }
         }
     }
-//#endif
+    //#endif
 
     private void activateDoubleTappedButton()
     {
