@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
             //    movementHorizontal = 0;
             //    movementVertical = 0;
             //}
-//#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.touches[0];
@@ -201,11 +201,11 @@ public class PlayerController : MonoBehaviour
                 movementHorizontal = GameLevelManager.instance.Joystick.Horizontal;
                 movementVertical = GameLevelManager.instance.Joystick.Vertical;
 
-                // percent of finger move distance from start to end range that will max speed of movement
+                //percent of finger move distance from start to end range that will max speed of movement
                 float XrangePercent = Mathf.Abs((touch.position.x - startTouchPosition.x) / screenXRange);
                 float YrangePercent = Mathf.Abs((touch.position.y - startTouchPosition.y) / screenYRange);
 
-                // if max finger move distance not achieved, multiply by percent of distance so far
+                 //if max finger move distance not achieved, multiply by percent of distance so far
                 if (XrangePercent < 1)
                 {
                     movementHorizontal *= XrangePercent;
@@ -221,17 +221,17 @@ public class PlayerController : MonoBehaviour
                 movementVertical = 0;
             }
 
-            ////#if UNITY_ANDROID && !UNITY_EDITOR
-            ////#if UNITY_ANDROID 
-//#endif
+            //#if UNITY_ANDROID && !UNITY_EDITOR
+            //#if UNITY_ANDROID 
+#endif
 
-//#if UNITY_STANDALONE || UNITY_EDITOR 
+#if UNITY_STANDALONE || UNITY_EDITOR
 
-//            movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
-//            movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
-//            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-//            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
-//#endif
+            movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
+            movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+#endif
 
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);

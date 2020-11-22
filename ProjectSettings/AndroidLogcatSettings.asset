@@ -3,8 +3,8 @@
     "m_SelectedPackage": {
         "deviceId": "R52N61C2WFZ",
         "name": "com.level5.level5",
-        "processId": 26194,
-        "exited": true
+        "processId": 5069,
+        "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -109,6 +109,12 @@
             "name": "com.level5.level5",
             "processId": 26194,
             "exited": true
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 5069,
+            "exited": false
         }
     ],
     "m_Tags": {
