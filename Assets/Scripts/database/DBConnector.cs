@@ -10,10 +10,7 @@ public class DBConnector : MonoBehaviour
 {
     private String connection;
     private String databaseNamePath = "/level5.db";
-    //private String currentGameVersion = "3.3.2";
-    //private String previousGameVersion = "3.3.1";
     private String filepath;
-    //private string filepathBackup;
 
     // table names
     const String tableNameAchievements = "Achievements";
@@ -22,13 +19,11 @@ public class DBConnector : MonoBehaviour
     const String tableNameCheerleaderProfile = "CheerleaderProfile";
     const String tableNameHighScores = "HighScores";
     const String tableNameUser = "User";
-
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private string currentDatabaseAppVersion;
+    private const int currentDatabaseAppVersion = 1;
 
     Text messageText;
-
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -42,16 +37,6 @@ public class DBConnector : MonoBehaviour
 
     void Awake()
     {
-        messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //Debug.Log(SystemInfo.deviceModel);
-        //Debug.Log(SystemInfo.deviceType);
-        //Debug.Log(SystemInfo.deviceName);
-        //Debug.Log(SystemInfo.device);
-
-        messageText.text += "\n" + SystemInfo.deviceName.ToString();
-        messageText.text += "\n" + SystemInfo.deviceModel.ToString();
-        messageText.text += "\n" + SystemInfo.processorType.ToString();
-
         // keep Database object persistent
         DontDestroyOnLoad(gameObject);
         if (instance == null)
@@ -63,21 +48,11 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
+
         filepath = Application.persistentDataPath + databaseNamePath;
-        //connection = "URI = " + filepath; //Path to database
+        //Debug.Log(filepath);
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
-        //filepathBackup = Application.streamingAssetsPath + databaseNamePath;
-        //Debug.Log("filepath : " + filepath);
-        //Debug.Log("connection : " + connection);
-
-        messageText.text += "\n" + filepath;
-        messageText.text += "\n" + connection;
-
-
-
-        //connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
-        //filepath = Application.persistentDataPath + databaseNamePath;
         dbHelper = gameObject.GetComponent<DBHelper>();
     }
 
@@ -87,50 +62,48 @@ public class DBConnector : MonoBehaviour
         if (File.Exists(filepath))
         //|| !Application.version.Equals(getDatabaseVersion()))// && integrityCheck())
         {
-            createDatabase();
-            //try
-            //{
-            //    createDatabase();
-            //}
-            //catch (Exception e)
-            //{
-            //    Debug.Log("ERROR : " + e);
-            //    return;
-            //}
+            try
+            {
+                createDatabase();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                //messageText.text += "\n" + e;
+                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
+                return;
+            }
         }
         // if database doesnt exist
-        if (!File.Exists(filepath))
+        if (!File.Exists(filepath) )
         //|| !integrityCheck()
         //|| !Application.version.Equals(getDatabaseVersion()))
         {
-            //databaseCreated = false;
             try
             {
-                //Debug.Log("create database");
+                SqliteConnection.CreateFile(filepath);
+                //Debug.Log("create file / !existed");
                 dropDatabase();
                 createDatabase();
             }
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                messageText.text += "\n" + e;
+                //messageText.text += "\n" + e;
+                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
-        VerifyDatabase();
-
-        //create default user 
-        if (tableExists(tableNameUser))
+        if(getDatabaseVersion() != currentDatabaseAppVersion)
         {
-            if (dbHelper.isTableEmpty(tableNameUser))
-            {
-                //Debug.Log("dbHelper.isTableEmpty(tableNameUser)");
-                dbHelper.InsertDefaultUserRecord();
-            }
+            //Debug.Log("db version mismatch : ");
+            //Debug.Log("     current db version : " + getDatabaseVersion());
+            //Debug.Log("     new db version : " + currentDatabaseAppVersion);
+            dropDatabase();
+            createDatabase();
+            setDatabaseVersion();
         }
 
-        // get device user is currently using
-        SetCurrentUserDevice();
     }
 
     private void VerifyDatabase()
@@ -165,59 +138,58 @@ public class DBConnector : MonoBehaviour
             dbconn.Close();
             dbconn = null;
 
-            //databaseCreated = true;
+            databaseCreated = true;
             //Debug.Log("databaseCreated : " + databaseCreated);
         }
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
+            //messageText.text += "\n" + e;
         }
     }
 
 
-    private string getDatabaseVersion()
-    {
-        string version = "";
+    //private string getDatabaseVersion()
+    //{
+    //    string version = "";
 
-        if (tableExists("User"))
-        {
-            try
-            {
-                dbconn = new SqliteConnection(connection);
-                dbconn.Open();
-                dbcmd = dbconn.CreateCommand();
+    //    if (tableExists("User"))
+    //    {
+    //        try
+    //        {
+    //            dbconn = new SqliteConnection(connection);
+    //            dbconn.Open();
+    //            dbcmd = dbconn.CreateCommand();
 
-                //string os = SystemInfo.operatingSystem;
+    //            //string os = SystemInfo.operatingSystem;
 
-                String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
+    //            String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
 
-                //Debug.Log("sqlQuery : " + sqlQuery);
+    //            //Debug.Log("sqlQuery : " + sqlQuery);
 
-                dbcmd.CommandText = sqlQuery;
-                IDataReader reader = dbcmd.ExecuteReader();
+    //            dbcmd.CommandText = sqlQuery;
+    //            IDataReader reader = dbcmd.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    version = reader.GetString(0);
-                }
+    //            while (reader.Read())
+    //            {
+    //                version = reader.GetString(0);
+    //            }
 
-                reader.Close();
-                reader = null;
-                dbcmd.Dispose();
-                dbcmd = null;
-                dbconn.Close();
-                dbconn = null;
-            }
-            catch (Exception e)
-            {
-                Debug.Log("ERROR : " + e);
-                messageText.text += "\n" + e;
-            }
-        }
-        Debug.Log("db version : " + version);
-        return version;
-    }
+    //            reader.Close();
+    //            reader = null;
+    //            dbcmd.Dispose();
+    //            dbcmd = null;
+    //            dbconn.Close();
+    //            dbconn = null;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.Log("ERROR : " + e);
+    //            //messageText.text += "\n" + e;
+    //        }
+    //    }
+    //    return version;
+    //}
 
     private bool integrityCheck()
     {
@@ -259,21 +231,15 @@ public class DBConnector : MonoBehaviour
     }
 
 
-    private void schemaInfo()
+    private int getDatabaseVersion()
     {
         int value = 0;
 
+        string sqlQuery = "PRAGMA user_version";
         IDbConnection dbconn;
-        string cs = "Data Source=:memory:";
-        dbconn = (IDbConnection)new SqliteConnection(cs);
+        dbconn = (IDbConnection)new SqliteConnection(connection);
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
-
-        //string sqlQuery = "PRAGMA integrity_check";
-        //string sqlQuery = "PRAGMA table_info('Achievements')";
-        string sqlQuery = "PRAGMA main.user_version";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -281,6 +247,7 @@ public class DBConnector : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
+            //Debug.Log("pragma version : " + value);
         }
 
         reader.Close();
@@ -290,16 +257,34 @@ public class DBConnector : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
-        Debug.Log("schema app id: " + value);
+        return value;
+    }
 
-        //if (value.ToLower() == "ok")
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
+    private void setDatabaseVersion()
+    {
+
+        dbconn = new SqliteConnection(connection);
+        dbconn.Open();
+        dbcmd = dbconn.CreateCommand();
+
+        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+
+        //string sqlQuery = "PRAGMA integrity_check";
+        //string sqlQuery = "PRAGMA table_info('Achievements')";
+        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion +"'";
+
+        dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteScalar();
+
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        Debug.Log("db version : ");
+        Debug.Log("     current db version : " + getDatabaseVersion());
+        //Debug.Log("     sqlite getversion : " + dbconn.);
+        Debug.Log("     new db version : " + currentDatabaseAppVersion);
     }
 
     //IEnumerator updateAchievements()
@@ -359,23 +344,25 @@ public class DBConnector : MonoBehaviour
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
         dbconn.Close();
+
+        databaseCreated = true;
     }
 
     // create tables if not created
     void createDatabase()
     {
         //Debug.Log("createDatabase()");
-        messageText.text += "\n" + "createDatabase()";
+        //messageText.text += "\n" + "createDatabase()";
         try
         {
             dbconn = new SqliteConnection(connection);
-            messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
+            //messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
 
             dbconn.Open();
-            messageText.text += "\n" + "dbconn.Open();";
+            //messageText.text += "\n" + "dbconn.Open();";
 
             dbcmd = dbconn.CreateCommand();
-            messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
+            //messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
 
             string sqlQuery = String.Format(
                 "CREATE TABLE if not exists HighScores(" +
@@ -396,7 +383,8 @@ public class DBConnector : MonoBehaviour
                 "maxShotMade   INTEGER, " +
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
-                "trafficEnabled	INTEGER); " +
+                "trafficEnabled	INTEGER," +
+                "hardcoreEnabled INTEGER); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
@@ -461,19 +449,19 @@ public class DBConnector : MonoBehaviour
                 "name   TEXT NOT NULL," +
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
-                "islocked  INTEGER DEFAULT 0);" +
+                "islocked  INTEGER DEFAULT 0);");
                 //"islocked  INTEGER DEFAULT 1);" +
 
-                "CREATE TABLE if not exists User( " +
-                "id    INTEGER PRIMARY KEY, " +
-                "userName  INTEGER, " +
-                "firstName TEXT, " +
-                "middleName    INTEGER, " +
-                "lastName  INTEGER, " +
-                "email TEXT, " +
-                "password  TEXT, " +
-                "version   TEXT, " +
-                "os    TEXT);");
+                //"CREATE TABLE if not exists User( " +
+                //"id    INTEGER PRIMARY KEY, " +
+                //"userName  INTEGER, " +
+                //"firstName TEXT, " +
+                //"middleName    INTEGER, " +
+                //"lastName  INTEGER, " +
+                //"email TEXT, " +
+                //"password  TEXT, " +
+                //"version   TEXT, " +
+                //"os    TEXT);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -487,16 +475,14 @@ public class DBConnector : MonoBehaviour
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            //VerifyDatabase();
+            VerifyDatabase();
 
         }
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            SendEmail.instance.SendEmailOnEvent("ERROR : create database", messageText.text);
             return;
-        }
+        } 
     }
 
 
@@ -515,10 +501,10 @@ public class DBConnector : MonoBehaviour
                 "DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists CharacterProfile; " +
                 "DROP TABLE if exists CheerleaderProfile; " +
-                "DROP TABLE if exists HighScores; " +
-                "DROP TABLE if exists User; ");
+                "DROP TABLE if exists HighScores; ");
+                //"DROP TABLE if exists User; ");
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -531,8 +517,8 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            SendEmail.instance.SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
+            //messageText.text += "\n" + e;
+            //SendEmail.instance.//SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
             return;
         }
     }
@@ -560,9 +546,9 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            string text = "ERROR : dropDatabaseTable(" + tableName + ")";
-            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            //messageText.text += "\n" + e;
+            //string text = "ERROR : dropDatabaseTable(" + tableName + ")";
+            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
     }
@@ -610,7 +596,7 @@ public class DBConnector : MonoBehaviour
 
     public void createTableCharacterProfile()
     {
-        Debug.Log("createDatabase()");
+        //Debug.Log("createDatabase()");
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -659,9 +645,10 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            string text = "createTableCharacterProfile()";
-            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            //messageText.text += "\n" + e;
+            //string text = "createTableCharacterProfile()";
+            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
+
             return;
         }
     }
@@ -709,9 +696,9 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            string text = "createTableCharacterProfile()";
-            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            //messageText.text += "\n" + e;
+            //string text = "createTableCharacterProfile()";
+            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
     }
@@ -749,9 +736,9 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            messageText.text += "\n" + e;
-            string text = "createTableCheerleaderProfile()";
-            SendEmail.instance.SendEmailOnEvent(text, e.ToString());
+            //messageText.text += "\n" + e;
+            //string text = "createTableCheerleaderProfile()";
+            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
     }

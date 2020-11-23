@@ -6,15 +6,12 @@ using UnityEngine.AI;
 public class BehaviorNpcSmallObstacle : MonoBehaviour
 {
 
-    AudioSource moonwalkAudio;
-
     public float walkMovementSpeed;
     public float runMovementSpeed;
     public float attackMovementSpeed;
     public float punchCooldown;
     public float chargeSpeed;
 
-    public float xMin, xMax, zMin, zMax, yMin, yMax;
     [SerializeField]
     public bool facingRight;
     public bool walking;
@@ -24,7 +21,7 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
 
     float distanceFromStartPos;
     bool locked;
-    GameObject player;
+    //GameObject player;
 
     private float movementSpeed;
     private Rigidbody rigidBody;
@@ -59,7 +56,7 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameLevelManager.instance.Player;
+        //player = GameLevelManager.instance.Player;
         facingRight = true;
         //canMove = true;
         movementSpeed = walkMovementSpeed;

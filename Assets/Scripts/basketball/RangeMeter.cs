@@ -13,8 +13,8 @@ public class RangeMeter : MonoBehaviour
     [SerializeField]
     Text sliderText;
     Text statText;
-    const string sliderTextName = "slider_value_text";
-    const string statsTextName = "slider_stats_text";
+    const string sliderTextName = "range_slider_value_text";
+    const string statsTextName = "range_slider_stats_text";
 
     [SerializeField]
     //float range;
@@ -32,6 +32,11 @@ public class RangeMeter : MonoBehaviour
         statText.text = "range:" + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
+
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     void setSliderValue()

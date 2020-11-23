@@ -8,7 +8,7 @@ using TouchPhase = UnityEngine.TouchPhase;
 
 public class TouchInputStartScreenController : MonoBehaviour
 {
-
+#if UNITY_ANDROID //&& !UNITY_EDITOR
     private Vector2 startTouchPosition, endTouchPosition;
 
     float swipeUpTolerance;
@@ -21,9 +21,9 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     Touch touch;
     bool buttonPressed;
-    [SerializeField]
+
     GameObject joystickGameObject;
-    [SerializeField]
+
     GameObject prevSelectedGameObject;
 
     public static TouchInputStartScreenController instance;
@@ -147,6 +147,14 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
         }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+        }
+
+
+        
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -213,6 +221,11 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
         }
+        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -252,6 +265,11 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
         }
+        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -272,4 +290,5 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
         buttonPressed = false;
     }
+#endif
 }

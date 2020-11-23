@@ -77,6 +77,15 @@ public class BasketBallStats : MonoBehaviour
         //Debug.Log("TotalPoints : " + TotalPoints);
         experience += TotalPoints;
 
+        if (GameOptions.enemiesEnabled)
+        {
+            experience *= 2;
+        }
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            experience *= 2;
+        }
+
         ExperienceGained = experience;
         //Debug.Log("experience gained : " + ExperienceGained);
         //Debug.Log("modeid : " + GameOptions.gameModeSelectedId + " ExperienceGained : " + ExperienceGained);

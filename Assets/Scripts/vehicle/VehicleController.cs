@@ -24,7 +24,7 @@ public class VehicleController : MonoBehaviour
     NavMeshAgent navMeshAgent;
     //GameObject spawnPoint;
     Animator animator;
-    private Rigidbody rigidbody;
+    //private Rigidbody rigidbody;
 
 
     public bool facingRight;
@@ -43,7 +43,7 @@ public class VehicleController : MonoBehaviour
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         animator = GetComponentInChildren<Animator>();
-        rigidbody = GetComponent<Rigidbody>();
+        //rigidbody = GetComponent<Rigidbody>();
 
         // where is vehicle spawned in relation to rim
         relativePositioning = bballRimVector.x - gameObject.transform.position.x;

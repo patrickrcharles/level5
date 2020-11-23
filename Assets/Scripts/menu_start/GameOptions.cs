@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,7 +41,7 @@ public class GameOptions : MonoBehaviour
     static public bool gameModeHasBeenSelected;
     static public bool gameModeRequiresCounter;
     static public bool gameModeRequiresCountDown;
-    // if game requires ,arkers be active
+    // if game requires markers be active
     // 3 / 4 point contest / moneyball / etc
     static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
@@ -63,18 +64,68 @@ public class GameOptions : MonoBehaviour
     static public int modeSelectedIndex = 0;
     static public int cheerleaderSelectedIndex = 0;
     static public bool trafficEnabled = false;
+    static public bool enemiesEnabled = false;
 
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
 
-    //static public int playerExperience;
-    //static public int playerLevel;
-    //static public int playerUpdatePointsAvailable;
-    //static public int playerUpdatePointsUsed;
+    static public bool architectureIs64bit;
+    static public bool architectureIs32bit;
+    static public bool architectureIsAndroid;
 
-    void Awake()
+    static public bool architectureInfoLoaded = false;
+    static public bool hardcoreModeEnabled = false;
+
+    //private void Awake()
+    //{
+    //    hardcoreModeEnabled = true;
+    //}
+
+    void Start()
     {
         levelSelectedName = SceneManager.GetActiveScene().name;
         applicationVersion = Application.version;
+
+        if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                //Debug.Log("ARM64");
+                GameOptions.architectureIs32bit = false;
+                GameOptions.architectureIs64bit = true;
+                GameOptions.architectureIsAndroid = true;
+            }
+
+            else
+            {
+                //Debug.Log("ARM");
+                GameOptions.architectureIs32bit = true;
+                GameOptions.architectureIs64bit = false;
+                GameOptions.architectureIsAndroid = true;
+            }
+        }
+        else
+        {
+            // Must be in the x86 family.
+            if (Environment.Is64BitProcess)
+            {
+                //Debug.Log("x86_64");
+                GameOptions.architectureIs32bit = false;
+                GameOptions.architectureIs64bit = true;
+                GameOptions.architectureIsAndroid = false;
+            }
+            else
+            {
+                //Debug.Log("x86");
+                GameOptions.architectureIs32bit = true;
+                GameOptions.architectureIs64bit = false;
+                GameOptions.architectureIsAndroid = false;
+            }
+            //Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
+            //Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
+            //Debug.Log("android : " + GameOptions.architectureIsAndroid);
+        }
+        architectureInfoLoaded = true;
+        //Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
     }
 }

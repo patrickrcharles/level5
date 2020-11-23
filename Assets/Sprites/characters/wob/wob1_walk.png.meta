@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 668aee52e7dd38d4884d983f4b0a1a81
+guid: 2356de558b800624686edfc22fd60775
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5611366786306318287
-    second: wob1_walk_0
+      213: 1892694830009278542
+    second: wob2_walk_0
   - first:
-      213: -5216652540899342027
-    second: wob1_walk_1
+      213: 6092907900508231709
+    second: wob2_walk_1
   - first:
-      213: 5912179312286458817
-    second: wob1_walk_2
+      213: -460933223908659689
+    second: wob2_walk_2
   - first:
-      213: -8146623094333725871
-    second: wob1_walk_3
+      213: 7749598199089061461
+    second: wob2_walk_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -55,7 +55,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -101,7 +101,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -113,9 +113,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -137,7 +137,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wob1_walk_0
+      name: wob2_walk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -151,14 +151,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13069cd53ab6022b0800000000000000
-      internalID: -5611366786306318287
+      spriteID: e40ebe28be3344a10800000000000000
+      internalID: 1892694830009278542
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_1
+      name: wob2_walk_1
       rect:
         serializedVersion: 2
         x: 128
@@ -172,14 +172,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5394e0f272aba97b0800000000000000
-      internalID: -5216652540899342027
+      spriteID: d18d6f2347b5e8450800000000000000
+      internalID: 6092907900508231709
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_2
+      name: wob2_walk_2
       rect:
         serializedVersion: 2
         x: 256
@@ -193,14 +193,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c36f3da2c74c0250800000000000000
-      internalID: 5912179312286458817
+      spriteID: 71eafbbccaf6a99f0800000000000000
+      internalID: -460933223908659689
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wob1_walk_3
+      name: wob2_walk_3
       rect:
         serializedVersion: 2
         x: 384
@@ -214,8 +214,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 153ae37557161fe80800000000000000
-      internalID: -8146623094333725871
+      spriteID: 55ed5b0c08a1c8b60800000000000000
+      internalID: 7749598199089061461
       vertices: []
       indices: 
       edges: []

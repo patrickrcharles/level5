@@ -72,7 +72,6 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
-
     private void loadVehiclePrefabs()
     {
         // where are the prefabs, load them

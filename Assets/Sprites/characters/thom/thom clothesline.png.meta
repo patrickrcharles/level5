@@ -17,6 +17,21 @@ TextureImporter:
   - first:
       213: 21300008
     second: thom clothesline_4
+  - first:
+      213: 5528441022845255286
+    second: thom clothesline_0
+  - first:
+      213: -3131939846389147473
+    second: thom clothesline_1
+  - first:
+      213: 2687582798564834272
+    second: thom clothesline_2
+  - first:
+      213: -2163047451464563194
+    second: thom clothesline_3
+  - first:
+      213: -5916434723719765258
+    second: thom clothesline_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -58,7 +73,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -116,7 +131,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -128,9 +143,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -147,15 +162,15 @@ TextureImporter:
         y: 128
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02305410000000000800000000000000
-      internalID: 21300000
+      spriteID: 67e7360c1d7f8bc40800000000000000
+      internalID: 5528441022845255286
       vertices: []
       indices: 
       edges: []
@@ -168,15 +183,15 @@ TextureImporter:
         y: 128
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22305410000000000800000000000000
-      internalID: 21300002
+      spriteID: fa8551ead4d1984d0800000000000000
+      internalID: -3131939846389147473
       vertices: []
       indices: 
       edges: []
@@ -189,36 +204,15 @@ TextureImporter:
         y: 128
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42305410000000000800000000000000
-      internalID: 21300004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thom clothesline_3
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 62305410000000000800000000000000
-      internalID: 21300006
+      spriteID: 0eb38ecd0563c4520800000000000000
+      internalID: 2687582798564834272
       vertices: []
       indices: 
       edges: []
@@ -227,12 +221,12 @@ TextureImporter:
       name: thom clothesline_4
       rect:
         serializedVersion: 2
-        x: 256
+        x: 0
         y: 0
         width: 128
         height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,7 +241,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a999104607f08494e9e4684501f0ef7f
     internalID: 0
     vertices: []
     indices: 

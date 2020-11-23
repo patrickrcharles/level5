@@ -145,6 +145,8 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
+        AnaylticsManager.MenuStatsLoaded();
+
         // create rows dor data display
         for (int i = 0; i < highScoreRowsDataList.Count; i++)
         {
@@ -153,6 +155,7 @@ public class StatsManager : MonoBehaviour
             highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
             highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
             highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = highScoreRowsDataList[i].hardcoreEnabled;
             // instantiate row on necessary table object
             Instantiate(highScoreRowPrefab, highScoresRowsObject.transform.position, Quaternion.identity, highScoresRowsObject.transform);
         }
@@ -385,6 +388,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = highScoreRowsDataList[i].hardcoreEnabled;
                     index++;
                 }
                 // empty out rows if scores do not exist or there isnt at least 10
@@ -395,6 +399,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = "";
                 }
             }
             catch (Exception e)

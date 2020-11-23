@@ -20,6 +20,48 @@ TextureImporter:
   - first:
       213: -7755261825265720365
     second: jimmy_ford_walk_5
+  - first:
+      213: 1416837295046222661
+    second: jimmy_ford_walk_0
+  - first:
+      213: 6819280259681715404
+    second: jimmy_ford_walk_1
+  - first:
+      213: -5082576038494976200
+    second: jimmy_ford_walk_2
+  - first:
+      213: 3046578032279172336
+    second: jimmy_ford_walk_3
+  - first:
+      213: -8794333345732105991
+    second: jimmy_ford_walk_4
+  - first:
+      213: 1746380361909030052
+    second: jimmy_ford_walk_5
+  - first:
+      213: 697341497167966655
+    second: jimmy_ford_walk_6
+  - first:
+      213: -2413303140597110218
+    second: jimmy_ford_walk_7
+  - first:
+      213: 1124433902234874570
+    second: jimmy_ford_walk_6
+  - first:
+      213: -2316952601290668117
+    second: jimmy_ford_walk_7
+  - first:
+      213: -8897112471831077789
+    second: jimmy_ford_walk_8
+  - first:
+      213: 2778151502251788340
+    second: jimmy_ford_walk_9
+  - first:
+      213: -5972721026601206581
+    second: jimmy_ford_walk_10
+  - first:
+      213: -5512267922704356648
+    second: jimmy_ford_walk_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -61,7 +103,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -107,7 +149,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -119,9 +161,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -147,6 +189,90 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54361cb530e99a310800000000000000
+      internalID: 1416837295046222661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc4892e1443f2ae50800000000000000
+      internalID: 6819280259681715404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 837489985001779b0800000000000000
+      internalID: -5082576038494976200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f43282349e974a20800000000000000
+      internalID: 3046578032279172336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_4
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 128
         width: 128
         height: 128
@@ -157,14 +283,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 119c57bd0bbb25446961baff66cf049d
-      internalID: 6424058464210968709
+      spriteID: 9f8e34b9a6044f580800000000000000
+      internalID: -8794333345732105991
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jimmy_ford_walk_1
+      name: jimmy_ford_walk_5
       rect:
         serializedVersion: 2
         x: 128
@@ -178,14 +304,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0cef359a9f68b9a4399e37de349736b6
-      internalID: -2284983453441776207
+      spriteID: 4ac4e4abfa36c3810800000000000000
+      internalID: 1746380361909030052
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jimmy_ford_walk_2
+      name: jimmy_ford_walk_6
       rect:
         serializedVersion: 2
         x: 256
@@ -199,14 +325,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd4be40def7cf99428dd98bc8440de7f
-      internalID: 2913238467294882658
+      spriteID: ac2bd143daaca9f00800000000000000
+      internalID: 1124433902234874570
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jimmy_ford_walk_3
+      name: jimmy_ford_walk_7
       rect:
         serializedVersion: 2
         x: 384
@@ -220,14 +346,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57c8d27de9f2af14da8cdbd1ea6aaa99
-      internalID: -2609223236068108309
+      spriteID: ba707a682e788dfd0800000000000000
+      internalID: -2316952601290668117
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jimmy_ford_walk_4
+      name: jimmy_ford_walk_8
       rect:
         serializedVersion: 2
         x: 0
@@ -241,14 +367,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68e1c9b98c0bbf045b01f3b069aff738
-      internalID: 8605306405020546435
+      spriteID: 36c9fc5885b178480800000000000000
+      internalID: -8897112471831077789
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jimmy_ford_walk_5
+      name: jimmy_ford_walk_9
       rect:
         serializedVersion: 2
         x: 128
@@ -262,8 +388,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf65c80e19ba90a4e9e8e6819b35d96c
-      internalID: -7755261825265720365
+      spriteID: 4388fef621afd8620800000000000000
+      internalID: 2778151502251788340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_10
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bccbde20fd1ac1da0800000000000000
+      internalID: -5972721026601206581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jimmy_ford_walk_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8da2d60978d7083b0800000000000000
+      internalID: -5512267922704356648
       vertices: []
       indices: 
       edges: []

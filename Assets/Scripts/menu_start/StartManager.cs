@@ -37,6 +37,7 @@ public class StartManager : MonoBehaviour
     // option select buttons, this will be disabled with touch input
     Button levelSelectButton;
     Button trafficSelectButton;
+    Button hardcoreSelectButton;
     Button playerSelectButton;
     Button CheerleaderSelectButton;
     Button modeSelectButton;
@@ -64,6 +65,7 @@ public class StartManager : MonoBehaviour
 
     //traffic
     private Text trafficSelectOptionText;
+    private Text hardcoreSelectOptionText;
 
     //const object names
     private const string startButtonName = "press_start";
@@ -110,9 +112,14 @@ public class StartManager : MonoBehaviour
     private const string trafficSelectButtonName = "traffic_select";
     private const string trafficSelectOptionName = "traffic_select_option";
 
+    //hardcore mode
+    private const string hardcoreSelectButtonName = "hardcore_select";
+    private const string hardcoreSelectOptionName = "hardcore_select_option";
 
     [SerializeField]
-    private bool trafficEnabled;
+    private bool trafficEnabled;    
+    [SerializeField]
+    private bool hardcoreEnabled;
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -151,8 +158,6 @@ public class StartManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        // dont destroy on load / check for duplicate instance
-        //destroyInstanceIfAlreadyExists();
 
         StartCoroutine(getLoadedData());
 
@@ -165,7 +170,8 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
-        trafficEnabled = GameOptions.trafficEnabled;
+        trafficEnabled = GameOptions.enemiesEnabled;
+        hardcoreEnabled = GameOptions.hardcoreModeEnabled;
 
         // update experience and levels
         // recommended here because experience will be gained after every game played
@@ -175,6 +181,7 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AnaylticsManager.MenuStartLoaded();
         StartCoroutine(InitializeDisplay());
     }
 
@@ -282,7 +289,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
-            && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
+            && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -296,7 +304,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(trafficSelectOptionName))
+            && !currentHighlightedButton.Equals(trafficSelectOptionName)
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -354,8 +363,14 @@ public class StartManager : MonoBehaviour
                 }
                 if (currentHighlightedButton.Equals(trafficSelectOptionName))
                 {
+                    // disabled for now. default : OFF
                     changeSelectedTrafficOption();
                     initializeTrafficOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(hardcoreSelectOptionName))
+                {
+                    changeSelectedHardcoreOption();
+                    initializeHardcoreOptionDisplay();
                 }
             }
             catch
@@ -395,6 +410,12 @@ public class StartManager : MonoBehaviour
                 {
                     changeSelectedTrafficOption();
                     initializeTrafficOptionDisplay();
+
+                }
+                if (currentHighlightedButton.Equals(hardcoreSelectOptionName))
+                {
+                    changeSelectedHardcoreOption();
+                    initializeHardcoreOptionDisplay();
                 }
             }
             catch
@@ -459,6 +480,7 @@ public class StartManager : MonoBehaviour
         initializeLevelDisplay();
         intializeModeDisplay();
         initializeTrafficOptionDisplay();
+        initializeHardcoreOptionDisplay();
         setInitialGameOptions();
 
     }
@@ -468,6 +490,7 @@ public class StartManager : MonoBehaviour
         // buttons to disable for touch input
         levelSelectButton = GameObject.Find(levelSelectButtonName).GetComponent<Button>();
         trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
+        hardcoreSelectButton = GameObject.Find(hardcoreSelectButtonName).GetComponent<Button>();
         playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
         CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
@@ -491,6 +514,7 @@ public class StartManager : MonoBehaviour
 
         // traffic option selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
+        hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
     }
 
     private void setInitialGameOptions()
@@ -536,6 +560,11 @@ public class StartManager : MonoBehaviour
         trafficEnabled = !trafficEnabled;
     }
 
+    public void changeSelectedHardcoreOption()
+    {
+        hardcoreEnabled = !hardcoreEnabled;
+    }
+
     // ============================  Initialize displays ==============================
     public void initializeTrafficOptionDisplay()
     {
@@ -546,6 +575,18 @@ public class StartManager : MonoBehaviour
         if (!trafficEnabled)
         {
             trafficSelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeHardcoreOptionDisplay()
+    {
+        if (hardcoreEnabled)
+        {
+            hardcoreSelectOptionText.text = "ON";
+        }
+        if (!hardcoreEnabled)
+        {
+            hardcoreSelectOptionText.text = "OFF";
         }
     }
 
@@ -838,7 +879,7 @@ public class StartManager : MonoBehaviour
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
         {
-            Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
+            //Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
             GameOptions.customTimer = modeSelectedData[modeSelectedIndex].CustomTimer;
         }
         else
@@ -853,7 +894,7 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderId = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId;
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
 
-        GameOptions.trafficEnabled = trafficEnabled;
+        //GameOptions.trafficEnabled = trafficEnabled;
 
         GameOptions.applicationVersion = Application.version;
         GameOptions.operatingSystemVersion = SystemInfo.operatingSystem;
@@ -863,7 +904,9 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderSelectedIndex = cheerleaderSelectedIndex;
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
-        GameOptions.trafficEnabled = trafficEnabled;
+        //GameOptions.trafficEnabled = trafficEnabled;
+        GameOptions.enemiesEnabled = trafficEnabled;
+        GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
     }
@@ -1035,4 +1078,6 @@ public class StartManager : MonoBehaviour
     public static string ProgressionScreenSceneName => progressionScreenSceneName;
 
     public static string UpdateMenuButtonName => updateMenuButtonName;
+
+    public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
 }

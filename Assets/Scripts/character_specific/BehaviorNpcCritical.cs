@@ -5,7 +5,7 @@ public class BehaviorNpcCritical : MonoBehaviour
 {
     Animator anim;
     AudioSource audioSource;
-    bool shotMade;
+    //bool shotMade;
     public float percentChanceOfCritical;
     public Animator animOnCamera;
     PlayerController playerState;

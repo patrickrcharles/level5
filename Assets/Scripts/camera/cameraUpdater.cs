@@ -103,40 +103,9 @@ public class cameraUpdater : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(" zoom amount: " + ZoomAmount);
 
-        playerPos = new Vector3(player.transform.position.x,
-            0, player.transform.position.z);
-        //camPos = new Vector3(cam.transform.position.x,
-        //    0, cam.transform.root.position.z);
-        //rimPos = new Vector3(basketBallRim.x,
-        //    0, basketBallRim.z);
-
-        //distanceCamFromPlayer = Vector3.Distance(playerPos, camPos);
-        // for zoom
-        //distanceRimFromPlayer = rimPos.z - playerPos.z;
-        //distanceRimFromPlayer = basketBallRim.z - playerPos.z;
-        // for secondary camera
         playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
-    }
-
-    void FixedUpdate()
-    {
-
-        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
-        {
-            // * note change var to player distance because each camera is in a different spot
-            if ((playerDistanceFromRimX < -5.5 || playerDistanceFromRimX > 5.5)
-                && !((playerDistanceFromRimX < -6.8 || playerDistanceFromRimX > 6.8)))
-            {
-                updatePositionNearGoal();
-            }
-            else
-            {
-                updatePositionOnPlayer();
-            }
-        }
 
         if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
         {
@@ -156,7 +125,66 @@ public class cameraUpdater : MonoBehaviour
         {
             toggleCameraOnGoal();
         }
+        if (isLockOnGoalCamera)
+        {
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
+        }
 
+
+        //if (distanceRimFromPlayer > startZoomDistance
+        //    && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
+        ////&& cam.transform.position.z > zMin)
+        //{
+        //    zoomOut();
+        //}
+        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
+        //{
+        //    zoomIn();
+        //
+
+    }
+
+    void FixedUpdate()
+    {
+        playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
+        playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+
+        if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
+        {
+            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
+            onGoalCameraEnabled = false;
+        }
+
+        // * note change var to player distance because each camera is in a different spot
+        if (Math.Abs(playerDistanceFromRimX) > 8.5f && !onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+
+        if (Math.Abs(playerDistanceFromRimX) < 8.5f && onGoalCameraEnabled
+            && CameraManager.instance.CameraOnGoalAllowed)
+        {
+            toggleCameraOnGoal();
+        }
+        if (isLockOnGoalCamera)
+        {
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
+        }
+
+        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
+        {
+            // * note change var to player distance because each camera is in a different spot
+            if ((playerDistanceFromRimX < -7 || playerDistanceFromRimX > 7)
+                && !((playerDistanceFromRimX < -8 || playerDistanceFromRimX > 8)))
+            {
+                updatePositionNearGoal();
+            }
+            else
+            {
+                updatePositionOnPlayer();
+            }
+        }
 
         if ((player != null) && isOrthoGraphic && !isFollowBallCamera && !isLockOnGoalCamera)
         {
@@ -170,22 +198,6 @@ public class cameraUpdater : MonoBehaviour
             transform.position = new Vector3(BasketBall.instance.transform.position.x,
                  BasketBall.instance.transform.position.y + 0.5f,
                  BasketBall.instance.transform.position.z - 2);
-        }
-
-        //if (distanceRimFromPlayer > startZoomDistance
-        //    && !cameraZoomedOut && !isFollowBallCamera && !isLockOnGoalCamera)
-        ////&& cam.transform.position.z > zMin)
-        //{
-        //    zoomOut();
-        //}
-        //if (distanceRimFromPlayer < startZoomDistance && cameraZoomedOut)
-        //{
-        //    zoomIn();
-        //}
-
-        if (isLockOnGoalCamera)
-        {
-            transform.position = basketBallRim + lockOnGoalCameraOffset;
         }
     }
 
@@ -218,39 +230,39 @@ public class cameraUpdater : MonoBehaviour
         transform.position = smoothedPosition;
     }
 
-    private void zoomOut()
-    {
-        if (ZoomAmount == -20)
-        {
-            cameraZoomedOut = true;
-        }
-        else
-        {
-            cameraZoomedOut = false;
-        }
+    //private void zoomOut()
+    //{
+    //    if (ZoomAmount == -20)
+    //    {
+    //        cameraZoomedOut = true;
+    //    }
+    //    else
+    //    {
+    //        cameraZoomedOut = false;
+    //    }
 
-        //Debug.Log("zoom out camera");
-        ZoomAmount -= .5f;
-        //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
-        ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
-        var translate = Mathf.Min(Mathf.Abs(-1), MaxToClamp - Mathf.Abs(ZoomAmount));
-        gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(-1));
-    }
+    //    //Debug.Log("zoom out camera");
+    //    ZoomAmount -= .5f;
+    //    //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
+    //    ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
+    //    var translate = Mathf.Min(Mathf.Abs(-1), MaxToClamp - Mathf.Abs(ZoomAmount));
+    //    gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(-1));
+    //}
 
 
-    private void zoomIn()
-    {
-        if (ZoomAmount == 0.5f)
-        {
-            cameraZoomedOut = false;
-        }
-        //Debug.Log("zoom in camera");
-        ZoomAmount += .5f;
-        //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
-        ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
-        var translate = Mathf.Min(Mathf.Abs(1), MaxToClamp - Mathf.Abs(ZoomAmount));
-        gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(1));
-    }
+    //private void zoomIn()
+    //{
+    //    if (ZoomAmount == 0.5f)
+    //    {
+    //        cameraZoomedOut = false;
+    //    }
+    //    //Debug.Log("zoom in camera");
+    //    ZoomAmount += .5f;
+    //    //Debug.Log("zoomAmount : " + ZoomAmount + "Input.GetAxis(mouse_axis_2) : " + Input.GetAxis("mouse_axis_2"));
+    //    ZoomAmount = Mathf.Clamp(ZoomAmount, -MaxToClamp, MaxToClamp);
+    //    var translate = Mathf.Min(Mathf.Abs(1), MaxToClamp - Mathf.Abs(ZoomAmount));
+    //    gameObject.transform.Translate(0, 0, translate * ROTSpeed * Mathf.Sign(1));
+    //}
 
     void setCamera()
     {

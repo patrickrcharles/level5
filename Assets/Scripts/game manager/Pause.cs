@@ -38,40 +38,62 @@ public class Pause : MonoBehaviour
     private Button loadStartScreenButton;
     private Button cancelMenuButton;
     private Button quitGameButton;
+
     private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
 
     GameObject controlsObject;
+    GameObject controlsMobileObject;
+    GameObject controlsDesktopObject;
+
+    private GameObject maxStatsObject;
+    private GameObject toggleFpsObject;
+    private GameObject toggleUiStatsObject;
 
     public static Pause instance;
 
     void Awake()
     {
         instance = this;
-        //fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
-        fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
 
+        fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
+        //text
         loadSceneText = GameObject.Find("load_scene").GetComponent<Text>();
         cancelMenuText = GameObject.Find("cancel_menu").GetComponent<Text>();
         loadStartScreenText = GameObject.Find("load_start").GetComponent<Text>();
         quitGameText = GameObject.Find("quit_game").GetComponent<Text>();
-
+        //buttons
         loadSceneButton = GameObject.Find("load_scene").GetComponent<Button>();
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
+        //controls
         controlsObject = GameObject.Find("controls").gameObject;
+        controlsMobileObject = GameObject.Find("control_key_mobile").gameObject;
+        controlsDesktopObject = GameObject.Find("control_key_desktop").gameObject;
 
         //toggleCameraText = GameObject.Find(toggleCameraName).GetComponent<Text>();
         toggleUiStatsText = GameObject.Find(toggleUiStatsName).GetComponent<Text>();
         toggleMaxStatsText = GameObject.Find(toggleMaxStatsName).GetComponent<Text>();
+
         toggleFpsText = GameObject.Find(toggleFpsName).GetComponent<Text>();
 
         if (controlsObject != null)
         {
             controlsObject.SetActive(false);
-        }
 
+#if UNITY_ANDROID && !UNITY_EDITOR
+            controlsDesktopObject.SetActive(false);
+            controlsMobileObject.SetActive(true);
+#endif
+
+#if UNITY_STANDALONE || UNITY_EDITOR
+            controlsDesktopObject.SetActive(true);
+            controlsMobileObject.SetActive(false);
+            disableMobileOnlyPauseOptions();
+#endif
+
+        }
 
         EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
         // init current button
@@ -183,9 +205,20 @@ public class Pause : MonoBehaviour
         }
     }
 
+    private void disableMobileOnlyPauseOptions()
+    {
+        // mobile buttons
+        maxStatsObject = GameObject.Find(toggleMaxStatsName).gameObject;
+        toggleFpsObject = GameObject.Find(toggleFpsName).gameObject;
+        toggleUiStatsObject = GameObject.Find(toggleUiStatsName).gameObject;
+
+        maxStatsObject.SetActive(false);
+        toggleFpsObject.SetActive(false);
+        toggleUiStatsObject.SetActive(false);
+    }
+
     public void quit()
     {
-        Debug.Log("quit");
         // update all time stats
         if (DBConnector.instance != null &&
            (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
@@ -197,9 +230,6 @@ public class Pause : MonoBehaviour
 
     public void loadstartScreen()
     {
-        //Debug.Log("loadstartScreen()");
-
-        // if database = null, i could spawn a DB object
         // update all time stats
         if (DBConnector.instance != null &&
            (GameOptions.gameModeSelectedName.ToLower().Contains("free") || GameOptions.gameModeSelectedId == 99))
@@ -209,7 +239,6 @@ public class Pause : MonoBehaviour
 
         // start screen should be first scene in build
         SceneManager.LoadScene("level_00_loading");
-        //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
     }
 
     public void reloadScene()
@@ -245,7 +274,6 @@ public class Pause : MonoBehaviour
 
     private static void updateFreePlayStats()
     {
-        //Debug.Log("---------------------- updateFreePlayStats");
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats

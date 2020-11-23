@@ -26,23 +26,21 @@ public class CallBallToPlayer : MonoBehaviour
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
         Locked = false;
 
-        canBallToPlayerEnabled = true;
-        pullSpeed = 2.3f;
+        //canBallToPlayerEnabled = true;
+        pullSpeed = 2.0f;
     }
 
     private void LateUpdate()
     {
-        if (/*InputManager.GetButtonDown("Fire1")*/
-            GameLevelManager.instance.Controls.Player.shoot.triggered
+        if (GameLevelManager.instance.Controls.Player.shoot.triggered
+            && GameLevelManager.instance.Controls.Other.change.ReadValue<float>() == 0
+            && GameLevelManager.instance.PlayerState.CurrentState != GameLevelManager.instance.PlayerState.BlockState
             && !playerState.hasBasketball
-            && !playerState.inAir
-            //&& !_basketBallState.Thrown
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked
-            //&& !_basketBallState.InAir
             && playerState.grounded
-            //&& canBallToPlayerEnabled
-            && !Locked)
+            && !Locked
+            && !GameOptions.hardcoreModeEnabled)
         {
             //Debug.Log("call ball input read");
             Locked = true;

@@ -32,6 +32,48 @@ TextureImporter:
   - first:
       213: -4501536427611621323
     second: christy_walk_9
+  - first:
+      213: 2778132718489696537
+    second: christy_walk_0
+  - first:
+      213: 7447069911030568290
+    second: christy_walk_1
+  - first:
+      213: 8070036807828789465
+    second: christy_walk_2
+  - first:
+      213: 1700276999040520398
+    second: christy_walk_3
+  - first:
+      213: -5901717689501260956
+    second: christy_walk_4
+  - first:
+      213: -9068098855040282059
+    second: christy_walk_5
+  - first:
+      213: 445661838335776907
+    second: christy_walk_6
+  - first:
+      213: 4305695830571106585
+    second: christy_walk_7
+  - first:
+      213: 1360184966929278009
+    second: christy_walk_8
+  - first:
+      213: 7468674690748043476
+    second: christy_walk_9
+  - first:
+      213: 7338994552176283193
+    second: christy_walk_10
+  - first:
+      213: -2251056135746770616
+    second: christy_walk_11
+  - first:
+      213: 2117261814247198706
+    second: christy_walk_12
+  - first:
+      213: 806223316688269392
+    second: christy_walk_13
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -119,7 +161,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -131,9 +173,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -159,6 +201,111 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 919f7700df8ed8620800000000000000
+      internalID: 2778132718489696537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christy_walk_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2651a78b0ae495760800000000000000
+      internalID: 7447069911030568290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christy_walk_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d856f648b78eff60800000000000000
+      internalID: 8070036807828789465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christy_walk_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec0d3931ce8989710800000000000000
+      internalID: 1700276999040520398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christy_walk_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46363a0b703e81ea0800000000000000
+      internalID: -5901717689501260956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christy_walk_5
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 128
         width: 128
         height: 128
@@ -169,14 +316,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 798b25db067852c4d870e17ca7058751
-      internalID: 1935914224945431491
+      spriteID: 532923dd224a72280800000000000000
+      internalID: -9068098855040282059
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_1
+      name: christy_walk_6
       rect:
         serializedVersion: 2
         x: 128
@@ -190,14 +337,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de8dfc33bd94c514e9b5328778af0dba
-      internalID: -30583270299917625
+      spriteID: b8893fba41f4f2600800000000000000
+      internalID: 445661838335776907
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_2
+      name: christy_walk_7
       rect:
         serializedVersion: 2
         x: 256
@@ -211,14 +358,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7a2e1d6cc28fcc439dca159c158cf47
-      internalID: -6298538527017422418
+      spriteID: 911421c9b87e0cb30800000000000000
+      internalID: 4305695830571106585
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_3
+      name: christy_walk_8
       rect:
         serializedVersion: 2
         x: 384
@@ -232,14 +379,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a6c15e71885a854c81dca3dd8e0e29e
-      internalID: -6494772001961942050
+      spriteID: 93465a6550950e210800000000000000
+      internalID: 1360184966929278009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_4
+      name: christy_walk_9
       rect:
         serializedVersion: 2
         x: 512
@@ -253,14 +400,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 084572db3d9286944851ca0833f0d964
-      internalID: 7722559379130205760
+      spriteID: 4d0dcfc7f0016a760800000000000000
+      internalID: 7468674690748043476
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_5
+      name: christy_walk_10
       rect:
         serializedVersion: 2
         x: 0
@@ -274,14 +421,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af538cf81a454fc4198f58e1679efacd
-      internalID: -7911471900888655953
+      spriteID: 93e8efa59a859d560800000000000000
+      internalID: 7338994552176283193
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_6
+      name: christy_walk_11
       rect:
         serializedVersion: 2
         x: 128
@@ -295,14 +442,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca3760c6983a0344397c5fa7ed1554ac
-      internalID: 3629808340294583655
+      spriteID: 849a9530f54a2c0e0800000000000000
+      internalID: -2251056135746770616
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_7
+      name: christy_walk_12
       rect:
         serializedVersion: 2
         x: 256
@@ -316,14 +463,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb64a9ddae5c59045bb9a457748bd2a9
-      internalID: -7991329984283175587
+      spriteID: 2ff04bef666026d10800000000000000
+      internalID: 2117261814247198706
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: christy_walk_8
+      name: christy_walk_13
       rect:
         serializedVersion: 2
         x: 384
@@ -337,29 +484,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6768e16a485e0e443a3e8d1771a59a51
-      internalID: -5059958572676069599
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: christy_walk_9
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 64d2c0070f2626e4dbc22ef71c11ed2e
-      internalID: -4501536427611621323
+      spriteID: 05077d0c5d7403b00800000000000000
+      internalID: 806223316688269392
       vertices: []
       indices: 
       edges: []

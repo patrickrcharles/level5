@@ -18,6 +18,7 @@ public class SFXBB : MonoBehaviour
     public AudioClip lightningStrike;
     public AudioClip rimShot;
     public AudioClip knockedDown;
+    public AudioClip blocked;
     public AudioClip skateGrind;
     public AudioClip glitch;
     public AudioClip turnIntoBat;
@@ -25,12 +26,16 @@ public class SFXBB : MonoBehaviour
     public AudioClip chainRattle;
     public AudioClip deathRay;
     public AudioClip probeCritical;
-    public AudioClip yellYeah1;
-    public AudioClip yellYeah2;
     public AudioClip metalBang;
     public AudioClip stoneCold;
     public AudioClip chopWood;
     public AudioClip shootGun;
+    public AudioClip takeDamage;
+    public AudioClip shotgunRack;
+    public AudioClip vampireHiss;
+    public AudioClip projectileRocket;
+    public AudioClip whipCrack;
+    public AudioClip shootAutomaticAK47;
 
     public AudioClip unlockAchievement;
 

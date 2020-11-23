@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-#if UNITY_EDITOR
-#endif
+﻿using System;
+using UnityEngine;
 
 public class GameLevelManager : MonoBehaviour
 {
@@ -8,10 +7,10 @@ public class GameLevelManager : MonoBehaviour
     // that can be retrieved across all scripts
     [SerializeField]
     private GameObject _player;
-    [SerializeField]
     private PlayerController _playerState;
-    [SerializeField]
     private CharacterProfile _playerShooterProfile;
+    [SerializeField]
+    private PlayerAttackQueue _playerAttackQueue;
 
     //BasketBall objects
     private GameObject _basketballPrefab;
@@ -39,6 +38,11 @@ public class GameLevelManager : MonoBehaviour
 
     public static GameLevelManager instance;
     private bool _locked;
+
+
+    //[SerializeField] InputSystemUIInputModule inputSystemUIInputModule;
+    //[SerializeField] StandaloneInputModule standaloneInputModule;
+    //[SerializeField] EventSystem eventSystem;
 
     private void OnEnable()
     {
@@ -91,18 +95,12 @@ public class GameLevelManager : MonoBehaviour
     {
         // return to this if n
         GameOptions.previousSceneName = "level_00_start";
-        //unlimited
-        //QualitySettings.vSyncCount = 0;
-        //GameObject.Find("screen_dpi").GetComponent<Text>().text = Screen.dpi.ToString() + "\n" + Screen.currentResolution;
-        //Debug.Log("screen.dpi : " + Screen.dpi);
-        //Debug.Log("device model : " + SystemInfo.deviceModel);
-        //Debug.Log("device  name: " + SystemInfo.deviceName);
-        //Debug.Log("device graphics : " + SystemInfo.graphicsDeviceName);
-        //Debug.Log("game mode id : " + GameOptions.gameModeSelectedId);
-        //QualitySettings.vSyncCount = 1;
 
-        QualitySettings.vSyncCount = 1;
-        Application.targetFrameRate = 60;
+        // analytic event
+        if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
+        {
+            AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
+        }
 
         //disable lighting if necessary
         // something like if gameoptions.lightingenabled
@@ -119,20 +117,6 @@ public class GameLevelManager : MonoBehaviour
         //}
 
 
-        //Debug.Log(System.DateTime.Now.Hour);
-        //Application.targetFrameRate = 60;
-
-        //QualitySettings.resolutionScalingFixedDPIFactor = 0.75f;
-        //Debug.Log("quality level : " + QualitySettings.GetQualityLevel());
-        //Debug.Log("quality level : " + QualitySettings.names);
-
-        //Debug.Log("width : " + Screen.width);
-        //Debug.Log("height : " + Screen.height);
-        //int w = Screen.width;
-        //int h = Screen.height;
-        //float num = (float)w/h;
-        //Debug.Log("screen ratio : " + num );
-
         _locked = false;
         //set up player/basketball read only references for use in other classes
         if (GameObject.FindWithTag("Player") == null)
@@ -143,30 +127,11 @@ public class GameLevelManager : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         _playerState = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
+        _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
+
         Anim = Player.GetComponentInChildren<Animator>();
     }
 
-    //IEnumerator SetMajorObjectReferences()
-    //{
-    //    yield return new WaitUntil(() => GameObject.FindWithTag("basketball") != null);
-    //    BasketballObject = GameObject.FindWithTag("basketball");
-
-    //    yield return new WaitUntil(() => BasketballObject.GetComponent<BasketBall>() != null);
-    //    Basketball = BasketballObject.GetComponent<BasketBall>();
-
-    //    yield return new WaitUntil(() => GameObject.Find("rim").transform.position != null);
-    //    BasketballRimVector = GameObject.Find("rim").transform.position;
-
-    //    //set up player/basketball read only references for use in other classes
-    //    yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
-    //    _player = GameObject.FindGameObjectWithTag("Player");
-
-    //    yield return new WaitUntil(() => _player.GetComponent<PlayerController>() != null);
-    //    _playerState = _player.GetComponent<PlayerController>();
-
-    //    yield return new WaitUntil(() => Player.GetComponentInChildren<Animator>() != null);
-    //    Anim = Player.GetComponentInChildren<Animator>();
-    //}
 
     private void Update()
     {
@@ -208,7 +173,7 @@ public class GameLevelManager : MonoBehaviour
                 //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
                 if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
                 {
-                    Debug.Log("disable veh  : " + veh.name);
+                    //Debug.Log("disable veh  : " + veh.name);
                     veh.SetActive(false);
                 }
             }
@@ -219,7 +184,7 @@ public class GameLevelManager : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
             {
-                Debug.Log("disable npc  : " + npc.name);
+                //Debug.Log("disable npc  : " + npc.name);
                 npc.SetActive(false);
             }
         }
@@ -304,5 +269,5 @@ public class GameLevelManager : MonoBehaviour
     //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
-
+    public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
 }

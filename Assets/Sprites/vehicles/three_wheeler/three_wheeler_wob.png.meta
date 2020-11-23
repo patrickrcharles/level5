@@ -79,7 +79,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -125,7 +125,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -137,9 +137,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 1
-    compressionQuality: 0
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -165,7 +165,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
+        y: 128
         width: 256
         height: 128
       alignment: 7
@@ -175,7 +175,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89c4a0f99b20aee4e859d73de8553611
+      spriteID: 600fd9a3143e582e0800000000000000
       internalID: -2124041779939512314
       vertices: []
       indices: 
@@ -186,7 +186,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 384
+        y: 128
         width: 256
         height: 128
       alignment: 7
@@ -196,7 +196,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da0d0066dc5014d40883f33c036b7d1a
+      spriteID: 431eefa7bec50b9f0800000000000000
       internalID: -454761395913825996
       vertices: []
       indices: 
@@ -207,7 +207,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 384
+        y: 128
         width: 256
         height: 128
       alignment: 7
@@ -217,7 +217,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b32512db4e2de4458c55140f299d2e1
+      spriteID: c9cdb894fff979170800000000000000
       internalID: 8185186766568545436
       vertices: []
       indices: 
@@ -228,7 +228,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 384
+        y: 128
         width: 256
         height: 128
       alignment: 7
@@ -238,7 +238,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73d674cf1b51f7840ad04210905a6cfe
+      spriteID: c53b51dccdcbcea10800000000000000
       internalID: 1940133196009419612
       vertices: []
       indices: 
@@ -249,7 +249,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 0
         width: 256
         height: 128
       alignment: 7
@@ -259,7 +259,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04951a87878b8e844aed0596253db617
+      spriteID: 11161a9069fb187e0800000000000000
       internalID: -1764918927824953071
       vertices: []
       indices: 
@@ -270,7 +270,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 256
+        y: 0
         width: 256
         height: 128
       alignment: 7
@@ -280,7 +280,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f32ca760e4651e74ead15b59bf0cff3e
+      spriteID: 174ade2baab803cf0800000000000000
       internalID: -274566012006980495
       vertices: []
       indices: 
@@ -291,7 +291,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 256
+        y: 0
         width: 256
         height: 128
       alignment: 7
@@ -301,7 +301,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ec04a2996c7eed40b9727b387c9e62d
+      spriteID: 549a15daf1b3639b0800000000000000
       internalID: -5100824520712672955
       vertices: []
       indices: 
@@ -312,7 +312,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 256
+        y: 0
         width: 256
         height: 128
       alignment: 7
@@ -322,92 +322,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a5fbb5535815a6442a7994b807a82707
+      spriteID: 519fc4f1692127e20800000000000000
       internalID: 3346757909069232405
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: three_wheeler_wob_8
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 256
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 853436c1e1b192541b2108b5cbd7ad2e
-      internalID: 3397112308775147266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: three_wheeler_wob_9
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 128
-        width: 256
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe67047d22f611643ad329e63a59dc99
-      internalID: -5061677155562891029
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: three_wheeler_wob_10
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 256
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dfb577852a875424080b41deb09c57a1
-      internalID: -9214681760143393098
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: three_wheeler_wob_11
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 256
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a98459d8a6033c74586724bc0119276c
-      internalID: 3395709958753571647
       vertices: []
       indices: 
       edges: []

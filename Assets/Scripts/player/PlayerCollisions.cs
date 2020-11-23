@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 public class PlayerCollisions : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class PlayerCollisions : MonoBehaviour
     PlayerController playerState;
     [SerializeField]
     bool playerCanBeKnockedDown;
+    bool locked = false;
 
     private void Start()
     {
@@ -14,51 +16,52 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag("playerHitbox")
-            && other.CompareTag("knock_down_attack2")
-            && !playerState.KnockedDown_Alternate)
-        {
-            if (playerCanBeKnockedDown)
-            {
-                playerKnockedDown_Alternate(other.gameObject);
-            }
-            else
-            {
-                // avoid knockdown scenario
-                playerAvoidKnockDown(other.gameObject);
-            }
-        }
         // if collsion between hitbox and vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
-            && other.CompareTag("knock_down_attack")
-            && !playerState.KnockedDown)
+            && other.CompareTag("enemyAttackBox")
+            && !playerState.KnockedDown
+            && !playerState.TakeDamage
+            && !locked)
         {
-            // player can be knocked down and other
-            if (playerCanBeKnockedDown)
+            locked = true;
+            // player is not blocking
+            if (playerState.CurrentState != playerState.BlockState)
             {
-                playerKnockedDown(other.gameObject);
+                locked = true;
+                // player can be knocked down and other
+                if (playerCanBeKnockedDown && other.GetComponent<EnemyAttackBox>().knockDownAttack)
+                {
+                    playerKnockedDown();
+                }
+                else
+                {
+                    playerTakeDamage();
+                }
             }
-            else
+            // player is blocking
+            if (playerState.CurrentState == playerState.BlockState)
             {
-                // avoid knockdown scenario
-                playerAvoidKnockDown(other.gameObject);
+                // blocking play sound
+                // block meter goes down
+                SFXBB.instance.playSFX(SFXBB.instance.blocked);
+                locked = false;
             }
+            locked = false;
         }
     }
 
-    void playerKnockedDown_Alternate(GameObject playerKnockedDown)
+    void playerTakeDamage()
     {
-        playerState.KnockedDown_Alternate = true;
-    }
-
-    void playerKnockedDown(GameObject playerKnockedDown)
-    {
-        playerState.KnockedDown = true;
+        playerState.TakeDamage = true;
+        playerState.KnockedDown = false;
         playerState.hasBasketball = false;
         playerState.setPlayerAnim("hasBasketball", false);
     }
-    void playerAvoidKnockDown(GameObject playerAvoidKnocked)
+    void playerKnockedDown()
     {
-        playerState.AvoidedKnockDown = true;
+        playerState.TakeDamage = false;
+        playerState.KnockedDown = true;
+        playerState.hasBasketball = false;
+        playerState.setPlayerAnim("hasBasketball", false);
     }
 }

@@ -62,6 +62,72 @@ TextureImporter:
   - first:
       213: 21300038
     second: woody_walk_19
+  - first:
+      213: -7232736637772579962
+    second: woody_walk_0
+  - first:
+      213: -8057539267042120209
+    second: woody_walk_1
+  - first:
+      213: 9166175949584056131
+    second: woody_walk_2
+  - first:
+      213: 7821293299167728285
+    second: woody_walk_3
+  - first:
+      213: 7428149457039483484
+    second: woody_walk_4
+  - first:
+      213: -6362333128218562311
+    second: woody_walk_5
+  - first:
+      213: 4288133848251133854
+    second: woody_walk_6
+  - first:
+      213: -7740062826733721438
+    second: woody_walk_7
+  - first:
+      213: 8189449492326509803
+    second: woody_walk_8
+  - first:
+      213: 8447440293756800889
+    second: woody_walk_9
+  - first:
+      213: 4175726897192621872
+    second: woody_walk_10
+  - first:
+      213: 4679783311700477666
+    second: woody_walk_11
+  - first:
+      213: 8889158333090539813
+    second: woody_walk_12
+  - first:
+      213: 4100419579143420888
+    second: woody_walk_13
+  - first:
+      213: 5578065985568346157
+    second: woody_walk_14
+  - first:
+      213: -7674401901093712696
+    second: woody_walk_15
+  - first:
+      213: -6339776725337694342
+    second: woody_walk_16
+  - first:
+      213: 2155242193574571901
+    second: woody_walk_17
+  - first:
+      213: 2618861462074253583
+    second: woody_walk_18
+  - first:
+      213: 8974730134532113796
+    second: woody_walk_19
+  - first:
+      213: 5768188433136922104
+    second: woody_walk_20
+  - first:
+      213: -9100108389476861762
+    second: woody_walk_21
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -103,7 +169,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -161,7 +227,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -173,9 +239,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -189,7 +255,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
+        y: 640
         width: 128
         height: 128
       alignment: 7
@@ -199,8 +265,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 752eed9e27b584c41b09b78531102496
-      internalID: 21300000
+      spriteID: 68bbc9f395820ab90800000000000000
+      internalID: -7232736637772579962
       vertices: []
       indices: 
       edges: []
@@ -210,7 +276,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 512
+        y: 640
         width: 128
         height: 128
       alignment: 7
@@ -220,8 +286,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb2713ba34c054a46be6c03744837764
-      internalID: 21300002
+      spriteID: fed61303abedd2090800000000000000
+      internalID: -8057539267042120209
       vertices: []
       indices: 
       edges: []
@@ -231,7 +297,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 512
+        y: 640
         width: 128
         height: 128
       alignment: 7
@@ -241,8 +307,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb68d844d5ef4524083d5d3ac2ea3a9a
-      internalID: 21300004
+      spriteID: 34fbfaf267cc43f70800000000000000
+      internalID: 9166175949584056131
       vertices: []
       indices: 
       edges: []
@@ -252,6 +318,27 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
+        y: 640
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92190d01d0da8c60800000000000000
+      internalID: 7821293299167728285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_4
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 512
         width: 128
         height: 128
@@ -262,29 +349,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de8eab6f240c98a46ae780a62c6746f2
-      internalID: 21300006
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5785ca1524b13cb4e9ae56042a2e4fe5
-      internalID: 21300008
+      spriteID: c52695d3396161760800000000000000
+      internalID: 7428149457039483484
       vertices: []
       indices: 
       edges: []
@@ -294,7 +360,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 384
+        y: 512
         width: 128
         height: 128
       alignment: 7
@@ -304,8 +370,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9147f04f443ebbd479fdd6a88c9d5475
-      internalID: 21300010
+      spriteID: 9f035dd9ab374b7a0800000000000000
+      internalID: -6362333128218562311
       vertices: []
       indices: 
       edges: []
@@ -315,7 +381,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 384
+        y: 512
         width: 128
         height: 128
       alignment: 7
@@ -325,8 +391,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c4c39db5e20a3b4c86b3f56d5fbee7b
-      internalID: 21300012
+      spriteID: e9f6656f303828b30800000000000000
+      internalID: 4288133848251133854
       vertices: []
       indices: 
       edges: []
@@ -336,6 +402,27 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
+        y: 512
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a8a4512ed5c59490800000000000000
+      internalID: -7740062826733721438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_8
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 384
         width: 128
         height: 128
@@ -346,29 +433,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 207142b33c846484d91d3c1234ad54c7
-      internalID: 21300014
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_8
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d0f59ffaf54f2df44b64c65c04d0955a
-      internalID: 21300016
+      spriteID: becef187ce4c6a170800000000000000
+      internalID: 8189449492326509803
       vertices: []
       indices: 
       edges: []
@@ -378,7 +444,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 7
@@ -388,8 +454,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 19861b4a0e5a23940bfa92eda2f8ef95
-      internalID: 21300018
+      spriteID: 97f02b2d0365b3570800000000000000
+      internalID: 8447440293756800889
       vertices: []
       indices: 
       edges: []
@@ -399,7 +465,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 7
@@ -409,8 +475,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25500395ec08d7c46b51ab852dccb887
-      internalID: 21300020
+      spriteID: 037d5323d7923f930800000000000000
+      internalID: 4175726897192621872
       vertices: []
       indices: 
       edges: []
@@ -420,6 +486,27 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
+        y: 384
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e645bf902ee1f040800000000000000
+      internalID: 4679783311700477666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_12
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 256
         width: 128
         height: 128
@@ -430,29 +517,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 045e41e8426ac3040ad36e06fb22666e
-      internalID: 21300022
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_12
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c69a8e2f00e59f647b7589f4b51f4c3a
-      internalID: 21300024
+      spriteID: 529a01c3862ac5b70800000000000000
+      internalID: 8889158333090539813
       vertices: []
       indices: 
       edges: []
@@ -462,6 +528,69 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8db76ecd1ed97e830800000000000000
+      internalID: 4100419579143420888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_14
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d209d73c575496d40800000000000000
+      internalID: 5578065985568346157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_15
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cc0ab5b12c0f7590800000000000000
+      internalID: -7674401901093712696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_16
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 128
         width: 128
         height: 128
@@ -472,14 +601,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c21dd2dd0bd91e949aec2c4fd191b79a
-      internalID: 21300026
+      spriteID: a7f15fa68a69408a0800000000000000
+      internalID: -6339776725337694342
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: woody_walk_14
+      name: woody_walk_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7f22f82b55f8ed10800000000000000
+      internalID: 2155242193574571901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woody_walk_18
       rect:
         serializedVersion: 2
         x: 256
@@ -493,14 +643,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b01c227b073aab6499a6961e45111286
-      internalID: 21300028
+      spriteID: f0165eadf90185420800000000000000
+      internalID: 2618861462074253583
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: woody_walk_15
+      name: woody_walk_19
       rect:
         serializedVersion: 2
         x: 384
@@ -514,14 +664,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fed8d6735e22baf4db7d44edf92ef16e
-      internalID: 21300030
+      spriteID: 485c7c7d185ac8c70800000000000000
+      internalID: 8974730134532113796
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: woody_walk_16
+      name: woody_walk_20
       rect:
         serializedVersion: 2
         x: 0
@@ -535,71 +685,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cef55587814f8024297ce9cf8e324fae
-      internalID: 21300032
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_17
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 67830489adae3174e9a824326c4f70ea
-      internalID: 21300034
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_18
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 422f8ee831bed1d41b870d0e66ea695e
-      internalID: 21300036
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: woody_walk_19
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e4374cfc10d61c34e9233d67f761e4c7
-      internalID: 21300038
+      spriteID: 8fda4aa91d8bc0050800000000000000
+      internalID: 5768188433136922104
       vertices: []
       indices: 
       edges: []

@@ -7,12 +7,14 @@ public class StatsTableHighScoreRow : MonoBehaviour
     const string characterName = "character";
     const string levelName = "level";
     const string dateName = "date";
+    const string hardcoreName = "hardcore";
 
 
     public Text scoreText;
     public Text characterText;
     public Text levelText;
     public Text dateText;
+    public Text hardcoreText;
 
     [SerializeField]
     public string score;
@@ -22,6 +24,8 @@ public class StatsTableHighScoreRow : MonoBehaviour
     public string level;
     [SerializeField]
     public string date;
+    [SerializeField]
+    public string hardcoreEnabled;
 
     // Start is called before the first frame update
     void Awake()
@@ -30,6 +34,7 @@ public class StatsTableHighScoreRow : MonoBehaviour
         characterText = transform.GetChild(1).GetComponent<Text>();
         levelText = transform.GetChild(2).GetComponent<Text>();
         dateText = transform.GetChild(3).GetComponent<Text>();
+        hardcoreText = transform.GetChild(4).GetComponent<Text>();
     }
 
     private void Update()
@@ -46,16 +51,17 @@ public class StatsTableHighScoreRow : MonoBehaviour
         characterText.text = character;
         levelText.text = level;
         dateText.text = date;
+        hardcoreText.text = hardcoreEnabled;
 
         //Debug.Log("score = " + score + " | character =" +character + " | level = " + level + " | date = " +date);
     }
 
-    public StatsTableHighScoreRow(string scor, string charact, string lvl, string dat)
+    public StatsTableHighScoreRow(string scor, string charact, string lvl, string dat, string hrdcor)
     {
         score = scor;
         character = charact;
         level = lvl;
         date = dat;
+        hardcoreEnabled = hrdcor;
     }
-
 }

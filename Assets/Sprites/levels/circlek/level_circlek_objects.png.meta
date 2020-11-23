@@ -58,7 +58,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -104,7 +104,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 3
     compressionQuality: 50
     crunchedCompression: 0
@@ -116,9 +116,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 65
     textureCompression: 1
-    compressionQuality: 0
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -219,27 +219,6 @@ TextureImporter:
       bones: []
       spriteID: 676934a09044962469f33190475e6a55
       internalID: -2793931982272977714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: level_circlek_objects_4
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 0
-        width: 192
-        height: 192
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 76769f9ea70970941ade576bff72f07a
-      internalID: 8136780425439295517
       vertices: []
       indices: 
       edges: []

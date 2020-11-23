@@ -14,6 +14,30 @@ TextureImporter:
   - first:
       213: -9129333397558095914
     second: bandit_3
+  - first:
+      213: 1853769555232670696
+    second: bandit_4
+  - first:
+      213: -3356063045824079122
+    second: bandit_5
+  - first:
+      213: -7782667563085016075
+    second: bandit_6
+  - first:
+      213: 934613895617716912
+    second: bandit_7
+  - first:
+      213: -7634579475551373235
+    second: bandit_0
+  - first:
+      213: -130293869568437196
+    second: bandit_1
+  - first:
+      213: -4043701617762723606
+    second: bandit_2
+  - first:
+      213: 363912495670396030
+    second: bandit_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -55,7 +79,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -101,7 +125,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -113,9 +137,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 1
-    compressionQuality: 0
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -141,8 +165,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 896
-        width: 512
+        y: 384
+        width: 384
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -151,8 +175,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2eb02f67f9d91f14da0b831499f81c3d
-      internalID: -2011081452543692480
+      spriteID: d48b54eaa668c0690800000000000000
+      internalID: -7634579475551373235
       vertices: []
       indices: 
       edges: []
@@ -162,8 +186,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 768
-        width: 512
+        y: 256
+        width: 384
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -172,8 +196,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bde7c77ae8292654cabd590ba91eaa9c
-      internalID: -2010273673257664405
+      spriteID: 43456fb7a6a113ef0800000000000000
+      internalID: -130293869568437196
       vertices: []
       indices: 
       edges: []
@@ -183,8 +207,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 640
-        width: 512
+        y: 128
+        width: 384
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -193,8 +217,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3fc4e7350b45c649b435d48abf43f00
-      internalID: -6289882858147728949
+      spriteID: ae894979dc2e1e7c0800000000000000
+      internalID: -4043701617762723606
       vertices: []
       indices: 
       edges: []
@@ -204,8 +228,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 512
+        y: 0
+        width: 384
         height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -214,8 +238,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b55e32839c3cf5847816e44acbadd3f8
-      internalID: -9129333397558095914
+      spriteID: e7482c99c70ec0500800000000000000
+      internalID: 363912495670396030
       vertices: []
       indices: 
       edges: []

@@ -1,0 +1,499 @@
+fileFormatVersion: 2
+guid: 2dee6df81ce1d1f4391a3866752a9fa6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1103595632485354439
+    second: basketball_rad_tony_0
+  - first:
+      213: 215896053786690301
+    second: basketball_rad_tony_1
+  - first:
+      213: 2368828133637435523
+    second: basketball_rad_tony_2
+  - first:
+      213: -8090159806390812747
+    second: basketball_rad_tony_3
+  - first:
+      213: -6753224626245183818
+    second: basketball_rad_tony_4
+  - first:
+      213: -1771433814047143697
+    second: basketball_rad_tony_5
+  - first:
+      213: 6807723037771105835
+    second: basketball_rad_tony_6
+  - first:
+      213: 9208383953278183215
+    second: basketball_rad_tony_7
+  - first:
+      213: 7135707227152102692
+    second: basketball_rad_tony_8
+  - first:
+      213: 1765383795917503214
+    second: basketball_rad_tony_9
+  - first:
+      213: 3203163082233415079
+    second: basketball_rad_tony_10
+  - first:
+      213: -6105474906482126126
+    second: basketball_rad_tony_11
+  - first:
+      213: 6618953649102927317
+    second: basketball_rad_tony_12
+  - first:
+      213: 3161332789818954374
+    second: basketball_rad_tony_13
+  - first:
+      213: -8566624774656428946
+    second: basketball_rad_tony_14
+  - first:
+      213: 6939146268101750249
+    second: rad_tony_basketball_0
+  - first:
+      213: 8211295546171885133
+    second: rad_tony_basketball_1
+  - first:
+      213: -2590687641778086548
+    second: rad_tony_basketball_2
+  - first:
+      213: 3757580160124064138
+    second: rad_tony_basketball_3
+  - first:
+      213: 5674500373998448622
+    second: rad_tony_basketball_4
+  - first:
+      213: -6264356421158902416
+    second: rad_tony_basketball_5
+  - first:
+      213: -5681580712945377368
+    second: rad_tony_basketball_6
+  - first:
+      213: -11889362308250526
+    second: rad_tony_basketball_7
+  - first:
+      213: 6923594615750695439
+    second: rad_tony_basketball_8
+  - first:
+      213: -2574517031616574373
+    second: rad_tony_basketball_9
+  - first:
+      213: -7702599576608781896
+    second: rad_tony_basketball_10
+  - first:
+      213: -4954792916826204007
+    second: rad_tony_basketball_11
+  - first:
+      213: 5610424356009283586
+    second: rad_tony_basketball_12
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 48
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: rad_tony_basketball_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 748
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edaea204cccc4060800000000000000
+      internalID: 6939146268101750249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 748
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d46825f3bc164f170800000000000000
+      internalID: 8211295546171885133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 748
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6d92dbd0570c0cd0800000000000000
+      internalID: -2590687641778086548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 748
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8110434f3b952430800000000000000
+      internalID: 3757580160124064138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 556
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eefaffd7600efbe40800000000000000
+      internalID: 5674500373998448622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 364
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 075e26266098019a0800000000000000
+      internalID: -6264356421158902416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 364
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8af1e22a178f621b0800000000000000
+      internalID: -5681580712945377368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 364
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 264c20f10b2c5dff0800000000000000
+      internalID: -11889362308250526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 364
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0a90a8ce9c851060800000000000000
+      internalID: 6923594615750695439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 172
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5c0d4e666a754cd0800000000000000
+      internalID: -2574517031616574373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_10
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 172
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b9c825ce7eda1590800000000000000
+      internalID: -7702599576608781896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 172
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 998d3f0081a0d3bb0800000000000000
+      internalID: -4954792916826204007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rad_tony_basketball_12
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 172
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 200122bf93b3cdd40800000000000000
+      internalID: 5610424356009283586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 98c831e26eaab0d449b4385191f5516f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

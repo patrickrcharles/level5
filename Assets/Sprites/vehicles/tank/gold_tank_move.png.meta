@@ -67,7 +67,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -113,7 +113,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 32
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -125,9 +125,9 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 48
     textureCompression: 1
-    compressionQuality: 0
+    compressionQuality: 75
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -153,7 +153,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 768
+        y: 256
         width: 512
         height: 256
       alignment: 7
@@ -163,7 +163,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28a6070b5af580a47bad431469493d2d
+      spriteID: 4e0528a8b94cff040800000000000000
       internalID: 4683678309811376356
       vertices: []
       indices: 
@@ -174,7 +174,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 768
+        y: 256
         width: 512
         height: 256
       alignment: 7
@@ -184,7 +184,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79950b631675e2a419c8b67713960a61
+      spriteID: 92769a3522ae0df90800000000000000
       internalID: -6930782393369794775
       vertices: []
       indices: 
@@ -195,7 +195,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
+        y: 0
         width: 512
         height: 256
       alignment: 7
@@ -205,7 +205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8675607d1f77a53499b89189c5a2ed93
+      spriteID: 02dba9d0b99794e60800000000000000
       internalID: 7947016724327087392
       vertices: []
       indices: 
@@ -216,7 +216,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 512
+        y: 0
         width: 512
         height: 256
       alignment: 7
@@ -226,92 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d3ab1db63c1a47340a53ac6a2e017791
+      spriteID: 43d03feafd87a28f0800000000000000
       internalID: -564505901173371596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gold_tank_move_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 512
-        height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 89432ca695546ab499be8e88508a9b7e
-      internalID: -3171682950942001297
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gold_tank_move_5
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 256
-        width: 512
-        height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 929ae661e1c748d45a3195828520319a
-      internalID: 6847528361404492816
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gold_tank_move_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f41c2f20085d8864295026b4e1eedcf9
-      internalID: -434437792763082298
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gold_tank_move_7
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 512
-        height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e4e54d9d6951db747a70d33b4ffd499a
-      internalID: -2332511798558763842
       vertices: []
       indices: 
       edges: []

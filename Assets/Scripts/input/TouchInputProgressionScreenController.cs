@@ -16,9 +16,9 @@ public class TouchInputProgressionScreenController : MonoBehaviour
 
     Touch touch;
     bool buttonPressed;
-    [SerializeField]
+
     GameObject joystickGameObject;
-    [SerializeField]
+
     GameObject prevSelectedGameObject;
 
     public static TouchInputProgressionScreenController instance;
@@ -32,7 +32,9 @@ public class TouchInputProgressionScreenController : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
         ProgressionManager.instance.disableButtonsNotUsedForTouchInput();
+#endif
 
         // set distance required for swipe up to be regeistered by device
         swipeUpTolerance = Screen.height / 7;
@@ -124,7 +126,7 @@ public class TouchInputProgressionScreenController : MonoBehaviour
         // else, this is not the startscreen and disable object
         else
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 

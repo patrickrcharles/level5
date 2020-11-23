@@ -9,7 +9,8 @@ using TouchPhase = UnityEngine.TouchPhase;
 public class TouchInputController : MonoBehaviour
 {
 
-    private Vector2 startTouchPosition, endTouchPosition;
+    private Vector2 startTouchPosition1, endTouchPosition1;
+    private Vector2 startTouchPosition2, endTouchPosition2;
 
     float swipeUpTolerance;
     float swipeDownTolerance;
@@ -22,177 +23,219 @@ public class TouchInputController : MonoBehaviour
     [SerializeField]
     EventSystem m_EventSystem;
 
-    Touch touch;
+    Touch touch1;
+    Touch touch2;
 
     public static TouchInputController instance;
 
     bool buttonPressed;
 
     bool pauseExists;
-    private bool tapDetected;
+    [SerializeField]
+    private bool tap1Detected;
+    [SerializeField]
+    private bool tap2Detected;
+    [SerializeField]
+    private bool doubleTap1Detected;
+    [SerializeField]
+    private bool doubleTap2Detected;
+    [SerializeField]
+    private bool hold1Detected;
+    [SerializeField]
+    private bool hold2Detected;
+
+    [SerializeField]
+    float tapInterval;
+    float touchfirstTap;
+    float touchLastTap;
+
+    [SerializeField]
+    PlayerController playerController;
+
+    public bool HoldDetected { get => hold1Detected; set => hold1Detected = value; }
 
     void Awake()
     {
         initializeTouchInputController();
+
+    }
+    private void Start()
+    {
+        instance = this;
+        playerController = GameLevelManager.instance.PlayerState;
     }
 
-    // changing from Update -> FixedUpdate allows input to be detected at 1/100 as opposed to 1/60 for mobile
-    //void FixedUpdate()
-    //{
-    //    //Debug.Log(EventSystem.current.currentSelectedGameObject.name);
-    //    //if (!Pause.instance.Paused && Input.touchCount > 0)
-    //    //{
-    //    //    Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
-    //    //    touch = Input.touches[0];
-    //    //    if (touch.tapCount == 1
-    //    //        && touch.phase == TouchPhase.Began
-    //    //        && !buttonPressed)
-    //    //    {
-    //    //        Debug.Log("----------------------------------Input.touchCount > 0");
-    //    //        Debug.Log("     buttonPressed : " + buttonPressed);
-    //    //        Debug.Log("     touch.tapCount : " + touch.tapCount);
-    //    //        Debug.Log("     touch.phase : " + touch.phase);
-    //    //        tapDetected = true;
-    //    //        startTouchPosition = touch.position;
-    //    //        Debug.Log("tapDetected : " + tapDetected);
-    //    //    }
-
-    //    //    endTouchPosition = touch.position;
-    //    //    swipeDistance = endTouchPosition.y - startTouchPosition.y;
-
-    //    //    //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
-    //    //    //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
-    //    //    //    && swipeDistance > 0 // swipe up
-    //    //    //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
-    //    //    //{
-    //    //    //    //Debug.Log("swipe up");
-    //    //    //    touch.phase = TouchPhase.Ended;
-    //    //    //    GameLevelManager.instance.PlayerState.TouchControlJump();
-    //    //    //}
-
-    //    //    if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
-    //    //        && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
-    //    //        && swipeDistance < 0 // swipe down
-    //    //        && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
-    //    //    {
-    //    //        //Debug.Log("swipe down");
-    //    //        Pause.instance.TogglePause();
-    //    //    }
-    //    //}
-    //}
-
-
+    //#if UNITY_ANDROID && !UNITY_EDITOR
     void Update()
     {
+        // not paused + touch
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
-            //Debug.Log("----------------------------------FIXED UPDATE - not paused + touch");
-            touch = Input.touches[0];
-            if (touch.tapCount == 1
-                && touch.phase == TouchPhase.Began
+            // ====================== get touches =====================================
+            // detect multi touches
+            if (Input.touchCount > 1)
+            {
+                touch1 = Input.touches[0];
+                touch2 = Input.touches[1];
+            }
+            else
+            {
+                touch1 = Input.touches[0];
+            }
+
+            // ====================== touch 1 : tap  =====================================
+            if (touch1.tapCount == 1
+                && touch1.phase == TouchPhase.Began
                 && !buttonPressed)
             {
-                //Debug.Log("----------------------------------Input.touchCount > 0");
-                //Debug.Log("     buttonPressed : " + buttonPressed);
-                //Debug.Log("     touch.tapCount : " + touch.tapCount);
-                //Debug.Log("     touch.phase : " + touch.phase);
-                tapDetected = true;
-                startTouchPosition = touch.position;
-                //Debug.Log("tapDetected : " + tapDetected);
+                tap1Detected = true;
+                startTouchPosition1 = touch1.position;
+            }
+            else
+            { tap1Detected = false; }
+
+            // ====================== touch 1 : hold  =====================================
+            //Touch 1 is hold + bottom left screen
+            if (touch1.tapCount == 1
+                && touch1.phase == TouchPhase.Stationary
+                //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
+                && !buttonPressed
+                && touch1.position.x < (Screen.width / 2)
+                && touch1.position.y > (Screen.height / 2)
+                //&& startTouchPosition1.x < (Screen.height / 2)
+                && playerController.PlayerCanBlock
+                && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
+            {
+                hold1Detected = true;
+                startTouchPosition1 = touch1.position;
+                if (playerController.CanBlock && !playerController.hasBasketball)
+                {
+                    playerController.playerBlock();
+                }
+            }
+            if (touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
+            {
+                hold1Detected = false;
+                playerController.Anim.SetBool("block", false);
             }
 
-            endTouchPosition = touch.position;
-            swipeDistance = endTouchPosition.y - startTouchPosition.y;
+            // ====================== touch 2 : tap  =====================================
+            if (touch2.tapCount == 1
+                && touch2.phase == TouchPhase.Began
+                && !buttonPressed)
+            {
+                tap2Detected = true;
+                startTouchPosition2 = touch2.position;
+                touchfirstTap = Time.time;
+            }
+            else
+            {
+                tap2Detected = false;
+            }
 
-            //if (touch.tapCount == 1 && touch.phase == TouchPhase.Moved // finger moving
-            //    && Mathf.Abs(swipeDistance) > swipeUpTolerance // swipe is long enough
-            //    && swipeDistance > 0 // swipe up
-            //    && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/3 of screen
-            //{
-            //    //Debug.Log("swipe up");
-            //    touch.phase = TouchPhase.Ended;
-            //    GameLevelManager.instance.PlayerState.TouchControlJump();
-            //}
+            // ====================== touch 1 : double tap  =====================================
+            if (touch1.tapCount == 2 && touch1.phase == TouchPhase.Began)
+            {
+                doubleTap1Detected = true;
+            }
+            else
+            {
+                doubleTap1Detected = false;
+            }
 
-            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            // ====================== touch 2 : double tap  =====================================
+            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
+            {
+                //Debug.Log("double tap 2");
+                doubleTap2Detected = true;
+                //touchLastTap = Time.time;
+                //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
+            }
+            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Ended)
+            {
+                doubleTap2Detected = false;
+            }
+            // ====================== touch 2  =====================================
+
+            //Touch 2 is tap + hold detected + bottom right screen
+            if (hold1Detected
+                && !buttonPressed
+                && startTouchPosition2.x > (Screen.width / 2)
+                && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) 
+                                               //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
+            {
+                // ====================== touch 2 + tap =====================================
+                if (tap2Detected && !doubleTap2Detected)
+                {
+                    //Debug.Log("tap2Detected && !doubleTap2Detected");
+                    buttonPressed = true;
+                    if (!playerController.hasBasketball && playerController.CanAttack)
+                    {
+                        //Debug.Log("player attack ");
+                        tap2Detected = false;
+                        playerController.playerAttack();
+                    }
+                    buttonPressed = false;
+                }
+                // ====================== touch 2 + double tap =====================================
+                if (!tap2Detected && doubleTap2Detected)
+                {
+                    Debug.Log("!tap2Detected && doubleTap2Detected");
+                    buttonPressed = true;
+                    if (!playerController.inAir
+                        && playerController.grounded
+                        && !playerController.KnockedDown)
+                    {
+                        //Debug.Log("player special attack ");
+                        doubleTap2Detected = false;
+                        hold1Detected = false;
+                        playerController.playerSpecial();
+                    }
+                    buttonPressed = false;
+                }
+            }
+            // ====================== touch 1 swipe distance  =====================================
+
+            endTouchPosition1 = touch1.position;
+            swipeDistance = endTouchPosition1.y - startTouchPosition1.y;
+
+            // ====================== touch 1 swipe down : Pause  =====================================
+            // not paused + swipe down + top right of screen
+            if (touch1.tapCount == 1 && touch1.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
-                && startTouchPosition.x > (Screen.width / 2) // if swipe on right 1/2 of screen)) 
-                && startTouchPosition.x > (Screen.height / 2)) // if swipe on right 1/2 of screen)) 
+                && startTouchPosition1.x > (Screen.width / 2) // if swipe on right 1/2 of screen)) 
+                && startTouchPosition1.x > (Screen.height / 2)) // if swipe on right 1/2 of screen)) 
             {
-                //Debug.Log("swipe down");
                 Pause.instance.TogglePause();
             }
-
-            //if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
-            //    && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
-            //    && swipeDistance < 0 // swipe down
-            //    && startTouchPosition.x < (Screen.width / 2) // if swipe on right 1/2 of screen)) 
-            //    && startTouchPosition.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) 
-            //{
-            //    //Debug.Log("current camera : " + Camera.current.name);
-            //    //Debug.Log("Camera.main : " + Camera.main);
-            //    //foreach (Camera c in Camera.allCameras)
-            //    //{
-            //    //    Debug.Log("     camera : " + c.name);
-            //    //}
-            //    ////Debug.Log("swipe down");
-            //    //foreach (GameObject c in CameraManager.instance.Cameras)
-            //    //{
-            //    //    Debug.Log("    " + c.name + "active : " + c.activeInHierarchy);
-            //    //}
-            //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-            //    messageText.text = "graphics api : " + SystemInfo.graphicsDeviceType;
-            //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(5));
-
-
-            //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceName);
-            //    //Debug.Log("graphics api : " + SystemInfo.graphicsDeviceType);
-            //    //Debug.Log("graphics api : " + SystemInfo.graphicsMemorySize);
-            //    //Debug.Log("graphics api : " + SystemInfo.processorType);
-            //    //Debug.Log("graphics api : " + SystemInfo.systemMemorySize);
-
-            //    //ColorHelper.ColorText(SystemInfo.graphicsDeviceName, m_GPUFieldsColor),
-            //    //ColorHelper.ColorText("[" + SystemInfo.graphicsDeviceType.ToString() + "]", m_GPUDetailFieldsColor),
-            //    //ColorHelper.ColorText(SystemInfo.graphicsMemorySize.ToString(), m_GPUFieldsColor),
-            //    //ColorHelper.ColorText(SystemInfo.processorType, m_CPUFieldsColor),
-            //    //ColorHelper.ColorText(SystemInfo.systemMemorySize.ToString(), m_CPUFieldsColor),
-            //    //ColorHelper.ColorText(SystemInfo.operatingSystem, m_SysFieldsColor)
-            //}
         }
-        if (tapDetected)
+
+        if (tap1Detected)
         {
-            Debug.Log("shoot/jump");
-            //startTouchPosition = touch.position;
-            GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch.position);
-            tapDetected = false;
+            GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch1.position);
+            tap1Detected = false;
         }
-        // if paused
+
+        // ====================== touch 1 : Paused  =====================================
+
+        // if paused + touch touch
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
-            //Debug.Log("touch.tapCount : " + touch.tapCount + " || touch.phase : " + touch.phase);
-
+            //tap
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
-                //Debug.Log("paused tap");
                 selectPressedButton();
             }
-
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
                 activateDoubleTappedButton();
             }
-
-            //// on double tap, perform actions
-            //if (touch.tapCount == 3 && touch.phase == TouchPhase.Began && !buttonPressed)
-            //{
-            //    activateTripleTappedButton();
-            //}
         }
     }
-
+    //#endif
 
     private void activateDoubleTappedButton()
     {
@@ -264,18 +307,8 @@ public class TouchInputController : MonoBehaviour
         messageText.text = "";
     }
 
-    //// action button (turn on moneyball)
-    //private void activateTripleTappedButton()
-    //{
-    //    buttonPressed = true;
-    //    Debug.Log("triple tap");
-    //    GameRules.instance.toggleMoneyBall();
-    //    buttonPressed = false;
-    //}
-
     private void selectPressedButton()
     {
-        //Debug.Log("selectPressedButton()");
         //Set up the new Pointer Event
         m_PointerEventData = new PointerEventData(m_EventSystem);
         //Set the Pointer Event Position to that of the mouse position
@@ -288,10 +321,10 @@ public class TouchInputController : MonoBehaviour
         m_Raycaster.Raycast(m_PointerEventData, results);
 
         //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-        foreach (RaycastResult result in results)
-        {
-            Debug.Log("Hit " + result.gameObject.name);
-        }
+        //foreach (RaycastResult result in results)
+        //{
+        //    Debug.Log("Hit " + result.gameObject.name);
+        //}
     }
 
     private void initializeTouchInputController()
