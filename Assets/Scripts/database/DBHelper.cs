@@ -287,7 +287,7 @@ public class DBHelper : MonoBehaviour
     // insert default Player profiles
     public void InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
     {
-
+        databaseLocked = true;
         var dbconn = new SqliteConnection(connection);
         using (dbconn)
         {
@@ -333,6 +333,7 @@ public class DBHelper : MonoBehaviour
             }
             dbconn.Close();
         }
+        databaseLocked = false;
     }
 
     // insert a specific character to database. Example, new character added to game, 
