@@ -72,6 +72,12 @@ public static class AnaylticsManager
     public static void PointsScoredEnemiesEnabled(BasketBallStats basketBallStats)
     {
         string eventName = "points scored : enemies enabled";
+
+        int accuracy = 0;
+        if(basketBallStats.ShotAttempt != 0)
+        {
+            accuracy = (basketBallStats.ShotMade / basketBallStats.ShotAttempt);
+        }
         AnalyticsResult analyticsResult =
             Analytics.CustomEvent(eventName,
             new Dictionary<string, object>
@@ -80,7 +86,7 @@ public static class AnaylticsManager
                 {"player", GameOptions.playerDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"points", basketBallStats.TotalPoints },
-                {"accuracy", (basketBallStats.ShotMade / basketBallStats.ShotAttempt).ToString("##.####") },
+                {"accuracy", accuracy.ToString("##.####") },
                 {"deviceType", SystemInfo.deviceType },
                 {"deviceModel", SystemInfo.deviceModel },
                 {"OperatingSystem", SystemInfo.operatingSystem }
