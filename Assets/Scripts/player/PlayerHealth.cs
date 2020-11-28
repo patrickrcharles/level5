@@ -5,32 +5,32 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField]
-    int health;
+    int health = 0;
     [SerializeField]
     int block;
-
-    bool isDead;
+    bool isDead = false;
 
     public int Health { get => health; set => health = value; }
     public int Block { get => block; set => block = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }
 
-    private void Start()
+    private void Awake()
     {
         // default
         health = 0;
         block = 25;
-        if(health >= 100)
+        if(health <= 100)
         {
-            isDead = false;
+            IsDead = false;
         }
     }
 
     private void Update()
     {
-        if(health <= 0 && !isDead)
+        if(health >= 100 && !IsDead)
         {
             Debug.Log("player is dead");
-            isDead = true;
+            IsDead = true;
         }
     }
 }
