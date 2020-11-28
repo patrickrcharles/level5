@@ -23,8 +23,8 @@ public class PlatformCheck : MonoBehaviour
             inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
         }
 
-#if UNITY_ANDROID //&& !UNITY_EDITOR
-        Debug.Log("if android");
+#if UNITY_ANDROID && !UNITY_EDITOR
+        //Debug.Log("if android");
         //QualitySettings.vSyncCount = 1;
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
@@ -36,14 +36,14 @@ public class PlatformCheck : MonoBehaviour
 #endif
 
 
-//#if UNITY_STANDALONE || UNITY_EDITOR
-//        Debug.Log("if editor");
-//        QualitySettings.vSyncCount = 0;
-//        //Application.targetFrameRate = -1;
-//        //standaloneInputModule.DeactivateModule();
-//        standaloneInputModule.enabled = false;
-//        //inputSystemUIInputModule.ActivateModule();
-//#endif
+#if UNITY_STANDALONE || UNITY_EDITOR
+        //Debug.Log("if editor");
+        QualitySettings.vSyncCount = 0;
+        //Application.targetFrameRate = -1;
+        //standaloneInputModule.DeactivateModule();
+        standaloneInputModule.enabled = false;
+        //inputSystemUIInputModule.ActivateModule();
+#endif
 
     }
 }
