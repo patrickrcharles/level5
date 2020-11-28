@@ -35,17 +35,6 @@ public class TheyLiveManager : MonoBehaviour
                 theyLiveSpriteList.Add(sprite);
             }
         }
-
-        //int randomIndex = Random.Range(0, (theyLiveSpriteList.Count - 1));
-
-        //if (currentSprite.name.ToLower().Contains("fbipi"))
-        //{
-        //    spriteRenderer.sprite = theyLiveSpriteList.Where(x => x.name.ToLower().Contains("watchtv") == true).Single();
-        //}
-        //else
-        //{
-        //    spriteRenderer.sprite = theyLiveSpriteList[randomIndex];
-        //}
     }
 
     private void Update()
@@ -57,7 +46,7 @@ public class TheyLiveManager : MonoBehaviour
         }
         if (!theyLiveEnabled)
         {
-
+            on = false;
         }
     }
 
