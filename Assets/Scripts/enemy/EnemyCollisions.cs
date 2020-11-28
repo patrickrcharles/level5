@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ public class EnemyCollisions : MonoBehaviour
 {
     [SerializeField]
     EnemyController enemyController;
+    [SerializeField]
+    EnemyHealth enemyHealth;
 
     private void Start()
     {
         enemyController = gameObject.transform.root.GetComponent<EnemyController>();
+        enemyHealth = GetComponent<EnemyHealth>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,27 +22,73 @@ public class EnemyCollisions : MonoBehaviour
         if (gameObject.CompareTag("enemyHitbox")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox")) )
         {
-            // player attack
-            if (other.GetComponent<PlayerAttackBox>() != null && other.GetComponent<PlayerAttackBox>().knockDownAttack)
+            PlayerAttackBox playerAttackBox = null;
+            EnemyAttackBox enemyAttackBox = null;
+
+            //Debug.Log("playerHealth.PlayerHealth before : " + enemyHealth.Health);
+
+            if (other.GetComponent<PlayerAttackBox>() != null)
+            {
+                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                Debug.Log("player attack damage : " + playerAttackBox.attackDamage);
+                enemyHealth.Health -= playerAttackBox.attackDamage;
+            }
+            if (other.GetComponent<EnemyAttackBox>() != null)
+            {
+                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+                Debug.Log("enemy attack damage : " + enemyAttackBox.attackDamage);
+                enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
+            }
+
+            Debug.Log("playerHealth.PlayerHealth after : " + enemyHealth.Health);
+
+            // player knock down attack
+            if (playerAttackBox != null && playerAttackBox.knockDownAttack && !playerAttackBox.disintegrateAttack)
             {
                 enemyKnockedDown();
             }
+            // if !knock down + is disintegrate
+            else if (playerAttackBox != null && !playerAttackBox.knockDownAttack && playerAttackBox.disintegrateAttack)
+            {
+                enemyDisintegrated();
+            }
             // enemy attack / friendly fire /vehicle
-            else if (other.GetComponent<EnemyAttackBox>() != null && other.GetComponent<EnemyAttackBox>().knockDownAttack)
+            else if (enemyAttackBox != null && enemyAttackBox.knockDownAttack && !enemyAttackBox.disintegrateAttack)
             {
                 enemyKnockedDown();
+            }
+            // if !knock down + is disintegrate
+            else if (enemyAttackBox != null && !enemyAttackBox.knockDownAttack && enemyAttackBox.disintegrateAttack)
+            {
+                enemyDisintegrated();
             }
             else
             {
                 enemyTakeDamage();
+                if (other.transform.parent.name.Contains("rake"))
+                {
+                    enemyStepOnRake(other);
+                }
             }
         }
+    }
+
+    private void enemyDisintegrated()
+    {
+        StartCoroutine(enemyController.disintegrated());
     }
 
     void enemyTakeDamage()
     {
         //Debug.Log("enemyTakeDamage()");
         StartCoroutine( enemyController.takeDamage());
+    }
+
+    void enemyStepOnRake(Collider other)
+    {
+        other.transform.parent.GetComponentInChildren<Animator>().Play("attack");
+        //Debug.Log("enemyTakeDamage()");
+        StartCoroutine(enemyController.takeDamage());
     }
 
     void enemyKnockedDown()

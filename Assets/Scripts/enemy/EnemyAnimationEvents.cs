@@ -13,6 +13,8 @@ public class EnemyAnimationEvents : MonoBehaviour
     GameObject projectileSpawn;
     [SerializeField]
     EnemyController enemyController;
+    [SerializeField]
+    bool attackBoxAlwaysOn;
 
     private AudioSource audioSource;
 
@@ -27,10 +29,16 @@ public class EnemyAnimationEvents : MonoBehaviour
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
-        enemyController = transform.parent.GetComponent<EnemyController>();
+        if (transform.parent.GetComponent<EnemyController>() != null)
+        {
+            enemyController = transform.parent.GetComponent<EnemyController>();
+        }
 
         attackBox = transform.parent.Find("attackBox").gameObject;
-        disableAttackBox();
+        if (!attackBoxAlwaysOn)
+        {
+            disableAttackBox();
+        }
     }
 
     public void enableAttackBox()

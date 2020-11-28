@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> spawnPositions;
     public List<GameObject> enemyPrefabs;
 
-    private void Start()
+    private void Awake()
     {
         if (GameOptions.enemiesEnabled)
         {
@@ -19,10 +19,12 @@ public class EnemySpawner : MonoBehaviour
             int numEnemiesToSpawn = 0;
 #if UNITY_STANDALONE || UNITY_EDITOR
             numEnemiesToSpawn = spawnPositions.Capacity;
+            
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             numEnemiesToSpawn = 3;
 #endif
+            //Debug.Log(numEnemiesToSpawn);
             for (int i = 0; i < numEnemiesToSpawn; i++)
             {
                 Instantiate(enemyPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
@@ -30,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         // this needs to second option or enabling it will spawn enemies
-        else if (GameObject.FindGameObjectWithTag("enemy") != null)
+        if (GameObject.FindGameObjectWithTag("enemy") != null)
         {
             GameOptions.enemiesEnabled = true;
         }

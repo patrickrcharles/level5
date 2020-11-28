@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -45,6 +46,7 @@ public class EnemyController : MonoBehaviour
     static int AnimatorState_Idle = Animator.StringToHash("base.idle");
     static int AnimatorState_Knockdown = Animator.StringToHash("base.knockdown");
     static int AnimatorState_Lightning = Animator.StringToHash("base.lightning");
+    static int AnimatorState_Disintegrated = Animator.StringToHash("base.disintegrated");
 
     public bool stateWalk = false;
     public bool stateIdle = false;
@@ -65,6 +67,8 @@ public class EnemyController : MonoBehaviour
     public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
+
+
     public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
 
     // Use this for initialization
@@ -89,7 +93,7 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (stateWalk && currentState != AnimatorState_Knockdown)
+        if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated)
         {
             pursuePlayer();
         }
@@ -139,7 +143,9 @@ public class EnemyController : MonoBehaviour
         // ================== enemy walk state ==========================
         if (enemyDetection.PlayerSighted
             && !stateAttack
-            && canAttack)
+            && canAttack
+            && currentState != AnimatorState_Knockdown
+            && currentState != AnimatorState_Disintegrated)
         {
 
             stateWalk = true;
@@ -245,31 +251,41 @@ public class EnemyController : MonoBehaviour
         FreezeEnemyPosition();
         GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.Play("lightning");
-        anim.SetBool("knockdown", true);
-        Debug.Log("time.time1 : " + Time.time);
-        yield return new WaitForSeconds(knockDownTime);
-        Debug.Log("time.time2 : " + Time.time);
-        anim.SetBool("knockdown", false);
-        stateKnockDown = false;
-        UnFreezeEnemyPosition();
+        yield return new WaitUntil(() => currentState == AnimatorState_Lightning);
+        //anim.SetBool("knockdown", true);
+        //yield return new WaitForSeconds(1);
+        StartCoroutine(knockedDown());
+
+        ////anim.SetBool("knockdown", true);
+        //playAnimation("knockdown");
+        //yield return new WaitForSeconds(knockDownTime);
+        //anim.SetBool("knockdown", false);
+        //stateKnockDown = false;
+        //UnFreezeEnemyPosition();
+
+        //stateKnockDown = false;
     }
+
 
     public IEnumerator knockedDown()
     {
-        //Debug.Log("public IEnumerator knockedDown() -----------------------------------------------------------------");
         stateKnockDown = true;
         FreezeEnemyPosition();
         anim.SetBool("knockdown", true);
+        yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         playAnimation("knockdown");
         yield return new WaitForSeconds(knockDownTime);
         anim.SetBool("knockdown", false);
         stateKnockDown = false;
         UnFreezeEnemyPosition();
+
+        stateKnockDown = false;
     }
 
     public IEnumerator takeDamage()
     {
         stateKnockDown = true;
+
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.SetBool("takeDamage", true);
@@ -279,8 +295,24 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSecondsRealtime(takeDamageTime);
         anim.SetBool("takeDamage", false);
         UnFreezeEnemyPosition();
+
         stateKnockDown = false;
         //anim.ResetTrigger("exitAnimation");
+    }
+
+    public IEnumerator disintegrated()
+    {
+        stateKnockDown = true;
+        Debug.Log("disintegrated()");
+        FreezeEnemyPosition();
+        Debug.Log("destroy gameobject : " + gameObject.name);
+        playAnimation("disintegrated");
+        Debug.Log("destroy gameobject : " + gameObject.name);
+        //yield return new WaitUntil(() => currentState == AnimatorState_Disintegrated);
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log("destroy gameobject : " + gameObject.name);
+        Destroy(gameObject);
+        stateKnockDown = false;
     }
 
     //int RandomNumber(int min, int max)
