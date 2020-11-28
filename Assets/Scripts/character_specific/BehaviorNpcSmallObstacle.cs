@@ -72,10 +72,39 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
         pos3 = returnPositions[2];
 
         locked = false;
+
+        InvokeRepeating("checkNPCState", 0, 1f);
     }
 
 
     void Update()
+    {
+       
+        currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        currentState = currentStateInfo.fullPathHash;
+
+        // ----- control speed based on commands----------
+        if (currentState == idleState || currentState == walkState
+        || currentState == idleState2)
+        {
+            movementSpeed = walkMovementSpeed;
+        }
+        else
+        {
+            movementSpeed = runMovementSpeed;
+        }
+        //rigidBody.velocity = movement * movementSpeed;
+        navmeshAgent.speed = movementSpeed;
+        if (rigidBody != null)
+        {
+            anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
+        }
+        ////check if walking
+        ////  function will flip sprite if needed
+        isWalking(navmeshAgent.velocity.magnitude);
+    }
+
+    private void checkNPCState()
     {
         distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
         //Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
@@ -110,32 +139,6 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
 
             StartCoroutine(waitOutsideRangeForXSeconds(5));
         }
-
-
-        currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        currentState = currentStateInfo.fullPathHash;
-
-        // ----- control speed based on commands----------
-
-        if (currentState == idleState || currentState == walkState
-        || currentState == idleState2)
-        {
-            movementSpeed = walkMovementSpeed;
-        }
-        else
-        {
-            movementSpeed = runMovementSpeed;
-        }
-        //rigidBody.velocity = movement * movementSpeed;
-        navmeshAgent.speed = movementSpeed;
-        if (rigidBody != null)
-        {
-            anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
-        }
-
-        ////check if walking
-        ////  function will flip sprite if needed
-        isWalking(navmeshAgent.velocity.magnitude);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -234,11 +237,6 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
     }
 
 
-    public void setPlayerAnim(string animationName, bool isTrue)
-    {
-        anim.SetBool(animationName, isTrue);
-    }
-
     IEnumerator setWaitForXSeconds(float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
@@ -251,8 +249,6 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
             transform.position.y,
             transform.position.z + RandomNumber(-3, 2));
 
-        //Debug.Log("generate new transform : " + newTransform);
-
         return newTransform;
     }
 
@@ -260,7 +256,6 @@ public class BehaviorNpcSmallObstacle : MonoBehaviour
     {
         System.Random rnd = new System.Random();
         int randNum = rnd.Next(min, max);
-        //Debug.Log("generate randNum : " + randNum);
         return randNum;
     }
 }
