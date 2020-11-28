@@ -55,7 +55,6 @@ public class Timer : MonoBehaviour
         {
             timerEnabled = true;
             displayTimer = true;
-            //Debug.Log("display timer true");
         }
         else
         {
@@ -72,21 +71,18 @@ public class Timer : MonoBehaviour
         {
             timeRemaining = timeStart - currentTime;
             minutes = Mathf.FloorToInt(timeRemaining / 60);
-            //seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
             seconds = (timeRemaining - (minutes * 60));
         }
 
         if (modeRequiresCounter)
         {
-            //minutes = Mathf.FloorToInt(currentTime / 60);
-            //seconds = Mathf.FloorToInt(currentTime - (minutes * 60));
             minutes = Mathf.FloorToInt(currentTime / 60);
             seconds = (currentTime - (minutes * 60));
         }
+
         // gameover, disable timer display and set text to empty
         if (GameRules.instance.GameOver || timeRemaining < 0)
         {
-            //Debug.Log("display timer false");
             displayTimer = false;
             timerText.text = "";
         }
@@ -124,8 +120,6 @@ public class Timer : MonoBehaviour
 
         if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
         {
-            //timerTextLocked = true;
-            //setCustomTimerText("OVERTIME");
             timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
         }
     }

@@ -123,7 +123,6 @@ public class GameRules : MonoBehaviour
         }
 
         GameModeRequiresConsecutiveShots = GameOptions.gameModeRequiresConsecutiveShot;
-        //Debug.Log("GameOptions.gameModeRequiresConsecutiveShot : " + GameOptions.gameModeRequiresConsecutiveShot);
 
         // init text
         displayScoreText.text = "";
@@ -163,11 +162,8 @@ public class GameRules : MonoBehaviour
         }
 
         // game over. pause / display end game / save
-        if (gameOver && !Pause.instance.Paused && gameRulesEnabled)
+        if ( (gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled)
         {
-            //Debug.Log("===== GAME OVER");
-            //Debug.Log("***** game mode : " + GameOptions.gameModeSelectedId);
-            //Debug.Log("game over, pause");
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
             displayMoneyText.text = "";
@@ -193,11 +189,9 @@ public class GameRules : MonoBehaviour
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.getExperienceGainedFromSession());
 
-                /*DBConnector.instance.saveAchievementStats()*/
-
-                // check if achievements reached, send bball stats object
-                AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
-                    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
+                //// check if achievements reached, send bball stats object
+                //AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
+                //    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
             }
             if (GameOptions.enemiesEnabled)
             {
@@ -416,7 +410,7 @@ public class GameRules : MonoBehaviour
                 displayHighScoreText.text = "high score : " + PlayerData.instance.MakeAllPointersMoneyBallLowTime;
                 displayMoneyText.text = "$" + PlayerStats.instance.Money;
             }
-            if (gameModeId == 99 || gameModeId == 98)
+            if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98 )
             {
                 displayCurrentScoreText.text = "longest shot : " + (basketBallStats.LongestShotMade).ToString("0.00")
                                                                  + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");
@@ -525,6 +519,14 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 16 || gameModeId == 17 || gameModeId == 18)
         {
             displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 98 )
+        {
+            displayText = "Arcade mode\n\n" + getStatsTotals();
+        }
+        if (gameModeId == 99 || gameModeId == 0)
+        {
+            displayText = "Free Play mode\n\n" + getStatsTotals();
         }
 
         return displayText;
