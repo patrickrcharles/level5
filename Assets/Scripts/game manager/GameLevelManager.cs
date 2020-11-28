@@ -9,6 +9,7 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _player;
     private PlayerController _playerState;
     private CharacterProfile _playerShooterProfile;
+    private PlayerHealth _playerHealth;
     [SerializeField]
     private PlayerAttackQueue _playerAttackQueue;
 
@@ -128,6 +129,7 @@ public class GameLevelManager : MonoBehaviour
         _playerState = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
         _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
+        _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
 
         Anim = Player.GetComponentInChildren<Animator>();
     }
@@ -270,4 +272,5 @@ public class GameLevelManager : MonoBehaviour
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
+    public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
 }
