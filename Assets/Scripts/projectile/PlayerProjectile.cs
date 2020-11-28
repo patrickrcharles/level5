@@ -51,12 +51,12 @@ public class PlayerProjectile : MonoBehaviour
         // get direction facing
         if (playerController.facingRight)
         {
-            Debug.Log(" shoot right");
+            //Debug.Log(" shoot right");
             rigidbody.AddForce(force, 0, 0, ForceMode.VelocityChange);
         }
         if (!playerController.facingRight)
         {
-            Debug.Log(" shoot left");
+            //Debug.Log(" shoot left");
             rigidbody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
         }
     }
@@ -86,7 +86,7 @@ public class PlayerProjectile : MonoBehaviour
             && !impactProjectile
             && (other.CompareTag("ground") || other.CompareTag("enemyHitbox")))
         {
-            Debug.Log("collision between : " + gameObject.name + " and " + other.name);
+            //Debug.Log("collision between : " + gameObject.name + " and " + other.name);
             Vector3 transformAtImpact = gameObject.transform.position;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
             // explode object

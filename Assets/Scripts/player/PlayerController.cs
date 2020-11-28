@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     private bool _facingRight;
     private bool _facingFront;
     private bool _locked;
-    private bool _jump;
+    //private bool _jump;
     private bool _inAir;
     private bool _grounded;
     [SerializeField]
@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
+        playerHealth = GameLevelManager.instance.PlayerHealth;
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
@@ -146,8 +147,9 @@ public class PlayerController : MonoBehaviour
     // not affected by framerate
     void FixedUpdate()
     {
+
         //------MOVEMENT---------------------------
-        if (!KnockedDown)
+        if (!KnockedDown && currentState != takeDamageState)
         {
             //#if UNITY_ANDROID && !UNITY_EDITOR
             //if (Input.touchCount > 0
@@ -190,6 +192,7 @@ public class PlayerController : MonoBehaviour
             //    movementVertical = 0;
             //}
 #if UNITY_ANDROID && !UNITY_EDITOR
+
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.touches[0];
@@ -231,11 +234,18 @@ public class PlayerController : MonoBehaviour
             movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+
 #endif
 
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
-            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            // check jump trigger and execute jump
+            if (jumpTrigger)
+            {
+                jumpTrigger = false;
+                playerJump();
+            }
 
             if (currentState != specialState)
             {
@@ -247,13 +257,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TouchControlJump()
-    {
-        if (grounded && !KnockedDown)
-        {
-            playerJump();
-        }
-    }
+    //public void TouchControlJump()
+    //{
+    //    if (grounded && !KnockedDown)
+    //    {
+    //        playerJump();
+    //    }
+    //}
 
     public void touchControlJumpOrShoot(Vector2 touchPosition)
     {
@@ -426,7 +436,8 @@ public class PlayerController : MonoBehaviour
             && grounded
             && !KnockedDown)
         {
-            playerJump();
+            jumpTrigger = true;
+            //playerJump();
         }
         //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
@@ -459,7 +470,8 @@ public class PlayerController : MonoBehaviour
             //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
             && !hasBasketball
             && canBlock
-            && GameOptions.enemiesEnabled)
+            && GameOptions.enemiesEnabled
+            && playerHealth.Block > 0)
         {
             if (playerCanBlock)
             {
@@ -467,7 +479,7 @@ public class PlayerController : MonoBehaviour
             }
             if (!playerCanBlock)
             {
-                playerJump();
+                jumpTrigger = true;
             }
         }
         else
@@ -497,7 +509,7 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
-#endif
+#endif 
     }
 
     public void playerAttack()
@@ -620,6 +632,24 @@ public class PlayerController : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
+    public IEnumerator PlayerFreezeForXSeconds(float time)
+    {
+        Debug.Log("freeze player");
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        anim.SetBool("takeDamage", true);
+        anim.Play("takeDamage");
+
+        float startTime = Time.time;
+        float endTime = startTime + time;
+        yield return new WaitUntil(() => Time.time > endTime);
+        anim.SetBool("takeDamage", false);
+        yield return new WaitUntil(() => currentState != takeDamageState);
+
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     public IEnumerator PlayerKnockedDown()
     {
         //Debug.Log("PlayerKnockedDown");
@@ -686,11 +716,7 @@ public class PlayerController : MonoBehaviour
         get { return _inAir; }
         set { _inAir = value; }
     }
-    public bool jump
-    {
-        get { return _jump; }
-        set { _jump = value; }
-    }
+
     public bool locked
     {
         get { return _locked; }
@@ -711,6 +737,8 @@ public class PlayerController : MonoBehaviour
         get => shotmeter;
         set => shotmeter = value;
     }
+
+    private PlayerHealth playerHealth;
 
     public bool KnockedDown
     {
