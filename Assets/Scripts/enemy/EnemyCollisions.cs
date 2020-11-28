@@ -8,12 +8,17 @@ public class EnemyCollisions : MonoBehaviour
     [SerializeField]
     EnemyController enemyController;
     [SerializeField]
+    EnemyHealthBar enemyHealthBar;
+
+    [SerializeField]
     EnemyHealth enemyHealth;
+    int maxEnemyHealth;
 
     private void Start()
     {
         enemyController = gameObject.transform.root.GetComponent<EnemyController>();
         enemyHealth = GetComponent<EnemyHealth>();
+        enemyHealthBar = transform.parent.GetComponentInChildren<EnemyHealthBar>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,50 +30,63 @@ public class EnemyCollisions : MonoBehaviour
             PlayerAttackBox playerAttackBox = null;
             EnemyAttackBox enemyAttackBox = null;
 
-            //Debug.Log("playerHealth.PlayerHealth before : " + enemyHealth.Health);
-
             if (other.GetComponent<PlayerAttackBox>() != null)
             {
                 playerAttackBox = other.GetComponent<PlayerAttackBox>();
-                Debug.Log("player attack damage : " + playerAttackBox.attackDamage);
                 enemyHealth.Health -= playerAttackBox.attackDamage;
             }
             if (other.GetComponent<EnemyAttackBox>() != null)
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-                Debug.Log("enemy attack damage : " + enemyAttackBox.attackDamage);
                 enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
             }
 
-            Debug.Log("playerHealth.PlayerHealth after : " + enemyHealth.Health);
-
-            // player knock down attack
-            if (playerAttackBox != null && playerAttackBox.knockDownAttack && !playerAttackBox.disintegrateAttack)
+            //update health slider
+            enemyHealthBar.setHealthSliderValue();
+            // check if enemy dead
+            if (enemyHealth.Health >= 0 )
             {
-                enemyKnockedDown();
+                // player knock down attack
+                if (playerAttackBox != null
+                    && playerAttackBox.knockDownAttack
+                    && !playerAttackBox.disintegrateAttack)
+                {
+                    enemyKnockedDown();
+                }
+                // if !knock down + is disintegrate
+                else if (playerAttackBox != null
+                    && !playerAttackBox.knockDownAttack
+                    && playerAttackBox.disintegrateAttack)
+                {
+                    enemyDisintegrated();
+                }
+                // enemy attack / friendly fire /vehicle
+                else if (enemyAttackBox != null
+                    && enemyAttackBox.knockDownAttack
+                    && !enemyAttackBox.disintegrateAttack)
+                {
+                    enemyKnockedDown();
+                }
+                // if !knock down + is disintegrate
+                else if (enemyAttackBox != null
+                    && !enemyAttackBox.knockDownAttack
+                    && enemyAttackBox.disintegrateAttack)
+                {
+                    enemyDisintegrated();
+                }
+                else
+                {
+                    enemyTakeDamage();
+                    if (other.transform.parent.name.Contains("rake"))
+                    {
+                        enemyStepOnRake(other);
+                    }
+                }
             }
-            // if !knock down + is disintegrate
-            else if (playerAttackBox != null && !playerAttackBox.knockDownAttack && playerAttackBox.disintegrateAttack)
-            {
-                enemyDisintegrated();
-            }
-            // enemy attack / friendly fire /vehicle
-            else if (enemyAttackBox != null && enemyAttackBox.knockDownAttack && !enemyAttackBox.disintegrateAttack)
-            {
-                enemyKnockedDown();
-            }
-            // if !knock down + is disintegrate
-            else if (enemyAttackBox != null && !enemyAttackBox.knockDownAttack && enemyAttackBox.disintegrateAttack)
-            {
-                enemyDisintegrated();
-            }
+            // else enemy is dead
             else
             {
-                enemyTakeDamage();
-                if (other.transform.parent.name.Contains("rake"))
-                {
-                    enemyStepOnRake(other);
-                }
+                StartCoroutine(enemyController.killEnemy());
             }
         }
     }
