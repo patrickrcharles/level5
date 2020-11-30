@@ -29,7 +29,7 @@ public class RangeMeter : MonoBehaviour
 
         //range = characterProfile.Range;
 
-        statText.text = "range:" + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
+        statText.text = "range : " + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
