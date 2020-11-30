@@ -285,14 +285,10 @@ public class EnemyController : MonoBehaviour
     public IEnumerator killEnemy()
     {
         stateKnockDown = true;
-        Debug.Log("disintegrated()");
         FreezeEnemyPosition();
-        Debug.Log("destroy gameobject : " + gameObject.name);
         playAnimation("disintegrated");
-        Debug.Log("destroy gameobject : " + gameObject.name);
-        //yield return new WaitUntil(() => currentState == AnimatorState_Disintegrated);
         yield return new WaitForSeconds(1.5f);
-        Debug.Log("destroy gameobject : " + gameObject.name);
+
         Destroy(gameObject);
         stateKnockDown = false;
     }
@@ -318,14 +314,10 @@ public class EnemyController : MonoBehaviour
     public IEnumerator disintegrated()
     {
         stateKnockDown = true;
-        Debug.Log("disintegrated()");
         FreezeEnemyPosition();
-        Debug.Log("destroy gameobject : " + gameObject.name);
         playAnimation("disintegrated");
-        Debug.Log("destroy gameobject : " + gameObject.name);
         //yield return new WaitUntil(() => currentState == AnimatorState_Disintegrated);
         yield return new WaitForSeconds(1.5f);
-        Debug.Log("destroy gameobject : " + gameObject.name);
         Destroy(gameObject);
         stateKnockDown = false;
     }
