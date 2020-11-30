@@ -40,11 +40,6 @@ public class GameLevelManager : MonoBehaviour
     public static GameLevelManager instance;
     private bool _locked;
 
-
-    //[SerializeField] InputSystemUIInputModule inputSystemUIInputModule;
-    //[SerializeField] StandaloneInputModule standaloneInputModule;
-    //[SerializeField] EventSystem eventSystem;
-
     private void OnEnable()
     {
         controls.Player.Enable();

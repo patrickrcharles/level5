@@ -162,7 +162,7 @@ public class GameRules : MonoBehaviour
         }
 
         // game over. pause / display end game / save
-        if ( (gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled)
+        if ( (gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled )
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
