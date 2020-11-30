@@ -20,6 +20,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileBulletPrefab;
     [SerializeField]
+    GameObject projectileAutomaticBulletPrefab;
+    [SerializeField]
     GameObject projectileMolotovPrefab;
     [SerializeField]
     GameObject projectileRocketPrefab;
@@ -44,6 +46,7 @@ public class PlayerAnimationEvents : MonoBehaviour
         {
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser") as GameObject;
             projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
+            projectileAutomaticBulletPrefab = Resources.Load("Prefabs/projectile/projectile_automatic_bullet") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
             projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;
             projectileCigarettePrefab = Resources.Load("Prefabs/projectile/projectile_cigarette") as GameObject;
@@ -125,6 +128,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
+    public void instantiateProjectileBulletAuto()
+    {
+        Instantiate(projectileAutomaticBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
 
     public void instantiateProjectileAutomaticBullet(int numOfBullets)
     {
@@ -136,7 +143,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         for(int i = 0; i < numBullets; i++)
         {
-            instantiateProjectileBullet();
+            instantiateProjectileBulletAuto();
             yield return new WaitForSeconds(0.1f);
         }
     }   
