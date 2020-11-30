@@ -39,6 +39,9 @@ public class BasketBallStats : MonoBehaviour
     private int _criticalRolled;
     private int _mostConsecutiveShots;
 
+    //enemies
+    private int _enemiesKilled;
+
     private float _timePlayed;
 
     //init from game options
@@ -77,8 +80,10 @@ public class BasketBallStats : MonoBehaviour
         //Debug.Log("TotalPoints : " + TotalPoints);
         experience += TotalPoints;
 
+
         if (GameOptions.enemiesEnabled)
         {
+            experience += (EnemiesKilled * 100);
             experience *= 2;
         }
         if (GameOptions.hardcoreModeEnabled)
@@ -258,4 +263,5 @@ public class BasketBallStats : MonoBehaviour
         get => _experienceGained;
         set => _experienceGained = value;
     }
+    public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
 }
