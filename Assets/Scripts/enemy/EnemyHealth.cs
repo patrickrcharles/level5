@@ -10,11 +10,12 @@ public class EnemyHealth : MonoBehaviour
     int maxEnemyHealth;
     [SerializeField]
     EnemyController enemyController;
-    //bool isDead;
+    bool isDead;
     //bool isLocked = false;
 
     public int Health { get => health; set => health = value; }
     public int MaxEnemyHealth { get => maxEnemyHealth; set => maxEnemyHealth = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }
 
     private void Start()
     {
@@ -23,22 +24,5 @@ public class EnemyHealth : MonoBehaviour
         health = maxEnemyHealth;
 
         enemyController = transform.parent.GetComponent<EnemyController>();
-        //if (health > 0)
-        //{
-        //    isDead = false;
-        //}
     }
-
-    //private void Update()
-    //{
-    //    if (health <= 0 && !isDead )
-    //    {
-    //        isDead = true;
-    //    }
-    //    if (isDead && !isLocked)
-    //    {
-    //        isLocked = true;
-    //        StartCoroutine(enemyController.disintegrated());
-    //    }
-    //}
 }
