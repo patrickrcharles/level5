@@ -25,7 +25,7 @@ public class EnemyCollisions : MonoBehaviour
     {
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
-            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox")) )
+            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox")))
         {
             PlayerAttackBox playerAttackBox = null;
             EnemyAttackBox enemyAttackBox = null;
@@ -40,7 +40,6 @@ public class EnemyCollisions : MonoBehaviour
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
                 enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
             }
-
             //update health slider
             enemyHealthBar.setHealthSliderValue();
             // check if enemy dead
@@ -84,9 +83,18 @@ public class EnemyCollisions : MonoBehaviour
                 }
             }
             // else enemy is dead
-            else
+            if(enemyHealth.Health <= 0 && !enemyHealth.IsDead)
             {
+                enemyHealth.IsDead = true;
                 StartCoroutine(enemyController.killEnemy());
+
+                // killed by player attack box and NOT enemy friendly fire
+                if (playerAttackBox != null && enemyHealth.IsDead )
+                {
+                    GameLevelManager.instance.PlayerHealth.Health += 10;
+                    PlayerHealthBar.instance.setHealthSliderValue();
+                    BasketBall.instance.BasketBallStats.EnemiesKilled++;
+                }
             }
         }
     }
@@ -105,13 +113,11 @@ public class EnemyCollisions : MonoBehaviour
     void enemyStepOnRake(Collider other)
     {
         other.transform.parent.GetComponentInChildren<Animator>().Play("attack");
-        //Debug.Log("enemyTakeDamage()");
         StartCoroutine(enemyController.takeDamage());
     }
 
     void enemyKnockedDown()
     {
-        //Debug.Log("enemyKnockedDown()");
         StartCoroutine(enemyController.knockedDown());
     }
 }
