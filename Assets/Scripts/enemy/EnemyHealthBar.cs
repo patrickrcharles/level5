@@ -26,10 +26,7 @@ public class EnemyHealthBar : MonoBehaviour
     // Update is called once per frame
     public void setHealthSliderValue()
     {
-        Debug.Log("playerHealth.Health : " + enemyHealth.Health);
-
         healthSlider.value = enemyHealth.Health;
-
         //healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
     }
