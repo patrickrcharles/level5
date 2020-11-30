@@ -50,18 +50,17 @@ public class PlayerController : MonoBehaviour
 
 
     // control movement speed based on state
-    int currentState;
-    int idleState = Animator.StringToHash("base.idle");
-    int walkState = Animator.StringToHash("base.movement.walk");
-    int run = Animator.StringToHash("base.movement.run");
-    int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
-    int bIdle = Animator.StringToHash("base.movement.basketball_idle");
-    int knockedDownState = Animator.StringToHash("base.knockedDown");
-    int shootSideState = Animator.StringToHash("base.knockedDown");
-    int takeDamageState = Animator.StringToHash("base.takeDamage");
-    int specialState = Animator.StringToHash("base.special");
-    int attackState = Animator.StringToHash("base.attack.attack");
-    int blockState = Animator.StringToHash("base.attack.block");
+    public int currentState;
+    public int idleState = Animator.StringToHash("base.idle");
+    public int walkState = Animator.StringToHash("base.movement.walk");
+    public int run = Animator.StringToHash("base.movement.run");
+    public int bWalk = Animator.StringToHash("base.movement.basketball_dribbling");
+    public int bIdle = Animator.StringToHash("base.movement.basketball_idle");
+    public int knockedDownState = Animator.StringToHash("base.knockedDown");
+    public int takeDamageState = Animator.StringToHash("base.takeDamage");
+    public int specialState = Animator.StringToHash("base.special");
+    public int attackState = Animator.StringToHash("base.attack.attack");
+    public int blockState = Animator.StringToHash("base.attack.block");
 
     // get/set for following at bottom of class
     [SerializeField]
@@ -346,7 +345,6 @@ public class PlayerController : MonoBehaviour
             && rigidBody.velocity.magnitude > 0.1f
             && !locked)
         {
-            Debug.Log("rigidBody.velocity.sqrMagnitude : " + rigidBody.velocity.sqrMagnitude);
             running = true;
             anim.SetBool("moonwalking", true);
         }
@@ -767,7 +765,6 @@ public class PlayerController : MonoBehaviour
     public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
     public bool CanBlock { get => canBlock; set => canBlock = value; }
     public Animator Anim { get => anim; set => anim = value; }
-    public bool PlayerCanBlock1 { get => playerCanBlock; set => playerCanBlock = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

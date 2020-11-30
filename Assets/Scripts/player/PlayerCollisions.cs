@@ -24,6 +24,7 @@ public class PlayerCollisions : MonoBehaviour
             && other.CompareTag("enemyAttackBox")
             && !playerState.KnockedDown
             && !playerState.TakeDamage
+            && GameOptions.enemiesEnabled
             && !locked)
         {
             locked = true;
@@ -36,15 +37,9 @@ public class PlayerCollisions : MonoBehaviour
             if (playerState.CurrentState != playerState.BlockState)
             {
                 locked = true;      
-
-                Debug.Log("playerHealth.PlayerHealth before : " + playerHealth.Health);
-                Debug.Log("enemy attack damage : " + enemyAttackBox.attackDamage);
-
                 // deduct from player health 
-                playerHealth.Health += enemyAttackBox.attackDamage;
+                playerHealth.Health -= enemyAttackBox.attackDamage;
                 PlayerHealthBar.instance.setHealthSliderValue();
-
-                Debug.Log("playerHealth.PlayerHealth after : " + playerHealth.Health);
 
                 // player can be knocked down and other
                 if (playerCanBeKnockedDown && enemyAttackBox.knockDownAttack)

@@ -32,7 +32,12 @@ public class PlayerHealthBar : MonoBehaviour
         {
             instance = this;
             playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
-            healthSlider = GetComponentInChildren<Slider>();
+            //healthSlider = GetComponentInChildren<Slider>();
+            healthSlider = transform.FindChild("health_bar").GetComponent<Slider>();
+            blockSlider = transform.FindChild("block_bar").GetComponent<Slider>();
+
+            healthSlider.maxValue = playerHealth.MaxHealth;
+            blockSlider.maxValue = playerHealth.MaxBlock;
 
             characterNameText = GameObject.Find(characterNameName).GetComponent<Text>();
             healthSliderValueText = GameObject.Find(healthSliderValueName).GetComponent<Text>();
@@ -50,16 +55,15 @@ public class PlayerHealthBar : MonoBehaviour
 
     public void setHealthSliderValue()
     {
-        Debug.Log("playerHealth.Health : " + playerHealth.Health);
+        //Debug.Log("playerHealth.Health : " + playerHealth.Health);
 
         healthSlider.value = playerHealth.Health;
-
-        healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
+        healthSliderValueText.text = healthSlider.value.ToString("0") + " / " + playerHealth.MaxHealth;
         //Debug.Log("slider.value : " + slider.value.ToString());
     }
     public void setBlockSliderValue()
     {
-        Debug.Log("playerHealth.Block : " + playerHealth.Block);
+        //Debug.Log("playerHealth.Block : " + playerHealth.Block);
 
         blockSlider.value = playerHealth.Block;
 
