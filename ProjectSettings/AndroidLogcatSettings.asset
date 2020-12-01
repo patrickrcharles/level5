@@ -1,10 +1,10 @@
 {
-    "m_SelectedDeviceId": "R52N61C2WFZ",
+    "m_SelectedDeviceId": "abb29bfb",
     "m_SelectedPackage": {
-        "deviceId": "R52N61C2WFZ",
+        "deviceId": "abb29bfb",
         "name": "com.level5.level5",
-        "processId": 5069,
-        "exited": false
+        "processId": 19657,
+        "exited": true
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -115,6 +115,18 @@
             "name": "com.level5.level5",
             "processId": 5069,
             "exited": false
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 29512,
+            "exited": true
+        },
+        {
+            "deviceId": "abb29bfb",
+            "name": "com.level5.level5",
+            "processId": 19657,
+            "exited": true
         }
     ],
     "m_Tags": {
