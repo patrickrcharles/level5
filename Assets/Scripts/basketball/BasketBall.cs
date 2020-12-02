@@ -416,26 +416,28 @@ public class BasketBall : MonoBehaviour
         float Vy = tanAlpha * Vz;
 
         bool critical = rollForCriticalShotChance(characterProfile.Luck);
-        //Debug.Log("------------------START SEQUENCE");
-        // if rolled critical
+
         string shotMeterMessage = "";
+        string shotMeterMessageX = "";
+        string shotMeterMessageY = "";
+        string shotMeterMessageZ = "";
+
+        // if rolled critical
         if (critical)
         {
             accuracyModifierX = 0;
             accuracyModifierY = 0;
-            //Debug.Log("------------------ CRITICAL");
-            // npc performs critical success action 
             shotMeterMessage = "critical";
         }
         // if >= 95 and NOT critical (release stat factored in)
         if (playerState.Shotmeter.SliderValueOnButtonPress >= 95
             && !critical)
         {
-            //Debug.Log("------------------ METER >= 95");
             accuracyModifierX = 0;
             accuracyModifierY = getReleaseModifier();
             accuracyModifierZ = 0;
-            shotMeterMessage = ">=95 Y/Zmod";
+            shotMeterMessage = ">= 95";
+            shotMeterMessageY = "+ release modifier";
         }
         // NOT critical and NOT >= 95 (get X, Y modifiers)
         if (playerState.Shotmeter.SliderValueOnButtonPress < 95
@@ -443,14 +445,33 @@ public class BasketBall : MonoBehaviour
         {
             accuracyModifierX = getAccuracyModifier();
             accuracyModifierY = getReleaseModifier();
-            shotMeterMessage = "<95 X/Y/Zmod";
+
+            shotMeterMessage = "< 95";
+            shotMeterMessageX = "+ accuracy modifier";
+            shotMeterMessageY = "+ release modifier";
         }
+
         // range modifier always factors in
         accuracyModifierZ = getRangeModifier();
 
+        if(accuracyModifierZ != 0)
+        {
+            shotMeterMessageZ = "+ range modifer";
+        }
+
+        // set shot meter message
+        if (shotMeterMessage != null)
+        {
+            shotMeterMessage = shotMeterMessage + "\n" + shotMeterMessageX + "\n" + shotMeterMessageY + "\n" + shotMeterMessageZ;
+        }
+        else
+        {
+            shotMeterMessage = shotMeterMessageX + "\n" + shotMeterMessageY + "\n" + shotMeterMessageZ;
+        }
+
+        // if no mods, cheerleader action
         if (accuracyModifierX == 0 && accuracyModifierY == 0 && accuracyModifierZ == 0)
         {
-            //Debug.Log("------------------ CHEERLEADER ACTION");
             if (BehaviorNpcCritical.instance != null)
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
