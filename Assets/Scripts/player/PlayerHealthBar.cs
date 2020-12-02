@@ -33,8 +33,8 @@ public class PlayerHealthBar : MonoBehaviour
             instance = this;
             playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
             //healthSlider = GetComponentInChildren<Slider>();
-            healthSlider = transform.FindChild("health_bar").GetComponent<Slider>();
-            blockSlider = transform.FindChild("block_bar").GetComponent<Slider>();
+            healthSlider = transform.Find("health_bar").GetComponent<Slider>();
+            blockSlider = transform.Find("block_bar").GetComponent<Slider>();
 
             healthSlider.maxValue = playerHealth.MaxHealth;
             blockSlider.maxValue = playerHealth.MaxBlock;
