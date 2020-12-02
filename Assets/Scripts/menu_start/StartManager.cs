@@ -199,21 +199,7 @@ public class StartManager : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
 
-        //// if player highlighted, display player
-        //if (currentHighlightedButton.Equals(playerSelectButtonName) 
-        //    || currentHighlightedButton.Equals(playerSelectOptionButtonName)
-        //    || )
-        //{
-        //    try
-        //    {
-        //        initializePlayerDisplay();
-        //    }
-        //    catch
-        //    {
-        //        return;
-        //    }
-        //}
-        //// if cheerleader highlighted, display cheerleader
+        // if player highlighted, display player
         if ((!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
             && dataLoaded)
         {
@@ -244,10 +230,6 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            //if (GameObject.Find("LoadedData") != null)
-            //{
-            //    Destroy(GameObject.Find("LoadedData").gameObject);
-            //}
             loadGame();
         }
         // quit button | quit game
@@ -337,10 +319,9 @@ public class StartManager : MonoBehaviour
         // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed)
         {
-            //Debug.Log(" change option up");
             buttonPressed = true;
             try
-            {
+            {           
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -382,7 +363,6 @@ public class StartManager : MonoBehaviour
         // down, change option
         if (controls.UINavigation.Down.triggered && !buttonPressed)
         {
-            //Debug.Log(" change option down");
             buttonPressed = true;
             try
             {
@@ -548,11 +528,22 @@ public class StartManager : MonoBehaviour
 
     public void disableButtonsNotUsedForTouchInput()
     {
+        Debug.Log("disable buttons");
         levelSelectButton.enabled = false;
         trafficSelectButton.enabled = false;
         playerSelectButton.enabled = false;
         CheerleaderSelectButton.enabled = false;
         modeSelectButton.enabled = false;
+    }
+
+    public void enableButtonsNotUsedForTouchInput()
+    {
+        Debug.Log("enable buttons");
+        levelSelectButton.enabled = true;
+        trafficSelectButton.enabled = true;
+        playerSelectButton.enabled = true;
+        CheerleaderSelectButton.enabled = true;
+        modeSelectButton.enabled = true;
     }
 
     public void changeSelectedTrafficOption()
@@ -924,7 +915,6 @@ public class StartManager : MonoBehaviour
     // ============================  navigation functions ==============================
     public void changeSelectedPlayerUp()
     {
-        //Debug.Log("changeSelectedPlayerUp");
         // if default index (first in list), go to end of list
         if (playerSelectedIndex == 0)
         {
@@ -941,7 +931,6 @@ public class StartManager : MonoBehaviour
     }
     public void changeSelectedPlayerDown()
     {
-        //Debug.Log("changeSelectedPlayerDown");
         // if default index (first in list
         if (playerSelectedIndex == playerSelectedData.Count - 1)
         {

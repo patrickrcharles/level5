@@ -11,9 +11,13 @@ public class BasketBallStats : MonoBehaviour
     private int _experienceGained;
 
     private int _totalPoints;
+    [SerializeField]
     private int _twoPointerMade;
+    [SerializeField]
     private int _threePointerMade;
+    [SerializeField]
     private int _fourPointerMade;
+    [SerializeField]
     private int _sevenPointerMade;
     private int _moneyBallMade;
 

@@ -168,7 +168,9 @@ public class BasketBallShotMade : MonoBehaviour
         // if not 3/4/all point contest
         if (!GameRules.instance.GameModeThreePointContest
             && !GameRules.instance.GameModeFourPointContest
-            && !GameRules.instance.GameModeAllPointContest)
+            && !GameRules.instance.GameModeAllPointContest
+            && GameOptions.gameModeSelectedId != 19)
+            // game mode 19 is 1 pt per 10 feet of last shot made
         {
             if (_basketBallState.TwoAttempt)
             {
@@ -221,11 +223,11 @@ public class BasketBallShotMade : MonoBehaviour
         }
         else
         {
-            // if player is on marker and marker enabled
+            int pointsScored = 0;
+            // if player is on marker and marker enabled && not game mode 19
             if (_basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MarkerEnabled)
-            {
-                int pointsScored = 0;
+            {                
                 //_basketBallStats.ShotMade++;
                 // if moneyball
                 if (_basketBallState.TwoAttempt)
@@ -261,6 +263,34 @@ public class BasketBallShotMade : MonoBehaviour
                 {
                     _basketBallStats.TotalPoints += pointsScored;
                 }
+            }
+            // is game mode 19
+            if(GameOptions.gameModeSelectedId == 19)
+            {
+                if (_basketBallState.TwoAttempt)
+                {
+                    _basketBallStats.TwoPointerMade++;
+                }
+
+                if (_basketBallState.ThreeAttempt)
+                {
+                    _basketBallStats.ThreePointerMade++;
+                }
+
+                if (_basketBallState.FourAttempt)
+                {
+                    _basketBallStats.FourPointerMade++;
+                }
+
+                if (_basketBallState.SevenAttempt)
+                {
+                    _basketBallStats.SevenPointerMade++;
+                }
+                // reset point scored if Points By Distance mode
+                pointsScored = 0;
+                pointsScored = Mathf.FloorToInt((BasketBall.instance.LastShotDistance * 6) / 10);
+                //Debug.Log("game mode 19 : pointsScored : " + pointsScored);
+                _basketBallStats.TotalPoints += pointsScored;
             }
         }
         // moneyball stats
