@@ -14,7 +14,7 @@ public class TouchButtonControl : MonoBehaviour, IPointerDownHandler
 
         if (gameObject.name.Equals(jumpButtonName))
         {
-            GameLevelManager.instance.PlayerState.TouchControlJump();
+            //GameLevelManager.instance.PlayerState.TouchControlJump();
         }
         if (gameObject.name.Equals(shootButtonName))
         {
