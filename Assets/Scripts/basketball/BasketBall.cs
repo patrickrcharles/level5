@@ -128,7 +128,7 @@ public class BasketBall : MonoBehaviour
         // get speed for basketball animation
         //checkIsBallFacingGoal();
 
-        if (rigidbody.velocity.magnitude > maxBasketballSpeed)
+        if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
         {
             rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
         }
@@ -479,11 +479,11 @@ public class BasketBall : MonoBehaviour
             // shot meter message 
             if(critical)
             {
-                shotMeterMessage = "critical -swish";
+                shotMeterMessage = "swish + critical";
             }
             else
             {
-                shotMeterMessage = "no mod -swish";
+                shotMeterMessage = "swish";
             }
         }
 
