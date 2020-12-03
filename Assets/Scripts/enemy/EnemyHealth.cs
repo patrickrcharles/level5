@@ -11,7 +11,10 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     EnemyController enemyController;
     bool isDead;
-    //bool isLocked = false;
+    [SerializeField]
+    bool isMinion;
+    [SerializeField]
+    bool isBoss;
 
     public int Health { get => health; set => health = value; }
     public int MaxEnemyHealth { get => maxEnemyHealth; set => maxEnemyHealth = value; }
@@ -20,7 +23,18 @@ public class EnemyHealth : MonoBehaviour
     private void Start()
     {
         // default
-        maxEnemyHealth = 100;
+        if (isMinion)
+        {
+            maxEnemyHealth = 50;
+        }
+        else if (isBoss)
+        {
+            maxEnemyHealth = 100;
+        }
+        else
+        {
+            maxEnemyHealth = 50;
+        }
         health = maxEnemyHealth;
 
         enemyController = transform.parent.GetComponent<EnemyController>();

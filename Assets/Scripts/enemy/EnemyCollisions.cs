@@ -94,6 +94,10 @@ public class EnemyCollisions : MonoBehaviour
                     GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
                     PlayerHealthBar.instance.setHealthSliderValue();
                     BasketBall.instance.BasketBallStats.EnemiesKilled++;
+                    if (BehaviorNpcCritical.instance != null)
+                    {
+                        BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+                    }
                 }
             }
         }
