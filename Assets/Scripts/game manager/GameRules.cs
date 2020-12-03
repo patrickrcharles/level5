@@ -115,7 +115,6 @@ public class GameRules : MonoBehaviour
         if (GameOptions.customTimer > 0)
         {
             setTimer(GameOptions.customTimer);
-            //customTimer = GameOptions.customTimer;
         }
         else
         {
@@ -222,7 +221,6 @@ public class GameRules : MonoBehaviour
         {
             displayMoneyBallText.text = "";
         }
-
     }
 
     public void setTimePlayed()
@@ -454,6 +452,12 @@ public class GameRules : MonoBehaviour
                     "current distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00")
                     + "\nlast shot : " + Mathf.FloorToInt((BasketBall.instance.LastShotDistance * 6) / 10)
                     + "\ntotal points : " + BasketBall.instance.BasketBallStats.TotalPoints;
+            }
+            if (gameModeId == 20)
+            {
+                displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
+                displayCurrentScoreText.text =
+                    "nerds bashed : " + (BasketBall.instance.BasketBallStats.EnemiesKilled);
             }
             if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98 )
             {
