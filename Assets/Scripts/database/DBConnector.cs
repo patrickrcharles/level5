@@ -384,7 +384,8 @@ public class DBConnector : MonoBehaviour
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
                 "trafficEnabled	INTEGER," +
-                "hardcoreEnabled INTEGER); " +
+                "hardcoreEnabled INTEGER, " +
+                "enemiesKilled INTEGER DEFAULT 0); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
@@ -400,7 +401,8 @@ public class DBConnector : MonoBehaviour
                 "totalPoints  INTEGER, " +
                 "totalDistance REAL, " +
                 "longestShot REAL, " +
-                "timePlayed    REAL);" +
+                "timePlayed   REAL," +
+                "enemiesKilled INTEGER DEFAULT 0); " +
 
                 "CREATE TABLE if not exists Achievements(" +
                 "aid   INTEGER PRIMARY KEY, " +

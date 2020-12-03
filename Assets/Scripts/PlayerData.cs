@@ -43,6 +43,8 @@ public class PlayerData : MonoBehaviour
     private float _fourPointContestScore = 0;
     private float _allPointContestScore = 0;
 
+    public int _enemiesKilled = 0;
+
     [SerializeField]
     private int _currentExperience = 0;
     [SerializeField]
@@ -104,14 +106,10 @@ public class PlayerData : MonoBehaviour
             _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC");
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
+
+            _enemiesKilled = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 19, "DESC");
         }
     }
-
-    //public float SevenPointerAttempts => _sevenPointerAttempts;
-
-    //public int PlayerId => _playerId;
-
-    //public string PlayerName => _playerName;
 
     public float TotalPoints => _totalPoints;
 
