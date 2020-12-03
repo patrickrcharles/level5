@@ -59,6 +59,8 @@ public class ShotMeter : MonoBehaviour
             meterYellow.SetActive(false);
             meterGreen.SetActive(false);
             meterHandle.SetActive(false);
+            sliderValueOnPress.enabled = false;
+            sliderMessageText.enabled = false;
         }
     }
 
