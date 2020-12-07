@@ -27,7 +27,7 @@ public class CallBallToPlayer : MonoBehaviour
         Locked = false;
 
         //canBallToPlayerEnabled = true;
-        pullSpeed = 2.0f;
+        pullSpeed = 2.3f;
     }
 
     private void LateUpdate()
@@ -40,9 +40,9 @@ public class CallBallToPlayer : MonoBehaviour
             && !_basketBallState.Locked
             && playerState.grounded
             && !Locked
-            && !GameOptions.hardcoreModeEnabled)
+            && !GameOptions.hardcoreModeEnabled 
+            && !GameOptions.EnemiesOnlyEnabled)
         {
-            //Debug.Log("call ball input read");
             Locked = true;
             pullBallToPlayer();
             Locked = false;
@@ -52,7 +52,6 @@ public class CallBallToPlayer : MonoBehaviour
 
     public void pullBallToPlayer()
     {
-        //Debug.Log("pullBallToPlayer()");
         Vector3 tempDirection = basketballRigidBody.transform.position;
         pullDirection = transform.position - tempDirection;
         basketballRigidBody.velocity = pullDirection * pullSpeed;

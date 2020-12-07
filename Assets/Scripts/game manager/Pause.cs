@@ -232,7 +232,6 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-
         // start screen should be first scene in build
         SceneManager.LoadScene("level_00_loading");
     }

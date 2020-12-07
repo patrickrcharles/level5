@@ -24,7 +24,7 @@ public class PlayerCollisions : MonoBehaviour
             && other.CompareTag("enemyAttackBox")
             && !playerState.KnockedDown
             && !playerState.TakeDamage
-            && GameOptions.enemiesEnabled
+            && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
             && !locked)
         {
             locked = true;
@@ -39,7 +39,10 @@ public class PlayerCollisions : MonoBehaviour
                 locked = true;      
                 // deduct from player health 
                 playerHealth.Health -= enemyAttackBox.attackDamage;
-                PlayerHealthBar.instance.setHealthSliderValue();
+                if (PlayerHealthBar.instance != null) // null check for health bar
+                {
+                    PlayerHealthBar.instance.setHealthSliderValue();
+                }
 
                 // player can be knocked down and other
                 if (playerCanBeKnockedDown && enemyAttackBox.knockDownAttack)
@@ -52,7 +55,6 @@ public class PlayerCollisions : MonoBehaviour
                     // if stepped on rake
                     if (enemyAttackBox.transform.parent.name.Contains("rake"))
                     {
-                        Debug.Log("stepped on rake");
                         playerStepOnRake(other);
                     }
                 }

@@ -38,6 +38,7 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         playerController = GameLevelManager.instance.PlayerState;
+        regenerateBlockRate = 0.5f;
     }
 
     private void Update()

@@ -533,6 +533,11 @@ public class GameRules : MonoBehaviour
         {
             displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         }
+        if (gameModeId == 20)
+        {
+            displayText = "You Bashed up " + basketBallStats.EnemiesKilled + " nerds"
+                + "\n\nexperience gained : " + basketBallStats.getExperienceGainedFromSession(); ;
+        }
         if (gameModeId == 98 )
         {
             displayText = "Arcade mode\n\n" + getStatsTotals();

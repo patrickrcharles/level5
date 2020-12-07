@@ -4,6 +4,7 @@ using UnityStandardAssets.Effects;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
+    [SerializeField]
     private AudioSource audioSource;
     const string attackBoxText = "attackBox";
     const string attackBoxSpecialText = "attackBoxSpecial";
@@ -58,10 +59,8 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
 
         playerController = GameLevelManager.instance.PlayerState;
-        if (GameLevelManager.instance.Basketball != null)
-        {
-            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-        }
+        audioSource = GetComponent<AudioSource>();
+
         if (transform.Find(attackBoxText)!= null)
         {
             attackBox = transform.Find(attackBoxText).gameObject;        

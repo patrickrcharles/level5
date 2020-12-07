@@ -37,5 +37,4 @@ public class PlayerSwapAttack : MonoBehaviour
         animatorOverrideController["attack"] = attackAnimations[index];
         animator.runtimeAnimatorController = animatorOverrideController;
     }
-
 }

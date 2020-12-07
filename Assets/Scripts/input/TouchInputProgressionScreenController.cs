@@ -99,7 +99,6 @@ public class TouchInputProgressionScreenController : MonoBehaviour
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
-                //Debug.Log(" double tap");
                 activateDoubleTappedButton();
             }
         }

@@ -67,6 +67,9 @@ public class StartManager : MonoBehaviour
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
 
+    //version text
+    private Text versionText;
+
     //const object names
     private const string startButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
@@ -454,6 +457,7 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
+        versionText.text = "Level 5 v."+ Application.version;
         // display default data
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
@@ -495,6 +499,9 @@ public class StartManager : MonoBehaviour
         // traffic option selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
+
+        //version
+        versionText = GameObject.Find("version").GetComponent<Text>();
     }
 
     private void setInitialGameOptions()
@@ -900,6 +907,14 @@ public class StartManager : MonoBehaviour
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
+
+        GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
+
+        // if enemies only mode, enable enemies whether it was selected or not
+        if (GameOptions.EnemiesOnlyEnabled)
+        {
+            GameOptions.enemiesEnabled = true;
+        }
     }
 
     // ============================  message display ==============================

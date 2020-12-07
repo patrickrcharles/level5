@@ -75,6 +75,7 @@ public class GameOptions : MonoBehaviour
 
     static public bool architectureInfoLoaded = false;
     static public bool hardcoreModeEnabled = false;
+    static public bool EnemiesOnlyEnabled = false;
 
     //private void Awake()
     //{

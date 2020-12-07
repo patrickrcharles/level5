@@ -211,7 +211,7 @@ public class TouchInputController : MonoBehaviour
             }
         }
 
-        if (tap1Detected)
+        if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
             GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch1.position);
             tap1Detected = false;

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     AnimatorStateInfo currentStateInfo;
     GameObject dropShadow;
-    AudioSource moonwalkAudio;
+    AudioSource audiosource;
     SpriteRenderer spriteRenderer;
     Rigidbody rigidBody;
     CharacterProfile characterProfile;
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
+        audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
@@ -432,7 +432,8 @@ public class PlayerController : MonoBehaviour
             //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
             && hasBasketball
             && grounded
-            && !KnockedDown)
+            && !KnockedDown
+            && !GameOptions.EnemiesOnlyEnabled)
         {
             jumpTrigger = true;
             //playerJump();
@@ -441,7 +442,8 @@ public class PlayerController : MonoBehaviour
         // if has ball, is in air, and pressed shoot button.
         if (inAir
             && hasBasketball
-            && GameLevelManager.instance.Controls.Player.shoot.triggered)
+            && GameLevelManager.instance.Controls.Player.shoot.triggered
+            && !GameOptions.EnemiesOnlyEnabled)
         {
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
@@ -765,6 +767,7 @@ public class PlayerController : MonoBehaviour
     public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
     public bool CanBlock { get => canBlock; set => canBlock = value; }
     public Animator Anim { get => anim; set => anim = value; }
+    public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()
