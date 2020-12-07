@@ -118,6 +118,12 @@ public class BasketBall : MonoBehaviour
         }
         InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
         InvokeRepeating("displayUiStats", 0, 0.5f);
+
+        if (GameOptions.EnemiesOnlyEnabled)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     // =========================================================== Update() ========================================================
@@ -127,37 +133,39 @@ public class BasketBall : MonoBehaviour
     {
         // get speed for basketball animation
         //checkIsBallFacingGoal();
-
-        if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
+        if (!GameOptions.EnemiesOnlyEnabled)
         {
-            rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
-        }
-        // drop shadow lock to bball transform on the ground
-        dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
+            if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
+            {
+                rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
+            }
+            // drop shadow lock to bball transform on the ground
+            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
-        // change this to reduce opacity
-        if (!playerState.hasBasketball)
-        {
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
-            dropShadow.SetActive(true);
-            basketBallState.CanPullBall = true;
-            basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
-        }
+            // change this to reduce opacity
+            if (!playerState.hasBasketball)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
+                dropShadow.SetActive(true);
+                basketBallState.CanPullBall = true;
+                basketBallSprite.transform.rotation = Quaternion.Euler(13.6f, 0, transform.root.position.z);
+            }
 
-        //if player has ball and hasnt shot
-        if (playerState.hasBasketball)//&& !basketBallState.Thrown)
-        {
-            basketBallState.CanPullBall = false;
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-            dropShadow.SetActive(false);
-            playerState.setPlayerAnim("hasBasketball", true);
-            //playerState.setPlayerAnim("walking", false);
-            playerState.setPlayerAnim("moonwalking", false);
+            //if player has ball and hasnt shot
+            if (playerState.hasBasketball)//&& !basketBallState.Thrown)
+            {
+                basketBallState.CanPullBall = false;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+                dropShadow.SetActive(false);
+                playerState.setPlayerAnim("hasBasketball", true);
+                //playerState.setPlayerAnim("walking", false);
+                playerState.setPlayerAnim("moonwalking", false);
 
-            // move basketball to launch position and disable sprite
-            transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
-                basketBallState.BasketBallPosition.transform.position.y,
-                basketBallState.BasketBallPosition.transform.position.z);
+                // move basketball to launch position and disable sprite
+                transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
+                    basketBallState.BasketBallPosition.transform.position.y,
+                    basketBallState.BasketBallPosition.transform.position.z);
+            }
         }
     }
 

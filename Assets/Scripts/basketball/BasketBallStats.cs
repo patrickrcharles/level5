@@ -85,7 +85,7 @@ public class BasketBallStats : MonoBehaviour
         experience += TotalPoints;
 
 
-        if (GameOptions.enemiesEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             experience += (EnemiesKilled * 100);
             experience *= 2;
