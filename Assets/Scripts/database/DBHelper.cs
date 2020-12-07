@@ -169,7 +169,7 @@ public class DBHelper : MonoBehaviour
 
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled, enemiesKilled )  " +
+           " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled, enemiesKilled )  " +
            "Values( '" + GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
