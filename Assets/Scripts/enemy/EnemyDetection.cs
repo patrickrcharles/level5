@@ -6,7 +6,6 @@ using UnityEngine;
 public class EnemyDetection : MonoBehaviour
 {
     EnemyController enemyController;
-    [SerializeField]
     bool playerSighted;
     bool enemyDetectionEnabled = true;
     public float enemySightDistance;
@@ -19,6 +18,11 @@ public class EnemyDetection : MonoBehaviour
         if (enemySightDistance == 0)
         {
             enemySightDistance = 5;
+        }
+        // if only enemies, make increase enemy sight
+        if (GameOptions.EnemiesOnlyEnabled)
+        {
+            enemySightDistance = 20;
         }
         //enemyDetectionEnabled = true;
         InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
@@ -40,12 +44,12 @@ public class EnemyDetection : MonoBehaviour
         }
     }
 
-    public void TurnOffEnemySight(float seconds)
-    {
-        StartCoroutine(DelayEnemmySight(seconds));
-    }
+    //public void TurnOffEnemySight(float seconds)
+    //{
+    //    StartCoroutine(DelayEnemmySight(seconds));
+    //}
 
-    IEnumerator DelayEnemmySight(float seconds)
+    IEnumerator DelayEnemySight(float seconds)
     {
         enemyDetectionEnabled = false;
         playerSighted = false;

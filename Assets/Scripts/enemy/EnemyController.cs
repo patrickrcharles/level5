@@ -80,13 +80,15 @@ public class EnemyController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
-        originalPosition = gameObject.transform.position;
+        originalPosition = new Vector3(0,0,0);
         canAttack = true;
-
         if (attackCooldown == 0) { attackCooldown = 1f; }
         //if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.2f; }
+
+        // put enemy on the ground. some are spawning up pretty high
+        gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
 
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }

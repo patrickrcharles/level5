@@ -91,7 +91,11 @@ public class EnemyCollisions : MonoBehaviour
                 // killed by player attack box and NOT enemy friendly fire
                 if (playerAttackBox != null && enemyHealth.IsDead )
                 {
-                    GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
+                    if (!GameOptions.EnemiesOnlyEnabled)
+                    {
+                        // if not enemies only game mode, player can receive health per kill
+                        GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
+                    }
                     PlayerHealthBar.instance.setHealthSliderValue();
                     BasketBall.instance.BasketBallStats.EnemiesKilled++;
                     if (BehaviorNpcCritical.instance != null)

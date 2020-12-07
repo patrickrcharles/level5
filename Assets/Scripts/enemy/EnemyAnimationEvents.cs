@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +16,15 @@ public class EnemyAnimationEvents : MonoBehaviour
     EnemyController enemyController;
     [SerializeField]
     bool attackBoxAlwaysOn;
-
+    [SerializeField]
     private AudioSource audioSource;
 
     private void Start()
     {
-        if (GameLevelManager.instance.Basketball != null)
-        {
-            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-        }
-        if(transform.Find("projectileSpawn") != null)
+
+        audioSource = gameObject.GetComponent<AudioSource>();
+
+        if (transform.Find("projectileSpawn") != null)
         {
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
@@ -39,6 +39,8 @@ public class EnemyAnimationEvents : MonoBehaviour
         {
             disableAttackBox();
         }
+        // checks for attack boxes not disabling properly animations
+        InvokeRepeating("checkAttackBoxDisabledCorrectly", 0, 3);
     }
 
     public void enableAttackBox()
@@ -54,6 +56,14 @@ public class EnemyAnimationEvents : MonoBehaviour
         if (attackBox != null)
         {
             attackBox.SetActive(false);
+        }
+    }
+
+    void checkAttackBoxDisabledCorrectly()
+    {
+        if (enemyController != null  &&  !enemyController.stateAttack)
+        {
+            disableAttackBox();
         }
     }
 
@@ -111,7 +121,14 @@ public class EnemyAnimationEvents : MonoBehaviour
     }
     public void playSfxKnockedDown()
     {
-        audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+        try
+        {
+            audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+        }
+        catch(Exception e)
+        {
+            Debug.Log("exception e :" + e);
+        }
     }
     public void playSfxTakeDamage()
     {
