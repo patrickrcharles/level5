@@ -33,7 +33,7 @@ public class RangeMeter : MonoBehaviour
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
-        if (GameOptions.hardcoreModeEnabled)
+        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             gameObject.SetActive(false);
         }
