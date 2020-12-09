@@ -59,6 +59,9 @@ TextureImporter:
   - first:
       213: -4479057253115514869
     second: evelyn_basketball_18
+  - first:
+      213: -2272443643804781145
+    second: evelyn_basketball_19
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -576,6 +579,27 @@ TextureImporter:
       bones: []
       spriteID: b00b96bc82137d1c0800000000000000
       internalID: -4479057253115514869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evelyn_basketball_19
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a5fbeebb88a670e0800000000000000
+      internalID: -2272443643804781145
       vertices: []
       indices: 
       edges: []
