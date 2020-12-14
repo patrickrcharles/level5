@@ -19,6 +19,7 @@ public class EnemyHealth : MonoBehaviour
     public int Health { get => health; set => health = value; }
     public int MaxEnemyHealth { get => maxEnemyHealth; set => maxEnemyHealth = value; }
     public bool IsDead { get => isDead; set => isDead = value; }
+    public bool IsBoss { get => isBoss; set => isBoss = value; }
 
     private void Start()
     {
@@ -29,11 +30,15 @@ public class EnemyHealth : MonoBehaviour
         }
         else if (isBoss)
         {
-            maxEnemyHealth = 100;
+            maxEnemyHealth = 150;
         }
         else
         {
             maxEnemyHealth = 50;
+        }
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            maxEnemyHealth += (maxEnemyHealth/4);
         }
         health = maxEnemyHealth;
 

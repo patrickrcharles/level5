@@ -86,15 +86,14 @@ public class EnemyCollisions : MonoBehaviour
             if(enemyHealth.Health <= 0 && !enemyHealth.IsDead)
             {
                 enemyHealth.IsDead = true;
-                StartCoroutine(enemyController.killEnemy());
-
                 // killed by player attack box and NOT enemy friendly fire
-                if (playerAttackBox != null && enemyHealth.IsDead )
+                if (playerAttackBox != null && enemyHealth.IsDead)
                 {
                     if (!GameOptions.EnemiesOnlyEnabled)
                     {
                         // if not enemies only game mode, player can receive health per kill
                         GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
+                        //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
                     }
                     PlayerHealthBar.instance.setHealthSliderValue();
                     BasketBall.instance.BasketBallStats.EnemiesKilled++;
@@ -103,6 +102,8 @@ public class EnemyCollisions : MonoBehaviour
                         BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
                     }
                 }
+
+                StartCoroutine(enemyController.killEnemy());
             }
         }
     }
