@@ -1,28 +1,16 @@
 fileFormatVersion: 2
-guid: ad0d9b69ba23ea84c9a277ddb4613d42
+guid: 43e6325404965f7439394ce4ad313c17
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5688053346161220192
-    second: ninja_walk_0
+      213: -6269075888573863409
+    second: ninja_black_blowgun_0
   - first:
-      213: -2838670054893378852
-    second: ninja_walk_1
+      213: 6413390403085519654
+    second: ninja_black_blowgun_1
   - first:
-      213: 8427008653197155635
-    second: ninja_walk_2
-  - first:
-      213: 7793587225392897403
-    second: ninja_walk_3
-  - first:
-      213: -6249278554299250811
-    second: ninja_walk_4
-  - first:
-      213: -3870893918806439768
-    second: ninja_walk_5
-  - first:
-      213: 7297785366203024370
-    second: ninja_walk_6
+      213: -8406689107344918116
+    second: ninja_black_blowgun_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -107,12 +95,24 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -130,107 +130,11 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ninja_walk_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a5a6964e99ff01b0800000000000000
-      internalID: -5688053346161220192
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_walk_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cd2aa8fff940b98d0800000000000000
-      internalID: -2838670054893378852
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_walk_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 33d95fcc8bfb2f470800000000000000
-      internalID: 8427008653197155635
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_walk_3
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b7dd09f0a42682c60800000000000000
-      internalID: 7793587225392897403
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_walk_4
+      name: ninja_black_blowgun_0
       rect:
         serializedVersion: 2
         x: 0
@@ -244,14 +148,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 587c684d34a1649a0800000000000000
-      internalID: -6249278554299250811
+      spriteID: f0aa69fb1b4cff8a0800000000000000
+      internalID: -6269075888573863409
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_walk_5
+      name: ninja_black_blowgun_1
       rect:
         serializedVersion: 2
         x: 128
@@ -265,14 +169,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a8825e5d72d74ac0800000000000000
-      internalID: -3870893918806439768
+      spriteID: 62bcfcd8790f00950800000000000000
+      internalID: 6413390403085519654
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_walk_6
+      name: ninja_black_blowgun_2
       rect:
         serializedVersion: 2
         x: 256
@@ -286,8 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f3439f0021f64560800000000000000
-      internalID: 7297785366203024370
+      spriteID: c997f832cc0755b80800000000000000
+      internalID: -8406689107344918116
       vertices: []
       indices: 
       edges: []

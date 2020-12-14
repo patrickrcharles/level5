@@ -1,43 +1,34 @@
 fileFormatVersion: 2
-guid: 4de62e2042f370d419d6c34272ad3a0b
+guid: 71e7e7547880fe54a9cafb66274cb06f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3580896172362325257
-    second: ninja_attack2_0
+      213: 3880039995832764217
+    second: ninja_white_attack_0
   - first:
-      213: -6552083342210214006
-    second: ninja_attack2_1
+      213: 989634138674835078
+    second: ninja_white_attack_1
   - first:
-      213: -2479868737895652103
-    second: ninja_attack2_2
+      213: -1201839936428755597
+    second: ninja_white_attack_2
   - first:
-      213: 8871671616857986538
-    second: ninja_attack2_3
+      213: -1209732756977753550
+    second: ninja_white_attack_3
   - first:
-      213: -7912658195032777641
-    second: ninja_attack2_4
+      213: -1172117941895219458
+    second: ninja_white_attack_4
   - first:
-      213: 3813756330658383205
-    second: ninja_attack2_5
+      213: -407299078648866159
+    second: ninja_white_attack_5
   - first:
-      213: 7317769590205847552
-    second: ninja_attack2_6
+      213: 6062906623959912319
+    second: ninja_white_attack_6
   - first:
-      213: 1651778569240399393
-    second: ninja_attack2_7
+      213: -6640246165539675260
+    second: ninja_white_attack_7
   - first:
-      213: 1017958122756755575
-    second: ninja_attack2_8
-  - first:
-      213: 105247467061542814
-    second: ninja_attack2_9
-  - first:
-      213: -5887507658843963486
-    second: ninja_attack2_10
-  - first:
-      213: -2328399346724584173
-    second: ninja_attack2_11
+      213: -5746800622405208387
+    second: ninja_white_attack_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -122,12 +113,24 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -145,29 +148,17 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ninja_attack2_0
+      name: ninja_white_attack_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
-        width: 128
-        height: 128
+        y: 576
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90d563ba816e1b130800000000000000
-      internalID: 3580896172362325257
+      spriteID: 9378be1a1dba8d530800000000000000
+      internalID: 3880039995832764217
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_attack2_1
+      name: ninja_white_attack_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 384
-        width: 128
-        height: 128
+        x: 192
+        y: 576
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,167 +187,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a875ec82ae25215a0800000000000000
-      internalID: -6552083342210214006
+      spriteID: 68e205d7103ebbd00800000000000000
+      internalID: 989634138674835078
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_attack2_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9f42224958cb59dd0800000000000000
-      internalID: -2479868737895652103
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ae55cb6d4528e1b70800000000000000
-      internalID: 8871671616857986538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 75cdcff6b47903290800000000000000
-      internalID: -7912658195032777641
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_5
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5654ac43d2f2de430800000000000000
-      internalID: 3813756330658383205
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 008106ccba0fd8560800000000000000
-      internalID: 7317769590205847552
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_7
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 12e4d237bdb4ce610800000000000000
-      internalID: 1651778569240399393
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_8
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 770d32fe483802e00800000000000000
-      internalID: 1017958122756755575
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ninja_attack2_9
+      name: ninja_white_attack_2
       rect:
         serializedVersion: 2
         x: 384
-        y: 128
-        width: 128
-        height: 128
+        y: 576
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -364,20 +208,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9f76bf730ae57100800000000000000
-      internalID: 105247467061542814
+      spriteID: 375394802f4325fe0800000000000000
+      internalID: -1201839936428755597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_attack2_10
+      name: ninja_white_attack_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 576
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 232ef2b877a263fe0800000000000000
+      internalID: -1209732756977753550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ninja_white_attack_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 128
-        height: 128
+        y: 384
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -385,20 +250,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2afb6364afe5b4ea0800000000000000
-      internalID: -5887507658843963486
+      spriteID: ef6397621fccbbfe0800000000000000
+      internalID: -1172117941895219458
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ninja_attack2_11
+      name: ninja_white_attack_5
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
+        x: 192
+        y: 384
+        width: 192
+        height: 192
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -406,8 +271,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 315ca3b612ddfafd0800000000000000
-      internalID: -2328399346724584173
+      spriteID: 19a5acb55abf85af0800000000000000
+      internalID: -407299078648866159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ninja_white_attack_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7f4e7ba375c32450800000000000000
+      internalID: 6062906623959912319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ninja_white_attack_7
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 483abd14b4b19d3a0800000000000000
+      internalID: -6640246165539675260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ninja_white_attack_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db63b8228434f30b0800000000000000
+      internalID: -5746800622405208387
       vertices: []
       indices: 
       edges: []
