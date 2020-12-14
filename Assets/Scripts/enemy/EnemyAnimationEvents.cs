@@ -11,6 +11,10 @@ public class EnemyAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileLaserPrefab;
     [SerializeField]
+    GameObject projectileBulletPrefab;
+    [SerializeField]
+    GameObject projectileDartPrefab;
+    [SerializeField]
     GameObject projectileSpawn;
     [SerializeField]
     EnemyController enemyController;
@@ -23,10 +27,11 @@ public class EnemyAnimationEvents : MonoBehaviour
     {
 
         audioSource = gameObject.GetComponent<AudioSource>();
-
         if (transform.Find("projectileSpawn") != null)
         {
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
+            projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_enemy") as GameObject;
+            projectileDartPrefab = Resources.Load("Prefabs/projectile/projectile_dart_enemy") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
         if (transform.parent.GetComponent<EnemyController>() != null)
@@ -69,11 +74,19 @@ public class EnemyAnimationEvents : MonoBehaviour
 
     public void instantiateProjectileLazer()
     {
-        //EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
         projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
-        //enemyProjectile.facingRight = enemyController.facingRight;
-
         Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileBullet()
+    {
+        projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+
+    public void instantiateProjectileDart()
+    {
+        projectileDartPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileDartPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
     public void playSfxBasketballDribbling()
@@ -191,5 +204,26 @@ public class EnemyAnimationEvents : MonoBehaviour
     public void playSfxShootGun()
     {
         audioSource.PlayOneShot(SFXBB.instance.shootGun);
+    }
+    public void playSfxShotgunRack()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.shotgunRack);
+    }
+
+    public void applyForceToDirectionFacingXAndY(float force)
+    {
+        enemyController.UnFreezeEnemyPosition();
+        // get direction facing
+        if (enemyController.facingRight)
+        {
+            //apply to X
+            enemyController.RigidBody.AddForce(force, force, 0, ForceMode.VelocityChange);
+        }
+        if (!enemyController.facingRight)
+        {
+            enemyController.RigidBody.AddForce(-force, force, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+
     }
 }
