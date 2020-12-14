@@ -9,8 +9,13 @@ public class EnemyDetection : MonoBehaviour
     bool playerSighted;
     bool enemyDetectionEnabled = true;
     public float enemySightDistance;
+    int attackPositionId;
+    [SerializeField]
+    bool attacking;
 
     public bool PlayerSighted { get => playerSighted; set => playerSighted = value; }
+    public int AttackPositionId { get => attackPositionId; set => attackPositionId = value; }
+    public bool Attacking { get => attacking; set => attacking = value; }
 
     private void Start()
     {
@@ -24,6 +29,8 @@ public class EnemyDetection : MonoBehaviour
         {
             enemySightDistance = 20;
         }
+        //Debug.Log("enemy name : " + gameObject.name);
+
         //enemyDetectionEnabled = true;
         InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
         InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);
@@ -31,23 +38,29 @@ public class EnemyDetection : MonoBehaviour
 
     void CheckPlayerDistance()
     {
+        // if player within enemy sight distance
         if (enemyController.DistanceFromPlayer < enemySightDistance
             && enemyDetectionEnabled)
         {
-
-            playerSighted = true;
+            if (PlayerAttackQueue.instance.AttackSlotOpen && !attacking)
+            {
+                StartCoroutine(PlayerAttackQueue.instance.RequestAddToQueue(gameObject));
+            }
         }
+        // if player NOT within enemy sight distance
         if (enemyController.DistanceFromPlayer >= enemySightDistance
             && enemyDetectionEnabled)
         {
             playerSighted = false;
+            // if attacking, remove from queue
+            if (attacking)
+            {
+                attacking = false;
+                StartCoroutine(PlayerAttackQueue.instance.removeEnemyFromAttackQueue(AttackPositionId));
+            }
         }
     }
 
-    //public void TurnOffEnemySight(float seconds)
-    //{
-    //    StartCoroutine(DelayEnemmySight(seconds));
-    //}
 
     IEnumerator DelayEnemySight(float seconds)
     {

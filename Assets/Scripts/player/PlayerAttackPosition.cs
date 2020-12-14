@@ -6,17 +6,37 @@ public class PlayerAttackPosition : MonoBehaviour
 {
     public bool engaged;
     public GameObject enemyEngaged;
+    public int attackPositionId;
+    public Vector3 position;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        InvokeRepeating("updateAttackPositionTransform", 0, 1);
     }
 
-    // Update is called once per frame
-    void Update()
+    void updateAttackPositionTransform()
     {
-        
+        if(enemyEngaged == null)
+        {
+            engaged = false;
+        }
+        Vector3 playerTransform = GameLevelManager.instance.Player.transform.position;
+        if (attackPositionId == 1)
+        {
+            transform.position = new Vector3(playerTransform.x - 0.6f, playerTransform.y, playerTransform.z - 0.25f);
+        }
+        if (attackPositionId == 2)
+        {
+            transform.position = new Vector3(playerTransform.x - 0.6f, playerTransform.y, playerTransform.z + 0.25f);
+        }
+        if (attackPositionId == 3)
+        {
+            transform.position = new Vector3(playerTransform.x + 0.6f, playerTransform.y, playerTransform.z - 0.25f);
+        }
+        if (attackPositionId == 4)
+        {
+            transform.position = new Vector3(playerTransform.x + 0.6f, playerTransform.y, playerTransform.z + 0.25f);
+        }
+        position = transform.position;
     }
-
 }

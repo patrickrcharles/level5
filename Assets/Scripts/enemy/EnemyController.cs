@@ -12,6 +12,9 @@ public class EnemyController : MonoBehaviour
     EnemyDetection enemyDetection;
     [SerializeField]
     SpriteRenderer spriteRenderer;
+    [SerializeField]
+    PlayerSwapAttack playerSwapAttack;
+
 
     // how long after attacking the enemy can attack again
     public float attackCooldown;
@@ -31,7 +34,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private float distanceFromPlayer;
     [SerializeField]
-    private float minDistanceToAttack;
+    private float minDistanceCloseAttack;
+    [SerializeField]
+    private float maxDistanceLongRangeAttack;
+    [SerializeField]
+    private float minDistanceLongRangeAttack;
+    [SerializeField]
+    bool hasLongRangeAttack;
+    [SerializeField]
+    private bool longRangeAttack;
     [SerializeField]
     private float knockDownTime;
     [SerializeField]
@@ -61,15 +72,20 @@ public class EnemyController : MonoBehaviour
     public bool canAttack;
     bool inAttackQueue;
 
+    [SerializeField]
+    bool enemyUsesPhysics;
+    [SerializeField]
+    GameObject dropShadow;
+
     Vector3 originalPosition;
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }
     public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
     public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
-
-
     public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
+    public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
+    public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
 
     // Use this for initialization
     void Start()
@@ -80,13 +96,21 @@ public class EnemyController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
-        originalPosition = new Vector3(0,0,0);
+        originalPosition = transform.position;
         canAttack = true;
+
+        playerSwapAttack = GetComponent<PlayerSwapAttack>();
+
         if (attackCooldown == 0) { attackCooldown = 1f; }
         //if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.2f; }
-
+        if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            movementSpeed *= 1.25f;
+            attackCooldown *= 0.5f;
+        }
         // put enemy on the ground. some are spawning up pretty high
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
 
@@ -95,13 +119,18 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated)
+        if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated
+            && enemyDetection.Attacking)
         {
             pursuePlayer();
         }
         if (statePatrol)
         {
             returnToPatrol();
+        }
+        if (enemyUsesPhysics)
+        {
+            dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
         }
     }
 
@@ -113,10 +142,6 @@ public class EnemyController : MonoBehaviour
         // ================== enemy facing player ==========================
         relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
 
-        //if (!anim.isActiveAndEnabled)
-        //{
-        //    Debug.Log("aniamtor is inactive");
-        //}
         // ================== enemy idle ==========================
         if ((GameLevelManager.instance.PlayerState.KnockedDown
             || !canAttack
@@ -132,15 +157,28 @@ public class EnemyController : MonoBehaviour
             stateIdle = false;
         }
         // ================== enemy attack state ==========================
-        if (math.abs(relativePositionToPlayer) < minDistanceToAttack
+        if (math.abs(relativePositionToPlayer) <= maxDistanceLongRangeAttack
+            && math.abs(relativePositionToPlayer) >= minDistanceLongRangeAttack
+            && hasLongRangeAttack
             && math.abs(lineOfSight) <= lineOfSightVariance
             && canAttack)
         {
+            longRangeAttack = true;
             stateAttack = true;
+        }
+
+        else if (math.abs(relativePositionToPlayer) < minDistanceCloseAttack
+            && math.abs(lineOfSight) <= lineOfSightVariance
+            && !longRangeAttack
+            && canAttack)
+        {
+            stateAttack = true;
+            longRangeAttack = false;
         }
         else
         {
             stateAttack = false;
+            longRangeAttack = false;
         }
         // ================== enemy walk state ==========================
         if (enemyDetection.PlayerSighted
@@ -149,7 +187,6 @@ public class EnemyController : MonoBehaviour
             && currentState != AnimatorState_Knockdown
             && currentState != AnimatorState_Disintegrated)
         {
-
             stateWalk = true;
         }
         else
@@ -169,6 +206,15 @@ public class EnemyController : MonoBehaviour
         if (stateAttack)
         {
             FreezeEnemyPosition();
+            if (playerSwapAttack != null && !longRangeAttack)
+            {
+                playerSwapAttack.setCloseAttack();
+            }
+            if (playerSwapAttack != null && longRangeAttack)
+            {
+                playerSwapAttack.setLongRangeAttack();
+            }
+
             anim.SetTrigger("attack");
             StartCoroutine(AttackCooldown(attackCooldown));
         }
@@ -184,21 +230,40 @@ public class EnemyController : MonoBehaviour
 
     public void FreezeEnemyPosition()
     {
-        rigidBody.velocity = Vector3.zero;
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
-            | RigidbodyConstraints.FreezeRotationZ
-            | RigidbodyConstraints.FreezeRotationY
-            | RigidbodyConstraints.FreezePositionY
-            | RigidbodyConstraints.FreezePositionZ
-            | RigidbodyConstraints.FreezePositionX;
+        if (enemyUsesPhysics)
+        {
+            rigidBody.velocity = Vector3.zero;
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+                | RigidbodyConstraints.FreezeRotationZ
+                | RigidbodyConstraints.FreezeRotationY
+                | RigidbodyConstraints.FreezePositionZ;
+        }
+        else
+        {
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+                | RigidbodyConstraints.FreezeRotationZ
+                | RigidbodyConstraints.FreezeRotationY
+                | RigidbodyConstraints.FreezePositionY
+                | RigidbodyConstraints.FreezePositionZ
+                | RigidbodyConstraints.FreezePositionX;
+        }
     }
 
     public void UnFreezeEnemyPosition()
     {
-        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
-            | RigidbodyConstraints.FreezeRotationZ
-            | RigidbodyConstraints.FreezeRotationY
-            | RigidbodyConstraints.FreezePositionY;
+        if (enemyUsesPhysics)
+        {
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+                | RigidbodyConstraints.FreezeRotationZ
+                | RigidbodyConstraints.FreezeRotationY;
+        }
+        else
+        {
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+                | RigidbodyConstraints.FreezeRotationZ
+                | RigidbodyConstraints.FreezeRotationY
+                | RigidbodyConstraints.FreezePositionY;
+        }
     }
 
     IEnumerator AttackCooldown(float seconds)
@@ -291,8 +356,14 @@ public class EnemyController : MonoBehaviour
         playAnimation("disintegrated");
         yield return new WaitForSeconds(1.5f);
 
+        if (enemyDetection.Attacking)
+        {
+            //Debug.Log("========================== enemy killed : " + gameObject.name + " :  remove from attack queue");
+            int attackPositionId = enemyDetection.AttackPositionId;
+            PlayerAttackQueue.instance.removeEnemyFromQueue(attackPositionId);
+        }
+        //yield return new WaitUntil( ()=> PlayerAttackQueue.instance.AttackSlotOpen);
         Destroy(gameObject);
-        stateKnockDown = false;
     }
 
     public IEnumerator takeDamage()
@@ -334,7 +405,8 @@ public class EnemyController : MonoBehaviour
 
     public void pursuePlayer()
     {
-        targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
+        //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
+        targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
@@ -345,7 +417,6 @@ public class EnemyController : MonoBehaviour
         //Debug.Log(gameObject.name + "  is returning to Vector3  : " + originalPosition);
         if (Vector3.Distance(gameObject.transform.position, OriginalPosition) > 1)
         {
-
             targetPosition = (originalPosition - transform.position).normalized;
             movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
             //movement = targetPosition * (movementSpeed * Time.deltaTime);

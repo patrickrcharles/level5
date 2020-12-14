@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     CharacterProfile characterProfile;
     BasketBall basketball;
     ShotMeter shotmeter;
+    PlayerSwapAttack playerSwapAttack;
 
     // walk speed #review can potentially remove
     private float movementSpeed;
@@ -139,8 +140,10 @@ public class PlayerController : MonoBehaviour
         //if (attackSpeed == 0) { attackSpeed = 0f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
-        screenXRange = Screen.width / 10;
-        screenYRange = Screen.width / 10;
+        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
+        {
+            playerSwapAttack = GetComponent<PlayerSwapAttack>();
+        }
     }
 
     // not affected by framerate
@@ -516,6 +519,8 @@ public class PlayerController : MonoBehaviour
     {
         if (playerCanAttack)
         {
+            // get random close attack if more than one
+            playerSwapAttack.setCloseAttack();
             anim.Play("attack");
         }
     }
