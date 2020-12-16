@@ -1,31 +1,43 @@
 fileFormatVersion: 2
-guid: 4c001f31f0c27ff48b32ef1434cb8a4a
+guid: 3130e9147fc5bf944b4801dcb1bfba41
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8850554189785906955
-    second: drblood_attack_0
+      213: 845438486595033602
+    second: drblood_elbow_0
   - first:
-      213: -4091528780651694201
-    second: drblood_attack_1
+      213: 1714572624207051126
+    second: drblood_elbow_1
   - first:
-      213: 2585971074454871034
-    second: drblood_attack_2
+      213: -7034717551422397055
+    second: drblood_elbow_2
   - first:
-      213: 5093826174357528760
-    second: drblood_attack_3
+      213: -826837051664227780
+    second: drblood_elbow_3
   - first:
-      213: -571724899377761450
-    second: drblood_attack_4
+      213: 2253409760453683792
+    second: drblood_elbow_4
   - first:
-      213: -4776592417894421011
-    second: drblood_attack_5
+      213: -1298624040231479441
+    second: drblood_elbow_5
   - first:
-      213: 1378802156364903081
-    second: drblood_attack_6
+      213: 2900499618573201612
+    second: drblood_elbow_6
   - first:
-      213: -390168484043171979
-    second: drblood_attack_7
+      213: -3990497540147356220
+    second: drblood_elbow_7
+  - first:
+      213: 4561311752790192858
+    second: drblood_elbow_8
+  - first:
+      213: -9182366899532256366
+    second: drblood_elbow_9
+  - first:
+      213: -3432018750361311873
+    second: drblood_elbow_10
+  - first:
+      213: 1734581192112913036
+    second: drblood_elbow_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -90,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +126,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,7 +139,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: 48
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -138,7 +150,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -149,70 +161,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: drblood_attack_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5f0477c4bd38c2580800000000000000
-      internalID: -8850554189785906955
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 787f7f87048f737c0800000000000000
-      internalID: -4091528780651694201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: afb515cbdf633e320800000000000000
-      internalID: 2585971074454871034
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_3
+      name: drblood_elbow_0
       rect:
         serializedVersion: 2
         x: 0
@@ -226,14 +175,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b0ea26dae7e0b640800000000000000
-      internalID: 5093826174357528760
+      spriteID: 20ad0f003d99bbb00800000000000000
+      internalID: 845438486595033602
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_4
+      name: drblood_elbow_1
       rect:
         serializedVersion: 2
         x: 128
@@ -247,14 +196,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 653b75fab33d018f0800000000000000
-      internalID: -571724899377761450
+      spriteID: 679787fa7b26bc710800000000000000
+      internalID: 1714572624207051126
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_5
+      name: drblood_elbow_2
       rect:
         serializedVersion: 2
         x: 256
@@ -268,14 +217,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ded249ed08226bdb0800000000000000
-      internalID: -4776592417894421011
+      spriteID: 185234498a9af5e90800000000000000
+      internalID: -7034717551422397055
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_6
+      name: drblood_elbow_3
       rect:
         serializedVersion: 2
         x: 384
@@ -289,14 +238,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a23ca9814d722310800000000000000
-      internalID: 1378802156364903081
+      spriteID: c322c60151c7684f0800000000000000
+      internalID: -826837051664227780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_7
+      name: drblood_elbow_4
       rect:
         serializedVersion: 2
         x: 0
@@ -310,8 +259,155 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 577dd0ab4d7d59af0800000000000000
-      internalID: -390168484043171979
+      spriteID: 05a6d31fc38b54f10800000000000000
+      internalID: 2253409760453683792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f675839d05c5afde0800000000000000
+      internalID: -1298624040231479441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc0363c1905a04820800000000000000
+      internalID: 2900499618573201612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cd527a31a7ee98c0800000000000000
+      internalID: -3990497540147356220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad2bfde4fd80d4f30800000000000000
+      internalID: 4561311752790192858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_9
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29b231484fda19080800000000000000
+      internalID: -9182366899532256366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_10
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f75eb3251250f50d0800000000000000
+      internalID: -3432018750361311873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drblood_elbow_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8ab6fd6768721810800000000000000
+      internalID: 1734581192112913036
       vertices: []
       indices: 
       edges: []

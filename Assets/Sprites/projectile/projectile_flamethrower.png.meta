@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 4c001f31f0c27ff48b32ef1434cb8a4a
+guid: ca17ac3dc56baad40b78fd3fc35ea81b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8850554189785906955
-    second: drblood_attack_0
+      213: -4600988420579192451
+    second: projectile_flamethrower_0
   - first:
-      213: -4091528780651694201
-    second: drblood_attack_1
+      213: -1866823690684180799
+    second: projectile_flamethrower_1
   - first:
-      213: 2585971074454871034
-    second: drblood_attack_2
+      213: -4172228907738603851
+    second: projectile_flamethrower_2
   - first:
-      213: 5093826174357528760
-    second: drblood_attack_3
+      213: 6950201645378224184
+    second: projectile_flamethrower_4
   - first:
-      213: -571724899377761450
-    second: drblood_attack_4
+      213: 4020741021775184959
+    second: projectile_flamethrower_7
   - first:
-      213: -4776592417894421011
-    second: drblood_attack_5
+      213: 8627055418533977226
+    second: projectile_flamethrower_10
   - first:
-      213: 1378802156364903081
-    second: drblood_attack_6
+      213: 7914542915353822563
+    second: projectile_flamethrower_13
   - first:
-      213: -390168484043171979
-    second: drblood_attack_7
+      213: 3343580832258211828
+    second: projectile_flamethrower_17
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -90,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,7 +127,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: 48
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 1
@@ -138,7 +138,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -149,169 +149,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: drblood_attack_0
+      name: projectile_flamethrower_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 640
+        width: 128
+        height: 128
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7111b798610620c0800000000000000
+      internalID: -4600988420579192451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_flamethrower_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 640
+        width: 128
+        height: 128
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c65c728eb5b716e0800000000000000
+      internalID: -1866823690684180799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_flamethrower_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 640
+        width: 256
+        height: 128
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bedf90f9e34916c0800000000000000
+      internalID: -4172228907738603851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_flamethrower_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 384
+        height: 128
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 830ca1e9293147060800000000000000
+      internalID: 6950201645378224184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_flamethrower_7
       rect:
         serializedVersion: 2
         x: 0
         y: 384
-        width: 128
+        width: 384
         height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5f0477c4bd38c2580800000000000000
-      internalID: -8850554189785906955
+      spriteID: f3440c018aa8cc730800000000000000
+      internalID: 4020741021775184959
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 787f7f87048f737c0800000000000000
-      internalID: -4091528780651694201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 384
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: afb515cbdf633e320800000000000000
-      internalID: 2585971074454871034
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_3
+      name: projectile_flamethrower_10
       rect:
         serializedVersion: 2
         x: 0
         y: 256
-        width: 128
+        width: 512
         height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b0ea26dae7e0b640800000000000000
-      internalID: 5093826174357528760
+      spriteID: a8c935fe13579b770800000000000000
+      internalID: 8627055418533977226
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: drblood_attack_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 653b75fab33d018f0800000000000000
-      internalID: -571724899377761450
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_5
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ded249ed08226bdb0800000000000000
-      internalID: -4776592417894421011
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_6
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 256
-        width: 128
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9a23ca9814d722310800000000000000
-      internalID: 1378802156364903081
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: drblood_attack_7
+      name: projectile_flamethrower_13
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 128
+        width: 512
         height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 577dd0ab4d7d59af0800000000000000
-      internalID: -390168484043171979
+      spriteID: 365cf3539da16dd60800000000000000
+      internalID: 7914542915353822563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_flamethrower_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 128
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ff3e884d09c66e20800000000000000
+      internalID: 3343580832258211828
       vertices: []
       indices: 
       edges: []
