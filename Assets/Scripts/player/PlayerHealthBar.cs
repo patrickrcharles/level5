@@ -18,12 +18,17 @@ public class PlayerHealthBar : MonoBehaviour
     [SerializeField]
     Text healthSliderValueText;
 
+    //[SerializeField]
+    //Text damageDisplayValueText;
+    //[SerializeField]
+    //GameObject damageDisplayObject;
+
     const string characterNameName = "health_slider_character_text";
     const string healthSliderValueName = "health_slider_value_text";
-
-    public Slider Slider => healthSlider;
+    //const string damagaeDisplayValueName = "player_damage_display_text";
 
     public static PlayerHealthBar instance;
+    public Slider Slider => healthSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -50,8 +55,8 @@ public class PlayerHealthBar : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-
     }
+
 
     public void setHealthSliderValue()
     {
@@ -69,5 +74,14 @@ public class PlayerHealthBar : MonoBehaviour
 
         //healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
+    }
+
+    public IEnumerator DisplayDamageTakenValue(int damage)
+    {
+        //transform.localScale = temp;
+
+        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "-" + damage.ToString();
+        yield return new WaitForSeconds(.6f);
+        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "";
     }
 }

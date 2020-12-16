@@ -42,6 +42,7 @@ public class PlayerCollisions : MonoBehaviour
                 if (PlayerHealthBar.instance != null) // null check for health bar
                 {
                     PlayerHealthBar.instance.setHealthSliderValue();
+                    StartCoroutine( PlayerHealthBar.instance.DisplayDamageTakenValue(enemyAttackBox.attackDamage) );
                 }
 
                 // player can be knocked down and other

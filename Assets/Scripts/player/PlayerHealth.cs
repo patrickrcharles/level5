@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField]
-    int health = 0;
+    float health = 0;
     [SerializeField]
     int maxHealth = 100;
     [SerializeField]
@@ -15,14 +15,17 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     float regenerateBlockRate;
     [SerializeField]
+    float regenerateHealthRate;
+    [SerializeField]
     float regenerateTimeDelay;
 
     bool isDead = false;
     bool regenerateBlock = false;
 
     PlayerController playerController;
+    private bool regenerateHealth;
 
-    public int Health { get => health; set => health = value; }
+    public float Health { get => health; set => health = value; }
     public float Block { get => block; set => block = value; }
     public bool IsDead { get => isDead; set => isDead = value; }
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
@@ -39,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
     {
         playerController = GameLevelManager.instance.PlayerState;
         regenerateBlockRate = 0.5f;
+        regenerateHealthRate = 1f;
     }
 
     private void Update()
@@ -63,6 +67,17 @@ public class PlayerHealth : MonoBehaviour
             {
                 StartCoroutine(RegenerateBlock());
             }
+            if (health < maxHealth
+                && !regenerateHealth
+                && (playerController.currentState == playerController.idleState
+                || playerController.currentState == playerController.bIdle
+                || playerController.currentState == playerController.walkState
+                || playerController.currentState == playerController.run
+                || playerController.currentState == playerController.bWalk))
+            {
+                StartCoroutine(RegenerateHealth());
+            }
+
         }
     }
 
@@ -73,5 +88,14 @@ public class PlayerHealth : MonoBehaviour
         block += 1f;
         PlayerHealthBar.instance.setBlockSliderValue();
         regenerateBlock = false;
+    }
+
+    IEnumerator RegenerateHealth()
+    {
+        regenerateHealth = true;
+        yield return new WaitForSeconds(regenerateHealthRate);
+        health += 1f;
+        PlayerHealthBar.instance.setHealthSliderValue();
+        regenerateHealth = false;
     }
 }

@@ -115,6 +115,12 @@ public class PlayerController : MonoBehaviour
 
     Touch touch;
 
+    [SerializeField]
+    Text damageDisplayValueText;
+    [SerializeField]
+    GameObject damageDisplayObject;
+    const string damagaeDisplayValueName = "player_damage_display_text";
+
     void Start()
     {
         audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
@@ -144,6 +150,9 @@ public class PlayerController : MonoBehaviour
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
         }
+
+        damageDisplayObject = GameObject.Find(damagaeDisplayValueName);
+        damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
     }
 
     // not affected by framerate
@@ -611,6 +620,13 @@ public class PlayerController : MonoBehaviour
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
+
+        Vector3 damageScale = damageDisplayObject.transform.localScale;
+        damageScale.x *= -1;
+        damageDisplayObject.transform.localScale = damageScale;
+        //Debug.Log("transform.localScale : " + transform.localScale);
+        //Debug.Log("damageDisplayObject.transform.localScale : " + damageDisplayObject.transform.localScale);
+
     }
 
     // ------------------------------- take damage -------------------------------------------------------
@@ -773,6 +789,7 @@ public class PlayerController : MonoBehaviour
     public bool CanBlock { get => canBlock; set => canBlock = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
+    public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()
