@@ -15,6 +15,8 @@ public class EnemyAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileDartPrefab;
     [SerializeField]
+    GameObject projectileFlameThrower;
+    [SerializeField]
     GameObject projectileSpawn;
     [SerializeField]
     EnemyController enemyController;
@@ -32,6 +34,7 @@ public class EnemyAnimationEvents : MonoBehaviour
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
             projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_enemy") as GameObject;
             projectileDartPrefab = Resources.Load("Prefabs/projectile/projectile_dart_enemy") as GameObject;
+            projectileFlameThrower = Resources.Load("Prefabs/projectile/projectile_flamethrower") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
         if (transform.parent.GetComponent<EnemyController>() != null)
@@ -63,6 +66,13 @@ public class EnemyAnimationEvents : MonoBehaviour
             attackBox.SetActive(false);
         }
     }
+    public void setKnockDownAttack(int value)
+    {
+        if (attackBox != null)
+        {
+            attackBox.GetComponent<EnemyAttackBox>().knockDownAttack = Convert.ToBoolean(value);
+        }
+    }
 
     void checkAttackBoxDisabledCorrectly()
     {
@@ -76,6 +86,36 @@ public class EnemyAnimationEvents : MonoBehaviour
     {
         projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
         Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileFlameThrower()
+    {
+        Vector3 temp = transform.root.localScale;
+        temp.x = transform.root.localScale.x;
+
+        projectileFlameThrower.transform.localScale = temp;
+
+        ////player localscale will be -1
+        //if (!enemyController.facingRight)
+        //{
+        //    Vector3 temp = transform.localScale;
+        //    temp.x *= transform.localScale.x;
+
+        //    projectileFlameThrower.transform.localScale = temp;
+        //    Debug.Log("flip the flame transform");
+        //}
+        ////player localscale will be -1
+        //else
+        //{
+        //    Vector3 temp = transform.localScale;
+        //    temp.x *= transform.localScale.x;
+
+        //    projectileFlameThrower.transform.localScale = temp;
+        //    Debug.Log("flip the flame transform");
+        //    Debug.Log("transform.localScale : " + transform.localScale);
+        //}
+        //projectileFlameThrower.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileFlameThrower, projectileSpawn.transform.position, Quaternion.identity);
+
     }
     public void instantiateProjectileBullet()
     {

@@ -12,7 +12,7 @@ public class EnemyProjectile : MonoBehaviour
     public bool thrownProjectile;
     public bool impactProjectile;
     public bool facingRight;
-
+    [SerializeField]
     GameObject impactExplosionPrefab;
 
     void Awake()
@@ -24,11 +24,11 @@ public class EnemyProjectile : MonoBehaviour
             applyForceToDirectionFacingProjectile(projectileForce);
             Destroy(transform.root.gameObject, lifetime);
         }
-        if (thrownProjectile && impactProjectile)
+        if (thrownProjectile && !impactProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForceThrown);
             impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_explosion") as GameObject;
-            //Destroy(transform.root.gameObject, lifetime);
+            Destroy(transform.root.gameObject, lifetime);
         }
         if (!thrownProjectile && !impactProjectile)
         {
@@ -67,17 +67,19 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("collision between : " + gameObject.tag + " and " + other.tag);
         // destroy thrown projectile on impact
         if (thrownProjectile // thrown projectile          
             && !impactProjectile // does NOT explode on impact. bullet, laser, etc        
-            && (other.CompareTag("ground") || other.CompareTag("enemyHitbox"))) // if hit ground or enemy
+            && (other.CompareTag("ground") || other.CompareTag("enemyHitbox") || other.CompareTag("playerHitbox"))) // if hit ground or enemy
         {
             // get position of impact to instantiate explosion object
-            Vector3 transformAtImpact = gameObject.transform.position;
+            Vector3 transformAtImpact = other.gameObject.transform.position;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
+
             // explode object
             Instantiate(impactExplosionPrefab, spawnPoint, Quaternion.identity);
-            DestroyProjectile();
+            //DestroyProjectile();
         }
     }
 }
