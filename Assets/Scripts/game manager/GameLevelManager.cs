@@ -192,7 +192,7 @@ public class GameLevelManager : MonoBehaviour
         if (GameObject.FindWithTag("cheerleader") == null
             && GameOptions.cheerleaderObjectName != null)
         {
-            string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
+            string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
 
             if (_cheerleaderClone != null)
