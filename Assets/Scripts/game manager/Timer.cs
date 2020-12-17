@@ -15,11 +15,14 @@ public class Timer : MonoBehaviour
     bool displayTimer = false;
     [SerializeField]
     private bool timerEnabled = false;
-    private Text timerText;
+    //private Text timerText;
     [SerializeField]
     private bool modeRequiresCountDown;
     [SerializeField]
     private bool modeRequiresCounter;
+
+    [SerializeField]
+    Text shotClockText;
 
     bool timerTextLocked;
     public static Timer instance;
@@ -27,13 +30,14 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        timerText = GetComponent<Text>();
-        timerText.text = "";
+        //timerText = GetComponent<Text>();
+        //timerText.text = "";
+        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+        shotClockText.text = "";
     }
 
     void Start()
     {
-
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest
@@ -84,7 +88,8 @@ public class Timer : MonoBehaviour
         if (GameRules.instance.GameOver || timeRemaining < 0)
         {
             displayTimer = false;
-            timerText.text = "";
+            //timerText.text = "";
+            shotClockText.text = "";
         }
         // time's up, pause and reset timer text
         if (timeRemaining <= 0
@@ -115,18 +120,37 @@ public class Timer : MonoBehaviour
 
         if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining > 0)
         {
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+            if (minutes < 1)
+            {
+                //timerText.text = seconds.ToString("00.000");
+                shotClockText.text = seconds.ToString("00.00");
+            }
+            else
+            {
+                //timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+            }
         }
 
         if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
         {
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+            if (minutes < 1)
+            {
+                //timerText.text = seconds.ToString("00.000");
+                shotClockText.text = seconds.ToString("00.00");
+            }
+            else
+            {
+                //timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+            }
         }
     }
 
     void setCustomTimerText(string text)
     {
-        timerText.text = text;
+        //timerText.text = text;
+        shotClockText.text = text;
     }
 
     public float TimeStart
@@ -141,4 +165,5 @@ public class Timer : MonoBehaviour
         set => displayTimer = value;
     }
     public float Seconds { get => seconds; set => seconds = value; }
+    //public Text TimerText { get => timerText; set => timerText = value; }
 }
