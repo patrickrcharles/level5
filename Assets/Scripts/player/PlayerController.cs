@@ -149,10 +149,9 @@ public class PlayerController : MonoBehaviour
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
+            damageDisplayObject = GameObject.Find(damagaeDisplayValueName);
+            damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
         }
-
-        damageDisplayObject = GameObject.Find(damagaeDisplayValueName);
-        damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
     }
 
     // not affected by framerate
@@ -621,9 +620,12 @@ public class PlayerController : MonoBehaviour
         thisScale.x *= -1;
         transform.localScale = thisScale;
 
-        Vector3 damageScale = damageDisplayObject.transform.localScale;
-        damageScale.x *= -1;
-        damageDisplayObject.transform.localScale = damageScale;
+        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
+        {
+            Vector3 damageScale = damageDisplayObject.transform.localScale;
+            damageScale.x *= -1;
+            damageDisplayObject.transform.localScale = damageScale;
+        }
         //Debug.Log("transform.localScale : " + transform.localScale);
         //Debug.Log("damageDisplayObject.transform.localScale : " + damageDisplayObject.transform.localScale);
 
