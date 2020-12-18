@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour
     bool displayTimer = false;
     [SerializeField]
     private bool timerEnabled = false;
-    //private Text timerText;
+    private Text timerText;
     [SerializeField]
     private bool modeRequiresCountDown;
     [SerializeField]
@@ -30,8 +30,8 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        //timerText = GetComponent<Text>();
-        //timerText.text = "";
+        timerText = GetComponent<Text>();
+        timerText.text = "";
         shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
         shotClockText.text = "";
     }
@@ -88,7 +88,7 @@ public class Timer : MonoBehaviour
         if (GameRules.instance.GameOver || timeRemaining < 0)
         {
             displayTimer = false;
-            //timerText.text = "";
+            timerText.text = "";
             shotClockText.text = "";
         }
         // time's up, pause and reset timer text
@@ -122,12 +122,12 @@ public class Timer : MonoBehaviour
         {
             if (minutes < 1)
             {
-                //timerText.text = seconds.ToString("00.000");
+                timerText.text = seconds.ToString("00.000");
                 shotClockText.text = seconds.ToString("00.00");
             }
             else
             {
-                //timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
                 shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
             }
         }
@@ -136,12 +136,12 @@ public class Timer : MonoBehaviour
         {
             if (minutes < 1)
             {
-                //timerText.text = seconds.ToString("00.000");
+                timerText.text = seconds.ToString("00.000");
                 shotClockText.text = seconds.ToString("00.00");
             }
             else
             {
-                //timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
                 shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
             }
         }
@@ -149,7 +149,7 @@ public class Timer : MonoBehaviour
 
     void setCustomTimerText(string text)
     {
-        //timerText.text = text;
+        timerText.text = text;
         shotClockText.text = text;
     }
 
@@ -165,5 +165,5 @@ public class Timer : MonoBehaviour
         set => displayTimer = value;
     }
     public float Seconds { get => seconds; set => seconds = value; }
-    //public Text TimerText { get => timerText; set => timerText = value; }
+    public Text TimerText { get => timerText; set => timerText = value; }
 }
