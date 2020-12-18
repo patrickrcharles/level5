@@ -25,7 +25,9 @@ public class EnemyCollisions : MonoBehaviour
     {
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
-            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox")))
+            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox"))
+            && enemyHealth != null
+            && enemyHealthBar != null)
         {
             PlayerAttackBox playerAttackBox = null;
             EnemyAttackBox enemyAttackBox = null;
@@ -35,7 +37,8 @@ public class EnemyCollisions : MonoBehaviour
                 playerAttackBox = other.GetComponent<PlayerAttackBox>();
                 enemyHealth.Health -= playerAttackBox.attackDamage;
             }
-            if (other.GetComponent<EnemyAttackBox>() != null)
+            if (other.GetComponent<EnemyAttackBox>() != null
+                && enemyHealth !=null )
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
                 enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
