@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BehaviorNpcSmallObstacle : MonoBehaviour
+public class BehaviorNpcAutonomous : MonoBehaviour
 {
 
     public float walkMovementSpeed;
