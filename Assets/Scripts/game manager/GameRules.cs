@@ -579,8 +579,8 @@ public class GameRules : MonoBehaviour
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
-            // add remaining counter time FLOOR to total points  as bonus points
-            BasketBall.instance.BasketBallStats.TotalPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+            //// add remaining counter time FLOOR to total points  as bonus points
+            //BasketBall.instance.BasketBallStats.TotalPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
 
             // if game has a time counter
             if (modeRequiresCounter)
