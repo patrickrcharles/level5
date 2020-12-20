@@ -17,14 +17,11 @@ public class BasketBall : MonoBehaviour
     Animator anim;
 
     GameObject basketBallSprite;
-    //GameObject playerDunkPos;
-    //GameObject bplayerDunkPos;
     GameObject basketBallPosition;
     GameObject basketBallTarget;
 
     GameObject player;
     GameObject dropShadow;
-    //private Vector3 dropShadowPosition;
 
     Text scoreText;
     Text shootProfileText;
@@ -33,30 +30,19 @@ public class BasketBall : MonoBehaviour
     //[Range(20f, 70f)] public float _angle;
 
     float releaseVelocityY;
-    //float _playerRigidBody;
     float accuracy;
-    //float twoAccuracy;
-    //int threeAccuracy;
-    //int fourAccuracy;
-    //int sevenAccuracy;
     float lastShotDistance;
     float maxBasketballSpeed = 0f;
 
     bool playHitRimSound;
     bool locked;
 
-    //BasketBallShotMade basketBallShotMade;
-
-    [SerializeField]
     float accuracyModifierX;
-    [SerializeField]
     private float accuracyModifierY;
-    [SerializeField]
     private float accuracyModifierZ;
 
     public static BasketBall instance;
 
-    //[SerializeField] float bballRelativePositioning;
     bool facingRight = true;
 
     // =========================================================== Start() ========================================================
@@ -348,32 +334,18 @@ public class BasketBall : MonoBehaviour
                 basketBallStats.MoneyBallAttempts++;
             }
         }
-        // wait for shot meter to finish calculations for accurate launch values
-        StartCoroutine(LaunchBasketBall());
-
         //calculate shot distance 
         Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
             0, basketBallState.BasketBallTarget.transform.position.z);
         float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
         lastShotDistance = tempDist;
 
+        // wait for shot meter to finish calculations for accurate launch values
+        StartCoroutine(LaunchBasketBall());
+
         //reset state flags
         basketBallState.Thrown = true;
         CallBallToPlayer.instance.Locked = false;
-        //basketBallState.InAir = true;
-        //basketBallState.Locked = false;
-
-        //// update ui stats if necessary
-        //if (UiStatsEnabled)
-        //{
-        //    updateScoreText();
-        //    updateShooterProfileText();
-        //}
-        //else
-        //{
-        //    scoreText.text = "";
-        //    shootProfileText.text = "";
-        //}
     }
 
     private void updateBasketBallStateShotTypeOnShoot()
@@ -418,7 +390,17 @@ public class BasketBall : MonoBehaviour
         // shorthands for the formula
         float R = Vector3.Distance(projectileXZPos, targetXZPos);
         float G = Physics.gravity.y;
-        float tanAlpha = Mathf.Tan(characterProfile.ShootAngle * Mathf.Deg2Rad);
+        float tanAlpha;
+        // check last shot distance. if > 500, angle = 55 degrees. almost impossible to make shot 
+        // >500ft with shoot angle 45-52 that most characters have 
+        if (LastShotDistance >= 500)
+        {
+            tanAlpha = Mathf.Tan(55 * Mathf.Deg2Rad);
+        }
+        else
+        {
+            tanAlpha = Mathf.Tan(characterProfile.ShootAngle * Mathf.Deg2Rad);
+        }
         float H = targetXZPos.y - projectileXZPos.y;
         float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
         float Vy = tanAlpha * Vz;
