@@ -29,10 +29,7 @@ public class EnemyDetection : MonoBehaviour
         {
             enemySightDistance = 20;
         }
-        //Debug.Log("enemy name : " + gameObject.name);
-
-        //enemyDetectionEnabled = true;
-        InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
+        InvokeRepeating("CheckPlayerDistance", 0, 0.5f);
         InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);
     }
 
