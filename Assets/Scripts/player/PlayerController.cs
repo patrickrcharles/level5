@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
     Text damageDisplayValueText;
     [SerializeField]
     GameObject damageDisplayObject;
-    const string damagaeDisplayValueName = "player_damage_display_text";
+    const string damageDisplayValueName = "player_damage_display_text";
 
     void Start()
     {
@@ -146,11 +146,16 @@ public class PlayerController : MonoBehaviour
         //if (attackSpeed == 0) { attackSpeed = 0f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
+        damageDisplayObject = GameObject.Find(damageDisplayValueName);
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
-            playerSwapAttack = GetComponent<PlayerSwapAttack>();
-            damageDisplayObject = GameObject.Find(damagaeDisplayValueName);
+            playerSwapAttack = GetComponent<PlayerSwapAttack>();            
             damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
+            damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
+        }
+        else
+        {
+            damageDisplayObject.SetActive(false);
         }
     }
 
