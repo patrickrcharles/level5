@@ -44,11 +44,15 @@ public class PlayerAttackQueue : MonoBehaviour
     private void Start()
     {
         // default set up
-        //if (maxEnemiesQueued == 0)
-        //{
-        //    maxEnemiesQueued = 4;
-        //}
-        //maxEnemiesQueued = 2;
+        if (maxEnemiesQueued == 0 && GameOptions.hardcoreModeEnabled)
+        {
+            maxEnemiesQueued = 4;
+        }
+        else
+        {
+            maxEnemiesQueued = 2;
+        }
+
         if (currentEnemiesQueued < maxEnemiesQueued)
         {
             attackSlotOpen = true;
