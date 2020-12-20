@@ -13,9 +13,6 @@ public class PlayerSwapAttack : MonoBehaviour
     [SerializeField]
     AnimatorOverrideController animatorOverrideController;
 
-    //public AnimationClip closeAttack1;
-    //public AnimationClip closeAttack2;
-    //public AnimationClip closeAttack3;
     public AnimationClip longRangeAttack;
     protected int index;
 
@@ -30,7 +27,7 @@ public class PlayerSwapAttack : MonoBehaviour
     public void setCloseAttack()
     {
         // if enemy has more than one close attack, chose random one
-        if (closeAttacks.Length > 1)
+        if (closeAttacks.Length > 1 && closeAttacks != null)
         {
             Random random = new Random();
             int randomIndex = random.Next(0, closeAttacks.Length);
@@ -38,9 +35,13 @@ public class PlayerSwapAttack : MonoBehaviour
             anim.runtimeAnimatorController = animatorOverrideController;
         }
         // else use default
-        else
+        else if(closeAttacks.Length == 1 && closeAttacks != null)
         {
             animatorOverrideController["attack"] = closeAttacks[0];
+            anim.runtimeAnimatorController = animatorOverrideController;
+        }
+        else
+        {
             anim.runtimeAnimatorController = animatorOverrideController;
         }
     }
