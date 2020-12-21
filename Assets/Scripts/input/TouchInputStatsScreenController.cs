@@ -130,7 +130,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(false);
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        {
+            StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(true);
         }
 
         // player select
@@ -164,7 +170,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(false);
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        {
+            StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(true);
         }
         buttonPressed = false;
     }
@@ -176,7 +188,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("left");
             StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(false);
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        {
+            StatsManager.instance.changeSelectedMode("left");
+            StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(true);
         }
         buttonPressed = false;
     }
