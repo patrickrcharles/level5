@@ -77,6 +77,9 @@ public class GameOptions : MonoBehaviour
     static public bool hardcoreModeEnabled = false;
     static public bool EnemiesOnlyEnabled = false;
 
+
+    static public bool levelRequiresTimeOfDay = true;
+
     //private void Awake()
     //{
     //    hardcoreModeEnabled = true;

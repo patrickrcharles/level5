@@ -860,6 +860,7 @@ public class StartManager : MonoBehaviour
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
+        GameOptions.levelRequiresTimeOfDay = levelSelectedData[levelSelectedIndex].LevelRequiresTimeOfDay;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
@@ -907,7 +908,6 @@ public class StartManager : MonoBehaviour
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
-
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
 
         // if enemies only mode, enable enemies whether it was selected or not
@@ -915,6 +915,7 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.enemiesEnabled = true;
         }
+
     }
 
     // ============================  message display ==============================

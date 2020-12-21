@@ -7,6 +7,7 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private string levelDisplayName;
     [SerializeField] private string levelObjectName;
     [SerializeField] private string levelDescription;
+    [SerializeField] private bool levelRequiresTimeOfDay;
 
     public string LevelDescription
     {
@@ -31,4 +32,5 @@ public class StartScreenLevelSelected : MonoBehaviour
         get => levelObjectName;
         set => levelObjectName = value;
     }
+    public bool LevelRequiresTimeOfDay { get => levelRequiresTimeOfDay; set => levelRequiresTimeOfDay = value; }
 }

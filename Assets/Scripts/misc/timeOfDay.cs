@@ -47,7 +47,14 @@ public class timeOfDay : MonoBehaviour
          * 3 - night
          * 4 - sunrise
          * */
+
+        // if level doesnt require this object, disable it
+        if (!GameOptions.levelRequiresTimeOfDay)
+        {
+            gameObject.SetActive(false);
+        }
     }
+
     void Awake()
     {
         startTime = Time.time;
