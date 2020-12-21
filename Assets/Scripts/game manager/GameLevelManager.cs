@@ -127,6 +127,13 @@ public class GameLevelManager : MonoBehaviour
         _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
 
         Anim = Player.GetComponentInChildren<Animator>();
+
+        // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
+        // instead of an overlay. this is for a slight performance increase
+        if (GameObject.Find("shot_clock") != null)
+        {
+            GameObject.Find("shot_clock").GetComponent<Canvas>().worldCamera = Camera.main;
+        }
     }
 
 
