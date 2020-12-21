@@ -1089,7 +1089,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid)
+    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid, bool hardcoreValue)
     {
         List<StatsTableHighScoreRow> listOfValues = new List<StatsTableHighScoreRow>();
 
@@ -1099,6 +1099,7 @@ public class DBHelper : MonoBehaviour
         string date;
         string hardcore = "";
         int hardcoreEnabled = 0;
+        //int hardcoreEnabled = Convert.ToInt32(hardcoreValue);
 
         string sqlQuery = "";
 
@@ -1108,15 +1109,33 @@ public class DBHelper : MonoBehaviour
         IDbCommand dbcmd = dbconn.CreateCommand();
 
         // game modes that require float values/ low time as high score
-        if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+        if (!hardcoreValue)
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
 
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+            }
         }
-        else
+        if (hardcoreValue)
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC LIMIT 10";
+
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC LIMIT 10";
+            }
         }
+        //Debug.Log("sqlQuery : " + sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
