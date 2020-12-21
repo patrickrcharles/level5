@@ -13,6 +13,8 @@ public class CallBallToPlayer : MonoBehaviour
     private bool locked;
     private bool canBallToPlayerEnabled;
 
+    bool CallEnabled = true;
+
     public static CallBallToPlayer instance;
 
     public bool Locked { get => locked; set => locked = value; }
@@ -28,6 +30,15 @@ public class CallBallToPlayer : MonoBehaviour
 
         //canBallToPlayerEnabled = true;
         pullSpeed = 2.3f;
+
+        if (GameOptions.hardcoreModeEnabled && GameOptions.EnemiesOnlyEnabled)
+        {
+            CallEnabled = false;
+            if (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest || GameOptions.gameModeAllPointContest)
+            {
+                CallEnabled = true;
+            }
+        }
     }
 
     private void LateUpdate()
@@ -40,8 +51,7 @@ public class CallBallToPlayer : MonoBehaviour
             && !_basketBallState.Locked
             && playerState.grounded
             && !Locked
-            && !GameOptions.hardcoreModeEnabled 
-            && !GameOptions.EnemiesOnlyEnabled)
+            && CallEnabled)
         {
             Locked = true;
             pullBallToPlayer();
