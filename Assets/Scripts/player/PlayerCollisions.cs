@@ -19,13 +19,19 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (gameObject.CompareTag("playerHitbox")
+            && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
+        {
+            StartCoroutine( GameLevelManager.instance.PlayerState.TriggerDunkSequence());
+        }
+
         // if collsion between hitbox and vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
-            && other.CompareTag("enemyAttackBox")
-            && !playerState.KnockedDown
-            && !playerState.TakeDamage
-            && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
-            && !locked)
+        && other.CompareTag("enemyAttackBox")
+        && !playerState.KnockedDown
+        && !playerState.TakeDamage
+        && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
+        && !locked)
         {
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
@@ -36,13 +42,13 @@ public class PlayerCollisions : MonoBehaviour
             // player is not blocking
             if (playerState.CurrentState != playerState.BlockState)
             {
-                locked = true;      
+                locked = true;
                 // deduct from player health 
                 playerHealth.Health -= enemyAttackBox.attackDamage;
                 if (PlayerHealthBar.instance != null) // null check for health bar
                 {
                     PlayerHealthBar.instance.setHealthSliderValue();
-                    StartCoroutine( PlayerHealthBar.instance.DisplayDamageTakenValue(enemyAttackBox.attackDamage) );
+                    StartCoroutine(PlayerHealthBar.instance.DisplayDamageTakenValue(enemyAttackBox.attackDamage));
                 }
 
                 // player can be knocked down and other
@@ -79,7 +85,7 @@ public class PlayerCollisions : MonoBehaviour
         playerState.TakeDamage = true;
         playerState.KnockedDown = false;
         playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false); 
+        playerState.setPlayerAnim("hasBasketball", false);
     }
     void playerKnockedDown()
     {
