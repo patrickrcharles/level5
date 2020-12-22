@@ -97,12 +97,18 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
         // check if attack box is active and should not be
 
-        //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+        InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
     }
-    private void Update()
+    //private void Update()
+    //{
+    //    checkCollidersDisabledProperly();
+    //}
+
+    private void checkCollidersDisabledProperly()
     {
-        if (playerController.CurrentState != playerController.AttackState 
+        if (playerController.CurrentState != playerController.AttackState
             && playerController.CurrentState != playerController.SpecialState
+            && playerController.CurrentState != playerController.dunkState
             && attackBoxEnabled)
         {
             disableAttackBox();
@@ -235,16 +241,15 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void enableAttackBox()
     {
+
         attackBox.SetActive(true);
         attackBoxEnabled = true;
-        //Debug.Log("enable attack box");
     }
 
     public void disableAttackBox()
     {
         attackBox.SetActive(false);
         attackBoxEnabled = false;
-        //Debug.Log("disable attack box");
     }
     public void enableAttackBoxSpecial()
     {
@@ -290,6 +295,11 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void disableRigidBodyIsKinematic()
     {
         GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    public void playSfxBasketballHitRim()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.basketballHitRim);
     }
 
     public void playSfxBasketballDribbling()

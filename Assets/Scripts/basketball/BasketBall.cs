@@ -138,7 +138,8 @@ public class BasketBall : MonoBehaviour
             }
 
             //if player has ball and hasnt shot
-            if (playerState.hasBasketball)//&& !basketBallState.Thrown)
+            if (playerState.hasBasketball 
+                && playerState.currentState!= playerState.dunkState)//&& !basketBallState.Thrown)
             {
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
@@ -243,7 +244,8 @@ public class BasketBall : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if basketball enters player hitbox
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox")
+        if (gameObject.CompareTag("basketball") 
+            && other.gameObject.CompareTag("playerHitbox")
             && !basketBallState.Thrown)
         {
             playerState.hasBasketball = true;
@@ -486,6 +488,7 @@ public class BasketBall : MonoBehaviour
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
+        Debug.Log("globalVelocity : " + globalVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
@@ -830,4 +833,5 @@ public class BasketBall : MonoBehaviour
     public BasketBallState BasketBallState => basketBallState;
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
+    public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
 }

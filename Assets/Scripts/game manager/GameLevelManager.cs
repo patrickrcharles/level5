@@ -84,7 +84,7 @@ public class GameLevelManager : MonoBehaviour
         //StartCoroutine( SetMajorObjectReferences() );
         //BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
-        BasketballRimVector = GameObject.Find("rim").transform.position;
+        _basketballRimVector = GameObject.Find("rim").transform.position;
     }
 
     private void Start()

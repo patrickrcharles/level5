@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     float bballRelativePositioning;
     Vector3 playerRelativePositioning;
     public float playerDistanceFromRim;
+    Vector3 dunkPositionLeft;
+    Vector3 dunkPositionRight;
 
 
     // control movement speed based on state
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
     public int specialState = Animator.StringToHash("base.special");
     public int attackState = Animator.StringToHash("base.attack.attack");
     public int blockState = Animator.StringToHash("base.attack.block");
+    public int dunkState = Animator.StringToHash("base.inair.dunk");
 
     // get/set for following at bottom of class
     [SerializeField]
@@ -101,16 +104,12 @@ public class PlayerController : MonoBehaviour
     //public float jumpStartTime;
     //public float jumpEndTime;
 
-    //Vector2 movementInput;
     Vector3 movement;
-
     float movementHorizontal;
     float movementVertical;
     Vector2 startTouchPosition = new Vector2(0, 0);
-
-    public float screenXRange;
-    public float screenYRange;
-
+    //public float screenXRange;
+    //public float screenYRange;
     bool jumpTrigger = false;
 
     Touch touch;
@@ -146,6 +145,9 @@ public class PlayerController : MonoBehaviour
         //if (attackSpeed == 0) { attackSpeed = 0f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
+        dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
+        dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
@@ -166,46 +168,6 @@ public class PlayerController : MonoBehaviour
         //------MOVEMENT---------------------------
         if (!KnockedDown && currentState != takeDamageState)
         {
-            //#if UNITY_ANDROID && !UNITY_EDITOR
-            //if (Input.touchCount > 0
-            //    && touch.position.x < (Screen.width / 2)
-            //    && touch.position.y < (Screen.height / 2))
-            //{
-            //    Touch touch = Input.touches[0];
-            //    if (touch.phase == TouchPhase.Began)
-            //    {
-            //        startTouchPosition = touch.position;
-            //    }
-            //    if (touch.position.x < (Screen.width / 2)
-            //        && touch.position.y < (Screen.height / 2)
-            //        && (touch.phase == TouchPhase.Moved))/*|| touch.phase == TouchPhase.Began))*/
-            //    {
-            //        // return normalized 0-1 value based on X/Y pixels ratio
-            //        movementHorizontal = touch.deltaPosition.normalized.x;
-            //        movementVertical = touch.deltaPosition.normalized.y;
-
-            //        // percent of finger move distance from start to end range that will max speed of movement
-            //        float XrangePercent = Mathf.Abs((touch.position.x - startTouchPosition.x) / screenXRange);
-            //        float YrangePercent = Mathf.Abs((touch.position.y - startTouchPosition.y) / screenYRange);
-
-            //        // if max finger move distance not achieved, multiply by percent of distance so far
-            //        if (XrangePercent < 1)
-            //        {
-            //            movementHorizontal *= XrangePercent;
-            //        }
-            //        if (YrangePercent < 1)
-            //        {
-            //            movementVertical *= YrangePercent;
-            //        }
-            //    }
-            //}
-            // no touch, no movement
-            //* this should involve fingerid
-            //if (Input.touchCount == 0)
-            //{
-            //    movementHorizontal = 0;
-            //    movementVertical = 0;
-            //}
 #if UNITY_ANDROID && !UNITY_EDITOR
 
             if (Input.touchCount > 0)
@@ -272,51 +234,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //public void TouchControlJump()
-    //{
-    //    if (grounded && !KnockedDown)
-    //    {
-    //        playerJump();
-    //    }
-    //}
-
-    public void touchControlJumpOrShoot(Vector2 touchPosition)
-    {
-        if (grounded
-            && !KnockedDown
-            && hasBasketball
-            && touchPosition.x > (Screen.width / 2))
-        {
-            playerJump();
-        }
-        // if has ball, is in air, and pressed shoot button.
-        // shoot ball
-        if (inAir
-            && hasBasketball
-            //&& !IsSetShooter
-            && touchPosition.x > (Screen.width / 2))
-        {
-            CallBallToPlayer.instance.Locked = true;
-            basketball.BasketBallState.Locked = true;
-            checkIsPlayerFacingGoal(); // turns player facing rim
-            Shotmeter.MeterEnded = true;
-            playerShoot();
-        }
-        // call ball
-        if (!hasBasketball
-            && !inAir
-            && basketball.BasketBallState.CanPullBall
-            && !basketball.BasketBallState.Locked
-            && grounded
-            && !CallBallToPlayer.instance.Locked
-            && touchPosition.x > (Screen.width / 2)
-            && !GameOptions.hardcoreModeEnabled)
-        {
-            CallBallToPlayer.instance.Locked = true;
-            CallBallToPlayer.instance.pullBallToPlayer();
-            CallBallToPlayer.instance.Locked = false;
-        }
-    }
 
     // Update :: once once per frame
     void Update()
@@ -431,7 +348,8 @@ public class PlayerController : MonoBehaviour
         if (grounded
             && !KnockedDown
             && !hasBasketball
-            && !inAir)
+            && !inAir
+            && currentState != dunkState)
         {
             canAttack = true;
             canBlock = true;
@@ -449,7 +367,8 @@ public class PlayerController : MonoBehaviour
             && hasBasketball
             && grounded
             && !KnockedDown
-            && !GameOptions.EnemiesOnlyEnabled)
+            && !GameOptions.EnemiesOnlyEnabled
+            && !inAir)
         {
             jumpTrigger = true;
             //playerJump();
@@ -528,6 +447,44 @@ public class PlayerController : MonoBehaviour
 #endif 
     }
 
+
+    public void touchControlJumpOrShoot(Vector2 touchPosition)
+    {
+        if (grounded
+            && !KnockedDown
+            && hasBasketball
+            && touchPosition.x > (Screen.width / 2))
+        {
+            playerJump();
+        }
+        // if has ball, is in air, and pressed shoot button.
+        // shoot ball
+        if (inAir
+            && hasBasketball
+            //&& !IsSetShooter
+            && touchPosition.x > (Screen.width / 2))
+        {
+            CallBallToPlayer.instance.Locked = true;
+            basketball.BasketBallState.Locked = true;
+            checkIsPlayerFacingGoal(); // turns player facing rim
+            Shotmeter.MeterEnded = true;
+            playerShoot();
+        }
+        // call ball
+        if (!hasBasketball
+            && !inAir
+            && basketball.BasketBallState.CanPullBall
+            && !basketball.BasketBallState.Locked
+            && grounded
+            && !CallBallToPlayer.instance.Locked
+            && touchPosition.x > (Screen.width / 2)
+            && !GameOptions.hardcoreModeEnabled)
+        {
+            CallBallToPlayer.instance.Locked = true;
+            CallBallToPlayer.instance.pullBallToPlayer();
+            CallBallToPlayer.instance.Locked = false;
+        }
+    }
     public void playerAttack()
     {
         if (playerCanAttack)
@@ -578,6 +535,80 @@ public class PlayerController : MonoBehaviour
         Shotmeter.MeterStartTime = Time.time;
     }
 
+    //------------------------------------dunk functions ----------------------------------------------------------------------
+
+    public void PlayerDunk()
+    {
+        float bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - transform.position.x;
+        //Vector3 dunkPosition = new Vector3(0, 0, 0);
+
+        // determine which side to dunk on
+        if (bballRelativePositioning > 0)
+        {
+            //dunkPosition = GameObject.Find("dunk_position_left").transform.position;
+            Launch(dunkPositionLeft);
+            //Vector3 dunkPosition = GameObject.Find("dunk_position_right").transform.position;
+        }
+        if (bballRelativePositioning < 0)
+        {
+            //dunkPosition = GameObject.Find("dunk_position_right").transform.position;
+            Launch(dunkPositionRight);
+        }
+        //Launch(dunkPosition);
+    }
+
+    public IEnumerator TriggerDunkSequence()
+    {
+        FreezePlayerPosition();
+        playAnim("dunk");
+        // wait for anim to start + finish
+        yield return new WaitUntil(() => currentState == dunkState);
+        yield return new WaitUntil(() => currentState != dunkState);
+
+        BasketBall.instance.BasketBallState.Thrown = true;
+        UnFreezePlayerPosition();
+
+        // move ball above rim
+        Vector3 temp = BasketBall.instance.BasketBallState.BasketBallTarget.transform.position;
+        BasketBall.instance.Rigidbody.velocity = Vector3.zero;
+        BasketBall.instance.transform.position = new Vector3(temp.x, temp.y, temp.z);
+        //reset
+        hasBasketball = false;
+        setPlayerAnim("hasBasketball", false);
+    }
+
+    // =================================== Launch ball function =======================================
+    void Launch(Vector3 Target)
+    {
+        //Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 projectileXZPos = transform.position;
+        Vector3 targetXZPos = Target;
+
+        // rotate the object to face the target
+        transform.LookAt(targetXZPos);
+
+        // shorthands for the formula
+        float R = Vector3.Distance(projectileXZPos, targetXZPos);
+
+        float G = Physics.gravity.y;
+        float tanAlpha = Mathf.Tan(40 * Mathf.Deg2Rad);
+        float H = targetXZPos.y - projectileXZPos.y;
+        float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
+        float Vy = tanAlpha * Vz;
+
+        float xVector = 0;
+        float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
+        float zVector = Vz; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
+
+        // create the velocity vector in local space and get it in global space
+        Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
+        Vector3 globalVelocity = transform.TransformDirection(localVelocity);
+
+        // launch the object by setting its initial velocity and flipping its state
+        RigidBody.velocity = globalVelocity;
+        playAnim("inair_dunk");
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+    }
     //-----------------------------------Walk function -----------------------------------------------------------------------
     //void isWalking(Vector3 movement)
     void isWalking(float horizontal, float vertical)
@@ -725,6 +756,25 @@ public class PlayerController : MonoBehaviour
     public void playAnim(string animationName)
     {
         anim.Play(animationName);
+    }
+    // ----------------------- freeze player postion ------------------------
+    public void FreezePlayerPosition()
+    {
+            //rigidBody.velocity = Vector3.zero;
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+            | RigidbodyConstraints.FreezeRotationY
+            | RigidbodyConstraints.FreezeRotationZ
+            | RigidbodyConstraints.FreezePositionX
+            | RigidbodyConstraints.FreezePositionY
+            | RigidbodyConstraints.FreezePositionZ;
+    }
+
+    public void UnFreezePlayerPosition()
+    {
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+            //rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+            //    | RigidbodyConstraints.FreezeRotationZ
+            //    | RigidbodyConstraints.FreezeRotationY;
     }
 
     ////can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
