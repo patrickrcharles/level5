@@ -21,6 +21,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (gameObject.CompareTag("playerHitbox")
             && playerState.inAir
+            && playerState.currentState != playerState.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
             StartCoroutine( PlayerDunk.instance.TriggerDunkSequence());
