@@ -834,6 +834,5 @@ public class BasketBall : MonoBehaviour
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
     public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
-    public GameObject BasketBallPosition1 { get => basketBallPosition; set => basketBallPosition = value; }
     public float LastShotDistance1 { get => lastShotDistance; set => lastShotDistance = value; }
 }
