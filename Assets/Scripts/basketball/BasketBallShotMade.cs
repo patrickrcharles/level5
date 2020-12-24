@@ -153,7 +153,7 @@ public class BasketBallShotMade : MonoBehaviour
         // else, not consecutive shot. get current, increment for next expected consecutive shot
         else
         {
-            _consecutiveShotsMade = 1;
+            _consecutiveShotsMade = 0;
             // increment expected values for next shot
             _expectedShotMade = _currentShotMade + 1;
             _expectedShotAttempts = _currentShotAttempts + 1;
