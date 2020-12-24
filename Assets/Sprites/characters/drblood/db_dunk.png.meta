@@ -14,6 +14,9 @@ TextureImporter:
   - first:
       213: -8538169752858041299
     second: db_dunk_3
+  - first:
+      213: -7005943362070168392
+    second: db_dunk_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -216,6 +219,27 @@ TextureImporter:
       bones: []
       spriteID: d2469e0d8d3528980800000000000000
       internalID: -8538169752858041299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: db_dunk_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 256
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bc3d4b91a3e5ce90800000000000000
+      internalID: -7005943362070168392
       vertices: []
       indices: 
       edges: []
