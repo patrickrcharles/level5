@@ -31,7 +31,7 @@ public class groundcheck : MonoBehaviour
                 //Debug.Log("fall distance : " + (finalHeight - initialHeight));
             }
 
-            _playerState.grounded = true;
+            _playerState.Grounded = true;
             _playerState.inAir = false;
             //playerState.jump = false;
             _playerState.setPlayerAnim("jump", false);
@@ -57,7 +57,7 @@ public class groundcheck : MonoBehaviour
         {
             // height when player exits ground (fall/jump etc.)
             //initialHeight = player.transform.position.y;
-            _playerState.grounded = false;
+            _playerState.Grounded = false;
             _playerState.inAir = true;
             _playerState.setPlayerAnim("jump", true);
         }

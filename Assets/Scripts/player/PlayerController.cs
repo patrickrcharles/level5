@@ -8,49 +8,82 @@ using Touch = UnityEngine.Touch;
 public class PlayerController : MonoBehaviour
 {
 
-    //#todo start breaking this up into separate classes: playerState, player move (walk / jump /input actions) 
-
     // components 
-    Animator anim;
-    AnimatorStateInfo currentStateInfo;
-    GameObject dropShadow;
-    AudioSource audiosource;
-    SpriteRenderer spriteRenderer;
-    Rigidbody rigidBody;
-    CharacterProfile characterProfile;
-    BasketBall basketball;
-    ShotMeter shotmeter;
-    PlayerSwapAttack playerSwapAttack;
+    private Animator anim;
+    private AnimatorStateInfo currentStateInfo;
+    private GameObject dropShadow;
+    private AudioSource audiosource;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody rigidBody;
+    private CharacterProfile characterProfile;
+    private BasketBall basketball;
+    private ShotMeter shotmeter;
+    private PlayerSwapAttack playerSwapAttack;
+    private PlayerHealth playerHealth;
 
     // walk speed #review can potentially remove
     private float movementSpeed;
     [SerializeField]
     private float inAirSpeed; // leave serialized
-    //[SerializeField]
-    //private float attackSpeed; // leave serialized
     [SerializeField]
     private float blockSpeed; // leave serialized
+    //[SerializeField]
+    //private float attackSpeed; // leave serialized
 
+    // get/set for following at bottom of class
+    private bool _facingRight;
+    private bool _facingFront;
+    private bool _locked;
+    private bool _inAir;
+    private bool _grounded;
+    private bool _knockedDown;
+    private bool _takeDamage;
+    private bool _avoidedKnockDown;
+    private bool canAttack;
+    private bool canBlock;
     // player state bools
     private bool running;
     private bool runningToggle;
     public bool hasBasketball;
+    // trigger player jump. bool used because activated in fixed update
+    // to ensure animaion is synced with camera. camera is updated in fixed update 
+    // as well
+    private bool jumpTrigger = false;
+    private bool dunkTrigger;
 
-    // #note this is work a work in progress feature. it works but it's bugged
-    //[SerializeField]
-    //private bool isSetShooter;
-    //public bool IsSetShooter => isSetShooter;
-    //public bool canMove; // #todo add player knock downs, this could be used
-    //                     // will be useful for when play knockdowns implemented
     public GameObject playerHitbox;
 
-    Vector3 bballRimVector;
-    float bballRelativePositioning;
-    Vector3 playerRelativePositioning;
-    public float playerDistanceFromRim;
-    Vector3 dunkPositionLeft;
-    Vector3 dunkPositionRight;
+    float bballRelativePositioning; // which side of the player the ball is on
+    [SerializeField]
+    float playerDistanceFromRim; // player distance from rim
+    [SerializeField]
+    float playerDistanceFromRimFeet; // player distance from rim
 
+    Vector3 playerRelativePositioning;
+    Vector3 bballRimVector;
+
+    // customizable options
+    [SerializeField]
+    private bool playerCanBlock;
+    [SerializeField]
+    private bool playerCanAttack;
+    [SerializeField]
+    float _knockDownTime;
+    [SerializeField]
+    float _takeDamageTime;
+
+    // movement variables
+    Vector3 movement;
+    float movementHorizontal;
+    float movementVertical;
+
+    // touch vars
+    Touch touch;
+    Vector2 startTouchPosition = new Vector2(0, 0);
+
+    Text damageDisplayValueText;
+    GameObject damageDisplayObject;
+    const string damageDisplayValueName = "player_damage_display_text";
 
     // control movement speed based on state
     public int currentState;
@@ -64,61 +97,9 @@ public class PlayerController : MonoBehaviour
     public int specialState = Animator.StringToHash("base.special");
     public int attackState = Animator.StringToHash("base.attack.attack");
     public int blockState = Animator.StringToHash("base.attack.block");
+    public int inAirDunkState = Animator.StringToHash("base.inair.inair_dunk");
     public int dunkState = Animator.StringToHash("base.inair.dunk");
 
-    // get/set for following at bottom of class
-    [SerializeField]
-    private bool _facingRight;
-    private bool _facingFront;
-    private bool _locked;
-    //private bool _jump;
-    private bool _inAir;
-    private bool _grounded;
-    [SerializeField]
-    private bool _knockedDown;
-    private bool _knockedDown_alternate;
-    [SerializeField]
-    private bool _takeDamage;
-    private bool _avoidedKnockDown;
-    [SerializeField]
-    private bool canAttack;
-    [SerializeField]
-    private bool canBlock;
-
-    [SerializeField]
-    private bool playerCanBlock;
-    [SerializeField]
-    private bool playerCanAttack;
-
-    [SerializeField]
-    float _knockDownTime;
-    [SerializeField]
-    float _takeDamageTime;
-
-    //#review no longer use, but some it could be useful
-    //public float initialHeight, finalHeight;
-    //public bool jumpPeakReached = false;
-    private float _rigidBodyYVelocity;
-
-    // used to calculate shot meter time
-    //public float jumpStartTime;
-    //public float jumpEndTime;
-
-    Vector3 movement;
-    float movementHorizontal;
-    float movementVertical;
-    Vector2 startTouchPosition = new Vector2(0, 0);
-    //public float screenXRange;
-    //public float screenYRange;
-    bool jumpTrigger = false;
-
-    Touch touch;
-
-    [SerializeField]
-    Text damageDisplayValueText;
-    [SerializeField]
-    GameObject damageDisplayObject;
-    const string damageDisplayValueName = "player_damage_display_text";
 
     void Start()
     {
@@ -145,8 +126,8 @@ public class PlayerController : MonoBehaviour
         //if (attackSpeed == 0) { attackSpeed = 0f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
-        dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
-        dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        //dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
+        //dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
 
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
@@ -223,6 +204,15 @@ public class PlayerController : MonoBehaviour
                 jumpTrigger = false;
                 playerJump();
             }
+            if (dunkTrigger 
+                && (currentState != inAirDunkState || currentState != inAirDunkState)
+                && !inAir
+                && Grounded
+                && !locked)
+            {
+                dunkTrigger = false;
+                PlayerDunk.instance.playerDunk();
+            }
 
             if (currentState != specialState)
             {
@@ -256,12 +246,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // keep drop shadow on ground at all times
-        if (grounded)
+        if (Grounded)
         {
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
                 transform.root.position.z);
         }
-        if (!grounded) // player in air
+        if (!Grounded) // player in air
         {
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
             transform.root.position.z);
@@ -269,7 +259,9 @@ public class PlayerController : MonoBehaviour
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
-        playerDistanceFromRim = Vector3.Distance(transform.position, bballRimVector);
+
+        playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, 0, bballRimVector.z));
+        playerDistanceFromRimFeet = playerDistanceFromRim * 6;
 
         // if run input or run toggle on
         if (GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
@@ -340,12 +332,12 @@ public class PlayerController : MonoBehaviour
             movementSpeed = blockSpeed;
         }
         // inair state
-        if (inAir)
+        if (inAir && currentState != inAirDunkState)
         {
             checkIsPlayerFacingGoal();
             movementSpeed = inAirSpeed;
         }
-        if (grounded
+        if (Grounded
             && !KnockedDown
             && !hasBasketball
             && !inAir
@@ -365,21 +357,29 @@ public class PlayerController : MonoBehaviour
         if (GameLevelManager.instance.Controls.Player.jump.triggered
             //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
             && hasBasketball
-            && grounded
+            && Grounded
             && !KnockedDown
             && !GameOptions.EnemiesOnlyEnabled
             && !inAir)
         {
-            jumpTrigger = true;
-            //playerJump();
+            if (playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
+            {
+                dunkTrigger = true;
+            }
+            else
+            {
+                jumpTrigger = true;
+            }
         }
         //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
         if (inAir
             && hasBasketball
             && GameLevelManager.instance.Controls.Player.shoot.triggered
-            && !GameOptions.EnemiesOnlyEnabled)
+            && !GameOptions.EnemiesOnlyEnabled
+            && currentState != inAirDunkState)
         {
+            Debug.Log("shoot");
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
             checkIsPlayerFacingGoal(); // turns player facing rim
@@ -429,7 +429,7 @@ public class PlayerController : MonoBehaviour
         //------------------ special -----------------------------------
         if (GameLevelManager.instance.Controls.Player.special.triggered
             && !inAir
-            && grounded
+            && Grounded
             && !KnockedDown
             && GameOptions.enemiesEnabled)
         {
@@ -450,12 +450,12 @@ public class PlayerController : MonoBehaviour
 
     public void touchControlJumpOrShoot(Vector2 touchPosition)
     {
-        if (grounded
+        if (Grounded
             && !KnockedDown
             && hasBasketball
             && touchPosition.x > (Screen.width / 2))
         {
-            playerJump();
+            playerJump();          
         }
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
@@ -475,7 +475,7 @@ public class PlayerController : MonoBehaviour
             && !inAir
             && basketball.BasketBallState.CanPullBall
             && !basketball.BasketBallState.Locked
-            && grounded
+            && Grounded
             && !CallBallToPlayer.instance.Locked
             && touchPosition.x > (Screen.width / 2)
             && !GameOptions.hardcoreModeEnabled)
@@ -531,84 +531,17 @@ public class PlayerController : MonoBehaviour
     {
         rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
+
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;
+        //// if not dunking, start shot meter
+        //if (currentState != inAirDunkState)
+        //{
+        //    Shotmeter.MeterStarted = true;
+        //    Shotmeter.MeterStartTime = Time.time;
+        //}
     }
 
-    //------------------------------------dunk functions ----------------------------------------------------------------------
-
-    public void PlayerDunk()
-    {
-        float bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - transform.position.x;
-        //Vector3 dunkPosition = new Vector3(0, 0, 0);
-
-        // determine which side to dunk on
-        if (bballRelativePositioning > 0)
-        {
-            //dunkPosition = GameObject.Find("dunk_position_left").transform.position;
-            Launch(dunkPositionLeft);
-            //Vector3 dunkPosition = GameObject.Find("dunk_position_right").transform.position;
-        }
-        if (bballRelativePositioning < 0)
-        {
-            //dunkPosition = GameObject.Find("dunk_position_right").transform.position;
-            Launch(dunkPositionRight);
-        }
-        //Launch(dunkPosition);
-    }
-
-    public IEnumerator TriggerDunkSequence()
-    {
-        FreezePlayerPosition();
-        playAnim("dunk");
-        // wait for anim to start + finish
-        yield return new WaitUntil(() => currentState == dunkState);
-        yield return new WaitUntil(() => currentState != dunkState);
-
-        BasketBall.instance.BasketBallState.Thrown = true;
-        UnFreezePlayerPosition();
-
-        // move ball above rim
-        Vector3 temp = BasketBall.instance.BasketBallState.BasketBallTarget.transform.position;
-        BasketBall.instance.Rigidbody.velocity = Vector3.zero;
-        BasketBall.instance.transform.position = new Vector3(temp.x, temp.y, temp.z);
-        //reset
-        hasBasketball = false;
-        setPlayerAnim("hasBasketball", false);
-    }
-
-    // =================================== Launch ball function =======================================
-    void Launch(Vector3 Target)
-    {
-        //Vector3 projectileXZPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        Vector3 projectileXZPos = transform.position;
-        Vector3 targetXZPos = Target;
-
-        // rotate the object to face the target
-        transform.LookAt(targetXZPos);
-
-        // shorthands for the formula
-        float R = Vector3.Distance(projectileXZPos, targetXZPos);
-
-        float G = Physics.gravity.y;
-        float tanAlpha = Mathf.Tan(40 * Mathf.Deg2Rad);
-        float H = targetXZPos.y - projectileXZPos.y;
-        float Vz = Mathf.Sqrt(G * R * R / (2.0f * (H - R * tanAlpha)));
-        float Vy = tanAlpha * Vz;
-
-        float xVector = 0;
-        float yVector = Vy; // + (accuracyModifier * shooterProfile.shootYVariance);
-        float zVector = Vz; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
-
-        // create the velocity vector in local space and get it in global space
-        Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
-        Vector3 globalVelocity = transform.TransformDirection(localVelocity);
-
-        // launch the object by setting its initial velocity and flipping its state
-        RigidBody.velocity = globalVelocity;
-        playAnim("inair_dunk");
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-    }
     //-----------------------------------Walk function -----------------------------------------------------------------------
     //void isWalking(Vector3 movement)
     void isWalking(float horizontal, float vertical)
@@ -662,13 +595,9 @@ public class PlayerController : MonoBehaviour
             damageScale.x *= -1;
             damageDisplayObject.transform.localScale = damageScale;
         }
-        //Debug.Log("transform.localScale : " + transform.localScale);
-        //Debug.Log("damageDisplayObject.transform.localScale : " + damageDisplayObject.transform.localScale);
-
     }
 
     // ------------------------------- take damage -------------------------------------------------------
-
     public IEnumerator PlayerTakeDamage()
     {
         //Debug.Log("PlayerTakeDamage");
@@ -772,18 +701,9 @@ public class PlayerController : MonoBehaviour
     public void UnFreezePlayerPosition()
     {
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-            //rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
-            //    | RigidbodyConstraints.FreezeRotationZ
-            //    | RigidbodyConstraints.FreezeRotationY;
     }
 
-    ////can be used as generic turn off audio by adding paramter to pass (Audio audioToTurnOff)
-    //public void turnOffMoonWalkAudio()
-    //{
-    //    moonwalkAudio.enabled = false;
-    //}
-
-    public bool grounded
+    public bool Grounded
     {
         get { return _grounded; }
         set { _grounded = value; }
@@ -816,8 +736,6 @@ public class PlayerController : MonoBehaviour
         set => shotmeter = value;
     }
 
-    private PlayerHealth playerHealth;
-
     public bool KnockedDown
     {
         get => _knockedDown;
@@ -828,11 +746,7 @@ public class PlayerController : MonoBehaviour
         get => _avoidedKnockDown;
         set => _avoidedKnockDown = value;
     }
-    public bool KnockedDown_Alternate
-    {
-        get => _knockedDown_alternate;
-        set => _knockedDown_alternate = value;
-    }
+
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
     //public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
     public bool TakeDamage { get => _takeDamage; set => _takeDamage = value; }
@@ -847,6 +761,7 @@ public class PlayerController : MonoBehaviour
     public Animator Anim { get => anim; set => anim = value; }
     public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
     public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
+    public float PlayerDistanceFromRim { get => playerDistanceFromRim; set => playerDistanceFromRim = value; }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
     public void toggleRun()

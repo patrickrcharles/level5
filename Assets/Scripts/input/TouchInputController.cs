@@ -183,7 +183,7 @@ public class TouchInputController : MonoBehaviour
                     Debug.Log("!tap2Detected && doubleTap2Detected");
                     buttonPressed = true;
                     if (!playerController.inAir
-                        && playerController.grounded
+                        && playerController.Grounded
                         && !playerController.KnockedDown)
                     {
                         //Debug.Log("player special attack ");

@@ -20,9 +20,17 @@ public class PlayerCollisions : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (gameObject.CompareTag("playerHitbox")
+            && playerState.inAir
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
-            StartCoroutine( GameLevelManager.instance.PlayerState.TriggerDunkSequence());
+            StartCoroutine( PlayerDunk.instance.TriggerDunkSequence());
+        }
+        // playyer sometimes gets stuck in inair dunk state
+        if (gameObject.CompareTag("playerHitbox")
+            && other.CompareTag("ground")
+            && playerState.currentState == playerState.inAirDunkState)
+        {
+            playerState.setPlayerAnim("jump", false);
         }
 
         // if collsion between hitbox and vehicle, knocked down

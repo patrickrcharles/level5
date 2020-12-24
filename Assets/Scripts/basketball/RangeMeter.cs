@@ -19,7 +19,6 @@ public class RangeMeter : MonoBehaviour
     [SerializeField]
     //float range;
 
-    // Start is called before the first frame update
     void Start()
     {
         characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
@@ -41,7 +40,7 @@ public class RangeMeter : MonoBehaviour
 
     void setSliderValue()
     {
-        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerState.playerDistanceFromRim * 6)) * 100;
+        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerState.PlayerDistanceFromRim * 6)) * 100;
         sliderText.text = slider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
     }

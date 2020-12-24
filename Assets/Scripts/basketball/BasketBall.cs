@@ -285,7 +285,7 @@ public class BasketBall : MonoBehaviour
             playerState.setPlayerAnimTrigger("basketballShoot");
         }
         // mostly prevent multiple inputs (button presses)
-        releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
+        //releaseVelocityY = playerState.rigidBodyYVelocity; //not really used. good data for testing
 
         // reset ball rotation
         // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
@@ -350,7 +350,7 @@ public class BasketBall : MonoBehaviour
         CallBallToPlayer.instance.Locked = false;
     }
 
-    private void updateBasketBallStateShotTypeOnShoot()
+    public void updateBasketBallStateShotTypeOnShoot()
     {
         // identify is in 2 or 3 point range for stat counters
         if (basketBallState.TwoPoints)
@@ -834,4 +834,6 @@ public class BasketBall : MonoBehaviour
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
     public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
+    public GameObject BasketBallPosition1 { get => basketBallPosition; set => basketBallPosition = value; }
+    public float LastShotDistance1 { get => lastShotDistance; set => lastShotDistance = value; }
 }

@@ -2,17 +2,19 @@
 
 public class CallBallToPlayer : MonoBehaviour
 {
-    [SerializeField] internal float pullSpeed;
+    [SerializeField] 
+    internal float pullSpeed;
     private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;
 
     private PlayerController playerState;
     private BasketBall basketBall;
     private BasketBallState _basketBallState;
-
+    [SerializeField]
     private bool locked;
+    [SerializeField]
     private bool canBallToPlayerEnabled;
-
+    [SerializeField]
     bool CallEnabled = true;
 
     public static CallBallToPlayer instance;
@@ -49,16 +51,15 @@ public class CallBallToPlayer : MonoBehaviour
             && !playerState.hasBasketball
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked
-            && playerState.grounded
-            && !Locked
+            && playerState.Grounded
+            //&& !Locked
             && CallEnabled)
         {
-            Locked = true;
+            //Locked = true;
             pullBallToPlayer();
-            Locked = false;
+            //Locked = false;
         }
     }
-
 
     public void pullBallToPlayer()
     {

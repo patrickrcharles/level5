@@ -68,7 +68,7 @@ public class ShotMeter : MonoBehaviour
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.PlayerState.grounded)
+        if (GameLevelManager.instance.PlayerState.Grounded)
         {
             slider.value = 0;
         }
@@ -119,8 +119,8 @@ public class ShotMeter : MonoBehaviour
             slider.value = sliderValueOnButtonPress;
             // display number
             displaySliderValueOnPressText(sliderValueOnButtonPress.ToString("###"));
-            //Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
-            //Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
+            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
+            Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
 
             meterStarted = false;
             meterEnded = false;

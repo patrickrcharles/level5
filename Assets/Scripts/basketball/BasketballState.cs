@@ -19,7 +19,9 @@ public class BasketBallState : MonoBehaviour
     private bool _dunk;
     private bool _inAir;
     private bool _thrown;
+    [SerializeField]
     private bool _locked;
+    [SerializeField]
     private bool _canPullBall;
     private bool _grounded;
 
@@ -54,7 +56,8 @@ public class BasketBallState : MonoBehaviour
     void Update()
     {
 
-        PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
+        PlayerDistanceFromRim = GameLevelManager.instance.PlayerState.PlayerDistanceFromRim;
+        //PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
         //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 
         // is player on  marker  +  is marker required for game mode
