@@ -81,8 +81,6 @@ public class GameLevelManager : MonoBehaviour
         //// check if player is npc in scene
         checkPlayerIsNpcInScene();
         // get necessary references to objects
-        //StartCoroutine( SetMajorObjectReferences() );
-        //BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
         _basketballRimVector = GameObject.Find("rim").transform.position;
     }
