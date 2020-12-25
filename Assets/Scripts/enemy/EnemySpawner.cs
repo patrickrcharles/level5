@@ -47,7 +47,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        //Debug.Log("GameObject.FindGameObjectWithTag(enemy) != null : " + (GameObject.FindGameObjectWithTag("enemy") != null));
         //// this needs to second option or enabling it will spawn enemies
         //if (GameObject.FindGameObjectWithTag("enemy") != null)
         //{
@@ -56,7 +55,6 @@ public class EnemySpawner : MonoBehaviour
         // if enemies in scene, spawn max
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
-            Debug.Log("GameOptions.hardcoreModeEnabled : " + GameOptions.hardcoreModeEnabled);
             if (GameOptions.hardcoreModeEnabled)
             {
                 maxNumberOfEnemies = 8;
@@ -78,26 +76,12 @@ public class EnemySpawner : MonoBehaviour
 
             // start function to check status of current enemies
             InvokeRepeating("getNumberOfCurrentEnemiesInScene", 0, 2f);
-
-            Debug.Log("GameOptions.enemiesEnabled" + GameOptions.enemiesEnabled);
         }
     }
 
-
-
     void spawnDefaultMinions()
     {
-        Debug.Log("---------------------------spawnDefaultMinions ");
-        Debug.Log("maxNumberOfEnemies : " + maxNumberOfEnemies);
-        Debug.Log("maxNumberOfBoss : " + maxNumberOfBoss);
-        Debug.Log("maxNumberOfMinions : " + maxNumberOfMinions);
-        Debug.Log("numberOfMinions : " + numberOfMinions);
-        Debug.Log("numberOfBoss : " + numberOfBoss);
-        Debug.Log("int numberToSpawn = " + maxNumberOfEnemies + " -  " + numberOfMinions + " - " + numberOfBoss);
-
         int numberToSpawn = maxNumberOfEnemies - numberOfMinions - numberOfBoss;
-
-        Debug.Log("numberToSpawn : " + numberToSpawn);
         if (numberToSpawn > 0)
         {
             for (int i = 0; i < numberToSpawn; i++)
@@ -108,27 +92,17 @@ public class EnemySpawner : MonoBehaviour
                     Random random = new Random();
                     int randomIndex = random.Next(0, maxNumberOfMinions - 1);
                     Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
-                    Debug.Log("enemyMinionPrefabs[randomIndex] " + enemyMinionPrefabs[randomIndex].name);
                 }
                 else
                 {
                     Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
-                    Debug.Log("enemyMinionPrefabs[randomIndex] " + enemyMinionPrefabs[i].name);
                 }
             }
         }
     }
+
     void spawnDefaultBoss()
     {
-        Debug.Log("-------------------------------spawnDefaultBoss ");
-        Debug.Log("spawnDefaultMinions ");
-        Debug.Log("maxNumberOfEnemies : " + maxNumberOfEnemies);
-        Debug.Log("maxNumberOfBoss : " + maxNumberOfBoss);
-        Debug.Log("maxNumberOfMinions : " + maxNumberOfMinions);
-        Debug.Log("numberOfMinions : " + numberOfMinions);
-        Debug.Log("numberOfBoss : " + numberOfBoss);
-        Debug.Log("int numberToSpawn = " + maxNumberOfBoss + " -  " + numberOfBoss);
-
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         if (numberToSpawn > 0)
         {
@@ -140,12 +114,10 @@ public class EnemySpawner : MonoBehaviour
                     Random random = new Random();
                     int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
                     Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
-                    Debug.Log("enemyBossPrefabs[randomIndex] " + enemyBossPrefabs[randomIndex].name);
                 }
                 else
                 {
                     Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
-                    Debug.Log("enemyBossPrefabs[randomIndex] " + enemyBossPrefabs[i].name);
                 }
             }
         }
@@ -160,14 +132,10 @@ public class EnemySpawner : MonoBehaviour
         if (randomIndex >= enemyMinionPrefabs.Count)
         {
             Instantiate(enemyMinionPrefabs[0], spawnPositions[randomIndex].transform.position, Quaternion.identity);
-            Debug.Log("spawn minion : " + enemyMinionPrefabs[randomIndex].name);
-
         }
-
         else
         {
             Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
-            Debug.Log("spawn minion : " + enemyMinionPrefabs[randomIndex].name);
         }
     }
 
@@ -180,16 +148,12 @@ public class EnemySpawner : MonoBehaviour
         if (randomIndex >= enemyBossPrefabs.Count - 1)
         {
             Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
-            Debug.Log("spawn boss : " + enemyBossPrefabs[randomIndex].name);
         }
-
         else
         {
             Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
-            Debug.Log("spawn boss : " + enemyBossPrefabs[randomIndex].name);
         }
     }
-
 
     void getNumberOfCurrentEnemiesInScene()
     {
@@ -197,7 +161,6 @@ public class EnemySpawner : MonoBehaviour
 
         numberOfMinions = GameObject.FindGameObjectsWithTag("enemy").Length;
         numberOfBoss = getNumberOfBoss();
-        Debug.Log("minions : " + numberOfMinions + "     boss : " + numberOfBoss);
 
         if (numberOfMinions < maxNumberOfMinions)
         {
@@ -205,7 +168,6 @@ public class EnemySpawner : MonoBehaviour
             int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 
             // update spawner location so spawn locations is near player
-            //gameObject.transform.position = GameLevelManager.instance.Player.transform.position;
             spawnSingleMinion();
         }
         if (numberOfBoss < maxNumberOfBoss)
@@ -214,7 +176,6 @@ public class EnemySpawner : MonoBehaviour
             int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
 
             // update spawner location so spawn locations is near player
-            //gameObject.transform.position = GameLevelManager.instance.Player.transform.position;
             spawnBoss();
         }
     }
