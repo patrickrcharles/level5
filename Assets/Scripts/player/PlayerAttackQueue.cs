@@ -20,6 +20,10 @@ public class PlayerAttackQueue : MonoBehaviour
     int maxEnemiesQueued;
     [SerializeField]
     GameObject[] attackPositions;
+    [SerializeField]
+    GameObject[] bodyGuards;
+    [SerializeField]
+    List<GameObject> enemiesQueued;
 
     public static PlayerAttackQueue instance;
 
@@ -27,6 +31,7 @@ public class PlayerAttackQueue : MonoBehaviour
     public bool LockAttackQueue { get => attackQueueLocked; set => attackQueueLocked = value; }
     public bool AttackSlotOpen { get => attackSlotOpen; set => attackSlotOpen = value; }
     public GameObject[] AttackPositions { get => attackPositions; set => attackPositions = value; }
+    public List<GameObject> EnemiesQueued { get => enemiesQueued; set => enemiesQueued = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -84,7 +89,7 @@ public class PlayerAttackQueue : MonoBehaviour
         }
     }
 
-    public IEnumerator removeEnemyFromAttackQueue(int attackPostionId)
+    public IEnumerator removeEnemyFromAttackQueue(GameObject enemy, int attackPostionId)
     {
         //yield return new WaitForSeconds( 0.1f);
         yield return new WaitUntil( () => !LockAttackQueue);
@@ -98,10 +103,11 @@ public class PlayerAttackQueue : MonoBehaviour
         currentEnemiesQueued--;
         attackSlotOpen = isAttackSlotOpen();
 
+        enemiesQueued.Remove(enemy);
         LockAttackQueue = false;
     }
 
-    public void removeEnemyFromQueue(int attackPostionId)
+    public void removeEnemyFromQueue(GameObject enemy, int attackPostionId)
     {
 
         //yield return new WaitUntil( () => !LockAttackQueue);
@@ -117,6 +123,8 @@ public class PlayerAttackQueue : MonoBehaviour
 
         currentEnemiesQueued--;
         attackSlotOpen = isAttackSlotOpen();
+
+        enemiesQueued.Remove(enemy);
 
         LockAttackQueue = false;
     }
@@ -155,6 +163,9 @@ public class PlayerAttackQueue : MonoBehaviour
                     enemyDetection.PlayerSighted = true;
 
                     currentEnemiesQueued++;
+                    // add enemy to queue
+                    enemiesQueued.Add(enemy);
+
                     AttackSlotOpen = false;
 
                     //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");
