@@ -1,22 +1,18 @@
 ﻿using UnityEngine;
 
-public class groundcheck : MonoBehaviour
+public class GroundCheck : MonoBehaviour
 {
     public float initialHeight, finalHeight;
-
-    private GameObject _player;
-    private PlayerController _playerState;
+    private PlayerController playerController;
 
     [SerializeField]
     private BasketBallState basketBallState;
 
-
-    // ReSharper disable once UnusedMember.Local
     private void Start()
     {
-        _player = GameLevelManager.instance.Player;
-        _playerState = GameLevelManager.instance.PlayerState;
-        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        playerController = GameLevelManager.instance.PlayerState;
+        //basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        basketBallState = BasketBall.instance.BasketBallState;
     }
 
 
@@ -25,29 +21,26 @@ public class groundcheck : MonoBehaviour
         // later 11 is ground/terrain
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("Player"))
         {
-            initialHeight = _player.transform.position.y;
-            if (finalHeight - initialHeight > 1)
-            {
-                //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-            }
+            //initialHeight = _player.transform.position.y;
+            //if (finalHeight - initialHeight > 1)
+            //{
+            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
+            //}
 
-            _playerState.Grounded = true;
-            _playerState.inAir = false;
-            //playerState.jump = false;
-            _playerState.setPlayerAnim("jump", false);
+            playerController.Grounded = true;
+            playerController.inAir = false;
+            playerController.setPlayerAnim("jump", false);
         }
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
         {
-            initialHeight = _player.transform.position.y;
-            if (finalHeight - initialHeight > 1)
-            {
-                //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-            }
+            //initialHeight = _player.transform.position.y;
+            //if (finalHeight - initialHeight > 1)
+            //{
+            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
+            //}
 
             basketBallState.Grounded = true;
             basketBallState.InAir = false;
-            //playerState.jump = false;
-            //.setPlayerAnim("jump", false);
         }
     }
 
@@ -55,25 +48,21 @@ public class groundcheck : MonoBehaviour
     {
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("Player"))
         {
-            // height when player exits ground (fall/jump etc.)
-            //initialHeight = player.transform.position.y;
-            _playerState.Grounded = false;
-            _playerState.inAir = true;
-            _playerState.setPlayerAnim("jump", true);
+            playerController.Grounded = false;
+            playerController.inAir = true;
+            playerController.setPlayerAnim("jump", true);
         }
 
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
         {
-            initialHeight = _player.transform.position.y;
-            if (finalHeight - initialHeight > 1)
-            {
-                //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-            }
+            //initialHeight = _player.transform.position.y;
+            //if (finalHeight - initialHeight > 1)
+            //{
+            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
+            //}
 
             basketBallState.Grounded = false;
             basketBallState.InAir = true;
-            //playerState.jump = false;
-            //.setPlayerAnim("jump", false);
         }
     }
 }
