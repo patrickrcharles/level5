@@ -1,25 +1,31 @@
 fileFormatVersion: 2
-guid: 00e4d9f53da19c34998db227df2651d2
+guid: 8c60df6ddbfa0d640a393451d11fb16f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9064088488985431686
-    second: db_dunk_0
+      213: 9111350083957697445
+    second: ian_dunk_0
   - first:
-      213: -1038334832380967179
-    second: db_dunk_1
+      213: -6832403358434542057
+    second: ian_dunk_1
   - first:
-      213: -4791193151913657679
-    second: db_dunk_2
+      213: 4307079356137691662
+    second: ian_dunk_2
   - first:
-      213: -8538169752858041299
-    second: db_dunk_3
+      213: 5897234962090643908
+    second: ian_dunk_3
   - first:
-      213: -7005943362070168392
-    second: db_dunk_4
+      213: 3089020786427741097
+    second: ian_dunk_4
   - first:
-      213: -1159317903033218877
-    second: db_dunk_5
+      213: -3604227792785210821
+    second: ian_dunk_5
+  - first:
+      213: -9073001502083495608
+    second: ian_dunk_6
+  - first:
+      213: -8645347055911985784
+    second: ian_dunk_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -120,7 +126,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 48
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -143,7 +149,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: db_dunk_0
+      name: ian_dunk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -157,14 +163,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68e0fa6057c1acd70800000000000000
-      internalID: 9064088488985431686
+      spriteID: 5ab268a90a4027e70800000000000000
+      internalID: 9111350083957697445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_dunk_1
+      name: ian_dunk_1
       rect:
         serializedVersion: 2
         x: 192
@@ -178,14 +184,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5f68406a8f71791f0800000000000000
-      internalID: -1038334832380967179
+      spriteID: 71eb25a585d6e21a0800000000000000
+      internalID: -6832403358434542057
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_dunk_2
+      name: ian_dunk_2
       rect:
         serializedVersion: 2
         x: 384
@@ -199,14 +205,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1baf6e19633428db0800000000000000
-      internalID: -4791193151913657679
+      spriteID: e0a5102cad1d5cb30800000000000000
+      internalID: 4307079356137691662
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_dunk_3
+      name: ian_dunk_3
       rect:
         serializedVersion: 2
         x: 576
@@ -220,8 +226,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2469e0d8d3528980800000000000000
-      internalID: -8538169752858041299
+      spriteID: 4c15d6004ff27d150800000000000000
+      internalID: 5897234962090643908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ian_dunk_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a3c2d6f9086eda20800000000000000
+      internalID: 3089020786427741097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ian_dunk_5
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3282712be53bfdc0800000000000000
+      internalID: -3604227792785210821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ian_dunk_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8494ab56439361280800000000000000
+      internalID: -9073001502083495608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ian_dunk_7
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88d956c58ae850880800000000000000
+      internalID: -8645347055911985784
       vertices: []
       indices: 
       edges: []

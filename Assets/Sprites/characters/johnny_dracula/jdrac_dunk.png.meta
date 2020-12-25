@@ -1,25 +1,16 @@
 fileFormatVersion: 2
-guid: 00e4d9f53da19c34998db227df2651d2
+guid: a987f41f875c87443a43b10cc3d189a0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9064088488985431686
-    second: db_dunk_0
+      213: 8378529472035622849
+    second: jdrac_dunk_0
   - first:
-      213: -1038334832380967179
-    second: db_dunk_1
+      213: -588367041678961945
+    second: jdrac_dunk_1
   - first:
-      213: -4791193151913657679
-    second: db_dunk_2
-  - first:
-      213: -8538169752858041299
-    second: db_dunk_3
-  - first:
-      213: -7005943362070168392
-    second: db_dunk_4
-  - first:
-      213: -1159317903033218877
-    second: db_dunk_5
+      213: -258709200692538962
+    second: jdrac_dunk_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -143,11 +134,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: db_dunk_0
+      name: jdrac_dunk_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
+        y: 0
         width: 192
         height: 192
       alignment: 7
@@ -157,18 +148,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68e0fa6057c1acd70800000000000000
-      internalID: 9064088488985431686
+      spriteID: 1cf03d8d924864470800000000000000
+      internalID: 8378529472035622849
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_dunk_1
+      name: jdrac_dunk_1
       rect:
         serializedVersion: 2
         x: 192
-        y: 192
+        y: 0
         width: 192
         height: 192
       alignment: 7
@@ -178,18 +169,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5f68406a8f71791f0800000000000000
-      internalID: -1038334832380967179
+      spriteID: 7e29d2bfa43b5d7f0800000000000000
+      internalID: -588367041678961945
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: db_dunk_2
+      name: jdrac_dunk_2
       rect:
         serializedVersion: 2
         x: 384
-        y: 192
+        y: 0
         width: 192
         height: 192
       alignment: 7
@@ -199,29 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1baf6e19633428db0800000000000000
-      internalID: -4791193151913657679
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: db_dunk_3
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 192
-        width: 192
-        height: 192
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d2469e0d8d3528980800000000000000
-      internalID: -8538169752858041299
+      spriteID: ea198984a51e86cf0800000000000000
+      internalID: -258709200692538962
       vertices: []
       indices: 
       edges: []
