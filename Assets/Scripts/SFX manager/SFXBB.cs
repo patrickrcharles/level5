@@ -56,7 +56,7 @@ public class SFXBB : MonoBehaviour
 
     private void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource = gameObject.GetComponent<AudioSource>();
         playRandomSong();
     }
 
