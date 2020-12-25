@@ -11,8 +11,8 @@ public class GroundCheck : MonoBehaviour
     private void Start()
     {
         playerController = GameLevelManager.instance.PlayerState;
-        //basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
-        basketBallState = BasketBall.instance.BasketBallState;
+        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        //basketBallState = BasketBall.instance.BasketBallState;
     }
 
 
