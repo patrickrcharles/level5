@@ -20,6 +20,7 @@ public class EnemyHealthBar : MonoBehaviour
 
         enemyHealth = transform.parent.GetComponentInChildren<EnemyHealth>();
         healthSlider = GetComponentInChildren<Slider>();
+        healthSlider.maxValue = enemyHealth.MaxEnemyHealth;
         setHealthSliderValue();
     }
 
@@ -28,6 +29,6 @@ public class EnemyHealthBar : MonoBehaviour
     {
         healthSlider.value = enemyHealth.Health;
         //healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
-        //Debug.Log("slider.value : " + slider.value.ToString());
+        Debug.Log(gameObject.transform.root.name +  " slider value : " + healthSlider.value.ToString());
     }
 }

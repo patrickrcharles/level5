@@ -53,11 +53,10 @@ public class EnemyDetection : MonoBehaviour
             if (attacking)
             {
                 attacking = false;
-                StartCoroutine(PlayerAttackQueue.instance.removeEnemyFromAttackQueue(AttackPositionId));
+                StartCoroutine(PlayerAttackQueue.instance.removeEnemyFromAttackQueue(gameObject, AttackPositionId));
             }
         }
     }
-
 
     IEnumerator DelayEnemySight(float seconds)
     {

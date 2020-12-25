@@ -32,16 +32,19 @@ public class EnemyCollisions : MonoBehaviour
             PlayerAttackBox playerAttackBox = null;
             EnemyAttackBox enemyAttackBox = null;
 
+            Debug.Log(gameObject.transform.root.name + " attacked by " + other.transform.root.name);
             if (other.GetComponent<PlayerAttackBox>() != null)
             {
                 playerAttackBox = other.GetComponent<PlayerAttackBox>();
                 enemyHealth.Health -= playerAttackBox.attackDamage;
+                Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
             if (other.GetComponent<EnemyAttackBox>() != null
                 && enemyHealth !=null )
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
                 enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
+                Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
