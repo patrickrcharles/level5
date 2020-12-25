@@ -7,12 +7,11 @@ using Touch = UnityEngine.Touch;
 
 public class PlayerController : MonoBehaviour
 {
-
     // components 
     private Animator anim;
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
-    private AudioSource audiosource;
+    //private AudioSource audiosource;
     private SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
     private CharacterProfile characterProfile;
@@ -41,17 +40,19 @@ public class PlayerController : MonoBehaviour
     private bool _avoidedKnockDown;
     private bool canAttack;
     private bool canBlock;
+
     // player state bools
     private bool running;
     private bool runningToggle;
     public bool hasBasketball;
+
     // trigger player jump. bool used because activated in fixed update
     // to ensure animaion is synced with camera. camera is updated in fixed update 
     // as well
     private bool jumpTrigger = false;
     private bool dunkTrigger;
 
-    public GameObject playerHitbox;
+    //public GameObject playerHitbox;
 
     float bballRelativePositioning; // which side of the player the ball is on
     [SerializeField]
@@ -103,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
+        //audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
-        playerHitbox.SetActive(true);
+        //playerHitbox.SetActive(true);
         facingRight = true;
         //canMove = true;
         movementSpeed = characterProfile.Speed;
@@ -278,16 +279,6 @@ public class PlayerController : MonoBehaviour
             running = false;
         }
 
-        //player reaches peak of jump. this will be useful for creating AI with auto shoot
-        //if (rigidBodyYVelocity > 0 && inAir)
-        //{
-        //    jumpPeakReached = true;
-        //}
-        //else
-        //{
-        //    jumpPeakReached = false;
-        //}
-
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
             Math.Abs(playerRelativePositioning.z) < 2)
@@ -332,10 +323,13 @@ public class PlayerController : MonoBehaviour
             movementSpeed = blockSpeed;
         }
         // inair state
-        if (inAir && currentState != inAirDunkState)
+        if (inAir )//&& currentState != inAirDunkState)
         {
             checkIsPlayerFacingGoal();
-            movementSpeed = inAirSpeed;
+            if (currentState != inAirDunkState)
+            {
+                movementSpeed = inAirSpeed;
+            }
         }
         if (Grounded
             && !KnockedDown
@@ -379,7 +373,7 @@ public class PlayerController : MonoBehaviour
             && !GameOptions.EnemiesOnlyEnabled
             && currentState != inAirDunkState)
         {
-            Debug.Log("shoot");
+            //Debug.Log("shoot");
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
             checkIsPlayerFacingGoal(); // turns player facing rim
@@ -497,7 +491,6 @@ public class PlayerController : MonoBehaviour
 
     public void playerBlock()
     {
-        //anim.Play("block");
         anim.SetBool("block", true);
     }
 
@@ -689,6 +682,7 @@ public class PlayerController : MonoBehaviour
     // ----------------------- freeze player postion ------------------------
     public void FreezePlayerPosition()
     {
+        //Debug.Log("FreezePlayerPosition");
             //rigidBody.velocity = Vector3.zero;
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
             | RigidbodyConstraints.FreezeRotationY
@@ -700,7 +694,24 @@ public class PlayerController : MonoBehaviour
 
     public void UnFreezePlayerPosition()
     {
+        //Debug.Log("UnFreezePlayerPosition");
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
+    public void toggleRun()
+    {
+        runningToggle = !runningToggle;
+        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
+        messageText.text = "running toggle = " + runningToggle;
+
+        // turn off text display after 5 seconds
+        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
+    }
+
+    public bool IsSpecialState()
+    {
+        return currentState == specialState;
     }
 
     public bool Grounded
@@ -759,23 +770,7 @@ public class PlayerController : MonoBehaviour
     public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
     public bool CanBlock { get => canBlock; set => canBlock = value; }
     public Animator Anim { get => anim; set => anim = value; }
-    public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
+    //public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
     public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
     public float PlayerDistanceFromRim { get => playerDistanceFromRim; set => playerDistanceFromRim = value; }
-
-    // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
-    public void toggleRun()
-    {
-        runningToggle = !runningToggle;
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "running toggle = " + runningToggle;
-
-        // turn off text display after 5 seconds
-        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
-    }
-
-    public bool IsSpecialState()
-    {
-        return currentState == specialState;
-    }
 }
