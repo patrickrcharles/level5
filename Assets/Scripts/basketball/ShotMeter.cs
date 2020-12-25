@@ -72,12 +72,11 @@ public class ShotMeter : MonoBehaviour
         {
             slider.value = 0;
         }
-        //
+        // idk
         if (meterStarted && !locked)
         {
             locked = true;
         }
-
         // this just to move the slider
         if (meterStarted && locked)
         {
@@ -92,16 +91,13 @@ public class ShotMeter : MonoBehaviour
                 {
                     sliderMaxReached = true;
                 }
-                //Debug.Log("slider.value : " + slider.value.ToString("###"));
             }
-
             if (sliderMaxReached)
             {
                 currentTime = Time.time;
                 slider.value = 90 - Math.Abs(100 - (((currentTime - meterStartTime) / (meterFillTime)) * 100));
             }
         }
-
         // this is to set the values and text display. it is separate from the above code
         if (meterEnded)
         {
@@ -119,8 +115,6 @@ public class ShotMeter : MonoBehaviour
             slider.value = sliderValueOnButtonPress;
             // display number
             displaySliderValueOnPressText(sliderValueOnButtonPress.ToString("###"));
-            Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
-            Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
 
             meterStarted = false;
             meterEnded = false;
@@ -159,13 +153,11 @@ public class ShotMeter : MonoBehaviour
 
     public void displaySliderValueOnPressText(String message)
     {
-
         StartCoroutine(toggleSliderValueOnPressText(2, message));
     }
 
     public void displaySliderMessageText(String message)
     {
-
         StartCoroutine(toggleSliderMessageText(2, message));
     }
 
