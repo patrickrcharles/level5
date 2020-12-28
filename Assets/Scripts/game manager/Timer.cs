@@ -23,6 +23,8 @@ public class Timer : MonoBehaviour
 
     [SerializeField]
     Text shotClockText;
+    [SerializeField]
+    Text scoreClockText;
 
     bool timerTextLocked;
     public static Timer instance;
@@ -33,7 +35,9 @@ public class Timer : MonoBehaviour
         timerText = GetComponent<Text>();
         timerText.text = "";
         shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
         shotClockText.text = "";
+        scoreClockText.text = "";
     }
 
     void Start()
@@ -166,4 +170,5 @@ public class Timer : MonoBehaviour
     }
     public float Seconds { get => seconds; set => seconds = value; }
     public Text TimerText { get => timerText; set => timerText = value; }
+    public Text ScoreClockText { get => scoreClockText; set => scoreClockText = value; }
 }
