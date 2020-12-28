@@ -8,6 +8,15 @@ TextureImporter:
   - first:
       213: 8544604393496241936
     second: evelyn_attack_1
+  - first:
+      213: 4910395185473108325
+    second: evelyn_attack_2
+  - first:
+      213: 7742178899596218616
+    second: evelyn_attack_3
+  - first:
+      213: 4232774819576981097
+    second: evelyn_attack_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -168,6 +177,69 @@ TextureImporter:
       bones: []
       spriteID: 017e594bc68849670800000000000000
       internalID: 8544604393496241936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evelyn_attack_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 569b9e0a76a352440800000000000000
+      internalID: 4910395185473108325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evelyn_attack_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 192
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f015f970beb17b60800000000000000
+      internalID: 7742178899596218616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evelyn_attack_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 966aa1fa546ddba30800000000000000
+      internalID: 4232774819576981097
       vertices: []
       indices: 
       edges: []
