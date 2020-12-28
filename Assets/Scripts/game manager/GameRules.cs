@@ -462,20 +462,21 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 19)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.TotalPointsByDistance;
-                Timer.instance.ScoreClockText.text = PlayerData.instance.TotalPointsByDistance.ToString();
 
                 displayCurrentScoreText.text =
                     "current distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00")
                     + "\nlast shot : " + Mathf.FloorToInt((BasketBall.instance.LastShotDistance * 6) / 10)
                     + "\ntotal points : " + BasketBall.instance.BasketBallStats.TotalPoints;
+
+                Timer.instance.ScoreClockText.text = BasketBall.instance.BasketBallStats.TotalPoints.ToString();
             }
             if (gameModeId == 20)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
-                Timer.instance.ScoreClockText.text = PlayerData.instance.EnemiesKilled.ToString();
 
                 displayCurrentScoreText.text =
                     "nerds bashed : " + (BasketBall.instance.BasketBallStats.EnemiesKilled);
+                Timer.instance.ScoreClockText.text = (BasketBall.instance.BasketBallStats.EnemiesKilled).ToString();
             }
             if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98 )
             {
