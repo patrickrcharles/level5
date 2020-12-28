@@ -240,6 +240,7 @@ public class TouchInputController : MonoBehaviour
     private void activateDoubleTappedButton()
     {
         //Debug.Log("double tap");
+        // reload
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name)
             && !buttonPressed)
         {
@@ -247,6 +248,7 @@ public class TouchInputController : MonoBehaviour
             Pause.instance.reloadScene();
             buttonPressed = true;
         }
+        // start screen
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadStartScreenButton.name)
             && !buttonPressed)
         {
@@ -254,6 +256,7 @@ public class TouchInputController : MonoBehaviour
             Pause.instance.loadstartScreen();
             buttonPressed = true;
         }
+        // cancel/unpause
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.CancelMenuButton.name)
             && !buttonPressed)
         {
@@ -261,6 +264,7 @@ public class TouchInputController : MonoBehaviour
             Pause.instance.TogglePause();
             buttonPressed = true;
         }
+        //quit
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.QuitGameButton.name)
             && !buttonPressed)
         {
@@ -268,14 +272,15 @@ public class TouchInputController : MonoBehaviour
             Pause.instance.quit();
             buttonPressed = true;
         }
-        // new stuff
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleCameraName)
-            && !buttonPressed)
-        {
-            //Debug.Log("toggle camera");
-            CameraManager.instance.switchCamera();
-            buttonPressed = true;
-        }
+        //// new stuff
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleCameraName)
+        //    && !buttonPressed)
+        //{
+        //    //Debug.Log("toggle camera");
+        //    CameraManager.instance.switchCamera();
+        //    buttonPressed = true;
+        //}
+        // toggle fps
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleFpsName)
             && !buttonPressed)
         {
@@ -283,6 +288,7 @@ public class TouchInputController : MonoBehaviour
             DevFunctions.instance.ToggleFpsCounter();
             buttonPressed = true;
         }
+        // set max stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleMaxStatsName)
             && !buttonPressed)
         {
@@ -290,6 +296,7 @@ public class TouchInputController : MonoBehaviour
             DevFunctions.instance.setMaxPlayerStats();
             buttonPressed = true;
         }
+        // toggle ui stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleUiStatsName)
             && !buttonPressed)
         {
