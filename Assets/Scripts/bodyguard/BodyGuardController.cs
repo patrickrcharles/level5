@@ -210,7 +210,7 @@ public class BodyGuardController : MonoBehaviour
         }
         // ================== animation walk state ==========================
         //if (rigidBody.velocity.sqrMagnitude > 0)
-        if (stateWalk)
+        if (stateWalk || statePatrol)
         {
             anim.SetBool("walk", true);
         }
@@ -375,6 +375,7 @@ public class BodyGuardController : MonoBehaviour
             int attackPositionId = bodyGuardDetection.AttackPositionId;
             PlayerAttackQueue.instance.removeEnemyFromQueue(gameObject, attackPositionId);
         }
+        removeBodyGuardFromQueueList(transform.root.gameObject);
         //yield return new WaitUntil( ()=> PlayerAttackQueue.instance.AttackSlotOpen);
         Destroy(gameObject);
     }
@@ -403,6 +404,8 @@ public class BodyGuardController : MonoBehaviour
         FreezeEnemyPosition();
         playAnimation("disintegrated");
         //yield return new WaitUntil(() => currentState == AnimatorState_Disintegrated);
+        // remove from body giard list in queue
+        removeBodyGuardFromQueueList(transform.root.gameObject);
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
         stateKnockDown = false;
@@ -445,6 +448,11 @@ public class BodyGuardController : MonoBehaviour
         {
             statePatrol = false;
         }
+    }
+
+    void removeBodyGuardFromQueueList(GameObject bodyguard)
+    {
+        PlayerAttackQueue.instance.BodyGuards.Remove(bodyguard);
     }
 
     //public void UpdateDistanceFromPlayer()

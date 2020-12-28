@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAttackQueue : MonoBehaviour
@@ -21,9 +22,11 @@ public class PlayerAttackQueue : MonoBehaviour
     [SerializeField]
     GameObject[] attackPositions;
     [SerializeField]
-    GameObject[] bodyGuards;
+    List<GameObject> bodyGuards;
     [SerializeField]
     List<GameObject> enemiesQueued;
+    [SerializeField]
+    bool bodyGuardEngaged;
 
     public static PlayerAttackQueue instance;
 
@@ -32,6 +35,8 @@ public class PlayerAttackQueue : MonoBehaviour
     public bool AttackSlotOpen { get => attackSlotOpen; set => attackSlotOpen = value; }
     public GameObject[] AttackPositions { get => attackPositions; set => attackPositions = value; }
     public List<GameObject> EnemiesQueued { get => enemiesQueued; set => enemiesQueued = value; }
+    public List<GameObject> BodyGuards { get => bodyGuards; set => bodyGuards = value; }
+    public bool BodyGuardEngaged { get => bodyGuardEngaged; set => bodyGuardEngaged = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -70,7 +75,8 @@ public class PlayerAttackQueue : MonoBehaviour
         {
             attackQueueLocked = false;
         }
-
+        // check for and add bodyguards to list
+        bodyGuards = getBodyGuards();
         getAttackPositions();
         // check for update status every 2 seconds
         // currently an issue with KillEnemy in enemy controller.
@@ -92,7 +98,7 @@ public class PlayerAttackQueue : MonoBehaviour
     public IEnumerator removeEnemyFromAttackQueue(GameObject enemy, int attackPostionId)
     {
         //yield return new WaitForSeconds( 0.1f);
-        yield return new WaitUntil( () => !LockAttackQueue);
+        yield return new WaitUntil(() => !LockAttackQueue);
         LockAttackQueue = true;
 
         PlayerAttackPosition playerAttackPosition = attackPositions[attackPostionId].GetComponent<PlayerAttackPosition>();
@@ -130,9 +136,9 @@ public class PlayerAttackQueue : MonoBehaviour
     }
 
     public IEnumerator RequestAddToQueue(GameObject enemy)
-    {      
+    {
         // wait for resource to unlock
-        yield return new WaitUntil( ()=>LockAttackQueue == false);
+        yield return new WaitUntil(() => LockAttackQueue == false);
 
         LockAttackQueue = true;
 
@@ -143,14 +149,14 @@ public class PlayerAttackQueue : MonoBehaviour
 
         if (attackSlotOpen && !enemyDetection.Attacking)
         {
-            foreach(GameObject go in attackPositions)
+            foreach (GameObject go in attackPositions)
             {
                 PlayerAttackPosition attackPosition = go.GetComponent<PlayerAttackPosition>();
                 //EnemyDetection enemyDetection = enemy.GetComponent<EnemyDetection>();
 
                 // find open attack position
                 // attack pos not engaged + enemy is not currently attacking
-                if(!attackPosition.engaged 
+                if (!attackPosition.engaged
                     && !enemyDetection.Attacking
                     && currentEnemiesQueued < maxEnemiesQueued)
                 {
@@ -158,18 +164,23 @@ public class PlayerAttackQueue : MonoBehaviour
                     attackPosition.enemyEngaged = enemy;
 
                     enemyDetection.Attacking = true;
-                    enemyDetection.AttackPositionId = attackPosition.attackPositionId;
-                    // this triggers 'pursue player' in enemy controller 
-                    enemyDetection.PlayerSighted = true;
+                    if (!bodyGuardEngaged)
+                    {
+                        enemyDetection.AttackPositionId = attackPosition.attackPositionId;
+                        // this triggers 'pursue player' in enemy controller 
+                        enemyDetection.PlayerSighted = true;
 
-                    currentEnemiesQueued++;
-                    // add enemy to queue
-                    enemiesQueued.Add(enemy);
-
-                    AttackSlotOpen = false;
-
-                    //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");
+                        currentEnemiesQueued++;
+                        // add enemy to queue
+                        enemiesQueued.Add(enemy);
+                        AttackSlotOpen = false;
+                    }
+                    else
+                    {
+                        bodyGuardEngaged = true;
+                    }
                 }
+                    //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");               
             }
         }
         LockAttackQueue = false;
@@ -202,5 +213,16 @@ public class PlayerAttackQueue : MonoBehaviour
                 attackSlotOpen = true;
             }
         }
+    }
+
+    List<GameObject> getBodyGuards()
+    {
+        List<GameObject> tempList = null;
+        GameObject[] bodyGuardList;
+        bodyGuardList = GameObject.FindGameObjectsWithTag("bodyGuard");
+
+        tempList = bodyGuardList.ToList();
+
+        return tempList;
     }
 }

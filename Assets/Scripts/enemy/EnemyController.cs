@@ -143,7 +143,14 @@ public class EnemyController : MonoBehaviour
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
         // ================== enemy facing player ==========================
-        relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
+        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        {
+            relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
+        }
+        else
+        {
+            relativePositionToPlayer = PlayerAttackQueue.instance.BodyGuards[0].transform.position.x - transform.position.x;
+        }
 
         // ================== enemy idle ==========================
         if ((GameLevelManager.instance.PlayerState.KnockedDown
@@ -409,7 +416,17 @@ public class EnemyController : MonoBehaviour
     public void pursuePlayer()
     {
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
-        targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
+
+        // if no bodyguards found
+        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        {
+            targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
+        }
+        // if bodyguards, attack 1 first bodyguard
+        else
+        {
+            targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
+        }
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
@@ -433,7 +450,15 @@ public class EnemyController : MonoBehaviour
 
     public void UpdateDistanceFromPlayer()
     {
-        distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
-        lineOfSight = GameLevelManager.instance.Player.transform.position.z - transform.position.z;
+        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        {
+            distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
+            lineOfSight = GameLevelManager.instance.Player.transform.position.z - transform.position.z;
+        }
+        else
+        {
+            distanceFromPlayer = Vector3.Distance(PlayerAttackQueue.instance.BodyGuards[0].transform.position, transform.position);
+            lineOfSight = PlayerAttackQueue.instance.BodyGuards[0].transform.position.z - transform.position.z;
+        }
     }
 }

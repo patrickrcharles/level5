@@ -20,12 +20,12 @@ public class EnemyDetection : MonoBehaviour
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
-        if (enemySightDistance == 0)
-        {
-            enemySightDistance = 5;
-        }
+        //if (enemySightDistance == 0)
+        //{
+        //    enemySightDistance = 5;
+        //}
         // if only enemies, make increase enemy sight
-        if (GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled)
         {
             enemySightDistance = 20;
         }
