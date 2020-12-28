@@ -33,7 +33,7 @@ public class PlayerDunk : MonoBehaviour
         playerController = GameLevelManager.instance.PlayerState;
         // default dunk values
         jumpAngle = 45;
-        dunkRangeFeet = 25;
+        dunkRangeFeet = 15;
     }
 
     //------------------------------------dunk functions ------------------------------------------------------------
