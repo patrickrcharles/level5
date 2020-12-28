@@ -29,6 +29,6 @@ public class EnemyHealthBar : MonoBehaviour
     {
         healthSlider.value = enemyHealth.Health;
         //healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
-        Debug.Log(gameObject.transform.root.name +  " slider value : " + healthSlider.value.ToString());
+        //Debug.Log(gameObject.transform.root.name +  " slider value : " + healthSlider.value.ToString());
     }
 }
