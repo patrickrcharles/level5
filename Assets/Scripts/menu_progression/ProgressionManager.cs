@@ -104,38 +104,20 @@ public class ProgressionManager : MonoBehaviour
     GameObject prevSelectedObject;
 
     public int ExperienceRequiredForNextLevel { get => experienceRequiredForNextLevel; set => experienceRequiredForNextLevel = value; }
-
     public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
-
     public static string StartButtonName => startButtonName;
-
     public static string StatsMenuButtonName => statsMenuButtonName;
-
     public static string QuitButtonName => quitButtonName;
-
     public static string Progression3AccuracyName => progression3AccuracyName;
-
     public static string Progression4AccuracyName => progression4AccuracyName;
-
     public static string Progression7AccuracyName => progression7AccuracyName;
-
     public static string ConfirmButtonName => confirmButtonName;
-
     public static string CancelButtonName => cancelButtonName;
-
     public static string SaveButtonName => saveButtonName;
-
     public static string ResetButtonName => resetButtonName;
-
-    //public GameObject ConfirmationDialogueBox { get => confirmationDialogueBox; set => confirmationDialogueBox = value; }
     public ProgressionState ProgressionState { get => progressionState; set => progressionState = value; }
-    //public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData;  }
-    //public int PlayerSelectedIndex { get => playerSelectedIndex;}
     public bool DataLoaded { get => dataLoaded; }
-
     public static string SceneStatsName => sceneStatsName;
-
-
     public static string SceneStartName => sceneStartName;
 
     public enum UpdateType
