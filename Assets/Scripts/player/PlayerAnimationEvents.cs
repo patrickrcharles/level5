@@ -99,11 +99,8 @@ public class PlayerAnimationEvents : MonoBehaviour
 
         InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
     }
-    //private void Update()
-    //{
-    //    checkCollidersDisabledProperly();
-    //}
 
+    // function - Invoke Repeating
     private void checkCollidersDisabledProperly()
     {
         if (playerController.CurrentState != playerController.AttackState
