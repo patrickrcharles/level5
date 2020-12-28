@@ -37,12 +37,12 @@ public class TouchInputController : MonoBehaviour
     private bool tap2Detected;
     [SerializeField]
     private bool doubleTap1Detected;
-    [SerializeField]
-    private bool doubleTap2Detected;
+    //[SerializeField]
+    //private bool doubleTap2Detected;
     [SerializeField]
     private bool hold1Detected;
-    [SerializeField]
-    private bool hold2Detected;
+    //[SerializeField]
+    //private bool hold2Detected;
 
     [SerializeField]
     float tapInterval;
@@ -143,18 +143,18 @@ public class TouchInputController : MonoBehaviour
                 doubleTap1Detected = false;
             }
 
-            // ====================== touch 2 : double tap  =====================================
-            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
-            {
-                //Debug.Log("double tap 2");
-                doubleTap2Detected = true;
-                //touchLastTap = Time.time;
-                //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
-            }
-            if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Ended)
-            {
-                doubleTap2Detected = false;
-            }
+            //// ====================== touch 2 : double tap  =====================================
+            //if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
+            //{
+            //    //Debug.Log("double tap 2");
+            //    doubleTap2Detected = true;
+            //    //touchLastTap = Time.time;
+            //    //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
+            //}
+            //if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Ended)
+            //{
+            //    doubleTap2Detected = false;
+            //}
             // ====================== touch 2  =====================================
 
             //Touch 2 is tap + hold detected + bottom right screen
@@ -164,8 +164,8 @@ public class TouchInputController : MonoBehaviour
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) 
                                                //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
             {
-                // ====================== touch 2 + tap =====================================
-                if (tap2Detected && !doubleTap2Detected)
+                // ====================== touch 2 + bottom right =====================================
+                if (tap2Detected && startTouchPosition2.y < (Screen.height / 2))
                 {
                     //Debug.Log("tap2Detected && !doubleTap2Detected");
                     buttonPressed = true;
@@ -177,17 +177,17 @@ public class TouchInputController : MonoBehaviour
                     }
                     buttonPressed = false;
                 }
-                // ====================== touch 2 + double tap =====================================
-                if (!tap2Detected && doubleTap2Detected)
+                // ====================== touch 2 + top right =====================================
+                if (tap2Detected && startTouchPosition2.y > (Screen.height / 2))
                 {
-                    Debug.Log("!tap2Detected && doubleTap2Detected");
+                    //Debug.Log("!tap2Detected && doubleTap2Detected");
                     buttonPressed = true;
                     if (!playerController.inAir
                         && playerController.Grounded
                         && !playerController.KnockedDown)
                     {
                         //Debug.Log("player special attack ");
-                        doubleTap2Detected = false;
+                        //doubleTap2Detected = false;
                         hold1Detected = false;
                         playerController.playerSpecial();
                     }
