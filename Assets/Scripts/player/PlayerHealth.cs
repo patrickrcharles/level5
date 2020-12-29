@@ -77,7 +77,6 @@ public class PlayerHealth : MonoBehaviour
             {
                 StartCoroutine(RegenerateHealth());
             }
-
         }
     }
 
