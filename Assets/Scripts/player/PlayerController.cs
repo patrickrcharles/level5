@@ -356,8 +356,8 @@ public class PlayerController : MonoBehaviour
             && !GameOptions.EnemiesOnlyEnabled
             && !inAir)
         {
-            if (playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet
-                && PlayerDunk.instance != null)
+            if (PlayerDunk.instance != null
+                && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
             {
                 dunkTrigger = true;
             }
