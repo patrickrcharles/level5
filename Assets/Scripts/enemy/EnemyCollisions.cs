@@ -103,6 +103,14 @@ public class EnemyCollisions : MonoBehaviour
                     }
                     PlayerHealthBar.instance.setHealthSliderValue();
                     BasketBall.instance.BasketBallStats.EnemiesKilled++;
+                    if (enemyHealth.IsBoss)
+                    {
+                        BasketBall.instance.BasketBallStats.BossKilled++;
+                    }
+                    else
+                    {
+                        BasketBall.instance.BasketBallStats.MinionsKilled++;
+                    }
                     if (BehaviorNpcCritical.instance != null)
                     {
                         BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();

@@ -45,6 +45,8 @@ public class BasketBallStats : MonoBehaviour
 
     //enemies
     private int _enemiesKilled;
+    private int _minionsKilled;
+    private int _bossKilled;
 
     private float _timePlayed;
 
@@ -87,7 +89,8 @@ public class BasketBallStats : MonoBehaviour
 
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
-            experience += (EnemiesKilled * 100);
+            experience += (MinionsKilled * 100);
+            experience += (BossKilled * 300);
             experience *= 2;
         }
         if (GameOptions.hardcoreModeEnabled)
@@ -268,4 +271,6 @@ public class BasketBallStats : MonoBehaviour
         set => _experienceGained = value;
     }
     public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
+    public int BossKilled { get => _bossKilled; set => _bossKilled = value; }
+    public int MinionsKilled { get => _minionsKilled; set => _minionsKilled = value; }
 }
