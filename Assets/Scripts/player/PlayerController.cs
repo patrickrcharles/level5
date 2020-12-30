@@ -81,7 +81,10 @@ public class PlayerController : MonoBehaviour
     // touch vars
     Touch touch;
     Vector2 startTouchPosition = new Vector2(0, 0);
+    float screenXRange;
+    float screenYRange;
 
+    // player take damage display
     Text damageDisplayValueText;
     GameObject damageDisplayObject;
     const string damageDisplayValueName = "player_damage_display_text";
@@ -129,6 +132,8 @@ public class PlayerController : MonoBehaviour
 
         //dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
         //dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        screenXRange = Screen.width / 10;
+        screenYRange = Screen.width / 10;
 
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
