@@ -25,7 +25,7 @@ public class EnemyCollisions : MonoBehaviour
     {
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
-            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox"))
+            && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             && enemyHealth != null
             && enemyHealthBar != null)
         {

@@ -26,7 +26,7 @@ public class PlayerCollisions : MonoBehaviour
         {
             StartCoroutine( PlayerDunk.instance.TriggerDunkSequence());
         }
-        // playyer sometimes gets stuck in inair dunk state
+        // player sometimes gets stuck in inair dunk state
         if (gameObject.CompareTag("playerHitbox")
             && other.CompareTag("ground")
             && playerState.currentState == playerState.inAirDunkState)
@@ -36,7 +36,7 @@ public class PlayerCollisions : MonoBehaviour
 
         // if collsion between hitbox and vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
-        && other.CompareTag("enemyAttackBox")
+        && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
         && !playerState.KnockedDown
         && !playerState.TakeDamage
         && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
