@@ -53,20 +53,27 @@ public class PlayerAttackQueue : MonoBehaviour
 
     private void Start()
     {
-        // default set up
-        if (maxEnemiesQueued == 0 && GameOptions.hardcoreModeEnabled)
+        // if fighting only game mode/ hardcore OFF
+        if (GameOptions.EnemiesOnlyEnabled && !GameOptions.hardcoreModeEnabled)
         {
             maxEnemiesQueued = 4;
         }
+        // if fighting only game mode/ hardcore ON
+        else if (GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
+        {
+            maxEnemiesQueued = 6;
+        }
+        //default
         else
         {
             maxEnemiesQueued = 2;
         }
-
+        // check if attack slot open
         if (currentEnemiesQueued < maxEnemiesQueued)
         {
             attackSlotOpen = true;
         }
+        // if queue is full
         if (currentEnemiesQueued == maxEnemiesQueued)
         {
             attackQueueLocked = true;
@@ -75,6 +82,7 @@ public class PlayerAttackQueue : MonoBehaviour
         {
             attackQueueLocked = false;
         }
+
         // check for and add bodyguards to list
         bodyGuards = getBodyGuards();
         getAttackPositions();
@@ -180,7 +188,7 @@ public class PlayerAttackQueue : MonoBehaviour
                         bodyGuardEngaged = true;
                     }
                 }
-                    //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");               
+                //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");               
             }
         }
         LockAttackQueue = false;
