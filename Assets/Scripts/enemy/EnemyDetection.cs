@@ -27,7 +27,7 @@ public class EnemyDetection : MonoBehaviour
         // if only enemies, make increase enemy sight
         if (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled)
         {
-            enemySightDistance = 20;
+            enemySightDistance = 10;
         }
         InvokeRepeating("CheckPlayerDistance", 0, 0.5f);
         InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);
