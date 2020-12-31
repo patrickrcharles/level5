@@ -30,6 +30,9 @@ public class GroundCheck : MonoBehaviour
             playerController.Grounded = true;
             playerController.inAir = false;
             playerController.setPlayerAnim("jump", false);
+
+            //reset state flags
+            CallBallToPlayer.instance.Locked = false;
         }
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
         {
