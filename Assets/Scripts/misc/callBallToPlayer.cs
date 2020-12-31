@@ -12,8 +12,8 @@ public class CallBallToPlayer : MonoBehaviour
     private BasketBallState _basketBallState;
     [SerializeField]
     private bool locked;
-    [SerializeField]
-    private bool canBallToPlayerEnabled;
+    //[SerializeField]
+    //private bool canBallToPlayerEnabled;
     [SerializeField]
     bool CallEnabled = true;
 
