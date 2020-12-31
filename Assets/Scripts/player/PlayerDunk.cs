@@ -62,6 +62,7 @@ public class PlayerDunk : MonoBehaviour
         {
             Launch(dunkPositionRight);
         }
+        //BasketBall.instance.BasketBallState.Locked = false;
     }
 
     public IEnumerator TriggerDunkSequence()
@@ -123,6 +124,7 @@ public class PlayerDunk : MonoBehaviour
 
         gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
         playerController.locked = false;
+
     }
 
     public float DunkRangeFeet { get => dunkRangeFeet; }
