@@ -120,25 +120,23 @@ public class PlayerController : MonoBehaviour
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
-        //playerHitbox.SetActive(true);
         facingRight = true;
-        //canMove = true;
+
         movementSpeed = characterProfile.Speed;
         runningToggle = true;
-        //if (_knockDownTime == 0) { _knockDownTime = 1.5f; }
-        //if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
-        //if (attackSpeed == 0) { attackSpeed = 0f; }
-        if (blockSpeed == 0) { blockSpeed = 0.2f; }
 
-        //dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
-        //dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        if (_knockDownTime == 0) { _knockDownTime = 1.5f; }
+        if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
+        if (blockSpeed == 0) { blockSpeed = 0.2f; }
+        //if (attackSpeed == 0) { attackSpeed = 0f; }
+
         screenXRange = Screen.width / 10;
         screenYRange = Screen.width / 10;
 
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
-            playerSwapAttack = GetComponent<PlayerSwapAttack>();            
+            playerSwapAttack = GetComponent<PlayerSwapAttack>();
             damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
             damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
         }
@@ -151,7 +149,6 @@ public class PlayerController : MonoBehaviour
     // not affected by framerate
     void FixedUpdate()
     {
-
         //------MOVEMENT---------------------------
         if (!KnockedDown && currentState != takeDamageState)
         {
@@ -172,7 +169,7 @@ public class PlayerController : MonoBehaviour
                 float XrangePercent = Mathf.Abs((touch.position.x - startTouchPosition.x) / screenXRange);
                 float YrangePercent = Mathf.Abs((touch.position.y - startTouchPosition.y) / screenYRange);
 
-                 //if max finger move distance not achieved, multiply by percent of distance so far
+                //if max finger move distance not achieved, multiply by percent of distance so far
                 if (XrangePercent < 1)
                 {
                     movementHorizontal *= XrangePercent;
@@ -187,30 +184,27 @@ public class PlayerController : MonoBehaviour
                 movementHorizontal = 0;
                 movementVertical = 0;
             }
-
-            //#if UNITY_ANDROID && !UNITY_EDITOR
-            //#if UNITY_ANDROID 
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
 
-            movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
-            movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+                        movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
+                        movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
+                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
 
 #endif
 
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
+            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
             // check jump trigger and execute jump
             if (jumpTrigger)
             {
                 jumpTrigger = false;
                 playerJump();
             }
-            if (dunkTrigger 
+            if (dunkTrigger
                 && (currentState != inAirDunkState || currentState != inAirDunkState)
                 && !inAir
                 && Grounded
@@ -328,7 +322,7 @@ public class PlayerController : MonoBehaviour
             movementSpeed = blockSpeed;
         }
         // inair state
-        if (inAir )//&& currentState != inAirDunkState)
+        if (inAir)//&& currentState != inAirDunkState)
         {
             checkIsPlayerFacingGoal();
             if (currentState != inAirDunkState)
@@ -455,14 +449,26 @@ public class PlayerController : MonoBehaviour
             && hasBasketball
             && touchPosition.x > (Screen.width / 2))
         {
-            playerJump();          
+            //playerJump();
+            jumpTrigger = true;
+        }
+        if (PlayerDunk.instance != null
+            && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet
+            && (currentState != inAirDunkState || currentState != inAirDunkState)
+            && !inAir
+            && Grounded
+            && hasBasketball
+            && !locked)
+        {
+            //PlayerDunk.instance.playerDunk();
+            dunkTrigger = true;
         }
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
         if (inAir
             && hasBasketball
-            //&& !IsSetShooter
-            && touchPosition.x > (Screen.width / 2))
+            && touchPosition.x > (Screen.width / 2)
+            && (currentState != inAirDunkState || currentState != inAirDunkState))
         {
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
@@ -689,13 +695,13 @@ public class PlayerController : MonoBehaviour
     public void FreezePlayerPosition()
     {
         //Debug.Log("FreezePlayerPosition");
-            //rigidBody.velocity = Vector3.zero;
-            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
-            | RigidbodyConstraints.FreezeRotationY
-            | RigidbodyConstraints.FreezeRotationZ
-            | RigidbodyConstraints.FreezePositionX
-            | RigidbodyConstraints.FreezePositionY
-            | RigidbodyConstraints.FreezePositionZ;
+        //rigidBody.velocity = Vector3.zero;
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
+        | RigidbodyConstraints.FreezeRotationY
+        | RigidbodyConstraints.FreezeRotationZ
+        | RigidbodyConstraints.FreezePositionX
+        | RigidbodyConstraints.FreezePositionY
+        | RigidbodyConstraints.FreezePositionZ;
     }
 
     public void UnFreezePlayerPosition()
