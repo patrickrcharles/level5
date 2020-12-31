@@ -9,8 +9,6 @@ public class PlatformCheck : MonoBehaviour
     [SerializeField] InputSystemUIInputModule inputSystemUIInputModule;
     [SerializeField] StandaloneInputModule standaloneInputModule;
 
-    //public static PlatformCheck instance;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,6 +31,7 @@ public class PlatformCheck : MonoBehaviour
         inputSystemUIInputModule.enabled = false;
         standaloneInputModule.enabled = true;
         //standaloneInputModule.ActivateModule(); 
+        Debug.Log("android");
 
 #endif
 
