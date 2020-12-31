@@ -31,6 +31,7 @@ public class DBHelper : MonoBehaviour
     {
         instance = this;
         filepath = Application.persistentDataPath + databaseNamePath;
+        //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
 
@@ -1064,27 +1065,34 @@ public class DBHelper : MonoBehaviour
         string sqlQuery = "SELECT " + field + " FROM " + tableName
             + " WHERE modeid = " + modeid + " ORDER BY " + field + "  " + order + "  LIMIT 1";
 
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            // null check
-            if (reader.IsDBNull(0))
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                value = 0;
+                // null check
+                if (reader.IsDBNull(0))
+                {
+                    value = 0;
+                }
+                else
+                {
+                    value = reader.GetInt32(0);
+                }
             }
-            else
-            {
-                value = reader.GetInt32(0);
-            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
         }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+        catch(Exception e)
+        {
+            Debug.Log(e);
+        }
 
         return value;
     }
