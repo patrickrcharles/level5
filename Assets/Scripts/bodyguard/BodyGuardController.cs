@@ -8,13 +8,9 @@ public class BodyGuardController : MonoBehaviour
 {
     Animator anim;
     private Rigidbody rigidBody;
-    [SerializeField]
     BodyGuardDetection bodyGuardDetection;
-    [SerializeField]
     SpriteRenderer spriteRenderer;
-    [SerializeField]
     PlayerSwapAttack playerSwapAttack;
-
 
     // how long after attacking the enemy can attack again
     public float attackCooldown;
@@ -49,7 +45,7 @@ public class BodyGuardController : MonoBehaviour
     [SerializeField]
     private float takeDamageTime;
 
-    const string lightningAnimName = "lightning";
+    //const string lightningAnimName = "lightning";
 
     private AnimatorStateInfo currentStateInfo;
     static int currentState;
@@ -75,10 +71,8 @@ public class BodyGuardController : MonoBehaviour
 
     [SerializeField]
     bool enemyUsesPhysics;
-    [SerializeField]
     GameObject dropShadow;
 
-    [SerializeField]
     GameObject enemyAttacking;
 
     Vector3 originalPosition;
