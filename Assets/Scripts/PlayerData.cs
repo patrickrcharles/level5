@@ -67,11 +67,6 @@ public class PlayerData : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (GameObject.FindGameObjectsWithTag("database") != null)
-        {
-            //Debug.Log("load player high scores");
-            loadStatsFromDatabase();
-        }
     }
 
     private void Start()
@@ -81,6 +76,11 @@ public class PlayerData : MonoBehaviour
         //    Debug.Log("load player high scores");
         //    loadStatsFromDatabase();
         //}
+        if (GameObject.FindGameObjectsWithTag("database") != null)
+        {
+            //Debug.Log("load player high scores");
+            loadStatsFromDatabase();
+        }
     }
 
     public void loadStatsFromDatabase()
