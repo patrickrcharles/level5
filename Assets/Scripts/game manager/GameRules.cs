@@ -79,7 +79,15 @@ public class GameRules : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         timePlayedStart = Time.time;
         inThePocketActivateValue = 3;
     }
@@ -88,7 +96,6 @@ public class GameRules : MonoBehaviour
     {
         gameOver = false;
         gameModeId = GameOptions.gameModeSelectedId;
-        timer = GameObject.Find("timer").GetComponent<Timer>();
 
         // components
         basketBallStats = BasketBall.instance.BasketBallStats;
@@ -99,6 +106,8 @@ public class GameRules : MonoBehaviour
         displayMoneyText = GameObject.Find(displayMoneyObjectName).GetComponent<Text>();
         displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
         displayOtherMessageText = GameObject.Find(displayOtherMessageName).GetComponent<Text>();
+        timer = GameObject.Find("timer").GetComponent<Timer>();
+        Debug.Log("timer :" + timer);
 
         // rules flags
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
@@ -290,38 +299,38 @@ public class GameRules : MonoBehaviour
         return p1.PositionMarkerId.CompareTo(p2.PositionMarkerId);
     }
 
-    private void setTimedPointContestPositionMarkers()
-    {
-        //// get all shot position marker objects
-        //basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
+    //private void setTimedPointContestPositionMarkers()
+    //{
+    //    //// get all shot position marker objects
+    //    //basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
 
-        //gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
-        //gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+    //    //gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
+    //    //gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
 
-        ////load them into list
-        //foreach (var marker in basketBallShotMarkerObjects)
-        //{
-        //    BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
-        //    // if 3 markers not required, disable them
-        //    if (!gameModeRequiresShotMarkers3s && temp.ShotTypeThree)
-        //    {
-        //        marker.SetActive(false);
-        //    }
-        //    // if 4 markers not required, disable them
-        //    if (!gameModeRequiresShotMarkers4s && temp.ShotTypeFour)
-        //    {
-        //        marker.SetActive(false);
-        //    }
-        //    // add all active and enabled markers to list
-        //    if (temp.isActiveAndEnabled)
-        //    {
-        //        BasketBallShotMarkersList.Add(temp);
-        //        temp.PositionMarkerId = BasketBallShotMarkersList.Count - 1;
-        //    }
-        //}
-        //// number of markers to complete ( all active and enabled sshot markers based on game options
-        //markersRemaining = BasketBallShotMarkersList.Count;
-    }
+    //    ////load them into list
+    //    //foreach (var marker in basketBallShotMarkerObjects)
+    //    //{
+    //    //    BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
+    //    //    // if 3 markers not required, disable them
+    //    //    if (!gameModeRequiresShotMarkers3s && temp.ShotTypeThree)
+    //    //    {
+    //    //        marker.SetActive(false);
+    //    //    }
+    //    //    // if 4 markers not required, disable them
+    //    //    if (!gameModeRequiresShotMarkers4s && temp.ShotTypeFour)
+    //    //    {
+    //    //        marker.SetActive(false);
+    //    //    }
+    //    //    // add all active and enabled markers to list
+    //    //    if (temp.isActiveAndEnabled)
+    //    //    {
+    //    //        BasketBallShotMarkersList.Add(temp);
+    //    //        temp.PositionMarkerId = BasketBallShotMarkersList.Count - 1;
+    //    //    }
+    //    //}
+    //    //// number of markers to complete ( all active and enabled sshot markers based on game options
+    //    //markersRemaining = BasketBallShotMarkersList.Count;
+    //}
 
     // ================================================ set score display ============================================
     private void setScoreDisplayText()

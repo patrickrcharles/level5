@@ -179,6 +179,11 @@ public class StartManager : MonoBehaviour
         // update experience and levels
         // recommended here because experience will be gained after every game played
         StartCoroutine(UpdateLevelAndExperienceFromDatabase());
+
+        // diable nav buttons if mobile
+#if UNITY_ANDROID && !UNITY_EDITOR
+            disableButtonsNotUsedForTouchInput();
+#endif
     }
 
     // Start is called before the first frame update
@@ -535,7 +540,6 @@ public class StartManager : MonoBehaviour
 
     public void disableButtonsNotUsedForTouchInput()
     {
-        Debug.Log("disable buttons");
         levelSelectButton.enabled = false;
         trafficSelectButton.enabled = false;
         playerSelectButton.enabled = false;

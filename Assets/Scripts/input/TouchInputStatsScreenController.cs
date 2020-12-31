@@ -33,6 +33,17 @@ public class TouchInputStatsScreenController : MonoBehaviour
     {
         initializeStatScreenTouchControls();
     }
+    private void Start()
+    {
+        // set distance required for swipe up to be regeistered by device
+        swipeUpTolerance = Screen.height / 7;
+        swipeDownTolerance = Screen.height / 5;
+        prevSelectedGameObject = EventSystem.current.firstSelectedGameObject;
+        if (EventSystem.current == null)
+        {
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+        }
+    }
 
     void Update()
     {
@@ -45,11 +56,6 @@ public class TouchInputStatsScreenController : MonoBehaviour
         if (Input.touchCount > 0 && !buttonPressed)
         {
             Touch touch = Input.touches[0];
-            // highlight pressed button
-            //if (touch.phase == TouchPhase.Began)
-            //{
-            //    selectPressedButton();
-            //}
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
                 startTouchPosition = touch.position;
@@ -58,7 +64,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
 
             // swipe down on changeable options
-            if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance < 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
@@ -72,7 +78,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
                 }
             }
             //swipe up on changeable options
-            if (/*touch.tapCount == 1 &&*/ touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
@@ -115,11 +121,8 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // else, this is not the startscreen and disable object
         else
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
-        // set distance required for swipe up to be regeistered by device
-        swipeUpTolerance = Screen.height / 7;
-        swipeDownTolerance = Screen.height / 5;
     }
 
     private void activateDoubleTappedButton()
@@ -129,13 +132,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
         {
             StatsManager.instance.changeSelectedMode("right");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay(false);
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("right");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay(true);
         }
 
@@ -164,37 +167,43 @@ public class TouchInputStatsScreenController : MonoBehaviour
 
     private void swipeUpOnOption()
     {
+        StatsManager.instance.changeHighScoreDataDisplay(false);
         buttonPressed = true;
         //high score, mode change
+        EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
         {
             StatsManager.instance.changeSelectedMode("right");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(false);
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(true);
+            buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("right");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(true);
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay(false);
+            buttonPressed = true;
         }
         buttonPressed = false;
     }
     private void swipeDownOnOption()
     {
-        buttonPressed = true;
         //high score, mode change
+        EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
         {
             StatsManager.instance.changeSelectedMode("left");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay(false);
+            buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("left");
-            StatsManager.instance.changeHighScoreModeNameDisplay();
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay(true);
+            buttonPressed = true;
         }
         buttonPressed = false;
     }

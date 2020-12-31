@@ -31,17 +31,25 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
-        timerText = GetComponent<Text>();
-        timerText.text = "";
-        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
-        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
-        shotClockText.text = "";
-        scoreClockText.text = "";
+        if (instance == null)
+        {
+            instance = this;
+            timerText = GetComponent<Text>();
+            Debug.Log("instance start");
+        }
+        else
+        {
+            Destroy(this);
+            Debug.Log("destroy this");
+        }
     }
 
     void Start()
     {
+
+        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest
@@ -68,6 +76,17 @@ public class Timer : MonoBehaviour
         {
             timerEnabled = false;
         }
+
+        //timerText = GetComponent<Text>();
+        timerText.text = "";
+
+        //shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+        //scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+        shotClockText.text = "";
+        scoreClockText.text = "";
+
+        Debug.Log(shotClockText);
+        Debug.Log(scoreClockText);
     }
 
     void Update()
@@ -168,7 +187,6 @@ public class Timer : MonoBehaviour
         get => displayTimer;
         set => displayTimer = value;
     }
-    public float Seconds { get => seconds; set => seconds = value; }
-    public Text TimerText { get => timerText; set => timerText = value; }
+
     public Text ScoreClockText { get => scoreClockText; set => scoreClockText = value; }
 }

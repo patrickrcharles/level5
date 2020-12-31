@@ -200,7 +200,7 @@ public class StatsManager : MonoBehaviour
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
-                changeHighScoreModeNameDisplay();
+                //changeHighScoreModeNameDisplay();
                 //changeHighScoreDataDisplay(false);
             }
 
@@ -208,7 +208,7 @@ public class StatsManager : MonoBehaviour
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                changeHighScoreModeNameDisplay();
+                //changeHighScoreModeNameDisplay();
                 //changeHighScoreDataDisplay(false);
             }
 
@@ -234,7 +234,7 @@ public class StatsManager : MonoBehaviour
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
-                changeHighScoreModeNameDisplay();
+                //changeHighScoreModeNameDisplay();
                 //changeHighScoreDataDisplay(true);
             }
 
@@ -242,7 +242,7 @@ public class StatsManager : MonoBehaviour
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                changeHighScoreModeNameDisplay();
+                //changeHighScoreModeNameDisplay();
                 //changeHighScoreDataDisplay(true);
             }
 
@@ -401,6 +401,9 @@ public class StatsManager : MonoBehaviour
                 currentModeSelectedIndex++;
             }
         }
+
+        modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     public void changeHighScoreModeNameDisplay()
