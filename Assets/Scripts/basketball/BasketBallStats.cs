@@ -62,35 +62,25 @@ public class BasketBallStats : MonoBehaviour
     public int getExperienceGainedFromSession()
     {
         int experience = 0;
-        //experience += TotalPoints * 10;
-        //Debug.Log("TotalPoints : " + TotalPoints);
 
         experience += (TwoPointerMade * 20);
-        //Debug.Log("(TwoPointerMade * 2) : " + (TwoPointerMade * 10));
 
         experience += (ThreePointerMade * 30);
-        //Debug.Log("(ThreePointerMade * 3) : " + (ThreePointerMade * 15));
 
         experience += (FourPointerMade * 40);
-        //Debug.Log("(FourPointerMade * 4) : " + (FourPointerMade * 20));
 
         experience += (SevenPointerMade * 70);
-        //Debug.Log("(SevenPointerMade * 7) : " + (SevenPointerMade * 35));
 
         experience += Mathf.RoundToInt(TotalDistance * 0.5f);
-        //Debug.Log("TotalDistance : " + TotalDistance * 0.5f);
 
-        //Debug.Log("MostConsecutiveShots * 50 : " + MostConsecutiveShots * 50);
         experience += (MostConsecutiveShots * 25);
 
-        //Debug.Log("TotalPoints : " + TotalPoints);
         experience += TotalPoints;
-
 
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
-            experience += (MinionsKilled * 100);
-            experience += (BossKilled * 300);
+            experience += (MinionsKilled * 50);
+            experience += (BossKilled * 150);
             experience *= 2;
         }
         if (GameOptions.hardcoreModeEnabled)
@@ -99,8 +89,6 @@ public class BasketBallStats : MonoBehaviour
         }
 
         ExperienceGained = experience;
-        //Debug.Log("experience gained : " + ExperienceGained);
-        //Debug.Log("modeid : " + GameOptions.gameModeSelectedId + " ExperienceGained : " + ExperienceGained);
 
         // if arcade mode, 0 out experience
         if (GameOptions.arcadeModeEnabled)
