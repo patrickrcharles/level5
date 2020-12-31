@@ -19,16 +19,16 @@ public class EnemyHealth : MonoBehaviour
     public int Health { get => health; set => health = value; }
     public int MaxEnemyHealth { get => maxEnemyHealth; set => maxEnemyHealth = value; }
     public bool IsDead { get => isDead; set => isDead = value; }
-    public bool IsBoss { get => isBoss; set => isBoss = value; }
 
     private void Start()
     {
+        enemyController = gameObject.transform.root.GetComponent<EnemyController>();
         // default
-        if (isMinion)
+        if (enemyController.IsMinion)
         {
             maxEnemyHealth = 50;
         }
-        else if (isBoss)
+        else if (enemyController.IsBoss)
         {
             maxEnemyHealth = 150;
         }
@@ -41,7 +41,5 @@ public class EnemyHealth : MonoBehaviour
             maxEnemyHealth += (maxEnemyHealth/4);
         }
         health = maxEnemyHealth;
-
-        enemyController = transform.parent.GetComponent<EnemyController>();
     }
 }

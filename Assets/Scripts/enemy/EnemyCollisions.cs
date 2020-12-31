@@ -103,7 +103,7 @@ public class EnemyCollisions : MonoBehaviour
                     }
                     PlayerHealthBar.instance.setHealthSliderValue();
                     BasketBall.instance.BasketBallStats.EnemiesKilled++;
-                    if (enemyHealth.IsBoss)
+                    if (enemyController.IsBoss)
                     {
                         BasketBall.instance.BasketBallStats.BossKilled++;
                     }

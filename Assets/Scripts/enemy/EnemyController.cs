@@ -6,18 +6,11 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    Animator anim;
+    private Animator anim;
     private Rigidbody rigidBody;
-    [SerializeField]
-    EnemyDetection enemyDetection;
-    [SerializeField]
-    SpriteRenderer spriteRenderer;
-    [SerializeField]
-    PlayerSwapAttack playerSwapAttack;
-
-
-    // how long after attacking the enemy can attack again
-    public float attackCooldown;
+    private EnemyDetection enemyDetection;
+    private SpriteRenderer spriteRenderer;
+    private PlayerSwapAttack playerSwapAttack;
     // target for enemy to move to
     private Vector3 targetPosition;
 
@@ -29,6 +22,8 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField]
     public bool facingRight;
+    // how long after attacking the enemy can attack again
+    public float attackCooldown;
     [SerializeField]
     private float relativePositionToPlayer;
     [SerializeField]
@@ -47,6 +42,10 @@ public class EnemyController : MonoBehaviour
     private float knockDownTime;
     [SerializeField]
     private float takeDamageTime;
+    [SerializeField]
+    bool isMinion;
+    [SerializeField]
+    bool isBoss;
 
     const string lightningAnimName = "lightning";
 
@@ -66,7 +65,7 @@ public class EnemyController : MonoBehaviour
     public bool stateKnockDown = false;
 
     bool playerInLineOfSight = false;
-    public float lineOfSight;
+    private float lineOfSight;
     public float lineOfSightVariance;
 
     public bool canAttack;
@@ -86,6 +85,8 @@ public class EnemyController : MonoBehaviour
     public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
     public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
+    public bool IsMinion { get => isMinion; set => isMinion = value; }
+    public bool IsBoss { get => isBoss; set => isBoss = value; }
 
     // Use this for initialization
     void Start()
@@ -103,16 +104,30 @@ public class EnemyController : MonoBehaviour
 
         if (attackCooldown == 0) { attackCooldown = 1f; }
         //if (knockDownTime == 0) { knockDownTime = 2f; }
-        if (lineOfSightVariance == 0) { lineOfSightVariance = 0.5f; }
+        if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
+
+        if (IsMinion)
+        {
+            attackCooldown = 1.5f;
+            walkMovementSpeed = 1.25f;
+            runMovementSpeed = 1.6f;
+            takeDamageTime = 0.4f;
+        }
+        if (IsBoss)
+        {
+            attackCooldown = 1.2f;
+            walkMovementSpeed = 1.5f;
+            runMovementSpeed = 2f;
+            takeDamageTime = 0.3f;
+        }
+
         if (GameOptions.hardcoreModeEnabled)
         {
             movementSpeed *= 1.25f;
             attackCooldown *= 0.5f;
         }
-        // try this as default
-        takeDamageTime = 0.3f;
 
         // put enemy on the ground. some are spawning up pretty high
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
