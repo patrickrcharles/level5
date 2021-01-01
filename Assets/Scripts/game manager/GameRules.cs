@@ -107,7 +107,6 @@ public class GameRules : MonoBehaviour
         displayMoneyBallText = GameObject.Find(displayMoneyBallObjectName).GetComponent<Text>();
         displayOtherMessageText = GameObject.Find(displayOtherMessageName).GetComponent<Text>();
         timer = GameObject.Find("timer").GetComponent<Timer>();
-        Debug.Log("timer :" + timer);
 
         // rules flags
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
