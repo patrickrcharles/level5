@@ -87,6 +87,8 @@ public class EnemyController : MonoBehaviour
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
     public bool IsMinion { get => isMinion; set => isMinion = value; }
     public bool IsBoss { get => isBoss; set => isBoss = value; }
+    //[SerializeField]
+    //float currentSpeed;
 
     // Use this for initialization
     void Start()
@@ -108,14 +110,14 @@ public class EnemyController : MonoBehaviour
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
 
-        if (IsMinion)
+        if (isMinion)
         {
             attackCooldown = 1.5f;
             walkMovementSpeed = 1.25f;
             runMovementSpeed = 1.6f;
             takeDamageTime = 0.4f;
         }
-        if (IsBoss)
+        if (isBoss)
         {
             attackCooldown = 1.2f;
             walkMovementSpeed = 1.5f;
@@ -154,6 +156,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        //currentSpeed = rigidBody.velocity.magnitude;
+
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
@@ -310,18 +314,6 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSecondsRealtime(seconds);
         canAttack = true;
     }
-    //void isWalking(float speed)
-    //{
-    //    // if moving
-    //    if (speed > 0)
-    //    {
-    //        anim.SetBool("run", true);
-    //    }
-    //    else
-    //    {
-    //        anim.SetBool("run", false);
-    //    }
-    //}
 
     void Flip()
     {
@@ -450,6 +442,9 @@ public class EnemyController : MonoBehaviour
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
         //transform.Translate(movement);
+
+        //Debug.Log(gameObject.transform.root.name + " -- currentSpeed : " + currentSpeed);
+
     }
     public void returnToPatrol()
     {
@@ -457,7 +452,7 @@ public class EnemyController : MonoBehaviour
         if (Vector3.Distance(gameObject.transform.position, OriginalPosition) > 1)
         {
             targetPosition = (originalPosition - transform.position).normalized;
-            movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
+            movement = targetPosition * (movementSpeed * Time.deltaTime);
             //movement = targetPosition * (movementSpeed * Time.deltaTime);
             rigidBody.MovePosition(transform.position + movement);
         }
