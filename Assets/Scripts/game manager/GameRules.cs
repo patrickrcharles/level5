@@ -458,14 +458,17 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 16)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.ThreePointContestScore;
+                Timer.instance.ScoreClockText.text = BasketBall.instance.BasketBallStats.TotalPoints.ToString();
             }
             if (gameModeId == 17)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.FourPointContestScore;
+                Timer.instance.ScoreClockText.text = BasketBall.instance.BasketBallStats.TotalPoints.ToString();
             }
             if (gameModeId == 18)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.AllPointContestScore;
+                Timer.instance.ScoreClockText.text = BasketBall.instance.BasketBallStats.TotalPoints.ToString();
             }
             if (gameModeId == 19)
             {
