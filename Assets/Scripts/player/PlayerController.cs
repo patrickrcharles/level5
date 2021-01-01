@@ -188,8 +188,8 @@ public class PlayerController : MonoBehaviour
 
 #if UNITY_STANDALONE || UNITY_EDITOR
 
-                        movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
-                        movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
+                movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
+                movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
                         //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
                         //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
 
@@ -447,9 +447,10 @@ public class PlayerController : MonoBehaviour
         if (Grounded
             && !KnockedDown
             && hasBasketball
-            && touchPosition.x > (Screen.width / 2))
+            && playerDistanceFromRimFeet > PlayerDunk.instance.DunkRangeFeet
+            && touchPosition.x > (Screen.width / 2)
+            && !locked)
         {
-            //playerJump();
             jumpTrigger = true;
         }
         if (PlayerDunk.instance != null
@@ -458,9 +459,9 @@ public class PlayerController : MonoBehaviour
             && !inAir
             && Grounded
             && hasBasketball
+            && touchPosition.x > (Screen.width / 2)
             && !locked)
         {
-            //PlayerDunk.instance.playerDunk();
             dunkTrigger = true;
         }
         // if has ball, is in air, and pressed shoot button.
