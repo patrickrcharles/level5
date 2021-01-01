@@ -49,12 +49,17 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     void Update()
     {
+        // if no button selected, return to previous
+        if(EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+        }
         // save previous button until a touch is made
         if (!buttonPressed && Input.touchCount == 0)
         {
             prevSelectedGameObject = EventSystem.current.currentSelectedGameObject;
         }
-
+        // if touch
         if (Input.touchCount > 0 && !buttonPressed)
         {
             Touch touch = Input.touches[0];
