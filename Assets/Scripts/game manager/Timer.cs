@@ -35,12 +35,10 @@ public class Timer : MonoBehaviour
         {
             instance = this;
             timerText = GetComponent<Text>();
-            Debug.Log("instance start");
         }
         else
         {
             Destroy(this);
-            Debug.Log("destroy this");
         }
     }
 
@@ -77,16 +75,9 @@ public class Timer : MonoBehaviour
             timerEnabled = false;
         }
 
-        //timerText = GetComponent<Text>();
         timerText.text = "";
-
-        //shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
-        //scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
         shotClockText.text = "";
         scoreClockText.text = "";
-
-        Debug.Log(shotClockText);
-        Debug.Log(scoreClockText);
     }
 
     void Update()
