@@ -32,7 +32,6 @@ public class EnemySpawner : MonoBehaviour
             GameObject[] enemyHealthList = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in enemyHealthList)
             {
-                Debug.Log("enemy : " + go.name);
                 if (go.GetComponentInChildren<EnemyController>().IsBoss)
                 {
                     numberOfBoss++;
