@@ -53,12 +53,14 @@ public class ShotMeter : MonoBehaviour
         sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
         sliderMessageText.text = "";
 
-        if (GameOptions.hardcoreModeEnabled)
+        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             meterRed.SetActive(false);
             meterYellow.SetActive(false);
             meterGreen.SetActive(false);
             meterHandle.SetActive(false);
+            sliderValueOnPress.enabled = false;
+            sliderMessageText.enabled = false;
         }
     }
 
@@ -66,16 +68,15 @@ public class ShotMeter : MonoBehaviour
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.PlayerState.grounded)
+        if (GameLevelManager.instance.PlayerState.Grounded)
         {
             slider.value = 0;
         }
-        //
+        // idk
         if (meterStarted && !locked)
         {
             locked = true;
         }
-
         // this just to move the slider
         if (meterStarted && locked)
         {
@@ -90,16 +91,13 @@ public class ShotMeter : MonoBehaviour
                 {
                     sliderMaxReached = true;
                 }
-                //Debug.Log("slider.value : " + slider.value.ToString("###"));
             }
-
             if (sliderMaxReached)
             {
                 currentTime = Time.time;
                 slider.value = 90 - Math.Abs(100 - (((currentTime - meterStartTime) / (meterFillTime)) * 100));
             }
         }
-
         // this is to set the values and text display. it is separate from the above code
         if (meterEnded)
         {
@@ -117,8 +115,6 @@ public class ShotMeter : MonoBehaviour
             slider.value = sliderValueOnButtonPress;
             // display number
             displaySliderValueOnPressText(sliderValueOnButtonPress.ToString("###"));
-            //Debug.Log("sliderValueOnButtonPress : " + sliderValueOnButtonPress.ToString("###"));
-            //Debug.Log("sliderValueOnButtonPress : " + slider.value.ToString("###"));
 
             meterStarted = false;
             meterEnded = false;
@@ -157,13 +153,11 @@ public class ShotMeter : MonoBehaviour
 
     public void displaySliderValueOnPressText(String message)
     {
-
         StartCoroutine(toggleSliderValueOnPressText(2, message));
     }
 
     public void displaySliderMessageText(String message)
     {
-
         StartCoroutine(toggleSliderMessageText(2, message));
     }
 

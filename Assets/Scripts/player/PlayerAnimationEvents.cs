@@ -4,6 +4,7 @@ using UnityStandardAssets.Effects;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
+    [SerializeField]
     private AudioSource audioSource;
     const string attackBoxText = "attackBox";
     const string attackBoxSpecialText = "attackBoxSpecial";
@@ -19,6 +20,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     GameObject projectileLaserPrefab;
     [SerializeField]
     GameObject projectileBulletPrefab;
+    [SerializeField]
+    GameObject projectileAutomaticBulletPrefab;
     [SerializeField]
     GameObject projectileMolotovPrefab;
     [SerializeField]
@@ -44,6 +47,7 @@ public class PlayerAnimationEvents : MonoBehaviour
         {
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser") as GameObject;
             projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
+            projectileAutomaticBulletPrefab = Resources.Load("Prefabs/projectile/projectile_automatic_bullet") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
             projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;
             projectileCigarettePrefab = Resources.Load("Prefabs/projectile/projectile_cigarette") as GameObject;
@@ -55,10 +59,8 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
 
         playerController = GameLevelManager.instance.PlayerState;
-        if (GameLevelManager.instance.Basketball != null)
-        {
-            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-        }
+        audioSource = GetComponent<AudioSource>();
+
         if (transform.Find(attackBoxText)!= null)
         {
             attackBox = transform.Find(attackBoxText).gameObject;        
@@ -95,12 +97,15 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
         // check if attack box is active and should not be
 
-        //InvokeRepeating("CheckAttackBoxActiveStatus", 0, 3);
+        InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
     }
-    private void Update()
+
+    // function - Invoke Repeating
+    private void checkCollidersDisabledProperly()
     {
-        if (playerController.CurrentState != playerController.AttackState 
+        if (playerController.CurrentState != playerController.AttackState
             && playerController.CurrentState != playerController.SpecialState
+            && playerController.CurrentState != playerController.dunkState
             && attackBoxEnabled)
         {
             disableAttackBox();
@@ -125,6 +130,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
+    public void instantiateProjectileBulletAuto()
+    {
+        Instantiate(projectileAutomaticBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
 
     public void instantiateProjectileAutomaticBullet(int numOfBullets)
     {
@@ -136,7 +145,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         for(int i = 0; i < numBullets; i++)
         {
-            instantiateProjectileBullet();
+            instantiateProjectileBulletAuto();
             yield return new WaitForSeconds(0.1f);
         }
     }   
@@ -229,16 +238,15 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void enableAttackBox()
     {
+
         attackBox.SetActive(true);
         attackBoxEnabled = true;
-        //Debug.Log("enable attack box");
     }
 
     public void disableAttackBox()
     {
         attackBox.SetActive(false);
         attackBoxEnabled = false;
-        //Debug.Log("disable attack box");
     }
     public void enableAttackBoxSpecial()
     {
@@ -284,6 +292,11 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void disableRigidBodyIsKinematic()
     {
         GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    public void playSfxBasketballHitRim()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.basketballHitRim);
     }
 
     public void playSfxBasketballDribbling()

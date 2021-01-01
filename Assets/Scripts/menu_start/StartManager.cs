@@ -67,6 +67,9 @@ public class StartManager : MonoBehaviour
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
 
+    //version text
+    private Text versionText;
+
     //const object names
     private const string startButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
@@ -176,6 +179,11 @@ public class StartManager : MonoBehaviour
         // update experience and levels
         // recommended here because experience will be gained after every game played
         StartCoroutine(UpdateLevelAndExperienceFromDatabase());
+
+        // diable nav buttons if mobile
+#if UNITY_ANDROID && !UNITY_EDITOR
+            disableButtonsNotUsedForTouchInput();
+#endif
     }
 
     // Start is called before the first frame update
@@ -199,21 +207,7 @@ public class StartManager : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
 
-        //// if player highlighted, display player
-        //if (currentHighlightedButton.Equals(playerSelectButtonName) 
-        //    || currentHighlightedButton.Equals(playerSelectOptionButtonName)
-        //    || )
-        //{
-        //    try
-        //    {
-        //        initializePlayerDisplay();
-        //    }
-        //    catch
-        //    {
-        //        return;
-        //    }
-        //}
-        //// if cheerleader highlighted, display cheerleader
+        // if player highlighted, display player
         if ((!currentHighlightedButton.Equals(cheerleaderSelectButtonName) || !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName))
             && dataLoaded)
         {
@@ -244,10 +238,6 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            //if (GameObject.Find("LoadedData") != null)
-            //{
-            //    Destroy(GameObject.Find("LoadedData").gameObject);
-            //}
             loadGame();
         }
         // quit button | quit game
@@ -337,10 +327,9 @@ public class StartManager : MonoBehaviour
         // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed)
         {
-            //Debug.Log(" change option up");
             buttonPressed = true;
             try
-            {
+            {           
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -382,7 +371,6 @@ public class StartManager : MonoBehaviour
         // down, change option
         if (controls.UINavigation.Down.triggered && !buttonPressed)
         {
-            //Debug.Log(" change option down");
             buttonPressed = true;
             try
             {
@@ -474,6 +462,7 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
+        versionText.text = "Level 5 v."+ Application.version;
         // display default data
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
@@ -515,6 +504,9 @@ public class StartManager : MonoBehaviour
         // traffic option selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
+
+        //version
+        versionText = GameObject.Find("version").GetComponent<Text>();
     }
 
     private void setInitialGameOptions()
@@ -553,6 +545,16 @@ public class StartManager : MonoBehaviour
         playerSelectButton.enabled = false;
         CheerleaderSelectButton.enabled = false;
         modeSelectButton.enabled = false;
+    }
+
+    public void enableButtonsNotUsedForTouchInput()
+    {
+        Debug.Log("enable buttons");
+        levelSelectButton.enabled = true;
+        trafficSelectButton.enabled = true;
+        playerSelectButton.enabled = true;
+        CheerleaderSelectButton.enabled = true;
+        modeSelectButton.enabled = true;
     }
 
     public void changeSelectedTrafficOption()
@@ -862,6 +864,7 @@ public class StartManager : MonoBehaviour
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
+        GameOptions.levelRequiresTimeOfDay = levelSelectedData[levelSelectedIndex].LevelRequiresTimeOfDay;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
@@ -909,6 +912,14 @@ public class StartManager : MonoBehaviour
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
+        GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
+
+        // if enemies only mode, enable enemies whether it was selected or not
+        if (GameOptions.EnemiesOnlyEnabled)
+        {
+            GameOptions.enemiesEnabled = true;
+        }
+
     }
 
     // ============================  message display ==============================
@@ -924,7 +935,6 @@ public class StartManager : MonoBehaviour
     // ============================  navigation functions ==============================
     public void changeSelectedPlayerUp()
     {
-        //Debug.Log("changeSelectedPlayerUp");
         // if default index (first in list), go to end of list
         if (playerSelectedIndex == 0)
         {
@@ -941,7 +951,6 @@ public class StartManager : MonoBehaviour
     }
     public void changeSelectedPlayerDown()
     {
-        //Debug.Log("changeSelectedPlayerDown");
         // if default index (first in list
         if (playerSelectedIndex == playerSelectedData.Count - 1)
         {

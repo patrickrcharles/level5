@@ -2,16 +2,20 @@
 
 public class CallBallToPlayer : MonoBehaviour
 {
-    [SerializeField] internal float pullSpeed;
+    [SerializeField] 
+    internal float pullSpeed;
     private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;
 
     private PlayerController playerState;
     private BasketBall basketBall;
     private BasketBallState _basketBallState;
-
+    [SerializeField]
     private bool locked;
-    private bool canBallToPlayerEnabled;
+    //[SerializeField]
+    //private bool canBallToPlayerEnabled;
+    [SerializeField]
+    bool CallEnabled = true;
 
     public static CallBallToPlayer instance;
 
@@ -27,7 +31,16 @@ public class CallBallToPlayer : MonoBehaviour
         Locked = false;
 
         //canBallToPlayerEnabled = true;
-        pullSpeed = 2.0f;
+        pullSpeed = 2.3f;
+
+        if (GameOptions.hardcoreModeEnabled && GameOptions.EnemiesOnlyEnabled)
+        {
+            CallEnabled = false;
+            if (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest || GameOptions.gameModeAllPointContest)
+            {
+                CallEnabled = true;
+            }
+        }
     }
 
     private void LateUpdate()
@@ -38,21 +51,18 @@ public class CallBallToPlayer : MonoBehaviour
             && !playerState.hasBasketball
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked
-            && playerState.grounded
-            && !Locked
-            && !GameOptions.hardcoreModeEnabled)
+            && playerState.Grounded
+            //&& !Locked
+            && CallEnabled)
         {
-            //Debug.Log("call ball input read");
-            Locked = true;
+            //Locked = true;
             pullBallToPlayer();
-            Locked = false;
+            //Locked = false;
         }
     }
 
-
     public void pullBallToPlayer()
     {
-        //Debug.Log("pullBallToPlayer()");
         Vector3 tempDirection = basketballRigidBody.transform.position;
         pullDirection = transform.position - tempDirection;
         basketballRigidBody.velocity = pullDirection * pullSpeed;

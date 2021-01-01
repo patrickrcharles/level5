@@ -2,40 +2,56 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerSwapAttack : MonoBehaviour
 {
 
-    public AnimationClip[] attackAnimations;
+    public AnimationClip[] closeAttacks;
+    [SerializeField]
     protected Animator anim;
+    [SerializeField]
     AnimatorOverrideController animatorOverrideController;
 
+    public AnimationClip longRangeAttack;
     protected int index;
 
     public void Start()
     {
-        anim = GameLevelManager.instance.Anim;
+        //anim = GameLevelManager.instance.Anim;
+        anim = GetComponentInChildren<Animator>();
         animatorOverrideController = anim.runtimeAnimatorController as AnimatorOverrideController;
         index = 0;
     }
 
-    public void Update()
+    public void setCloseAttack()
     {
-        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha7))
+        // if enemy has more than one close attack, chose random one
+        if (closeAttacks.Length > 1 && closeAttacks != null)
         {
-            index++;
-            if (index > attackAnimations.Length-1)
+            Random random = new Random();
+            int randomIndex = random.Next(0, closeAttacks.Length);
+            animatorOverrideController["attack"] = closeAttacks[randomIndex];
+            anim.runtimeAnimatorController = animatorOverrideController;
+        }
+        // else use default
+        else if(closeAttacks.Length == 1 && closeAttacks != null)
+        {
+            animatorOverrideController["attack"] = closeAttacks[0];
+            anim.runtimeAnimatorController = animatorOverrideController;
+        }
+        else
+        {
+            if (animatorOverrideController != null)
             {
-                index = 0;
+                anim.runtimeAnimatorController = animatorOverrideController;
             }
-            SetCurrentAnimation(anim, index);
         }
     }
 
-    public void SetCurrentAnimation(Animator animator, int index)
+    public void setLongRangeAttack()
     {
-        animatorOverrideController["attack"] = attackAnimations[index];
-        animator.runtimeAnimatorController = animatorOverrideController;
+        animatorOverrideController["attack"] = longRangeAttack;
+        anim.runtimeAnimatorController = animatorOverrideController;
     }
-
 }

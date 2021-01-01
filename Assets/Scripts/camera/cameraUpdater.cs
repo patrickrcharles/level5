@@ -115,20 +115,22 @@ public class cameraUpdater : MonoBehaviour
 
         // * note change var to player distance because each camera is in a different spot
         if (Math.Abs(playerDistanceFromRimX) > 8 && !onGoalCameraEnabled
-            && CameraManager.instance.CameraOnGoalAllowed)
+            && CameraManager.instance.CameraOnGoalAllowed
+            && !GameOptions.EnemiesOnlyEnabled)
         {
             toggleCameraOnGoal();
         }
 
         if (Math.Abs(playerDistanceFromRimX) < 8 && onGoalCameraEnabled
-            && CameraManager.instance.CameraOnGoalAllowed)
+            && CameraManager.instance.CameraOnGoalAllowed
+            && !GameOptions.EnemiesOnlyEnabled)
         {
             toggleCameraOnGoal();
         }
-        if (isLockOnGoalCamera)
-        {
-            transform.position = basketBallRim + lockOnGoalCameraOffset;
-        }
+        //if (isLockOnGoalCamera)
+        //{
+        //    transform.position = basketBallRim + lockOnGoalCameraOffset;
+        //}
 
 
         //if (distanceRimFromPlayer > startZoomDistance
@@ -149,24 +151,24 @@ public class cameraUpdater : MonoBehaviour
         playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
         playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
 
-        if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
-        {
-            CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
-            onGoalCameraEnabled = false;
-        }
+        //if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
+        //{
+        //    CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
+        //    onGoalCameraEnabled = false;
+        //}
 
-        // * note change var to player distance because each camera is in a different spot
-        if (Math.Abs(playerDistanceFromRimX) > 8.5f && !onGoalCameraEnabled
-            && CameraManager.instance.CameraOnGoalAllowed)
-        {
-            toggleCameraOnGoal();
-        }
+        //// * note change var to player distance because each camera is in a different spot
+        //if (Math.Abs(playerDistanceFromRimX) > 8.5f && !onGoalCameraEnabled
+        //    && CameraManager.instance.CameraOnGoalAllowed)
+        //{
+        //    toggleCameraOnGoal();
+        //}
 
-        if (Math.Abs(playerDistanceFromRimX) < 8.5f && onGoalCameraEnabled
-            && CameraManager.instance.CameraOnGoalAllowed)
-        {
-            toggleCameraOnGoal();
-        }
+        //if (Math.Abs(playerDistanceFromRimX) < 8.5f && onGoalCameraEnabled
+        //    && CameraManager.instance.CameraOnGoalAllowed)
+        //{
+        //    toggleCameraOnGoal();
+        //}
         if (isLockOnGoalCamera)
         {
             transform.position = basketBallRim + lockOnGoalCameraOffset;

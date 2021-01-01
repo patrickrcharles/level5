@@ -2,6 +2,12 @@
 
 public class ProgressionState : MonoBehaviour
 {
+    [SerializeField] int maxThreeAccuraccy;
+    [SerializeField] int maxFourAccuraccy;
+    [SerializeField] int maxSevenAccuraccy;
+    [SerializeField] int maxReleaseAccuraccy;
+    [SerializeField] int maxLuck;
+
     [SerializeField] int addTo3;
     [SerializeField] int addTo4;
     [SerializeField] int addTo7;
@@ -27,23 +33,6 @@ public class ProgressionState : MonoBehaviour
 
     public static ProgressionState instance;
 
-    public int AddTo3 { get => addTo3; set => addTo3 = value; }
-    public int AddTo4 { get => addTo4; set => addTo4 = value; }
-    public int AddTo7 { get => addTo7; set => addTo7 = value; }
-    public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
-    public int PointsUsedThisSession { get => pointsUsedThisSession; set => pointsUsedThisSession = value; }
-    public int Accuracy3 { get => accuracy3; set => accuracy3 = value; }
-    public int Accuracy4 { get => accuracy4; set => accuracy4 = value; }
-    public int Accuracy7 { get => accuracy7; set => accuracy7 = value; }
-    public int Range { get => range; set => range = value; }
-    public int Release { get => release; set => release = value; }
-    public int Luck { get => luck; set => luck = value; }
-    public int Level { get => level; set => level = value; }
-    public int Experience { get => experience; set => experience = value; }
-    public int AddToLuck { get => addToLuck; set => addToLuck = value; }
-    public int AddToRange { get => addToRange; set => addToRange = value; }
-    public int AddToRelease { get => addToRelease; set => addToRelease = value; }
-
     private void Awake()
     {
         instance = this;
@@ -51,13 +40,54 @@ public class ProgressionState : MonoBehaviour
 
     public void initializeState(CharacterProfile characterProfile)
     {
-        accuracy3 = (int)characterProfile.Accuracy3Pt;
-        accuracy4 = (int)characterProfile.Accuracy4Pt;
-        accuracy7 = (int)characterProfile.Accuracy7Pt;
-
+        // check if stats that can be changed are lower than max allowed stats
+        //3 accuracy ( X accuracy of projectile)
+        if (accuracy3 < maxThreeAccuraccy)
+        {
+            accuracy3 = (int)characterProfile.Accuracy3Pt;
+        }
+        else
+        {
+            accuracy3 = maxThreeAccuraccy;
+        }
+        //4 accuracy ( X accuracy of projectile)
+        if (accuracy4 < maxFourAccuraccy)
+        {
+            accuracy4 = (int)characterProfile.Accuracy4Pt;
+        }
+        else
+        {
+            accuracy4 = maxFourAccuraccy;
+        }
+        //7 accuracy ( X accuracy of projectile)
+        if (accuracy7 < maxSevenAccuraccy)
+        {
+            accuracy7 = (int)characterProfile.Accuracy7Pt;
+        }
+        else
+        {
+            accuracy7 = maxSevenAccuraccy;
+        }
+        // release accuracy ( Y accuracy of projectile)
+        if (release < maxReleaseAccuraccy)
+        {
+            release = (int)characterProfile.Release;
+        }
+        else
+        {
+            release = maxReleaseAccuraccy;
+        }
+        // luck (% chance of removing all modifiers on shot)
+        if (luck < maxLuck)
+        {
+            luck = (int)characterProfile.Luck;
+        }
+        else
+        {
+            luck = maxLuck;
+        }
+        // (Z accuracy of projectile).
         range = (int)characterProfile.Range;
-        release = (int)characterProfile.Release;
-        luck = (int)characterProfile.Luck;
 
         pointsAvailable = (int)characterProfile.PointsAvailable;
         level = (int)characterProfile.Level;
@@ -83,4 +113,26 @@ public class ProgressionState : MonoBehaviour
 
         playerId = 0;
     }
+
+    public int AddTo3 { get => addTo3; set => addTo3 = value; }
+    public int AddTo4 { get => addTo4; set => addTo4 = value; }
+    public int AddTo7 { get => addTo7; set => addTo7 = value; }
+    public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
+    public int PointsUsedThisSession { get => pointsUsedThisSession; set => pointsUsedThisSession = value; }
+    public int Accuracy3 { get => accuracy3; set => accuracy3 = value; }
+    public int Accuracy4 { get => accuracy4; set => accuracy4 = value; }
+    public int Accuracy7 { get => accuracy7; set => accuracy7 = value; }
+    public int Range { get => range; set => range = value; }
+    public int Release { get => release; set => release = value; }
+    public int Luck { get => luck; set => luck = value; }
+    public int Level { get => level; set => level = value; }
+    public int Experience { get => experience; set => experience = value; }
+    public int AddToLuck { get => addToLuck; set => addToLuck = value; }
+    public int AddToRange { get => addToRange; set => addToRange = value; }
+    public int AddToRelease { get => addToRelease; set => addToRelease = value; }
+    public int MaxThreeAccuraccy { get => maxThreeAccuraccy; set => maxThreeAccuraccy = value; }
+    public int MaxFourAccuraccy { get => maxFourAccuraccy; set => maxFourAccuraccy = value; }
+    public int MaxSevenAccuraccy { get => maxSevenAccuraccy; set => maxSevenAccuraccy = value; }
+    public int MaxReleaseAccuraccy { get => maxReleaseAccuraccy; set => maxReleaseAccuraccy = value; }
+    public int MaxLuck { get => maxLuck; set => maxLuck = value; }
 }

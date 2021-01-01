@@ -5,6 +5,8 @@ using UnityEngine;
 public class FanManager : MonoBehaviour
 {
     GameObject basketBallGoalPosition;
+    [SerializeField]
+    List<GameObject> fansList;
 
     private void Start()
     {
@@ -14,5 +16,28 @@ public class FanManager : MonoBehaviour
         transform.position = new Vector3(basketBallGoalPosition.transform.position.x, 0, basketBallGoalPosition.transform.position.z);
         //Debug.Log("vector : " + position);
         //transform.position = position;
+        fansList = getFans();
+    }
+
+    List<GameObject> getFans()
+    {
+        List<GameObject> tempList = new List<GameObject>();
+        int count = transform.childCount;
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject fan = transform.GetChild(i).gameObject;
+            if( !string.IsNullOrEmpty(GameOptions.playerObjectName) 
+                && fan.name.Contains(GameOptions.playerObjectName))
+            {
+                fan.SetActive(false);
+            }
+            else
+            {
+                tempList.Add(transform.GetChild(i).gameObject);
+            }
+        }
+
+        return tempList;
     }
 }

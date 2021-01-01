@@ -3,118 +3,82 @@
     "m_SelectedPackage": {
         "deviceId": "R52N61C2WFZ",
         "name": "com.level5.level5",
-        "processId": 5069,
+        "processId": 31806,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R52N61C2WFZ",
-            "name": "com.skeletondistrict.level5",
-            "processId": 18970,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 31388,
+            "name": "com.sec.android.app.launcher",
+            "processId": 8768,
             "exited": false
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 32159,
+            "processId": 18493,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 1926,
+            "processId": 19763,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 10045,
+            "processId": 20602,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 15743,
+            "processId": 23032,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 21007,
+            "processId": 25350,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 23174,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 27356,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 31929,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 567,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 13196,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 30083,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 16184,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 20469,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 22238,
+            "processId": 28991,
             "exited": false
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 26194,
-            "exited": true
+            "processId": 29626,
+            "exited": false
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 5069,
+            "processId": 30547,
             "exited": false
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 30956,
+            "exited": false
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 31806,
+            "exited": false
+        },
+        {
+            "deviceId": "abb29bfb",
+            "name": "com.level5.level5",
+            "processId": 19657,
+            "exited": true
         }
     ],
     "m_Tags": {
@@ -164,10 +128,10 @@
             true,
             true
         ],
-        "MemoryGroup": 1,
+        "MemoryGroup": 0,
         "Behavior": 1
     },
-    "m_Filter": "error",
+    "m_Filter": "",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }

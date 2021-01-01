@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class DevFunctions : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     [SerializeField] CharacterProfile player;
-    //[SerializeField] Text debugText;
     [SerializeField] GameObject fpsCounter;
     [SerializeField] GameObject[] enemies;
     [SerializeField] Text messageText;
+    [SerializeField] float smoothSpeed;
 
     public static DevFunctions instance;
 
@@ -29,7 +28,6 @@ public class DevFunctions : MonoBehaviour
 
         if (GameLevelManager.instance != null)
         {
-            //fpsCounter = GameObject.Find("fps_counter");
             fpsCounter = GameObject.Find("LiteFPSCounter");
             fpsCounter.SetActive(false);
         }
@@ -46,14 +44,17 @@ public class DevFunctions : MonoBehaviour
         {
             ToggleFpsCounter();
         }
-        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha6))
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8))
         {
             InstantiateRob();
         }
-
-        //debugText.text = GameLevelManager.instance.PlayerState.RigidBody.velocity.magnitude.ToString();
-        //debugText.text = GameLevelManager.instance.PlayerState.MovementSpeed.ToString();
-        //+"\n"+ GameLevelManager.instance.PlayerState.CurrentStateInfo;
+        //if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9)
+        //    && GameLevelManager.instance.PlayerState.hasBasketball)
+        //{
+        //    //StartCoroutine(PlayerDunk());
+        //    //PlayerDunk();
+        //    GameLevelManager.instance.PlayerState.PlayerDunk();
+        //}
     }
 
     private void InstantiateRob()
@@ -70,27 +71,20 @@ public class DevFunctions : MonoBehaviour
     private void testLightningStrike()
     {
         enemies = GameObject.FindGameObjectsWithTag("enemy");
-        //Debug.Log("tets lighting animation");
-        //GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+
         foreach (GameObject enemy in enemies)
         {
             EnemyController enemyController = enemy.GetComponent<EnemyController>();
-            //enemyController.playAnimation("lightning");
-            //enemyController.playAnimation("lightning");
-            //enemyController.playAnimation("enemy_generic_lightning");
+
             if (enemyController.SpriteRenderer.isVisible)
             {
-                //StartCoroutine(enemyController.struckByLighning());
                 StartCoroutine(enemyController.struckByLighning());
             }
-            //enemyController.GetComponentInChildren<Animator>().Play("enemy_generic_lightning");
-            //Debug.Log("test lighting animation");
         }
     }
 
     public void setMaxPlayerStats()
     {
-
         player.Accuracy2Pt = 100;
         player.Accuracy3Pt = 100;
         player.Accuracy4Pt = 100;
@@ -99,7 +93,6 @@ public class DevFunctions : MonoBehaviour
         player.Range = 100;
         player.Luck = 10;
 
-        //Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "max player stats enabled";
         StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
     }

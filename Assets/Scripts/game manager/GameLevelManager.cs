@@ -9,6 +9,7 @@ public class GameLevelManager : MonoBehaviour
     private GameObject _player;
     private PlayerController _playerState;
     private CharacterProfile _playerShooterProfile;
+    private PlayerHealth _playerHealth;
     [SerializeField]
     private PlayerAttackQueue _playerAttackQueue;
 
@@ -38,11 +39,6 @@ public class GameLevelManager : MonoBehaviour
 
     public static GameLevelManager instance;
     private bool _locked;
-
-
-    //[SerializeField] InputSystemUIInputModule inputSystemUIInputModule;
-    //[SerializeField] StandaloneInputModule standaloneInputModule;
-    //[SerializeField] EventSystem eventSystem;
 
     private void OnEnable()
     {
@@ -85,10 +81,8 @@ public class GameLevelManager : MonoBehaviour
         //// check if player is npc in scene
         checkPlayerIsNpcInScene();
         // get necessary references to objects
-        //StartCoroutine( SetMajorObjectReferences() );
-        //BasketballObject = GameObject.FindWithTag("basketball");
         Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
-        BasketballRimVector = GameObject.Find("rim").transform.position;
+        _basketballRimVector = GameObject.Find("rim").transform.position;
     }
 
     private void Start()
@@ -128,8 +122,16 @@ public class GameLevelManager : MonoBehaviour
         _playerState = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
         _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
+        _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
 
         Anim = Player.GetComponentInChildren<Animator>();
+
+        // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
+        // instead of an overlay. this is for a slight performance increase
+        if (GameObject.Find("shot_clock") != null)
+        {
+            GameObject.Find("shot_clock").GetComponent<Canvas>().worldCamera = Camera.main;
+        }
     }
 
 
@@ -195,7 +197,7 @@ public class GameLevelManager : MonoBehaviour
         if (GameObject.FindWithTag("cheerleader") == null
             && GameOptions.cheerleaderObjectName != null)
         {
-            string cheerleaderPrefabPath = "Prefabs/characters/auto_players/cheerleader_" + GameOptions.cheerleaderObjectName;
+            string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
 
             if (_cheerleaderClone != null)
@@ -270,4 +272,5 @@ public class GameLevelManager : MonoBehaviour
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
+    public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
 }

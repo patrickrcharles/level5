@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using Random = System.Random;
 
 public class SFXBB : MonoBehaviour
 {
 
     private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip[] musicList;
+    private int currentSongIndex;
 
     public AudioClip basketballBounce;
     public AudioClip basketballHitRim;
@@ -51,11 +56,44 @@ public class SFXBB : MonoBehaviour
 
     private void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource = gameObject.GetComponent<AudioSource>();
+        playRandomSong();
     }
 
     public void playSFX(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);
+    }
+
+    private void Update()
+    {
+        if (!audioSource.isPlaying || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha0)))  
+        {
+            playNextSong();
+        }
+    }
+
+    void playRandomSong()
+    {
+        Random random = new Random();
+        int randNum = random.Next(0, musicList.Length);
+        currentSongIndex = randNum;
+        audioSource.clip = musicList[currentSongIndex];
+        audioSource.Play();
+    }
+
+    void playNextSong()
+    {
+        //int newIndex=0;
+        if(currentSongIndex == (musicList.Length-1))
+        {
+            currentSongIndex = 0;
+        }
+        else
+        {
+            currentSongIndex++;
+        }
+        audioSource.clip = musicList[currentSongIndex];
+        audioSource.Play();
     }
 }

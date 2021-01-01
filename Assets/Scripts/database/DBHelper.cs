@@ -31,6 +31,7 @@ public class DBHelper : MonoBehaviour
     {
         instance = this;
         filepath = Application.persistentDataPath + databaseNamePath;
+        //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
 
@@ -169,7 +170,7 @@ public class DBHelper : MonoBehaviour
 
         string sqlQuery1 =
            "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           "totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled )  " +
+           " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled, enemiesKilled )  " +
            "Values( '" + GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
@@ -186,7 +187,8 @@ public class DBHelper : MonoBehaviour
            + stats.ShotAttempt + "','"
            + stats.MostConsecutiveShots + "','"
            + trafficEnabled + "','"
-           + hardcoreEnabled + "')";
+           + hardcoreEnabled + "','"
+           + stats.EnemiesKilled + "')";
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -287,7 +289,7 @@ public class DBHelper : MonoBehaviour
     // insert default Player profiles
     public void InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
     {
-
+        databaseLocked = true;
         var dbconn = new SqliteConnection(connection);
         using (dbconn)
         {
@@ -333,6 +335,7 @@ public class DBHelper : MonoBehaviour
             }
             dbconn.Close();
         }
+        databaseLocked = false;
     }
 
     // insert a specific character to database. Example, new character added to game, 
@@ -498,6 +501,14 @@ public class DBHelper : MonoBehaviour
                 prevStats.TotalDistance = reader.GetFloat(11);
                 prevStats.LongestShotMade = reader.GetFloat(12);
                 prevStats.TimePlayed = reader.GetFloat(13);
+                if (reader.IsDBNull(14))
+                {
+                    prevStats.EnemiesKilled = 0;
+                }
+                else
+                {
+                    prevStats.EnemiesKilled = reader.GetInt32(14);
+                }
             }
         }
         Destroy(prevStats, 5);
@@ -694,7 +705,7 @@ public class DBHelper : MonoBehaviour
         {
             sqlQuery =
            "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-           "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot)  " +
+           "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled)  " +
            "Values( '" +
            stats.TwoPointerMade + "', '" +
            stats.TwoPointerAttempts + "', '" +
@@ -709,7 +720,8 @@ public class DBHelper : MonoBehaviour
            stats.MoneyBallAttempts + "','" +
            stats.TotalDistance + "','" +
            stats.TimePlayed + "','" +
-           stats.LongestShotMade + "')";
+           stats.LongestShotMade + "','" +
+           stats.EnemiesKilled + "')";
 
             //Debug.Log(sqlQuery);
         }
@@ -732,6 +744,7 @@ public class DBHelper : MonoBehaviour
            ", totalPoints = " + (prevStats.TotalPoints += stats.TotalPoints) +
            ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
            ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
+           ", enemiesKilled = " + (prevStats.EnemiesKilled += stats.EnemiesKilled) +
            " WHERE ROWID = 1 ";
         }
 
@@ -1052,24 +1065,39 @@ public class DBHelper : MonoBehaviour
         string sqlQuery = "SELECT " + field + " FROM " + tableName
             + " WHERE modeid = " + modeid + " ORDER BY " + field + "  " + order + "  LIMIT 1";
 
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetInt32(0);
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                // null check
+                if (reader.IsDBNull(0))
+                {
+                    value = 0;
+                }
+                else
+                {
+                    value = reader.GetInt32(0);
+                }
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
         }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+        catch(Exception e)
+        {
+            Debug.Log(e);
+        }
 
         return value;
     }
 
-    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid)
+    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid, bool hardcoreValue)
     {
         List<StatsTableHighScoreRow> listOfValues = new List<StatsTableHighScoreRow>();
 
@@ -1079,6 +1107,7 @@ public class DBHelper : MonoBehaviour
         string date;
         string hardcore = "";
         int hardcoreEnabled = 0;
+        //int hardcoreEnabled = Convert.ToInt32(hardcoreValue);
 
         string sqlQuery = "";
 
@@ -1088,15 +1117,33 @@ public class DBHelper : MonoBehaviour
         IDbCommand dbcmd = dbconn.CreateCommand();
 
         // game modes that require float values/ low time as high score
-        if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+        if (!hardcoreValue)
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
 
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+            }
         }
-        else
+        if (hardcoreValue)
         {
-            sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC LIMIT 10";
+
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC LIMIT 10";
+            }
         }
+        //Debug.Log("sqlQuery : " + sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();

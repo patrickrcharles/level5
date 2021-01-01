@@ -10,6 +10,7 @@ public class PlayerData : MonoBehaviour
     private string _playerName = "";
 
     private float _totalPoints = 0;
+    private float _totalPointsByDistance = 0;
     private float _totalPointsBonus = 0;
     private float _twoPointerMade = 0;
     private float _threePointerMade = 0;
@@ -42,6 +43,8 @@ public class PlayerData : MonoBehaviour
     private float _fourPointContestScore = 0;
     private float _allPointContestScore = 0;
 
+    private int _enemiesKilled = 0;
+
     [SerializeField]
     private int _currentExperience = 0;
     [SerializeField]
@@ -68,8 +71,14 @@ public class PlayerData : MonoBehaviour
 
     private void Start()
     {
+        //if (GameObject.FindGameObjectsWithTag("database") != null)
+        //{
+        //    Debug.Log("load player high scores");
+        //    loadStatsFromDatabase();
+        //}
         if (GameObject.FindGameObjectsWithTag("database") != null)
         {
+            //Debug.Log("load player high scores");
             loadStatsFromDatabase();
         }
     }
@@ -81,6 +90,7 @@ public class PlayerData : MonoBehaviour
         if (DBHelper.instance != null)
         {
             _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC");
+
             TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC");
             _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC");
             _fourPointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 3, "DESC");
@@ -102,14 +112,10 @@ public class PlayerData : MonoBehaviour
             _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC");
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC");
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC");
+            TotalPointsByDistance = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 19, "DESC");
+            EnemiesKilled = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 20, "DESC");
         }
     }
-
-    //public float SevenPointerAttempts => _sevenPointerAttempts;
-
-    //public int PlayerId => _playerId;
-
-    //public string PlayerName => _playerName;
 
     public float TotalPoints => _totalPoints;
 
@@ -157,5 +163,7 @@ public class PlayerData : MonoBehaviour
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public int UpdatePointsAvailable { get => _updatePointsAvailable; set => _updatePointsAvailable = value; }
     public int UpdatePointsUsed { get => _updatePointsUsed; set => _updatePointsUsed = value; }
+    public float TotalPointsByDistance { get => _totalPointsByDistance; set => _totalPointsByDistance = value; }
+    public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }

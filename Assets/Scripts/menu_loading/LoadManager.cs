@@ -177,16 +177,18 @@ public class LoadManager : MonoBehaviour
     }
 
     IEnumerator InsertNewCharacterToDB(CharacterProfile character)
-    {
-        DBHelper.instance.InsertCharacterProfile(character);
+    {        
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
+        DBHelper.instance.InsertCharacterProfile(character);
+
         Debug.Log("player record inserted");
     }
 
     IEnumerator InsertNewCheerleaderToDB(CheerleaderProfile cheerleader)
     {
-        DBHelper.instance.InsertCheerleaderProfile(cheerleader);
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
+        DBHelper.instance.InsertCheerleaderProfile(cheerleader);
+        
         Debug.Log("cheerleader record inserted");
     }
 

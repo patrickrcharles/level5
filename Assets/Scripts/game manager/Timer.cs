@@ -21,18 +21,32 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private bool modeRequiresCounter;
 
+    [SerializeField]
+    Text shotClockText;
+    [SerializeField]
+    Text scoreClockText;
+
     bool timerTextLocked;
     public static Timer instance;
 
     private void Awake()
     {
-        instance = this;
-        timerText = GetComponent<Text>();
-        timerText.text = "";
+        if (instance == null)
+        {
+            instance = this;
+            timerText = GetComponent<Text>();
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     void Start()
     {
+
+        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
 
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
@@ -55,12 +69,15 @@ public class Timer : MonoBehaviour
         {
             timerEnabled = true;
             displayTimer = true;
-            //Debug.Log("display timer true");
         }
         else
         {
             timerEnabled = false;
         }
+
+        timerText.text = "";
+        shotClockText.text = "";
+        scoreClockText.text = "";
     }
 
     void Update()
@@ -72,23 +89,21 @@ public class Timer : MonoBehaviour
         {
             timeRemaining = timeStart - currentTime;
             minutes = Mathf.FloorToInt(timeRemaining / 60);
-            //seconds = Mathf.FloorToInt(timeRemaining - (minutes * 60));
             seconds = (timeRemaining - (minutes * 60));
         }
 
         if (modeRequiresCounter)
         {
-            //minutes = Mathf.FloorToInt(currentTime / 60);
-            //seconds = Mathf.FloorToInt(currentTime - (minutes * 60));
             minutes = Mathf.FloorToInt(currentTime / 60);
             seconds = (currentTime - (minutes * 60));
         }
+
         // gameover, disable timer display and set text to empty
         if (GameRules.instance.GameOver || timeRemaining < 0)
         {
-            //Debug.Log("display timer false");
             displayTimer = false;
             timerText.text = "";
+            shotClockText.text = "";
         }
         // time's up, pause and reset timer text
         if (timeRemaining <= 0
@@ -119,20 +134,37 @@ public class Timer : MonoBehaviour
 
         if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining > 0)
         {
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+            if (minutes < 1)
+            {
+                timerText.text = seconds.ToString("00.000");
+                shotClockText.text = seconds.ToString("00.00");
+            }
+            else
+            {
+                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+            }
         }
 
         if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
         {
-            //timerTextLocked = true;
-            //setCustomTimerText("OVERTIME");
-            timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+            if (minutes < 1)
+            {
+                timerText.text = seconds.ToString("00.000");
+                shotClockText.text = seconds.ToString("00.00");
+            }
+            else
+            {
+                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+            }
         }
     }
 
     void setCustomTimerText(string text)
     {
         timerText.text = text;
+        shotClockText.text = text;
     }
 
     public float TimeStart
@@ -146,5 +178,6 @@ public class Timer : MonoBehaviour
         get => displayTimer;
         set => displayTimer = value;
     }
-    public float Seconds { get => seconds; set => seconds = value; }
+
+    public Text ScoreClockText { get => scoreClockText; set => scoreClockText = value; }
 }

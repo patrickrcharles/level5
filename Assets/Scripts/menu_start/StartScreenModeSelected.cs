@@ -25,8 +25,9 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private string highScoreField;
 
     [SerializeField] private bool arcadeModeActive;
+    [SerializeField] private bool enemiesOnlyEnabled;
 
-
+    public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
     public bool ModeRequiresMoneyBall => modeRequiresMoneyBall;
 

@@ -148,7 +148,7 @@ public class Pause : MonoBehaviour
         //==========================================================
 
         //disable cotnrols display if game over
-        if (GameRules.instance.GameOver)
+        if (GameRules.instance.GameOver || GameLevelManager.instance.PlayerHealth.IsDead)
         {
             controlsObject.SetActive(false);
         }
@@ -178,11 +178,9 @@ public class Pause : MonoBehaviour
             {
                 reloadScene();
             }
-
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
-            //|| InputManager.GetButtonDown("Fire1")))
             {
                 //Debug.Log("load start scene");
                 loadstartScreen();
@@ -190,7 +188,6 @@ public class Pause : MonoBehaviour
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
-            //|| InputManager.GetButtonDown("Fire1"))
             {
                 //Debug.Log("toggle pause");
                 TogglePause();
@@ -198,7 +195,6 @@ public class Pause : MonoBehaviour
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
-            //|| InputManager.GetButtonDown("Fire1"))
             {
                 quit();
             }
@@ -236,7 +232,6 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-
         // start screen should be first scene in build
         SceneManager.LoadScene("level_00_loading");
     }

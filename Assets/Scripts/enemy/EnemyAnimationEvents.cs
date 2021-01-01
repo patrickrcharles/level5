@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,27 +11,44 @@ public class EnemyAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileLaserPrefab;
     [SerializeField]
+    GameObject projectileBulletPrefab;
+    [SerializeField]
+    GameObject projectileDartPrefab;
+    [SerializeField]
+    GameObject projectileFlameThrower;
+    [SerializeField]
     GameObject projectileSpawn;
     [SerializeField]
     EnemyController enemyController;
-
+    [SerializeField]
+    bool attackBoxAlwaysOn;
+    [SerializeField]
     private AudioSource audioSource;
 
     private void Start()
     {
-        if (GameLevelManager.instance.Basketball != null)
-        {
-            audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
-        }
-        if(transform.Find("projectileSpawn") != null)
+
+        audioSource = gameObject.GetComponent<AudioSource>();
+        if (transform.Find("projectileSpawn") != null)
         {
             projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_enemy") as GameObject;
+            projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_enemy") as GameObject;
+            projectileDartPrefab = Resources.Load("Prefabs/projectile/projectile_dart_enemy") as GameObject;
+            projectileFlameThrower = Resources.Load("Prefabs/projectile/projectile_flamethrower") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
-        enemyController = transform.parent.GetComponent<EnemyController>();
+        if (transform.parent.GetComponent<EnemyController>() != null)
+        {
+            enemyController = transform.parent.GetComponent<EnemyController>();
+        }
 
-        attackBox = transform.parent.Find("attackBox").gameObject;
-        disableAttackBox();
+        attackBox = transform.Find("attackBox").gameObject;
+        if (!attackBoxAlwaysOn)
+        {
+            disableAttackBox();
+        }
+        // checks for attack boxes not disabling properly animations
+        InvokeRepeating("checkAttackBoxDisabledCorrectly", 0, 3);
     }
 
     public void enableAttackBox()
@@ -48,14 +66,67 @@ public class EnemyAnimationEvents : MonoBehaviour
             attackBox.SetActive(false);
         }
     }
+    public void setKnockDownAttack(int value)
+    {
+        if (attackBox != null)
+        {
+            attackBox.GetComponent<EnemyAttackBox>().knockDownAttack = Convert.ToBoolean(value);
+        }
+    }
+
+    void checkAttackBoxDisabledCorrectly()
+    {
+        if (enemyController != null  &&  !enemyController.stateAttack)
+        {
+            disableAttackBox();
+        }
+    }
 
     public void instantiateProjectileLazer()
     {
-        //EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
         projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
-        //enemyProjectile.facingRight = enemyController.facingRight;
-
         Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileFlameThrower()
+    {
+        Vector3 temp = transform.root.localScale;
+        temp.x = transform.root.localScale.x;
+
+        projectileFlameThrower.transform.localScale = temp;
+
+        ////player localscale will be -1
+        //if (!enemyController.facingRight)
+        //{
+        //    Vector3 temp = transform.localScale;
+        //    temp.x *= transform.localScale.x;
+
+        //    projectileFlameThrower.transform.localScale = temp;
+        //    Debug.Log("flip the flame transform");
+        //}
+        ////player localscale will be -1
+        //else
+        //{
+        //    Vector3 temp = transform.localScale;
+        //    temp.x *= transform.localScale.x;
+
+        //    projectileFlameThrower.transform.localScale = temp;
+        //    Debug.Log("flip the flame transform");
+        //    Debug.Log("transform.localScale : " + transform.localScale);
+        //}
+        //projectileFlameThrower.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileFlameThrower, projectileSpawn.transform.position, Quaternion.identity);
+
+    }
+    public void instantiateProjectileBullet()
+    {
+        projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileBulletPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+
+    public void instantiateProjectileDart()
+    {
+        projectileDartPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+        Instantiate(projectileDartPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
     public void playSfxBasketballDribbling()
@@ -103,7 +174,14 @@ public class EnemyAnimationEvents : MonoBehaviour
     }
     public void playSfxKnockedDown()
     {
-        audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+        try
+        {
+            audioSource.PlayOneShot(SFXBB.instance.knockedDown);
+        }
+        catch(Exception e)
+        {
+            Debug.Log("exception e :" + e);
+        }
     }
     public void playSfxTakeDamage()
     {
@@ -166,5 +244,26 @@ public class EnemyAnimationEvents : MonoBehaviour
     public void playSfxShootGun()
     {
         audioSource.PlayOneShot(SFXBB.instance.shootGun);
+    }
+    public void playSfxShotgunRack()
+    {
+        audioSource.PlayOneShot(SFXBB.instance.shotgunRack);
+    }
+
+    public void applyForceToDirectionFacingXAndY(float force)
+    {
+        enemyController.UnFreezeEnemyPosition();
+        // get direction facing
+        if (enemyController.facingRight)
+        {
+            //apply to X
+            enemyController.RigidBody.AddForce(force, force, 0, ForceMode.VelocityChange);
+        }
+        if (!enemyController.facingRight)
+        {
+            enemyController.RigidBody.AddForce(-force, force, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+
     }
 }

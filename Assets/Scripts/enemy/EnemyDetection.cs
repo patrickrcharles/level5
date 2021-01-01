@@ -6,46 +6,59 @@ using UnityEngine;
 public class EnemyDetection : MonoBehaviour
 {
     EnemyController enemyController;
-    [SerializeField]
     bool playerSighted;
     bool enemyDetectionEnabled = true;
     public float enemySightDistance;
+    int attackPositionId;
+    [SerializeField]
+    bool attacking;
 
     public bool PlayerSighted { get => playerSighted; set => playerSighted = value; }
+    public int AttackPositionId { get => attackPositionId; set => attackPositionId = value; }
+    public bool Attacking { get => attacking; set => attacking = value; }
 
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
-        if (enemySightDistance == 0)
+        //if (enemySightDistance == 0)
+        //{
+        //    enemySightDistance = 5;
+        //}
+        // if only enemies, make increase enemy sight
+        if (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled)
         {
-            enemySightDistance = 5;
+            enemySightDistance = 10;
         }
-        //enemyDetectionEnabled = true;
-        InvokeRepeating("CheckPlayerDistance", 0, 0.2f);
+        InvokeRepeating("CheckPlayerDistance", 0, 0.5f);
         InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);
     }
 
     void CheckPlayerDistance()
     {
+        // if player within enemy sight distance
         if (enemyController.DistanceFromPlayer < enemySightDistance
             && enemyDetectionEnabled)
         {
-
-            playerSighted = true;
+            if (PlayerAttackQueue.instance.AttackSlotOpen && !attacking)
+            {
+                StartCoroutine(PlayerAttackQueue.instance.RequestAddToQueue(gameObject));
+            }
         }
+        // if player NOT within enemy sight distance
         if (enemyController.DistanceFromPlayer >= enemySightDistance
             && enemyDetectionEnabled)
         {
             playerSighted = false;
+            // if attacking, remove from queue
+            if (attacking)
+            {
+                attacking = false;
+                StartCoroutine(PlayerAttackQueue.instance.removeEnemyFromAttackQueue(gameObject, AttackPositionId));
+            }
         }
     }
 
-    public void TurnOffEnemySight(float seconds)
-    {
-        StartCoroutine(DelayEnemmySight(seconds));
-    }
-
-    IEnumerator DelayEnemmySight(float seconds)
+    IEnumerator DelayEnemySight(float seconds)
     {
         enemyDetectionEnabled = false;
         playerSighted = false;
