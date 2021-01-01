@@ -42,7 +42,10 @@ public class PlayerSwapAttack : MonoBehaviour
         }
         else
         {
-            anim.runtimeAnimatorController = animatorOverrideController;
+            if (animatorOverrideController != null)
+            {
+                anim.runtimeAnimatorController = animatorOverrideController;
+            }
         }
     }
 
