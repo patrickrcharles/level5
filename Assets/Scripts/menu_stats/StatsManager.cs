@@ -201,7 +201,7 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay(false);
             }
 
             if (controls.UINavigation.Right.triggered)
@@ -209,7 +209,7 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay(false);
             }
 
             if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
@@ -222,7 +222,7 @@ public class StatsManager : MonoBehaviour
             {
                 navigateDown();
             }
-            changeHighScoreDataDisplay(false);
+            //changeHighScoreDataDisplay(false);
         }
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonHardcoreName))
@@ -235,7 +235,7 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(true);
+                changeHighScoreDataDisplay(true);
             }
 
             if (controls.UINavigation.Right.triggered)
@@ -243,7 +243,7 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(true);
+                changeHighScoreDataDisplay(true);
             }
 
             if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
@@ -256,7 +256,7 @@ public class StatsManager : MonoBehaviour
             {
                 navigateDown();
             }
-            changeHighScoreDataDisplay(true);
+            //changeHighScoreDataDisplay(true);
         }
 
         // all time stats table button selected
