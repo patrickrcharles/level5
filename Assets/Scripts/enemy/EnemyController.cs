@@ -237,11 +237,13 @@ public class EnemyController : MonoBehaviour
             FreezeEnemyPosition();
             if (playerSwapAttack != null 
                 && !longRangeAttack
-                && playerSwapAttack.closeAttacks != null)
+                && playerSwapAttack.closeAttacks != null
+                && playerSwapAttack.AnimatorOverrideController != null)
             {
                 playerSwapAttack.setCloseAttack();
             }
-            if (playerSwapAttack != null 
+            if (playerSwapAttack != null
+                && playerSwapAttack.AnimatorOverrideController != null
                 && longRangeAttack
                 && playerSwapAttack.longRangeAttack != null)
             {

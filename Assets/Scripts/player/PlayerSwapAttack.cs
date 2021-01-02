@@ -16,6 +16,8 @@ public class PlayerSwapAttack : MonoBehaviour
     public AnimationClip longRangeAttack;
     protected int index;
 
+    public AnimatorOverrideController AnimatorOverrideController { get => animatorOverrideController; }
+
     public void Start()
     {
         //anim = GameLevelManager.instance.Anim;
