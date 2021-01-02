@@ -1144,7 +1144,6 @@ public class DBHelper : MonoBehaviour
                     + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10";
             }
         }
-        Debug.Log("sqlQuery : " + sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
