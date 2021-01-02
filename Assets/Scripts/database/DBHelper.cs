@@ -1106,6 +1106,7 @@ public class DBHelper : MonoBehaviour
         string level;
         string date;
         string hardcore = "";
+        float time;
         int hardcoreEnabled = 0;
         //int hardcoreEnabled = Convert.ToInt32(hardcoreValue);
 
@@ -1121,12 +1122,12 @@ public class DBHelper : MonoBehaviour
         {
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+                sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC,time ASC LIMIT 10";
 
             }
             else
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC, time ASC LIMIT 10";
             }
         }
         if (hardcoreValue)
@@ -1134,16 +1135,16 @@ public class DBHelper : MonoBehaviour
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC LIMIT 10";
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10";
 
             }
             else
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC LIMIT 10";
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10";
             }
         }
-        //Debug.Log("sqlQuery : " + sqlQuery);
+        Debug.Log("sqlQuery : " + sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -1162,14 +1163,15 @@ public class DBHelper : MonoBehaviour
             character = reader.GetString(1);
             level = reader.GetString(2);
             date = reader.GetString(3);
+            time = reader.GetFloat(4);
             // null check
-            if (reader.IsDBNull(4))
+            if (reader.IsDBNull(5))
             {
                 hardcoreEnabled = 0;
             }
             else
             {
-                hardcoreEnabled = reader.GetInt32(4);
+                hardcoreEnabled = reader.GetInt32(5);
             }
 
             if (hardcoreEnabled != 0)
