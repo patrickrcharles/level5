@@ -662,18 +662,32 @@ public class ProgressionManager : MonoBehaviour
             //    : "+" + progressionState.AddToLuck.ToString();
 
             // set text displays
-            progressionRange.text = progressionState.Range.ToString("F0") + " ft";
-            progressionRelease.text = progressionState.Release.ToString("F0");
-            progressionLuck.text = progressionState.Luck.ToString("F0");
 
+            // these DO NOT have max limits
+            progressionRange.text = progressionState.Range.ToString("F0") + " ft";
             progressionSpeed.text = playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0");
             progressionJump.text = playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0");
 
-            //use progression state data. dynamic data
-            //progression3Accuracy.text = (progressionState.Accuracy3 + progressionState.AddTo3).ToString("F0");
-            //progression4Accuracy.text = (progressionState.Accuracy4 + progressionState.AddTo4).ToString("F0");
-            //progression7Accuracy.text = (progressionState.Accuracy7 + progressionState.AddTo7).ToString("F0");
-
+            // these DO have max limits
+            //release
+            if (progressionState.Release < progressionState.MaxReleaseAccuraccy)
+            {
+                progressionRelease.text = progressionState.Release.ToString("F0");
+            }
+            else
+            {
+                progressionRelease.text = progressionState.Release.ToString("F0") + " MAX";
+            }
+            // luck
+            if (progressionState.Luck < progressionState.MaxLuck)
+            {
+                progressionLuck.text = progressionState.Luck.ToString("F0");
+            }
+            else
+            {
+                progressionRelease.text = progressionState.Luck.ToString("F0") + " MAX";
+            }
+            // 3 accuracy
             if (progressionState.Accuracy3 < progressionState.MaxThreeAccuraccy)
             {
                 progression3Accuracy.text = progressionState.Accuracy3.ToString("F0");
@@ -682,10 +696,12 @@ public class ProgressionManager : MonoBehaviour
             {
                 progression3Accuracy.text = progressionState.Accuracy3.ToString("F0") + " MAX";
             }
+            // 4 accuracy
             if (progressionState.Accuracy4 < progressionState.MaxFourAccuraccy)
             {
                 progression4Accuracy.text = progressionState.Accuracy4.ToString("F0");
             }
+            // 7 accuracy
             else
             {
                 progression4Accuracy.text = progressionState.Accuracy4.ToString("F0") + " MAX";
@@ -698,19 +714,17 @@ public class ProgressionManager : MonoBehaviour
             {
                 progression7Accuracy.text = progressionState.Accuracy7.ToString("F0") + " MAX";
             }
-            //progression4Accuracy.text = progressionState.Accuracy4.ToString("F0");
-            //progression7Accuracy.text = progressionState.Accuracy7.ToString("F0");
 
+            // get level by experience
             progressionState.Level = progressionState.Experience / experienceRequiredForNextLevel;
+            //                      next level      x    exp to gain a level (ex 3000)  -   current amount of exp
             int nextlvl = ((progressionState.Level + 1) * experienceRequiredForNextLevel) - progressionState.Experience;
-
+            // display lvl, exp, exp for next lvl
             playerProgressionStatsText.text = progressionState.Level.ToString("F0") + "\n"
                 + progressionState.Experience.ToString("F0") + "\n"
                 + nextlvl.ToString("F0") + "\n";
-
             playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
-
-
+            // not sure what this is for but im not gonna touch it yet
             GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
         catch (Exception e)
