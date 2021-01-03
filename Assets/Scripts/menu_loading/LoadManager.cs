@@ -47,7 +47,8 @@ public class LoadManager : MonoBehaviour
 
     const string startSceneName = "level_00_start";
 
-    bool isLocked = false;
+    //bool isLocked = false;
+
     private bool CheerleaderProfileTableExists;
     private bool CheerleaderProfileTableCreated;
 

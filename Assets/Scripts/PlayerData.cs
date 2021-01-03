@@ -6,25 +6,26 @@
 
 public class PlayerData : MonoBehaviour
 {
-    private int _playerId = 0;
-    private string _playerName = "";
+    //private int _playerId = 0;
+    //private string _playerName = "";
 
     private float _totalPoints = 0;
     private float _totalPointsByDistance = 0;
     private float _totalPointsBonus = 0;
-    private float _twoPointerMade = 0;
+    //private float _twoPointerMade = 0;
     private float _threePointerMade = 0;
     private float _sevenPointerMade = 0;
 
     private float _fourPointerMade = 0;
-    private float _twoPointerAttempts = 0;
-    private float _threePointerAttempts = 0;
-    private float _fourPointerAttempts = 0;
-    private float _sevenPointerAttempts = 0;
+    //private float _twoPointerAttempts = 0;
+    //private float _threePointerAttempts = 0;
+    //private float _fourPointerAttempts = 0;
+    //private float _sevenPointerAttempts = 0;
 
     //private float _shotAttempt = 0;
     //private float _shotMade = 0;
     //private float _longestShotMade = 0;
+
     private float _longestShotMadeFreePlay = 0;
     private float _longestShotMadeArcade = 0;
     private float _totalDistance = 0;
@@ -140,19 +141,12 @@ public class PlayerData : MonoBehaviour
     //public float LongestShotMade => _longestShotMade;
 
     public float TotalDistance => _totalDistance;
-
     public float MakeThreePointersLowTime => _makeThreePointersLowTime;
-
     public float MakeFourPointersLowTime => _makeFourPointersLowTime;
-
     public float MakeAllPointersLowTime => _makeAllPointersLowTime;
-
     public float MakeThreePointersMoneyBallLowTime => _makeThreePointersMoneyBallLowTime;
-
     public float MakeFourPointersMoneyBallLowTime => _makeFourPointersMoneyBallLowTime;
-
     public float MakeAllPointersMoneyBallLowTime => _makeAllPointersMoneyBallLowTime;
-
     public float LongestShotMadeFreePlay { get => _longestShotMadeFreePlay; set => _longestShotMadeFreePlay = value; }
     public int MostConsecutiveShots { get => _mostConsecutiveShots; set => _mostConsecutiveShots = value; }
     public float TotalPointsBonus { get => _totalPointsBonus; set => _totalPointsBonus = value; }
