@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class DBHelper : MonoBehaviour
 {
-
     private String connection;
     private String databaseNamePath = "/level5.db";
     private String filepath;

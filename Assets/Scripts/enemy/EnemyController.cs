@@ -64,7 +64,8 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    bool playerInLineOfSight = false;
+    //bool playerInLineOfSight = false;
+    [SerializeField]
     private float lineOfSight;
     public float lineOfSightVariance;
 
