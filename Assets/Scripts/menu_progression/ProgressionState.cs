@@ -43,7 +43,7 @@ public class ProgressionState : MonoBehaviour
         maxFourAccuraccy = 100;
         maxSevenAccuraccy = 100;
         maxReleaseAccuraccy = 100;
-        maxLuck = 100;
+        maxLuck = 10;
     }
 
     public void initializeState(CharacterProfile characterProfile)

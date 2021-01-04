@@ -685,7 +685,7 @@ public class ProgressionManager : MonoBehaviour
             }
             else
             {
-                progressionRelease.text = progressionState.Luck.ToString("F0") + " MAX";
+                progressionLuck.text = progressionState.Luck.ToString("F0") + " MAX";
             }
             // 3 accuracy
             if (progressionState.Accuracy3 < progressionState.MaxThreeAccuraccy)
