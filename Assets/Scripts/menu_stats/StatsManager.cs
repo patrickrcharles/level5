@@ -16,7 +16,6 @@ public class StatsManager : MonoBehaviour
     //const string highscoreSelectButtonName = "high_score_select";
     const string modeSelectButtonName = "mode_select_name";
     const string modeSelectButtonHardcoreName = "mode_select_name_hardcore";
-
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
     // table names
@@ -25,14 +24,7 @@ public class StatsManager : MonoBehaviour
 
     // tag find high score rows that are instantiated
     const string highScoreRowTag = "high_score_row";
-
     const string mainMenuSceneName = "level_00_start";
-
-    //GameObject scoreOptionButtonObject;
-    //GameObject highscoreSelectButtonObject;
-    //GameObject modeSelectButtonObject;
-    //GameObject alltimeSelectButtonObject;
-    //GameObject mainMenuButtonObject;
 
     GameObject allTimeTableObject;
     GameObject highScoreTableObject;
@@ -40,33 +32,34 @@ public class StatsManager : MonoBehaviour
     Text modeSelectButtonText;
     Text modeSelectButtonHardcoreText;
 
+    // list of high score rows
     [SerializeField]
     List<StatsTableHighScoreRow> highScoreRowsDataList;
-    [SerializeField]
-    List<mode> modesList;
+    //list of high score row objects
     [SerializeField]
     List<GameObject> highScoreRowsObjectsList;
+    // list of modes
+    [SerializeField]
+    List<mode> modesList;
 
     int defaultModeSelectedIndex;
     int currentModeSelectedIndex;
 
-    GameObject highScoreRowPrefab;
-    const string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
+    // high score results pagination
+    int highScoresResultsPageNumber;
 
+    // high score rows
+    const string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
     const string highScoresRowsName = "high_scores_rows";
     GameObject highScoresRowsObject;
+    GameObject highScoreRowPrefab;
+
+    bool regularLoaded;
+    bool hardcoreLoaded;
 
     PlayerControls controls;
 
     public static StatsManager instance;
-
-    public static string ModeSelectButtonName => modeSelectButtonName;
-    public static string AlltimeSelectButtonName => alltimeSelectButtonName;
-    public static string MainMenuButtonName => mainMenuButtonName;
-
-    public static string MainMenuSceneName => mainMenuSceneName;
-
-    public static string ModeSelectButtonHardcoreName => modeSelectButtonHardcoreName;
 
     // for input system
     private void OnEnable()
@@ -142,7 +135,11 @@ public class StatsManager : MonoBehaviour
         {
             try
             {
-                highScoreRowsDataList = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId, false);
+                highScoreRowsDataList = 
+                    DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
+
+                int numResults = DBHelper.instance.getNumberOfResults(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
+                //Debug.Log("numResults : " + numResults);
             }
             catch (Exception e)
             {
@@ -154,6 +151,9 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
+        // default page number value, start on first page
+        highScoresResultsPageNumber = 0;
+
         AnaylticsManager.MenuStatsLoaded();
 
         // create rows dor data display
@@ -191,17 +191,18 @@ public class StatsManager : MonoBehaviour
         // ================================== navigation =====================================================================
 
         // high scores table button selected
-        if (currentHighlightedButton.Equals(modeSelectButtonName))
+        if (currentHighlightedButton.Equals(modeSelectButtonName) )
         {
             highScoreTableObject.SetActive(true);
             allTimeTableObject.SetActive(false);
+            //regularLoaded = true;
 
             if (controls.UINavigation.Left.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay(false);
             }
 
             if (controls.UINavigation.Right.triggered)
@@ -209,33 +210,43 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay(false);
             }
 
             if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
+                regularLoaded = false;
             }
 
             // down arrow navigation
             if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
+                regularLoaded = false;
             }
-            changeHighScoreDataDisplay(false);
+            //changeHighScoreDataDisplay(false);
+            if (!regularLoaded)
+            {
+                regularLoaded = true;
+                changeHighScoreDataDisplay(false);
+            }
+        }
+        else
+        {
+            regularLoaded = false;
         }
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonHardcoreName))
         {
             highScoreTableObject.SetActive(true);
             allTimeTableObject.SetActive(false);
-
             if (controls.UINavigation.Left.triggered)
             {
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(true);
+                changeHighScoreDataDisplay(true);
             }
 
             if (controls.UINavigation.Right.triggered)
@@ -243,20 +254,31 @@ public class StatsManager : MonoBehaviour
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(true);
+                changeHighScoreDataDisplay(true);
             }
 
             if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
                 navigateUp();
+                hardcoreLoaded = false;
             }
 
             // down arrow navigation
             if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
             {
                 navigateDown();
+                hardcoreLoaded = false;
             }
-            changeHighScoreDataDisplay(true);
+            //changeHighScoreDataDisplay(true);
+            if (!hardcoreLoaded)
+            {
+                hardcoreLoaded = true;
+                changeHighScoreDataDisplay(true);
+            }
+        }
+        else
+        {
+            hardcoreLoaded = false;
         }
 
         // all time stats table button selected
@@ -426,7 +448,10 @@ public class StatsManager : MonoBehaviour
 
                 // get new list of scores based on currently selected game mode
                 highScoreRowsDataList
-                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue);
+                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
+
+                int numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
+                //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
 
                 // updates row with new data
                 for (int i = 0; i < highScoreRowsDataList.Count; i++)
@@ -457,4 +482,10 @@ public class StatsManager : MonoBehaviour
             }
         }
     }
+
+    public static string ModeSelectButtonName => modeSelectButtonName;
+    public static string AlltimeSelectButtonName => alltimeSelectButtonName;
+    public static string MainMenuButtonName => mainMenuButtonName;
+    public static string MainMenuSceneName => mainMenuSceneName;
+    public static string ModeSelectButtonHardcoreName => modeSelectButtonHardcoreName;
 }
