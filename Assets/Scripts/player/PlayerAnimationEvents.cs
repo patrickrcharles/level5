@@ -430,7 +430,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         if (gameObject.CompareTag("hanger") && other.gameObject.CompareTag("basketball"))
         {
-            Debug.Log(" game obejct : " + gameObject.tag + "  other : " + other.tag);
+            //Debug.Log(" game obejct : " + gameObject.tag + "  other : " + other.tag);
             gameObject.GetComponent<Animator>().SetTrigger("hit");
         }
 
