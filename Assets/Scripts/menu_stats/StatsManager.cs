@@ -57,6 +57,8 @@ public class StatsManager : MonoBehaviour
     bool regularLoaded;
     bool hardcoreLoaded;
 
+    public int numResults;
+
     PlayerControls controls;
 
     public static StatsManager instance;
@@ -138,7 +140,7 @@ public class StatsManager : MonoBehaviour
                 highScoreRowsDataList = 
                     DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
 
-                int numResults = DBHelper.instance.getNumberOfResults(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
+                numResults = DBHelper.instance.getNumberOfResults(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
                 //Debug.Log("numResults : " + numResults);
             }
             catch (Exception e)
@@ -442,15 +444,12 @@ public class StatsManager : MonoBehaviour
             {
                 // counts number entries returned.
                 int index = 0;
-
                 // get highscore field from mode prefab
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
-
                 // get new list of scores based on currently selected game mode
                 highScoreRowsDataList
                     = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
-
-                int numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
+                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
                 //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
 
                 // updates row with new data
