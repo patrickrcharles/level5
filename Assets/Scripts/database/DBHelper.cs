@@ -28,7 +28,14 @@ public class DBHelper : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         filepath = Application.persistentDataPath + databaseNamePath;
         //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
@@ -1050,7 +1057,7 @@ public class DBHelper : MonoBehaviour
 
     // ***************************** get values by MODE ID *******************************************
     // return string from specified table by field and userid
-    public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
 
         int value = 0;
@@ -1062,8 +1069,9 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " ORDER BY " + field + "  " + order + "  LIMIT 1";
+            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore + " ORDER BY " + field + "  " + order + "  LIMIT 1";
 
+        //Debug.Log(sqlQuery);
         try
         {
             dbcmd.CommandText = sqlQuery;
@@ -1080,6 +1088,7 @@ public class DBHelper : MonoBehaviour
                 {
                     value = reader.GetInt32(0);
                 }
+                //Debug.Log("value : "+ value);
             }
             reader.Close();
             reader = null;
@@ -1354,7 +1363,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
     //====================================================================================================
-    public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
@@ -1366,7 +1375,7 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " ORDER BY " + field + " " + order + " LIMIT 1";
+            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore +" ORDER BY " + field + " " + order + " LIMIT 1";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -1385,7 +1394,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order)
+    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order, int hardcore)
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
@@ -1397,10 +1406,14 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " ORDER BY " + field + " " + order + " LIMIT 1";
+            + " WHERE hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
+
+
 
         while (reader.Read())
         {
