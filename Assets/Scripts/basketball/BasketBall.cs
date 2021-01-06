@@ -9,7 +9,7 @@ public class BasketBall : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     PlayerController playerState;
-    Rigidbody rigidbody;
+    new Rigidbody rigidbody;
     AudioSource audioSource;
     CharacterProfile characterProfile;
     BasketBallState basketBallState;

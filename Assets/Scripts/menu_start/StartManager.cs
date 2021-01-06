@@ -848,6 +848,8 @@ public class StartManager : MonoBehaviour
     // this is necessary for setting Game Rules on game manager
     private void setGameOptions()
     {
+        //Debug.Log("setGameOptions()");
+
         GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
 
@@ -919,7 +921,9 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.enemiesEnabled = true;
         }
-
+        // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
+        //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
+        PlayerData.instance.loadStatsFromDatabase();
     }
 
     // ============================  message display ==============================
@@ -1060,33 +1064,23 @@ public class StartManager : MonoBehaviour
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
     public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
-
     public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
-
     public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
-
     public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
-
     public static string TrafficSelectOptionName => trafficSelectOptionName;
-
     public static string StartButtonName => startButtonName;
-
     public static string StatsMenuButtonName => statsMenuButtonName;
-
     public static string QuitButtonName => quitButtonName;
-
     public static string StatsMenuSceneName => statsMenuSceneName;
-
-    public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
-    public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
-    public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
-    public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
-    public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
-    public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
-
     public static string ProgressionScreenSceneName => progressionScreenSceneName;
-
     public static string UpdateMenuButtonName => updateMenuButtonName;
-
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
+    //public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
+    //public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
+    //public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
+    //public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
+    //public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
+    //public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
+
+
 }

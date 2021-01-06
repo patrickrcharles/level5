@@ -64,7 +64,8 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    bool playerInLineOfSight = false;
+    //bool playerInLineOfSight = false;
+    [SerializeField]
     private float lineOfSight;
     public float lineOfSightVariance;
 
@@ -237,11 +238,13 @@ public class EnemyController : MonoBehaviour
             FreezeEnemyPosition();
             if (playerSwapAttack != null 
                 && !longRangeAttack
-                && playerSwapAttack.closeAttacks != null)
+                && playerSwapAttack.closeAttacks != null
+                && playerSwapAttack.AnimatorOverrideController != null)
             {
                 playerSwapAttack.setCloseAttack();
             }
-            if (playerSwapAttack != null 
+            if (playerSwapAttack != null
+                && playerSwapAttack.AnimatorOverrideController != null
                 && longRangeAttack
                 && playerSwapAttack.longRangeAttack != null)
             {

@@ -11,11 +11,11 @@ public class CameraManager : MonoBehaviour
     Camera cam;
     [SerializeField]
     int currentCameraIndex;
-    int defaultCameraIndex = 0;
+    //int defaultCameraIndex = 0;
     [SerializeField]
     int numberOfCameras;
 
-    bool locked;
+    //bool locked;
     private int cameraOnGoalIndex;
     private int cameraFollowBallIndex;
 
@@ -151,7 +151,7 @@ public class CameraManager : MonoBehaviour
 
         StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
 
-        locked = false;
+        //locked = false;
     }
 
     public IEnumerator turnOffMessageLogDisplayAfterSeconds(float seconds)

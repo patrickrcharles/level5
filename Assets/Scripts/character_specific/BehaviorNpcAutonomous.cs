@@ -39,8 +39,8 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     static int runState = Animator.StringToHash("base.run");
     [SerializeField]
     Vector3 playerRelativePosition;
-    [SerializeField]
-    bool waiting;
+    //[SerializeField]
+    //bool waiting;
 
     public bool ignoreCollision;
     public bool idle;
@@ -237,11 +237,11 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     }
 
 
-    IEnumerator setWaitForXSeconds(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        waiting = false;
-    }
+    //IEnumerator setWaitForXSeconds(float seconds)
+    //{
+    //    yield return new WaitForSecondsRealtime(seconds);
+    //    waiting = false;
+    //}
 
     private Vector3 getRandomTransformFromPlayerPosition()
     {

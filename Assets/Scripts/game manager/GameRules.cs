@@ -546,7 +546,7 @@ public class GameRules : MonoBehaviour
         {
             displayText = "Your total distance for shots made was " + (basketBallStats.TotalDistance).ToString("0.00") + " ft.\n\n" + getStatsTotals();
         }
-        if (gameModeId >= 6 && gameModeId <= 12)
+        if (gameModeId > 6 && gameModeId <= 12)
         {
             int minutes = Mathf.FloorToInt(counterTime / 60);
             float seconds = (counterTime - (minutes * 60));

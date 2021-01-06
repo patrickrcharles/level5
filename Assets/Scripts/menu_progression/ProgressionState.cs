@@ -37,6 +37,14 @@ public class ProgressionState : MonoBehaviour
     {
         instance = this;
     }
+    private void Start()
+    {
+        maxThreeAccuraccy = 100;
+        maxFourAccuraccy = 100;
+        maxSevenAccuraccy = 100;
+        maxReleaseAccuraccy = 100;
+        maxLuck = 10;
+    }
 
     public void initializeState(CharacterProfile characterProfile)
     {

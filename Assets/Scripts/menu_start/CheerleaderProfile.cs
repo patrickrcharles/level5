@@ -12,6 +12,16 @@ public class CheerleaderProfile : MonoBehaviour
     [SerializeField] private int cheerleaderId;
     [SerializeField] private string unlockCharacterText;
 
+    [SerializeField] private int bonus3Accuracy;
+    [SerializeField] private int bonus4Accuracy;
+    [SerializeField] private int bonus7Accuracy;
+    [SerializeField] private int bonusLuck;
+    [SerializeField] private int bonusRelease;
+    [SerializeField] private int bonusRange;
+    [SerializeField] private int bonusAttack;
+    [SerializeField] private int bonusHealth;
+    [SerializeField] private int bonusDefense;
+
     public int CheerleaderId { get => cheerleaderId; set => cheerleaderId = value; }
     public string CheerleaderDisplayName { get => cheerleaderDisplayName; set => cheerleaderDisplayName = value; }
     public string CheerleaderObjectName { get => cheerleaderObjectName; set => cheerleaderObjectName = value; }

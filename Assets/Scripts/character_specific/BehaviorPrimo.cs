@@ -34,7 +34,7 @@ public class BehaviorPrimo : MonoBehaviour
     static int runState = Animator.StringToHash("base.run");
 
     Vector3 playerRelativePosition;
-    bool waiting;
+    //bool waiting;
 
     public bool ignoreCollision;
     public bool outsideRange;
@@ -221,11 +221,11 @@ public class BehaviorPrimo : MonoBehaviour
         anim.SetBool(animationName, isTrue);
     }
 
-    IEnumerator setWaitForXSeconds(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        waiting = false;
-    }
+    //IEnumerator setWaitForXSeconds(float seconds)
+    //{
+    //    yield return new WaitForSecondsRealtime(seconds);
+    //    waiting = false;
+    //}
 
     //private Vector3 getRandomTransformFromPlayerPosition()
     //{

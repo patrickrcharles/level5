@@ -16,7 +16,7 @@ public class cameraUpdater : MonoBehaviour
 
     public float ZoomAmount = 0; //With Positive and negative values
     public float MaxToClamp = 10;
-    public float ROTSpeed = .1f;
+    public float ROTSpeed = 0.1f;
 
     [SerializeField]
     bool cameraZoomedIn, cameraZoomedOut;
@@ -33,8 +33,8 @@ public class cameraUpdater : MonoBehaviour
     bool isOrthoGraphic;
 
     bool mainPerspectiveCamActive;
-    bool orthoCam1Active;
-    bool orthoCam2Active;
+    //bool orthoCam1Active;
+    //bool orthoCam2Active;
     bool isFollowBallCamera;
 
     [SerializeField]
@@ -274,8 +274,8 @@ public class cameraUpdater : MonoBehaviour
         {
             addToCameraPosY = 1.835f;
             mainPerspectiveCamActive = true;
-            orthoCam1Active = false;
-            orthoCam2Active = false;
+            //orthoCam1Active = false;
+            //orthoCam2Active = false;
         }
 
         // 2 orthographic cameras
@@ -285,14 +285,14 @@ public class cameraUpdater : MonoBehaviour
             {
                 addToCameraPosY = 2.5f;
                 mainPerspectiveCamActive = false;
-                orthoCam1Active = true;
+                //orthoCam1Active = true;
             }
             if (cam.name.Contains("camera_orthographic_2"))
             {
                 addToCameraPosY = 3.3f;
                 mainPerspectiveCamActive = false;
-                orthoCam1Active = false;
-                orthoCam2Active = true;
+                //orthoCam1Active = false;
+                //orthoCam2Active = true;
             }
         }
         if (cam.name.Contains("follow_ball"))

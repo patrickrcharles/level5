@@ -62,7 +62,7 @@ public class BodyGuardController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    bool playerInLineOfSight = false;
+    //bool playerInLineOfSight = false;
     public float lineOfSight;
     public float lineOfSightVariance;
 

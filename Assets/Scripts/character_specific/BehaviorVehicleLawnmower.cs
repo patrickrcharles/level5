@@ -17,7 +17,7 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
     public GameObject pos1, pos2, pos3, pos4;
 
     float distanceFromStartPos;
-    bool locked;
+    //bool locked;
     //GameObject player;
 
     private float movementSpeed;
@@ -67,7 +67,7 @@ public class BehaviorVehicleLawnmower : MonoBehaviour
         // positions flash will retreat to
         returnPositions = GameObject.FindGameObjectsWithTag("vehicle_position_marker");
 
-        locked = false;
+        //locked = false;
         currentTargetIndex = 0;
         currentTarget = returnPositions[currentTargetIndex].transform.position;
         movingToTarget = false;

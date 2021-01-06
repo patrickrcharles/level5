@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class DBHelper : MonoBehaviour
 {
-
     private String connection;
     private String databaseNamePath = "/level5.db";
     private String filepath;
@@ -29,7 +28,14 @@ public class DBHelper : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         filepath = Application.persistentDataPath + databaseNamePath;
         //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
@@ -1051,7 +1057,7 @@ public class DBHelper : MonoBehaviour
 
     // ***************************** get values by MODE ID *******************************************
     // return string from specified table by field and userid
-    public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    public int getIntValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
 
         int value = 0;
@@ -1063,8 +1069,9 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " ORDER BY " + field + "  " + order + "  LIMIT 1";
+            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore + " ORDER BY " + field + "  " + order + "  LIMIT 1";
 
+        //Debug.Log(sqlQuery);
         try
         {
             dbcmd.CommandText = sqlQuery;
@@ -1081,6 +1088,7 @@ public class DBHelper : MonoBehaviour
                 {
                     value = reader.GetInt32(0);
                 }
+                //Debug.Log("value : "+ value);
             }
             reader.Close();
             reader = null;
@@ -1097,7 +1105,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid, bool hardcoreValue)
+    public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid, bool hardcoreValue, int pageNumber)
     {
         List<StatsTableHighScoreRow> listOfValues = new List<StatsTableHighScoreRow>();
 
@@ -1106,7 +1114,12 @@ public class DBHelper : MonoBehaviour
         string level;
         string date;
         string hardcore = "";
+        float time;
         int hardcoreEnabled = 0;
+        //int numberOfResultsPages = 0;
+        //string numResultsQuery = "";
+
+        int pageNumberOffset = pageNumber * 10;
         //int hardcoreEnabled = Convert.ToInt32(hardcoreValue);
 
         string sqlQuery = "";
@@ -1116,17 +1129,23 @@ public class DBHelper : MonoBehaviour
         dbconn.Open(); //Open connection to the database.
         IDbCommand dbcmd = dbconn.CreateCommand();
 
+        //numResultsQuery = "SELECT  * FROM HighScores  WHERE modeid = " + modeid
+        //        + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+        //numberOfResultsPages = getNumberOfResults(numResultsQuery);
+
         // game modes that require float values/ low time as high score
         if (!hardcoreValue)
         {
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " ASC LIMIT 10";
+                sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                    + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
 
             }
             else
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid + " ORDER BY " + field + " DESC LIMIT 10";
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                    + " AND hardcoreEnabled = 0 ORDER BY " + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
             }
         }
         if (hardcoreValue)
@@ -1134,16 +1153,17 @@ public class DBHelper : MonoBehaviour
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC LIMIT 10";
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
 
             }
             else
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC LIMIT 10";
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
             }
         }
-        //Debug.Log("sqlQuery : " + sqlQuery);
+
+        //Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -1162,16 +1182,16 @@ public class DBHelper : MonoBehaviour
             character = reader.GetString(1);
             level = reader.GetString(2);
             date = reader.GetString(3);
+            time = reader.GetFloat(4);
             // null check
-            if (reader.IsDBNull(4))
+            if (reader.IsDBNull(5))
             {
                 hardcoreEnabled = 0;
             }
             else
             {
-                hardcoreEnabled = reader.GetInt32(4);
+                hardcoreEnabled = reader.GetInt32(5);
             }
-
             if (hardcoreEnabled != 0)
             {
                 hardcore = "yes";
@@ -1180,7 +1200,6 @@ public class DBHelper : MonoBehaviour
             {
                 hardcore = "no";
             }
-
             // add to list
             listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore));
             //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
@@ -1204,9 +1223,51 @@ public class DBHelper : MonoBehaviour
         }
 
         return listOfValues;
-
     }
 
+    public int getNumberOfResults(string field, int modeid, bool hardcoreValue, int pageNumber)
+    {
+        int rowCount = 0;
+        string sqlQuery = "";
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        if (hardcoreValue)
+        {
+            sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
+                    + " AND hardcoreEnabled = 1 ORDER BY " + field;
+        }
+        else
+        {
+            sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
+                    + " AND hardcoreEnabled = 0 ORDER BY " + field;
+        }
+
+        //numberOfResultsPages = getNumberOfResults(numResultsQuery);
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            rowCount = reader.GetInt32(0);
+            //Debug.Log("rowCount : " + rowCount);
+        }
+
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        //Debug.Log("rowCount : " + rowCount);
+        //Debug.Log("sqlQuery : " + sqlQuery);
+
+        return rowCount;
+    }
+
+    
     //============================== get all time stats ===================================================
     public float getFloatValueAllTimeFromTableByField(String tableName, String field)
     {
@@ -1302,7 +1363,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
     //====================================================================================================
-    public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order)
+    public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
@@ -1314,7 +1375,7 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " ORDER BY " + field + " " + order + " LIMIT 1";
+            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore +" ORDER BY " + field + " " + order + " LIMIT 1";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -1333,7 +1394,7 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order)
+    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order, int hardcore)
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
@@ -1345,10 +1406,14 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " ORDER BY " + field + " " + order + " LIMIT 1";
+            + " WHERE hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+        Debug.Log(sqlQuery);
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
+
+
 
         while (reader.Read())
         {
