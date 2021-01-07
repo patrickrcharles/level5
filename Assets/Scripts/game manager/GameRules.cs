@@ -11,7 +11,6 @@ public class GameRules : MonoBehaviour
     private int gameModeId;
     private float timerStart;
 
-    [SerializeField]
     private bool gameOver;
     private bool gameStart;
     private bool gameRulesEnabled;
@@ -152,7 +151,7 @@ public class GameRules : MonoBehaviour
     // ================================================ Update ============================================
     void Update()
     {
-        // update current score
+        //// update current score
         if (gameRulesEnabled)
         {
             setScoreDisplayText();
@@ -332,7 +331,7 @@ public class GameRules : MonoBehaviour
     //}
 
     // ================================================ set score display ============================================
-    private void setScoreDisplayText()
+    public void setScoreDisplayText()
     {
         if (PlayerData.instance != null)
         {
@@ -716,4 +715,5 @@ public class GameRules : MonoBehaviour
     public int InThePocketActivateValue { get => inThePocketActivateValue; set => inThePocketActivateValue = value; }
     public Text DisplayCurrentScoreText { get => displayCurrentScoreText; set => displayCurrentScoreText = value; }
     public Text DisplayHighScoreText { get => displayHighScoreText; set => displayHighScoreText = value; }
+    public bool GameRulesEnabled { get => gameRulesEnabled; set => gameRulesEnabled = value; }
 }
