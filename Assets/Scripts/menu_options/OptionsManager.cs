@@ -50,6 +50,7 @@ public class OptionsManager : MonoBehaviour
     private const string dpiCurrentTextName = "current_dpi";
     private const string frameRateCurrentTextName = "current_frame_rate";
     private const string TextureQualityCurrentTextName = "current_texture_quality";
+    private const string refreshRateCurrentTextName = "current_refresh_rate";
 
 
     private int resolutionSelectedIndex;
@@ -63,7 +64,7 @@ public class OptionsManager : MonoBehaviour
 
     public static OptionsManager instance;
 
-    bool buttonPressed;
+    //bool buttonPressed;
 
     enum textureQuality
     {
@@ -91,33 +92,15 @@ public class OptionsManager : MonoBehaviour
     {
         instance = this;
         controls = new PlayerControls();
-        buttonPressed = false;
+        //buttonPressed = false;
 
         resolutions = Screen.resolutions;
-
-        ////float scale;
-        //for(int i = 0; i < 10; i++)
-        //{
-        //    float scale = 1 - (i * 0.1f);
-        //    Debug.Log("dpi current x " + scale + " : " + Mathf.Ceil(240 * scale));
-        //}
-
-        //Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
-
-        //int w = Screen.width;
-        //int h = Screen.height;
-        //float num = (float)w / h;
-        //Debug.Log("screen ratio : " + num);
 
         //current
         GameObject.Find(resolutionCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.ToString();
         GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text = Screen.currentResolution.ToString();
-        //GameObject.Find(textureQualityButtonName).GetComponent<Text>().text = textureQuality.Full.ToString();
-
-        //GameObject.Find(textureQualityOptionButtonName).GetComponent<Text>().text
-        //    = GetEnumValue<textureQuality>(QualitySettings.masterTextureLimit).ToString();
-
         GameObject.Find(dpiCurrentTextName).GetComponent<Text>().text = Screen.dpi.ToString();
+        GameObject.Find(refreshRateCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString() + " Hz";
 
         if (QualitySettings.vSyncCount == 0)
         {
@@ -127,6 +110,7 @@ public class OptionsManager : MonoBehaviour
         {
             GameObject.Find(vsyncCurrentTextName).GetComponent<Text>().text = "On";
         }
+
         if (Application.targetFrameRate < 0)
         {
             GameObject.Find(frameRateCurrentTextName).GetComponent<Text>().text = "unlimited";
@@ -135,41 +119,6 @@ public class OptionsManager : MonoBehaviour
         {
             GameObject.Find(frameRateCurrentTextName).GetComponent<Text>().text = Application.targetFrameRate.ToString();
         }
-
-        //GameObject.Find(TextureQualityCurrentTextName).GetComponent<Text>().text
-        //    = GetEnumValue<textureQuality>(QualitySettings.masterTextureLimit).ToString();
-
-        //// buttons to disable for touch input
-        //levelSelectButton = GameObject.Find(levelSelectButtonName).GetComponent<Button>();
-        //trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
-        //playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
-        //CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
-        //modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
-
-        //// player object with lock texture and unlock text
-        //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
-        //playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
-        //playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
-        //playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
-        //playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
-        //playerSelectCategoryStatsText = GameObject.Find(playerSelectStatsCategoryName).GetComponent<Text>();
-
-        //// friend object with lock texture and unlock text
-        //cheerleaderSelectedIsLockedObject = GameObject.Find(cheerleaderSelectIsLockedObjectName);
-        //cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
-        //cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
-        //cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
-
-        //// traffic option selection text
-        //trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
-
-        ////default index for player selected
-        //playerSelectedIndex = GameOptions.playerSelectedIndex;
-        //cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
-        //levelSelectedIndex = GameOptions.levelSelectedIndex;
-        //modeSelectedIndex = GameOptions.modeSelectedIndex;
-        //trafficEnabled = GameOptions.trafficEnabled;
-
 
     }
 
@@ -192,14 +141,14 @@ public class OptionsManager : MonoBehaviour
         dpiSelectedIndex = 0;
         frameRateSelectedIndex = 0;
 
-        var resolutions = Screen.resolutions;
-        var refreshRates = new Int32[resolutions.Length];
+        //var resolutions = Screen.resolutions;
+        //var refreshRates = new Int32[resolutions.Length];
 
-        for (var c = 0; c < refreshRates.Length; c++)
-        {
-            refreshRates[c] = resolutions[c].refreshRate;
-            //Debug.Log(resolutions[c].refreshRate);
-        }
+        //for (var c = 0; c < refreshRates.Length; c++)
+        //{
+        //    refreshRates[c] = resolutions[c].refreshRate;
+        //    Debug.Log("refresh rate : " + resolutions[c].refreshRate);
+        //}
     }
 
     private void Update()
@@ -267,7 +216,7 @@ public class OptionsManager : MonoBehaviour
 
         }
         //Debug.Log("screen dpi * scale : " + Screen.dpi * scale );
-        Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
+        //Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
         //Debug.Log("dpiSelectedIndex : " + dpiSelectedIndex);
     }
 
@@ -292,6 +241,7 @@ public class OptionsManager : MonoBehaviour
             if (Application.targetFrameRate < 0)
             {
                 Application.targetFrameRate = 0;
+                //GameObject.Find(frameRateCurrentTextName).GetComponent<Text>().text = "unlimited";
             }
             //scale = 1 - (dpiSelectedIndex * 0.1f);
             //QualitySettings.resolutionScalingFixedDPIFactor = scale;
