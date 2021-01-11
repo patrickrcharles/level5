@@ -42,11 +42,6 @@ public class SFXBB : MonoBehaviour
     public AudioClip whipCrack;
     public AudioClip shootAutomaticAK47;
 
-    public AudioClip unlockAchievement;
-
-
-    //public List<AudioClip> vanMusicPlayList;
-
     public static SFXBB instance;
 
     private void Awake()

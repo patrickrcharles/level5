@@ -43,7 +43,6 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private int pointsUsed;
     [SerializeField] private decimal money;
     [SerializeField] private bool isLocked;
-    //[SerializeField] private int achievementId;
     [SerializeField] private string unlockCharacterText;
 
 

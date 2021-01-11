@@ -194,10 +194,6 @@ public class GameRules : MonoBehaviour
 
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.getExperienceGainedFromSession());
-
-                //// check if achievements reached, send bball stats object
-                //AchievementManager.instance.checkAllAchievements(GameOptions.playerId, GameOptions.cheerleaderId,
-                //    GameOptions.levelId, GameOptions.gameModeSelectedId, basketBallStats.TotalPoints);
             }
             if (GameOptions.enemiesEnabled)
             {

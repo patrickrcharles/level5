@@ -11,7 +11,6 @@ public class DBHelper : MonoBehaviour
     private String databaseNamePath = "/level5.db";
     private String filepath;
     private const String allTimeStatsTableName = "AllTimeStats";
-    private const String achievementTableName = "Achievements";
     private const String characterProfileTableName = "CharacterProfile";
     private const String cheerleaderProfileTableName = "CheerleaderProfile";
 
@@ -521,68 +520,6 @@ public class DBHelper : MonoBehaviour
         return prevStats;
     }
 
-    /*
-     * gets achievements current in database
-     */
-    public List<Achievement> loadAchievementsFromDB()
-    {
-        List<Achievement> achieveStats = new List<Achievement>();
-
-        String sqlQuery = "";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        if (!isTableEmpty(achievementTableName))
-        {
-            sqlQuery = "Select aid, charid, cheerid, levelid, modeid, name, description, "
-                + "required_charid, required_cheerid, required_levelid, required_modeid, "
-                + " activevalue_int, activevalue_progress_int, islocked From " + achievementTableName;
-            //Debug.Log(sqlQuery);
-
-
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                //string name;
-                //string description;
-                //int activateInt;
-                //int progressInt;
-                //int islocked;
-                Achievement achievement = new Achievement();
-
-                achievement.AchievementId = reader.GetInt32(0);
-                achievement.PlayerId = reader.GetInt32(1);
-                achievement.CheerleaderId = reader.GetInt32(2);
-                achievement.LevelId = reader.GetInt32(3);
-                achievement.ModeId = reader.GetInt32(4);
-
-                achievement.AchievementName = (!reader.IsDBNull(5) ? reader.GetString(5) : "name");
-                achievement.AchievementDescription = (!reader.IsDBNull(6) ? reader.GetString(6) : "description");
-
-                achievement.PlayerRequiredToUseId = (!reader.IsDBNull(7) ? reader.GetInt32(7) : 0);
-                achievement.CheerleaderRequiredToUseId = (!reader.IsDBNull(8) ? reader.GetInt32(8) : 0);
-                achievement.LevelRequiredToUseId = (!reader.IsDBNull(9) ? reader.GetInt32(9) : 0);
-                achievement.ModeRequiredToUseId = (!reader.IsDBNull(10) ? reader.GetInt32(10) : 0);
-
-                achievement.ActivationValueInt = (!reader.IsDBNull(11) ? reader.GetInt32(11) : 0);
-                achievement.ActivationValueProgressionInt = (!reader.IsDBNull(12) ? reader.GetInt32(12) : 0);
-                achievement.IsLocked = Convert.ToBoolean(!reader.IsDBNull(13) ? reader.GetInt32(13) : 0);
-
-                achieveStats.Add(achievement);
-            }
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-        }
-        return achieveStats;
-    }
 
     // get Character Data from Database
     public List<CharacterProfile> getCharacterProfileStats()
@@ -633,10 +570,6 @@ public class DBHelper : MonoBehaviour
                     temp.Range = reader.GetInt32(17);
                     temp.Release = reader.GetInt32(18);
                     temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
-                    //Debug.Log("player.islocked : " + temp.IsLocked);
-
-                    //Debug.Log("db aid" + aid + " islocked : " + islocked);
-                    //Achievement temp = Achievement(aid, activateInt, progressInt, islocked);
                     characterStats.Add(temp);
                 }
                 reader.Close();
@@ -765,140 +698,6 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
     }
 
-    public void insertNewAchievmentInDB(Achievement newAchievement)
-    {
-
-        databaseLocked = true;
-
-        newAchievement.IsLocked = true;
-
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
-        {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
-            {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
-                {
-                    cmd.Transaction = tr;
-
-                    string sqlQuery =
-                         "Insert INTO "
-                         + achievementTableName
-                         + " ( aid, charid, cheerid, levelid, modeid, name, description, required_charid, required_cheerid,  required_levelid, "
-                         + "required_modeid, activevalue_int, activevalue_float, activevalue_progress_int,activevalue_progress_float, islocked) "
-                         + " Values('" + newAchievement.achievementId + "', '"
-                         + newAchievement.PlayerId + "', '"
-                         + newAchievement.CheerleaderId + "', '"
-                         + newAchievement.LevelId + "', '"
-                         + newAchievement.ModeId + "', '"
-                         + newAchievement.AchievementName + "', '"
-                         + newAchievement.AchievementDescription + "', '"
-                         + newAchievement.PlayerRequiredToUseId + "', '"
-                         + newAchievement.CheerleaderRequiredToUseId + "', '"
-                         + newAchievement.LevelRequiredToUseId + "', '"
-                         + newAchievement.ModeRequiredToUseId + "', '"
-                         + newAchievement.ActivationValueInt + "', '"
-                         + newAchievement.ActivationValueFloat + "', '"
-                         + newAchievement.ActivationValueProgressionInt + "', '"
-                         + newAchievement.ActivationValueProgressionFloat + "', '"
-                         + Convert.ToInt32(newAchievement.IsLocked) + "')";
-
-                    //Debug.Log(sqlQuery);
-                    cmd.CommandText = sqlQuery;
-                    cmd.ExecuteNonQuery();
-                }
-                tr.Commit();
-            }
-            dbconn.Close();
-        }
-        databaseLocked = false;
-    }
-
-    // this is a mess. needs to be redone and split into functions
-    internal void UpdateAchievementStats()
-    {
-        // get achievements from DB
-        List<Achievement> achievementsList = loadAchievementsFromDB();
-        String sqlQuery = "";
-
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
-        {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
-            {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
-                {
-                    cmd.Transaction = tr;
-                    foreach (Achievement prefabAchievement in AchievementManager.instance.AchievementList)
-                    {
-                        // if achievement exists in DB and prefab
-                        bool entryExists = achievementsList.Any(x => x.achievementId == prefabAchievement.achievementId);
-                        Achievement databaseAchievement;
-
-                        if (entryExists)
-                        {
-                            //get achievement database object to update
-                            databaseAchievement = achievementsList.Where(x => x.achievementId == prefabAchievement.achievementId).Single();
-                            // if db is unlocked and current ISNT
-                            if (databaseAchievement.IsLocked && !prefabAchievement.IsLocked)
-                            {
-                                prefabAchievement.IsLocked = true;
-                            }
-                            // if db is NOT unlocked and current IS. this a course correction. DB value takes precedent
-                            if (!databaseAchievement.IsLocked && prefabAchievement.IsLocked)
-                            {
-                                prefabAchievement.IsLocked = false;
-                            }
-
-                            // if this achievement is LOCKED but is a progressive count, and current value > db value ;update progression
-                            if (prefabAchievement.IsLocked && databaseAchievement.IsLocked
-                                && prefabAchievement.IsProgressiveCount)
-                            {
-                                // if needs to update progression value
-                                if (prefabAchievement.ActivationValueProgressionInt > databaseAchievement.ActivationValueProgressionInt)
-                                {
-                                    sqlQuery =
-                                    "UPDATE " + achievementTableName + " SET activevalue_progress_int = " + prefabAchievement.ActivationValueProgressionInt
-                                    + " WHERE aid = " + prefabAchievement.achievementId;
-                                }
-                            }
-                            // if DB doesnt have an activation value, use prefab value to add it in
-                            if (databaseAchievement.ActivationValueInt != prefabAchievement.ActivationValueInt)
-                            {
-                                sqlQuery = "UPDATE " + achievementTableName + " SET activevalue_int = " + prefabAchievement.ActivationValueInt
-                                    + " WHERE aid = " + prefabAchievement.achievementId;
-                            }
-
-                        }
-                        // if no entry in db. create entry with activate value, progress, and islocked = 1
-                        if (!entryExists)
-                        {
-                            // 1 - locked, 0 - unlocked
-                            int unlockAchievement = 1;
-                            // if entry is NOT in list of stats
-                            sqlQuery =
-                            "Insert INTO "
-                            + achievementTableName + " ( activevalue_int, activevalue_progress_int, islocked) "
-                            + " Values('" + prefabAchievement.ActivationValueInt + "', '"
-                            + prefabAchievement.ActivationValueProgressionInt + "', '"
-                            + unlockAchievement + "')";
-                        }
-                        // check if sql query is empty/null. time saving method (skip query if not necessary to run)
-                        if (!String.IsNullOrEmpty(sqlQuery))
-                        {
-                            //Debug.Log(sqlQuery);
-                            cmd.CommandText = sqlQuery;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-                tr.Commit();
-            }
-            dbconn.Close();
-        }
-    }
 
     public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
     {
@@ -1459,77 +1258,6 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    // return int from specified table by field and achievement id
-    public int getIntValueFromTableByFieldAndAchievementID(String tableName, String field, int aid)
-    {
-        int value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        // null check
-        if (reader.IsDBNull(0))
-        {
-            value = 0;
-        }
-        else
-        {
-            while (reader.Read())
-            {
-                value = reader.GetInt32(0);
-            }
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-
-    // return int from specified table by field and achievement id
-    public void updateIntValueFromTableByFieldAndId(String tableName, String field, int value, string idName, int idValue)
-    {
-
-        Debug.Log(" updateIntValueFromTableByFieldAndId)");
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE aid = " + aid;
-
-        string sqlQuery = "UPDATE " + tableName +
-        " SET " + field + "  = " + value +
-        " WHERE " + idName + " = " + idValue;
-
-        Debug.Log(sqlQuery);
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetInt32(0);
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-    }
 
     public float deleteRecordFromTableByID(String tableName, String idName, int id)
     {

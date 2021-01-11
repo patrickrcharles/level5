@@ -614,47 +614,6 @@ public class StartManager : MonoBehaviour
 
             playerSelectedIsLockedObject.SetActive(false);
 
-            // check if players is locked
-
-            //foreach (CheerleaderProfile cl in cheerleaderSelectedData)
-            //{
-            //    if (AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId) != null)
-            //    {
-            //        Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId);
-            //        cl.IsLocked = tempAchieve.IsLocked;
-            //        cl.UnlockCharacterText = tempAchieve.AchievementDescription;
-            //    }
-            //    // none selected
-            //    if (cl.CheerleaderId == 0)
-            //    {
-            //        cl.IsLocked = false;
-            //        cl.UnlockCharacterText = "";
-            //    }
-            //}
-
-            //if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            //{
-            //    // get achievement progress for display
-            //    Achievement tempAchieve =
-            //        AchievementManager.instance.AchievementList
-            //        .Find(x => x.CheerleaderId == cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId);
-
-            //    // disable text and unlock text
-            //    cheerleaderSelectedIsLockedObject.SetActive(true);
-            //    cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText
-            //        + "\nprogress " + tempAchieve.ActivationValueProgressionInt
-            //        + " / " + tempAchieve.ActivationValueInt;
-            //}
-            //// if player is locked or free play mode selected
-            //if (!cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked
-            //    || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-            //    || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-            //{
-            //    //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
-            //    cheerleaderSelectedIsLockedObject.SetActive(false);
-            //    cheerleaderSelectUnlockText.text = "";
-            //}
-
             cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
             cheerleaderSelectOptionImage.sprite = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderPortrait;
 
@@ -693,31 +652,6 @@ public class StartManager : MonoBehaviour
 
             playerProgressionCategoryText.enabled = true;
             playerProgressionStatsText.enabled = true;
-
-            ////Debug.Log("***************************************** 1");
-            //if (playerSelectedData[playerSelectedIndex].IsLocked)
-            //{
-            //    // get player achievement status
-            //    Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == playerSelectedData[playerSelectedIndex].PlayerId);
-            //    playerSelectedIsLockedObject.SetActive(true);
-
-            //    // disable text and unlock text
-            //    //cheerleaderSelectedIsLockedObject.SetActive(true);
-            //    if (tempAchieve.IsProgressiveCount)
-            //    {
-            //        //Debug.Log("========================================================== temp.progress : " + tempAchieve.ActivationValueProgressionInt);
-
-            //        playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText
-            //            + "\nprogress " + tempAchieve.ActivationValueProgressionInt
-            //            + " / " + tempAchieve.ActivationValueInt;
-            //    }
-            //    else
-            //    {
-            //        playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
-            //    }
-            //}
-
-            //Debug.Log("***************************************** 2");
 
             // if player is locked or free play mode selected
             if (!playerSelectedData[playerSelectedIndex].IsLocked

@@ -64,10 +64,8 @@ public class LoadManager : MonoBehaviour
 
     private void Update()
     {
-        // if achievements loaded and other data lists loaded
         // load start screen
-        if ((AchievementManager.instance.achievementsLoaded || AchievementManager.instance == null)
-            && LoadedData.instance.DataLoaded)
+        if (LoadedData.instance.DataLoaded)
         {
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
@@ -94,9 +92,6 @@ public class LoadManager : MonoBehaviour
     IEnumerator verifyCharacterProfileTable()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
-
 
         // if CharacterProfile table does exist
         if (DBConnector.instance.tableExists("CharacterProfile")
@@ -118,8 +113,6 @@ public class LoadManager : MonoBehaviour
     IEnumerator verifyCheerleaderProfileTable()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
         if (DBConnector.instance.tableExists("CheerleaderProfile")
             && !DBHelper.instance.isTableEmpty("CheerleaderProfile"))
@@ -142,8 +135,6 @@ public class LoadManager : MonoBehaviour
     IEnumerator LoadGameData()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
         // insert default player profiles + table did not already exits
         if (CharacterProfileTableCreated && !CharacterProfileTableExists)
