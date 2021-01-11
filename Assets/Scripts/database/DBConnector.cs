@@ -13,7 +13,6 @@ public class DBConnector : MonoBehaviour
     private String filepath;
 
     // table names
-    const String tableNameAchievements = "Achievements";
     const String tableNameAllTimeStats = "AllTimeStats";
     const String tableNameCharacterProfile = "CharacterProfile";
     const String tableNameCheerleaderProfile = "CheerleaderProfile";
@@ -270,7 +269,6 @@ public class DBConnector : MonoBehaviour
         //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
 
         //string sqlQuery = "PRAGMA integrity_check";
-        //string sqlQuery = "PRAGMA table_info('Achievements')";
         string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion +"'";
 
         dbcmd.CommandText = sqlQuery;
@@ -287,34 +285,11 @@ public class DBConnector : MonoBehaviour
         Debug.Log("     new db version : " + currentDatabaseAppVersion);
     }
 
-    //IEnumerator updateAchievements()
-    //{
-    //    // wait for achievement list to be created
-    //    yield return new WaitUntil(() => AchievementManager.instance.ListCreated == true);
-
-    //    // check if dbhelper is null and if achievement table is null
-    //    if (dbHelper != null )
-    //    {
-    //        try
-    //        {
-    //            dbHelper.UpdateAchievementStats();
-    //        }
-    //        catch
-    //        {
-    //            Debug.Log("exception : dbhelper == null");
-    //        }
-    //    }
-    //}
 
     // ============================ Save stats ===============================
     public void savePlayerGameStats(BasketBallStats stats)
     {
         dbHelper.InsertGameScore(stats);
-    }
-
-    public void saveAchievementStats()
-    {
-        dbHelper.UpdateAchievementStats();
     }
 
     public void savePlayerProfileProgression(float expGained)
@@ -404,25 +379,6 @@ public class DBConnector : MonoBehaviour
                 "timePlayed   REAL," +
                 "enemiesKilled INTEGER DEFAULT 0); " +
 
-                "CREATE TABLE if not exists Achievements(" +
-                "aid   INTEGER PRIMARY KEY, " +
-                "charid   INTEGER DEFAULT 0 ," +
-                "cheerid   INTEGER DEFAULT 0 ," +
-                "levelid   INTEGER DEFAULT 0 ," +
-                "modeid    INTEGER DEFAULT 0 ," +
-                "name  TEXT NOT NULL," +
-                "description   TEXT NOT NULL," +
-                "required_charid   INTEGER DEFAULT 0 ," +
-                "required_cheerid   INTEGER DEFAULT 0 ," +
-                "required_levelid  INTEGER DEFAULT 0 ," +
-                "required_modeid   INTEGER DEFAULT 0 ," +
-                "activevalue_int   INTEGER DEFAULT 0 ," +
-                "activevalue_float REAL," +
-                "activevalue_progress_int  INTEGER DEFAULT 0 ," +
-                "activevalue_progress_float  REAL," +
-                "islocked  INTEGER DEFAULT 0 );" +
-                //"islocked  INTEGER INTEGER DEFAULT 1 );" +
-
                 "CREATE TABLE if not exists CharacterProfile(" +
                 "id   INTEGER PRIMARY KEY, " +
                 "playerName   TEXT," +
@@ -499,7 +455,6 @@ public class DBConnector : MonoBehaviour
 
             // DROP TABLE [IF EXISTS] [schema_name.]table_name;
             string sqlQuery = String.Format(
-                "DROP TABLE if exists Achievements; " +
                 "DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists CharacterProfile; " +
                 "DROP TABLE if exists CheerleaderProfile; " +
@@ -654,57 +609,6 @@ public class DBConnector : MonoBehaviour
             return;
         }
     }
-
-    public void createTableAchievements()
-    {
-
-        Debug.Log("createTableAchievements");
-        try
-        {
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery =
-                "CREATE TABLE if not exists Achievements(" +
-                "aid   INTEGER PRIMARY KEY, " +
-                "charid   INTEGER DEFAULT 0," +
-                "cheerid   INTEGER DEFAULT 0," +
-                "levelid   INTEGER DEFAULT 0," +
-                "modeid    INTEGER DEFAULT 0," +
-                "name  TEXT NOT NULL," +
-                "description   TEXT NOT NULL," +
-                "required_charid   INTEGER DEFAULT 0," +
-                "required_cheerid   INTEGER DEFAULT 0," +
-                "required_levelid  INTEGER DEFAULT 0," +
-                "required_modeid   INTEGER DEFAULT 0," +
-                "activevalue_int   INTEGER DEFAULT 0," +
-                "activevalue_float REAL DEFAULT 0," +
-                "activevalue_progress_int  INTEGER DEFAULT 0," +
-                "activevalue_progress_float    REAL DEFAULT 0," +
-                "islocked  INTEGER DEFAULT 0);";
-            //"islocked  INTEGER DEFAULT 1);";
-
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-        }
-        catch (Exception e)
-        {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCharacterProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-            return;
-        }
-    }
-
 
     public void createTableCheerleaderProfile()
     {
