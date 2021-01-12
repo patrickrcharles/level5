@@ -81,7 +81,14 @@ public class PlayerHealthBar : MonoBehaviour
         //transform.localScale = temp;
 
         GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "-" + damage.ToString();
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(0.7f);
+        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "";
+    }
+    public IEnumerator DisplayCustomMessageOnDamageDisplay(string message)
+    {
+       
+        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = message;
+        yield return new WaitForSeconds(0.7f);
         GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "";
     }
 }

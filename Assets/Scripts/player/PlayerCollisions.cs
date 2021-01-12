@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerCollisions : MonoBehaviour
 {
@@ -40,8 +41,11 @@ public class PlayerCollisions : MonoBehaviour
         && !playerState.KnockedDown
         && !playerState.TakeDamage
         && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
+        // roll for evade attack chance
+        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
         && !locked)
         {
+            //bool critical = rollForCriticalShotChance(GameLevelManager.instance.PlayerShooterProfile.Luck);
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
             if (other.GetComponent<EnemyAttackBox>() != null)
@@ -87,6 +91,20 @@ public class PlayerCollisions : MonoBehaviour
             }
             locked = false;
         }
+    }
+
+    // player has a chance to evade attack based on character profile's luck value
+    bool rollForPlayerEvadeAttackChance(float maxPercent)
+    {
+        Random random = new Random();
+        float percent = random.Next(1, 100);
+        if (percent <= maxPercent)
+        {
+            StartCoroutine(PlayerHealthBar.instance.DisplayCustomMessageOnDamageDisplay("dodged"));
+            return true;
+        }
+
+        return false;
     }
 
     void playerTakeDamage()
