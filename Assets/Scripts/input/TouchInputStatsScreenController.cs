@@ -189,6 +189,8 @@ public class TouchInputStatsScreenController : MonoBehaviour
     }
     private void swipeDownOnOption()
     {
+        StatsManager.instance.changeHighScoreDataDisplay(false);
+        buttonPressed = true;
         //high score, mode change
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
