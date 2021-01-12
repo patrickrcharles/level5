@@ -333,15 +333,18 @@ public class ProgressionManager : MonoBehaviour
     public void subtractPoint()
     {
         buttonPressed = true;
-        if (currentHighlightedButton.Equals(progression3AccuracyName) && progressionState.AddTo3 > 0)
+        if (currentHighlightedButton.Equals(progression3AccuracyName) 
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateThreeAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression4AccuracyName) && progressionState.AddTo4 > 0)
+        if (currentHighlightedButton.Equals(progression4AccuracyName) 
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateFourAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression7AccuracyName) && progressionState.AddTo7 > 0)
+        if (currentHighlightedButton.Equals(progression7AccuracyName) 
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateSevenAccuracy(UpdateType.Subtract);
         }
@@ -453,6 +456,13 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        // if maxed out, update range
+        else
+        {
+            updateBonusRangeDistance(updateType);
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
     }
     public void updateFourAccuracy(UpdateType updateType)
     {
@@ -481,9 +491,16 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        else
+        {
+            updateBonusRangeDistance(updateType);
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
     }
     public void updateSevenAccuracy(UpdateType updateType)
     {
+        Debug.Log("update : " + updateType);
         if (progressionState.Accuracy7 < progressionState.MaxSevenAccuraccy)
         {
             switch (updateType)
@@ -507,6 +524,12 @@ public class ProgressionManager : MonoBehaviour
                     }
                 default: break;
             }
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
+        else
+        {
+            updateBonusRangeDistance(updateType);
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
@@ -620,7 +643,6 @@ public class ProgressionManager : MonoBehaviour
 
     public void initializePlayerDisplay()
     {
-        //Debug.Log("initializePlayerDisplay()");
         try
         {
             // name and portrait
@@ -649,6 +671,7 @@ public class ProgressionManager : MonoBehaviour
                     bonusLuckText.text = "MAX";
                 }
                 bonusRangeText.text = "+" + progressionState.AddToRange;
+                Debug.Log("progressionState.AddToRange : " + progressionState.AddToRange);
             }
             else
             {
@@ -732,6 +755,42 @@ public class ProgressionManager : MonoBehaviour
             Debug.Log("ERROR : " + e);
             return;
         }
+    }
+
+    void updateBonusRangeDistance(UpdateType updateType)
+    {
+        Debug.Log("updateBonusRangeDistance(UpdateType " + updateType + ")");
+        //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+        //bonusRangeText.text = "+" + progressionState.AddToRange;
+        switch (updateType)
+        {
+            case UpdateType.Add:
+                {
+                    progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+                    bonusRangeText.text = "+" + progressionState.AddToRange;
+                    progressionState.PointsAvailable--;
+                    progressionState.PointsUsedThisSession++;
+
+                    break;
+                }
+            case UpdateType.Subtract:
+                {
+                    progressionState.AddToRange -= 5;
+                    //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+                    bonusRangeText.text = "+" + progressionState.AddToRange;
+                    progressionState.PointsAvailable++;
+                    progressionState.PointsUsedThisSession--;
+                    break;
+                }
+            default: break;
+        }
+
+        //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+        //bonusRangeText.text = "+" + progressionState.AddToRange;
+        //Debug.Log("progressionState.AddToRange : " + progressionState.AddToRange);
+        //progressionState.PointsAvailable--;
+        //progressionState.PointsUsedThisSession++;
+        //progressionState.Range = (int)(playerSelectedData[playerSelectedIndex].Range + progressionState.AddToRange);
     }
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
