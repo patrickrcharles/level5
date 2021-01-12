@@ -73,6 +73,7 @@ public class Timer : MonoBehaviour
         else
         {
             timerEnabled = false;
+            displayTimer = false;
         }
 
         timerText.text = "";
@@ -145,6 +146,11 @@ public class Timer : MonoBehaviour
                 shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
             }
         }
+        else
+        {
+            timerText.text = "";
+            shotClockText.text = "";
+        }
 
         if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
         {
@@ -158,6 +164,11 @@ public class Timer : MonoBehaviour
                 timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
                 shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
             }
+        }
+        else
+        {
+            timerText.text = "";
+            shotClockText.text = "";
         }
     }
 
