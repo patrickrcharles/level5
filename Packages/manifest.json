@@ -1,4 +1,12 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "Packages from jillejr",
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity/",
+      "scopes": ["jillejr"]
+    }
+  ],
+  
   "dependencies": {
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ads": "3.5.2",
@@ -15,6 +23,9 @@
     "com.unity.quicksearch": "1.5.4",
     "com.unity.render-pipelines.lightweight": "8.2.0",
     "com.unity.ugui": "1.0.0",
+
+    "jillejr.newtonsoft.json-for-unity": "12.0.101",
+
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
