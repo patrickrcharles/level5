@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
-        playerHealth = GameLevelManager.instance.PlayerHealth;
+        PlayerHealth = GameLevelManager.instance.PlayerHealth;
 
         // bball rim vector, used for relative positioning
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
@@ -400,7 +400,7 @@ public class PlayerController : MonoBehaviour
             && !hasBasketball
             && canBlock
             && GameOptions.enemiesEnabled
-            && playerHealth.Block > 0)
+            && PlayerHealth.Block > 0)
         {
             if (playerCanBlock)
             {
@@ -786,4 +786,5 @@ public class PlayerController : MonoBehaviour
     //public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
     public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
     public float PlayerDistanceFromRim { get => playerDistanceFromRim; set => playerDistanceFromRim = value; }
+    public PlayerHealth PlayerHealth { get => playerHealth; set => playerHealth = value; }
 }

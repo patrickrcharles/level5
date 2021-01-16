@@ -104,6 +104,7 @@ public class TouchInputController : MonoBehaviour
                 && touch1.position.y > (Screen.height / 2)
                 //&& startTouchPosition1.x < (Screen.height / 2)
                 && playerController.PlayerCanBlock
+                && playerController.PlayerHealth.Block > 0
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
             {
                 hold1Detected = true;
