@@ -74,7 +74,7 @@ public class DBConnector : MonoBehaviour
             }
         }
         // if database doesnt exist
-        if (!File.Exists(filepath) )
+        if (!File.Exists(filepath))
         //|| !integrityCheck()
         //|| !Application.version.Equals(getDatabaseVersion()))
         {
@@ -93,7 +93,7 @@ public class DBConnector : MonoBehaviour
                 return;
             }
         }
-        if(getDatabaseVersion() != currentDatabaseAppVersion)
+        if (getDatabaseVersion() != currentDatabaseAppVersion)
         {
             //Debug.Log("db version mismatch : ");
             //Debug.Log("     current db version : " + getDatabaseVersion());
@@ -186,7 +186,7 @@ public class DBConnector : MonoBehaviour
         //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
 
         //string sqlQuery = "PRAGMA integrity_check";
-        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion +"'";
+        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
 
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
@@ -225,22 +225,16 @@ public class DBConnector : MonoBehaviour
     void createDatabase()
     {
         //Debug.Log("createDatabase()");
-        //messageText.text += "\n" + "createDatabase()";
         try
         {
             dbconn = new SqliteConnection(connection);
-            //messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
-
             dbconn.Open();
-            //messageText.text += "\n" + "dbconn.Open();";
-
             dbcmd = dbconn.CreateCommand();
-            //messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
 
             string sqlQuery = String.Format(
                 "CREATE TABLE if not exists HighScores(" +
                 "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "playerid  INTEGER," +
+                "scoreidUnique   TEXT," +
                 "modeid    INTEGER, " +
                 "characterid   INTEGER, " +
                 "character   TEXT, " +
@@ -256,9 +250,11 @@ public class DBConnector : MonoBehaviour
                 "maxShotMade   INTEGER, " +
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
-                "trafficEnabled	INTEGER," +
-                "hardcoreEnabled INTEGER, " +
-                "enemiesKilled INTEGER DEFAULT 0); " +
+                "trafficEnabled	INTEGER DEFAULT 0," +
+                "hardcoreEnabled INTEGER DEFAULT 0, " +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "platform    TEXT," +
+                "device    TEXT);" +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
@@ -305,19 +301,16 @@ public class DBConnector : MonoBehaviour
                 "name   TEXT NOT NULL," +
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
-                "islocked  INTEGER DEFAULT 0);");
-                //"islocked  INTEGER DEFAULT 1);" +
+                "islocked  INTEGER DEFAULT 0);"+
 
-                //"CREATE TABLE if not exists User( " +
-                //"id    INTEGER PRIMARY KEY, " +
-                //"userName  INTEGER, " +
-                //"firstName TEXT, " +
-                //"middleName    INTEGER, " +
-                //"lastName  INTEGER, " +
-                //"email TEXT, " +
-                //"password  TEXT, " +
-                //"version   TEXT, " +
-                //"os    TEXT);");
+                "CREATE TABLE if not exists User( " +
+                "userid INTEGER PRIMARY KEY," +
+                "userName  INTEGER, " +
+                "firstName TEXT, " +
+                "middleName    INTEGER, " +
+                "lastName  INTEGER, " +
+                "email TEXT, " +
+                "password  TEXT);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -338,7 +331,7 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             return;
-        } 
+        }
     }
 
     void dropDatabase()
@@ -353,10 +346,11 @@ public class DBConnector : MonoBehaviour
             // DROP TABLE [IF EXISTS] [schema_name.]table_name;
             string sqlQuery = String.Format(
                 "DROP TABLE if exists AllTimeStats; " +
+                "DROP TABLE if exists Achievements; " +
                 "DROP TABLE if exists CharacterProfile; " +
                 "DROP TABLE if exists CheerleaderProfile; " +
                 "DROP TABLE if exists HighScores; ");
-                //"DROP TABLE if exists User; ");
+            //"DROP TABLE if exists User; ");
 
             //Debug.Log(sqlQuery);
 

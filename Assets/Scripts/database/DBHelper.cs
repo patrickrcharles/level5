@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class DBHelper : MonoBehaviour
@@ -39,7 +40,6 @@ public class DBHelper : MonoBehaviour
         //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
-
     }
 
     // check if specified table is emoty
@@ -122,6 +122,37 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
     }
 
+    public string RemoveWhitespace(string str)
+    {
+        return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+    }
+
+    string generateUnqueScoreID()
+    {
+        string macAddress = "";
+        string uniqueScoreId = "";
+        string uniqueModeDateIdentifier = "";
+        TimeZone localZone = TimeZone.CurrentTimeZone;
+
+        uniqueModeDateIdentifier 
+            = RemoveWhitespace(DateTime.Now.ToString())
+            + RemoveWhitespace(localZone.StandardName)
+            + RemoveWhitespace(GameOptions.levelDisplayName)
+            + RemoveWhitespace(GameOptions.playerDisplayName)
+            + RemoveWhitespace(GameOptions.gameModeSelectedName);
+
+        foreach (NetworkInterface ninf in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            if (ninf.NetworkInterfaceType != NetworkInterfaceType.Ethernet) continue;
+            if (ninf.OperationalStatus == OperationalStatus.Up)
+            {
+                macAddress += ninf.GetPhysicalAddress().ToString();
+                break;
+            }
+        }
+        uniqueScoreId = macAddress + uniqueModeDateIdentifier + SystemInfo.deviceUniqueIdentifier;
+        return uniqueScoreId;
+    }
 
     // insert current game's stats and score
     internal void InsertGameScore(BasketBallStats stats)
@@ -143,9 +174,11 @@ public class DBHelper : MonoBehaviour
         }
 
         string sqlQuery1 =
-           "INSERT INTO HighScores( modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, hardcoreEnabled, enemiesKilled )  " +
-           "Values( '" + GameOptions.gameModeSelectedId
+           "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
+           " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
+           "hardcoreEnabled, enemiesKilled, platform, device )  " +
+           "Values( '" + generateUnqueScoreID()
+           + "', '"+ GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
            + "','" + GameOptions.levelId
@@ -162,7 +195,9 @@ public class DBHelper : MonoBehaviour
            + stats.MostConsecutiveShots + "','"
            + trafficEnabled + "','"
            + hardcoreEnabled + "','"
-           + stats.EnemiesKilled + "')";
+           + stats.EnemiesKilled + "','"
+           + SystemInfo.deviceType + "','"
+           + SystemInfo.deviceModel + "')";
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
