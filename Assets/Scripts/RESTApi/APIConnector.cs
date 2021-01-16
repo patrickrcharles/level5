@@ -21,20 +21,26 @@ public class APIConnector : MonoBehaviour
 
     public void getHighScores()
     {
+        Debug.Log("hit API...");
         HttpWebRequest request =
             (HttpWebRequest)WebRequest.Create(String.Format(publicApiHighScores));
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
         StreamReader reader = new StreamReader(response.GetResponseStream());
+
+        Debug.Log("publicApiHighScores : " + publicApiHighScores);
+
         //string jsonResponse = reader.ReadToEnd();
         string jsonResponse = @"{""Highscores"":" + reader.ReadToEnd() + "}";
         Debug.Log(jsonResponse);
 
         APIHighScores highScores =  JsonConvert.DeserializeObject<APIHighScores>(jsonResponse);
 
-        Debug.Log(highScores.HighScores[1].Id);
-        Debug.Log(highScores.HighScores[1].UserId);
-        Debug.Log(highScores.HighScores[1].ModeId);
+        foreach(APIHighScores.HighScore score in highScores.HighScores) 
+        {
+            Debug.Log("id : " + score.Id);
+            Debug.Log("userid : " + score.UserId);
+            Debug.Log("modeid : " + score.ModeId);
+        }
       
     }
 }
