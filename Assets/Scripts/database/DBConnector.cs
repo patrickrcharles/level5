@@ -20,7 +20,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private const int currentDatabaseAppVersion = 1;
+    private const int currentDatabaseAppVersion = 2;
 
     Text messageText;
 
@@ -147,89 +147,6 @@ public class DBConnector : MonoBehaviour
         }
     }
 
-
-    //private string getDatabaseVersion()
-    //{
-    //    string version = "";
-
-    //    if (tableExists("User"))
-    //    {
-    //        try
-    //        {
-    //            dbconn = new SqliteConnection(connection);
-    //            dbconn.Open();
-    //            dbcmd = dbconn.CreateCommand();
-
-    //            //string os = SystemInfo.operatingSystem;
-
-    //            String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
-
-    //            //Debug.Log("sqlQuery : " + sqlQuery);
-
-    //            dbcmd.CommandText = sqlQuery;
-    //            IDataReader reader = dbcmd.ExecuteReader();
-
-    //            while (reader.Read())
-    //            {
-    //                version = reader.GetString(0);
-    //            }
-
-    //            reader.Close();
-    //            reader = null;
-    //            dbcmd.Dispose();
-    //            dbcmd = null;
-    //            dbconn.Close();
-    //            dbconn = null;
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Debug.Log("ERROR : " + e);
-    //            //messageText.text += "\n" + e;
-    //        }
-    //    }
-    //    return version;
-    //}
-
-    private bool integrityCheck()
-    {
-        string value = "";
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
-
-        //string sqlQuery = "PRAGMA integrity_check";
-        string sqlQuery = "pragma quick_check";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetString(0);
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        if (value.ToLower() == "ok")
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
     private int getDatabaseVersion()
     {
         int value = 0;
@@ -303,25 +220,6 @@ public class DBConnector : MonoBehaviour
     }
 
     // =========================================================================
-
-    // set user's current device in User table
-    void SetCurrentUserDevice()
-    {
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
-
-        string version = Application.version;
-        string os = SystemInfo.operatingSystem;
-
-        String sqlQuery = "Update User SET os = '" + os + "', version = '" + version + "'WHERE id = 1 ";
-
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
-        dbconn.Close();
-
-        databaseCreated = true;
-    }
 
     // create tables if not created
     void createDatabase()
@@ -442,7 +340,6 @@ public class DBConnector : MonoBehaviour
             return;
         } 
     }
-
 
     void dropDatabase()
     {
@@ -642,9 +539,6 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCheerleaderProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
         }
     }
