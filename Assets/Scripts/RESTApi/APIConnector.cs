@@ -23,23 +23,32 @@ public class APIConnector : MonoBehaviour
     {
         Debug.Log("hit API...");
         HttpWebRequest request =
-            (HttpWebRequest)WebRequest.Create(String.Format(publicApiHighScores));
+            (HttpWebRequest)WebRequest.Create(String.Format(publicApiHighScores + "?modeid=1"));
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
 
-        Debug.Log("publicApiHighScores : " + publicApiHighScores);
+        //Debug.Log("publicApiHighScores : " + publicApiHighScores +"/1");
 
-        //string jsonResponse = reader.ReadToEnd();
         string jsonResponse = @"{""Highscores"":" + reader.ReadToEnd() + "}";
         Debug.Log(jsonResponse);
 
         APIHighScores highScores =  JsonConvert.DeserializeObject<APIHighScores>(jsonResponse);
 
+        int i = 0;
         foreach(APIHighScores.HighScore score in highScores.HighScores) 
         {
+            Debug.Log( i + "start ==============================================");
             Debug.Log("id : " + score.Id);
             Debug.Log("userid : " + score.UserId);
             Debug.Log("modeid : " + score.ModeId);
+            Debug.Log("cid : " + score.CharacterId);
+            Debug.Log("lid : " + score.Level);
+            Debug.Log("lid : " + score.Character);
+            Debug.Log("lid : " + score.Date);
+            Debug.Log("lid : " + score.Device);
+            Debug.Log("lid : " + score.Platform);
+            Debug.Log(i + " end ==============================================");
+            i++;
         }
       
     }
