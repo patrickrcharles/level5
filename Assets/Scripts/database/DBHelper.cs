@@ -82,37 +82,6 @@ public class DBHelper : MonoBehaviour
         return false;
     }
 
-    //// list of string values by table/field
-    //public List<String> getStringListOfAllValuesFromTableByField(String tableName, String field)
-    //{
-    //    List<String> listOfValues = new List<string>();
-    //    String value;
-
-    //    IDbConnection dbconn;
-    //    dbconn = (IDbConnection)new SqliteConnection(connection);
-    //    dbconn.Open(); //Open connection to the database.
-    //    IDbCommand dbcmd = dbconn.CreateCommand();
-
-    //    string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-    //    dbcmd.CommandText = sqlQuery;
-    //    IDataReader reader = dbcmd.ExecuteReader();
-
-    //    while (reader.Read())
-    //    {
-    //        value = reader.GetString(0);
-    //        listOfValues.Add(value);
-    //    }
-    //    reader.Close();
-    //    reader = null;
-    //    dbcmd.Dispose();
-    //    dbcmd = null;
-    //    dbconn.Close();
-    //    dbconn = null;
-
-    //    return listOfValues;
-    //}
-
     internal void InsertDefaultUserRecord()
     {
 
@@ -698,103 +667,6 @@ public class DBHelper : MonoBehaviour
         dbconn = null;
     }
 
-
-    public List<int> getIntListOfAllValuesFromTableByField(String tableName, String field)
-    {
-        List<int> listOfValues = new List<int>();
-        int value;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetInt32(0);
-            listOfValues.Add(value);
-            //Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return listOfValues;
-    }
-
-    public List<float> getFloatListOfAllValuesFromTableByField(String tableName, String field)
-    {
-        //Debug.Log("getListOfAllValuesFromTableByField()");
-        List<float> listOfValues = new List<float>();
-        float value;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetFloat(0);
-            listOfValues.Add(value);
-            //Debug.Log("table = " + tableName + " | field =" + field + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return listOfValues;
-    }
-
-    // ***************************** get values by USER ID *******************************************
-    // return string from specified table by field and userid
-    public String getStringValueFromTableByFieldAndId(String tableName, String field, int userid)
-    {
-        String value = null;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE id = " + userid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetString(0);
-            //Debug.Log("tablename = " + tableName + " | field =" + field + " | id = " + userid + " | value = " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value.ToString();
-    }
-
-
-
     // return int from specified table by field and userid
     public int getIntValueFromTableByFieldAndCharId(String tableName, String field, int charid)
     {
@@ -813,36 +685,6 @@ public class DBHelper : MonoBehaviour
         while (reader.Read())
         {
             value = reader.GetInt32(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-
-    // return string from specified table by field and userid
-    public float getFloatValueFromTableByFieldAndId(String tableName, String field, float userid)
-    {
-
-        float value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE userid = " + userid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetFloat(0);
         }
         reader.Close();
         reader = null;
@@ -1193,41 +1035,6 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
-    public float getFloatValueHighScoreFromTableByField(String tableName, String field, String order, int hardcore)
-    {
-        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
-        float value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        // get all all values sort DESC, return top 1
-        string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
-
-        Debug.Log(sqlQuery);
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-
-
-        while (reader.Read())
-        {
-            value = reader.GetFloat(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
-    }
-
     // return string from specified table by field and userid
     public float updateFloatValueByTableAndField(String tableName, String field, float value)
     {
@@ -1257,7 +1064,6 @@ public class DBHelper : MonoBehaviour
 
         return value;
     }
-
 
     public float deleteRecordFromTableByID(String tableName, String idName, int id)
     {
