@@ -1070,6 +1070,37 @@ public class DBHelper : MonoBehaviour
         return value;
     }
 
+    //====================================================================================================
+    public int getMostConsecutiveShots()
+    {
+        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+        int value = 0;
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        // get all all values sort DESC, return top 1
+        string sqlQuery = "SELECT consecutiveShots from HighScores ORDER BY consecutiveShots DESC LIMIT 1";
+
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            value = reader.GetInt32(0);
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+
+        return value;
+    }
+
     // return string from specified table by field and userid
     public float updateFloatValueByTableAndField(String tableName, String field, float value)
     {

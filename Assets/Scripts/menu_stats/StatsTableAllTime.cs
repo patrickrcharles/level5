@@ -11,6 +11,7 @@ public class StatsTableAllTime : MonoBehaviour
     const string moneyballName = "moneyball";
     const string totalDistanceName = "total_distance";
     const string totalShotsName = "total_shots";
+    const string consecutiveShotsName = "consecutive_shots";
     const string totalPointsName = "total_points";
     const string timePlayedName = "time_played";
 
@@ -36,6 +37,7 @@ public class StatsTableAllTime : MonoBehaviour
     Text moneyBallText;
     Text totalDistanceText;
     Text totalShotsText;
+    Text consecutiveShotsText;
     Text totalPointsText;
     Text timePlayedText;
 
@@ -52,6 +54,7 @@ public class StatsTableAllTime : MonoBehaviour
         moneyBallText = GameObject.Find(moneyballName).transform.GetChild(1).GetComponent<Text>();
         totalDistanceText = GameObject.Find(totalDistanceName).transform.GetChild(1).GetComponent<Text>();
         totalShotsText = GameObject.Find(totalShotsName).transform.GetChild(1).GetComponent<Text>();
+        consecutiveShotsText = GameObject.Find(consecutiveShotsName).transform.GetChild(1).GetComponent<Text>();
         totalPointsText = GameObject.Find(totalPointsName).transform.GetChild(1).GetComponent<Text>();
         timePlayedText = GameObject.Find(timePlayedName).transform.GetChild(1).GetComponent<Text>();
 
@@ -94,6 +97,8 @@ public class StatsTableAllTime : MonoBehaviour
         int shotsM = twoM + threeM + fourM + sevenM;
         int shotsA = twoA + threeA + fourA + sevenA;
 
+        int consecSots = DBHelper.instance.getMostConsecutiveShots();
+
         int points = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", totalPointsDBField);
         float played = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", timePlayedDBField);
 
@@ -105,6 +110,7 @@ public class StatsTableAllTime : MonoBehaviour
 
         totalDistanceText.text = convertFeetToMiles(dist);
         totalShotsText.text = shotsM + " / " + shotsA + "  " + divideIntsReturnFloatPercentage(shotsM, shotsA).ToString("00.00") + "%";
+        consecutiveShotsText.text = consecSots.ToString();
         totalPointsText.text = points.ToString();
         timePlayedText.text = convertSecondsToHoursAndMinutes(played);
     }
