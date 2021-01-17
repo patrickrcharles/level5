@@ -254,7 +254,8 @@ public class BasketBallShotMade : MonoBehaviour
                     pointsScored = 7;
                 }
                 // if moneyball / last shot on marker (5/5)
-                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
+                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5
+                    && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
                 {
                     _basketBallStats.TotalPoints += (pointsScored * 2);
                     _basketBallStats.MoneyBallMade++;
