@@ -93,7 +93,7 @@ public class BasketBall : MonoBehaviour
             {
                 scoreText.text = "";
                 shootProfileText.text = "";
-                uiStatsBackground.SetActive(false); 
+                uiStatsBackground.SetActive(false);
             }
         }
         InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
@@ -132,8 +132,8 @@ public class BasketBall : MonoBehaviour
             }
 
             //if player has ball and hasnt shot
-            if (playerState.hasBasketball 
-                && playerState.currentState!= playerState.dunkState)//&& !basketBallState.Thrown)
+            if (playerState.hasBasketball
+                && playerState.currentState != playerState.dunkState)//&& !basketBallState.Thrown)
             {
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
@@ -237,7 +237,7 @@ public class BasketBall : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if basketball enters player hitbox
-        if (gameObject.CompareTag("basketball") 
+        if (gameObject.CompareTag("basketball")
             && other.gameObject.CompareTag("playerHitbox")
             && !basketBallState.Thrown)
         {
@@ -275,19 +275,19 @@ public class BasketBall : MonoBehaviour
         // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
 
-        //================== anim stuff 
-        // check for and set money ball
-        if (GameRules.instance.MoneyBallEnabled)
-        {
-            basketBallState.MoneyBallEnabledOnShoot = true;
-            PlayerStats.instance.Money -= 5; // moneyball spent
-            BasketBallStats.MoneyBallAttempts++;
-            GameRules.instance.MoneyBallEnabled = false;
-        }
-        else
-        {
-            basketBallState.MoneyBallEnabledOnShoot = false;
-        }
+        //// check for and set money ball
+        //if (GameRules.instance.MoneyBallEnabled)
+        //{
+        //    basketBallState.MoneyBallEnabledOnShoot = true;
+        //    PlayerStats.instance.Money -= 5; // moneyball spent
+        //    BasketBallStats.MoneyBallAttempts++;
+        //    GameRules.instance.MoneyBallEnabled = false;
+        //}
+        //else
+        //{
+        //    basketBallState.MoneyBallEnabledOnShoot = false;
+        //}
+
 
         //// let basketball rim know current statistics of made/attempt for every shot
         //// this is more determining consecutive shots
@@ -305,6 +305,12 @@ public class BasketBall : MonoBehaviour
             basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
             // update shot attempt stat for marker position shot from
             GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
+
+            if (basketBallState.PlayerOnMarkerOnShoot
+                && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
+            {
+                BasketBallStats.MoneyBallAttempts++;
+            }
 
             if (GameRules.instance.MoneyBallEnabled)
             {
@@ -421,7 +427,7 @@ public class BasketBall : MonoBehaviour
         // range modifier always factors in
         accuracyModifierZ = getRangeModifier();
 
-        if(accuracyModifierZ != 0)
+        if (accuracyModifierZ != 0)
         {
             shotMeterMessageZ = "+ range modifer";
         }
@@ -444,7 +450,7 @@ public class BasketBall : MonoBehaviour
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
             // shot meter message 
-            if(critical)
+            if (critical)
             {
                 shotMeterMessage = "swish + critical";
             }

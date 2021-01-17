@@ -33,7 +33,7 @@ public class StatsTableAllTime : MonoBehaviour
     Text threeText;
     Text fourText;
     Text sevenText;
-    //Text moneyBallText;
+    Text moneyBallText;
     Text totalDistanceText;
     Text totalShotsText;
     Text totalPointsText;
@@ -49,7 +49,7 @@ public class StatsTableAllTime : MonoBehaviour
         threeText = GameObject.Find(threeName).transform.GetChild(1).GetComponent<Text>();
         fourText = GameObject.Find(fourName).transform.GetChild(1).GetComponent<Text>();
         sevenText = GameObject.Find(sevenName).transform.GetChild(1).GetComponent<Text>();
-        //moneyBallText = GameObject.Find(moneyballName).transform.GetChild(1).GetComponent<Text>();
+        moneyBallText = GameObject.Find(moneyballName).transform.GetChild(1).GetComponent<Text>();
         totalDistanceText = GameObject.Find(totalDistanceName).transform.GetChild(1).GetComponent<Text>();
         totalShotsText = GameObject.Find(totalShotsName).transform.GetChild(1).GetComponent<Text>();
         totalPointsText = GameObject.Find(totalPointsName).transform.GetChild(1).GetComponent<Text>();
@@ -101,7 +101,7 @@ public class StatsTableAllTime : MonoBehaviour
         threeText.text = threeM + " / " + threeA + "  " + divideIntsReturnFloatPercentage(threeM, threeA).ToString("00.00") + "%";
         fourText.text = fourM + " / " + fourA + "  " + divideIntsReturnFloatPercentage(fourM, fourA).ToString("00.00") + "%";
         sevenText.text = sevenM + " / " + sevenA + "  " + divideIntsReturnFloatPercentage(sevenM, sevenA).ToString("00.00") + "%";
-        //moneyBallText.text = mbM + " / " + mbA + "  " + divideIntsReturnFloatPercentage(mbM, mbA).ToString("00.00") + "%";
+        moneyBallText.text = mbM + " / " + mbA + "  " + divideIntsReturnFloatPercentage(mbM, mbA).ToString("00.00") + "%";
 
         totalDistanceText.text = convertFeetToMiles(dist);
         totalShotsText.text = shotsM + " / " + shotsA + "  " + divideIntsReturnFloatPercentage(shotsM, shotsA).ToString("00.00") + "%";
