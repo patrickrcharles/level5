@@ -48,9 +48,7 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
-
         filepath = Application.persistentDataPath + databaseNamePath;
-        //Debug.Log(filepath);
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
         dbHelper = gameObject.GetComponent<DBHelper>();
@@ -68,14 +66,12 @@ public class DBConnector : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.Log("ERROR : " + e);
+                dbHelper.DatabaseLocked = false;
                 return;
             }
         }
         // if database doesnt exist
         if (!File.Exists(filepath))
-        //|| !integrityCheck()
-        //|| !Application.version.Equals(getDatabaseVersion()))
         {
             try
             {
@@ -86,7 +82,7 @@ public class DBConnector : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.Log("ERROR : " + e);
+                dbHelper.DatabaseLocked = false;
                 return;
             }
         }
@@ -134,36 +130,42 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
+            dbHelper.DatabaseLocked = false;
+            return;
         }
     }
 
     private int getDatabaseVersion()
     {
         int value = 0;
-
-        string sqlQuery = "PRAGMA user_version";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetInt32(0);
-            //Debug.Log("pragma version : " + value);
-        }
+            string sqlQuery = "PRAGMA user_version";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetInt32(0);
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+            return 0;
+        }
 
         return value;
     }
@@ -171,31 +173,29 @@ public class DBConnector : MonoBehaviour
     public IEnumerator setDatabaseVersion()
     {
         yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
-        dbHelper.DatabaseLocked = true;
+        try
+        {
+            dbHelper.DatabaseLocked = true;
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
 
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
+            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
 
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
 
-        //string sqlQuery = "PRAGMA integrity_check";
-        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
 
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
-
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        dbHelper.DatabaseLocked = false;
-
-        //Debug.Log("db version : ");
-        //Debug.Log("     current db version : " + getDatabaseVersion());
-        ////Debug.Log("     sqlite getversion : " + dbconn.);
-        //Debug.Log("     new db version : " + currentDatabaseAppVersion);
+            dbHelper.DatabaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+        }
     }
 
 
@@ -298,7 +298,7 @@ public class DBConnector : MonoBehaviour
                 "name   TEXT NOT NULL," +
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
-                "islocked  INTEGER DEFAULT 0);"+
+                "islocked  INTEGER DEFAULT 0);" +
 
                 "CREATE TABLE if not exists User( " +
                 "userid INTEGER PRIMARY KEY," +
@@ -326,14 +326,13 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
+            dbHelper.DatabaseLocked = false;
             return;
         }
     }
 
     void dropDatabase()
     {
-        Debug.Log("drop database");
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -361,9 +360,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //SendEmail.instance.//SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
+            dbHelper.DatabaseLocked = false;
             return;
         }
     }
@@ -390,10 +387,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "ERROR : dropDatabaseTable(" + tableName + ")";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
+            dbHelper.DatabaseLocked = false;
             return;
         }
     }
@@ -404,37 +398,45 @@ public class DBConnector : MonoBehaviour
         int count = 0;
         string value = null;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = String.Format(
-            "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + tableName + "';");
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetString(0);
-            count++;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + tableName + "';");
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetString(0);
+                count++;
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            // if correct table name is returned and at least 1 table names exists
+            if (count > 0 && value.Equals(tableName))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        // if correct table name is returned and at least 1 table names exists
-        if (count > 0 && value.Equals(tableName))
+        catch(Exception e)
         {
-            return true;
-        }
-        else
-        {
+            dbHelper.DatabaseLocked = false;
             return false;
         }
     }
@@ -489,11 +491,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCharacterProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-
+            dbHelper.DatabaseLocked = false;
             return;
         }
     }
@@ -516,7 +514,6 @@ public class DBConnector : MonoBehaviour
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
                 "islocked  INTEGER DEFAULT 0);";
-            //"islocked  INTEGER DEFAULT 1);";
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -529,7 +526,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
+            dbHelper.DatabaseLocked = false;
             return;
         }
     }
