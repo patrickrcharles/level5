@@ -68,8 +68,6 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                //messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
@@ -88,8 +86,6 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
-                //messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
@@ -254,7 +250,8 @@ public class DBConnector : MonoBehaviour
                 "hardcoreEnabled INTEGER DEFAULT 0, " +
                 "enemiesKilled INTEGER DEFAULT 0," +
                 "platform    TEXT," +
-                "device    TEXT);" +
+                "device    TEXT," +
+                "ipaddress   TEXT);" +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
