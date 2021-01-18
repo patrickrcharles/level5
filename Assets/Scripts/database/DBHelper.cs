@@ -39,91 +39,100 @@ public class DBHelper : MonoBehaviour
             Destroy(gameObject);
         }
         filepath = Application.persistentDataPath + databaseNamePath;
-        //Debug.Log(filepath);
-        //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
-
-        //alterTableAddColumn("CheerleaderProfile", "test", "text");
     }
 
     // check if specified table is emoty
     public bool isTableEmpty(String tableName)
     {
-        int count = 0;
-
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
-
-        String sqlQuery = "SELECT count(*) FROM '" + tableName + "'";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            int value = reader.GetInt32(0);
-            count = value;
+            int count = 0;
+
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            String sqlQuery = "SELECT count(*) FROM '" + tableName + "'";
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int value = reader.GetInt32(0);
+                count = value;
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            //if table contains records
+            if (count == 0)
+            {
+                return true;
+            }
+            return false;
         }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-
-        //if table contains records
-        if (count == 0)
+        catch (Exception e)
         {
-            //Debug.Log(tableName + " is empty");
-            return true;
+            DatabaseLocked = false;
+            return false;
         }
-        //Debug.Log(tableName + " is NOT empty");
-        return false;
     }
 
     internal void InsertDefaultUserRecord()
     {
+        try
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
+            string sqlQuery1 =
+               "INSERT INTO User( " +
+               "id, " +
+               "userName, " +
+               "firstName," +
+               "middleName," +
+               "lastName," +
+               "email," +
+               "password," +
+               "version," +
+               "os)  " +
 
-        string sqlQuery1 =
-           "INSERT INTO User( " +
-           "id, " +
-           "userName, " +
-           "firstName," +
-           "middleName," +
-           "lastName," +
-           "email," +
-           "password," +
-           "version," +
-           "os)  " +
+               "Values( '" + 1
+               + "', '" + "placeholder"
+               + "','" + "placeholder"
+               + "','" + "placeholder"
+               + "','" + "placeholder"
+               + "','" + "email@placeholder.com"
+               + "','" + "password"
+               + "','" + "6.9.420"
+               + "','" + "os version')";
 
-           "Values( '" + 1
-           + "', '" + "placeholder"
-           + "','" + "placeholder"
-           + "','" + "placeholder"
-           + "','" + "placeholder"
-           + "','" + "email@placeholder.com"
-           + "','" + "password"
-           + "','" + "6.9.420"
-           + "','" + "os version')";
-
-        dbcmd.CommandText = sqlQuery1;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery1;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
     }
 
     public string RemoveWhitespace(string str)
@@ -161,372 +170,433 @@ public class DBHelper : MonoBehaviour
     // insert current game's stats and score
     internal void InsertGameScore(BasketBallStats stats)
     {
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        int trafficEnabled = 0;
-        if (GameOptions.trafficEnabled)
+        try
         {
-            trafficEnabled = 1;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            int trafficEnabled = 0;
+            if (GameOptions.trafficEnabled)
+            {
+                trafficEnabled = 1;
+            }
+            int hardcoreEnabled = 0;
+            if (GameOptions.hardcoreModeEnabled)
+            {
+                hardcoreEnabled = 1;
+            }
+
+            string sqlQuery1 =
+               "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
+               " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
+               "hardcoreEnabled, enemiesKilled, platform, device, ipaddress )  " +
+               "Values( '" + generateUnqueScoreID()
+               + "', '" + GameOptions.gameModeSelectedId
+               + "', '" + GameOptions.playerId
+               + "', '" + GameOptions.playerDisplayName
+               + "','" + GameOptions.levelId
+               + "','" + GameOptions.levelDisplayName
+               + "','" + SystemInfo.operatingSystem
+               + "','" + Application.version
+               + "','" + DateTime.Now
+               + "','" + GameRules.instance.CounterTime
+               + "','" + stats.TotalPoints
+               + "','" + stats.LongestShotMade
+               + "','" + stats.TotalDistance + "','"
+               + stats.ShotMade + "','"
+               + stats.ShotAttempt + "','"
+               + stats.MostConsecutiveShots + "','"
+               + trafficEnabled + "','"
+               + hardcoreEnabled + "','"
+               + stats.EnemiesKilled + "','"
+               + SystemInfo.deviceType + "','"
+               + SystemInfo.deviceModel + "','"
+               + GetExternalIpAdress() + "')";
+
+            dbcmd.CommandText = sqlQuery1;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
         }
-        int hardcoreEnabled = 0;
-        if (GameOptions.hardcoreModeEnabled)
+        catch (Exception e)
         {
-            hardcoreEnabled = 1;
+            DatabaseLocked = false;
+            return;
         }
-
-        string sqlQuery1 =
-           "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
-           " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
-           "hardcoreEnabled, enemiesKilled, platform, device, ipaddress )  " +
-           "Values( '" + generateUnqueScoreID()
-           + "', '" + GameOptions.gameModeSelectedId
-           + "', '" + GameOptions.playerId
-           + "', '" + GameOptions.playerDisplayName
-           + "','" + GameOptions.levelId
-           + "','" + GameOptions.levelDisplayName
-           + "','" + SystemInfo.operatingSystem
-           + "','" + Application.version
-           + "','" + DateTime.Now
-           + "','" + GameRules.instance.CounterTime
-           + "','" + stats.TotalPoints
-           + "','" + stats.LongestShotMade
-           + "','" + stats.TotalDistance + "','"
-           + stats.ShotMade + "','"
-           + stats.ShotAttempt + "','"
-           + stats.MostConsecutiveShots + "','"
-           + trafficEnabled + "','"
-           + hardcoreEnabled + "','"
-           + stats.EnemiesKilled + "','"
-           + SystemInfo.deviceType + "','"
-           + SystemInfo.deviceModel + "','"
-           + GetExternalIpAdress() + "')";
-
-        dbcmd.CommandText = sqlQuery1;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
     }
 
     // add default cheerleader data from PREFABS to DATABASE
     public void InsertCheerleaderProfile(List<CheerleaderProfile> cheerleaderSelectedData)
     {
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
+        try
         {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            databaseLocked = true;
+            var dbconn = new SqliteConnection(connection);
+            using (dbconn)
             {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
+                dbconn.Open(); //Open connection to the database.
+                using (SqliteTransaction tr = dbconn.BeginTransaction())
                 {
-                    cmd.Transaction = tr;
-                    foreach (CheerleaderProfile ch in cheerleaderSelectedData)
+                    using (SqliteCommand cmd = dbconn.CreateCommand())
                     {
-                        string sqlQuery =
-                        "Insert INTO "
-                        + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked) "
-                        + " Values('" + ch.CheerleaderId
-                        + "', '" + ch.CheerleaderDisplayName
-                        + "', '" + ch.CheerleaderObjectName
-                        + "', '" + ch.UnlockCharacterText
-                        + "', '" + Convert.ToInt32(ch.IsLocked)
-                        + "')";
+                        cmd.Transaction = tr;
+                        foreach (CheerleaderProfile ch in cheerleaderSelectedData)
+                        {
+                            string sqlQuery =
+                            "Insert INTO "
+                            + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked) "
+                            + " Values('" + ch.CheerleaderId
+                            + "', '" + ch.CheerleaderDisplayName
+                            + "', '" + ch.CheerleaderObjectName
+                            + "', '" + ch.UnlockCharacterText
+                            + "', '" + Convert.ToInt32(ch.IsLocked)
+                            + "')";
 
-                        cmd.CommandText = sqlQuery;
-                        cmd.ExecuteNonQuery();
+                            cmd.CommandText = sqlQuery;
+                            cmd.ExecuteNonQuery();
+                        }
                     }
+                    tr.Commit();
                 }
-                tr.Commit();
+                dbconn.Close();
             }
-            dbconn.Close();
+            databaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return;
         }
     }
 
     // add experience gained to database
     internal void UpdatePlayerProfileProgression(float expGained)
     {
-        //Debug.Log("expGained : " + expGained);
-        //Debug.Log("PlayerData.instance.CurrentExperience : " + PlayerData.instance.CurrentExperience);
-        //Debug.Log("PlayerData.instance.Level : " + PlayerData.instance.CurrentLevel);
-        //Debug.Log("     total : " + (PlayerData.instance.CurrentExperience + expGained));
-
-        int prevLevel = PlayerData.instance.CurrentExperience / 3000;
-        int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 3000));
-
-        // gained a level
-        if (currentLevel > prevLevel)
+        try
         {
-            PlayerData.instance.UpdatePointsAvailable++;
+            int prevLevel = PlayerData.instance.CurrentExperience / 3000;
+            int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 3000));
+
+            // gained a level
+            if (currentLevel > prevLevel)
+            {
+                PlayerData.instance.UpdatePointsAvailable++;
+            }
+
+            int updatePointsAvailable = PlayerData.instance.UpdatePointsAvailable;
+            int updatePointsUsed = PlayerData.instance.UpdatePointsUsed;
+
+            // course correction if points available/used dont line up
+            if (!((updatePointsAvailable + updatePointsUsed) == currentLevel))
+            {
+                updatePointsAvailable = currentLevel - updatePointsUsed;
+            }
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery1 =
+               "UPDATE " + characterProfileTableName
+               + " SET experience = " + (PlayerData.instance.CurrentExperience + expGained)
+               + ", level = " + currentLevel
+               + ", pointsAvailable = " + updatePointsAvailable
+               + " WHERE charid = " + GameOptions.playerId;
+
+            //Debug.Log(sqlQuery1);
+
+            dbcmd.CommandText = sqlQuery1;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
         }
-
-        int updatePointsAvailable = PlayerData.instance.UpdatePointsAvailable;
-        int updatePointsUsed = PlayerData.instance.UpdatePointsUsed;
-
-        // course correction if points available/used dont line up
-        if (!((updatePointsAvailable + updatePointsUsed) == currentLevel))
+        catch (Exception e)
         {
-            updatePointsAvailable = currentLevel - updatePointsUsed;
+            DatabaseLocked = false;
+            return;
         }
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery1 =
-           "UPDATE " + characterProfileTableName
-           + " SET experience = " + (PlayerData.instance.CurrentExperience + expGained)
-           + ", level = " + currentLevel
-           + ", pointsAvailable = " + updatePointsAvailable
-           + " WHERE charid = " + GameOptions.playerId;
-
-        //Debug.Log(sqlQuery1);
-
-        dbcmd.CommandText = sqlQuery1;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
     }
 
     // insert default Player profiles
     public void InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
     {
-        databaseLocked = true;
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
+        try
         {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            databaseLocked = true;
+            var dbconn = new SqliteConnection(connection);
+            using (dbconn)
             {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
+                dbconn.Open(); //Open connection to the database.
+                using (SqliteTransaction tr = dbconn.BeginTransaction())
                 {
-                    cmd.Transaction = tr;
-                    foreach (CharacterProfile shooter in shooterProfileList)
+                    using (SqliteCommand cmd = dbconn.CreateCommand())
                     {
-                        string sqlQuery =
-                        "Insert INTO "
-                        + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
-                        "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked) "
-                        + " Values('" + shooter.PlayerId
-                        + "', '" + shooter.PlayerDisplayName
-                        + "', '" + shooter.PlayerObjectName
-                        + "', '" + shooter.Accuracy2Pt
-                        + "', '" + shooter.Accuracy3Pt
-                        + "', '" + shooter.Accuracy4Pt
-                        + "', '" + shooter.Accuracy7Pt
-                        + "', '" + shooter.JumpForce
-                        + "', '" + shooter.Speed
-                        + "', '" + shooter.RunSpeed
-                        + "', '" + shooter.RunSpeedHasBall
-                        + "', '" + shooter.Luck
-                        + "', '" + shooter.ShootAngle
-                        + "', '" + shooter.Experience
-                        + "', '" + shooter.Level
-                        + "', '" + shooter.PointsAvailable
-                        + "', '" + shooter.PointsUsed
-                        + "', '" + shooter.Range
-                        + "', '" + shooter.Release
-                        + "', '" + Convert.ToInt32(shooter.IsLocked)
-                        + "')";
+                        cmd.Transaction = tr;
+                        foreach (CharacterProfile shooter in shooterProfileList)
+                        {
+                            string sqlQuery =
+                            "Insert INTO "
+                            + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
+                            "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked) "
+                            + " Values('" + shooter.PlayerId
+                            + "', '" + shooter.PlayerDisplayName
+                            + "', '" + shooter.PlayerObjectName
+                            + "', '" + shooter.Accuracy2Pt
+                            + "', '" + shooter.Accuracy3Pt
+                            + "', '" + shooter.Accuracy4Pt
+                            + "', '" + shooter.Accuracy7Pt
+                            + "', '" + shooter.JumpForce
+                            + "', '" + shooter.Speed
+                            + "', '" + shooter.RunSpeed
+                            + "', '" + shooter.RunSpeedHasBall
+                            + "', '" + shooter.Luck
+                            + "', '" + shooter.ShootAngle
+                            + "', '" + shooter.Experience
+                            + "', '" + shooter.Level
+                            + "', '" + shooter.PointsAvailable
+                            + "', '" + shooter.PointsUsed
+                            + "', '" + shooter.Range
+                            + "', '" + shooter.Release
+                            + "', '" + Convert.ToInt32(shooter.IsLocked)
+                            + "')";
 
-                        cmd.CommandText = sqlQuery;
-                        cmd.ExecuteNonQuery();
+                            cmd.CommandText = sqlQuery;
+                            cmd.ExecuteNonQuery();
+                        }
                     }
+                    tr.Commit();
                 }
-                tr.Commit();
+                dbconn.Close();
             }
-            dbconn.Close();
+            databaseLocked = false;
         }
-        databaseLocked = false;
+        catch(Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
     }
 
     // insert a specific character to database. Example, new character added to game, 
     // this will update Database with new character info
     public void InsertCharacterProfile(CharacterProfile character)
     {
-        databaseLocked = true;
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
+        try
         {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            databaseLocked = true;
+            var dbconn = new SqliteConnection(connection);
+            using (dbconn)
             {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
+                dbconn.Open(); //Open connection to the database.
+                using (SqliteTransaction tr = dbconn.BeginTransaction())
                 {
-                    cmd.Transaction = tr;
+                    using (SqliteCommand cmd = dbconn.CreateCommand())
+                    {
+                        cmd.Transaction = tr;
 
-                    string sqlQuery =
-                    "Insert INTO "
-                    + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
-                    "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, islocked) "
-                    + " Values('" + character.PlayerId
-                    + "', '" + character.PlayerDisplayName
-                    + "', '" + character.PlayerObjectName
-                    + "', '" + character.Accuracy2Pt
-                    + "', '" + character.Accuracy3Pt
-                    + "', '" + character.Accuracy4Pt
-                    + "', '" + character.Accuracy7Pt
-                    + "', '" + character.JumpForce
-                    + "', '" + character.Speed
-                    + "', '" + character.RunSpeed
-                    + "', '" + character.RunSpeedHasBall
-                    + "', '" + character.Luck
-                    + "', '" + character.ShootAngle
-                    + "', '" + character.Experience
-                    + "', '" + character.Level
-                    + "', '" + character.PointsAvailable
-                    + "', '" + character.PointsUsed
-                    + "', '" + character.Range
-                    + "', '" + character.Release
-                    + "', '" + Convert.ToInt32(character.IsLocked)
-                    + "')";
+                        string sqlQuery =
+                        "Insert INTO "
+                        + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
+                        "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, islocked) "
+                        + " Values('" + character.PlayerId
+                        + "', '" + character.PlayerDisplayName
+                        + "', '" + character.PlayerObjectName
+                        + "', '" + character.Accuracy2Pt
+                        + "', '" + character.Accuracy3Pt
+                        + "', '" + character.Accuracy4Pt
+                        + "', '" + character.Accuracy7Pt
+                        + "', '" + character.JumpForce
+                        + "', '" + character.Speed
+                        + "', '" + character.RunSpeed
+                        + "', '" + character.RunSpeedHasBall
+                        + "', '" + character.Luck
+                        + "', '" + character.ShootAngle
+                        + "', '" + character.Experience
+                        + "', '" + character.Level
+                        + "', '" + character.PointsAvailable
+                        + "', '" + character.PointsUsed
+                        + "', '" + character.Range
+                        + "', '" + character.Release
+                        + "', '" + Convert.ToInt32(character.IsLocked)
+                        + "')";
 
-                    cmd.CommandText = sqlQuery;
-                    cmd.ExecuteNonQuery();
+                        cmd.CommandText = sqlQuery;
+                        cmd.ExecuteNonQuery();
 
+                    }
+                    tr.Commit();
                 }
-                tr.Commit();
+                dbconn.Close();
             }
-            dbconn.Close();
+            databaseLocked = false;
         }
-        databaseLocked = false;
+        catch(Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
     }
 
     // update a character profile.
     // used in Progression scene on Save progress
     public void UpdateCharacterProfile(CharacterProfile character)
     {
-        databaseLocked = true;
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
+        try
         {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            databaseLocked = true;
+            var dbconn = new SqliteConnection(connection);
+            using (dbconn)
             {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
+                dbconn.Open(); //Open connection to the database.
+                using (SqliteTransaction tr = dbconn.BeginTransaction())
                 {
-                    cmd.Transaction = tr;
+                    using (SqliteCommand cmd = dbconn.CreateCommand())
+                    {
+                        cmd.Transaction = tr;
 
-                    string sqlQuery =
-                    "Update " + characterProfileTableName
-                    + " SET accuracy2 = " + character.Accuracy2Pt
-                    + ", accuracy3 = " + character.Accuracy3Pt
-                    + ", accuracy4 = " + character.Accuracy4Pt
-                    + ", accuracy7 = " + character.Accuracy7Pt
-                    + ", range = " + character.Range
-                    + ", release = " + character.Release
-                    + ", luck = " + character.Luck
-                    + ", pointsAvailable = " + character.PointsAvailable
-                    + ", pointsUsed = " + character.PointsUsed
-                    + " WHERE charid = " + character.PlayerId;
+                        string sqlQuery =
+                        "Update " + characterProfileTableName
+                        + " SET accuracy2 = " + character.Accuracy2Pt
+                        + ", accuracy3 = " + character.Accuracy3Pt
+                        + ", accuracy4 = " + character.Accuracy4Pt
+                        + ", accuracy7 = " + character.Accuracy7Pt
+                        + ", range = " + character.Range
+                        + ", release = " + character.Release
+                        + ", luck = " + character.Luck
+                        + ", pointsAvailable = " + character.PointsAvailable
+                        + ", pointsUsed = " + character.PointsUsed
+                        + " WHERE charid = " + character.PlayerId;
 
-                    cmd.CommandText = sqlQuery;
-                    cmd.ExecuteNonQuery();
+                        cmd.CommandText = sqlQuery;
+                        cmd.ExecuteNonQuery();
 
+                    }
+                    tr.Commit();
                 }
-                tr.Commit();
+                dbconn.Close();
             }
-            dbconn.Close();
+            databaseLocked = false;
         }
-        databaseLocked = false;
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
     }
     // insert a specific cheerleader to database. Example, new cheerleader added to game, 
     // this will update Database with new cheerleader info
     public void InsertCheerleaderProfile(CheerleaderProfile cheerleader)
     {
-        databaseLocked = true;
-        var dbconn = new SqliteConnection(connection);
-        using (dbconn)
+        try
         {
-            dbconn.Open(); //Open connection to the database.
-            using (SqliteTransaction tr = dbconn.BeginTransaction())
+            databaseLocked = true;
+            var dbconn = new SqliteConnection(connection);
+            using (dbconn)
             {
-                using (SqliteCommand cmd = dbconn.CreateCommand())
+                dbconn.Open(); //Open connection to the database.
+                using (SqliteTransaction tr = dbconn.BeginTransaction())
                 {
-                    cmd.Transaction = tr;
+                    using (SqliteCommand cmd = dbconn.CreateCommand())
+                    {
+                        cmd.Transaction = tr;
 
-                    string sqlQuery =
-                    "Insert INTO "
-                    + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked ) "
-                    + " Values('" + cheerleader.CheerleaderId
-                    + "', '" + cheerleader.CheerleaderDisplayName
-                    + "', '" + cheerleader.CheerleaderObjectName
-                    + "', '" + cheerleader.UnlockCharacterText
-                    + "', '" + Convert.ToInt32(cheerleader.IsLocked)
-                    + "')";
+                        string sqlQuery =
+                        "Insert INTO "
+                        + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked ) "
+                        + " Values('" + cheerleader.CheerleaderId
+                        + "', '" + cheerleader.CheerleaderDisplayName
+                        + "', '" + cheerleader.CheerleaderObjectName
+                        + "', '" + cheerleader.UnlockCharacterText
+                        + "', '" + Convert.ToInt32(cheerleader.IsLocked)
+                        + "')";
 
-                    cmd.CommandText = sqlQuery;
-                    cmd.ExecuteNonQuery();
+                        cmd.CommandText = sqlQuery;
+                        cmd.ExecuteNonQuery();
 
+                    }
+                    tr.Commit();
                 }
-                tr.Commit();
+                dbconn.Close();
             }
-            dbconn.Close();
+            databaseLocked = false;
         }
-        databaseLocked = false;
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
     }
 
     // get All time stats. Used to update all time stats after a game session
     internal BasketBallStats getAllTimeStats()
     {
-        BasketBallStats prevStats = gameObject.AddComponent<BasketBallStats>();
-
-        String sqlQuery = "";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
-
-        if (!isTableEmpty(allTimeStatsTableName))
+        try
         {
-            //Debug.Log(" table is not empty");
-            sqlQuery = "Select  * From " + allTimeStatsTableName;
+            BasketBallStats prevStats = gameObject.AddComponent<BasketBallStats>();
 
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-            while (reader.Read())
+            //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+
+            if (!isTableEmpty(allTimeStatsTableName))
             {
-                prevStats.TwoPointerMade = reader.GetInt32(0);
-                prevStats.TwoPointerAttempts = reader.GetInt32(1);
-                prevStats.ThreePointerMade = reader.GetInt32(2);
-                prevStats.ThreePointerAttempts = reader.GetInt32(3);
-                prevStats.FourPointerMade = reader.GetInt32(4);
-                prevStats.FourPointerAttempts = reader.GetInt32(5);
-                prevStats.SevenPointerMade = reader.GetInt32(6);
-                prevStats.SevenPointerAttempts = reader.GetInt32(7);
-                prevStats.MoneyBallMade = reader.GetInt32(8);
-                prevStats.MoneyBallAttempts = reader.GetInt32(9);
-                prevStats.TotalPoints = reader.GetInt32(10);
-                prevStats.TotalDistance = reader.GetFloat(11);
-                prevStats.LongestShotMade = reader.GetFloat(12);
-                prevStats.TimePlayed = reader.GetFloat(13);
-                if (reader.IsDBNull(14))
+                //Debug.Log(" table is not empty");
+                sqlQuery = "Select  * From " + allTimeStatsTableName;
+
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    prevStats.EnemiesKilled = 0;
-                }
-                else
-                {
-                    prevStats.EnemiesKilled = reader.GetInt32(14);
+                    prevStats.TwoPointerMade = reader.GetInt32(0);
+                    prevStats.TwoPointerAttempts = reader.GetInt32(1);
+                    prevStats.ThreePointerMade = reader.GetInt32(2);
+                    prevStats.ThreePointerAttempts = reader.GetInt32(3);
+                    prevStats.FourPointerMade = reader.GetInt32(4);
+                    prevStats.FourPointerAttempts = reader.GetInt32(5);
+                    prevStats.SevenPointerMade = reader.GetInt32(6);
+                    prevStats.SevenPointerAttempts = reader.GetInt32(7);
+                    prevStats.MoneyBallMade = reader.GetInt32(8);
+                    prevStats.MoneyBallAttempts = reader.GetInt32(9);
+                    prevStats.TotalPoints = reader.GetInt32(10);
+                    prevStats.TotalDistance = reader.GetFloat(11);
+                    prevStats.LongestShotMade = reader.GetFloat(12);
+                    prevStats.TimePlayed = reader.GetFloat(13);
+                    if (reader.IsDBNull(14))
+                    {
+                        prevStats.EnemiesKilled = 0;
+                    }
+                    else
+                    {
+                        prevStats.EnemiesKilled = reader.GetInt32(14);
+                    }
                 }
             }
+            Destroy(prevStats, 5);
+            return prevStats;
         }
-        Destroy(prevStats, 5);
-        return prevStats;
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return null;
+        }
     }
 
 
@@ -534,9 +604,10 @@ public class DBHelper : MonoBehaviour
     public List<CharacterProfile> getCharacterProfileStats()
     {
         List<CharacterProfile> characterStats = new List<CharacterProfile>();
-
         try
         {
+            DatabaseLocked = true;
+
             String sqlQuery = "";
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -588,11 +659,12 @@ public class DBHelper : MonoBehaviour
                 dbconn.Close();
                 dbconn = null;
             }
+            databaseLocked = false;
             return characterStats;
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
+            databaseLocked = false;
             return new List<CharacterProfile>();
         }
     }
@@ -600,33 +672,155 @@ public class DBHelper : MonoBehaviour
     // get cheerleader data from Database
     public List<CheerleaderProfile> getCheerleaderProfileStats()
     {
-        List<CheerleaderProfile> cheerleaderStats = new List<CheerleaderProfile>();
-
-        String sqlQuery = "";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        if (!isTableEmpty(cheerleaderProfileTableName))
+        try
         {
-            sqlQuery = "Select cid, name, objectName, unlockText, isLocked "
-                + " From " + cheerleaderProfileTableName;
+            DatabaseLocked = true;
+            List<CheerleaderProfile> cheerleaderStats = new List<CheerleaderProfile>();
+
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            if (!isTableEmpty(cheerleaderProfileTableName))
+            {
+                sqlQuery = "Select cid, name, objectName, unlockText, isLocked "
+                    + " From " + cheerleaderProfileTableName;
+
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    CheerleaderProfile temp = new CheerleaderProfile();
+
+                    temp.CheerleaderId = reader.GetInt32(0);
+                    temp.CheerleaderDisplayName = reader.GetString(1);
+                    temp.CheerleaderObjectName = reader.GetString(2);
+                    temp.UnlockCharacterText = reader.GetString(3);
+                    temp.IsLocked = Convert.ToBoolean(reader.GetInt32(4));
+
+                    cheerleaderStats.Add(temp);
+                }
+                reader.Close();
+                reader = null;
+                dbcmd.Dispose();
+                dbcmd = null;
+                dbconn.Close();
+                dbconn = null;
+            }
+            databaseLocked = false;
+            return cheerleaderStats;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return null;
+        }
+    }
+    // update all time stats
+    internal void UpdateAllTimeStats(BasketBallStats stats)
+    {
+        try
+        {
+            databaseLocked = true;
+            String sqlQuery = "";
+            // get prev stats that current stats will be added to
+            BasketBallStats prevStats = getAllTimeStats();
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            if (isTableEmpty(allTimeStatsTableName))
+            {
+                sqlQuery =
+               "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
+               "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled)  " +
+               "Values( '" +
+               stats.TwoPointerMade + "', '" +
+               stats.TwoPointerAttempts + "', '" +
+               stats.ThreePointerMade + "','" +
+               stats.ThreePointerAttempts + "','" +
+               stats.FourPointerMade + "','" +
+               stats.FourPointerAttempts + "','" +
+               stats.SevenPointerMade + "','" +
+               stats.SevenPointerAttempts + "','" +
+               stats.TotalPoints + "','" +
+               stats.MoneyBallMade + "','" +
+               stats.MoneyBallAttempts + "','" +
+               stats.TotalDistance + "','" +
+               stats.TimePlayed + "','" +
+               stats.LongestShotMade + "','" +
+               stats.EnemiesKilled + "')";
+
+                //Debug.Log(sqlQuery);
+            }
+            else
+            {
+
+                sqlQuery =
+               "Update " + allTimeStatsTableName +
+               " SET" +
+               " twoMade = " + (prevStats.TwoPointerMade += stats.TwoPointerMade) +
+               ", twoAtt = " + (prevStats.TwoPointerAttempts += stats.TwoPointerAttempts) +
+               ", threeMade = " + (prevStats.ThreePointerMade += stats.ThreePointerMade) +
+               ", threeAtt = " + (prevStats.ThreePointerAttempts += stats.ThreePointerAttempts) +
+               ", fourMade = " + (prevStats.FourPointerMade += stats.FourPointerMade) +
+               ", FourAtt = " + (prevStats.FourPointerAttempts += stats.FourPointerAttempts) +
+               ", sevenMade = " + (prevStats.SevenPointerMade += stats.SevenPointerMade) +
+               ", sevenAtt = " + (prevStats.SevenPointerAttempts += stats.SevenPointerAttempts) +
+               ", moneyBallMade = " + (prevStats.MoneyBallMade += stats.MoneyBallMade) +
+               ", moneyBallAtt = " + (prevStats.MoneyBallAttempts += stats.MoneyBallAttempts) +
+               ", totalPoints = " + (prevStats.TotalPoints += stats.TotalPoints) +
+               ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
+               ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
+               ", enemiesKilled = " + (prevStats.EnemiesKilled += stats.EnemiesKilled) +
+               " WHERE ROWID = 1 ";
+            }
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            DatabaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            return;
+        }
+    }
+
+    // return int from specified table by field and userid
+    public int getIntValueFromTableByFieldAndCharId(String tableName, String field, int charid)
+    {
+        int value = 0;
+        try
+        {
+            databaseLocked = true;
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE charid = " + charid;
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
 
             while (reader.Read())
             {
-                CheerleaderProfile temp = new CheerleaderProfile();
-
-                temp.CheerleaderId = reader.GetInt32(0);
-                temp.CheerleaderDisplayName = reader.GetString(1);
-                temp.CheerleaderObjectName = reader.GetString(2);
-                temp.UnlockCharacterText = reader.GetString(3);
-                temp.IsLocked = Convert.ToBoolean(reader.GetInt32(4));
-
-                cheerleaderStats.Add(temp);
+                value = reader.GetInt32(0);
             }
             reader.Close();
             reader = null;
@@ -634,106 +828,16 @@ public class DBHelper : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+
+            DatabaseLocked = false;
+
+            return value;
         }
-        return cheerleaderStats;
-    }
-    // update all time stats
-    internal void UpdateAllTimeStats(BasketBallStats stats)
-    {
-        String sqlQuery = "";
-        // get prev stats that current stats will be added to
-        BasketBallStats prevStats = getAllTimeStats();
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        if (isTableEmpty(allTimeStatsTableName))
+        catch (Exception e)
         {
-            sqlQuery =
-           "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-           "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled)  " +
-           "Values( '" +
-           stats.TwoPointerMade + "', '" +
-           stats.TwoPointerAttempts + "', '" +
-           stats.ThreePointerMade + "','" +
-           stats.ThreePointerAttempts + "','" +
-           stats.FourPointerMade + "','" +
-           stats.FourPointerAttempts + "','" +
-           stats.SevenPointerMade + "','" +
-           stats.SevenPointerAttempts + "','" +
-           stats.TotalPoints + "','" +
-           stats.MoneyBallMade + "','" +
-           stats.MoneyBallAttempts + "','" +
-           stats.TotalDistance + "','" +
-           stats.TimePlayed + "','" +
-           stats.LongestShotMade + "','" +
-           stats.EnemiesKilled + "')";
-
-            //Debug.Log(sqlQuery);
+            DatabaseLocked = false;
+            return value;
         }
-        else
-        {
-
-            sqlQuery =
-           "Update " + allTimeStatsTableName +
-           " SET" +
-           " twoMade = " + (prevStats.TwoPointerMade += stats.TwoPointerMade) +
-           ", twoAtt = " + (prevStats.TwoPointerAttempts += stats.TwoPointerAttempts) +
-           ", threeMade = " + (prevStats.ThreePointerMade += stats.ThreePointerMade) +
-           ", threeAtt = " + (prevStats.ThreePointerAttempts += stats.ThreePointerAttempts) +
-           ", fourMade = " + (prevStats.FourPointerMade += stats.FourPointerMade) +
-           ", FourAtt = " + (prevStats.FourPointerAttempts += stats.FourPointerAttempts) +
-           ", sevenMade = " + (prevStats.SevenPointerMade += stats.SevenPointerMade) +
-           ", sevenAtt = " + (prevStats.SevenPointerAttempts += stats.SevenPointerAttempts) +
-           ", moneyBallMade = " + (prevStats.MoneyBallMade += stats.MoneyBallMade) +
-           ", moneyBallAtt = " + (prevStats.MoneyBallAttempts += stats.MoneyBallAttempts) +
-           ", totalPoints = " + (prevStats.TotalPoints += stats.TotalPoints) +
-           ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
-           ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
-           ", enemiesKilled = " + (prevStats.EnemiesKilled += stats.EnemiesKilled) +
-           " WHERE ROWID = 1 ";
-        }
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        reader.Close();
-
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-    }
-
-    // return int from specified table by field and userid
-    public int getIntValueFromTableByFieldAndCharId(String tableName, String field, int charid)
-    {
-        int value = 0;
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName + " WHERE charid = " + charid;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetInt32(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        return value;
     }
 
     // ***************************** get values by MODE ID *******************************************
@@ -742,6 +846,7 @@ public class DBHelper : MonoBehaviour
     {
 
         int value = 0;
+        databaseLocked = true;
 
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -777,13 +882,15 @@ public class DBHelper : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+            databaseLocked = false;
+
+            return value;
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            databaseLocked = false;
+            return value;
         }
-
-        return value;
     }
 
     public List<StatsTableHighScoreRow> getListOfHighScoreRowsFromTableByModeIdAndField(string field, int modeid, bool hardcoreValue, int pageNumber)
@@ -805,105 +912,116 @@ public class DBHelper : MonoBehaviour
 
         string sqlQuery = "";
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //numResultsQuery = "SELECT  * FROM HighScores  WHERE modeid = " + modeid
-        //        + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
-        //numberOfResultsPages = getNumberOfResults(numResultsQuery);
-
-        // game modes that require float values/ low time as high score
-        if (!hardcoreValue)
+        try
         {
-            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
-            {
-                sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+            databaseLocked = true;
 
-            }
-            else
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            //numResultsQuery = "SELECT  * FROM HighScores  WHERE modeid = " + modeid
+            //        + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+            //numberOfResultsPages = getNumberOfResults(numResultsQuery);
+
+            // game modes that require float values/ low time as high score
+            if (!hardcoreValue)
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 0 ORDER BY " + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+                if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+                {
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+
+                }
+                else
+                {
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 0 ORDER BY " + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+                }
             }
+            if (hardcoreValue)
+            {
+                if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+                {
+                    sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
+
+                }
+                else
+                {
+                    sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
+                }
+            }
+
+            //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                // game modes that require float values
+                if ((modeid > 4 && modeid < 14) || modeid == 99)
+                {
+                    score = reader.GetFloat(0).ToString();
+                }
+                else
+                {
+                    score = reader.GetInt32(0).ToString();
+                }
+                character = reader.GetString(1);
+                level = reader.GetString(2);
+                date = reader.GetString(3);
+                time = reader.GetFloat(4);
+                // null check
+                if (reader.IsDBNull(5))
+                {
+                    hardcoreEnabled = 0;
+                }
+                else
+                {
+                    hardcoreEnabled = reader.GetInt32(5);
+                }
+                if (hardcoreEnabled != 0)
+                {
+                    hardcore = "yes";
+                }
+                else
+                {
+                    hardcore = "no";
+                }
+                // add to list
+                listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore));
+                //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            // if less than 10 values in list, add empty values
+            if (listOfValues.Count < 10)
+            {
+                int numToAdd = 10 - listOfValues.Count;
+                for (int i = 0; i < numToAdd; i++)
+                {
+                    listOfValues.Add(new StatsTableHighScoreRow("", "", "", "", ""));
+                }
+            }
+
+            databaseLocked = false;
+            return listOfValues;
         }
-        if (hardcoreValue)
+        catch(Exception e)
         {
-            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
-            {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
-
-            }
-            else
-            {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
-            }
+            databaseLocked = false;
+            return listOfValues;
         }
-
-        //Debug.Log(sqlQuery);
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            // game modes that require float values
-            if ((modeid > 4 && modeid < 14) || modeid == 99)
-            {
-                score = reader.GetFloat(0).ToString();
-            }
-            else
-            {
-                score = reader.GetInt32(0).ToString();
-            }
-            character = reader.GetString(1);
-            level = reader.GetString(2);
-            date = reader.GetString(3);
-            time = reader.GetFloat(4);
-            // null check
-            if (reader.IsDBNull(5))
-            {
-                hardcoreEnabled = 0;
-            }
-            else
-            {
-                hardcoreEnabled = reader.GetInt32(5);
-            }
-            if (hardcoreEnabled != 0)
-            {
-                hardcore = "yes";
-            }
-            else
-            {
-                hardcore = "no";
-            }
-            // add to list
-            listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore));
-            //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        // if less than 10 values in list, add empty values
-        if (listOfValues.Count < 10)
-        {
-            int numToAdd = 10 - listOfValues.Count;
-            for (int i = 0; i < numToAdd; i++)
-            {
-                listOfValues.Add(new StatsTableHighScoreRow("", "", "", "", ""));
-            }
-        }
-
-        return listOfValues;
     }
 
     public int getNumberOfResults(string field, int modeid, bool hardcoreValue, int pageNumber)
@@ -911,41 +1029,50 @@ public class DBHelper : MonoBehaviour
         int rowCount = 0;
         string sqlQuery = "";
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        if (hardcoreValue)
+        try
         {
-            sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 1 ORDER BY " + field;
+            databaseLocked = true;
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            if (hardcoreValue)
+            {
+                sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 1 ORDER BY " + field;
+            }
+            else
+            {
+                sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
+                        + " AND hardcoreEnabled = 0 ORDER BY " + field;
+            }
+
+            //numberOfResultsPages = getNumberOfResults(numResultsQuery);
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                rowCount = reader.GetInt32(0);
+                //Debug.Log("rowCount : " + rowCount);
+            }
+
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return rowCount;
         }
-        else
+        catch (Exception e)
         {
-            sqlQuery = "SELECT Count(*) FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = 0 ORDER BY " + field;
+            databaseLocked = false;
+            return rowCount;
         }
-
-        //numberOfResultsPages = getNumberOfResults(numResultsQuery);
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            rowCount = reader.GetInt32(0);
-            //Debug.Log("rowCount : " + rowCount);
-        }
-
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        //Debug.Log("rowCount : " + rowCount);
-        //Debug.Log("sqlQuery : " + sqlQuery);
-
-        return rowCount;
     }
 
 
@@ -955,79 +1082,60 @@ public class DBHelper : MonoBehaviour
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         float value = 0;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetFloat(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true;
 
-        return value;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "SELECT " + field + " FROM " + tableName;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetFloat(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
     public int getIntValueAllTimeFromTableByField(String tableName, String field)
     {
-        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         int value = 0;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        // get all all values sort DESC, return top 1
-        string sqlQuery = "SELECT " + field + " FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetInt32(0);
-            //Debug.Log(" value : " + value);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true;
 
-        return value;
-    }
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-    public int getIntSumByTableByField(String tableName, String field)
-    {
-        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
-        int value = 0;
+            // get all all values sort DESC, return top 1
+            string sqlQuery = "SELECT " + field + " FROM " + tableName;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
 
-        // sum all values in column
-        string sqlQuery = "SELECT SUM(" + field + ") FROM " + tableName;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        // check if table is empty
-        if (!isTableEmpty(tableName))
-        {
             while (reader.Read())
             {
                 value = reader.GetInt32(0);
@@ -1039,40 +1147,105 @@ public class DBHelper : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
-        }
 
-        return value;
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
+    }
+
+    public int getIntSumByTableByField(String tableName, String field)
+    {
+
+        int value = 0;
+
+        try
+        {
+            databaseLocked = true;
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            // sum all values in column
+            string sqlQuery = "SELECT SUM(" + field + ") FROM " + tableName;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            // check if table is empty
+            if (!isTableEmpty(tableName))
+            {
+                while (reader.Read())
+                {
+                    value = reader.GetInt32(0);
+                    //Debug.Log(" value : " + value);
+                }
+                reader.Close();
+                reader = null;
+                dbcmd.Dispose();
+                dbcmd = null;
+                dbconn.Close();
+                dbconn = null;
+            }
+
+            databaseLocked = false;
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
     //====================================================================================================
     public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
-        //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
+
         float value = 0;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        // get all all values sort DESC, return top 1
-        string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetFloat(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true; ;
 
-        return value;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            // get all all values sort DESC, return top 1
+            string sqlQuery = "SELECT " + field + " FROM " + tableName
+                + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetFloat(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
 
     //====================================================================================================
@@ -1081,93 +1254,129 @@ public class DBHelper : MonoBehaviour
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
         int value = 0;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        // get all all values sort DESC, return top 1
-        string sqlQuery = "SELECT consecutiveShots from HighScores ORDER BY consecutiveShots DESC LIMIT 1";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetInt32(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true;
 
-        return value;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            // get all all values sort DESC, return top 1
+            string sqlQuery = "SELECT consecutiveShots from HighScores ORDER BY consecutiveShots DESC LIMIT 1";
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetInt32(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
 
     // return string from specified table by field and userid
     public float updateFloatValueByTableAndField(String tableName, String field, float value)
     {
-        //Debug.Log("save to db: " + tableName + "  " + field + "  " + value);
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        // if entry is NOT in list of stats
-        string sqlQuery =
-        "UPDATE " + tableName + " SET " + field + " = " + value;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetFloat(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true;
 
-        return value;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            // if entry is NOT in list of stats
+            string sqlQuery =
+            "UPDATE " + tableName + " SET " + field + " = " + value;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetFloat(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
 
     public float deleteRecordFromTableByID(String tableName, String idName, int id)
     {
         float value = 0;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = "DELETE FROM " + tableName + " Where " + idName + " = " + id;
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetFloat(0);
-        }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            databaseLocked = true;
 
-        return value;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "DELETE FROM " + tableName + " Where " + idName + " = " + id;
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetFloat(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+            return value;
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            return value;
+        }
     }
 
     public void alterTableAddColumn(string tableName, string columnName, string type)
     {
         try
         {
+            databaseLocked = true;
             if (!doesColumnExist(tableName, columnName))
             {
                 IDbConnection dbconn;
@@ -1187,6 +1396,7 @@ public class DBHelper : MonoBehaviour
                 dbconn.Close();
                 dbconn = null;
             }
+            databaseLocked = false;
         }
         catch
         {
@@ -1212,7 +1422,6 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table1, col1, type1);
             yield return new WaitUntil(() => doesColumnExist(table1, col1));
-            //Debug.Log("add column : " + col1);
             databaseLocked = false;
         }
         // add platform column
@@ -1222,7 +1431,6 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table1, col2, type1);
             yield return new WaitUntil(() => doesColumnExist(table1, col2));
-            //Debug.Log("add column : " + col2);
             databaseLocked = false;
         }
         // add device column
@@ -1232,7 +1440,6 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table1, col3, type1);
             yield return new WaitUntil(() => doesColumnExist(table1, col3));
-            //Debug.Log("add column : " + col3);
             databaseLocked = false;
         }
         // add ipaddress column
@@ -1242,7 +1449,6 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table1, col4, type1);
             yield return new WaitUntil(() => doesColumnExist(table1, col4));
-            //Debug.Log("add column : " + col4);
             databaseLocked = false;
         }
 
@@ -1258,13 +1464,14 @@ public class DBHelper : MonoBehaviour
     {
         try
         {
+            databaseLocked = true;
+
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(connection);
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
             string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
-            //Debug.Log(sqlQueryCheckForColumn);
 
             dbcmd.CommandText = sqlQueryCheckForColumn;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1279,6 +1486,8 @@ public class DBHelper : MonoBehaviour
                     return true;
                 }
             }
+
+            databaseLocked = false;
         }
         catch
         {
