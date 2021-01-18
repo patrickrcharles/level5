@@ -347,8 +347,8 @@ public class DBConnector : MonoBehaviour
             string sqlQuery = String.Format(
                 "DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists Achievements; " +
-                "DROP TABLE if exists CharacterProfile; " +
-                "DROP TABLE if exists CheerleaderProfile; " +
+                //"DROP TABLE if exists CharacterProfile; " +
+                //"DROP TABLE if exists CheerleaderProfile; " +
                 "DROP TABLE if exists HighScores; ");
             //"DROP TABLE if exists User; ");
 
