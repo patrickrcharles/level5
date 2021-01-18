@@ -40,6 +40,8 @@ public class DBHelper : MonoBehaviour
         //Debug.Log(filepath);
         //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
+
+        alterTableAddColumn("CheerleaderProfile", "test", "text");
     }
 
     // check if specified table is emoty
@@ -1158,4 +1160,68 @@ public class DBHelper : MonoBehaviour
 
         return value;
     }
+
+    public void alterTableAddColumn(string tableName, string columnName, string type)
+    {
+        if (!doesColumnExist(tableName, columnName))
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
+            dbcmd.CommandText = sqlQuery;
+
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        else
+        {
+            Debug.Log("column exists already");
+        }
+    }
+
+    public bool doesColumnExist(string tableName, string columnName)
+    {
+
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(connection);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
+        //Debug.Log(sqlQueryCheckForColumn);
+
+        dbcmd.CommandText = sqlQueryCheckForColumn;
+        IDataReader reader = dbcmd.ExecuteReader();
+
+        int nameIndex = reader.GetOrdinal("Name");
+
+        while (reader.Read())
+        {
+            if (reader.GetString(nameIndex).Equals(columnName))
+            {
+                //Debug.Log("column found");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //public void alterTableRemoveColumn(string tableName, string columnName, string type)
+    //{
+    //    string sqlQueryCheckForColumn = "SELECT* FROM sqlite_master WHERE type = '" + tableName + "' AND name = '" + columnName + "' AND sql LIKE '%skiptime%'";
+
+    //    string sqlQuery = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
+
+    //    Debug.Log(sqlQueryCheckForColumn);
+    //    Debug.Log(sqlQuery);
+    //}
 }
