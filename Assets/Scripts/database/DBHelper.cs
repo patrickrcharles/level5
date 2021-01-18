@@ -1,8 +1,10 @@
 ﻿using Mono.Data.Sqlite;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
 
@@ -41,7 +43,7 @@ public class DBHelper : MonoBehaviour
         //filepath = Application.streamingAssetsPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
 
-        alterTableAddColumn("CheerleaderProfile", "test", "text");
+        //alterTableAddColumn("CheerleaderProfile", "test", "text");
     }
 
     // check if specified table is emoty
@@ -136,7 +138,7 @@ public class DBHelper : MonoBehaviour
         string uniqueModeDateIdentifier = "";
         TimeZone localZone = TimeZone.CurrentTimeZone;
 
-        uniqueModeDateIdentifier 
+        uniqueModeDateIdentifier
             = RemoveWhitespace(DateTime.Now.ToString())
             + RemoveWhitespace(localZone.StandardName)
             + RemoveWhitespace(GameOptions.levelDisplayName)
@@ -178,9 +180,9 @@ public class DBHelper : MonoBehaviour
         string sqlQuery1 =
            "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
            " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
-           "hardcoreEnabled, enemiesKilled, platform, device )  " +
+           "hardcoreEnabled, enemiesKilled, platform, device, ipaddress )  " +
            "Values( '" + generateUnqueScoreID()
-           + "', '"+ GameOptions.gameModeSelectedId
+           + "', '" + GameOptions.gameModeSelectedId
            + "', '" + GameOptions.playerId
            + "', '" + GameOptions.playerDisplayName
            + "','" + GameOptions.levelId
@@ -199,7 +201,8 @@ public class DBHelper : MonoBehaviour
            + hardcoreEnabled + "','"
            + stats.EnemiesKilled + "','"
            + SystemInfo.deviceType + "','"
-           + SystemInfo.deviceModel + "')";
+           + SystemInfo.deviceModel + "','"
+           + GetExternalIpAdress() + "')";
 
         dbcmd.CommandText = sqlQuery1;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -775,7 +778,7 @@ public class DBHelper : MonoBehaviour
             dbconn.Close();
             dbconn = null;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log(e);
         }
@@ -816,7 +819,7 @@ public class DBHelper : MonoBehaviour
         {
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
                     + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
 
             }
@@ -830,13 +833,13 @@ public class DBHelper : MonoBehaviour
         {
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
                     + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
 
             }
             else
             {
-                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid 
+                sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
                     + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
             }
         }
@@ -945,7 +948,7 @@ public class DBHelper : MonoBehaviour
         return rowCount;
     }
 
-    
+
     //============================== get all time stats ===================================================
     public float getFloatValueAllTimeFromTableByField(String tableName, String field)
     {
@@ -1053,7 +1056,7 @@ public class DBHelper : MonoBehaviour
 
         // get all all values sort DESC, return top 1
         string sqlQuery = "SELECT " + field + " FROM " + tableName
-            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore +" ORDER BY " + field + " " + order + " LIMIT 1";
+            + " WHERE modeid = " + modeid + " AND hardcoreEnabled = " + hardcore + " ORDER BY " + field + " " + order + " LIMIT 1";
 
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -1163,56 +1166,132 @@ public class DBHelper : MonoBehaviour
 
     public void alterTableAddColumn(string tableName, string columnName, string type)
     {
-        if (!doesColumnExist(tableName, columnName))
+        try
+        {
+            if (!doesColumnExist(tableName, columnName))
+            {
+                IDbConnection dbconn;
+                dbconn = (IDbConnection)new SqliteConnection(connection);
+                dbconn.Open(); //Open connection to the database.
+                IDbCommand dbcmd = dbconn.CreateCommand();
+
+                string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
+                dbcmd.CommandText = sqlQuery;
+
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                reader.Close();
+                reader = null;
+                dbcmd.Dispose();
+                dbcmd = null;
+                dbconn.Close();
+                dbconn = null;
+            }
+        }
+        catch
+        {
+            databaseLocked = false;
+            return;
+        }
+    }
+
+    public IEnumerator UpgradeDatabaseToVersion2()
+    {
+        string table1 = "HighScores";
+        string col1 = "scoreidUnique";
+        string col2 = "platform";
+        string col3 = "device";
+        string col4 = "ipaddress";
+
+        string type1 = "text";
+
+        // add scoreidunique column
+        if (!doesColumnExist(table1, col1))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col1, type1);
+            yield return new WaitUntil(() => doesColumnExist(table1, col1));
+            //Debug.Log("add column : " + col1);
+            databaseLocked = false;
+        }
+        // add platform column
+        if (!doesColumnExist(table1, col2))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col2, type1);
+            yield return new WaitUntil(() => doesColumnExist(table1, col2));
+            //Debug.Log("add column : " + col2);
+            databaseLocked = false;
+        }
+        // add device column
+        if (!doesColumnExist(table1, col3))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col3, type1);
+            yield return new WaitUntil(() => doesColumnExist(table1, col3));
+            //Debug.Log("add column : " + col3);
+            databaseLocked = false;
+        }
+        // add ipaddress column
+        if (!doesColumnExist(table1, col4))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col4, type1);
+            yield return new WaitUntil(() => doesColumnExist(table1, col4));
+            //Debug.Log("add column : " + col4);
+            databaseLocked = false;
+        }
+
+        /*
+         * x add to HighScores scoreidUnique
+         * x add to HighScores platform
+         * x add to HighScores device
+         * x add to HighScores ipaddress
+         */
+    }
+
+    public bool doesColumnExist(string tableName, string columnName)
+    {
+        try
         {
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(connection);
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
-            dbcmd.CommandText = sqlQuery;
+            string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
+            //Debug.Log(sqlQueryCheckForColumn);
 
+            dbcmd.CommandText = sqlQueryCheckForColumn;
             IDataReader reader = dbcmd.ExecuteReader();
 
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-        }
-        else
-        {
-            Debug.Log("column exists already");
-        }
-    }
+            int nameIndex = reader.GetOrdinal("Name");
 
-    public bool doesColumnExist(string tableName, string columnName)
-    {
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
-        //Debug.Log(sqlQueryCheckForColumn);
-
-        dbcmd.CommandText = sqlQueryCheckForColumn;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        int nameIndex = reader.GetOrdinal("Name");
-
-        while (reader.Read())
-        {
-            if (reader.GetString(nameIndex).Equals(columnName))
+            while (reader.Read())
             {
-                //Debug.Log("column found");
-                return true;
+                if (reader.GetString(nameIndex).Equals(columnName))
+                {
+                    //Debug.Log("column found");
+                    return true;
+                }
             }
         }
+        catch
+        {
+            databaseLocked = false;
+            return false;
+        }
         return false;
+    }
+
+    public string GetExternalIpAdress()
+    {
+        string pubIp = new WebClient().DownloadString("https://api.ipify.org");
+        return pubIp;
     }
 
     //public void alterTableRemoveColumn(string tableName, string columnName, string type)

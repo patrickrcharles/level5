@@ -1,6 +1,7 @@
 ﻿
 using Mono.Data.Sqlite;
 using System;
+using System.Collections;
 using System.Data;
 using System.IO;
 using UnityEngine;
@@ -91,14 +92,9 @@ public class DBConnector : MonoBehaviour
         }
         if (getDatabaseVersion() != currentDatabaseAppVersion)
         {
-            //Debug.Log("db version mismatch : ");
-            //Debug.Log("     current db version : " + getDatabaseVersion());
-            //Debug.Log("     new db version : " + currentDatabaseAppVersion);
-            dropDatabase();
-            createDatabase();
-            setDatabaseVersion();
+            StartCoroutine(dbHelper.UpgradeDatabaseToVersion2());
+            StartCoroutine(setDatabaseVersion());
         }
-
     }
 
     private void VerifyDatabase()
@@ -172,8 +168,10 @@ public class DBConnector : MonoBehaviour
         return value;
     }
 
-    private void setDatabaseVersion()
+    public IEnumerator setDatabaseVersion()
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
 
         dbconn = new SqliteConnection(connection);
         dbconn.Open();
@@ -192,10 +190,12 @@ public class DBConnector : MonoBehaviour
         dbconn.Close();
         dbconn = null;
 
-        Debug.Log("db version : ");
-        Debug.Log("     current db version : " + getDatabaseVersion());
-        //Debug.Log("     sqlite getversion : " + dbconn.);
-        Debug.Log("     new db version : " + currentDatabaseAppVersion);
+        dbHelper.DatabaseLocked = false;
+
+        //Debug.Log("db version : ");
+        //Debug.Log("     current db version : " + getDatabaseVersion());
+        ////Debug.Log("     sqlite getversion : " + dbconn.);
+        //Debug.Log("     new db version : " + currentDatabaseAppVersion);
     }
 
 
