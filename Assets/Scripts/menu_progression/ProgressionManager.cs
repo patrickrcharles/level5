@@ -500,7 +500,6 @@ public class ProgressionManager : MonoBehaviour
     }
     public void updateSevenAccuracy(UpdateType updateType)
     {
-        Debug.Log("update : " + updateType);
         if (progressionState.Accuracy7 < progressionState.MaxSevenAccuraccy)
         {
             switch (updateType)
