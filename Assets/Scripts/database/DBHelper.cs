@@ -191,7 +191,8 @@ public class DBHelper : MonoBehaviour
             string sqlQuery1 =
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
-               "hardcoreEnabled, enemiesKilled, platform, device, ipaddress )  " +
+               "hardcoreEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
+               "fourMade, fourAtt, sevenMade, sevenAtt )  " +
                "Values( '" + generateUnqueScoreID()
                + "', '" + GameOptions.gameModeSelectedId
                + "', '" + GameOptions.playerId
@@ -213,7 +214,15 @@ public class DBHelper : MonoBehaviour
                + stats.EnemiesKilled + "','"
                + SystemInfo.deviceType + "','"
                + SystemInfo.deviceModel + "','"
-               + GetExternalIpAdress() + "')";
+               + GetExternalIpAdress() + "','"
+               + stats.TwoPointerMade + "','"
+               + stats.TwoPointerAttempts + "','"
+               + stats.ThreePointerMade + "','"
+               + stats.ThreePointerAttempts + "','"
+               + stats.FourPointerMade + "','"
+               + stats.FourPointerAttempts + "','"
+               + stats.SevenPointerMade + "','"
+               + stats.SevenPointerAttempts + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -228,6 +237,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log(e);
             return;
         }
     }
@@ -1415,19 +1425,29 @@ public class DBHelper : MonoBehaviour
     public IEnumerator UpgradeDatabaseToVersion2()
     {
         string table1 = "HighScores";
+
         string col1 = "scoreidUnique";
         string col2 = "platform";
         string col3 = "device";
         string col4 = "ipaddress";
+        string col5 = "twoMade";
+        string col6 = "twoAtt";
+        string col7 = "threeMade";
+        string col8 = "threeAtt";
+        string col9 = "fourMade";
+        string col10 = "fourAtt";
+        string col11 = "sevenMade";
+        string col12 = "sevenAtt";
 
-        string type1 = "text";
+        string typeText = "text";
+        string typeInteger = "integer";
 
         // add scoreidunique column
         if (!doesColumnExist(table1, col1))
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col1, type1);
+            alterTableAddColumn(table1, col1, typeText);
             yield return new WaitUntil(() => doesColumnExist(table1, col1));
             databaseLocked = false;
         }
@@ -1436,7 +1456,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col2, type1);
+            alterTableAddColumn(table1, col2, typeText);
             yield return new WaitUntil(() => doesColumnExist(table1, col2));
             databaseLocked = false;
         }
@@ -1445,7 +1465,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col3, type1);
+            alterTableAddColumn(table1, col3, typeText);
             yield return new WaitUntil(() => doesColumnExist(table1, col3));
             databaseLocked = false;
         }
@@ -1454,8 +1474,72 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col4, type1);
+            alterTableAddColumn(table1, col4, typeText);
             yield return new WaitUntil(() => doesColumnExist(table1, col4));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col5))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col5, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col5));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col6))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col6, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col6));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col7))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col7, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col7));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col8))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col8, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col8));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col9))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col9, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col9));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col10))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col10, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col10));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col11))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col11, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col11));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col12))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col12, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col12));
             databaseLocked = false;
         }
 

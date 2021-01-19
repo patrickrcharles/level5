@@ -251,7 +251,15 @@ public class DBConnector : MonoBehaviour
                 "enemiesKilled INTEGER DEFAULT 0," +
                 "platform    TEXT," +
                 "device    TEXT," +
-                "ipaddress   TEXT);" +
+                "ipaddress   TEXT," +
+                "twoMade   INTEGER, " +
+                "twoAtt    INTEGER, " +
+                "threeMade INTEGER, " +
+                "threeAtt  INTEGER, " +
+                "fourMade  INTEGER, " +
+                "fourAtt   INTEGER, " +
+                "sevenMade INTEGER, " +
+                "sevenAtt  INTEGER); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
