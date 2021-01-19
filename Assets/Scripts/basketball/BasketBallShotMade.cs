@@ -254,9 +254,11 @@ public class BasketBallShotMade : MonoBehaviour
                     pointsScored = 7;
                 }
                 // if moneyball / last shot on marker (5/5)
-                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
+                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5
+                    && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
                 {
                     _basketBallStats.TotalPoints += (pointsScored * 2);
+                    _basketBallStats.MoneyBallMade++;
                 }
                 // not last shot on marker (1-4/5)
                 else
@@ -264,7 +266,7 @@ public class BasketBallShotMade : MonoBehaviour
                     _basketBallStats.TotalPoints += pointsScored;
                 }
             }
-            // is game mode 19
+            // is game mode 19 [Points By Distance]
             if(GameOptions.gameModeSelectedId == 19)
             {
                 if (_basketBallState.TwoAttempt)

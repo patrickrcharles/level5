@@ -500,7 +500,6 @@ public class ProgressionManager : MonoBehaviour
     }
     public void updateSevenAccuracy(UpdateType updateType)
     {
-        Debug.Log("update : " + updateType);
         if (progressionState.Accuracy7 < progressionState.MaxSevenAccuraccy)
         {
             switch (updateType)
@@ -671,7 +670,6 @@ public class ProgressionManager : MonoBehaviour
                     bonusLuckText.text = "MAX";
                 }
                 bonusRangeText.text = "+" + progressionState.AddToRange;
-                Debug.Log("progressionState.AddToRange : " + progressionState.AddToRange);
             }
             else
             {
@@ -759,7 +757,6 @@ public class ProgressionManager : MonoBehaviour
 
     void updateBonusRangeDistance(UpdateType updateType)
     {
-        Debug.Log("updateBonusRangeDistance(UpdateType " + updateType + ")");
         //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
         //bonusRangeText.text = "+" + progressionState.AddToRange;
         switch (updateType)

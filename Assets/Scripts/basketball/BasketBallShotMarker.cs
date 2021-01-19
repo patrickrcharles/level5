@@ -102,12 +102,12 @@ public class BasketBallShotMarker : MonoBehaviour
             }
         }
 
-        // if game mode IS 3,4, all point contest
+        // if game mode IS 3/4/all point contest
         if (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest)
         {
-            // max shot attempst reached
+            // max shot attempts reached
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
                 && !GameLevelManager.instance.PlayerState.hasBasketball
@@ -128,7 +128,7 @@ public class BasketBallShotMarker : MonoBehaviour
                 }
             }
         }
-        // game mode is NOT 3,4 , All point contest
+        // game mode is NOT 3/4/All point contest
         if (!GameRules.instance.GameModeThreePointContest
             || !GameRules.instance.GameModeFourPointContest
             || !GameRules.instance.GameModeAllPointContest)

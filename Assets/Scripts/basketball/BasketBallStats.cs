@@ -63,6 +63,8 @@ public class BasketBallStats : MonoBehaviour
     {
         int experience = 0;
 
+        experience += (ShotAttempt * 10);
+
         experience += (TwoPointerMade * 20);
 
         experience += (ThreePointerMade * 30);
