@@ -627,7 +627,9 @@ public class DBHelper : MonoBehaviour
                 while (reader.Read())
                 {
                     //CharacterProfile temp = null;
-                    CharacterProfile temp = new CharacterProfile();
+                    //CharacterProfile temp = new CharacterProfile();
+                    CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
+
                     //CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
 
                     temp.PlayerId = reader.GetInt32(0);
@@ -651,6 +653,8 @@ public class DBHelper : MonoBehaviour
                     temp.Release = reader.GetInt32(18);
                     temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
                     characterStats.Add(temp);
+
+                    Destroy(temp);
                 }
                 reader.Close();
                 reader = null;
@@ -693,7 +697,8 @@ public class DBHelper : MonoBehaviour
 
                 while (reader.Read())
                 {
-                    CheerleaderProfile temp = new CheerleaderProfile();
+                    //CheerleaderProfile temp = new CheerleaderProfile();
+                    CheerleaderProfile temp = gameObject.AddComponent<CheerleaderProfile>();
 
                     temp.CheerleaderId = reader.GetInt32(0);
                     temp.CheerleaderDisplayName = reader.GetString(1);
@@ -702,6 +707,8 @@ public class DBHelper : MonoBehaviour
                     temp.IsLocked = Convert.ToBoolean(reader.GetInt32(4));
 
                     cheerleaderStats.Add(temp);
+
+                    Destroy(temp);
                 }
                 reader.Close();
                 reader = null;
