@@ -10,7 +10,7 @@ public class DevFunctions : MonoBehaviour
     [SerializeField] GameObject fpsCounter;
     [SerializeField] GameObject[] enemies;
     [SerializeField] Text messageText;
-    [SerializeField] float smoothSpeed;
+    //[SerializeField] float smoothSpeed;
 
     public static DevFunctions instance;
 
@@ -48,13 +48,6 @@ public class DevFunctions : MonoBehaviour
         {
             InstantiateRob();
         }
-        //if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9)
-        //    && GameLevelManager.instance.PlayerState.hasBasketball)
-        //{
-        //    //StartCoroutine(PlayerDunk());
-        //    //PlayerDunk();
-        //    GameLevelManager.instance.PlayerState.PlayerDunk();
-        //}
     }
 
     private void InstantiateRob()
