@@ -180,4 +180,5 @@ public class Timer : MonoBehaviour
     }
 
     public Text ScoreClockText { get => scoreClockText; set => scoreClockText = value; }
+    public float Seconds { get => seconds; }
 }

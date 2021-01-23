@@ -11,13 +11,10 @@ public class BasketBallStats : MonoBehaviour
     private int _experienceGained;
 
     private int _totalPoints;
-    [SerializeField]
+    private int _bonusPoints;
     private int _twoPointerMade;
-    [SerializeField]
     private int _threePointerMade;
-    [SerializeField]
     private int _fourPointerMade;
-    [SerializeField]
     private int _sevenPointerMade;
     private int _moneyBallMade;
 
@@ -263,4 +260,5 @@ public class BasketBallStats : MonoBehaviour
     public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
     public int BossKilled { get => _bossKilled; set => _bossKilled = value; }
     public int MinionsKilled { get => _minionsKilled; set => _minionsKilled = value; }
+    public int BonusPoints { get => _bonusPoints; set => _bonusPoints = value; }
 }

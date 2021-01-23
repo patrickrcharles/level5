@@ -168,7 +168,7 @@ public class GameRules : MonoBehaviour
         }
 
         // game over. pause / display end game / save
-        if ( (gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled )
+        if ((gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled)
         {
             displayCurrentScoreText.text = "";
             displayHighScoreText.text = "";
@@ -484,7 +484,7 @@ public class GameRules : MonoBehaviour
                     "nerds bashed : " + (BasketBall.instance.BasketBallStats.EnemiesKilled);
                 Timer.instance.ScoreClockText.text = (BasketBall.instance.BasketBallStats.EnemiesKilled).ToString();
             }
-            if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98 )
+            if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98)
             {
                 displayCurrentScoreText.text = "longest shot : " + (basketBallStats.LongestShotMade).ToString("0.00")
                                                                  + "\ncurrent distance : " + (BasketBall.instance.BasketBallState.PlayerDistanceFromRim * 6).ToString("00.00");
@@ -508,7 +508,7 @@ public class GameRules : MonoBehaviour
                     DBHelper.instance.updateFloatValueByTableAndField("AllTimeStats", "longestShot", PlayerData.instance.LongestShotMadeFreePlay);
                 }
             }
-            
+
         }
     }
 
@@ -565,7 +565,7 @@ public class GameRules : MonoBehaviour
             displayText = "You Bashed up " + basketBallStats.EnemiesKilled + " nerds"
                 + "\n\nexperience gained : " + basketBallStats.getExperienceGainedFromSession(); ;
         }
-        if (gameModeId == 98 )
+        if (gameModeId == 98)
         {
             displayText = "Arcade mode\n\n" + getStatsTotals();
         }
@@ -581,20 +581,41 @@ public class GameRules : MonoBehaviour
     string getStatsTotals()
     {
         string scoreText = "";
-        scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
-                         + "points : " + basketBallStats.TotalPoints + "\n"
-                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    "
-                         + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
-                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "    "
-                         + BasketBall.instance.getThreePointAccuracy().ToString("00.0") + "%\n"
-                         + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "    "
-                         + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
-                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
-                         + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
-                         + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
-                         + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
-                         + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
-                         + "experience gained : " + basketBallStats.getExperienceGainedFromSession();
+        if (basketBallStats.BonusPoints > 0)
+        {
+            scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
+                             + "points : " + basketBallStats.TotalPoints + "\n"
+                             + "bonus points : " + basketBallStats.BonusPoints + "\n"
+                             + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    "
+                             + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
+                             + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "    "
+                             + BasketBall.instance.getThreePointAccuracy().ToString("00.0") + "%\n"
+                             + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "    "
+                             + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
+                             + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
+                             + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
+                             + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
+                             + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
+                             + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
+                             + "experience gained : " + basketBallStats.getExperienceGainedFromSession();
+        }
+        else
+        {
+            scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
+                 + "points : " + basketBallStats.TotalPoints + "\n"
+                 + "2 pointers : " + basketBallStats.TwoPointerMade + " / " + basketBallStats.TwoPointerAttempts + "    "
+                 + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
+                 + "3 pointers : " + basketBallStats.ThreePointerMade + " / " + basketBallStats.ThreePointerAttempts + "    "
+                 + BasketBall.instance.getThreePointAccuracy().ToString("00.0") + "%\n"
+                 + "4 pointers : " + basketBallStats.FourPointerMade + " / " + basketBallStats.FourPointerAttempts + "    "
+                 + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
+                 + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
+                 + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
+                 + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
+                 + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
+                 + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
+                 + "experience gained : " + basketBallStats.getExperienceGainedFromSession();
+        }
         return scoreText;
     }
 
@@ -606,8 +627,11 @@ public class GameRules : MonoBehaviour
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
+
             //// add remaining counter time FLOOR to total points  as bonus points
-            //BasketBall.instance.BasketBallStats.TotalPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+            BasketBall.instance.BasketBallStats.BonusPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+            // add bonus points
+            BasketBall.instance.BasketBallStats.TotalPoints += BasketBall.instance.BasketBallStats.BonusPoints;
 
             // if game has a time counter
             if (modeRequiresCounter)
