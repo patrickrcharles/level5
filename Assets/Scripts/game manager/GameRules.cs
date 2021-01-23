@@ -558,7 +558,7 @@ public class GameRules : MonoBehaviour
         //}
         if (gameModeId == 15 || gameModeId == 16 || gameModeId == 17 || gameModeId == 18 || gameModeId == 19)
         {
-            displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
+            displayText = "You scored " + (basketBallStats.TotalPoints + basketBallStats.BonusPoints)+ " total points\n\n" + getStatsTotals();
         }
         if (gameModeId == 20)
         {
@@ -581,7 +581,7 @@ public class GameRules : MonoBehaviour
     string getStatsTotals()
     {
         string scoreText = "";
-        if (basketBallStats.BonusPoints > 0)
+        if (gameModeAllPointContest || gameModeFourPointContest || gameModeThreePointContest)
         {
             scoreText = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
                              + "points : " + basketBallStats.TotalPoints + "\n"
@@ -628,10 +628,13 @@ public class GameRules : MonoBehaviour
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
 
-            //// add remaining counter time FLOOR to total points  as bonus points
-            BasketBall.instance.BasketBallStats.BonusPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
-            // add bonus points
-            BasketBall.instance.BasketBallStats.TotalPoints += BasketBall.instance.BasketBallStats.BonusPoints;
+            if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
+            {
+                //// add remaining counter time FLOOR to total points  as bonus points
+                BasketBall.instance.BasketBallStats.BonusPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+                // add bonus points
+                BasketBall.instance.BasketBallStats.TotalPoints += BasketBall.instance.BasketBallStats.BonusPoints;
+            }
 
             // if game has a time counter
             if (modeRequiresCounter)
