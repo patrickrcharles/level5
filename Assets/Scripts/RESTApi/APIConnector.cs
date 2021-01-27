@@ -13,91 +13,121 @@ public class APIConnector : MonoBehaviour
 {
     const string publicApi = "http://13.58.224.237/api/";
     const string publicApiHighScores = "http://13.58.224.237/api/highscores";
+    const string publicApiUsers = "http://13.58.224.237/api/users";
+
+    bool apiLocked;
 
     // Start is called before the first frame update
     void Start()
     {
-        //for (int i = 1; i < 106; i++)
-        //{
 
-        //    //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
-        //    //StartCoroutine(PostHighscore(dbs));
-        //    StartCoroutine(WaitForDatabase(i));
-        //}
-    }
-
-    public IEnumerator WaitForDatabase(int i)
-    {
-        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-        DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
+        DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(5);
         StartCoroutine(PostHighscore(dbs));
     }
 
+    //public IEnumerator WaitForDatabase(int i)
+    //{
+    //    yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+    //    DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
+    //    StartCoroutine(PostHighscore(dbs));
+    //}
+
     public IEnumerator PostHighscore(DBHighScoreModel dbHighScoreModel)
     {
-        Debug.Log("wait for DB..." + Time.time);
+        Debug.Log("wait for API..." + Time.time);
+        yield return new WaitUntil(() => !apiLocked);
+        apiLocked = true;
 
+        Debug.Log("wait for DB..." + Time.time);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-        Debug.Log("DB unlocked..." + Time.time);
+        DBHighScoreModel dbTempObject = new DBHighScoreModel();
 
-        string toJson = JsonUtility.ToJson(dbHighScoreModel);
+        //string toJson = JsonUtility.ToJson(dbHighScoreModel);
+        string toJson = JsonUtility.ToJson(dbTempObject);
+        //string toJson = "[{dsadasd}]";
+        Debug.Log("Json : " + toJson);
 
-        Debug.Log("tojson : " + toJson);
+        HttpWebResponse httpResponse = null;
+        HttpStatusCode statusCode;
 
-
-        //ASCIIEncoding encoder = new ASCIIEncoding();
-        //byte[] data = encoder.GetBytes(serializedObject); // a json object, or xml, whatever...
-
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
-        httpWebRequest.ContentType = "application/json; charset=utf-8";
-        httpWebRequest.Method = "POST";
-
-        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        try
         {
-            string json = toJson;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
+            httpWebRequest.ContentType = "application/json; charset=utf-8";
+            httpWebRequest.Method = "POST";
 
-            streamWriter.Write(json);
-            streamWriter.Flush();
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = toJson;
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+            }
+
+            httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            //Debug.Log("----------------- ...finished");
+            //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //{
+            //    var result = streamReader.ReadToEnd();
+            //    Debug.Log("----------------- ...finished");
+            //    //Debug.Log("----------------- RESPONSE\n" + result);
+            //    //Debug.Log("----------------- code : " + httpResponse.StatusCode);
+            //    //Debug.Log("----------------- code : " + (int)httpResponse.StatusCode);
+        }
+        // on web exception
+        catch (WebException e)
+        {
+            httpResponse = (HttpWebResponse)e.Response;
+            apiLocked = false;
         }
 
-        var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        statusCode = httpResponse.StatusCode;
+
+        // if successful
+        if (httpResponse.StatusCode == HttpStatusCode.Created)
         {
-            var result = streamReader.ReadToEnd();
-            Debug.Log(result);
+            Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+            apiLocked = false;
+        }
+        // failed
+        else
+        {
+            Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " +   statusCode);
+            apiLocked = false;
         }
     }
 }
-    //public void getHighScores()
-    //{
-    //    Debug.Log("hit API...");
-    //    HttpWebRequest request =
-    //        (HttpWebRequest)WebRequest.Create(String.Format(publicApiHighScores + "?modeid=1"));
-    //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-    //    StreamReader reader = new StreamReader(response.GetResponseStream());
+//public void getHighScores()
+//{
+//    Debug.Log("hit API...");
+//    HttpWebRequest request =
+//        (HttpWebRequest)WebRequest.Create(String.Format(publicApiHighScores + "?modeid=1"));
+//    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+//    StreamReader reader = new StreamReader(response.GetResponseStream());
 
-    //    //Debug.Log("publicApiHighScores : " + publicApiHighScores +"/1");
+//    //Debug.Log("publicApiHighScores : " + publicApiHighScores +"/1");
 
-    //    string jsonResponse = @"{""Highscores"":" + reader.ReadToEnd() + "}";
-    //    Debug.Log(jsonResponse);
+//    string jsonResponse = @"{""Highscores"":" + reader.ReadToEnd() + "}";
+//    Debug.Log(jsonResponse);
 
-    //    APIHighScores highScores =  JsonConvert.DeserializeObject<APIHighScores>(jsonResponse);
+//    APIHighScores highScores =  JsonConvert.DeserializeObject<APIHighScores>(jsonResponse);
 
-    //    int i = 0;
-    //    foreach(APIHighScores.HighScore score in highScores.HighScores) 
-    //    {
-    //        Debug.Log( i + "start ==============================================");
-    //        Debug.Log("id : " + score.Id);
-    //        Debug.Log("userid : " + score.UserId);
-    //        Debug.Log("modeid : " + score.ModeId);
-    //        Debug.Log("cid : " + score.CharacterId);
-    //        Debug.Log("lid : " + score.Level);
-    //        Debug.Log("lid : " + score.Character);
-    //        Debug.Log("lid : " + score.Date);
-    //        Debug.Log("lid : " + score.Device);
-    //        Debug.Log("lid : " + score.Platform);
-    //        Debug.Log(i + " end ==============================================");
-    //        i++;
-    //    }   
-    //}
+//    int i = 0;
+//    foreach(APIHighScores.HighScore score in highScores.HighScores) 
+//    {
+//        Debug.Log( i + "start ==============================================");
+//        Debug.Log("id : " + score.Id);
+//        Debug.Log("userid : " + score.UserId);
+//        Debug.Log("modeid : " + score.ModeId);
+//        Debug.Log("cid : " + score.CharacterId);
+//        Debug.Log("lid : " + score.Level);
+//        Debug.Log("lid : " + score.Character);
+//        Debug.Log("lid : " + score.Date);
+//        Debug.Log("lid : " + score.Device);
+//        Debug.Log("lid : " + score.Platform);
+//        Debug.Log(i + " end ==============================================");
+//        i++;
+//    }   
+//}
