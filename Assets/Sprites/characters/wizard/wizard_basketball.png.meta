@@ -50,6 +50,9 @@ TextureImporter:
   - first:
       213: 2025077577728749643
     second: wizard_basketball_15
+  - first:
+      213: 7425080612886852468
+    second: wizard_basketball_16
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -409,8 +412,8 @@ TextureImporter:
       name: wizard_basketball_11
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
+        x: 576
+        y: 384
         width: 192
         height: 192
       alignment: 7
@@ -430,7 +433,7 @@ TextureImporter:
       name: wizard_basketball_12
       rect:
         serializedVersion: 2
-        x: 192
+        x: 0
         y: 192
         width: 192
         height: 192
@@ -451,7 +454,7 @@ TextureImporter:
       name: wizard_basketball_13
       rect:
         serializedVersion: 2
-        x: 384
+        x: 192
         y: 192
         width: 192
         height: 192
@@ -472,8 +475,8 @@ TextureImporter:
       name: wizard_basketball_14
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 384
+        y: 192
         width: 192
         height: 192
       alignment: 7
@@ -493,7 +496,7 @@ TextureImporter:
       name: wizard_basketball_15
       rect:
         serializedVersion: 2
-        x: 192
+        x: 0
         y: 0
         width: 192
         height: 192
@@ -506,6 +509,27 @@ TextureImporter:
       bones: []
       spriteID: b40712fd3558a1c10800000000000000
       internalID: 2025077577728749643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wizard_basketball_16
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 473b2c74a7f2b0760800000000000000
+      internalID: 7425080612886852468
       vertices: []
       indices: 
       edges: []
