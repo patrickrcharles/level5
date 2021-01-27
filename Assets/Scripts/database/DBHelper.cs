@@ -1,4 +1,5 @@
-﻿using Mono.Data.Sqlite;
+﻿using Assets.Scripts.database;
+using Mono.Data.Sqlite;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class DBHelper : MonoBehaviour
     private const String allTimeStatsTableName = "AllTimeStats";
     private const String characterProfileTableName = "CharacterProfile";
     private const String cheerleaderProfileTableName = "CheerleaderProfile";
+    private const String highScoresTableName = "HighScores";
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -1549,6 +1551,81 @@ public class DBHelper : MonoBehaviour
          * x add to HighScores device
          * x add to HighScores ipaddress
          */
+    }
+
+    public DBHighScoreModel getHighScoreFromDatabase(int id)
+    {
+        DBHighScoreModel highscore = new DBHighScoreModel();
+        databaseLocked = true;
+        try
+        {
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+
+            if (!isTableEmpty(highScoresTableName))
+            {
+                //Debug.Log(" table is not empty");
+                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid ="+ id;
+                Debug.Log(sqlQuery);
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    highscore.Id = reader.GetInt32(0);
+
+                    if (reader.IsDBNull(1)) { highscore.Userid = 0; }
+                    else { highscore.Userid = reader.GetInt32(1); }
+
+                    highscore.Modeid = reader.GetInt32(2);
+                    highscore.Characterid = reader.GetInt32(3);
+                    highscore.Character = reader.GetString(4);
+                    highscore.Levelid = reader.GetInt32(5);
+                    highscore.Level = reader.GetString(6);
+                    highscore.Os = reader.GetString(7);
+                    highscore.Version = reader.GetString(8);
+                    highscore.Date = reader.GetString(9);
+                    highscore.Time = reader.GetFloat(10);
+                    highscore.TotalPoints = reader.GetInt32(11);
+                    highscore.LongestShot = reader.GetFloat(12);
+                    highscore.TotalDistance = reader.GetFloat(13);
+                    highscore.MaxShotMade = reader.GetInt32(14);
+                    highscore.MaxShotAtt = reader.GetInt32(15);
+                    highscore.ConsecutiveShots = reader.GetInt32(16);
+                    highscore.TrafficEnabled = reader.GetInt32(17);
+                    highscore.HardcoreEnabled = reader.GetInt32(18);
+                    highscore.EnemiesKilled = reader.GetInt32(19);
+                    highscore.Scoreid = reader.GetString(20);
+                    highscore.Platform = reader.GetString(21);
+                    highscore.Device = reader.GetString(22);
+                    highscore.Ipaddress = reader.GetString(23);
+                    highscore.TwoMade = reader.GetInt32(24);
+                    highscore.TwoAtt = reader.GetInt32(25);
+                    highscore.ThreeMade = reader.GetInt32(26);
+                    highscore.ThreeAtt = reader.GetInt32(27);
+                    highscore.FourMade = reader.GetInt32(28);
+                    highscore.FourAtt = reader.GetInt32(29);
+                    highscore.SevenMade = reader.GetInt32(30);
+                    highscore.SevenAtt = reader.GetInt32(31);
+
+                    Debug.Log("------------------------------------------ db action finished");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("EXCEPTION : "+ e);
+            DatabaseLocked = false;
+            return null;
+        }
+        databaseLocked = false;
+        //Destroy(highscore, 5);
+        return highscore;
     }
 
     public bool doesColumnExist(string tableName, string columnName)
