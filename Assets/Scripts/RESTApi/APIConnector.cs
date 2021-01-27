@@ -17,49 +17,32 @@ public class APIConnector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DBHighScoreModel dbs = gameObject.AddComponent<DBHighScoreModel>();
-        PostHighscore(dbs);
+        //for (int i = 1; i < 106; i++)
+        //{
+
+        //    //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
+        //    //StartCoroutine(PostHighscore(dbs));
+        //    StartCoroutine(WaitForDatabase(i));
+        //}
     }
 
-    public void PostHighscore(DBHighScoreModel dbHighScoreModel)
+    public IEnumerator WaitForDatabase(int i)
     {
-        DBHighScoreModel dbHighScoreModel1 = new DBHighScoreModel();
-        string toJson = JsonUtility.ToJson(dbHighScoreModel1);
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
+        StartCoroutine(PostHighscore(dbs));
+    }
 
+    public IEnumerator PostHighscore(DBHighScoreModel dbHighScoreModel)
+    {
+        Debug.Log("wait for DB..." + Time.time);
 
-        //string json =
-        //    "{ \"userid\": " + dbHighScoreModel.Userid + "," +
-        //    "\"modeid\": " + dbHighScoreModel.Modeid + "," +
-        //    "\"characterid\": " + dbHighScoreModel.Characterid + "," +
-        //    "\"levelid\": " + dbHighScoreModel.Levelid + "," +
-        //    "\"character\": '" + dbHighScoreModel.Character + "'," +
-        //    "\"level\": " + dbHighScoreModel.Level + "," +
-        //    "\"os\": " + SystemInfo.operatingSystem + "," +
-        //    "\"version\": " + Application.version + "," +
-        //    "\"date\": " + dbHighScoreModel.name + "," +
-        //    "\"time\": "+ dbHighScoreModel.Time +"," +
-        //    "\"totalPoints\": "+dbHighScoreModel.TotalPoints + "," +
-        //    "\"longestShot\": "+dbHighScoreModel.LongestShot +"," +
-        //    "\"totalDistance\": "+ dbHighScoreModel.TotalDistance +"," +
-        //    "\"maxShotMade\": "+ dbHighScoreModel.MaxShotMade + "," +
-        //    "\"maxShotAtt\": "+ dbHighScoreModel.MaxShotAtt +"," +
-        //    "\"consecutiveShots\": "+ dbHighScoreModel.ConsecutiveShots +"," +
-        //    "\"trafficEnabled\": "+ dbHighScoreModel.TrafficEnabled +"," +
-        //    "\"hardcoreEnabled\": "+ dbHighScoreModel.HardcoreEnabled +"," +
-        //    "\"enemiesKilled\": "+ dbHighScoreModel.EnemiesKilled +"," +
-        //    "\"platform\": "+ dbHighScoreModel.Platform +"," +
-        //     "\"device\": "+ dbHighScoreModel.Device +"," +
-        //     "\"ipaddress\": "+ dbHighScoreModel.Ipaddress +"," +
-        //     "\"scoreid\": "+ dbHighScoreModel.Scoreid +"," +
-        //     "\"twoMade\": "+ dbHighScoreModel.TwoMade +"," +
-        //     "\"twoAtt\": "+ dbHighScoreModel.TwoAtt +"," +
-        //     "\"threeMade\": "+ dbHighScoreModel.ThreeMade +"," +
-        //     "\"threeAtt\": "+ dbHighScoreModel.ThreeAtt +"," +
-        //     "\"fourMade\": "+ dbHighScoreModel.FourMade +"," +
-        //     "\"fourAtt\": "+ dbHighScoreModel.FourAtt +"," +
-        //     "\"sevenMade\": "+ dbHighScoreModel.SevenMade +"," +
-        //     "\"sevenAtt\": "+ dbHighScoreModel.SevenAtt +"}";
-        //Debug.Log(json);
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+
+        Debug.Log("DB unlocked..." + Time.time);
+
+        string toJson = JsonUtility.ToJson(dbHighScoreModel);
+
         Debug.Log("tojson : " + toJson);
 
 
