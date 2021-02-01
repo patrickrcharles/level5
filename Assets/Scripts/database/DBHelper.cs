@@ -142,19 +142,24 @@ public class DBHelper : MonoBehaviour
         return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
     }
 
-    string generateUnqueScoreID()
+    string generateUniqueScoreID()
     {
         string macAddress = "";
         string uniqueScoreId = "";
         string uniqueModeDateIdentifier = "";
-        TimeZone localZone = TimeZone.CurrentTimeZone;
+        //TimeZone localZone = TimeZone.CurrentTimeZone;
 
-        uniqueModeDateIdentifier
-            = RemoveWhitespace(DateTime.Now.ToString())
-            + RemoveWhitespace(localZone.StandardName)
-            + RemoveWhitespace(GameOptions.levelDisplayName)
-            + RemoveWhitespace(GameOptions.playerDisplayName)
-            + RemoveWhitespace(GameOptions.gameModeSelectedName);
+        uniqueModeDateIdentifier = DateTime.Now.Day.ToString()
+            + DateTime.Now.Month.ToString() 
+            + DateTime.Now.Year.ToString()
+            + DateTime.Now.Second;
+        Debug.Log("----- uniqueScoreId : " + uniqueScoreId);
+        //uniqueModeDateIdentifier
+        //    = RemoveWhitespace(date)
+        //    + RemoveWhitespace(localZone.StandardName)
+        //    + RemoveWhitespace(GameOptions.levelDisplayName)
+        //    + RemoveWhitespace(GameOptions.playerDisplayName)
+        //    + RemoveWhitespace(GameOptions.gameModeSelectedName);
 
         foreach (NetworkInterface ninf in NetworkInterface.GetAllNetworkInterfaces())
         {
@@ -166,6 +171,7 @@ public class DBHelper : MonoBehaviour
             }
         }
         uniqueScoreId = macAddress + uniqueModeDateIdentifier + SystemInfo.deviceUniqueIdentifier;
+
         return uniqueScoreId;
     }
 
@@ -195,7 +201,7 @@ public class DBHelper : MonoBehaviour
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt )  " +
-               "Values( '" + generateUnqueScoreID()
+               "Values( '" + generateUniqueScoreID()
                + "', '" + GameOptions.gameModeSelectedId
                + "', '" + GameOptions.playerId
                + "', '" + GameOptions.playerDisplayName
@@ -235,6 +241,8 @@ public class DBHelper : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+
+            //* try to post to api here
         }
         catch (Exception e)
         {
