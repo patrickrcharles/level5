@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Assets.Scripts.database
 {
     [Serializable]
-    public class DBHighScoreModel : MonoBehaviour
+    public class DBHighScoreModel 
     {
         public int Id;
         public int Userid;
@@ -43,37 +43,43 @@ namespace Assets.Scripts.database
         public int SevenMade ;
         public int SevenAtt ;
 
-        //public int Id { get; set; }
-        //public int Userid { get; set; }
-        //public int Modeid { get; set; }
-        //public int Characterid { get; set; }
-        //public int Levelid { get; set; }
-        //public string Character { get; set; }
-        //public string Level { get; set; }
-        //public string Os { get; set; }
-        //public string Version { get; set; }
-        //public string Date { get; set; }
-        //public float Time { get; set; }
-        //public int TotalPoints { get; set; }
-        //public float LongestShot { get; set; }
-        //public float TotalDistance { get; set; }
-        //public int MaxShotMade { get; set; }
-        //public int MaxShotAtt { get; set; }
-        //public int ConsecutiveShots { get; set; }
-        //public int TrafficEnabled { get; set; }
-        //public int HardcoreEnabled { get; set; }
-        //public int EnemiesKilled { get; set; }
-        //public string Platform { get; set; }
-        //public string Device { get; set; }
-        //public string Ipaddress { get; set; }
-        //public string Scoreid { get; set; }
-        //public int TwoMade { get; set; }
-        //public int TwoAtt { get; set; }
-        //public int ThreeMade { get; set; }
-        //public int ThreeAtt { get; set; }
-        //public int FourMade { get; set; }
-        //public int FourAtt { get; set; }
-        //public int SevenMade { get; set; }
-        //public int SevenAtt { get; set; }
+        public DBHighScoreModel convertBasketBallStatsToModel(BasketBallStats basketBallStats)
+        {
+            DBHighScoreModel highscore = new DBHighScoreModel();
+
+            //highscore.Modeid = reader.GetInt32(2);
+            //highscore.Characterid = reader.GetInt32(3);
+            //highscore.Character = reader.GetString(4);
+            //highscore.Levelid = reader.GetInt32(5);
+            //highscore.Level = reader.GetString(6);
+            //highscore.Os = reader.GetString(7);
+            //highscore.Version = reader.GetString(8);
+            //highscore.Date = reader.GetString(9);
+            //highscore.Time = reader.GetFloat(10);
+            //highscore.TotalPoints = reader.GetInt32(11);
+            //highscore.LongestShot = reader.GetFloat(12);
+            //highscore.TotalDistance = reader.GetFloat(13);
+            //highscore.MaxShotMade = reader.GetInt32(14);
+            //highscore.MaxShotAtt = reader.GetInt32(15);
+            //highscore.ConsecutiveShots = reader.GetInt32(16);
+            //highscore.TrafficEnabled = reader.GetInt32(17);
+            //highscore.HardcoreEnabled = reader.GetInt32(18);
+            //highscore.EnemiesKilled = reader.GetInt32(19);
+            //highscore.Scoreid = reader.GetString(20);
+            //highscore.Platform = reader.GetString(21);
+            //highscore.Device = reader.GetString(22);
+            //highscore.Ipaddress = reader.GetString(23);
+            //highscore.TwoMade = reader.GetInt32(24);
+            //highscore.TwoAtt = reader.GetInt32(25);
+            //highscore.ThreeMade = reader.GetInt32(26);
+            //highscore.ThreeAtt = reader.GetInt32(27);
+            //highscore.FourMade = reader.GetInt32(28);
+            //highscore.FourAtt = reader.GetInt32(29);
+            //highscore.SevenMade = reader.GetInt32(30);
+            //highscore.SevenAtt = reader.GetInt32(31);
+
+            return highscore;
+        }
     }
+
 }
