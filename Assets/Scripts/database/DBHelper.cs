@@ -176,7 +176,7 @@ public class DBHelper : MonoBehaviour
     }
 
     // insert current game's stats and score
-    internal void InsertGameScore(BasketBallStats stats)
+    internal void InsertGameScore(DBHighScoreModel stats)
     {
         try
         {
@@ -185,52 +185,52 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            int trafficEnabled = 0;
-            if (GameOptions.trafficEnabled)
-            {
-                trafficEnabled = 1;
-            }
-            int hardcoreEnabled = 0;
-            if (GameOptions.hardcoreModeEnabled)
-            {
-                hardcoreEnabled = 1;
-            }
+            //int trafficEnabled = 0;
+            //if (GameOptions.trafficEnabled)
+            //{
+            //    trafficEnabled = 1;
+            //}
+            //int hardcoreEnabled = 0;
+            //if (GameOptions.hardcoreModeEnabled)
+            //{
+            //    hardcoreEnabled = 1;
+            //}
 
             string sqlQuery1 =
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt )  " +
-               "Values( '" + generateUniqueScoreID()
-               + "', '" + GameOptions.gameModeSelectedId
-               + "', '" + GameOptions.playerId
-               + "', '" + GameOptions.playerDisplayName
-               + "','" + GameOptions.levelId
-               + "','" + GameOptions.levelDisplayName
-               + "','" + SystemInfo.operatingSystem
-               + "','" + Application.version
-               + "','" + DateTime.Now
-               + "','" + GameRules.instance.CounterTime
+               "Values( '" + stats.Scoreid
+               + "', '"  +stats.Modeid
+               + "', '" + stats.Characterid
+               + "', '" + stats.Character
+               + "','" + stats.Levelid
+               + "','" + stats.Level
+               + "','" + stats.Os
+               + "','" + stats.Version
+               + "','" + stats.Date
+               + "','" + stats.Time
                + "','" + stats.TotalPoints
-               + "','" + stats.LongestShotMade
+               + "','" + stats.LongestShot
                + "','" + stats.TotalDistance + "','"
-               + stats.ShotMade + "','"
-               + stats.ShotAttempt + "','"
-               + stats.MostConsecutiveShots + "','"
-               + trafficEnabled + "','"
-               + hardcoreEnabled + "','"
+               + stats.MaxShotMade + "','"
+               + stats.MaxShotAtt + "','"
+               + stats.ConsecutiveShots + "','"
+               + stats.TrafficEnabled + "','"
+               + stats.HardcoreEnabled + "','"
                + stats.EnemiesKilled + "','"
-               + SystemInfo.deviceType + "','"
-               + SystemInfo.deviceModel + "','"
-               + GetExternalIpAdress() + "','"
-               + stats.TwoPointerMade + "','"
-               + stats.TwoPointerAttempts + "','"
-               + stats.ThreePointerMade + "','"
-               + stats.ThreePointerAttempts + "','"
-               + stats.FourPointerMade + "','"
-               + stats.FourPointerAttempts + "','"
-               + stats.SevenPointerMade + "','"
-               + stats.SevenPointerAttempts + "')";
+               + stats.Platform + "','"
+               + stats.Device + "','"
+               + stats.Ipaddress + "','"
+               + stats.TwoMade + "','"
+               + stats.TwoAtt + "','"
+               + stats.ThreeMade + "','"
+               + stats.ThreeAtt + "','"
+               + stats.FourMade + "','"
+               + stats.FourAtt + "','"
+               + stats.SevenMade + "','"
+               + stats.SevenAtt + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -329,7 +329,7 @@ public class DBHelper : MonoBehaviour
                + " SET experience = " + (PlayerData.instance.CurrentExperience + expGained)
                + ", level = " + currentLevel
                + ", pointsAvailable = " + updatePointsAvailable
-               + " WHERE charid = " + GameOptions.playerId;
+               + " WHERE charid = " + GameOptions.characterId;
 
             //Debug.Log(sqlQuery1);
 
@@ -1561,7 +1561,7 @@ public class DBHelper : MonoBehaviour
          */
     }
 
-    public DBHighScoreModel getHighScoreFromDatabase(int id)
+    public DBHighScoreModel getHighScoreFromDatabase(string scoreid)
     {
         DBHighScoreModel highscore = new DBHighScoreModel();
         databaseLocked = true;
@@ -1578,14 +1578,14 @@ public class DBHelper : MonoBehaviour
             if (!isTableEmpty(highScoresTableName))
             {
                 //Debug.Log(" table is not empty");
-                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid ="+ id;
+                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid ="+ scoreid;
                 Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    highscore.Id = reader.GetInt32(0);
+                    //highscore.Id = reader.GetInt32(0);
 
                     if (reader.IsDBNull(1)) { highscore.Userid = 0; }
                     else { highscore.Userid = reader.GetInt32(1); }

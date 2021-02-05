@@ -1,4 +1,5 @@
 ﻿
+using Assets.Scripts.database;
 using Mono.Data.Sqlite;
 using System;
 using System.Collections;
@@ -200,9 +201,9 @@ public class DBConnector : MonoBehaviour
 
 
     // ============================ Save stats ===============================
-    public void savePlayerGameStats(BasketBallStats stats)
+    public void savePlayerGameStats(DBHighScoreModel dbHighScoreModel)
     {
-        dbHelper.InsertGameScore(stats);
+        dbHelper.InsertGameScore(dbHighScoreModel);
     }
 
     public void savePlayerProfileProgression(float expGained)
