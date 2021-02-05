@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.database;
+using Assets.Scripts.restapi;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -183,17 +185,27 @@ public class GameRules : MonoBehaviour
             Pause.instance.TogglePause();
             displayScoreText.text = getDisplayText(GameModeId);
 
+            // ******** important : convert basketball stats to high score model
+            DBHighScoreModel dBHighScoreModel = new DBHighScoreModel();
+            DBHighScoreModel dBHighScoreModelTemp = new DBHighScoreModel();
+            dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(basketBallStats);
+
             //save if at leat 1 minte played
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
                 if (gameModeId != 99)
                 {
-                    DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+                    DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
+                    StartCoroutine(APIHelper.PostHighscore(dBHighScoreModelTemp));
                 }
 
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.getExperienceGainedFromSession());
+
+                // post to API
+                //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(basketBallStats.);
+                //StartCoroutine(APIHelper.PostHighscore(basketBallStats));
             }
             if (GameOptions.enemiesEnabled)
             {

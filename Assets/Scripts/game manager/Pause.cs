@@ -1,4 +1,5 @@
 ﻿
+using Assets.Scripts.database;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -272,7 +273,11 @@ public class Pause : MonoBehaviour
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats
-        DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+        // convert basketball stats to high score model
+        DBHighScoreModel dBHighScoreModel = new DBHighScoreModel();
+        dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.BasketBallStats);
+
+        DBConnector.instance.savePlayerGameStats(dBHighScoreModel);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
         DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
