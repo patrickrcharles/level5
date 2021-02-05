@@ -18,28 +18,43 @@ public class APIConnector : MonoBehaviour
 
     bool apiLocked;
 
-    const string testScoreid = "7085C280BE161220213de8e03a50404e1b686d125c8919b9a3c47b7d9e3";
+    //const string testScoreid = "7085C280BE161220213de8e03a50404e1b686d125c8919b9a3c47b7d9e3";
+
     // Start is called before the first frame update
     void Start()
     {
+        //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(104);
 
-        //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(5);
-        //StartCoroutine(PostHighscore(dbs));        
-        if (APIHelper.ScoreIdExists(testScoreid))
-        {
-            List<DBHighScoreModel> dBHighScoreModel = APIHelper.GetHighscoreByScoreid(testScoreid);
-            Debug.Log("response[0] : " + dBHighScoreModel[0].Character);
-            Debug.Log("response[0] : " + dBHighScoreModel[0].Level);
-            Debug.Log("response[0] : " + dBHighScoreModel[0].Ipaddress);
-        }
+        ////Debug.Log("dbs : " + dbs.Scoreid);
+        ////Debug.Log("dbs : " + dbs.Character);
+        ////Debug.Log("dbs : " + dbs.Level);
+        ////Debug.Log("dbs : " + dbs.Version);
+        //if (!APIHelper.ScoreIdExists(dbs.Scoreid))
+        //{
+        //    StartCoroutine(APIHelper.PostHighscore(dbs));
+        //}
+        //else
+        //{
+        //    Debug.Log(" scoreid already exists : " + dbs.Scoreid);
+        //}
+
+
+        //if (!APIHelper.ScoreIdExists(dbs.Scoreid))
+        //{
+        //    StartCoroutine(APIHelper.PutHighscore(dbs));
+        //}
+        //else
+        //{
+        //    Debug.Log(" scoreid already exists : " + dbs.Scoreid);
+        //}
+
+        //if (APIHelper.ScoreIdExists(testScoreid))
+        //{
+        //    List<DBHighScoreModel> dBHighScoreModel = APIHelper.GetHighscoreByScoreid(testScoreid);
+        //    Debug.Log("response[0] : " + dBHighScoreModel[0].Character);
+        //    Debug.Log("response[0] : " + dBHighScoreModel[0].Level);
+        //    Debug.Log("response[0] : " + dBHighScoreModel[0].Ipaddress);
+        //}
     }
-
-    //public IEnumerator WaitForDatabase(int i)
-    //{
-    //    yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-    //    DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(i);
-    //    StartCoroutine(PostHighscore(dbs));
-    //}
-
 }
 
