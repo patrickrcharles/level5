@@ -73,7 +73,7 @@ public class CharacterProfile : MonoBehaviour
     {
         //Debug.Log("initializeStats()");
 
-        CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.playerId);
+        CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
         playerObjectName = temp.playerObjectName;
         playerDisplayName = temp.playerDisplayName;

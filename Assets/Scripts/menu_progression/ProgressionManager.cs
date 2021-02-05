@@ -746,7 +746,7 @@ public class ProgressionManager : MonoBehaviour
                 + nextlvl.ToString("F0") + "\n";
             playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
             // not sure what this is for but im not gonna touch it yet
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
         catch (Exception e)
         {

@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
     {
         instance = this;
         // this should be loaded from saved data
-        playerId = GameOptions.playerId;
+        playerId = GameOptions.characterId;
     }
 
 

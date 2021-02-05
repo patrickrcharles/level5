@@ -28,7 +28,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"traffic", GameOptions.trafficEnabled },
                 {"deviceType", SystemInfo.deviceType },
@@ -46,7 +46,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"traffic", GameOptions.trafficEnabled },
                 {"deviceType", SystemInfo.deviceType },
@@ -63,7 +63,7 @@ public static class AnaylticsManager
             Analytics.CustomEvent(eventName,
             new Dictionary<string, object>
             {
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"slider value", sliderValue }
             }
             );
@@ -83,7 +83,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"points", basketBallStats.TotalPoints },
                 {"accuracy", accuracy.ToString("##.####") },
@@ -101,7 +101,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"points", basketBallStats.TotalPoints },
                 {"accuracy", (basketBallStats.ShotMade / basketBallStats.ShotAttempt).ToString("##.####") },

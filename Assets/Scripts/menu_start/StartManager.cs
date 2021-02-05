@@ -511,7 +511,7 @@ public class StartManager : MonoBehaviour
 
     private void setInitialGameOptions()
     {
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
@@ -719,7 +719,7 @@ public class StartManager : MonoBehaviour
             }
 
             //Debug.Log("***************************************** 8");
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         }
         catch (Exception e)
@@ -784,17 +784,17 @@ public class StartManager : MonoBehaviour
     {
         //Debug.Log("setGameOptions()");
 
-        GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
-        GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        GameOptions.characterId = playerSelectedData[playerSelectedIndex].PlayerId;
+        GameOptions.characterDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
 
         // if Wizard of Boat selected, randomly choose which one to spawn
         if (playerSelectedData[playerSelectedIndex].PlayerDisplayName.ToLower().Contains("boat"))
         {
-            GameOptions.playerObjectName = getRandomWizardOfBoat();
+            GameOptions.characterObjectName = getRandomWizardOfBoat();
         }
         else
         {
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
 
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
@@ -884,7 +884,7 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             playerSelectedIndex--;
         }
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerObjectName);
     }
     public void changeSelectedPlayerDown()
@@ -899,7 +899,7 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             playerSelectedIndex++;
         }
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
 
     public void changeSelectedCheerleaderUp()

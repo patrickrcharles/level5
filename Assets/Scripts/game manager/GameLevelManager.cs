@@ -173,7 +173,7 @@ public class GameLevelManager : MonoBehaviour
             {
                 //Debug.Log("veh  : " + veh.name);
                 //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
-                if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
+                if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && veh.name.Contains(GameOptions.characterObjectName))
                 {
                     //Debug.Log("disable veh  : " + veh.name);
                     veh.SetActive(false);
@@ -184,7 +184,7 @@ public class GameLevelManager : MonoBehaviour
         _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
         foreach (var npc in _npcObjects)
         {
-            if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
+            if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && npc.name.Contains(GameOptions.characterObjectName))
             {
                 //Debug.Log("disable npc  : " + npc.name);
                 npc.SetActive(false);
@@ -219,9 +219,9 @@ public class GameLevelManager : MonoBehaviour
     private void checkPlayerPrefabExists()
     {
         // if player selected is not null / player not selected
-        if (!string.IsNullOrEmpty(GameOptions.playerObjectName))
+        if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
         {
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
             //Debug.Log("load prefab");y analyticsvalidotr not working
 

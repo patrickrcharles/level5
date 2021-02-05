@@ -52,8 +52,8 @@ public class BasketBallStats : MonoBehaviour
     {
         // for saving character specific info
         // id and name use to construct key that will be stored
-        PlayerId = GameOptions.playerId;
-        PlayerName = GameOptions.playerObjectName;
+        PlayerId = GameOptions.characterId;
+        PlayerName = GameOptions.characterObjectName;
     }
 
     public int getExperienceGainedFromSession()

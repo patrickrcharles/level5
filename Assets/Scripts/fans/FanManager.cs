@@ -27,8 +27,8 @@ public class FanManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject fan = transform.GetChild(i).gameObject;
-            if( !string.IsNullOrEmpty(GameOptions.playerObjectName) 
-                && fan.name.Contains(GameOptions.playerObjectName))
+            if( !string.IsNullOrEmpty(GameOptions.characterObjectName) 
+                && fan.name.Contains(GameOptions.characterObjectName))
             {
                 fan.SetActive(false);
             }
