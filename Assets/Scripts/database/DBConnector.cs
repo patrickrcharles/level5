@@ -22,7 +22,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private const int currentDatabaseAppVersion = 2;
+    private const int currentDatabaseAppVersion = 3;
 
     Text messageText;
 
@@ -89,7 +89,7 @@ public class DBConnector : MonoBehaviour
         }
         if (getDatabaseVersion() != currentDatabaseAppVersion)
         {
-            StartCoroutine(dbHelper.UpgradeDatabaseToVersion2());
+            StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
             StartCoroutine(setDatabaseVersion());
         }
     }
@@ -221,7 +221,6 @@ public class DBConnector : MonoBehaviour
     // create tables if not created
     void createDatabase()
     {
-        //Debug.Log("createDatabase()");
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -309,14 +308,18 @@ public class DBConnector : MonoBehaviour
                 "unlockText   TEXT NOT NULL," +
                 "islocked  INTEGER DEFAULT 0);" +
 
+                "DROP TABLE if exists User; " +
+
                 "CREATE TABLE if not exists User( " +
-                "userid INTEGER PRIMARY KEY," +
-                "userName  INTEGER, " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "userid INTEGER UNIQUE," +
+                "userName  TEXT UNIQUE, " +
                 "firstName TEXT, " +
-                "middleName    INTEGER, " +
                 "lastName  INTEGER, " +
                 "email TEXT, " +
-                "password  TEXT);");
+                "ipaddress TEXT, " +
+                "signupdate TEXT, " +
+                "lastlogin TEXT);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -335,6 +338,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
+            Debug.Log("ERROR : " + e);
             dbHelper.DatabaseLocked = false;
             return;
         }
