@@ -14,14 +14,25 @@ public class LoginManager : MonoBehaviour
     Button checkEmailButton;
     [SerializeField]
     Button checkUserNameButton;
+
     [SerializeField]
     string emailInput;
     [SerializeField]
     string userNameInput;
     [SerializeField]
+    string firstNameInput;
+    [SerializeField]
+    string lastNameInput;
+
+    [SerializeField]
     InputField emailInputField;
     [SerializeField]
     InputField usernameInputField;
+    [SerializeField]
+    InputField firstNameInputField;
+    [SerializeField]
+    InputField lastNameInputField;
+
     [SerializeField]
     Text messageDisplay;
 
@@ -31,6 +42,10 @@ public class LoginManager : MonoBehaviour
     {
         emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
         usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
+        firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
+        lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
+
+
         messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
 
 
@@ -110,5 +125,16 @@ public class LoginManager : MonoBehaviour
     {
         userNameInput = usernameInputField.text;
         Debug.Log(userNameInput);
+    }
+
+    public void readFirstNameInput(string s)
+    {
+        firstNameInput = firstNameInputField.text;
+        Debug.Log(firstNameInput);
+    }
+    public void readLastNameInput(string s)
+    {
+        lastNameInput = lastNameInputField.text;
+        Debug.Log(lastNameInput);
     }
 }
