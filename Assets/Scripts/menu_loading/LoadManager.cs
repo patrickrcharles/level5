@@ -103,7 +103,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            DBConnector.instance.dropDatabaseTable("CharacterProfile");
+            StartCoroutine( DBConnector.instance.dropDatabaseTable("CharacterProfile"));
             //create table
             DBConnector.instance.createTableCharacterProfile();
             CharacterProfileTableCreated = true;
@@ -123,7 +123,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            DBConnector.instance.dropDatabaseTable("CheerleaderProfile");
+            StartCoroutine( DBConnector.instance.dropDatabaseTable("CheerleaderProfile"));
             //create table
             DBConnector.instance.createTableCheerleaderProfile();
             CheerleaderProfileTableCreated = true;
