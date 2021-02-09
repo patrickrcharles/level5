@@ -175,14 +175,14 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(true);
+            StatsManager.instance.changeHighScoreDataDisplay(false);
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(false);
+            StatsManager.instance.changeHighScoreDataDisplay(true);
             buttonPressed = true;
         }
         buttonPressed = false;
