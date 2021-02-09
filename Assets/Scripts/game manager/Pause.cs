@@ -275,9 +275,10 @@ public class Pause : MonoBehaviour
         // save free play stats
         // convert basketball stats to high score model
         DBHighScoreModel dBHighScoreModel = new DBHighScoreModel();
-        dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.BasketBallStats);
+        DBHighScoreModel dBHighScoreModelTemp = new DBHighScoreModel();
+        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.BasketBallStats);
 
-        DBConnector.instance.savePlayerGameStats(dBHighScoreModel);
+        DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
         // update all time stats
         DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
         DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
