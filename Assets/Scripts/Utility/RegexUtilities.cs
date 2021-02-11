@@ -52,6 +52,16 @@ namespace Assets.Scripts.Utility
                 return false;
             }
         }
+
+        public static string RemoveWhitespace(string str)
+        {
+            return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        public static bool ContainsWhiteSpace(String s)
+        {
+            return s.Contains(" ");
+        }
     }
 }
 
