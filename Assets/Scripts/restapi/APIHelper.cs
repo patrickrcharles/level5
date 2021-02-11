@@ -1,5 +1,6 @@
 ﻿
 using Assets.Scripts.database;
+using Assets.Scripts.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -21,10 +22,9 @@ namespace Assets.Scripts.restapi
         const string publicApiHighScores = "http://13.58.224.237/api/highscores/";
         const string publicApiHighScoresByScoreid = "http://13.58.224.237/api/highscores/scoreid/";
         const string publicApiHighScoresByModeid = "http://13.58.224.237/api/highscores/modeid/";
+        const string publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
 
         static bool apiLocked;
-
-
         // -------------------------------------- HTTTP POST Highscore -------------------------------------------
 
         // POST highscore by scoreid by hitting api at
@@ -40,6 +40,7 @@ namespace Assets.Scripts.restapi
 
             // wait for database operations
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            //DBHelper.instance.DatabaseLocked = true;
 
             // wait for api operations
             yield return new WaitUntil(() => !apiLocked);
@@ -82,28 +83,31 @@ namespace Assets.Scripts.restapi
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
-
                 statusCode = httpResponse.StatusCode;
 
                 // if successful
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
-                    Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    DBHelper.instance.setGameScoreSubmitted(dbHighScoreModel.Scoreid, true);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
                 // failed
                 else
                 {
-                    Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                    //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
                     //unlock api + database
+                    DBHelper.instance.setGameScoreSubmitted(dbHighScoreModel.Scoreid, false);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
             }
             else
             {
-                Debug.Log(" scoreid already exists : " + dbHighScoreModel.Scoreid);
+                //Debug.Log(" scoreid already exists : " + dbHighScoreModel.Scoreid);
+                apiLocked = false;
+                DBHelper.instance.DatabaseLocked = false;
             }
         }
 
@@ -229,7 +233,7 @@ namespace Assets.Scripts.restapi
         }
 
 
-        // -------------------------------------- HTTTP POST Highscore -------------------------------------------
+        // -------------------------------------- HTTTP POST User -------------------------------------------
 
         // POST highscore by scoreid by hitting api at
         // http://13.58.224.237/api/users/{username}
@@ -249,6 +253,8 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !apiLocked);
             apiLocked = true;
 
+            Debug.Log(dBUserModel.SignUpDate);
+            Debug.Log(dBUserModel.LastLogin);
             // verify unique scoreid does NOT exist in database already
             if (!APIHelper.UserNameExists(dBUserModel.UserName))
             {
@@ -311,6 +317,55 @@ namespace Assets.Scripts.restapi
             }
         }
 
+        // -------------------------------------- HTTTP GET User -------------------------------------------
+        // GET highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/scoreid/{scoreid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static bool UserExists(string username)
+        {
+
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+            //List<DBHighScoreModel> dBHighScoreModels = new List<DBHighScoreModel>();
+
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByUserName + username)) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "GET";
+
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                //dBHighScoreModels = new List<DBHighScoreModel>();
+                //dBHighScoreModels = convertHttpWebResponseToDBHighscoreModelList(httpResponse);
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                Debug.Log("----------------- GetHighscoreByScoreid() successful : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+                return true;
+            }
+            // failed
+            else
+            {
+                Debug.Log("----------------- GetHighscoreByScoreid() : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+                return false;
+            }
+        }
+
         // --------------------------------------Utility functions -------------------------------------------
 
         // send HttpWebResponse to function to be serialized into List of DBHighScore objects
@@ -352,7 +407,7 @@ namespace Assets.Scripts.restapi
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
-            Debug.Log("scoredidexists uri :" + (publicApiHighScoresByScoreid + scoreid));
+            //Debug.Log("scoredidexists uri :" + (publicApiHighScoresByScoreid + scoreid));
 
             try
             {
