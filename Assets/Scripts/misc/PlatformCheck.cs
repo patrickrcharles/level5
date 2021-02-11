@@ -43,6 +43,10 @@ public class PlatformCheck : MonoBehaviour
         standaloneInputModule.enabled = false;
         inputSystemUIInputModule.enabled = true;
         //inputSystemUIInputModule.ActivateModule();
+        //Debug.Log("standalone");
 #endif
+
+        //Debug.Log("QualitySettings.vSyncCount : " + QualitySettings.vSyncCount);
+        //Debug.Log("Application.targetFrameRate : " + Application.targetFrameRate);
     }
 }
