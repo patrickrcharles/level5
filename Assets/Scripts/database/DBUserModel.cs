@@ -20,8 +20,8 @@ namespace Assets.Scripts.database
         public string Email;
         public string Password;
         public string IpAddress;
-        public DateTime SignUpDate;
-        public DateTime LastLogin;
+        public string SignUpDate;
+        public string LastLogin;
 
         //public DBHighScoreModel convertBasketBallStatsToModel(BasketBallStats stats)
         //{

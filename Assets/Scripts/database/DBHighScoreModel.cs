@@ -44,6 +44,9 @@ namespace Assets.Scripts.database
         public int FourAtt ;
         public int SevenMade ;
         public int SevenAtt ;
+        public int BonusPoints;
+        public int MoneyBallMade;
+        public int MoneyBallAtt;
 
         public DBHighScoreModel convertBasketBallStatsToModel(BasketBallStats stats)
         {
@@ -90,9 +93,9 @@ namespace Assets.Scripts.database
             model.FourAtt = stats.FourPointerAttempts;
             model.SevenMade = stats.SevenPointerMade;
             model.SevenAtt = stats.SevenPointerAttempts;
-
-            Debug.Log("model.Scoreid : " + model.Scoreid);
-            Debug.Log(" model.Character : " + model.Character);
+            model.BonusPoints = stats.BonusPoints;
+            model.MoneyBallMade = stats.MoneyBallMade;
+            model.MoneyBallAtt = stats.MoneyBallAttempts;
 
             return model;
         }
@@ -116,7 +119,7 @@ namespace Assets.Scripts.database
                 + DateTime.Now.Year.ToString()
                 + DateTime.Now.Second.ToString()
                 + DateTime.Now.Millisecond.ToString();
-            Debug.Log("----- uniqueModeDateIdentifier : " + uniqueModeDateIdentifier);
+            //Debug.Log("----- uniqueModeDateIdentifier : " + uniqueModeDateIdentifier);
             //uniqueModeDateIdentifier
             //    = RemoveWhitespace(date)
             //    + RemoveWhitespace(localZone.StandardName)

@@ -22,7 +22,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private const int currentDatabaseAppVersion = 3;
+    //private const int currentDatabaseAppVersion = 3;
 
     Text messageText;
 
@@ -87,11 +87,12 @@ public class DBConnector : MonoBehaviour
                 return;
             }
         }
-        if (getDatabaseVersion() != currentDatabaseAppVersion)
+        if (getDatabaseVersion() != dbHelper.CurrentDatabaseAppVersion)
         {
             StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
-            StartCoroutine(setDatabaseVersion());
+            //StartCoroutine(setDatabaseVersion());
         }
+        //StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
     }
 
     private void VerifyDatabase()
@@ -171,33 +172,33 @@ public class DBConnector : MonoBehaviour
         return value;
     }
 
-    public IEnumerator setDatabaseVersion()
-    {
-        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
-        try
-        {
-            dbHelper.DatabaseLocked = true;
-            dbconn = new SqliteConnection(connection);
-            dbconn.Open();
-            dbcmd = dbconn.CreateCommand();
+    //public IEnumerator setDatabaseVersion()
+    //{
+    //    yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+    //    try
+    //    {
+    //        dbHelper.DatabaseLocked = true;
+    //        dbconn = new SqliteConnection(connection);
+    //        dbconn.Open();
+    //        dbcmd = dbconn.CreateCommand();
 
-            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
+    //        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
 
-            dbcmd.CommandText = sqlQuery;
-            dbcmd.ExecuteScalar();
+    //        dbcmd.CommandText = sqlQuery;
+    //        dbcmd.ExecuteScalar();
 
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
+    //        dbcmd.Dispose();
+    //        dbcmd = null;
+    //        dbconn.Close();
+    //        dbconn = null;
 
-            dbHelper.DatabaseLocked = false;
-        }
-        catch (Exception e)
-        {
-            dbHelper.DatabaseLocked = false;
-        }
-    }
+    //        dbHelper.DatabaseLocked = false;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        dbHelper.DatabaseLocked = false;
+    //    }
+    //}
 
 
     // ============================ Save stats ===============================
@@ -228,6 +229,7 @@ public class DBConnector : MonoBehaviour
             dbcmd = dbconn.CreateCommand();
 
             string sqlQuery = String.Format(
+
                 "CREATE TABLE if not exists HighScores(" +
                 "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "scoreidUnique   TEXT," +
@@ -259,7 +261,11 @@ public class DBConnector : MonoBehaviour
                 "fourMade  INTEGER, " +
                 "fourAtt   INTEGER, " +
                 "sevenMade INTEGER, " +
-                "sevenAtt  INTEGER); " +
+                "sevenAtt  INTEGER, " +
+                "bonusPoints  INTEGER, " +
+                "moneyBallMade  INTEGER, " +
+                "moneyBallAtt  INTEGER, " +
+                "submittedToApi  INTEGER); " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
                 "twoMade   INTEGER, " +
@@ -308,14 +314,14 @@ public class DBConnector : MonoBehaviour
                 "unlockText   TEXT NOT NULL," +
                 "islocked  INTEGER DEFAULT 0);" +
 
-                "DROP TABLE if exists User; " +
+                "DROP TABLE if exists Users; " +
 
                 "CREATE TABLE if not exists User( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "userid INTEGER UNIQUE," +
-                "userName  TEXT UNIQUE, " +
-                "firstName TEXT, " +
-                "lastName  INTEGER, " +
+                "username  TEXT UNIQUE, " +
+                "firstname TEXT, " +
+                "lastname  INTEGER, " +
                 "email TEXT, " +
                 "ipaddress TEXT, " +
                 "signupdate TEXT, " +
@@ -378,8 +384,11 @@ public class DBConnector : MonoBehaviour
         }
     }
 
-    public void dropDatabaseTable(string tableName)
+    public IEnumerator dropDatabaseTable(string tableName)
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -397,11 +406,11 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
-            return;
         }
     }
 
@@ -541,6 +550,52 @@ public class DBConnector : MonoBehaviour
         {
             dbHelper.DatabaseLocked = false;
             return;
+        }
+    }
+
+    public IEnumerator createTableUser()
+    {
+        //Debug.Log("createDatabase()");
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+
+        dbHelper.DatabaseLocked = true;
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists User( " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "userid INTEGER UNIQUE," +
+                "username  TEXT UNIQUE, " +
+                "firstname TEXT, " +
+                "lastname  INTEGER, " +
+                "email TEXT, " +
+                "ipaddress TEXT, " +
+                "signupdate TEXT, " +
+                "lastlogin TEXT);");
+
+            //"isLocked   INTEGER DEFAULT 1);");
+
+            //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbconn.Close();
+            dbconn = null;
+
+            dbcmd.Dispose();
+            dbcmd = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
         }
     }
 }

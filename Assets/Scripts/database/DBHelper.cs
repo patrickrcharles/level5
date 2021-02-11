@@ -18,6 +18,10 @@ public class DBHelper : MonoBehaviour
     private const String characterProfileTableName = "CharacterProfile";
     private const String cheerleaderProfileTableName = "CheerleaderProfile";
     private const String highScoresTableName = "HighScores";
+    private const String userTableName = "User";
+
+    private int currentDatabaseAppVersion = 4;
+    bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -29,6 +33,8 @@ public class DBHelper : MonoBehaviour
 
     public IDbConnection Dbconn { get => dbconn; set => dbconn = value; }
     public bool DatabaseLocked { get => databaseLocked; set => databaseLocked = value; }
+
+    public int CurrentDatabaseAppVersion => currentDatabaseAppVersion;
 
     void Awake()
     {
@@ -150,7 +156,7 @@ public class DBHelper : MonoBehaviour
         //TimeZone localZone = TimeZone.CurrentTimeZone;
 
         uniqueModeDateIdentifier = DateTime.Now.Day.ToString()
-            + DateTime.Now.Month.ToString() 
+            + DateTime.Now.Month.ToString()
             + DateTime.Now.Year.ToString()
             + DateTime.Now.Second;
         Debug.Log("----- uniqueScoreId : " + uniqueScoreId);
@@ -176,8 +182,9 @@ public class DBHelper : MonoBehaviour
     }
 
     // insert current game's stats and score
-    internal void InsertGameScore(DBHighScoreModel stats)
+    public void InsertGameScore(DBHighScoreModel stats)
     {
+        databaseLocked = true;
         try
         {
             IDbConnection dbconn;
@@ -185,24 +192,13 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            //int trafficEnabled = 0;
-            //if (GameOptions.trafficEnabled)
-            //{
-            //    trafficEnabled = 1;
-            //}
-            //int hardcoreEnabled = 0;
-            //if (GameOptions.hardcoreModeEnabled)
-            //{
-            //    hardcoreEnabled = 1;
-            //}
-
             string sqlQuery1 =
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
-               "fourMade, fourAtt, sevenMade, sevenAtt )  " +
+               "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt)  " +
                "Values( '" + stats.Scoreid
-               + "', '"  +stats.Modeid
+               + "', '" + stats.Modeid
                + "', '" + stats.Characterid
                + "', '" + stats.Character
                + "','" + stats.Levelid
@@ -230,7 +226,10 @@ public class DBHelper : MonoBehaviour
                + stats.FourMade + "','"
                + stats.FourAtt + "','"
                + stats.SevenMade + "','"
-               + stats.SevenAtt + "')";
+               + stats.SevenAtt + "','"
+               + stats.BonusPoints + "','"
+               + stats.MoneyBallMade + "','"
+               + stats.MoneyBallAtt + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -242,7 +241,7 @@ public class DBHelper : MonoBehaviour
             dbconn.Close();
             dbconn = null;
 
-            //* try to post to api here
+            databaseLocked = false;
         }
         catch (Exception e)
         {
@@ -403,7 +402,7 @@ public class DBHelper : MonoBehaviour
             }
             databaseLocked = false;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             DatabaseLocked = false;
             return;
@@ -463,7 +462,7 @@ public class DBHelper : MonoBehaviour
             }
             databaseLocked = false;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             DatabaseLocked = false;
             return;
@@ -1044,7 +1043,7 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
             return listOfValues;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             databaseLocked = false;
             return listOfValues;
@@ -1423,10 +1422,13 @@ public class DBHelper : MonoBehaviour
                 dbconn.Close();
                 dbconn = null;
             }
-            databaseLocked = false;
+            //databaseLocked = false;
         }
-        catch
+        catch (Exception e)
         {
+            Debug.Log("ERROR : " + e);
+            databaseSuccessfullyUpgraded = false;
+            Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
             databaseLocked = false;
             return;
         }
@@ -1435,8 +1437,9 @@ public class DBHelper : MonoBehaviour
     public IEnumerator UpgradeDatabaseToVersion3()
     {
         Debug.Log("UpgradeDatabaseToVersion3()");
+
         string table1 = "HighScores";
-        string table2 = "Users";
+        string table2 = "User";
 
         string col1 = "scoreidUnique";
         string col2 = "platform";
@@ -1450,6 +1453,10 @@ public class DBHelper : MonoBehaviour
         string col10 = "fourAtt";
         string col11 = "sevenMade";
         string col12 = "sevenAtt";
+        string col13 = "submittedToApi";
+        string col14 = "bonusPoints";
+        string col15 = "moneyBallMade";
+        string col16 = "moneyBallAtt";
 
         string col1a = "userid";
         string col2a = "username";
@@ -1505,7 +1512,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col5, typeText);
+            alterTableAddColumn(table1, col5, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col5));
             databaseLocked = false;
         }
@@ -1513,7 +1520,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col6, typeText);
+            alterTableAddColumn(table1, col6, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col6));
             databaseLocked = false;
         }
@@ -1521,7 +1528,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col7, typeText);
+            alterTableAddColumn(table1, col7, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col7));
             databaseLocked = false;
         }
@@ -1529,7 +1536,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col8, typeText);
+            alterTableAddColumn(table1, col8, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col8));
             databaseLocked = false;
         }
@@ -1537,7 +1544,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col9, typeText);
+            alterTableAddColumn(table1, col9, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col9));
             databaseLocked = false;
         }
@@ -1545,7 +1552,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col10, typeText);
+            alterTableAddColumn(table1, col10, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col10));
             databaseLocked = false;
         }
@@ -1553,7 +1560,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col11, typeText);
+            alterTableAddColumn(table1, col11, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col11));
             databaseLocked = false;
         }
@@ -1561,12 +1568,55 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col12, typeText);
+            alterTableAddColumn(table1, col12, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col12));
             databaseLocked = false;
         }
 
+        if (!doesColumnExist(table1, col13))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col13, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col13));
+            databaseLocked = false;
+        }
+
+        if (!doesColumnExist(table1, col14))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col14, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col14));
+            databaseLocked = false;
+        }
+
+        if (!doesColumnExist(table1, col15))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col15, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col15));
+            databaseLocked = false;
+        }
+
+        if (!doesColumnExist(table1, col16))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col16, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col16));
+            databaseLocked = false;
+        }
+
         // ------------------------- Upgrade Users table
+
+        // drop user table
+        StartCoroutine( DBConnector.instance.dropDatabaseTable("User"));
+        StartCoroutine( DBConnector.instance.createTableUser() );
+
+        yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
+
         // add scoreidunique column
         if (!doesColumnExist(table2, col1a))
         {
@@ -1576,6 +1626,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col1a));
             databaseLocked = false;
         }
+
         // add platform column
         if (!doesColumnExist(table2, col2a))
         {
@@ -1585,6 +1636,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col2a));
             databaseLocked = false;
         }
+
         // add device column
         if (!doesColumnExist(table2, col3a))
         {
@@ -1594,6 +1646,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col3));
             databaseLocked = false;
         }
+
         // add ipaddress column
         if (!doesColumnExist(table2, col4a))
         {
@@ -1603,6 +1656,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col4a));
             databaseLocked = false;
         }
+
         if (!doesColumnExist(table2, col5a))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -1611,6 +1665,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col5a));
             databaseLocked = false;
         }
+
         if (!doesColumnExist(table2, col6a))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -1619,6 +1674,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col6a));
             databaseLocked = false;
         }
+
         if (!doesColumnExist(table2, col7a))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -1627,6 +1683,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col7a));
             databaseLocked = false;
         }
+
         if (!doesColumnExist(table2, col8a))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -1635,6 +1692,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col8a));
             databaseLocked = false;
         }
+
         if (!doesColumnExist(table2, col9a))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -1642,6 +1700,48 @@ public class DBHelper : MonoBehaviour
             alterTableAddColumn(table2, col9a, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table2, col9a));
             databaseLocked = false;
+        }
+
+        Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
+        if (databaseSuccessfullyUpgraded)
+        {
+            StartCoroutine(setDatabaseVersion());
+        }
+        else
+        {
+            Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
+        }
+    }
+
+
+
+    public IEnumerator setDatabaseVersion()
+    {
+        Debug.Log("setDatabaseVersion");
+        yield return new WaitUntil(() => !DatabaseLocked);
+        try
+        {
+            Debug.Log("try...");
+            DatabaseLocked = true;
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            DatabaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
         }
     }
 
@@ -1662,7 +1762,7 @@ public class DBHelper : MonoBehaviour
             if (!isTableEmpty(highScoresTableName))
             {
                 //Debug.Log(" table is not empty");
-                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid ="+ scoreid;
+                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid =" + scoreid;
                 Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -1704,6 +1804,10 @@ public class DBHelper : MonoBehaviour
                     highscore.FourAtt = reader.GetInt32(29);
                     highscore.SevenMade = reader.GetInt32(30);
                     highscore.SevenAtt = reader.GetInt32(31);
+                    highscore.BonusPoints = reader.GetInt32(31);
+                    //highscore.submittedToApi = reader.GetInt32(32);
+                    highscore.MoneyBallMade = reader.GetInt32(33);
+                    highscore.MoneyBallAtt = reader.GetInt32(34);
 
                     Debug.Log("------------------------------------------ db action finished");
                 }
@@ -1711,7 +1815,7 @@ public class DBHelper : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("EXCEPTION : "+ e);
+            Debug.Log("EXCEPTION : " + e);
             DatabaseLocked = false;
             return null;
         }
@@ -1742,18 +1846,18 @@ public class DBHelper : MonoBehaviour
             {
                 if (reader.GetString(nameIndex).Equals(columnName))
                 {
-                    //Debug.Log("column found");
+                    Debug.Log("column : " + columnName + " found");
                     return true;
                 }
             }
-
-            databaseLocked = false;
+            //databaseLocked = false;
         }
         catch
         {
             databaseLocked = false;
             return false;
         }
+        Debug.Log("---------- column : " + columnName + " return FALSE");
         return false;
     }
 
@@ -1761,6 +1865,48 @@ public class DBHelper : MonoBehaviour
     {
         string pubIp = new WebClient().DownloadString("https://api.ipify.org");
         return pubIp;
+    }
+
+    // insert current game's stats and score
+    public void setGameScoreSubmitted(string scoreid, bool value)
+    {
+        databaseLocked = true;
+        int submittedValue = 0;
+        if (value)
+        {
+            submittedValue = 1;
+        }
+        try
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            // if entry is NOT in list of stats
+            string sqlQuery = "UPDATE " + highScoresTableName + " SET submittedToApi" + " = " + submittedValue
+                + " WHERE scoreidUnique = " + "'" + scoreid + "'";
+
+            //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            //databaseLocked = false;
+            //Debug.Log("score submitted to api");
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
+        }
     }
 
     //public void alterTableRemoveColumn(string tableName, string columnName, string type)
