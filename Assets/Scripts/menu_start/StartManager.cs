@@ -75,6 +75,7 @@ public class StartManager : MonoBehaviour
     private const string statsMenuButtonName = "stats_menu";
     private const string quitButtonName = "quit_game";
     private const string optionsMenuButtonName = "options_menu";
+    private const string creditsMenuButtonName = "credits_meni";
     private const string updateMenuButtonName = "update_menu";
     private const string updatePointsAvailable = "update_points_available";
 
@@ -263,13 +264,13 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(progressionScreenSceneName);
         }
-        //// stats menu button | load stats menu
-        //if ((controls.UINavigation.Submit.triggered
-        //     || controls.Player.shoot.triggered)
-        //    && currentHighlightedButton.Equals(progressionScreenSceneName))
-        //{
-        //    loadMenu(progressionScreenSceneName);
-        //}
+        // crediys menu button | load stats menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(creditsMenuButtonName))
+        {
+            loadMenu(creditsMenuButtonName);
+        }
 
 
         // ================================== navigation =====================================================================
