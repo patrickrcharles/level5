@@ -267,7 +267,10 @@ public class DBConnector : MonoBehaviour
                 "moneyBallAtt  INTEGER, " +
                 "submittedToApi  INTEGER); " +
 
+                "DROP TABLE if exists Achievements; " +
+
                 "CREATE TABLE if not exists AllTimeStats(" +
+                "userid INTEGER UNIQUE," +
                 "twoMade   INTEGER, " +
                 "twoAtt    INTEGER, " +
                 "threeMade INTEGER, " +
