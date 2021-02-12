@@ -13,6 +13,9 @@ public class PlayerDunk : MonoBehaviour
     [SerializeField]
     private float jumpAngle;
 
+    [SerializeField]
+    private bool playerCanDunk;
+
     public static PlayerDunk instance;
 
     private void Awake()
@@ -128,4 +131,5 @@ public class PlayerDunk : MonoBehaviour
     }
 
     public float DunkRangeFeet { get => dunkRangeFeet; }
+    public bool PlayerCanDunk { get => playerCanDunk; }
 }

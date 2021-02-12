@@ -356,6 +356,7 @@ public class PlayerController : MonoBehaviour
             && !inAir)
         {
             if (PlayerDunk.instance != null
+                && PlayerDunk.instance.PlayerCanDunk
                 && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
             {
                 dunkTrigger = true;
@@ -454,6 +455,7 @@ public class PlayerController : MonoBehaviour
             jumpTrigger = true;
         }
         if (PlayerDunk.instance != null
+            && PlayerDunk.instance.PlayerCanDunk
             && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet
             && (currentState != inAirDunkState || currentState != inAirDunkState)
             && !inAir
