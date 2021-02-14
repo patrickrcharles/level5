@@ -75,14 +75,17 @@ public class StartManager : MonoBehaviour
     private const string statsMenuButtonName = "stats_menu";
     private const string quitButtonName = "quit_game";
     private const string optionsMenuButtonName = "options_menu";
-    private const string creditsMenuButtonName = "credits_meni";
+    private const string creditsMenuButtonName = "credits_menu";
     private const string updateMenuButtonName = "update_menu";
+    private const string accountMenuButtonName = "account_menu";
     private const string updatePointsAvailable = "update_points_available";
 
     // scene name
     private const string statsMenuSceneName = "level_00_stats";
     private const string loadScreenSceneName = "level_00_loading";
     private const string progressionScreenSceneName = "level_00_progression";
+    private const string creditsScreenSceneName = "level_00_credits";
+    private const string accountScreenSceneName = "level_00_account";
 
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -256,7 +259,7 @@ public class StartManager : MonoBehaviour
             loadMenu(statsMenuSceneName);
         }
 
-        // stats menu button | load stats menu
+        // update menu button | load update menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(updateMenuButtonName))
@@ -264,12 +267,20 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(progressionScreenSceneName);
         }
-        // crediys menu button | load stats menu
+        // credits menu button | load credits menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(creditsMenuButtonName))
         {
-            loadMenu(creditsMenuButtonName);
+            loadMenu(creditsScreenSceneName);
+        }
+
+        // account menu button | load account menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(accountMenuButtonName))
+        {
+            loadMenu(accountScreenSceneName);
         }
 
 
@@ -999,18 +1010,22 @@ public class StartManager : MonoBehaviour
 
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
+    // button names
     public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
     public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
     public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
     public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
+    public static string CreditsMenuButtonName => creditsMenuButtonName;
     public static string TrafficSelectOptionName => trafficSelectOptionName;
     public static string StartButtonName => startButtonName;
     public static string StatsMenuButtonName => statsMenuButtonName;
     public static string QuitButtonName => quitButtonName;
+    //scene names
     public static string StatsMenuSceneName => statsMenuSceneName;
     public static string ProgressionScreenSceneName => progressionScreenSceneName;
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
+    public static string CreditsScreenSceneName => creditsScreenSceneName;
     //public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
     //public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
     //public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
