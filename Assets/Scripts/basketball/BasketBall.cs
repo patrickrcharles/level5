@@ -757,6 +757,21 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    public float getAccuracy(int made, int attempt)
+    {
+        if (attempt > 0)
+        {
+            float accuracy = (float)made / attempt;
+            return (accuracy * 100);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+
     // ============================= getters/ setters ======================================
 
     public float LastShotDistance { get => lastShotDistance; set => lastShotDistance = value; }
