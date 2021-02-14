@@ -16,7 +16,7 @@ public class LoginManager : MonoBehaviour
     string errorMessageEmail = "";
     string errorMessageUserName = "";
 
-    DBUserModel testuser;
+    DBUserModel user;
     PlayerControls controls;
     APIConnector apiConnector;
 
@@ -90,34 +90,51 @@ public class LoginManager : MonoBehaviour
 
     private void Start()
     {
-
         emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
         usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
         passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
         firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
         lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
-
         messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageDisplay.text = "";
 
-        testuser = new DBUserModel();
-        testuser.UserName = "drblood";// + RandomString(8);
-        testuser.FirstName = "testUser";
-        testuser.LastName = "testUser";
-        testuser.Password = "testUser";
-        testuser.Email = "testUser@cxzxz.cnet";
-        testuser.IpAddress = "testUser";
-        testuser.SignUpDate = DateTime.Now.ToString();
-        testuser.LastLogin = DateTime.Now.ToString();
+        //user = new DBUserModel();
+        //user.UserName = "drblood";// + RandomString(8);
+        //user.FirstName = "testUser";
+        //user.LastName = "testUser";
+        //user.Password = "testUser";
+        //user.Email = "testUser@cxzxz.cnet";
+        //user.IpAddress = "testUser";
+        //user.SignUpDate = DateTime.Now.ToString();
+        //user.LastLogin = DateTime.Now.ToString();
         //Debug.Log("LoginManager Awake()");
         //Debug.Log("testUser.Email : " + testuser.Email);
         //Debug.Log("testUser.UserName : " + testuser.UserName);
 
         //currentSelectedObject = EventSystem.current.currentSelectedGameObject;
+
+        // check if user exists in database
+        // display users in database
+        // display users available
+        // load user from database
+        // insert user data into user model
+
+        // login / get token
+
+        // else
+        //create new user
+        
+
     }
 
     void Update()
     {
+        // test onscreen keyboard
+        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9) && !buttonPressed)
+        {
+            Debug.Log("test on screen keyboard");
+        }
+
         if (controls.Player.submit.triggered && !buttonPressed)
         {
             buttonPressed = true;
@@ -242,7 +259,7 @@ public class LoginManager : MonoBehaviour
         {
             errorMessageUserName += "\nusername already exists";
         }
-        else
+        if (!APIHelper.UserNameExists(userNameInput) && !string.IsNullOrWhiteSpace(userNameInput))
         {
             errorMessageUserName += "\nusername does not exist";
         }
