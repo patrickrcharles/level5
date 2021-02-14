@@ -606,6 +606,8 @@ public class GameRules : MonoBehaviour
                              + BasketBall.instance.getFourPointAccuracy().ToString("00.0") + "%\n"
                              + "7 pointers : " + basketBallStats.SevenPointerMade + " / " + basketBallStats.SevenPointerAttempts + "    "
                              + BasketBall.instance.getSevenPointAccuracy().ToString("00.0") + "%\n"
+                             + "money ball : " + basketBallStats.MoneyBallMade + " / " + basketBallStats.MoneyBallAttempts + "    "
+                             + BasketBall.instance.getAccuracy(basketBallStats.MoneyBallMade, basketBallStats.MoneyBallAttempts).ToString("00.0") + "%\n"
                              + "longest shot distance : " + (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
                              + "total shots made distance : " + (Math.Round(basketBallStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
                              + "most consecutive shots : " + basketBallStats.MostConsecutiveShots + "\n"
@@ -639,11 +641,14 @@ public class GameRules : MonoBehaviour
         {
             //set counter timer
             counterTime = Timer.instance.CurrentTime;
+            float bonusTime = Timer.instance.Seconds * 0.5f;
+            Debug.Log("bonusTime : " + bonusTime);
+            //Debug.Log("(int)(Mathf.Floor(bonusTime) : " + (int)(Mathf.Floor(bonusTime)));
 
             if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
             {
                 //// add remaining counter time FLOOR to total points  as bonus points
-                BasketBall.instance.BasketBallStats.BonusPoints += (int)(Mathf.Floor(Timer.instance.Seconds));
+                BasketBall.instance.BasketBallStats.BonusPoints = (int)(Mathf.Floor(bonusTime));
                 // add bonus points
                 BasketBall.instance.BasketBallStats.TotalPoints += BasketBall.instance.BasketBallStats.BonusPoints;
             }
