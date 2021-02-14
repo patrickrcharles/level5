@@ -103,7 +103,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            StartCoroutine( DBConnector.instance.dropDatabaseTable("CharacterProfile"));
+            StartCoroutine(DBConnector.instance.dropDatabaseTable("CharacterProfile"));
             //create table
             DBConnector.instance.createTableCharacterProfile();
             CharacterProfileTableCreated = true;
@@ -123,7 +123,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            StartCoroutine( DBConnector.instance.dropDatabaseTable("CheerleaderProfile"));
+            StartCoroutine(DBConnector.instance.dropDatabaseTable("CheerleaderProfile"));
             //create table
             DBConnector.instance.createTableCheerleaderProfile();
             CheerleaderProfileTableCreated = true;
@@ -169,7 +169,7 @@ public class LoadManager : MonoBehaviour
     }
 
     IEnumerator InsertNewCharacterToDB(CharacterProfile character)
-    {        
+    {
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
         DBHelper.instance.InsertCharacterProfile(character);
     }
@@ -178,7 +178,7 @@ public class LoadManager : MonoBehaviour
     {
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
         DBHelper.instance.InsertCheerleaderProfile(cheerleader);
-        
+
         Debug.Log("cheerleader record inserted");
     }
 
