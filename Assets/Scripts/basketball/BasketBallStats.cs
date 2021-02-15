@@ -76,11 +76,15 @@ public class BasketBallStats : MonoBehaviour
 
         experience += TotalPoints;
 
+        if (GameOptions.trafficEnabled)
+        {
+            experience *= (int)1.25f;
+        }
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             experience += (MinionsKilled * 50);
             experience += (BossKilled * 150);
-            experience *= 2;
+            experience *= (int)1.5f;
         }
         if (GameOptions.hardcoreModeEnabled)
         {
@@ -88,7 +92,6 @@ public class BasketBallStats : MonoBehaviour
         }
 
         ExperienceGained = experience;
-
         // if arcade mode, 0 out experience
         if (GameOptions.arcadeModeEnabled)
         {

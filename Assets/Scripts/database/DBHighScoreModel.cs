@@ -31,6 +31,7 @@ namespace Assets.Scripts.database
         public int ConsecutiveShots ;
         public int TrafficEnabled ;
         public int HardcoreEnabled ;
+        public int EnemiesEnabled ;
         public int EnemiesKilled ;
         public string Platform ;
         public string Device ;
@@ -59,6 +60,11 @@ namespace Assets.Scripts.database
             if (GameOptions.hardcoreModeEnabled)
             {
                 hardcoreEnabled = 1;
+            }
+            int enemiesEnabled = 0;
+            if (GameOptions.enemiesEnabled)
+            {
+                enemiesEnabled = 1;
             }
 
             DBHighScoreModel model = new DBHighScoreModel();
@@ -96,6 +102,7 @@ namespace Assets.Scripts.database
             model.BonusPoints = stats.BonusPoints;
             model.MoneyBallMade = stats.MoneyBallMade;
             model.MoneyBallAtt = stats.MoneyBallAttempts;
+            model.EnemiesEnabled = enemiesEnabled;
 
             return model;
         }

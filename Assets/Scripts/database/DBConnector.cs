@@ -250,6 +250,7 @@ public class DBConnector : MonoBehaviour
                 "consecutiveShots   INTEGER," +
                 "trafficEnabled	INTEGER DEFAULT 0," +
                 "hardcoreEnabled INTEGER DEFAULT 0, " +
+                "enemiesEnabled INTEGER DEFAULT 0, " +
                 "enemiesKilled INTEGER DEFAULT 0," +
                 "platform    TEXT," +
                 "device    TEXT," +

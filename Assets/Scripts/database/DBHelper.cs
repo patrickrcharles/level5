@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DBHelper : MonoBehaviour
 {
@@ -29,10 +30,11 @@ public class DBHelper : MonoBehaviour
 
     bool databaseLocked = false;
 
-    public static DBHelper instance;
+    Text message;
 
-    public IDbConnection Dbconn { get => dbconn; set => dbconn = value; }
+    public static DBHelper instance;
     public bool DatabaseLocked { get => databaseLocked; set => databaseLocked = value; }
+
 
     public int CurrentDatabaseAppVersion => currentDatabaseAppVersion;
 
@@ -46,8 +48,17 @@ public class DBHelper : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         filepath = Application.persistentDataPath + databaseNamePath;
         connection = "Data source=" + filepath; //Path to database
+    }
+
+    private void Start()
+    {
+        if (GameObject.Find("messageDisplay").GetComponent<Text>() != null)
+        {
+            message = GameObject.Find("messageDisplay").GetComponent<Text>();
+        }
     }
 
     // check if specified table is emoty
@@ -184,6 +195,7 @@ public class DBHelper : MonoBehaviour
     // insert current game's stats and score
     public void InsertGameScore(DBHighScoreModel stats)
     {
+
         databaseLocked = true;
         try
         {
@@ -195,7 +207,7 @@ public class DBHelper : MonoBehaviour
             string sqlQuery1 =
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
-               "hardcoreEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
+               "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
@@ -215,6 +227,7 @@ public class DBHelper : MonoBehaviour
                + stats.ConsecutiveShots + "','"
                + stats.TrafficEnabled + "','"
                + stats.HardcoreEnabled + "','"
+               + stats.EnemiesEnabled + "','"
                + stats.EnemiesKilled + "','"
                + stats.Platform + "','"
                + stats.Device + "','"
@@ -298,6 +311,8 @@ public class DBHelper : MonoBehaviour
     // add experience gained to database
     internal void UpdatePlayerProfileProgression(float expGained)
     {
+        //Debug.Log("UpdatePlayerProfileProgression()");
+        //Debug.Log("exp gained : " + expGained);
         try
         {
             int prevLevel = PlayerData.instance.CurrentExperience / 3000;
@@ -1436,7 +1451,11 @@ public class DBHelper : MonoBehaviour
 
     public IEnumerator UpgradeDatabaseToVersion3()
     {
-        Debug.Log("UpgradeDatabaseToVersion3()");
+        //Debug.Log("UpgradeDatabaseToVersion3()");
+        if (message != null)
+        {
+            message.text = "upgrading database...";
+        }
 
         string table1 = "HighScores";
         string table2 = "User";
@@ -1457,6 +1476,7 @@ public class DBHelper : MonoBehaviour
         string col14 = "bonusPoints";
         string col15 = "moneyBallMade";
         string col16 = "moneyBallAtt";
+        string col17 = "enemiesEnabled";
 
         string col1a = "userid";
         string col2a = "username";
@@ -1609,11 +1629,20 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
         }
 
+        if (!doesColumnExist(table1, col17))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col17, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col17));
+            databaseLocked = false;
+        }
+
         // ------------------------- Upgrade Users table
 
         // drop user table
-        StartCoroutine( DBConnector.instance.dropDatabaseTable("User"));
-        StartCoroutine( DBConnector.instance.createTableUser() );
+        StartCoroutine(DBConnector.instance.dropDatabaseTable("User"));
+        StartCoroutine(DBConnector.instance.createTableUser());
 
         yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
 
@@ -1711,17 +1740,21 @@ public class DBHelper : MonoBehaviour
         {
             Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
         }
+        if (message != null)
+        {
+            message.text = "";
+        }
     }
 
 
 
     public IEnumerator setDatabaseVersion()
     {
-        Debug.Log("setDatabaseVersion");
+        //Debug.Log("setDatabaseVersion");
         yield return new WaitUntil(() => !DatabaseLocked);
         try
         {
-            Debug.Log("try...");
+            //Debug.Log("try...");
             DatabaseLocked = true;
             dbconn = new SqliteConnection(connection);
             dbconn.Open();
@@ -1742,6 +1775,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
         }
     }
 
@@ -1808,6 +1842,7 @@ public class DBHelper : MonoBehaviour
                     //highscore.submittedToApi = reader.GetInt32(32);
                     highscore.MoneyBallMade = reader.GetInt32(33);
                     highscore.MoneyBallAtt = reader.GetInt32(34);
+                    highscore.EnemiesEnabled = reader.GetInt32(35);
 
                     Debug.Log("------------------------------------------ db action finished");
                 }
@@ -1846,7 +1881,7 @@ public class DBHelper : MonoBehaviour
             {
                 if (reader.GetString(nameIndex).Equals(columnName))
                 {
-                    Debug.Log("column : " + columnName + " found");
+                    //Debug.Log("column : " + columnName + " found");
                     return true;
                 }
             }
@@ -1857,7 +1892,7 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
             return false;
         }
-        Debug.Log("---------- column : " + columnName + " return FALSE");
+        //Debug.Log("---------- column : " + columnName + " return FALSE");
         return false;
     }
 
