@@ -640,10 +640,10 @@ public class GameRules : MonoBehaviour
         if (MarkersRemaining <= 0)
         {
             //set counter timer
-            counterTime = Timer.instance.CurrentTime;
             float bonusTime = Timer.instance.Seconds * 0.5f;
+
+            Debug.Log("Timer.instance.Seconds : " + Timer.instance.Seconds);
             Debug.Log("bonusTime : " + bonusTime);
-            //Debug.Log("(int)(Mathf.Floor(bonusTime) : " + (int)(Mathf.Floor(bonusTime)));
 
             if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
             {
