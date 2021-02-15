@@ -38,6 +38,7 @@ public class StartManager : MonoBehaviour
     Button levelSelectButton;
     Button trafficSelectButton;
     Button hardcoreSelectButton;
+    Button enemySelectButton;
     Button playerSelectButton;
     Button CheerleaderSelectButton;
     Button modeSelectButton;
@@ -66,6 +67,7 @@ public class StartManager : MonoBehaviour
     //traffic
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
+    private Text enemySelectOptionText;
 
     //version text
     private Text versionText;
@@ -123,10 +125,16 @@ public class StartManager : MonoBehaviour
     private const string hardcoreSelectButtonName = "hardcore_select";
     private const string hardcoreSelectOptionName = "hardcore_select_option";
 
+    //hardcore mode
+    private const string enemySelectButtonName = "enemy_select";
+    private const string enemySelectOptionName = "enemy_select_option";
+
     [SerializeField]
-    private bool trafficEnabled;    
+    private bool trafficEnabled;
     [SerializeField]
     private bool hardcoreEnabled;
+    [SerializeField]
+    private bool enemiesEnabled;
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -292,7 +300,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
+            && !currentHighlightedButton.Equals(enemySelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -307,7 +316,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
-            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
+            && !currentHighlightedButton.Equals(enemySelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -341,7 +351,7 @@ public class StartManager : MonoBehaviour
         {
             buttonPressed = true;
             try
-            {           
+            {
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -372,6 +382,11 @@ public class StartManager : MonoBehaviour
                 {
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                {
+                    changeSelectedEnemiesOption();
+                    initializeEnemyOptionDisplay();
                 }
             }
             catch
@@ -416,6 +431,11 @@ public class StartManager : MonoBehaviour
                 {
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                {
+                    changeSelectedEnemiesOption();
+                    initializeEnemyOptionDisplay();
                 }
             }
             catch
@@ -474,7 +494,7 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
-        versionText.text = "Level 5 v."+ Application.version;
+        versionText.text = "Level 5 v." + Application.version;
         // display default data
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
@@ -492,6 +512,7 @@ public class StartManager : MonoBehaviour
         levelSelectButton = GameObject.Find(levelSelectButtonName).GetComponent<Button>();
         trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
         hardcoreSelectButton = GameObject.Find(hardcoreSelectButtonName).GetComponent<Button>();
+        enemySelectButton = GameObject.Find(enemySelectButtonName).GetComponent<Button>();
         playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
         CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
@@ -516,6 +537,7 @@ public class StartManager : MonoBehaviour
         // traffic option selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
+        enemySelectOptionText = GameObject.Find(enemySelectOptionName).GetComponent<Text>();
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
@@ -579,6 +601,11 @@ public class StartManager : MonoBehaviour
         hardcoreEnabled = !hardcoreEnabled;
     }
 
+    public void changeSelectedEnemiesOption()
+    {
+        enemiesEnabled = !enemiesEnabled;
+    }
+
     // ============================  Initialize displays ==============================
     public void initializeTrafficOptionDisplay()
     {
@@ -601,6 +628,18 @@ public class StartManager : MonoBehaviour
         if (!hardcoreEnabled)
         {
             hardcoreSelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeEnemyOptionDisplay()
+    {
+        if (enemiesEnabled)
+        {
+            enemySelectOptionText.text = "ON";
+        }
+        if (!enemiesEnabled)
+        {
+            enemySelectOptionText.text = "OFF";
         }
     }
 
@@ -856,8 +895,8 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderSelectedIndex = cheerleaderSelectedIndex;
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
-        //GameOptions.trafficEnabled = trafficEnabled;
-        GameOptions.enemiesEnabled = trafficEnabled;
+        GameOptions.trafficEnabled = trafficEnabled;
+        GameOptions.enemiesEnabled = enemiesEnabled;
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
@@ -868,6 +907,12 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.enemiesEnabled = true;
         }
+
+        if (!levelSelectedData[levelSelectedIndex].LevelHasTraffic) 
+        {
+            GameOptions.trafficEnabled = false;
+        }
+            
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
         PlayerData.instance.loadStatsFromDatabase();
