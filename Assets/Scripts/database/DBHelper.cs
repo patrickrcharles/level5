@@ -21,7 +21,7 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 4;
+    private int currentDatabaseAppVersion = 3;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
@@ -55,7 +55,7 @@ public class DBHelper : MonoBehaviour
 
     private void Start()
     {
-        if (GameObject.Find("messageDisplay").GetComponent<Text>() != null)
+        if (GameObject.Find("messageDisplay") != null)
         {
             message = GameObject.Find("messageDisplay").GetComponent<Text>();
         }
@@ -261,6 +261,57 @@ public class DBHelper : MonoBehaviour
             DatabaseLocked = false;
             Debug.Log(e);
             return;
+        }
+    }
+
+
+    // insert current game's stats and score
+    public void InsertUser(DBUserModel user)
+    {
+        StartCoroutine(InsertUserCoroutine(user));
+    }
+
+    private IEnumerator InsertUserCoroutine(DBUserModel user)
+    {
+        yield return new WaitUntil(() => !databaseLocked);
+        databaseLocked = true;
+        try
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery1 =
+               "INSERT INTO User(userid, username,firstname, lastname, email, ipaddress, signupdate, lastlogin, password)  " +
+               "Values( '" + user.Userid
+               + "', '" + user.UserName
+               + "', '" + user.FirstName
+               + "', '" + user.LastName
+               + "','" + user.Email
+               + "','" + user.IpAddress
+               + "','" + user.SignUpDate
+               + "','" + user.LastLogin
+               + "','" + user.Password + "')";
+
+            Debug.Log(sqlQuery1);
+
+            dbcmd.CommandText = sqlQuery1;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            Debug.Log(e);
         }
     }
 
@@ -1487,6 +1538,7 @@ public class DBHelper : MonoBehaviour
         string col7a = "ipaddress";
         string col8a = "signupdate";
         string col9a = "lastlogin";
+        string col10a = "bearerToken";
 
         string typeText = "text";
         string typeInteger = "integer";
@@ -1731,6 +1783,15 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
         }
 
+        if (!doesColumnExist(table2, col10a))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table2, col10a, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table2, col10a));
+            databaseLocked = false;
+        }
+
         Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
         if (databaseSuccessfullyUpgraded)
         {
@@ -1745,8 +1806,6 @@ public class DBHelper : MonoBehaviour
             message.text = "";
         }
     }
-
-
 
     public IEnumerator setDatabaseVersion()
     {
@@ -1943,6 +2002,7 @@ public class DBHelper : MonoBehaviour
             Debug.Log("ERROR : " + e);
         }
     }
+
 
     //public void alterTableRemoveColumn(string tableName, string columnName, string type)
     //{

@@ -1,4 +1,6 @@
 ﻿
+using Assets.Scripts.database;
+using Assets.Scripts.restapi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ public class StatsManager : MonoBehaviour
     //const string highscoreSelectButtonName = "high_score_select";
     const string modeSelectButtonName = "mode_select_name";
     const string modeSelectButtonHardcoreName = "mode_select_name_hardcore";
+    const string modeSelectButtonOnlineName = "mode_select_name_online";
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
     // table names
@@ -56,6 +59,7 @@ public class StatsManager : MonoBehaviour
 
     bool regularLoaded;
     bool hardcoreLoaded;
+    bool onlineLoaded;
 
     public int numResults;
 
@@ -282,6 +286,53 @@ public class StatsManager : MonoBehaviour
         {
             hardcoreLoaded = false;
         }
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(modeSelectButtonOnlineName))
+        {
+            highScoreTableObject.SetActive(true);
+            allTimeTableObject.SetActive(false);
+            //regularLoaded = true;
+
+            if (controls.UINavigation.Left.triggered)
+            {
+                // change selected mode and display data based on mode selected
+                changeSelectedMode("left");
+                //changeHighScoreModeNameDisplay();
+                //changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplayOnline(false);
+            }
+
+            if (controls.UINavigation.Right.triggered)
+            {
+                // change selected mode and display data based on mode selected
+                changeSelectedMode("right");
+                //changeHighScoreModeNameDisplay();
+                changeHighScoreDataDisplayOnline(false);
+            }
+
+            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
+            {
+                navigateUp();
+                onlineLoaded = false;
+            }
+
+            // down arrow navigation
+            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
+            {
+                navigateDown();
+                onlineLoaded = false;
+            }
+            //changeHighScoreDataDisplay(false);
+            if (!onlineLoaded)
+            {
+                onlineLoaded = true;
+                changeHighScoreDataDisplayOnline(false);
+            }
+        }
+        else
+        {
+            regularLoaded = false;
+        }
 
         // all time stats table button selected
         if (currentHighlightedButton.Equals(alltimeSelectButtonName))
@@ -465,6 +516,61 @@ public class StatsManager : MonoBehaviour
                 }
                 // empty out rows if scores do not exist or there isnt at least 10
                 for (int i = index; i < highScoreRowsObjectsList.Count; i++)
+                {
+                    // set data for prefabs from list retrieved from database
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = "";
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                return;
+            }
+        }
+    }
+
+    public void changeHighScoreDataDisplayOnline(bool hardcoreValue)
+    {
+        if (GameObject.Find("restapi") != null)
+        {
+            try
+            {
+                // counts number entries returned.
+                int index = 0;
+                // get highscore field from mode prefab
+                string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
+                // get new list of scores based on currently selected game mode
+                //highScoreRowsDataList
+                //    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
+                //numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
+                //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
+
+                List<DBHighScoreModel> dBHighScoreModelList = new List<DBHighScoreModel>();
+                dBHighScoreModelList =  APIHelper.GetHighscoreByModeid(modesList[currentModeSelectedIndex].modeSelectedId, field );
+
+                Debug.Log(dBHighScoreModelList);
+                Debug.Log("link");
+                Debug.Log(dBHighScoreModelList.Count);
+                Debug.Log("link");
+                Debug.Log(dBHighScoreModelList[0].Character);
+
+                // updates row with new data
+                for (int i = 0; i < dBHighScoreModelList.Count; i++)
+                {
+                    // set data for prefabs from list retrieved from database
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = dBHighScoreModelList[i].TotalPoints.ToString();
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = dBHighScoreModelList[i].Character;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = dBHighScoreModelList[i].Level;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = dBHighScoreModelList[i].Date;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = dBHighScoreModelList[i].HardcoreEnabled.ToString();
+                    index++;
+                }
+                // empty out rows if scores do not exist or there isnt at least 10
+                for (int i = index; i < dBHighScoreModelList.Count; i++)
                 {
                     // set data for prefabs from list retrieved from database
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
