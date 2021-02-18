@@ -105,7 +105,7 @@ namespace Assets.Scripts.database
             model.MoneyBallAtt = stats.MoneyBallAttempts;
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
-            Debug.Log(" model.UserName : " + model.UserName);
+            //Debug.Log(" model.UserName : " + model.UserName);
 
             return model;
         }

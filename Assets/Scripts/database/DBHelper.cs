@@ -996,6 +996,7 @@ public class DBHelper : MonoBehaviour
         string date;
         string hardcore = "";
         float time;
+        string username;
         int hardcoreEnabled = 0;
         //int numberOfResultsPages = 0;
         //string numResultsQuery = "";
@@ -1023,13 +1024,13 @@ public class DBHelper : MonoBehaviour
             {
                 if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
                 {
-                    sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                         + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
 
                 }
                 else
                 {
-                    sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                         + " AND hardcoreEnabled = 0 ORDER BY " + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
                 }
             }
@@ -1037,18 +1038,16 @@ public class DBHelper : MonoBehaviour
             {
                 if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
                 {
-                    sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                         + " AND hardcoreEnabled = 1 ORDER BY " + field + " ASC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
 
                 }
                 else
                 {
-                    sqlQuery = "SELECT  " + field + ", character, level, date, hardcoreEnabled FROM HighScores  WHERE modeid = " + modeid
+                    sqlQuery = "SELECT  " + field + ", character, level, date, time,  hardcoreEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                         + " AND hardcoreEnabled = 1 ORDER BY " + field + " DESC, time DESC LIMIT 10 OFFSET " + pageNumberOffset;
                 }
             }
-
-            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1085,9 +1084,15 @@ public class DBHelper : MonoBehaviour
                 {
                     hardcore = "no";
                 }
+                username = reader.GetString(6);
+
+                StatsTableHighScoreRow row = gameObject.AddComponent<StatsTableHighScoreRow>();
+                row.setRowValues(score, character, level, date, hardcore, username);
+
                 // add to list
-                listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore));
-                //Debug.Log("score : " + score + " character : " + character + " level : " + level + " date : " + date);
+                //listOfValues.Add(new StatsTableHighScoreRow(score, character, level, date, hardcore, username));
+                listOfValues.Add(row);
+                Destroy(row);
             }
 
             reader.Close();
@@ -1103,7 +1108,10 @@ public class DBHelper : MonoBehaviour
                 int numToAdd = 10 - listOfValues.Count;
                 for (int i = 0; i < numToAdd; i++)
                 {
-                    listOfValues.Add(new StatsTableHighScoreRow("", "", "", "", ""));
+                    StatsTableHighScoreRow row = gameObject.AddComponent<StatsTableHighScoreRow>();
+                    row.setRowValues("", "", "", "", "", "");
+                    listOfValues.Add(row);
+                    Destroy(row);
                 }
             }
 
@@ -1112,6 +1120,7 @@ public class DBHelper : MonoBehaviour
         }
         catch (Exception e)
         {
+            Debug.Log(" ERROR : " + e);
             databaseLocked = false;
             return listOfValues;
         }
@@ -1696,7 +1705,7 @@ public class DBHelper : MonoBehaviour
         {
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
-            alterTableAddColumn(table1, col18, typeInteger);
+            alterTableAddColumn(table1, col18, typeText);
             yield return new WaitUntil(() => doesColumnExist(table1, col18));
             databaseLocked = false;
         }

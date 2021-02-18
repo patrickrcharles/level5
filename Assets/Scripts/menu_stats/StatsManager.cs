@@ -33,9 +33,11 @@ public class StatsManager : MonoBehaviour
 
     GameObject allTimeTableObject;
     GameObject highScoreTableObject;
-
+    [SerializeField]
     Text modeSelectButtonText;
+    [SerializeField]
     Text modeSelectButtonHardcoreText;
+    [SerializeField]
     Text modeSelectButtonOnlineText;
 
     // list of high score rows
@@ -48,6 +50,21 @@ public class StatsManager : MonoBehaviour
     [SerializeField]
     List<mode> modesList;
 
+    [SerializeField]
+    private bool trafficEnabled;
+    [SerializeField]
+    private bool hardcoreEnabled;
+    [SerializeField]
+    private bool enemiesEnabled;
+
+    //selectable option text
+    [SerializeField]
+    private Text trafficSelectOptionText;
+    [SerializeField]
+    private Text hardcoreSelectOptionText;
+    [SerializeField]
+    private Text enemySelectOptionText;
+
     int defaultModeSelectedIndex;
     int currentModeSelectedIndex;
 
@@ -57,12 +74,28 @@ public class StatsManager : MonoBehaviour
     // high score rows
     const string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
     const string highScoresRowsName = "high_scores_rows";
+    [SerializeField]
     GameObject highScoresRowsObject;
+    [SerializeField]
     GameObject highScoreRowPrefab;
 
     bool regularLoaded;
     bool hardcoreLoaded;
     bool onlineLoaded;
+
+    bool buttonPressed;
+
+    //traffic objects
+    //private const string trafficSelectButtonName = "traffic_name_button";
+    private const string trafficSelectValueName = "traffic_value_button";
+
+    //hardcore mode
+    //private const string hardcoreSelectButtonName = "hardcore_name_button";
+    private const string hardcoreSelectValueName = "hardcore_value_button";
+
+    //hardcore mode
+    //private const string enemySelectButtonName = "enemies_name_button";
+    private const string enemySelectValueName = "enemies_value_button";
 
     public int numResults;
 
@@ -102,18 +135,11 @@ public class StatsManager : MonoBehaviour
 
     void Awake()
     {
-        //check for existsing instance of statmanager
-        //destroyInstanceIfAlreadyExists();
 
         instance = this;
-
         controls = new PlayerControls();
 
-        // find objects/buttons
-        modeSelectButtonText = GameObject.Find(modeSelectButtonName).GetComponent<Text>();
-        modeSelectButtonHardcoreText = GameObject.Find(modeSelectButtonHardcoreName).GetComponent<Text>();
-        modeSelectButtonOnlineText = GameObject.Find(modeSelectButtonOnlineName).GetComponent<Text>();
-
+        // table objects
         highScoreTableObject = GameObject.Find(highScoreTableName);
         allTimeTableObject = GameObject.Find(allTimeTableName);
 
@@ -127,14 +153,6 @@ public class StatsManager : MonoBehaviour
         defaultModeSelectedIndex = 0;
         currentModeSelectedIndex = defaultModeSelectedIndex;
 
-        // set default game mode name
-        modeSelectButtonText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
-        modeSelectButtonHardcoreText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
-        modeSelectButtonOnlineText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
-
-        //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedName);
-        //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedId);
-
         // row prefab to be instantiated
         highScoreRowPrefab = Resources.Load(highScoreRowPrefabPath) as GameObject;
 
@@ -146,11 +164,11 @@ public class StatsManager : MonoBehaviour
         {
             try
             {
-                highScoreRowsDataList = 
+                highScoreRowsDataList =
                     DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
-
+                Debug.Log("highScoreRowsDataList.Count : " + highScoreRowsDataList.Count);
                 numResults = DBHelper.instance.getNumberOfResults(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
-                //Debug.Log("numResults : " + numResults);
+                Debug.Log("numResults : " + numResults);
             }
             catch (Exception e)
             {
@@ -171,11 +189,11 @@ public class StatsManager : MonoBehaviour
         for (int i = 0; i < highScoreRowsDataList.Count; i++)
         {
             // set data for prefabs from list retrieved from database
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
-            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = highScoreRowsDataList[i].hardcoreEnabled;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().Score = highScoreRowsDataList[i].Score;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().Character = highScoreRowsDataList[i].Character;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().Level = highScoreRowsDataList[i].Level;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().Date = highScoreRowsDataList[i].Date;
+            highScoreRowPrefab.GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = highScoreRowsDataList[i].HardcoreEnabled;
             // instantiate row on necessary table object
             Instantiate(highScoreRowPrefab, highScoresRowsObject.transform.position, Quaternion.identity, highScoresRowsObject.transform);
         }
@@ -185,6 +203,10 @@ public class StatsManager : MonoBehaviour
         // default table view
         highScoreTableObject.SetActive(true);
         allTimeTableObject.SetActive(false);
+
+        initializeTrafficOptionDisplay();
+        initializeHardcoreOptionDisplay();
+        initializeEnemyOptionDisplay();
     }
 
     // Update is called once per frame
@@ -198,99 +220,142 @@ public class StatsManager : MonoBehaviour
         }
 
         currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
+        //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
         // ================================== navigation =====================================================================
 
         // high scores table button selected
-        if (currentHighlightedButton.Equals(modeSelectButtonName) )
+        if (currentHighlightedButton.Equals(trafficSelectValueName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Up.triggered || controls.UINavigation.Down.triggered)
+            {
+                buttonPressed = true;
+                changeSelectedTrafficOption();
+                initializeTrafficOptionDisplay();
+                buttonPressed = false;
+            }
+        }
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(hardcoreSelectValueName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Up.triggered || controls.UINavigation.Down.triggered)
+            {
+                buttonPressed = true;
+                changeSelectedHardcoreOption();
+                initializeHardcoreOptionDisplay();
+                buttonPressed = false;
+            }
+        }
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(enemySelectValueName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Up.triggered || controls.UINavigation.Down.triggered)
+            {
+                buttonPressed = true;
+                changeSelectedEnemiesOption();
+                initializeEnemyOptionDisplay();
+                buttonPressed = false;
+            }
+        }
+
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(modeSelectButtonName))
         {
             highScoreTableObject.SetActive(true);
             allTimeTableObject.SetActive(false);
             //regularLoaded = true;
 
-            if (controls.UINavigation.Left.triggered)
+            if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
+                buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
-                //changeHighScoreModeNameDisplay();
-                changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay();
+                buttonPressed = false;
             }
 
-            if (controls.UINavigation.Right.triggered)
+            if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
+                buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                //changeHighScoreModeNameDisplay();
-                changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay();
+                buttonPressed = false;
             }
 
-            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
-            {
-                navigateUp();
-                regularLoaded = false;
-            }
+            //if (controls.UINavigation.Up.triggered && !buttonPressed)
+            //{
+            //    Debug.Log("navigate up");
+            //    buttonPressed = true;
+            //    navigateUp();
+            //    buttonPressed = false;
+            //    regularLoaded = false;
+            //}
 
-            // down arrow navigation
-            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
-            {
-                navigateDown();
-                regularLoaded = false;
-            }
+            //// down arrow navigation
+            //if (controls.UINavigation.Down.triggered && !buttonPressed)
+            //{
+            //    buttonPressed = true;
+            //    navigateDown();
+            //    buttonPressed = false;
+            //    regularLoaded = false;
+            //}
             //changeHighScoreDataDisplay(false);
             if (!regularLoaded)
             {
+                buttonPressed = true;
                 regularLoaded = true;
-                changeHighScoreDataDisplay(false);
+                changeHighScoreDataDisplay();
+                buttonPressed = false;
             }
+            modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
         }
         else
         {
             regularLoaded = false;
         }
-        // high scores table button selected
-        if (currentHighlightedButton.Equals(modeSelectButtonHardcoreName))
-        {
-            highScoreTableObject.SetActive(true);
-            allTimeTableObject.SetActive(false);
-            if (controls.UINavigation.Left.triggered)
-            {
-                // change selected mode and display data based on mode selected
-                changeSelectedMode("left");
-                //changeHighScoreModeNameDisplay();
-                changeHighScoreDataDisplay(true);
-            }
+        //// high scores table button selected
+        //if (currentHighlightedButton.Equals(modeSelectButtonHardcoreName))
+        //{
+        //    highScoreTableObject.SetActive(true);
+        //    allTimeTableObject.SetActive(false);
+        //    if (controls.UINavigation.Left.triggered)
+        //    {
+        //        // change selected mode and display data based on mode selected
+        //        changeSelectedMode("left");
+        //        changeHighScoreDataDisplay();
+        //    }
 
-            if (controls.UINavigation.Right.triggered)
-            {
-                // change selected mode and display data based on mode selected
-                changeSelectedMode("right");
-                //changeHighScoreModeNameDisplay();
-                changeHighScoreDataDisplay(true);
-            }
+        //    if (controls.UINavigation.Right.triggered)
+        //    {
+        //        // change selected mode and display data based on mode selected
+        //        changeSelectedMode("right");
+        //        changeHighScoreDataDisplay();
+        //    }
 
-            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
-            {
-                navigateUp();
-                hardcoreLoaded = false;
-            }
+        //    if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
+        //    {
+        //        navigateUp();
+        //        hardcoreLoaded = false;
+        //    }
 
-            // down arrow navigation
-            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
-            {
-                navigateDown();
-                hardcoreLoaded = false;
-            }
-            //changeHighScoreDataDisplay(true);
-            if (!hardcoreLoaded)
-            {
-                hardcoreLoaded = true;
-                changeHighScoreDataDisplay(true);
-            }
-        }
-        else
-        {
-            hardcoreLoaded = false;
-        }
+        //    // down arrow navigation
+        //    if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
+        //    {
+        //        navigateDown();
+        //        hardcoreLoaded = false;
+        //    }
+        //    if (!hardcoreLoaded)
+        //    {
+        //        hardcoreLoaded = true;
+        //        changeHighScoreDataDisplay();
+        //    }
+        //    modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        //}
+        //else
+        //{
+        //    hardcoreLoaded = false;
+        //}
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonOnlineName))
         {
@@ -298,41 +363,48 @@ public class StatsManager : MonoBehaviour
             allTimeTableObject.SetActive(false);
             //regularLoaded = true;
 
-            if (controls.UINavigation.Left.triggered)
+            if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
+                buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
-                //changeHighScoreModeNameDisplay();
-                //changeHighScoreDataDisplay(false);
                 changeHighScoreDataDisplayOnline(false);
+                buttonPressed = false;
             }
 
-            if (controls.UINavigation.Right.triggered)
+            if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
+                buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                //changeHighScoreModeNameDisplay();
                 changeHighScoreDataDisplayOnline(false);
+                buttonPressed = false;
             }
 
-            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
-            {
-                navigateUp();
-                onlineLoaded = false;
-            }
+            //if (controls.UINavigation.Up.triggered && !buttonPressed)
+            //{
+            //    Debug.Log("navigate up");
+            //    buttonPressed = true;
+            //    navigateUp();
+            //    onlineLoaded = false;
+            //    buttonPressed = false;
+            //}
 
-            // down arrow navigation
-            if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
-            {
-                navigateDown();
-                onlineLoaded = false;
-            }
-            //changeHighScoreDataDisplay(false);
+            //// down arrow navigation
+            //if (controls.UINavigation.Down.triggered && !buttonPressed)
+            //{
+            //    buttonPressed = true;
+            //    navigateDown();
+            //    onlineLoaded = false;
+            //    buttonPressed = false;
+            //}
+
             if (!onlineLoaded)
             {
                 onlineLoaded = true;
                 changeHighScoreDataDisplayOnline(false);
             }
+            modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
         }
         else
         {
@@ -348,34 +420,46 @@ public class StatsManager : MonoBehaviour
             // up arrow navigation
             if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
             {
+                Debug.Log("navigate up");
+                buttonPressed = true;
                 navigateUp();
+                buttonPressed = false;
             }
 
             // down arrow navigation
             if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
+                buttonPressed = true;
                 navigateDown();
+                buttonPressed = false;
             }
         }
 
         // main menu button selected
-        if (currentHighlightedButton.Equals(mainMenuButtonName))
+        if (currentHighlightedButton.Equals(mainMenuButtonName) && !buttonPressed)
         {
             if (controls.UINavigation.Submit.triggered)
             {
+                buttonPressed = true;
                 loadMainMenu(mainMenuSceneName);
+                buttonPressed = false;
             }
 
             // up arrow navigation
             if (controls.UINavigation.Up.triggered)// || InputManager.GetKeyDown(KeyCode.W))
             {
+                Debug.Log("navigate up");
+                buttonPressed = true;
                 navigateUp();
+                buttonPressed = false;
             }
 
             // down arrow navigation
             if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
             {
+                buttonPressed = true;
                 navigateDown();
+                buttonPressed = false;
             }
         }
     }
@@ -388,6 +472,7 @@ public class StatsManager : MonoBehaviour
 
     public static void navigateDown()
     {
+        Debug.Log("navigate down");
         EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
             .GetComponent<Button>().FindSelectableOnDown().gameObject);
     }
@@ -395,20 +480,6 @@ public class StatsManager : MonoBehaviour
     public void loadMainMenu(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-    }
-
-    private void destroyInstanceIfAlreadyExists()
-    {
-        // make sure only once instance
-        DontDestroyOnLoad(gameObject);
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     private List<mode> getModeSelectDataList()
@@ -482,9 +553,9 @@ public class StatsManager : MonoBehaviour
             }
         }
 
-        modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        //modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        //modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        //modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     public void changeHighScoreModeNameDisplay()
@@ -493,7 +564,7 @@ public class StatsManager : MonoBehaviour
         modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
-    public void changeHighScoreDataDisplay(bool hardcoreValue)
+    public void changeHighScoreDataDisplay()
     {
         if (GameObject.FindGameObjectWithTag("database") != null)
         {
@@ -505,30 +576,32 @@ public class StatsManager : MonoBehaviour
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
                 // get new list of scores based on currently selected game mode
                 highScoreRowsDataList
-                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
-                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
+                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
+                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
                 //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
 
                 // updates row with new data
                 for (int i = 0; i < highScoreRowsDataList.Count; i++)
                 {
                     // set data for prefabs from list retrieved from database
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = highScoreRowsDataList[i].score.ToString();
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = highScoreRowsDataList[i].character;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = highScoreRowsDataList[i].level;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = highScoreRowsDataList[i].date;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = highScoreRowsDataList[i].hardcoreEnabled;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = highScoreRowsDataList[i].UserName;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = highScoreRowsDataList[i].Score;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowsDataList[i].Character;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowsDataList[i].Level;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = highScoreRowsDataList[i].Date;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = highScoreRowsDataList[i].HardcoreEnabled;
                     index++;
                 }
                 // empty out rows if scores do not exist or there isnt at least 10
                 for (int i = index; i < highScoreRowsObjectsList.Count; i++)
                 {
                     // set data for prefabs from list retrieved from database
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
                 }
             }
             catch (Exception e)
@@ -551,43 +624,52 @@ public class StatsManager : MonoBehaviour
                 // get highscore field from mode prefab
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
 
-                //// game modes that require float values
-                //if ((modeid > 4 && modeid < 14) || modeid == 99)
-                //{
-                //    //score = reader.GetFloat(0).ToString();
-                //    // float
-                //}
-                //else
-                //{
-                //    //score = reader.GetInt32(0).ToString();
-                //    //float
-                //}
+                List<StatsTableHighScoreRow> highScoreRowList = new List<StatsTableHighScoreRow>();
+                highScoreRowList = APIHelper.GetHighscoreByModeid(modeid);
 
-                List<DBHighScoreModel> dBHighScoreModelList = new List<DBHighScoreModel>();
-                dBHighScoreModelList =  APIHelper.GetHighscoreByModeid(modeid, field );
-
+                int rowCount;
+                if (highScoreRowList.Count < 10 && highScoreRowList != null)
+                {
+                    rowCount = highScoreRowList.Count;
+                    index = highScoreRowList.Count;
+                }
+                else
+                {
+                    rowCount = 10;
+                    index = 0;
+                }
+                Debug.Log("----- index : " + index);
                 // updates row with new data
-                for (int i = 0; i < dBHighScoreModelList.Count; i++)
+                for (int i = 0; i < rowCount; i++)
                 {
 
                     // set data for prefabs from list retrieved from database
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = dBHighScoreModelList[i].TotalPoints.ToString();
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = dBHighScoreModelList[i].Character;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = dBHighScoreModelList[i].Level;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = dBHighScoreModelList[i].Date;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = dBHighScoreModelList[i].HardcoreEnabled.ToString();
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = highScoreRowList[i].UserName;
+                    //highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = "userNamePlaceholder";
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = highScoreRowList[i].Score;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowList[i].Character;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowList[i].Level;
+                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = highScoreRowList[i].Date;
                     index++;
                 }
+
+                index = highScoreRowList.Count;
                 // empty out rows if scores do not exist or there isnt at least 10
-                for (int i = index; i < dBHighScoreModelList.Count; i++)
+                //for (int i = index; i < highScoreRowList.Count; i++)
+                if (index < 10)
                 {
-                    // set data for prefabs from list retrieved from database
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().level = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().date = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().hardcoreEnabled = "";
+                    for (int i = index; i < 10; i++)
+                    {
+                        // set data for prefabs from list retrieved from database
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = "";
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = "";
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = "";
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = "";
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
+                    }
                 }
+
+                onlineLoaded = true;
             }
             catch (Exception e)
             {
@@ -595,6 +677,58 @@ public class StatsManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    // ============================  Initialize displays ==============================
+    public void initializeTrafficOptionDisplay()
+    {
+        if (trafficEnabled)
+        {
+            trafficSelectOptionText.text = "ON";
+        }
+        if (!trafficEnabled)
+        {
+            trafficSelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeHardcoreOptionDisplay()
+    {
+        if (hardcoreEnabled)
+        {
+            hardcoreSelectOptionText.text = "ON";
+        }
+        if (!hardcoreEnabled)
+        {
+            hardcoreSelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeEnemyOptionDisplay()
+    {
+        if (enemiesEnabled)
+        {
+            enemySelectOptionText.text = "ON";
+        }
+        if (!enemiesEnabled)
+        {
+            enemySelectOptionText.text = "OFF";
+        }
+    }
+
+    public void changeSelectedTrafficOption()
+    {
+        trafficEnabled = !trafficEnabled;
+    }
+
+    public void changeSelectedHardcoreOption()
+    {
+        hardcoreEnabled = !hardcoreEnabled;
+    }
+
+    public void changeSelectedEnemiesOption()
+    {
+        enemiesEnabled = !enemiesEnabled;
     }
 
     public static string ModeSelectButtonName => modeSelectButtonName;

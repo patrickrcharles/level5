@@ -15,6 +15,7 @@ namespace Assets.Scripts.restapi
 {
     public static class APIHelper
     {
+        // api web hosted
         const string publicApi = "http://13.58.224.237/api/";
         const string publicApiUsers = "http://13.58.224.237/api/users";
         const string publicApiUsersByUserid = "http://13.58.224.237/api/users/userid";
@@ -23,8 +24,12 @@ namespace Assets.Scripts.restapi
         const string publicApiHighScores = "http://13.58.224.237/api/highscores/";
         const string publicApiHighScoresByScoreid = "http://13.58.224.237/api/highscores/scoreid/";
         const string publicApiHighScoresByModeid = "http://13.58.224.237/api/highscores/modeid/";
+        const string publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/game/modeid/";
         const string publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
         const string publicApiToken = "http://13.58.224.237/api/token/";
+
+        // localhost testing
+        const string localHostHighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
 
         static bool apiLocked;
         private static string bearerToken;
@@ -252,16 +257,17 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/modeid/{modeid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static List<DBHighScoreModel> GetHighscoreByModeid(int modeid, string field)
+        public static List<StatsTableHighScoreRow> GetHighscoreByModeid(int modeid)
         {
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
-            List<DBHighScoreModel> dBHighScoreModels = new List<DBHighScoreModel>();
+            List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByModeid + modeid + "/" + field)) as HttpWebRequest;
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByModeidInGameDisplay + modeid )) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByModeidInGameDisplay + modeid )) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 //httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -271,11 +277,8 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    Debug.Log(result);
-                    dBHighScoreModels = (List<DBHighScoreModel>)JsonConvert.DeserializeObject<List<DBHighScoreModel>>(result);
+                    highScoresList = JsonConvert.DeserializeObject<List<StatsTableHighScoreRow>>(result);
                 }
-
-                //dBHighScoreModels = convertHttpWebResponseToDBHighscoreModelList(httpResponse);
             }
             // on web exception
             catch (WebException e)
@@ -300,7 +303,7 @@ namespace Assets.Scripts.restapi
                 apiLocked = false;
             }
 
-            return dBHighScoreModels;
+            return highScoresList;
         }
 
 
