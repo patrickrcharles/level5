@@ -79,6 +79,7 @@ public class GameOptions : MonoBehaviour
 
 
     static public bool levelRequiresTimeOfDay = true;
+    static public string userName;
 
     //private void Awake()
     //{

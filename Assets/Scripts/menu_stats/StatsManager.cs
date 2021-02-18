@@ -4,6 +4,8 @@ using Assets.Scripts.restapi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -34,6 +36,7 @@ public class StatsManager : MonoBehaviour
 
     Text modeSelectButtonText;
     Text modeSelectButtonHardcoreText;
+    Text modeSelectButtonOnlineText;
 
     // list of high score rows
     [SerializeField]
@@ -109,6 +112,7 @@ public class StatsManager : MonoBehaviour
         // find objects/buttons
         modeSelectButtonText = GameObject.Find(modeSelectButtonName).GetComponent<Text>();
         modeSelectButtonHardcoreText = GameObject.Find(modeSelectButtonHardcoreName).GetComponent<Text>();
+        modeSelectButtonOnlineText = GameObject.Find(modeSelectButtonOnlineName).GetComponent<Text>();
 
         highScoreTableObject = GameObject.Find(highScoreTableName);
         allTimeTableObject = GameObject.Find(allTimeTableName);
@@ -126,6 +130,7 @@ public class StatsManager : MonoBehaviour
         // set default game mode name
         modeSelectButtonText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
         modeSelectButtonHardcoreText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
+        modeSelectButtonOnlineText.text = modesList[defaultModeSelectedIndex].modeSelectedName;
 
         //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedName);
         //Debug.Log("modesList[defaultModeSelectedIndex].modeSelectedName : " + modesList[defaultModeSelectedIndex].modeSelectedId);
@@ -479,6 +484,7 @@ public class StatsManager : MonoBehaviour
 
         modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
         modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
+        modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     public void changeHighScoreModeNameDisplay()
@@ -541,26 +547,29 @@ public class StatsManager : MonoBehaviour
             {
                 // counts number entries returned.
                 int index = 0;
+                int modeid = modesList[currentModeSelectedIndex].modeSelectedId;
                 // get highscore field from mode prefab
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
-                // get new list of scores based on currently selected game mode
-                //highScoreRowsDataList
-                //    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
-                //numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreValue, highScoresResultsPageNumber);
-                //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
+
+                //// game modes that require float values
+                //if ((modeid > 4 && modeid < 14) || modeid == 99)
+                //{
+                //    //score = reader.GetFloat(0).ToString();
+                //    // float
+                //}
+                //else
+                //{
+                //    //score = reader.GetInt32(0).ToString();
+                //    //float
+                //}
 
                 List<DBHighScoreModel> dBHighScoreModelList = new List<DBHighScoreModel>();
-                dBHighScoreModelList =  APIHelper.GetHighscoreByModeid(modesList[currentModeSelectedIndex].modeSelectedId, field );
-
-                Debug.Log(dBHighScoreModelList);
-                Debug.Log("link");
-                Debug.Log(dBHighScoreModelList.Count);
-                Debug.Log("link");
-                Debug.Log(dBHighScoreModelList[0].Character);
+                dBHighScoreModelList =  APIHelper.GetHighscoreByModeid(modeid, field );
 
                 // updates row with new data
                 for (int i = 0; i < dBHighScoreModelList.Count; i++)
                 {
+
                     // set data for prefabs from list retrieved from database
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().score = dBHighScoreModelList[i].TotalPoints.ToString();
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().character = dBHighScoreModelList[i].Character;

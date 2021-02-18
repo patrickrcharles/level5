@@ -14,6 +14,7 @@ namespace Assets.Scripts.database
     {
         //public int Id;
         public int Userid;
+        public string UserName;
         public int Modeid;
         public int Characterid ;
         public int Levelid ;
@@ -103,6 +104,8 @@ namespace Assets.Scripts.database
             model.MoneyBallMade = stats.MoneyBallMade;
             model.MoneyBallAtt = stats.MoneyBallAttempts;
             model.EnemiesEnabled = enemiesEnabled;
+            model.UserName = GameOptions.userName;
+            Debug.Log(" model.UserName : " + model.UserName);
 
             return model;
         }

@@ -266,7 +266,8 @@ public class DBConnector : MonoBehaviour
                 "bonusPoints  INTEGER, " +
                 "moneyBallMade  INTEGER, " +
                 "moneyBallAtt  INTEGER, " +
-                "submittedToApi  INTEGER); " +
+                "submittedToApi  INTEGER, " +
+                "username  TEXT DEAFAULT NULL); " +
 
                 "DROP TABLE if exists Achievements; " +
 

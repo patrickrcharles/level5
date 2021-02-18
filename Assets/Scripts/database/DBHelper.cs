@@ -21,7 +21,7 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 3;
+    private int currentDatabaseAppVersion = 4;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
@@ -208,7 +208,7 @@ public class DBHelper : MonoBehaviour
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
-               "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt)  " +
+               "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
                + "', '" + stats.Characterid
@@ -242,7 +242,8 @@ public class DBHelper : MonoBehaviour
                + stats.SevenAtt + "','"
                + stats.BonusPoints + "','"
                + stats.MoneyBallMade + "','"
-               + stats.MoneyBallAtt + "')";
+               + stats.MoneyBallAtt + "','"
+               + stats.UserName + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1528,6 +1529,7 @@ public class DBHelper : MonoBehaviour
         string col15 = "moneyBallMade";
         string col16 = "moneyBallAtt";
         string col17 = "enemiesEnabled";
+        string col18 = "userName";
 
         string col1a = "userid";
         string col2a = "username";
@@ -1687,6 +1689,15 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table1, col17, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table1, col17));
+            databaseLocked = false;
+        }
+
+        if (!doesColumnExist(table1, col18))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col18, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col18));
             databaseLocked = false;
         }
 

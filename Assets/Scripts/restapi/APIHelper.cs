@@ -52,9 +52,9 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !apiLocked);
             apiLocked = true;
 
-            // verify unique scoreid does NOT exist in database already
-            if (!APIHelper.ScoreIdExists(dbHighScoreModel.Scoreid))
-            {
+            //// verify unique scoreid does NOT exist in database already
+            //if (!APIHelper.ScoreIdExists(dbHighScoreModel.Scoreid))
+            //{
                 //serialize highscore to json for HTTP POST
                 string toJson = JsonUtility.ToJson(dbHighScoreModel);
 
@@ -71,6 +71,7 @@ namespace Assets.Scripts.restapi
                     using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                     {
                         string json = toJson;
+                        Debug.Log(json);
                         streamWriter.Write(json);
                         streamWriter.Flush();
                     }
@@ -109,13 +110,13 @@ namespace Assets.Scripts.restapi
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
-            }
-            else
-            {
-                //Debug.Log(" scoreid already exists : " + dbHighScoreModel.Scoreid);
-                apiLocked = false;
-                DBHelper.instance.DatabaseLocked = false;
-            }
+            //}
+            //else
+            //{
+            //    //Debug.Log(" scoreid already exists : " + dbHighScoreModel.Scoreid);
+            //    apiLocked = false;
+            //    DBHelper.instance.DatabaseLocked = false;
+            //}
         }
 
         // -------------------------------------- HTTTP PUT Highscore -------------------------------------------
@@ -212,8 +213,14 @@ namespace Assets.Scripts.restapi
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
 
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Debug.Log(result);
+                    dBHighScoreModels = (List<DBHighScoreModel>)JsonConvert.DeserializeObject<List<DBHighScoreModel>>(result);
+                }
 
-                dBHighScoreModels = convertHttpWebResponseToDBHighscoreModelList(httpResponse);
+                //dBHighScoreModels = convertHttpWebResponseToDBHighscoreModelList(httpResponse);
             }
             // on web exception
             catch (WebException e)

@@ -912,7 +912,9 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.trafficEnabled = false;
         }
-            
+
+        GameOptions.userName = "userNameTest";
+
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
         PlayerData.instance.loadStatsFromDatabase();
