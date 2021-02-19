@@ -133,13 +133,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(false);
+            StatsManager.instance.changeHighScoreDataDisplay();
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(true);
+            StatsManager.instance.changeHighScoreDataDisplay();
         }
 
         // player select
@@ -167,7 +167,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
 
     private void swipeUpOnOption()
     {
-        StatsManager.instance.changeHighScoreDataDisplay(false);
+        StatsManager.instance.changeHighScoreDataDisplay();
         buttonPressed = true;
         //high score, mode change
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
@@ -175,21 +175,21 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(false);
+            StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("right");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(true);
+            StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
         buttonPressed = false;
     }
     private void swipeDownOnOption()
     {
-        StatsManager.instance.changeHighScoreDataDisplay(false);
+        StatsManager.instance.changeHighScoreDataDisplay();
         buttonPressed = true;
         //high score, mode change
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
@@ -197,14 +197,14 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.changeSelectedMode("left");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(false);
+            StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
         {
             StatsManager.instance.changeSelectedMode("left");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay(true);
+            StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
         buttonPressed = false;
