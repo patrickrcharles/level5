@@ -64,7 +64,7 @@ public class StartManager : MonoBehaviour
     private Text modeSelectOptionText;
     private Text ModeSelectOptionDescriptionText;
 
-    //traffic
+    //selectable option text
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
     private Text enemySelectOptionText;
@@ -1073,12 +1073,5 @@ public class StartManager : MonoBehaviour
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
     public static string CreditsScreenSceneName => creditsScreenSceneName;
-    //public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
-    //public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
-    //public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
-    //public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
-    //public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
-    //public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
-
 
 }

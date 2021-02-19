@@ -30,8 +30,6 @@ public class StatsTableHighScoreRow : MonoBehaviour
     [SerializeField]
     public string UserName;
     [SerializeField]
-    public string HardCoreEnabled;
-    [SerializeField]
     public string TrafficEnabled;
     [SerializeField]
     public string EnemiesEnabled;

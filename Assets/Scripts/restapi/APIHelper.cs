@@ -24,7 +24,7 @@ namespace Assets.Scripts.restapi
         const string publicApiHighScores = "http://13.58.224.237/api/highscores/";
         const string publicApiHighScoresByScoreid = "http://13.58.224.237/api/highscores/scoreid/";
         const string publicApiHighScoresByModeid = "http://13.58.224.237/api/highscores/modeid/";
-        const string publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/game/modeid/";
+        const string publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/modeid/";
         const string publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
         const string publicApiToken = "http://13.58.224.237/api/token/";
 
@@ -76,7 +76,6 @@ namespace Assets.Scripts.restapi
                     using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                     {
                         string json = toJson;
-                        Debug.Log(json);
                         streamWriter.Write(json);
                         streamWriter.Flush();
                     }
@@ -257,17 +256,24 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/modeid/{modeid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static List<StatsTableHighScoreRow> GetHighscoreByModeid(int modeid)
+        public static List<StatsTableHighScoreRow> GetHighscoreByModeid(int modeid, int hardcore, int traffic, int enemies)
         {
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
+            // build api request
+            string apiRequest = publicApiHighScoresByModeidInGameDisplay + modeid
+                + "?hardcore=" + hardcore
+                + "&traffic=" + traffic
+                + "&enemies=" + enemies;
+
+            Debug.Log("apiRequest : " + apiRequest);
+
             try
             {
-                //var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByModeidInGameDisplay + modeid )) as HttpWebRequest;
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByModeidInGameDisplay + modeid )) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 //httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -277,7 +283,9 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    Debug.Log(result);
                     highScoresList = JsonConvert.DeserializeObject<List<StatsTableHighScoreRow>>(result);
+                    Debug.Log("highScoresList.Count : " + highScoresList.Count);
                 }
             }
             // on web exception
@@ -655,7 +663,6 @@ namespace Assets.Scripts.restapi
                     string json = toJson;
                     streamWriter.Write(json);
                     streamWriter.Flush();
-                    Debug.Log(json);
                 }
                 // response
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -663,7 +670,7 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     bearerToken = result;
-                    Debug.Log(result);
+                    //Debug.Log(result);
                     Debug.Log(bearerToken);
                 }
             }
@@ -680,7 +687,7 @@ namespace Assets.Scripts.restapi
             statusCode = httpResponse.StatusCode;
 
             // if successful
-            if (httpResponse.StatusCode == HttpStatusCode.Created)
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
                 Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;

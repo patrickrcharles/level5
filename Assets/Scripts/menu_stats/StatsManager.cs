@@ -15,6 +15,8 @@ public class StatsManager : MonoBehaviour
 {
     [SerializeField]
     private string currentHighlightedButton;
+    [SerializeField]
+    private string previousHighlightedButton;
 
     //const string scoreOptionButtonName = "score_options";
     //const string highscoreSelectButtonName = "high_score_select";
@@ -78,9 +80,9 @@ public class StatsManager : MonoBehaviour
     GameObject highScoresRowsObject;
     [SerializeField]
     GameObject highScoreRowPrefab;
-
-    bool regularLoaded;
-    bool hardcoreLoaded;
+    [SerializeField]
+    bool localLoaded;
+    [SerializeField]
     bool onlineLoaded;
 
     bool buttonPressed;
@@ -97,7 +99,7 @@ public class StatsManager : MonoBehaviour
     //private const string enemySelectButtonName = "enemies_name_button";
     private const string enemySelectValueName = "enemies_value_button";
 
-    public int numResults;
+    //public int numResults;
 
     PlayerControls controls;
 
@@ -164,11 +166,19 @@ public class StatsManager : MonoBehaviour
         {
             try
             {
+                // get default high score list + num results
                 highScoreRowsDataList =
-                    DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
-                Debug.Log("highScoreRowsDataList.Count : " + highScoreRowsDataList.Count);
-                numResults = DBHelper.instance.getNumberOfResults(field, modesList[defaultModeSelectedIndex].modeSelectedId, false, highScoresResultsPageNumber);
-                Debug.Log("numResults : " + numResults);
+                DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field,
+                    modesList[defaultModeSelectedIndex].modeSelectedId,
+                    hardcoreEnabled,
+                    trafficEnabled,
+                    enemiesEnabled,
+                    highScoresResultsPageNumber);
+
+                //numResults = 
+                //    DBHelper.instance.getNumberOfResults(field,
+                //    modesList[defaultModeSelectedIndex].modeSelectedId,
+                //    false, highScoresResultsPageNumber);
             }
             catch (Exception e)
             {
@@ -201,8 +211,14 @@ public class StatsManager : MonoBehaviour
         highScoreRowsObjectsList = GameObject.FindGameObjectsWithTag(highScoreRowTag).ToList();
 
         // default table view
-        highScoreTableObject.SetActive(true);
-        allTimeTableObject.SetActive(false);
+        if (!highScoreTableObject.activeSelf)
+        {
+            highScoreTableObject.SetActive(true);
+        }
+        if (allTimeTableObject.activeSelf)
+        {
+            allTimeTableObject.SetActive(false);
+        }
 
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
@@ -216,11 +232,10 @@ public class StatsManager : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             //Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); 
         }
 
-        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
-        //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
+        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; 
 
         // ================================== navigation =====================================================================
 
@@ -232,6 +247,7 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = true;
                 changeSelectedTrafficOption();
                 initializeTrafficOptionDisplay();
+                changeHighScoreDataDisplay();
                 buttonPressed = false;
             }
         }
@@ -243,6 +259,7 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = true;
                 changeSelectedHardcoreOption();
                 initializeHardcoreOptionDisplay();
+                changeHighScoreDataDisplay();
                 buttonPressed = false;
             }
         }
@@ -254,6 +271,7 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = true;
                 changeSelectedEnemiesOption();
                 initializeEnemyOptionDisplay();
+                changeHighScoreDataDisplay();
                 buttonPressed = false;
             }
         }
@@ -261,12 +279,24 @@ public class StatsManager : MonoBehaviour
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonName))
         {
-            highScoreTableObject.SetActive(true);
-            allTimeTableObject.SetActive(false);
-            //regularLoaded = true;
+            if (previousHighlightedButton != modeSelectButtonName)
+            {
+                changeHighScoreDataDisplay();
+            }
+            if (!highScoreTableObject.activeSelf)
+            {
+                highScoreTableObject.SetActive(true);
+            }
+            if (allTimeTableObject.activeSelf)
+            {
+                allTimeTableObject.SetActive(false);
+            }
 
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
+                //save previous button
+                previousHighlightedButton = currentHighlightedButton;
+
                 buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
@@ -276,162 +306,70 @@ public class StatsManager : MonoBehaviour
 
             if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
+                //save previous button
+                previousHighlightedButton = currentHighlightedButton;
+
                 buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                changeHighScoreDataDisplay();
-                buttonPressed = false;
-            }
-
-            //if (controls.UINavigation.Up.triggered && !buttonPressed)
-            //{
-            //    Debug.Log("navigate up");
-            //    buttonPressed = true;
-            //    navigateUp();
-            //    buttonPressed = false;
-            //    regularLoaded = false;
-            //}
-
-            //// down arrow navigation
-            //if (controls.UINavigation.Down.triggered && !buttonPressed)
-            //{
-            //    buttonPressed = true;
-            //    navigateDown();
-            //    buttonPressed = false;
-            //    regularLoaded = false;
-            //}
-            //changeHighScoreDataDisplay(false);
-            if (!regularLoaded)
-            {
-                buttonPressed = true;
-                regularLoaded = true;
                 changeHighScoreDataDisplay();
                 buttonPressed = false;
             }
             modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
         }
-        else
-        {
-            regularLoaded = false;
-        }
-        //// high scores table button selected
-        //if (currentHighlightedButton.Equals(modeSelectButtonHardcoreName))
-        //{
-        //    highScoreTableObject.SetActive(true);
-        //    allTimeTableObject.SetActive(false);
-        //    if (controls.UINavigation.Left.triggered)
-        //    {
-        //        // change selected mode and display data based on mode selected
-        //        changeSelectedMode("left");
-        //        changeHighScoreDataDisplay();
-        //    }
 
-        //    if (controls.UINavigation.Right.triggered)
-        //    {
-        //        // change selected mode and display data based on mode selected
-        //        changeSelectedMode("right");
-        //        changeHighScoreDataDisplay();
-        //    }
-
-        //    if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
-        //    {
-        //        navigateUp();
-        //        hardcoreLoaded = false;
-        //    }
-
-        //    // down arrow navigation
-        //    if (controls.UINavigation.Down.triggered)//|| InputManager.GetKeyDown(KeyCode.S))
-        //    {
-        //        navigateDown();
-        //        hardcoreLoaded = false;
-        //    }
-        //    if (!hardcoreLoaded)
-        //    {
-        //        hardcoreLoaded = true;
-        //        changeHighScoreDataDisplay();
-        //    }
-        //    modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        //}
-        //else
-        //{
-        //    hardcoreLoaded = false;
-        //}
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonOnlineName))
         {
-            highScoreTableObject.SetActive(true);
-            allTimeTableObject.SetActive(false);
-            //regularLoaded = true;
+            if(previousHighlightedButton != modeSelectButtonOnlineName)
+            {
+                changeHighScoreDataDisplayOnline();
+            }
+            if (!highScoreTableObject.activeSelf)
+            {
+                highScoreTableObject.SetActive(true);
+            }
+            if (allTimeTableObject.activeSelf)
+            {
+                allTimeTableObject.SetActive(false);
+            }
 
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
+                //save previous button
+                previousHighlightedButton = currentHighlightedButton;
+
                 buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
-                changeHighScoreDataDisplayOnline(false);
+                changeHighScoreDataDisplayOnline();
                 buttonPressed = false;
             }
 
             if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
+                //save previous button
+                previousHighlightedButton = currentHighlightedButton;
+
                 buttonPressed = true;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
-                changeHighScoreDataDisplayOnline(false);
+                changeHighScoreDataDisplayOnline();
                 buttonPressed = false;
             }
-
-            //if (controls.UINavigation.Up.triggered && !buttonPressed)
-            //{
-            //    Debug.Log("navigate up");
-            //    buttonPressed = true;
-            //    navigateUp();
-            //    onlineLoaded = false;
-            //    buttonPressed = false;
-            //}
-
-            //// down arrow navigation
-            //if (controls.UINavigation.Down.triggered && !buttonPressed)
-            //{
-            //    buttonPressed = true;
-            //    navigateDown();
-            //    onlineLoaded = false;
-            //    buttonPressed = false;
-            //}
-
-            if (!onlineLoaded)
-            {
-                onlineLoaded = true;
-                changeHighScoreDataDisplayOnline(false);
-            }
             modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        }
-        else
-        {
-            regularLoaded = false;
         }
 
         // all time stats table button selected
         if (currentHighlightedButton.Equals(alltimeSelectButtonName))
         {
-            allTimeTableObject.SetActive(true);
-            highScoreTableObject.SetActive(false);
-
-            // up arrow navigation
-            if (controls.UINavigation.Up.triggered)//|| InputManager.GetKeyDown(KeyCode.W))
+            if (highScoreTableObject.activeSelf)
             {
-                Debug.Log("navigate up");
-                buttonPressed = true;
-                navigateUp();
-                buttonPressed = false;
+                highScoreTableObject.SetActive(false);
             }
-
-            // down arrow navigation
-            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
+            if (!allTimeTableObject.activeSelf)
             {
-                buttonPressed = true;
-                navigateDown();
-                buttonPressed = false;
+                allTimeTableObject.SetActive(true);
             }
         }
 
@@ -444,24 +382,9 @@ public class StatsManager : MonoBehaviour
                 loadMainMenu(mainMenuSceneName);
                 buttonPressed = false;
             }
-
-            // up arrow navigation
-            if (controls.UINavigation.Up.triggered)// || InputManager.GetKeyDown(KeyCode.W))
-            {
-                Debug.Log("navigate up");
-                buttonPressed = true;
-                navigateUp();
-                buttonPressed = false;
-            }
-
-            // down arrow navigation
-            if (controls.UINavigation.Down.triggered)// || InputManager.GetKeyDown(KeyCode.S))
-            {
-                buttonPressed = true;
-                navigateDown();
-                buttonPressed = false;
-            }
         }
+        // save at end of frame
+        previousHighlightedButton = currentHighlightedButton;
     }
 
     public static void navigateUp()
@@ -493,10 +416,6 @@ public class StatsManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             StartScreenModeSelected temp = obj.GetComponent<StartScreenModeSelected>();
-
-            //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(free) : " + !temp.ModeDisplayName.ToLower().Contains("free"));
-            //Debug.Log("!temp.ModeDisplayName.ToLower().Contains(arcade) : " + !temp.ModeDisplayName.ToLower().Contains("arcade"));
-
             //// add to list
             //if (!temp.ModeDisplayName.ToLower().Contains("free") 
             //    && !temp.ModeDisplayName.ToLower().Contains("arcade")) // exclude freeplay
@@ -552,16 +471,6 @@ public class StatsManager : MonoBehaviour
                 currentModeSelectedIndex++;
             }
         }
-
-        //modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        //modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        //modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-    }
-
-    public void changeHighScoreModeNameDisplay()
-    {
-        modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
-        modeSelectButtonHardcoreText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     public void changeHighScoreDataDisplay()
@@ -576,8 +485,13 @@ public class StatsManager : MonoBehaviour
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
                 // get new list of scores based on currently selected game mode
                 highScoreRowsDataList
-                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
-                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
+                    = DBHelper.instance.getListOfHighScoreRowsFromTableByModeIdAndField(field,
+                    modesList[currentModeSelectedIndex].modeSelectedId,
+                    hardcoreEnabled,
+                    trafficEnabled,
+                    enemiesEnabled,
+                    highScoresResultsPageNumber);
+                //numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
                 //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
 
                 // updates row with new data
@@ -612,7 +526,7 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    public void changeHighScoreDataDisplayOnline(bool hardcoreValue)
+    public void changeHighScoreDataDisplayOnline()
     {
         if (GameObject.Find("restapi") != null)
         {
@@ -625,7 +539,15 @@ public class StatsManager : MonoBehaviour
                 string field = modesList[currentModeSelectedIndex].modeSelectedHighScoreField;
 
                 List<StatsTableHighScoreRow> highScoreRowList = new List<StatsTableHighScoreRow>();
-                highScoreRowList = APIHelper.GetHighscoreByModeid(modeid);
+
+                highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
+                    Convert.ToInt32(hardcoreEnabled),
+                    Convert.ToInt32(trafficEnabled),
+                    Convert.ToInt32(enemiesEnabled));
+
+                Debug.Log("***** hardcore "+Convert.ToInt32(hardcoreEnabled));
+                Debug.Log("***** traffic "+Convert.ToInt32(trafficEnabled));
+                Debug.Log("***** enemies "+Convert.ToInt32(enemiesEnabled));
 
                 int rowCount;
                 if (highScoreRowList.Count < 10 && highScoreRowList != null)
@@ -638,7 +560,6 @@ public class StatsManager : MonoBehaviour
                     rowCount = 10;
                     index = 0;
                 }
-                Debug.Log("----- index : " + index);
                 // updates row with new data
                 for (int i = 0; i < rowCount; i++)
                 {
@@ -668,12 +589,12 @@ public class StatsManager : MonoBehaviour
                         highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
                     }
                 }
-
-                onlineLoaded = true;
+                //onlineLoaded = true;
             }
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
+                //onlineLoaded = false;
                 return;
             }
         }
