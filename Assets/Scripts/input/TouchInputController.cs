@@ -101,7 +101,7 @@ public class TouchInputController : MonoBehaviour
                 //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
                 && !buttonPressed
                 && touch1.position.x < (Screen.width / 2)
-                && touch1.position.y > (Screen.height / 2)
+                && touch1.position.y > (Screen.height / 3)
                 //&& startTouchPosition1.x < (Screen.height / 2)
                 && playerController.PlayerCanBlock
                 && playerController.PlayerHealth.Block > 0
