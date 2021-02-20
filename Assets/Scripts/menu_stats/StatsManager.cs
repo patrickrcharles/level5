@@ -232,10 +232,10 @@ public class StatsManager : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             //Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); 
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
 
-        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; 
+        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name;
 
         // ================================== navigation =====================================================================
 
@@ -321,7 +321,7 @@ public class StatsManager : MonoBehaviour
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonOnlineName))
         {
-            if(previousHighlightedButton != modeSelectButtonOnlineName)
+            if (previousHighlightedButton != modeSelectButtonOnlineName)
             {
                 changeHighScoreDataDisplayOnline();
             }
@@ -545,9 +545,9 @@ public class StatsManager : MonoBehaviour
                     Convert.ToInt32(trafficEnabled),
                     Convert.ToInt32(enemiesEnabled));
 
-                Debug.Log("***** hardcore "+Convert.ToInt32(hardcoreEnabled));
-                Debug.Log("***** traffic "+Convert.ToInt32(trafficEnabled));
-                Debug.Log("***** enemies "+Convert.ToInt32(enemiesEnabled));
+                Debug.Log("***** hardcore " + Convert.ToInt32(hardcoreEnabled));
+                Debug.Log("***** traffic " + Convert.ToInt32(trafficEnabled));
+                Debug.Log("***** enemies " + Convert.ToInt32(enemiesEnabled));
 
                 int rowCount;
                 if (highScoreRowList.Count < 10 && highScoreRowList != null)
