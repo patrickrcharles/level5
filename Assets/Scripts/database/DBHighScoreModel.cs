@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Assets.Scripts.database
 {
     [Serializable]
-    public class DBHighScoreModel : MonoBehaviour
+    public class DBHighScoreModel 
     {
         //public int Id;
         public int Userid;
