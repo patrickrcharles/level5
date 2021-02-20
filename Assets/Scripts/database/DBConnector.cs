@@ -576,11 +576,13 @@ public class DBConnector : MonoBehaviour
                 "userid INTEGER UNIQUE," +
                 "username  TEXT UNIQUE, " +
                 "firstname TEXT, " +
-                "lastname  INTEGER, " +
+                "lastname  TEXT, " +
                 "email TEXT, " +
                 "ipaddress TEXT, " +
                 "signupdate TEXT, " +
-                "lastlogin TEXT);");
+                "lastlogin TEXT, " +
+                "password TEXT, " +
+                "bearerToken TEXT);");
 
             //"isLocked   INTEGER DEFAULT 1);");
 
