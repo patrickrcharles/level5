@@ -266,56 +266,6 @@ public class DBHelper : MonoBehaviour
     }
 
 
-    // insert current game's stats and score
-    public void InsertUser(DBUserModel user)
-    {
-        StartCoroutine(InsertUserCoroutine(user));
-    }
-
-    private IEnumerator InsertUserCoroutine(DBUserModel user)
-    {
-        yield return new WaitUntil(() => !databaseLocked);
-        databaseLocked = true;
-        try
-        {
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery1 =
-               "INSERT INTO User(userid, username,firstname, lastname, email, ipaddress, signupdate, lastlogin, password)  " +
-               "Values( '" + user.Userid
-               + "', '" + user.UserName
-               + "', '" + user.FirstName
-               + "', '" + user.LastName
-               + "','" + user.Email
-               + "','" + user.IpAddress
-               + "','" + user.SignUpDate
-               + "','" + user.LastLogin
-               + "','" + user.Password + "')";
-
-            Debug.Log(sqlQuery1);
-
-            dbcmd.CommandText = sqlQuery1;
-            IDataReader reader = dbcmd.ExecuteReader();
-            reader.Close();
-
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-
-            databaseLocked = false;
-        }
-        catch (Exception e)
-        {
-            DatabaseLocked = false;
-            Debug.Log(e);
-        }
-    }
-
     // add default cheerleader data from PREFABS to DATABASE
     public void InsertCheerleaderProfile(List<CheerleaderProfile> cheerleaderSelectedData)
     {
@@ -810,6 +760,118 @@ public class DBHelper : MonoBehaviour
         {
             DatabaseLocked = false;
             return null;
+        }
+    }
+
+
+    // insert current game's stats and score
+    public void InsertUser(DBUserModel user)
+    {
+        StartCoroutine(InsertUserCoroutine(user));
+    }
+
+
+    private IEnumerator InsertUserCoroutine(DBUserModel user)
+    {
+        yield return new WaitUntil(() => !databaseLocked);
+        databaseLocked = true;
+        try
+        {
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery1 =
+               "INSERT INTO User(userid, username,firstname, lastname, email, ipaddress, signupdate, lastlogin, password)  " +
+               "Values( '" + user.Userid
+               + "', '" + user.UserName
+               + "', '" + user.FirstName
+               + "', '" + user.LastName
+               + "','" + user.Email
+               + "','" + user.IpAddress
+               + "','" + user.SignUpDate
+               + "','" + user.LastLogin
+               + "','" + user.Password + "')";
+
+            Debug.Log(sqlQuery1);
+
+            dbcmd.CommandText = sqlQuery1;
+            IDataReader reader = dbcmd.ExecuteReader();
+            reader.Close();
+
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            DatabaseLocked = false;
+            Debug.Log(e);
+        }
+    }
+
+    // get user Data from Database
+    public List<DBUserModel> getUserProfileStats()
+    {
+        Debug.Log("getUserProfileStats()");
+
+        List<DBUserModel> userModel = new List<DBUserModel>();
+        try
+        {
+            DatabaseLocked = true;
+
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            if (!isTableEmpty(userTableName))
+            {
+                sqlQuery = "Select userid, username, firstname, lastname, email, ipaddress, signupdate, lastlogin, password,"
+                    + "bearerToken"
+                    + " From " + userTableName;
+
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    DBUserModel temp = new DBUserModel();
+
+                    temp.Userid = reader.GetInt32(0);
+                    temp.UserName = reader.GetString(1);
+                    temp.FirstName = reader.GetString(2);
+                    temp.LastName = reader.GetString(3);
+                    temp.Email = reader.GetString(4);
+                    temp.IpAddress = reader.GetString(5);
+                    temp.SignUpDate = reader.GetString(6);
+                    temp.LastLogin = reader.GetString(7);
+                    temp.Password = reader.GetString(8);
+                    temp.BearerToken = reader.GetString(9);
+
+                    userModel.Add(temp);
+                }
+                reader.Close();
+                reader = null;
+                dbcmd.Dispose();
+                dbcmd = null;
+                dbconn.Close();
+                dbconn = null;
+            }
+            databaseLocked = false;
+            return userModel;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error : " + e);
+            databaseLocked = false;
+            return new List<DBUserModel>();
         }
     }
     // update all time stats
