@@ -555,9 +555,9 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId > 6 && gameModeId <= 12)
         {
-            int minutes = Mathf.FloorToInt(counterTime / 60);
-            float seconds = (counterTime - (minutes * 60));
-            //displayText = "Your time to complete all shots was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
+            int minutes = Mathf.FloorToInt(basketBallStats.TimePlayed / 60);
+            float seconds = (basketBallStats.TimePlayed - (minutes * 60));
+            //displayText = "Your time was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
             displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
         }
         if (gameModeId == 14)
@@ -570,7 +570,7 @@ public class GameRules : MonoBehaviour
         //}
         if (gameModeId == 15 || gameModeId == 16 || gameModeId == 17 || gameModeId == 18 || gameModeId == 19)
         {
-            displayText = "You scored " + (basketBallStats.TotalPoints + basketBallStats.BonusPoints)+ " total points\n\n" + getStatsTotals();
+            displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         }
         if (gameModeId == 20)
         {
