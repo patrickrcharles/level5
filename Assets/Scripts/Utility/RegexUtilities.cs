@@ -13,7 +13,9 @@ namespace Assets.Scripts.Utility
         public static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
+            {
                 return false;
+            }
             try
             {
                 // Normalize the domain
