@@ -642,8 +642,8 @@ public class GameRules : MonoBehaviour
             //set counter timer
             float bonusTime = Timer.instance.Seconds * 0.5f;
 
-            Debug.Log("Timer.instance.Seconds : " + Timer.instance.Seconds);
-            Debug.Log("bonusTime : " + bonusTime);
+            //Debug.Log("Timer.instance.Seconds : " + Timer.instance.Seconds);
+            //Debug.Log("bonusTime : " + bonusTime);
 
             if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
             {
