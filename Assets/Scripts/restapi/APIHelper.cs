@@ -335,8 +335,7 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !apiLocked);
             apiLocked = true;
 
-            Debug.Log(user.SignUpDate);
-            Debug.Log(user.LastLogin);
+            int userid;
             // verify unique scoreid does NOT exist in database already
             if (!APIHelper.UserNameExists(user.UserName))
             {
@@ -363,6 +362,11 @@ namespace Assets.Scripts.restapi
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
+                        DBUserModel model = (DBUserModel)JsonConvert.DeserializeObject<DBUserModel>(result);
+                        userid = model.Userid;
+                        user.Userid = userid;
+                        Debug.Log("userid from api : " + userid);
+                        Debug.Log("userid going to db : " + user.Userid);
                     }
                 }
                 // on web exception
@@ -530,7 +534,7 @@ namespace Assets.Scripts.restapi
         }
 
         // check if username exists by hitting api at
-        // http://13.58.224.237/api/users/username/{username}
+        // http://13.58.224.237/api/users/username/{username}found
         // return true if status code == 200 ok
         // return false if status code != 200 ok
         public static bool UserNameExists(string username)
