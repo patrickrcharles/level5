@@ -26,7 +26,7 @@ public class APIConnector : MonoBehaviour
         testuser.UserName = "drblood";
         testuser.Password = "admin";
 
-        StartCoroutine(APIHelper.PostToken(testuser));
+        //StartCoroutine(APIHelper.PostToken(testuser));
         
         // check database for existing users
         // if true - offer option to load user

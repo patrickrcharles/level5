@@ -1,4 +1,5 @@
 ﻿
+using Assets.Scripts.restapi;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,6 +72,8 @@ public class StartManager : MonoBehaviour
 
     //version text
     private Text versionText;
+    [SerializeField]
+    private Text userNameText;
 
     //const object names
     private const string startButtonName = "press_start";
@@ -504,6 +507,26 @@ public class StartManager : MonoBehaviour
         initializeHardcoreOptionDisplay();
         setInitialGameOptions();
 
+        yield return new WaitUntil(() => UserAccountManager.instance != null);
+        yield return new WaitUntil(() => UserAccountManager.instance.UserAccountData != null);
+        if (UserAccountManager.instance.UserAccountData.Count > 0)
+        {
+            APIHelper.ApiLocked = true;
+            StartCoroutine( APIHelper.PostToken(UserAccountManager.instance.UserAccountData[1]) );
+
+            yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+            if (APIHelper.BearerToken != null)
+            {
+                userNameText.text = "username : " + GameOptions.userName + " connected";
+            }
+            if (APIHelper.BearerToken == null)
+            {
+                userNameText.text = "username : " + GameOptions.userName + " disconnected";
+            }
+        }
+
+
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
@@ -541,6 +564,7 @@ public class StartManager : MonoBehaviour
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
+        userNameText = GameObject.Find("username").GetComponent<Text>();
     }
 
     private void setInitialGameOptions()
@@ -908,12 +932,10 @@ public class StartManager : MonoBehaviour
             GameOptions.enemiesEnabled = true;
         }
 
-        if (!levelSelectedData[levelSelectedIndex].LevelHasTraffic) 
+        if (!levelSelectedData[levelSelectedIndex].LevelHasTraffic)
         {
             GameOptions.trafficEnabled = false;
         }
-
-        GameOptions.userName = "userNameTest";
 
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);

@@ -818,8 +818,6 @@ public class DBHelper : MonoBehaviour
     // get user Data from Database
     public List<DBUserModel> getUserProfileStats()
     {
-        Debug.Log("getUserProfileStats()");
-
         List<DBUserModel> userModel = new List<DBUserModel>();
         try
         {

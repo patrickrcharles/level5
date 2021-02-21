@@ -35,6 +35,7 @@ namespace Assets.Scripts.restapi
         private static string bearerToken;
 
         public static string BearerToken { get => bearerToken; }
+        public static bool ApiLocked { get => apiLocked; set => apiLocked = value; }
 
         // -------------------------------------- HTTTP POST Highscore -------------------------------------------
 
@@ -641,11 +642,8 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             // wait for api operations
-            yield return new WaitUntil(() => !apiLocked);
-            apiLocked = true;
-
-            Debug.Log(dBUserModel.UserName);
-            Debug.Log(dBUserModel.Password);
+            //yield return new WaitUntil(() => !apiLocked);
+            //apiLocked = true;
 
             // verify unique scoreid does NOT exist in database already
             //if (!APIHelper.UserNameExists(dBUserModel.UserName))
@@ -675,7 +673,7 @@ namespace Assets.Scripts.restapi
                     var result = streamReader.ReadToEnd();
                     bearerToken = result;
                     //Debug.Log(result);
-                    Debug.Log(bearerToken);
+                    //Debug.Log(bearerToken);
                 }
             }
             // on web exception
@@ -708,20 +706,7 @@ namespace Assets.Scripts.restapi
 
             yield return new WaitUntil(() => !apiLocked);
 
-            Debug.Log(APIHelper.bearerToken);
-
-            //List<DBHighScoreModel> list = APIHelper.GetHighscoreByScoreid("7085C280BE1615220219571de8e03a50404e1b686d125c8919b9a3c47b7d9e3");
-
-            //Debug.Log(list[0].Character);
-            //Debug.Log(list[0].Level);
-            //Debug.Log(list[0].TotalPoints);
-            //Debug.Log(list[0].MaxShotMade);
-            //Debug.Log(list[0].MaxShotAtt);
-            //}
-            //else
-            //{
-            //    Debug.Log(" unathorized : " + dBUserModel.UserName);
-            //}
+            //Debug.Log(APIHelper.bearerToken);
         }
     }
 }

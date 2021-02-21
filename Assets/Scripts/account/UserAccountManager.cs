@@ -31,6 +31,17 @@ public class UserAccountManager : MonoBehaviour
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
         userAccountData = DBHelper.instance.getUserProfileStats();
+
+        yield return new WaitUntil(() => GameObject.FindObjectOfType<GameOptions>() != null);
+
+        if (userAccountData.Count > 0)
+        {
+            GameOptions.userName = userAccountData[1].UserName;
+        }
+        else
+        {
+            GameOptions.userName = "No User Accounts found. Create an account";
+        }
     }
     public List<DBUserModel> UserAccountData { get => userAccountData; }
 }

@@ -97,34 +97,6 @@ public class LoginManager : MonoBehaviour
         lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
         messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageDisplay.text = "";
-
-        //user = new DBUserModel();
-        //user.UserName = "drblood";// + RandomString(8);
-        //user.FirstName = "testUser";
-        //user.LastName = "testUser";
-        //user.Password = "testUser";
-        //user.Email = "testUser@cxzxz.cnet";
-        //user.IpAddress = "testUser";
-        //user.SignUpDate = DateTime.Now.ToString();
-        //user.LastLogin = DateTime.Now.ToString();
-        //Debug.Log("LoginManager Awake()");
-        //Debug.Log("testUser.Email : " + testuser.Email);
-        //Debug.Log("testUser.UserName : " + testuser.UserName);
-
-        //currentSelectedObject = EventSystem.current.currentSelectedGameObject;
-
-        // check if user exists in database
-        // display users in database
-        // display users available
-        // load user from database
-        // insert user data into user model
-
-        // login / get token
-
-        // else
-        //create new user
-        
-
     }
 
     void Update()
@@ -205,14 +177,19 @@ public class LoginManager : MonoBehaviour
         {
             errorMessageEmail += "\nemail address is invalid format";
         }
+        else
+        {
+            errorMessageEmail += "\nemail address is valid format";
+        }
         if (string.IsNullOrWhiteSpace(emailInput))
         {
             errorMessageEmail += "\nemail address is empty or contains white space";
         }
         else
         {
-            errorMessageEmail += "\nemail address not empty and doesnt contain whitespace";
+            errorMessageEmail += "\nemail address : other problem";
         }
+
         //setErrorMessage();
         //messageDisplay.text = errorMessageEmail;
         if (string.IsNullOrEmpty(errorMessageUserName))
@@ -297,6 +274,33 @@ public class LoginManager : MonoBehaviour
             apiConnector.CreateNewUser(user);
         }
     }
+
+    public void loginUser()
+    {
+        //checkEmailAddressFormat();
+        //checkUserName();
+        //messageDisplay.text = getCheckEmailAddress() + getCheckUserName();
+
+        //if (userNameIsValid && emailAddressIsValid)
+        //{
+        //    DBUserModel user = new DBUserModel();
+
+        //    user.Email = emailInput;
+        //    user.UserName = userNameInput;
+        //    user.Password = passwordInput;
+        //    user.FirstName = firstNameInput;
+        //    user.LastName = lastNameInput;
+        //    user.IpAddress = GetExternalIpAdress();
+        //    user.SignUpDate = DateTime.Now.ToString();
+        //    user.LastLogin = DateTime.Now.ToString();
+
+        //    apiConnector.CreateNewUser(user);
+        //}
+        Debug.Log("loginUser()");
+        Debug.Log("----- check user valid / get token");
+        Debug.Log("----- set user loggen in /load to gameoptions.username");
+    }
+
 
 
     private string RandomString(int length)
