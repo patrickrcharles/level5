@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 using Random = System.Random;
 
@@ -14,6 +15,12 @@ public class PlayerCollisions : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(GetPlayerObjects());
+    }
+
+    IEnumerator GetPlayerObjects()
+    {
+        yield return new WaitUntil(() => GameLevelManager.instance.PlayerState != null);
         playerState = GameLevelManager.instance.PlayerState;
         playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
     }
@@ -25,7 +32,7 @@ public class PlayerCollisions : MonoBehaviour
             && playerState.currentState != playerState.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
-            StartCoroutine( PlayerDunk.instance.TriggerDunkSequence());
+            StartCoroutine(PlayerDunk.instance.TriggerDunkSequence());
         }
         // player sometimes gets stuck in inair dunk state
         if (gameObject.CompareTag("playerHitbox")
@@ -40,7 +47,7 @@ public class PlayerCollisions : MonoBehaviour
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
         && !playerState.KnockedDown
         && !playerState.TakeDamage
-        && (GameOptions.enemiesEnabled || other.transform.parent.name.Contains("rake"))
+        && (GameOptions.enemiesEnabled || GameOptions.trafficEnabled ||other.transform.parent.name.Contains("rake"))
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
         && !locked)
