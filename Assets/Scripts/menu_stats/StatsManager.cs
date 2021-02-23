@@ -25,6 +25,8 @@ public class StatsManager : MonoBehaviour
     const string modeSelectButtonOnlineName = "mode_select_name_online";
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
+    const string pageNumberButtonName = "page_number";
+
     // table names
     const string highScoreTableName = "high_scores_table";
     const string allTimeTableName = "all_time_table";
@@ -41,6 +43,8 @@ public class StatsManager : MonoBehaviour
     Text modeSelectButtonHardcoreText;
     [SerializeField]
     Text modeSelectButtonOnlineText;
+    [SerializeField]
+    Text pageNumberSelectButtonText;
 
     // list of high score rows
     [SerializeField]
@@ -99,7 +103,7 @@ public class StatsManager : MonoBehaviour
     //private const string enemySelectButtonName = "enemies_name_button";
     private const string enemySelectValueName = "enemies_value_button";
 
-    //public int numResults;
+    public int numResults;
 
     PlayerControls controls;
 
@@ -174,11 +178,6 @@ public class StatsManager : MonoBehaviour
                     trafficEnabled,
                     enemiesEnabled,
                     highScoresResultsPageNumber);
-
-                //numResults = 
-                //    DBHelper.instance.getNumberOfResults(field,
-                //    modesList[defaultModeSelectedIndex].modeSelectedId,
-                //    false, highScoresResultsPageNumber);
             }
             catch (Exception e)
             {
@@ -223,6 +222,8 @@ public class StatsManager : MonoBehaviour
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
         initializeEnemyOptionDisplay();
+        initializePageNumberDisplay();
+        changeHighScoreDataDisplay();
     }
 
     // Update is called once per frame
@@ -491,9 +492,9 @@ public class StatsManager : MonoBehaviour
                     trafficEnabled,
                     enemiesEnabled,
                     highScoresResultsPageNumber);
-                //numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
-                //Debug.Log("numResults for modeId: "+ modesList[currentModeSelectedIndex].modeSelectedId +  " : "+ numResults);
-
+                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
+                Debug.Log("numResults for modeId: " + modesList[currentModeSelectedIndex].modeSelectedId + " : " + numResults);
+                //Debug.Log("highScoreRowsDataList.Count : " + highScoreRowsDataList.Count);
                 // updates row with new data
                 for (int i = 0; i < highScoreRowsDataList.Count; i++)
                 {
@@ -507,7 +508,7 @@ public class StatsManager : MonoBehaviour
                     index++;
                 }
                 // empty out rows if scores do not exist or there isnt at least 10
-                for (int i = index; i < highScoreRowsObjectsList.Count; i++)
+                for (int i = index; i < highScoreRowsDataList.Count; i++)
                 {
                     // set data for prefabs from list retrieved from database
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = "";
@@ -517,6 +518,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
                 }
+                initializePageNumberDisplay();
             }
             catch (Exception e)
             {
@@ -637,19 +639,34 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    public void initializePageNumberDisplay()
+    {
+        int numPages;
+        if ((numResults % 10) == 0)
+        {
+            numPages = numResults / 10 ;
+        }
+        else
+        {
+            numPages = (numResults / 10) + 1;
+        }
+
+        pageNumberSelectButtonText.text = "page " + (highScoresResultsPageNumber + 1) + " / " + numPages;
+    }
+
     public void changeSelectedTrafficOption()
     {
         trafficEnabled = !trafficEnabled;
     }
 
-    public void changeSelectedHardcoreOption()
-    {
-        hardcoreEnabled = !hardcoreEnabled;
-    }
-
     public void changeSelectedEnemiesOption()
     {
         enemiesEnabled = !enemiesEnabled;
+    }
+
+    public void changeSelectedHardcoreOption()
+    {
+        hardcoreEnabled = !hardcoreEnabled;
     }
 
     public static string ModeSelectButtonName => modeSelectButtonName;
