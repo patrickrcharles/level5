@@ -25,7 +25,7 @@ public class StatsManager : MonoBehaviour
     const string modeSelectButtonOnlineName = "mode_select_name_online";
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
-    const string pageNumberButtonName = "page_number";
+    const string pageNumberLocalButtonName = "page_number_local";
 
     // table names
     const string highScoreTableName = "high_scores_table";
@@ -75,6 +75,7 @@ public class StatsManager : MonoBehaviour
     int currentModeSelectedIndex;
 
     // high score results pagination
+    [SerializeField]
     int highScoresResultsPageNumber;
 
     // high score rows
@@ -299,6 +300,7 @@ public class StatsManager : MonoBehaviour
                 previousHighlightedButton = currentHighlightedButton;
 
                 buttonPressed = true;
+                highScoresResultsPageNumber = 0;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 changeHighScoreDataDisplay();
@@ -311,6 +313,7 @@ public class StatsManager : MonoBehaviour
                 previousHighlightedButton = currentHighlightedButton;
 
                 buttonPressed = true;
+                highScoresResultsPageNumber = 0;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 changeHighScoreDataDisplay();
@@ -322,6 +325,7 @@ public class StatsManager : MonoBehaviour
         // high scores table button selected
         if (currentHighlightedButton.Equals(modeSelectButtonOnlineName))
         {
+
             if (previousHighlightedButton != modeSelectButtonOnlineName)
             {
                 changeHighScoreDataDisplayOnline();
@@ -337,6 +341,7 @@ public class StatsManager : MonoBehaviour
 
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
+                highScoresResultsPageNumber = 0;
                 //save previous button
                 previousHighlightedButton = currentHighlightedButton;
 
@@ -349,6 +354,7 @@ public class StatsManager : MonoBehaviour
 
             if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
+                highScoresResultsPageNumber = 0;
                 //save previous button
                 previousHighlightedButton = currentHighlightedButton;
 
@@ -381,6 +387,22 @@ public class StatsManager : MonoBehaviour
             {
                 buttonPressed = true;
                 loadMainMenu(mainMenuSceneName);
+                buttonPressed = false;
+            }
+        }
+        // main menu button selected
+        if (currentHighlightedButton.Equals(pageNumberLocalButtonName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Left.triggered && !buttonPressed)
+            {
+                buttonPressed = true;
+                decreaseLocalResultsPageNumber();
+                buttonPressed = false;
+            }
+            if (controls.UINavigation.Right.triggered && !buttonPressed)
+            {
+                buttonPressed = true;
+                increaseLocalResultsPageNumber();
                 buttonPressed = false;
             }
         }
@@ -591,7 +613,7 @@ public class StatsManager : MonoBehaviour
                         highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
                     }
                 }
-                //onlineLoaded = true;
+
             }
             catch (Exception e)
             {
@@ -667,6 +689,55 @@ public class StatsManager : MonoBehaviour
     public void changeSelectedHardcoreOption()
     {
         hardcoreEnabled = !hardcoreEnabled;
+    }
+
+    public void increaseLocalResultsPageNumber()
+    {
+        int numPages;
+        if ((numResults % 10) == 0)
+        {
+            numPages = numResults / 10;
+        }
+        else
+        {
+            numPages = (numResults / 10) + 1;
+        }
+        // if can increase page number of results, do so
+        if((highScoresResultsPageNumber + 2) <= numPages)
+        {
+            highScoresResultsPageNumber++;
+            initializePageNumberDisplay();
+        }
+        else
+        {
+            highScoresResultsPageNumber = 0; 
+            initializePageNumberDisplay();
+        }
+        changeHighScoreDataDisplay();
+    }
+    public void decreaseLocalResultsPageNumber()
+    {
+        int numPages;
+        if ((numResults % 10) == 0)
+        {
+            numPages = numResults / 10;
+        }
+        else
+        {
+            numPages = (numResults / 10) + 1;
+        }
+        // if can increase page number of results, do so
+        if ((highScoresResultsPageNumber-1) >= 0)
+        {
+            highScoresResultsPageNumber--;
+            initializePageNumberDisplay();
+        }
+        else
+        {
+            highScoresResultsPageNumber = numPages-1;
+            initializePageNumberDisplay();
+        }
+        changeHighScoreDataDisplay();
     }
 
     public static string ModeSelectButtonName => modeSelectButtonName;
