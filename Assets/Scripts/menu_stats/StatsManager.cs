@@ -21,11 +21,12 @@ public class StatsManager : MonoBehaviour
     //const string scoreOptionButtonName = "score_options";
     //const string highscoreSelectButtonName = "high_score_select";
     const string modeSelectButtonName = "mode_select_name";
-    const string modeSelectButtonHardcoreName = "mode_select_name_hardcore";
+    //const string modeSelectButtonHardcoreName = "mode_select_name_hardcore";
     const string modeSelectButtonOnlineName = "mode_select_name_online";
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
     const string pageNumberLocalButtonName = "page_number_local";
+    const string pageNumberOnlineButtonName = "page_number_online";
 
     // table names
     const string highScoreTableName = "high_scores_table";
@@ -44,7 +45,9 @@ public class StatsManager : MonoBehaviour
     [SerializeField]
     Text modeSelectButtonOnlineText;
     [SerializeField]
-    Text pageNumberSelectButtonText;
+    Text pageNumberLocalSelectButtonText;
+    [SerializeField]
+    Text pageNumberOnlineSelectButtonText;
 
     // list of high score rows
     [SerializeField]
@@ -76,7 +79,9 @@ public class StatsManager : MonoBehaviour
 
     // high score results pagination
     [SerializeField]
-    int highScoresResultsPageNumber;
+    int localResultsPageNumber;
+    [SerializeField]
+    int onlineResultsPageNumber;
 
     // high score rows
     const string highScoreRowPrefabPath = "Prefabs/stats/highScoreRow";
@@ -104,7 +109,8 @@ public class StatsManager : MonoBehaviour
     //private const string enemySelectButtonName = "enemies_name_button";
     private const string enemySelectValueName = "enemies_value_button";
 
-    public int numResults;
+    public int numLocalResults;
+    public int numOnlineResults;
 
     PlayerControls controls;
 
@@ -178,7 +184,7 @@ public class StatsManager : MonoBehaviour
                     hardcoreEnabled,
                     trafficEnabled,
                     enemiesEnabled,
-                    highScoresResultsPageNumber);
+                    localResultsPageNumber);
             }
             catch (Exception e)
             {
@@ -191,7 +197,8 @@ public class StatsManager : MonoBehaviour
     private void Start()
     {
         // default page number value, start on first page
-        highScoresResultsPageNumber = 0;
+        localResultsPageNumber = 0;
+        onlineResultsPageNumber = 0;
 
         AnaylticsManager.MenuStatsLoaded();
 
@@ -223,8 +230,10 @@ public class StatsManager : MonoBehaviour
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
         initializeEnemyOptionDisplay();
-        initializePageNumberDisplay();
+        initializeLocalPageNumberDisplay();
+        initializeOnlinePageNumberDisplay();
         changeHighScoreDataDisplay();
+        changeHighScoreDataDisplayOnline();
     }
 
     // Update is called once per frame
@@ -300,7 +309,7 @@ public class StatsManager : MonoBehaviour
                 previousHighlightedButton = currentHighlightedButton;
 
                 buttonPressed = true;
-                highScoresResultsPageNumber = 0;
+                localResultsPageNumber = 0;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("left");
                 changeHighScoreDataDisplay();
@@ -313,7 +322,7 @@ public class StatsManager : MonoBehaviour
                 previousHighlightedButton = currentHighlightedButton;
 
                 buttonPressed = true;
-                highScoresResultsPageNumber = 0;
+                localResultsPageNumber = 0;
                 // change selected mode and display data based on mode selected
                 changeSelectedMode("right");
                 changeHighScoreDataDisplay();
@@ -341,7 +350,7 @@ public class StatsManager : MonoBehaviour
 
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
-                highScoresResultsPageNumber = 0;
+                onlineResultsPageNumber = 0;
                 //save previous button
                 previousHighlightedButton = currentHighlightedButton;
 
@@ -354,7 +363,7 @@ public class StatsManager : MonoBehaviour
 
             if (controls.UINavigation.Right.triggered && !buttonPressed)
             {
-                highScoresResultsPageNumber = 0;
+                onlineResultsPageNumber = 0;
                 //save previous button
                 previousHighlightedButton = currentHighlightedButton;
 
@@ -403,6 +412,22 @@ public class StatsManager : MonoBehaviour
             {
                 buttonPressed = true;
                 increaseLocalResultsPageNumber();
+                buttonPressed = false;
+            }
+        }
+        // main menu button selected
+        if (currentHighlightedButton.Equals(pageNumberOnlineButtonName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Left.triggered && !buttonPressed)
+            {
+                buttonPressed = true;
+                decreaseOnlineResultsPageNumber();
+                buttonPressed = false;
+            }
+            if (controls.UINavigation.Right.triggered && !buttonPressed)
+            {
+                buttonPressed = true;
+                increaseOnlineResultsPageNumber();
                 buttonPressed = false;
             }
         }
@@ -513,9 +538,9 @@ public class StatsManager : MonoBehaviour
                     hardcoreEnabled,
                     trafficEnabled,
                     enemiesEnabled,
-                    highScoresResultsPageNumber);
-                numResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, highScoresResultsPageNumber);
-                Debug.Log("numResults for modeId: " + modesList[currentModeSelectedIndex].modeSelectedId + " : " + numResults);
+                    localResultsPageNumber);
+                numLocalResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, localResultsPageNumber);
+                Debug.Log("numResults for modeId: " + modesList[currentModeSelectedIndex].modeSelectedId + " : " + numLocalResults);
                 //Debug.Log("highScoreRowsDataList.Count : " + highScoreRowsDataList.Count);
                 // updates row with new data
                 for (int i = 0; i < highScoreRowsDataList.Count; i++)
@@ -540,7 +565,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
                 }
-                initializePageNumberDisplay();
+                initializeLocalPageNumberDisplay();
             }
             catch (Exception e)
             {
@@ -564,10 +589,19 @@ public class StatsManager : MonoBehaviour
 
                 List<StatsTableHighScoreRow> highScoreRowList = new List<StatsTableHighScoreRow>();
 
-                highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
+                numOnlineResults = APIHelper.GetHighscoreCountByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
                     Convert.ToInt32(enemiesEnabled));
+
+                Debug.Log("----- results from apicount function : " + numOnlineResults);
+
+                highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
+                    Convert.ToInt32(hardcoreEnabled),
+                    Convert.ToInt32(trafficEnabled),
+                    Convert.ToInt32(enemiesEnabled),
+                    onlineResultsPageNumber,
+                    10);
 
                 Debug.Log("***** hardcore " + Convert.ToInt32(hardcoreEnabled));
                 Debug.Log("***** traffic " + Convert.ToInt32(trafficEnabled));
@@ -590,7 +624,6 @@ public class StatsManager : MonoBehaviour
 
                     // set data for prefabs from list retrieved from database
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = highScoreRowList[i].UserName;
-                    //highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = "userNamePlaceholder";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = highScoreRowList[i].Score;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowList[i].Character;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowList[i].Level;
@@ -613,7 +646,7 @@ public class StatsManager : MonoBehaviour
                         highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
                     }
                 }
-
+                initializeOnlinePageNumberDisplay();
             }
             catch (Exception e)
             {
@@ -661,19 +694,33 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    public void initializePageNumberDisplay()
+    public void initializeLocalPageNumberDisplay()
     {
         int numPages;
-        if ((numResults % 10) == 0)
+        if ((numLocalResults % 10) == 0)
         {
-            numPages = numResults / 10 ;
+            numPages = numLocalResults / 10;
         }
         else
         {
-            numPages = (numResults / 10) + 1;
+            numPages = (numLocalResults / 10) + 1;
         }
 
-        pageNumberSelectButtonText.text = "page " + (highScoresResultsPageNumber + 1) + " / " + numPages;
+        pageNumberLocalSelectButtonText.text = "page " + (localResultsPageNumber + 1) + " / " + numPages;
+    }
+    public void initializeOnlinePageNumberDisplay()
+    {
+        int numPages;
+        if ((numOnlineResults % 10) == 0)
+        {
+            numPages = numOnlineResults / 10;
+        }
+        else
+        {
+            numPages = (numOnlineResults / 10) + 1;
+        }
+
+        pageNumberOnlineSelectButtonText.text = "page " + (onlineResultsPageNumber + 1) + " / " + numPages;
     }
 
     public void changeSelectedTrafficOption()
@@ -694,55 +741,105 @@ public class StatsManager : MonoBehaviour
     public void increaseLocalResultsPageNumber()
     {
         int numPages;
-        if ((numResults % 10) == 0)
+        if ((numLocalResults % 10) == 0)
         {
-            numPages = numResults / 10;
+            numPages = numLocalResults / 10;
         }
         else
         {
-            numPages = (numResults / 10) + 1;
+            numPages = (numLocalResults / 10) + 1;
         }
         // if can increase page number of results, do so
-        if((highScoresResultsPageNumber + 2) <= numPages)
+        if ((localResultsPageNumber + 2) <= numPages)
         {
-            highScoresResultsPageNumber++;
-            initializePageNumberDisplay();
+            localResultsPageNumber++;
+            initializeLocalPageNumberDisplay();
         }
         else
         {
-            highScoresResultsPageNumber = 0; 
-            initializePageNumberDisplay();
+            localResultsPageNumber = 0;
+            initializeLocalPageNumberDisplay();
         }
         changeHighScoreDataDisplay();
     }
     public void decreaseLocalResultsPageNumber()
     {
         int numPages;
-        if ((numResults % 10) == 0)
+        if ((numLocalResults % 10) == 0)
         {
-            numPages = numResults / 10;
+            numPages = numLocalResults / 10;
         }
         else
         {
-            numPages = (numResults / 10) + 1;
+            numPages = (numLocalResults / 10) + 1;
         }
         // if can increase page number of results, do so
-        if ((highScoresResultsPageNumber-1) >= 0)
+        if ((localResultsPageNumber - 1) >= 0)
         {
-            highScoresResultsPageNumber--;
-            initializePageNumberDisplay();
+            localResultsPageNumber--;
+            initializeLocalPageNumberDisplay();
         }
         else
         {
-            highScoresResultsPageNumber = numPages-1;
-            initializePageNumberDisplay();
+            localResultsPageNumber = numPages - 1;
+            initializeLocalPageNumberDisplay();
         }
         changeHighScoreDataDisplay();
     }
+
+    public void increaseOnlineResultsPageNumber()
+    {
+        int numPages;
+        if ((numOnlineResults % 10) == 0)
+        {
+            numPages = numOnlineResults / 10;
+        }
+        else
+        {
+            numPages = (numOnlineResults / 10) + 1;
+        }
+        // if can increase page number of results, do so
+        if ((onlineResultsPageNumber + 2) <= numPages)
+        {
+            onlineResultsPageNumber++;
+            initializeOnlinePageNumberDisplay();
+        }
+        else
+        {
+            onlineResultsPageNumber = 0;
+            initializeOnlinePageNumberDisplay();
+        }
+        changeHighScoreDataDisplayOnline();
+    }
+    public void decreaseOnlineResultsPageNumber()
+    {
+        int numPages;
+        if ((numOnlineResults % 10) == 0)
+        {
+            numPages = numOnlineResults / 10;
+        }
+        else
+        {
+            numPages = (numOnlineResults / 10) + 1;
+        }
+        // if can increase page number of results, do so
+        if ((onlineResultsPageNumber - 1) >= 0)
+        {
+            onlineResultsPageNumber--;
+            initializeOnlinePageNumberDisplay();
+        }
+        else
+        {
+            onlineResultsPageNumber = numPages - 1;
+            initializeOnlinePageNumberDisplay();
+        }
+        changeHighScoreDataDisplayOnline();
+    }
+
+
 
     public static string ModeSelectButtonName => modeSelectButtonName;
     public static string AlltimeSelectButtonName => alltimeSelectButtonName;
     public static string MainMenuButtonName => mainMenuButtonName;
     public static string MainMenuSceneName => mainMenuSceneName;
-    public static string ModeSelectButtonHardcoreName => modeSelectButtonHardcoreName;
 }

@@ -135,12 +135,12 @@ public class TouchInputStatsScreenController : MonoBehaviour
             //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay();
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        {
-            StatsManager.instance.changeSelectedMode("right");
-            //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
-        }
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        //{
+        //    StatsManager.instance.changeSelectedMode("right");
+        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
+        //    StatsManager.instance.changeHighScoreDataDisplay();
+        //}
 
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
@@ -178,13 +178,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        {
-            StatsManager.instance.changeSelectedMode("right");
-            //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
-            buttonPressed = true;
-        }
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        //{
+        //    StatsManager.instance.changeSelectedMode("right");
+        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
+        //    StatsManager.instance.changeHighScoreDataDisplay();
+        //    buttonPressed = true;
+        //}
         buttonPressed = false;
     }
     private void swipeDownOnOption()
@@ -200,13 +200,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        {
-            StatsManager.instance.changeSelectedMode("left");
-            //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
-            buttonPressed = true;
-        }
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+        //{
+        //    StatsManager.instance.changeSelectedMode("left");
+        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
+        //    StatsManager.instance.changeHighScoreDataDisplay();
+        //    buttonPressed = true;
+        //}
         buttonPressed = false;
     }
 }
