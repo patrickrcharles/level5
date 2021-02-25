@@ -132,7 +132,6 @@ public class UserAccountManager : MonoBehaviour
     }
     IEnumerator CreateUserButtons()
     {
-        //Debug.Log("CreateUserButtons");
         yield return new WaitUntil(() => DBHelper.instance != null);
         // for each, create empty object
         // add text + button that is clickable
