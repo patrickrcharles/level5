@@ -3,7 +3,7 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOptions : MonoBehaviour
+public static class GameOptions 
 {
     static public string applicationVersion;
     static public string operatingSystemVersion;
@@ -80,57 +80,58 @@ public class GameOptions : MonoBehaviour
 
     static public bool levelRequiresTimeOfDay = true;
     static public string userName;
+    static public string bearerToken;
 
     //private void Awake()
     //{
     //    hardcoreModeEnabled = true;
     //}
 
-    void Start()
-    {
-        levelSelectedName = SceneManager.GetActiveScene().name;
-        applicationVersion = Application.version;
+    //void Start()
+    //{
+    //    levelSelectedName = SceneManager.GetActiveScene().name;
+    //    applicationVersion = Application.version;
 
-        if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
-        {
-            if (Environment.Is64BitProcess)
-            {
-                //Debug.Log("ARM64");
-                GameOptions.architectureIs32bit = false;
-                GameOptions.architectureIs64bit = true;
-                GameOptions.architectureIsAndroid = true;
-            }
+    //    if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
+    //    {
+    //        if (Environment.Is64BitProcess)
+    //        {
+    //            //Debug.Log("ARM64");
+    //            GameOptions.architectureIs32bit = false;
+    //            GameOptions.architectureIs64bit = true;
+    //            GameOptions.architectureIsAndroid = true;
+    //        }
 
-            else
-            {
-                //Debug.Log("ARM");
-                GameOptions.architectureIs32bit = true;
-                GameOptions.architectureIs64bit = false;
-                GameOptions.architectureIsAndroid = true;
-            }
-        }
-        else
-        {
-            // Must be in the x86 family.
-            if (Environment.Is64BitProcess)
-            {
-                //Debug.Log("x86_64");
-                GameOptions.architectureIs32bit = false;
-                GameOptions.architectureIs64bit = true;
-                GameOptions.architectureIsAndroid = false;
-            }
-            else
-            {
-                //Debug.Log("x86");
-                GameOptions.architectureIs32bit = true;
-                GameOptions.architectureIs64bit = false;
-                GameOptions.architectureIsAndroid = false;
-            }
-            //Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
-            //Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
-            //Debug.Log("android : " + GameOptions.architectureIsAndroid);
-        }
-        architectureInfoLoaded = true;
-        //Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
-    }
+    //        else
+    //        {
+    //            //Debug.Log("ARM");
+    //            GameOptions.architectureIs32bit = true;
+    //            GameOptions.architectureIs64bit = false;
+    //            GameOptions.architectureIsAndroid = true;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // Must be in the x86 family.
+    //        if (Environment.Is64BitProcess)
+    //        {
+    //            //Debug.Log("x86_64");
+    //            GameOptions.architectureIs32bit = false;
+    //            GameOptions.architectureIs64bit = true;
+    //            GameOptions.architectureIsAndroid = false;
+    //        }
+    //        else
+    //        {
+    //            //Debug.Log("x86");
+    //            GameOptions.architectureIs32bit = true;
+    //            GameOptions.architectureIs64bit = false;
+    //            GameOptions.architectureIsAndroid = false;
+    //        }
+    //        //Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
+    //        //Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
+    //        //Debug.Log("android : " + GameOptions.architectureIsAndroid);
+    //    }
+    //    architectureInfoLoaded = true;
+    //    //Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
+    //}
 }

@@ -56,7 +56,7 @@ public class LoadManager : MonoBehaviour
     {
         instance = this;
 
-        StartCoroutine(LoadAllData());
+        LoadAllData();
         //StartCoroutine(verifyCharacterProfileTable());
         //StartCoroutine(verifyCheerleaderProfileTable());
         //StartCoroutine(LoadGameData());
@@ -80,9 +80,9 @@ public class LoadManager : MonoBehaviour
         }
     }
 
-    IEnumerator LoadAllData()
+    public void LoadAllData()
     {
-        yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
+        //yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
         //Debug.Log("LoadAllData : architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
         StartCoroutine(verifyCharacterProfileTable());
         StartCoroutine(verifyCheerleaderProfileTable());

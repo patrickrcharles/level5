@@ -730,8 +730,9 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     bearerToken = result;
-                    //Debug.Log(result);
-                    //Debug.Log(bearerToken);
+                    GameOptions.bearerToken = APIHelper.BearerToken;
+                    Debug.Log("api : result :: "+ result);
+                    Debug.Log("api : token :: " + bearerToken);
                 }
             }
             // on web exception

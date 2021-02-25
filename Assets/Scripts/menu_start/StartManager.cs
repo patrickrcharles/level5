@@ -13,19 +13,15 @@ public class StartManager : MonoBehaviour
 {
     [SerializeField]
     public string currentHighlightedButton;
-
     //list of all shooter profiles with player data
     [SerializeField]
     private List<CharacterProfile> playerSelectedData;
-
     // list off cheerleader profile data
     [SerializeField]
     private List<CheerleaderProfile> cheerleaderSelectedData;
-
     // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
-
     //mode selected objects
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
@@ -206,6 +202,7 @@ public class StartManager : MonoBehaviour
     {
         AnaylticsManager.MenuStartLoaded();
         StartCoroutine(InitializeDisplay());
+        //Debug.Log("startscreen : username : " + GameOptions.userName);
     }
 
 
@@ -507,26 +504,35 @@ public class StartManager : MonoBehaviour
         initializeHardcoreOptionDisplay();
         setInitialGameOptions();
 
-        yield return new WaitUntil(() => UserAccountManager.instance != null);
-        yield return new WaitUntil(() => UserAccountManager.instance.UserAccountData != null);
-        if (UserAccountManager.instance.UserAccountData.Count > 0)
+        //yield return new WaitUntil(() => UserAccountManager.instance != null);
+        //yield return new WaitUntil(() => UserAccountManager.instance.UserAccountData != null);
+        Debug.Log("startscreen : username : " + GameOptions.userName);
+        Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
+        if (APIHelper.BearerToken != null)
         {
-            APIHelper.ApiLocked = true;
-            StartCoroutine( APIHelper.PostToken(UserAccountManager.instance.UserAccountData[1]) );
-
-            yield return new WaitUntil(() => !APIHelper.ApiLocked);
-
-            if (APIHelper.BearerToken != null)
-            {
-                userNameText.text = "username : " + GameOptions.userName + " connected";
-            }
-            if (APIHelper.BearerToken == null)
-            {
-                userNameText.text = "username : " + GameOptions.userName + " disconnected";
-            }
+            userNameText.text = "username : " + GameOptions.userName + " connected";
+        }
+        if (APIHelper.BearerToken == null)
+        {
+            userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
 
+        //if (UserAccountManager.instance.UserAccountData.Count > 0)
+        //{
+        //    //APIHelper.ApiLocked = true;
+        //    //StartCoroutine( APIHelper.PostToken(UserAccountManager.instance.UserAccountData[1]) );
 
+        //    //yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        //    Debug.Log("startscreen : username : " + GameOptions.userName);
+        //    if (APIHelper.BearerToken != null)
+        //    {
+        //        userNameText.text = "username : " + GameOptions.userName + " connected";
+        //    }
+        //    if (APIHelper.BearerToken == null)
+        //    {
+        //        userNameText.text = "username : " + GameOptions.userName + " disconnected";
+        //    }
+        //}
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
