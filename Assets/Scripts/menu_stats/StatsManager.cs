@@ -539,9 +539,10 @@ public class StatsManager : MonoBehaviour
                     trafficEnabled,
                     enemiesEnabled,
                     localResultsPageNumber);
+
+                // get # of results for pageination display
                 numLocalResults = DBHelper.instance.getNumberOfResults(field, modesList[currentModeSelectedIndex].modeSelectedId, hardcoreEnabled, localResultsPageNumber);
-                Debug.Log("numResults for modeId: " + modesList[currentModeSelectedIndex].modeSelectedId + " : " + numLocalResults);
-                //Debug.Log("highScoreRowsDataList.Count : " + highScoreRowsDataList.Count);
+
                 // updates row with new data
                 for (int i = 0; i < highScoreRowsDataList.Count; i++)
                 {
@@ -577,7 +578,8 @@ public class StatsManager : MonoBehaviour
 
     public void changeHighScoreDataDisplayOnline()
     {
-        if (GameObject.Find("restapi") != null)
+        // if not free play
+        if (GameObject.Find("restapi") != null )
         {
             try
             {
@@ -589,13 +591,13 @@ public class StatsManager : MonoBehaviour
 
                 List<StatsTableHighScoreRow> highScoreRowList = new List<StatsTableHighScoreRow>();
 
+                // # of results for pagination
                 numOnlineResults = APIHelper.GetHighscoreCountByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
                     Convert.ToInt32(enemiesEnabled));
 
-                Debug.Log("----- results from apicount function : " + numOnlineResults);
-
+                // scores got display
                 highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
@@ -603,11 +605,8 @@ public class StatsManager : MonoBehaviour
                     onlineResultsPageNumber,
                     10);
 
-                Debug.Log("***** hardcore " + Convert.ToInt32(hardcoreEnabled));
-                Debug.Log("***** traffic " + Convert.ToInt32(trafficEnabled));
-                Debug.Log("***** enemies " + Convert.ToInt32(enemiesEnabled));
-
                 int rowCount;
+                // if list  < 10 AND not empty
                 if (highScoreRowList.Count < 10 && highScoreRowList != null)
                 {
                     rowCount = highScoreRowList.Count;
@@ -618,20 +617,26 @@ public class StatsManager : MonoBehaviour
                     rowCount = 10;
                     index = 0;
                 }
-                // updates row with new data
-                for (int i = 0; i < rowCount; i++)
-                {
+                //if modeid = free play, zero it out
+                if (modeid != 99) {
+                    // updates row with new data
+                    for (int i = 0; i < rowCount; i++)
+                    {
 
-                    // set data for prefabs from list retrieved from database
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = highScoreRowList[i].UserName;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = highScoreRowList[i].Score;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowList[i].Character;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowList[i].Level;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = highScoreRowList[i].Date;
-                    index++;
+                        // set data for prefabs from list retrieved from database
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().UserName = highScoreRowList[i].UserName;
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Score = highScoreRowList[i].Score;
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowList[i].Character;
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowList[i].Level;
+                        highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = highScoreRowList[i].Date;
+                        index++;
+                    }
+                    index = highScoreRowList.Count;
                 }
-
-                index = highScoreRowList.Count;
+                else
+                {
+                    index = 0;
+                }
                 // empty out rows if scores do not exist or there isnt at least 10
                 //for (int i = index; i < highScoreRowList.Count; i++)
                 if (index < 10)
@@ -720,7 +725,14 @@ public class StatsManager : MonoBehaviour
             numPages = (numOnlineResults / 10) + 1;
         }
 
-        pageNumberOnlineSelectButtonText.text = "page " + (onlineResultsPageNumber + 1) + " / " + numPages;
+        if (numPages >  0)
+        {
+            pageNumberOnlineSelectButtonText.text = "page " + (onlineResultsPageNumber + 1) + " / " + numPages;
+        }
+        else
+        {
+            pageNumberOnlineSelectButtonText.text = "page " + (onlineResultsPageNumber) + " / " + numPages;
+        }
     }
 
     public void changeSelectedTrafficOption()

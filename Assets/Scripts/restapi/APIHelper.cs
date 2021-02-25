@@ -264,7 +264,6 @@ namespace Assets.Scripts.restapi
         {
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
-
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
             // build api request
@@ -275,23 +274,18 @@ namespace Assets.Scripts.restapi
                 + "&page=" + page
                 + "&results=" + results;
 
-            Debug.Log("apiRequest : " + apiRequest);
-
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
-                //httpWebRequest.Headers.Add("Authorization", bearerToken);
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
 
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    Debug.Log(result);
                     highScoresList = JsonConvert.DeserializeObject<List<StatsTableHighScoreRow>>(result);
-                    Debug.Log("highScoresList.Count : " + highScoresList.Count);
                 }
             }
             // on web exception
@@ -307,13 +301,13 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                Debug.Log("----------------- GetHighscoreByScoreid() successful : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- GetHighscoreByModeid() successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
             // failed
             else
             {
-                Debug.Log("----------------- GetHighscoreByScoreid() : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- GetHighscoreByModeid() : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
 
@@ -336,12 +330,11 @@ namespace Assets.Scripts.restapi
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies;
 
+            //build api localhost request
             //string apiRequest = localHostHighScoresCountByModeid + modeid
             //    + "?hardcore=" + hardcore
             //    + "&traffic=" + traffic
             //    + "&enemies=" + enemies;
-
-            Debug.Log("apiRequest : " + apiRequest);
 
             int numResults = 0;
             try
@@ -349,18 +342,13 @@ namespace Assets.Scripts.restapi
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
-                //httpWebRequest.Headers.Add("Authorization", bearerToken);
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
-
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                Debug.Log("httpResponse : " + httpResponse);
 
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
                     numResults = Convert.ToInt32(JsonConvert.DeserializeObject(result));
- 
-                    //Debug.Log(numResults);
                 }
             }
             // on web exception
@@ -376,13 +364,13 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                Debug.Log("----------------- GetHighscoreByScoreid() successful : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- GetHighscoreCountByModeid() successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
             // failed
             else
             {
-                Debug.Log("----------------- GetHighscoreByScoreid() : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- GetHighscoreCountByModeid() : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
 
