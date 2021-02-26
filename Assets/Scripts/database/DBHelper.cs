@@ -103,6 +103,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return false;
         }
     }
@@ -150,6 +151,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -260,7 +262,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
-            Debug.Log(e);
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -306,6 +308,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -362,6 +365,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -422,6 +426,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -482,6 +487,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -529,6 +535,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -572,6 +579,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -631,6 +639,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return null;
         }
     }
@@ -705,6 +714,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return new List<CharacterProfile>();
         }
     }
@@ -759,6 +769,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return null;
         }
     }
@@ -811,6 +822,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             Debug.Log(e);
         }
     }
@@ -867,8 +879,8 @@ public class DBHelper : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("Error : " + e);
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return new List<DBUserModel>();
         }
     }
@@ -908,12 +920,9 @@ public class DBHelper : MonoBehaviour
                stats.TimePlayed + "','" +
                stats.LongestShotMade + "','" +
                stats.EnemiesKilled + "')";
-
-                //Debug.Log(sqlQuery);
             }
             else
             {
-
                 sqlQuery =
                "Update " + allTimeStatsTableName +
                " SET" +
@@ -949,6 +958,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -989,6 +999,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1042,6 +1053,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1246,6 +1258,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return rowCount;
         }
     }
@@ -1289,6 +1302,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1330,6 +1344,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1376,6 +1391,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1419,6 +1435,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1462,6 +1479,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1503,6 +1521,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1543,6 +1562,7 @@ public class DBHelper : MonoBehaviour
         catch (Exception e)
         {
             databaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return value;
         }
     }
@@ -1575,9 +1595,9 @@ public class DBHelper : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("ERROR : " + e);
             databaseSuccessfullyUpgraded = false;
             Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
+            Debug.Log("ERROR : " + e);
             databaseLocked = false;
             return;
         }

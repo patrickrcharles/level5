@@ -68,6 +68,7 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 dbHelper.DatabaseLocked = false;
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }
@@ -84,6 +85,7 @@ public class DBConnector : MonoBehaviour
             catch (Exception e)
             {
                 dbHelper.DatabaseLocked = false;
+                Debug.Log("ERROR : " + e);
                 return;
             }
         }
@@ -133,6 +135,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -166,6 +169,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return 0;
         }
 
@@ -385,6 +389,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -416,6 +421,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
         }
     }
 
@@ -464,6 +470,7 @@ public class DBConnector : MonoBehaviour
         catch(Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return false;
         }
     }
@@ -519,6 +526,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -554,6 +562,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return;
         }
     }
@@ -603,6 +612,7 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
         }
     }
 }
