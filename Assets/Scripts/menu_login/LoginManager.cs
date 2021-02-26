@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -19,15 +20,20 @@ public class LoginManager : MonoBehaviour
     DBUserModel user;
     PlayerControls controls;
     APIConnector apiConnector;
-
+    //buttonobject names
     const string checkEmailButtonName = "checkEmail";
     const string checkUserNameButtonName = "checkUserName";
-
+    //input field object names
     const string emailAddressInputFieldName = "EmailInputField";
     const string userNameInputFieldName = "UserNameInputField";
     const string passwordInputFieldName = "PasswordInputField";
     const string firstNameInputFieldName = "FirstNameInputField";
     const string lastNameInputFieldName = "LastNameInputField";
+    // footer button names
+    const string mainMenuButtonName = "press_start";
+    const string statsMenuButtonName = "stats_menu";
+    const string progressionMenuButtonName = "update_menu";
+    const string creditsMenuButtonName = "credits_menu";
 
     string emailInput;
     string userNameInput;
@@ -101,13 +107,15 @@ public class LoginManager : MonoBehaviour
 
     void Update()
     {
+#if UNITY_ANDROID || UNITY_IOS
         // test onscreen keyboard
-        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9) && !buttonPressed)
+        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9) 
+            && !buttonPressed)
         {
             Debug.Log("test on screen keyboard");
         }
-
-        if (controls.Player.submit.triggered && !buttonPressed)
+#endif
+        if (controls.UINavigation.Submit.triggered && !buttonPressed)
         {
             buttonPressed = true;
 
@@ -145,6 +153,27 @@ public class LoginManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject.name.Equals(lastNameInputFieldName))
             {
                 EventSystem.current.SetSelectedGameObject(lastNameTextButtonObject);
+            }
+            // footer
+            // main menu
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(mainMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_start);
+            }
+            //stats
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(statsMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_stats);
+            }
+            //progression
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(progressionMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_progression);
+            }
+            //credits
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(creditsMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_credits);
             }
             buttonPressed = false;
         }

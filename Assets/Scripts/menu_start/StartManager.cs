@@ -516,23 +516,6 @@ public class StartManager : MonoBehaviour
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
-
-        //if (UserAccountManager.instance.UserAccountData.Count > 0)
-        //{
-        //    //APIHelper.ApiLocked = true;
-        //    //StartCoroutine( APIHelper.PostToken(UserAccountManager.instance.UserAccountData[1]) );
-
-        //    //yield return new WaitUntil(() => !APIHelper.ApiLocked);
-        //    Debug.Log("startscreen : username : " + GameOptions.userName);
-        //    if (APIHelper.BearerToken != null)
-        //    {
-        //        userNameText.text = "username : " + GameOptions.userName + " connected";
-        //    }
-        //    if (APIHelper.BearerToken == null)
-        //    {
-        //        userNameText.text = "username : " + GameOptions.userName + " disconnected";
-        //    }
-        //}
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()

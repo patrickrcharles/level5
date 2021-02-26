@@ -32,7 +32,6 @@ public class PlatformCheck : MonoBehaviour
         standaloneInputModule.enabled = true;
         //standaloneInputModule.ActivateModule(); 
         Debug.Log("android");
-
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR

@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     private bool canBlock;
 
     // player state bools
-    private bool running;
+    //private bool running;
     private bool runningToggle;
     public bool hasBasketball;
 
@@ -270,12 +270,13 @@ public class PlayerController : MonoBehaviour
             && rigidBody.velocity.magnitude > 0.1f
             && !locked)
         {
-            running = true;
+            //running = true;
             anim.SetBool("moonwalking", true);
         }
         else
         {
-            running = false;
+            //running = false;
+            anim.SetBool("moonwalking", false);
         }
 
         // determine if player animation is shooting from or facing basket
@@ -575,7 +576,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("walking", false);
             anim.SetBool("moonwalking", false);
             //moonwalkAudio.enabled = false;
-            running = false;
+            //running = false;
         }
 
         // player moving right, not facing right

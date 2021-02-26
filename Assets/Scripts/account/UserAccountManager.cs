@@ -88,6 +88,8 @@ public class UserAccountManager : MonoBehaviour
             DBUserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             StartCoroutine(APIHelper.PostToken(user));
             SceneManager.LoadSceneAsync(loadingScreenName);
+
+            // update lastlogindate for local and online
         }
         if(!usersLoaded)
         {
@@ -135,7 +137,9 @@ public class UserAccountManager : MonoBehaviour
         yield return new WaitUntil(() => DBHelper.instance != null);
         // for each, create empty object
         // add text + button that is clickable
-        usersLoaded = false;
+
+        // flag for testing
+        //usersLoaded = false;
         if (usersLoaded)
         {
             int index = 0;

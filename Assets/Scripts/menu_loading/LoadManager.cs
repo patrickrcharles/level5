@@ -424,6 +424,5 @@ public class LoadManager : MonoBehaviour
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
     }
-
 }
 

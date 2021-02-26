@@ -40,14 +40,9 @@ public class CreditsManager : MonoBehaviour
     private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
     private const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
-    [SerializeField]
     public PlayerControls controls;
 
-    [SerializeField]
     public static CreditsManager instance;
-
-    bool buttonPressed = false;
-    bool dataLoaded = false;
 
     private void OnEnable()
     {
@@ -62,7 +57,6 @@ public class CreditsManager : MonoBehaviour
         controls.Other.Disable();
     }
 
-    //private Text gameModeSelectText;
     void Awake()
     {
         instance = this;
