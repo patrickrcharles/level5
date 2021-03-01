@@ -845,10 +845,11 @@ public class DBHelper : MonoBehaviour
             {
                 sqlQuery = "Select userid, username, firstname, lastname, email, ipaddress, signupdate, lastlogin, password,"
                     + "bearerToken"
-                    + " From " + userTableName;
-
+                    + " From " + userTableName
+                    + " ORDER BY lastlogin ASC";
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
+                Debug.Log(sqlQuery);
 
                 while (reader.Read())
                 {
