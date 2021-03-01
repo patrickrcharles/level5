@@ -1486,10 +1486,10 @@ public class DBHelper : MonoBehaviour
 
 
     //====================================================================================================
-    public int getLongestShotMadeShots()
+    public float getLongestShotMadeShots()
     {
         //Debug.Log("getFloatValueHighScoreFromTableByFieldAndModeId");
-        int value = 0;
+        float value = 0;
 
         try
         {
@@ -1508,7 +1508,7 @@ public class DBHelper : MonoBehaviour
 
             while (reader.Read())
             {
-                value = reader.GetInt32(0);
+                value = reader.GetFloat(0);
             }
             reader.Close();
             reader = null;
