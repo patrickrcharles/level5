@@ -99,6 +99,8 @@ public class StatsTableAllTime : MonoBehaviour
 
         int consecSots = DBHelper.instance.getMostConsecutiveShots();
 
+        float longShot = DBHelper.instance.getLongestShotMadeShots();
+
         int points = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", totalPointsDBField);
         float played = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", timePlayedDBField);
 
