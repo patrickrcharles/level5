@@ -187,8 +187,8 @@ public class GameRules : MonoBehaviour
 
             // ******** important : convert basketball stats to high score model
             DBHighScoreModel dBHighScoreModel = new DBHighScoreModel();
-            DBHighScoreModel dBHighScoreModelTemp = new DBHighScoreModel();
-            dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(basketBallStats);
+            DBHighScoreModel user = new DBHighScoreModel();
+            user = dBHighScoreModel.convertBasketBallStatsToModel(basketBallStats);
 
             //save if at leat 1 minte played
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
@@ -196,8 +196,12 @@ public class GameRules : MonoBehaviour
                 // dont save free play game score
                 if (gameModeId != 99)
                 {
-                    DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
-                    StartCoroutine(APIHelper.PostHighscore(dBHighScoreModelTemp));
+                    DBConnector.instance.savePlayerGameStats(user);
+
+                    //Debug.Log("username : " + user.UserName);
+                    //Debug.Log("userid : " + user.UserName);
+                    //Debug.Log("ip address : " + user.Ipaddress);
+                    StartCoroutine(APIHelper.PostHighscore(user));
                 }
 
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
