@@ -6,7 +6,7 @@ public static class SceneNameConstants
 {
     public const string SCENE_NAME_level_00_account = "level_00_account";
     public const string SCENE_NAME_level_00_credits = "level_00_credits";
-    public const string SCENE_NAME_level_00_loading = "level_00_laoding";
+    public const string SCENE_NAME_level_00_loading = "level_00_loading";
     public const string SCENE_NAME_level_00_login = "level_00_login";
     public const string SCENE_NAME_level_00_options = "level_00_options";
     public const string SCENE_NAME_level_00_progression = "level_00_progression";

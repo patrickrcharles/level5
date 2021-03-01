@@ -11,9 +11,6 @@ using UnityEngine.UI;
 
 public class UserAccountManager : MonoBehaviour
 {
-    const string startScreenName = "level_00_start";
-    const string loadingScreenName = "level_00_loading";
-    //string currentSelectedButton;
 
     [SerializeField]
     private List<DBUserModel> userAccountData;
@@ -52,7 +49,7 @@ public class UserAccountManager : MonoBehaviour
     void Awake()
     {
 
-        if (!SceneManager.GetActiveScene().name.Equals(loadingScreenName))
+        if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_loading))
         {
             StartCoroutine(loadUserData());
         }
@@ -66,7 +63,7 @@ public class UserAccountManager : MonoBehaviour
 
         // based on login button selected, get sibling text name. 
         // the sibling object text is a USERNAME stored locally and loaded into list
-        if (!SceneManager.GetActiveScene().name.Equals(startScreenName))
+        if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_start))
         {
             if (EventSystem.current.currentSelectedGameObject != null && usersLoaded)
             {
@@ -82,19 +79,22 @@ public class UserAccountManager : MonoBehaviour
 
     public void LoginButton()
     {
+        //usersLoaded = false;
+
         if (usersLoaded)
         {
             GameOptions.userName = userNameSelected;
             DBUserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             StartCoroutine(APIHelper.PostToken(user));
-            SceneManager.LoadSceneAsync(loadingScreenName);
+            //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
 
             // update lastlogindate for local and online
         }
-        if(!usersLoaded)
-        {
-            SceneManager.LoadSceneAsync(loadingScreenName);
-        }
+        //if(!usersLoaded)
+        //{
+        //    SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
+        //}
+        SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
     IEnumerator loadUserData()
@@ -108,7 +108,7 @@ public class UserAccountManager : MonoBehaviour
             if (userAccountData.Count > 0)
             {
                 usersLoaded = true;
-                if(messageText != null)
+                if (messageText != null)
                 {
                     messageText.text = "select user to log in";
                 }
@@ -147,8 +147,11 @@ public class UserAccountManager : MonoBehaviour
             {
                 GameObject prefabClone =
                 Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
+                // set parent to object with vertical layout
                 prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
+                // add to list
                 localAccounsList.Add(prefabClone);
+                //set text
                 localAccounsList[index].GetComponentInChildren<Text>().text = u.UserName;
                 index++;
             }
@@ -160,7 +163,8 @@ public class UserAccountManager : MonoBehaviour
                 Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
             prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
             // get username text
-            prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found\ngo to account and create one";
+            prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found" +
+                "\ngo to account and create one";
             prefabClone.transform.Find("userAccountLoginButton").GetComponent<Text>().text = "continue";
             EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
         }

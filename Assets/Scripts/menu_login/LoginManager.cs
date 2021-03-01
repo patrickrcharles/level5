@@ -23,6 +23,8 @@ public class LoginManager : MonoBehaviour
     //buttonobject names
     const string checkEmailButtonName = "checkEmail";
     const string checkUserNameButtonName = "checkUserName";
+    const string loginNameButtonName = "login";
+    const string createUserNameButtonName = "createUser";
     //input field object names
     const string emailAddressInputFieldName = "EmailInputField";
     const string userNameInputFieldName = "UserNameInputField";
@@ -328,6 +330,7 @@ public class LoginManager : MonoBehaviour
         Debug.Log("loginUser()");
         Debug.Log("----- check user valid / get token");
         Debug.Log("----- set user loggen in /load to gameoptions.username");
+        SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_login);
     }
 
 
