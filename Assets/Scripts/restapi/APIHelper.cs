@@ -695,7 +695,6 @@ namespace Assets.Scripts.restapi
             // this automatically.
             // put something like if(!201 created, try again) limit to 10 tries
             // check uniquescoreid not already inserted. hit that api first, then proceed
-            Debug.Log("...APIHelper.PostUser()");
             // wait for database operations
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
@@ -731,8 +730,8 @@ namespace Assets.Scripts.restapi
                     var result = streamReader.ReadToEnd();
                     bearerToken = result;
                     GameOptions.bearerToken = APIHelper.BearerToken;
-                    Debug.Log("api : result :: "+ result);
-                    Debug.Log("api : token :: " + bearerToken);
+                    //Debug.Log("api : result :: "+ result);
+                    //Debug.Log("api : token :: " + bearerToken);
                 }
             }
             // on web exception

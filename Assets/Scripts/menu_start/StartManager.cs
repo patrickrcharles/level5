@@ -506,8 +506,8 @@ public class StartManager : MonoBehaviour
 
         //yield return new WaitUntil(() => UserAccountManager.instance != null);
         //yield return new WaitUntil(() => UserAccountManager.instance.UserAccountData != null);
-        Debug.Log("startscreen : username : " + GameOptions.userName);
-        Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
+        //Debug.Log("startscreen : username : " + GameOptions.userName);
+        //Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
         if (APIHelper.BearerToken != null)
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
