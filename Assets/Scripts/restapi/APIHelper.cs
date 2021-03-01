@@ -9,7 +9,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.restapi
 {
@@ -765,6 +765,7 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !apiLocked);
 
             //Debug.Log(APIHelper.bearerToken);
+            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
         }
     }
 }

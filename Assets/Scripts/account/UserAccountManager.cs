@@ -85,6 +85,7 @@ public class UserAccountManager : MonoBehaviour
         {
             GameOptions.userName = userNameSelected;
             DBUserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
+            GameOptions.userid = user.Userid;
             StartCoroutine(APIHelper.PostToken(user));
             //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
 
@@ -94,7 +95,7 @@ public class UserAccountManager : MonoBehaviour
         //{
         //    SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
         //}
-        SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
+        //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
     IEnumerator loadUserData()
@@ -105,6 +106,7 @@ public class UserAccountManager : MonoBehaviour
         try
         {
             userAccountData = DBHelper.instance.getUserProfileStats();
+            GameOptions.numOfLocalUsers = userAccountData.Count;
             if (userAccountData.Count > 0)
             {
                 usersLoaded = true;
@@ -120,6 +122,7 @@ public class UserAccountManager : MonoBehaviour
                 {
                     messageText.text = "no users found";
                 }
+                //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
             }
         }
         catch (Exception e)
@@ -145,14 +148,18 @@ public class UserAccountManager : MonoBehaviour
             int index = 0;
             foreach (DBUserModel u in userAccountData)
             {
-                GameObject prefabClone =
-                Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
-                // set parent to object with vertical layout
-                prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
-                // add to list
-                localAccounsList.Add(prefabClone);
-                //set text
-                localAccounsList[index].GetComponentInChildren<Text>().text = u.UserName;
+                // instantiate a max of 5 rows
+                if (index < 5)
+                {
+                    GameObject prefabClone =
+                    Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
+                    // set parent to object with vertical layout
+                    prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
+                    // add to list
+                    localAccounsList.Add(prefabClone);
+                    //set text
+                    localAccounsList[index].GetComponentInChildren<Text>().text = u.UserName;
+                }
                 index++;
             }
             EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);

@@ -79,8 +79,11 @@ public static class GameOptions
 
 
     static public bool levelRequiresTimeOfDay = true;
+
     static public string userName;
+    static public int userid;
     static public string bearerToken;
+    static public int numOfLocalUsers;
 
     //private void Awake()
     //{

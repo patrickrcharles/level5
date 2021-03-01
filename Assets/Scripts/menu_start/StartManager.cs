@@ -288,7 +288,14 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(accountMenuButtonName))
         {
-            loadMenu(accountScreenSceneName);
+            if ( GameOptions.numOfLocalUsers < 5)
+            {
+                loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
+            }
+            else
+            {
+                loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
+            }
         }
 
 
