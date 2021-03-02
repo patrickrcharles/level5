@@ -195,7 +195,7 @@ public class DBHelper : MonoBehaviour
     }
 
     // insert current game's stats and score
-    public void InsertGameScore(DBHighScoreModel stats)
+    public void InsertGameScore(HighScoreModel stats)
     {
 
         databaseLocked = true;
@@ -776,13 +776,13 @@ public class DBHelper : MonoBehaviour
 
 
     // insert current game's stats and score
-    public void InsertUser(DBUserModel user)
+    public void InsertUser(UserModel user)
     {
         StartCoroutine(InsertUserCoroutine(user));
     }
 
 
-    private IEnumerator InsertUserCoroutine(DBUserModel user)
+    private IEnumerator InsertUserCoroutine(UserModel user)
     {
         yield return new WaitUntil(() => !databaseLocked);
         databaseLocked = true;
@@ -828,9 +828,9 @@ public class DBHelper : MonoBehaviour
     }
 
     // get user Data from Database
-    public List<DBUserModel> getUserProfileStats()
+    public List<UserModel> getUserProfileStats()
     {
-        List<DBUserModel> userModel = new List<DBUserModel>();
+        List<UserModel> userModel = new List<UserModel>();
         try
         {
             DatabaseLocked = true;
@@ -853,7 +853,7 @@ public class DBHelper : MonoBehaviour
 
                 while (reader.Read())
                 {
-                    DBUserModel temp = new DBUserModel();
+                    UserModel temp = new UserModel();
 
                     temp.Userid = reader.GetInt32(0);
                     temp.UserName = reader.GetString(1);
@@ -882,7 +882,7 @@ public class DBHelper : MonoBehaviour
         {
             databaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return new List<DBUserModel>();
+            return new List<UserModel>();
         }
     }
     // update all time stats
@@ -1997,85 +1997,85 @@ public class DBHelper : MonoBehaviour
         }
     }
 
-    public DBHighScoreModel getHighScoreFromDatabase(string scoreid)
-    {
-        DBHighScoreModel highscore = new DBHighScoreModel();
-        databaseLocked = true;
-        try
-        {
-            String sqlQuery = "";
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
+    //public HighScoreModel getHighScoreFromDatabase(string scoreid)
+    //{
+    //    HighScoreModel highscore = new HighScoreModel();
+    //    databaseLocked = true;
+    //    try
+    //    {
+    //        String sqlQuery = "";
+    //        IDbConnection dbconn;
+    //        dbconn = (IDbConnection)new SqliteConnection(connection);
+    //        dbconn.Open(); //Open connection to the database.
+    //        IDbCommand dbcmd = dbconn.CreateCommand();
 
-            //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+    //        //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
 
-            if (!isTableEmpty(highScoresTableName))
-            {
-                //Debug.Log(" table is not empty");
-                sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid =" + scoreid;
-                Debug.Log(sqlQuery);
-                dbcmd.CommandText = sqlQuery;
-                IDataReader reader = dbcmd.ExecuteReader();
+    //        if (!isTableEmpty(highScoresTableName))
+    //        {
+    //            //Debug.Log(" table is not empty");
+    //            sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid =" + scoreid;
+    //            Debug.Log(sqlQuery);
+    //            dbcmd.CommandText = sqlQuery;
+    //            IDataReader reader = dbcmd.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    //highscore.Id = reader.GetInt32(0);
+    //            while (reader.Read())
+    //            {
+    //                //highscore.Id = reader.GetInt32(0);
 
-                    if (reader.IsDBNull(1)) { highscore.Userid = 0; }
-                    else { highscore.Userid = reader.GetInt32(1); }
+    //                if (reader.IsDBNull(1)) { highscore.Userid = 0; }
+    //                else { highscore.Userid = reader.GetInt32(1); }
 
-                    highscore.Modeid = reader.GetInt32(2);
-                    highscore.Characterid = reader.GetInt32(3);
-                    highscore.Character = reader.GetString(4);
-                    highscore.Levelid = reader.GetInt32(5);
-                    highscore.Level = reader.GetString(6);
-                    highscore.Os = reader.GetString(7);
-                    highscore.Version = reader.GetString(8);
-                    highscore.Date = reader.GetString(9);
-                    highscore.Time = reader.GetFloat(10);
-                    highscore.TotalPoints = reader.GetInt32(11);
-                    highscore.LongestShot = reader.GetFloat(12);
-                    highscore.TotalDistance = reader.GetFloat(13);
-                    highscore.MaxShotMade = reader.GetInt32(14);
-                    highscore.MaxShotAtt = reader.GetInt32(15);
-                    highscore.ConsecutiveShots = reader.GetInt32(16);
-                    highscore.TrafficEnabled = reader.GetInt32(17);
-                    highscore.HardcoreEnabled = reader.GetInt32(18);
-                    highscore.EnemiesKilled = reader.GetInt32(19);
-                    highscore.Scoreid = reader.GetString(20);
-                    highscore.Platform = reader.GetString(21);
-                    highscore.Device = reader.GetString(22);
-                    highscore.Ipaddress = reader.GetString(23);
-                    highscore.TwoMade = reader.GetInt32(24);
-                    highscore.TwoAtt = reader.GetInt32(25);
-                    highscore.ThreeMade = reader.GetInt32(26);
-                    highscore.ThreeAtt = reader.GetInt32(27);
-                    highscore.FourMade = reader.GetInt32(28);
-                    highscore.FourAtt = reader.GetInt32(29);
-                    highscore.SevenMade = reader.GetInt32(30);
-                    highscore.SevenAtt = reader.GetInt32(31);
-                    highscore.BonusPoints = reader.GetInt32(31);
-                    //highscore.submittedToApi = reader.GetInt32(32);
-                    highscore.MoneyBallMade = reader.GetInt32(33);
-                    highscore.MoneyBallAtt = reader.GetInt32(34);
-                    highscore.EnemiesEnabled = reader.GetInt32(35);
+    //                highscore.Modeid = reader.GetInt32(2);
+    //                highscore.Characterid = reader.GetInt32(3);
+    //                highscore.Character = reader.GetString(4);
+    //                highscore.Levelid = reader.GetInt32(5);
+    //                highscore.Level = reader.GetString(6);
+    //                highscore.Os = reader.GetString(7);
+    //                highscore.Version = reader.GetString(8);
+    //                highscore.Date = reader.GetString(9);
+    //                highscore.Time = reader.GetFloat(10);
+    //                highscore.TotalPoints = reader.GetInt32(11);
+    //                highscore.LongestShot = reader.GetFloat(12);
+    //                highscore.TotalDistance = reader.GetFloat(13);
+    //                highscore.MaxShotMade = reader.GetInt32(14);
+    //                highscore.MaxShotAtt = reader.GetInt32(15);
+    //                highscore.ConsecutiveShots = reader.GetInt32(16);
+    //                highscore.TrafficEnabled = reader.GetInt32(17);
+    //                highscore.HardcoreEnabled = reader.GetInt32(18);
+    //                highscore.EnemiesKilled = reader.GetInt32(19);
+    //                highscore.Scoreid = reader.GetString(20);
+    //                highscore.Platform = reader.GetString(21);
+    //                highscore.Device = reader.GetString(22);
+    //                highscore.Ipaddress = reader.GetString(23);
+    //                highscore.TwoMade = reader.GetInt32(24);
+    //                highscore.TwoAtt = reader.GetInt32(25);
+    //                highscore.ThreeMade = reader.GetInt32(26);
+    //                highscore.ThreeAtt = reader.GetInt32(27);
+    //                highscore.FourMade = reader.GetInt32(28);
+    //                highscore.FourAtt = reader.GetInt32(29);
+    //                highscore.SevenMade = reader.GetInt32(30);
+    //                highscore.SevenAtt = reader.GetInt32(31);
+    //                highscore.BonusPoints = reader.GetInt32(31);
+    //                //highscore.submittedToApi = reader.GetInt32(32);
+    //                highscore.MoneyBallMade = reader.GetInt32(33);
+    //                highscore.MoneyBallAtt = reader.GetInt32(34);
+    //                highscore.EnemiesEnabled = reader.GetInt32(35);
 
-                    Debug.Log("------------------------------------------ db action finished");
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log("EXCEPTION : " + e);
-            DatabaseLocked = false;
-            return null;
-        }
-        databaseLocked = false;
-        //Destroy(highscore, 5);
-        return highscore;
-    }
+    //                Debug.Log("------------------------------------------ db action finished");
+    //            }
+    //        }
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Debug.Log("EXCEPTION : " + e);
+    //        DatabaseLocked = false;
+    //        return null;
+    //    }
+    //    databaseLocked = false;
+    //    //Destroy(highscore, 5);
+    //    return highscore;
+    //}
 
     public bool doesColumnExist(string tableName, string columnName)
     {
@@ -2162,6 +2162,86 @@ public class DBHelper : MonoBehaviour
         }
     }
 
+
+    public List<HighScoreModel> getUnsubmittedHighScoreFromDatabase()
+    {
+        List<HighScoreModel> highscores = new List<HighScoreModel>();
+        databaseLocked = true;
+        try
+        {
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
+
+            if (!isTableEmpty(highScoresTableName))
+            {
+                sqlQuery = "Select  * From " + highScoresTableName + " WHERE submittedToApi = 0";
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    HighScoreModel highscore = new HighScoreModel();
+
+                    if (reader.IsDBNull(1)) { highscore.Userid = 0; }
+                    else { highscore.Userid = reader.GetInt32(1); }
+
+                    highscore.Modeid = reader.GetInt32(2);
+                    highscore.Characterid = reader.GetInt32(3);
+                    highscore.Character = reader.GetString(4);
+                    highscore.Levelid = reader.GetInt32(5);
+                    highscore.Level = reader.GetString(6);
+                    highscore.Os = reader.GetString(7);
+                    highscore.Version = reader.GetString(8);
+                    highscore.Date = reader.GetString(9);
+                    highscore.Time = reader.GetFloat(10);
+                    highscore.TotalPoints = reader.GetInt32(11);
+                    highscore.LongestShot = reader.GetFloat(12);
+                    highscore.TotalDistance = reader.GetFloat(13);
+                    highscore.MaxShotMade = reader.GetInt32(14);
+                    highscore.MaxShotAtt = reader.GetInt32(15);
+                    highscore.ConsecutiveShots = reader.GetInt32(16);
+                    highscore.TrafficEnabled = reader.GetInt32(17);
+                    highscore.HardcoreEnabled = reader.GetInt32(18);
+                    highscore.EnemiesKilled = reader.GetInt32(19);
+                    highscore.Scoreid = reader.GetString(20);
+                    highscore.Platform = reader.GetString(21);
+                    highscore.Device = reader.GetString(22);
+                    highscore.Ipaddress = reader.GetString(23);
+                    highscore.TwoMade = reader.GetInt32(24);
+                    highscore.TwoAtt = reader.GetInt32(25);
+                    highscore.ThreeMade = reader.GetInt32(26);
+                    highscore.ThreeAtt = reader.GetInt32(27);
+                    highscore.FourMade = reader.GetInt32(28);
+                    highscore.FourAtt = reader.GetInt32(29);
+                    highscore.SevenMade = reader.GetInt32(30);
+                    highscore.SevenAtt = reader.GetInt32(31);
+                    highscore.BonusPoints = reader.GetInt32(31);
+                    //highscore.submittedToApi = reader.GetInt32(32);
+                    highscore.MoneyBallMade = reader.GetInt32(33);
+                    highscore.MoneyBallAtt = reader.GetInt32(34);
+                    highscore.EnemiesEnabled = reader.GetInt32(35);
+                    highscore.UserName = reader.GetInt32(36).ToString();
+
+                    highscores.Add(highscore);
+                    //Debug.Log("scoreid : " + highscore.Scoreid);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("EXCEPTION : " + e);
+            DatabaseLocked = false;
+            return null;
+        }
+        databaseLocked = false;
+        //Destroy(highscore, 5);
+        return highscores;
+    }
 
     //public void alterTableRemoveColumn(string tableName, string columnName, string type)
     //{

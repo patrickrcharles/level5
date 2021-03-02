@@ -18,10 +18,7 @@ public class StatsManager : MonoBehaviour
     [SerializeField]
     private string previousHighlightedButton;
 
-    //const string scoreOptionButtonName = "score_options";
-    //const string highscoreSelectButtonName = "high_score_select";
     const string modeSelectButtonName = "mode_select_name";
-    //const string modeSelectButtonHardcoreName = "mode_select_name_hardcore";
     const string modeSelectButtonOnlineName = "mode_select_name_online";
     const string alltimeSelectButtonName = "all_time_select";
     const string mainMenuButtonName = "main_menu";
@@ -58,6 +55,11 @@ public class StatsManager : MonoBehaviour
     // list of modes
     [SerializeField]
     List<mode> modesList;
+    //list of unsubmitted highscores
+    [SerializeField]
+    List<HighScoreModel> unsubmittedHighScores;
+    [SerializeField]
+    int numUnsubmittedHighscores;
 
     [SerializeField]
     private bool trafficEnabled;
@@ -73,6 +75,10 @@ public class StatsManager : MonoBehaviour
     private Text hardcoreSelectOptionText;
     [SerializeField]
     private Text enemySelectOptionText;
+    [SerializeField]
+    private Text submittedHighscoresText;
+    [SerializeField]
+    private Text numUnsubmittedHighscoresText;
 
     int defaultModeSelectedIndex;
     int currentModeSelectedIndex;
@@ -234,7 +240,9 @@ public class StatsManager : MonoBehaviour
         initializeOnlinePageNumberDisplay();
         changeHighScoreDataDisplay();
         changeHighScoreDataDisplayOnline();
+        getUnsubmittedHighscores();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -521,6 +529,24 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    private void getUnsubmittedHighscores()
+    {
+        // get unsubmitted scores
+        unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
+        numUnsubmittedHighscores = unsubmittedHighScores.Count;
+        // if count > 0,  set appropriate text
+        if (numUnsubmittedHighscores > 0)
+        {
+            submittedHighscoresText.text = "submit scores";
+            numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
+        }
+        // if none, set appropriate text
+        if (numUnsubmittedHighscores == 0)
+        {
+            submittedHighscoresText.text = "no scores to submit";
+            numUnsubmittedHighscoresText.text = "";
+        }
+    }
     public void changeHighScoreDataDisplay()
     {
         if (GameObject.FindGameObjectWithTag("database") != null)
