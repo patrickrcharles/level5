@@ -4,48 +4,51 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
+using Ping = System.Net.NetworkInformation.Ping;
+using Random = System.Random;
 
 namespace Assets.Scripts.database
 {
     [Serializable]
-    public class HighScoreModel 
+    public class HighScoreModel
     {
         //public int Id;
         public int Userid;
         public string UserName;
         public int Modeid;
-        public int Characterid ;
-        public int Levelid ;
-        public string Character ;
-        public string Level ;
-        public string Os ;
-        public string Version ;
-        public string Date ;
-        public float Time ;
-        public int TotalPoints ;
-        public float LongestShot ;
-        public float TotalDistance ;
-        public int MaxShotMade ;
-        public int MaxShotAtt ;
-        public int ConsecutiveShots ;
-        public int TrafficEnabled ;
-        public int HardcoreEnabled ;
-        public int EnemiesEnabled ;
-        public int EnemiesKilled ;
-        public string Platform ;
-        public string Device ;
-        public string Ipaddress ;
-        public string Scoreid ;
-        public int TwoMade ;
-        public int TwoAtt ;
-        public int ThreeMade ;
-        public int ThreeAtt ;
-        public int FourMade ;
-        public int FourAtt ;
-        public int SevenMade ;
-        public int SevenAtt ;
+        public int Characterid;
+        public int Levelid;
+        public string Character;
+        public string Level;
+        public string Os;
+        public string Version;
+        public string Date;
+        public float Time;
+        public int TotalPoints;
+        public float LongestShot;
+        public float TotalDistance;
+        public int MaxShotMade;
+        public int MaxShotAtt;
+        public int ConsecutiveShots;
+        public int TrafficEnabled;
+        public int HardcoreEnabled;
+        public int EnemiesEnabled;
+        public int EnemiesKilled;
+        public string Platform;
+        public string Device;
+        public string Ipaddress;
+        public string Scoreid;
+        public int TwoMade;
+        public int TwoAtt;
+        public int ThreeMade;
+        public int ThreeAtt;
+        public int FourMade;
+        public int FourAtt;
+        public int SevenMade;
+        public int SevenAtt;
         public int BonusPoints;
         public int MoneyBallMade;
         public int MoneyBallAtt;
@@ -91,7 +94,14 @@ namespace Assets.Scripts.database
             model.EnemiesKilled = stats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
-            model.Ipaddress = GetExternalIpAdress();
+            if (IsConnectedToInternet())
+            {
+                model.Ipaddress = GetExternalIpAdress();
+            }
+            else
+            {
+                model.Ipaddress = "noConnectivity" + RandomString(8);
+            }
             model.TwoMade = stats.TwoPointerMade;
             model.TwoAtt = stats.TwoPointerAttempts;
             model.ThreeMade = stats.ThreePointerMade;
@@ -113,8 +123,61 @@ namespace Assets.Scripts.database
 
         public string GetExternalIpAdress()
         {
-            string pubIp = new WebClient().DownloadString("https://api.ipify.org");
-            return pubIp;
+            //string pubIp = new WebClient().DownloadString("https://api.ipify.org");
+            //return pubIp;
+
+            // External IP Address (get your external IP locally)  
+            //UTF8Encoding utf8 = new UTF8Encoding();
+            //WebClient webClient = new WebClient();
+            //String externalIp = utf8.GetString(webClient.DownloadData(
+            //"http://whatismyip.com/automation/n09230945.asp"));
+
+            try
+            {
+                string externalIP;
+                externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
+                externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
+                             .Matches(externalIP)[0].ToString();
+                return externalIP;
+            }
+            catch(Exception e) 
+            {
+                Debug.Log("ERROR : " + e);
+                return null;
+            }
+
+            //return externalIp;
+        }
+
+        public bool IsConnectedToInternet()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204"))
+                    return true;
+            }
+            catch(Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                return false;
+            }
+        }
+
+        private string RandomString(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+
+            return finalString;
         }
 
         string generateUniqueScoreID()
@@ -124,7 +187,7 @@ namespace Assets.Scripts.database
             string uniqueModeDateIdentifier = "";
             //TimeZone localZone = TimeZone.CurrentTimeZone;
 
-            uniqueModeDateIdentifier = 
+            uniqueModeDateIdentifier =
                   DateTime.Now.Day.ToString()
                 + DateTime.Now.Month.ToString()
                 + DateTime.Now.Year.ToString()
