@@ -824,7 +824,7 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }

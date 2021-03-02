@@ -87,7 +87,7 @@ public class UserAccountManager : MonoBehaviour
     public void LoginButton()
     {
         //usersLoaded = false;
-        Debug.Log("loginbutton");
+        //Debug.Log("loginbutton");
         if (usersLoaded)
         {
             GameOptions.userName = userNameSelected;
@@ -107,7 +107,7 @@ public class UserAccountManager : MonoBehaviour
 
     public void ContinueButton()
     {
-        Debug.Log("ContinueButton");
+        //Debug.Log("ContinueButton");
         GameOptions.userName = "";
         GameOptions.userid = 0;
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
@@ -117,7 +117,7 @@ public class UserAccountManager : MonoBehaviour
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-        Debug.Log("loadUserData");
+        //Debug.Log("loadUserData");
         try
         {
             userAccountData = DBHelper.instance.getUserProfileStats();

@@ -849,7 +849,7 @@ public class DBHelper : MonoBehaviour
                     + " ORDER BY lastlogin ASC";
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
-                Debug.Log(sqlQuery);
+                //Debug.Log(sqlQuery);
 
                 while (reader.Read())
                 {
