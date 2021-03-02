@@ -45,7 +45,7 @@ public class LoadManager : MonoBehaviour
     [SerializeField] internal bool levelDataLoaded = false;
     [SerializeField] internal bool modeDataLoaded = false;
 
-    const string startSceneName = "level_00_start";
+    //const string startSceneName = "level_00_start";
 
     //bool isLocked = false;
 
@@ -70,7 +70,7 @@ public class LoadManager : MonoBehaviour
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                SceneManager.LoadScene(startSceneName);
+                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
