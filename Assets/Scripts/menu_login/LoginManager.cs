@@ -111,7 +111,7 @@ public class LoginManager : MonoBehaviour
     {
 #if UNITY_ANDROID || UNITY_IOS
         // test onscreen keyboard
-        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9) 
+        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9)
             && !buttonPressed)
         {
             Debug.Log("test on screen keyboard");
@@ -306,33 +306,36 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-    public void loginUser()
+    public void LoginUser()
     {
-        //checkEmailAddressFormat();
-        //checkUserName();
-        //messageDisplay.text = getCheckEmailAddress() + getCheckUserName();
+        StartCoroutine(LoginUserCoroutine());
 
-        //if (userNameIsValid && emailAddressIsValid)
-        //{
-        //    DBUserModel user = new DBUserModel();
-
-        //    user.Email = emailInput;
-        //    user.UserName = userNameInput;
-        //    user.Password = passwordInput;
-        //    user.FirstName = firstNameInput;
-        //    user.LastName = lastNameInput;
-        //    user.IpAddress = GetExternalIpAdress();
-        //    user.SignUpDate = DateTime.Now.ToString();
-        //    user.LastLogin = DateTime.Now.ToString();
-
-        //    apiConnector.CreateNewUser(user);
-        //}
-        Debug.Log("loginUser()");
-        Debug.Log("----- check user valid / get token");
-        Debug.Log("----- set user loggen in /load to gameoptions.username");
-        SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_login);
+        //GameOptions.userName = userNameSelected;
+        //UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
+        //GameOptions.userid = user.Userid;
+        //StartCoroutine(APIHelper.PostToken(user));
     }
 
+    private IEnumerator LoginUserCoroutine()
+    {
+        // check if user already exists or null
+        if (string.IsNullOrEmpty(userNameInput))
+        {
+            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_login);
+        }
+        else
+        {
+            checkUserName();
+            messageDisplay.text = getCheckUserName();
+            UserModel user = APIHelper.GetUserByUserName(userNameInput);
+
+            yield return new WaitUntil(() => user != null);
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+            StartCoroutine(APIHelper.PostToken(user));
+        }
+    }
 
 
     private string RandomString(int length)
@@ -360,13 +363,13 @@ public class LoginManager : MonoBehaviour
     public void readUsernameInput(string s)
     {
         userNameInput = usernameInputField.text;
-        Debug.Log(userNameInput);
+        //Debug.Log(userNameInput);
     }
 
     public void readPasswordInput(string s)
     {
         passwordInput = passwordInputField.text;
-        Debug.Log(passwordInput);
+        //Debug.Log(passwordInput);
     }
 
     public void readFirstNameInput(string s)

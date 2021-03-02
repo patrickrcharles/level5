@@ -94,15 +94,7 @@ public class UserAccountManager : MonoBehaviour
             UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             GameOptions.userid = user.Userid;
             StartCoroutine(APIHelper.PostToken(user));
-            //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
-
-            // update lastlogindate for local and online
         }
-        //if(!usersLoaded)
-        //{
-        //    SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
-        //}
-        //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
     public void ContinueButton()

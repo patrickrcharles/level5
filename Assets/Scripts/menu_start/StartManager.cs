@@ -288,14 +288,16 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(accountMenuButtonName))
         {
-            if ( GameOptions.numOfLocalUsers < 5)
-            {
-                loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
-            }
-            else
-            {
-                loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
-            }
+            //if ( GameOptions.numOfLocalUsers < 5)
+            //{
+            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
+            //}
+            //else
+            //{
+            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
+            //}
+
+            loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
         }
 
 
@@ -510,9 +512,6 @@ public class StartManager : MonoBehaviour
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
         setInitialGameOptions();
-
-        //Debug.Log("startscreen : username : " + GameOptions.userName);
-        //Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
 
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {

@@ -35,6 +35,7 @@ namespace Assets.Scripts.restapi
 
         static bool apiLocked;
         private static string bearerToken;
+        private static string username;
 
         public static string BearerToken { get => bearerToken; }
         public static bool ApiLocked { get => apiLocked; set => apiLocked = value; }
@@ -503,6 +504,7 @@ namespace Assets.Scripts.restapi
                         UserModel model = (UserModel)JsonConvert.DeserializeObject<UserModel>(result);
                         userid = model.Userid;
                         user.Userid = userid;
+
                         Debug.Log("userid from api : " + userid);
                         Debug.Log("userid going to db : " + user.Userid);
                     }
@@ -703,13 +705,13 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                Debug.Log("----------------- username found : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- username found : " + (int)statusCode + " " + statusCode);
                 exists = true;
             }
             // failed
             else
             {
-                Debug.Log("----------------- username not found : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- username not found : " + (int)statusCode + " " + statusCode);
                 exists = false;
             }
 
@@ -758,6 +760,60 @@ namespace Assets.Scripts.restapi
             return exists;
         }
 
+        // check if username email by hitting api at
+        // http://13.58.224.237/api/users/username/{username}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static UserModel GetUserByUserName(string username)
+        {
+            apiLocked = true;
+            UserModel user = new UserModel();
+
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByUserName + username)) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "GET";
+                httpWebRequest.Headers.Add("Authorization", bearerToken);
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                // response
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    user = (UserModel)JsonConvert.DeserializeObject<UserModel>(result);
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                //Debug.Log("----------------- username found : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+            // failed
+            else
+            {
+                Debug.Log("----------------- username not found : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+
+            return user;
+        }
+
+
         // -------------------------------------- HTTTP POST Token -------------------------------------------
 
         // POST Token by User model to get token
@@ -773,13 +829,6 @@ namespace Assets.Scripts.restapi
             // wait for database operations
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-            // wait for api operations
-            //yield return new WaitUntil(() => !apiLocked);
-            //apiLocked = true;
-
-            // verify unique scoreid does NOT exist in database already
-            //if (!APIHelper.UserNameExists(dBUserModel.UserName))
-            //{
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(dBUserModel);
 
@@ -804,9 +853,6 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     bearerToken = result;
-                    GameOptions.bearerToken = APIHelper.BearerToken;
-                    //Debug.Log("api : result :: "+ result);
-                    //Debug.Log("api : token :: " + bearerToken);
                 }
             }
             // on web exception
@@ -825,13 +871,17 @@ namespace Assets.Scripts.restapi
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
                 //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                GameOptions.userName = dBUserModel.UserName;
+                GameOptions.userid = dBUserModel.Userid;
+                GameOptions.bearerToken = APIHelper.BearerToken;
+
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
             // failed
             else
             {
-                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
                 //unlock api + database
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
