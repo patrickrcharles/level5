@@ -117,13 +117,88 @@ namespace Assets.Scripts.restapi
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
-            //}
-            //else
-            //{
-            //    //Debug.Log(" scoreid already exists : " + dbHighScoreModel.Scoreid);
-            //    apiLocked = false;
-            //    DBHelper.instance.DatabaseLocked = false;
-            //}
+        }
+
+        // -------------------------------------- HTTTP POST unsubmitted Highscores -------------------------------------------
+
+        // POST highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/scoreid/{scoreid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static IEnumerator PostUnsubmittedHighscores(List<HighScoreModel> highscores)
+        {
+            foreach (HighScoreModel score in highscores)
+            {
+
+                // wait for database operations
+                yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+                //DBHelper.instance.DatabaseLocked = true;
+
+                // wait for api operations
+                yield return new WaitUntil(() => !apiLocked);
+                apiLocked = true;
+
+                //// verify unique scoreid does NOT exist in database already
+                //if (!APIHelper.ScoreIdExists(dbHighScoreModel.Scoreid))
+                //{
+
+                //**** wrap this in a loop and call it a day
+
+                //serialize highscore to json for HTTP POST
+                string toJson = JsonUtility.ToJson(score);
+
+                HttpWebResponse httpResponse = null;
+                HttpStatusCode statusCode;
+
+                try
+                {
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
+                    httpWebRequest.ContentType = "application/json; charset=utf-8";
+                    httpWebRequest.Method = "POST";
+                    httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+                    //post
+                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        string json = toJson;
+                        streamWriter.Write(json);
+                        streamWriter.Flush();
+                    }
+                    // response
+                    httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                    }
+                }
+                // on web exception
+                catch (WebException e)
+                {
+                    httpResponse = (HttpWebResponse)e.Response;
+                    Debug.Log("----------------- ERROR : " + e);
+                    //unlock api + database
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+                statusCode = httpResponse.StatusCode;
+
+                // if successful
+                if (httpResponse.StatusCode == HttpStatusCode.Created)
+                {
+                    Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+                // failed
+                else
+                {
+                    Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                    //unlock api + database
+                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+            }
         }
 
         // -------------------------------------- HTTTP PUT Highscore -------------------------------------------

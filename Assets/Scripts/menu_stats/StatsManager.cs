@@ -539,6 +539,7 @@ public class StatsManager : MonoBehaviour
         {
             submittedHighscoresText.text = "submit scores";
             numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
+            StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores) );
         }
         // if none, set appropriate text
         if (numUnsubmittedHighscores == 0)
@@ -547,6 +548,8 @@ public class StatsManager : MonoBehaviour
             numUnsubmittedHighscoresText.text = "";
         }
     }
+
+
     public void changeHighScoreDataDisplay()
     {
         if (GameObject.FindGameObjectWithTag("database") != null)
