@@ -45,7 +45,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/scoreid/{scoreid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostHighscore(DBHighScoreModel dbHighScoreModel)
+        public static IEnumerator PostHighscore(HighScoreModel dbHighScoreModel)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.
@@ -132,7 +132,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/{scoreid}}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PutHighscore(DBHighScoreModel dbHighScoreModel)
+        public static IEnumerator PutHighscore(HighScoreModel dbHighScoreModel)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.
@@ -204,12 +204,12 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/scoreid/{scoreid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static List<DBHighScoreModel> GetHighscoreByScoreid(string scoreid)
+        public static List<HighScoreModel> GetHighscoreByScoreid(string scoreid)
         {
 
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
-            List<DBHighScoreModel> dBHighScoreModels = new List<DBHighScoreModel>();
+            List<HighScoreModel> dBHighScoreModels = new List<HighScoreModel>();
 
             try
             {
@@ -224,7 +224,7 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     Debug.Log(result);
-                    dBHighScoreModels = (List<DBHighScoreModel>)JsonConvert.DeserializeObject<List<DBHighScoreModel>>(result);
+                    dBHighScoreModels = (List<HighScoreModel>)JsonConvert.DeserializeObject<List<HighScoreModel>>(result);
                 }
 
                 //dBHighScoreModels = convertHttpWebResponseToDBHighscoreModelList(httpResponse);
@@ -384,7 +384,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/users/{username}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostUser(DBUserModel user)
+        public static IEnumerator PostUser(UserModel user)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.
@@ -425,7 +425,7 @@ namespace Assets.Scripts.restapi
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
-                        DBUserModel model = (DBUserModel)JsonConvert.DeserializeObject<DBUserModel>(result);
+                        UserModel model = (UserModel)JsonConvert.DeserializeObject<UserModel>(result);
                         userid = model.Userid;
                         user.Userid = userid;
                         Debug.Log("userid from api : " + userid);
@@ -520,16 +520,16 @@ namespace Assets.Scripts.restapi
         // --------------------------------------Utility functions -------------------------------------------
 
         // send HttpWebResponse to function to be serialized into List of DBHighScore objects
-        public static List<DBHighScoreModel> convertHttpWebResponseToDBHighscoreModelList(HttpWebResponse httpWebResponse)
+        public static List<HighScoreModel> convertHttpWebResponseToDBHighscoreModelList(HttpWebResponse httpWebResponse)
         {
             Debug.Log("convertHttpWebResponseToDBHighscoreModelList(HttpWebResponse httpWebResponse)");
-            List<DBHighScoreModel> dBHighScoreModels = new List<DBHighScoreModel>();
+            List<HighScoreModel> dBHighScoreModels = new List<HighScoreModel>();
 
             using (var streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
                 Debug.Log("results 1 : \n" + result);
-                dBHighScoreModels = (List<DBHighScoreModel>)JsonConvert.DeserializeObject<List<DBHighScoreModel>>(result);
+                dBHighScoreModels = (List<HighScoreModel>)JsonConvert.DeserializeObject<List<HighScoreModel>>(result);
                 Debug.Log("results 2 : \n" + result);
             }
 
@@ -537,14 +537,14 @@ namespace Assets.Scripts.restapi
         }
 
         // send HttpWebResponse to function to be serialized into a single DBHighScore object
-        public static DBHighScoreModel ConvertHttpWebResponseToDBHighscoreModel(HttpWebResponse httpWebResponse)
+        public static HighScoreModel ConvertHttpWebResponseToDBHighscoreModel(HttpWebResponse httpWebResponse)
         {
 
-            DBHighScoreModel dBHighScoreModels = new DBHighScoreModel();
+            HighScoreModel dBHighScoreModels = new HighScoreModel();
             using (var streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
-                dBHighScoreModels = (DBHighScoreModel)JsonConvert.DeserializeObject<DBHighScoreModel>(result);
+                dBHighScoreModels = (HighScoreModel)JsonConvert.DeserializeObject<HighScoreModel>(result);
             }
 
             return dBHighScoreModels;
@@ -689,7 +689,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/token
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostToken(DBUserModel dBUserModel)
+        public static IEnumerator PostToken(UserModel dBUserModel)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.

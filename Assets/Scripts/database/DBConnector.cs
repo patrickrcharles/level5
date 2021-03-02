@@ -206,7 +206,7 @@ public class DBConnector : MonoBehaviour
 
 
     // ============================ Save stats ===============================
-    public void savePlayerGameStats(DBHighScoreModel dbHighScoreModel)
+    public void savePlayerGameStats(HighScoreModel dbHighScoreModel)
     {
         dbHelper.InsertGameScore(dbHighScoreModel);
     }

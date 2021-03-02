@@ -17,7 +17,7 @@ public class LoginManager : MonoBehaviour
     string errorMessageEmail = "";
     string errorMessageUserName = "";
 
-    DBUserModel user;
+    UserModel user;
     PlayerControls controls;
     APIConnector apiConnector;
     //buttonobject names
@@ -291,7 +291,7 @@ public class LoginManager : MonoBehaviour
 
         if (userNameIsValid && emailAddressIsValid)
         {
-            DBUserModel user = new DBUserModel();
+            UserModel user = new UserModel();
 
             user.Email = emailInput;
             user.UserName = userNameInput;

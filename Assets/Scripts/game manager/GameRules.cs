@@ -186,8 +186,8 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = getDisplayText(GameModeId);
 
             // ******** important : convert basketball stats to high score model
-            DBHighScoreModel dBHighScoreModel = new DBHighScoreModel();
-            DBHighScoreModel user = new DBHighScoreModel();
+            HighScoreModel dBHighScoreModel = new HighScoreModel();
+            HighScoreModel user = new HighScoreModel();
             user = dBHighScoreModel.convertBasketBallStatsToModel(basketBallStats);
 
             //save if at leat 1 minte played

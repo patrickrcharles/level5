@@ -20,7 +20,7 @@ public class APIConnector : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        DBUserModel testuser = new DBUserModel();
+        UserModel testuser = new UserModel();
 
         //testuser.UserName = "testUser" + RandomString(8);
         testuser.UserName = "drblood";
@@ -36,7 +36,7 @@ public class APIConnector : MonoBehaviour
         // else - create user
     }
 
-    public void CreateNewUser(DBUserModel user)
+    public void CreateNewUser(UserModel user)
     {
         if (!RegexUtilities.IsValidEmail(user.Email))
         {

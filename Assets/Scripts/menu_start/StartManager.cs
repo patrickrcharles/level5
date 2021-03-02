@@ -511,15 +511,14 @@ public class StartManager : MonoBehaviour
         initializeHardcoreOptionDisplay();
         setInitialGameOptions();
 
-        //yield return new WaitUntil(() => UserAccountManager.instance != null);
-        //yield return new WaitUntil(() => UserAccountManager.instance.UserAccountData != null);
-        //Debug.Log("startscreen : username : " + GameOptions.userName);
-        //Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
-        if (APIHelper.BearerToken != null)
+        Debug.Log("startscreen : username : " + GameOptions.userName);
+        Debug.Log("startscreen : bearerToken : " + GameOptions.bearerToken);
+
+        if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
         }
-        if (APIHelper.BearerToken == null)
+        if (APIHelper.BearerToken == null || string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
@@ -666,6 +665,8 @@ public class StartManager : MonoBehaviour
     public void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
+        Debug.Log("levelSelectedData.Count : " + levelSelectedData.Count);
+        Debug.Log("levelSelectedIndex : " + levelSelectedIndex);
         levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
