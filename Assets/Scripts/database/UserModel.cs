@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Assets.Scripts.database
 {
     [Serializable]
-    public class DBUserModel 
+    public class UserModel 
     {
         //public int Id;
         public int Userid;

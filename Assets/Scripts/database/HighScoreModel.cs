@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Assets.Scripts.database
 {
     [Serializable]
-    public class DBHighScoreModel 
+    public class HighScoreModel 
     {
         //public int Id;
         public int Userid;
@@ -50,7 +50,7 @@ namespace Assets.Scripts.database
         public int MoneyBallMade;
         public int MoneyBallAtt;
 
-        public DBHighScoreModel convertBasketBallStatsToModel(BasketBallStats stats)
+        public HighScoreModel convertBasketBallStatsToModel(BasketBallStats stats)
         {
             int trafficEnabled = 0;
             if (GameOptions.trafficEnabled)
@@ -68,7 +68,7 @@ namespace Assets.Scripts.database
                 enemiesEnabled = 1;
             }
 
-            DBHighScoreModel model = new DBHighScoreModel();
+            HighScoreModel model = new HighScoreModel();
 
             model.Scoreid = generateUniqueScoreID();
             model.Modeid = GameOptions.gameModeSelectedId;
