@@ -17,25 +17,6 @@ using Random = System.Random;
 public class APIConnector : MonoBehaviour
 {
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        UserModel testuser = new UserModel();
-
-        //testuser.UserName = "testUser" + RandomString(8);
-        testuser.UserName = "drblood";
-        testuser.Password = "admin";
-
-        //StartCoroutine(APIHelper.PostToken(testuser));
-        
-        // check database for existing users
-        // if true - offer option to load user
-        // get token, save token
-        // set logged in
-
-        // else - create user
-    }
-
     public void CreateNewUser(UserModel user)
     {
         if (!RegexUtilities.IsValidEmail(user.Email))
@@ -56,22 +37,6 @@ public class APIConnector : MonoBehaviour
 
         // if not, create user
         // else return 'username already exists
-    }
-
-    private string RandomString(int length)
-    {
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var stringChars = new char[length];
-        var random = new Random();
-
-        for (int i = 0; i < stringChars.Length; i++)
-        {
-            stringChars[i] = chars[random.Next(chars.Length)];
-        }
-
-        var finalString = new String(stringChars);
-
-        return finalString;
     }
 }
 
