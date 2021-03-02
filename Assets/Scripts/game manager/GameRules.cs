@@ -197,19 +197,22 @@ public class GameRules : MonoBehaviour
                 if (gameModeId != 99)
                 {
                     DBConnector.instance.savePlayerGameStats(user);
-
-                    //Debug.Log("username : " + user.UserName);
-                    //Debug.Log("userid : " + user.UserName);
-                    //Debug.Log("ip address : " + user.Ipaddress);
-                    StartCoroutine(APIHelper.PostHighscore(user));
+                    // if username is logged in
+                    if (!string.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
+                    {
+                        StartCoroutine(APIHelper.PostHighscore(user));
+                    }
+                    // if user not logged in, set submitted score to false
+                    else
+                    {
+                        DBHelper.instance.setGameScoreSubmitted(user.Scoreid, false);
+                    }
                 }
 
                 DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
                 DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.getExperienceGainedFromSession());
 
                 // post to API
-                //DBHighScoreModel dbs = DBHelper.instance.getHighScoreFromDatabase(basketBallStats.);
-                //StartCoroutine(APIHelper.PostHighscore(basketBallStats));
             }
             if (GameOptions.enemiesEnabled)
             {
