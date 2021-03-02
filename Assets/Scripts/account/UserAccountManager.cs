@@ -13,7 +13,7 @@ public class UserAccountManager : MonoBehaviour
 {
 
     [SerializeField]
-    private List<DBUserModel> userAccountData;
+    private List<UserModel> userAccountData;
 
     private bool usersLoaded = false;
 
@@ -29,7 +29,6 @@ public class UserAccountManager : MonoBehaviour
     Text messageText;
 
     PlayerControls controls;
-
     public static UserAccountManager instance;
 
     private void OnEnable()
@@ -71,8 +70,16 @@ public class UserAccountManager : MonoBehaviour
             }
             if (controls.Player.submit.triggered)
             {
-                //Debug.Log("login button pressed : " + userNameSelected);
-                LoginButton();
+                if (EventSystem.current.currentSelectedGameObject.name != "continueButton") 
+                {
+                    LoginButton();
+                }
+                else
+                {
+                    GameOptions.userName = null;
+                    GameOptions.userid = 0;
+                    ContinueButton();
+                }
             }
         }
     }
@@ -80,11 +87,11 @@ public class UserAccountManager : MonoBehaviour
     public void LoginButton()
     {
         //usersLoaded = false;
-
+        Debug.Log("loginbutton");
         if (usersLoaded)
         {
             GameOptions.userName = userNameSelected;
-            DBUserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
+            UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             GameOptions.userid = user.Userid;
             StartCoroutine(APIHelper.PostToken(user));
             //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
@@ -98,11 +105,17 @@ public class UserAccountManager : MonoBehaviour
         //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
+    public void ContinueButton()
+    {
+        Debug.Log("ContinueButton");
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+    }
+
     IEnumerator loadUserData()
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-
+        Debug.Log("loadUserData");
         try
         {
             userAccountData = DBHelper.instance.getUserProfileStats();
@@ -146,7 +159,7 @@ public class UserAccountManager : MonoBehaviour
         if (usersLoaded)
         {
             int index = 0;
-            foreach (DBUserModel u in userAccountData)
+            foreach (UserModel u in userAccountData)
             {
                 // instantiate a max of 5 rows
                 if (index < 5)
@@ -176,5 +189,5 @@ public class UserAccountManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
         }
     }
-    public List<DBUserModel> UserAccountData { get => userAccountData; }
+    public List<UserModel> UserAccountData { get => userAccountData; }
 }
