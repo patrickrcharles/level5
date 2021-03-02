@@ -108,6 +108,8 @@ public class UserAccountManager : MonoBehaviour
     public void ContinueButton()
     {
         Debug.Log("ContinueButton");
+        GameOptions.userName = "";
+        GameOptions.userid = 0;
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
