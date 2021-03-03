@@ -1677,7 +1677,7 @@ public class DBHelper : MonoBehaviour
         string col15 = "moneyBallMade";
         string col16 = "moneyBallAtt";
         string col17 = "enemiesEnabled";
-        string col18 = "userName";
+        string col18 = "username";
 
         string col1a = "userid";
         string col2a = "username";
