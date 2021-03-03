@@ -109,11 +109,15 @@ public class UserAccountManager : MonoBehaviour
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-        //Debug.Log("loadUserData");
+
         try
         {
             userAccountData = DBHelper.instance.getUserProfileStats();
             GameOptions.numOfLocalUsers = userAccountData.Count;
+
+            //Debug.Log("GameOptions.numOfLocalUsers : " + GameOptions.numOfLocalUsers);
+            //Debug.Log("userAccountData.Count : " + userAccountData.Count);
+
             if (userAccountData.Count > 0)
             {
                 usersLoaded = true;

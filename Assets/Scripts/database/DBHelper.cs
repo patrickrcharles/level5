@@ -864,8 +864,14 @@ public class DBHelper : MonoBehaviour
                     temp.SignUpDate = reader.GetString(6);
                     temp.LastLogin = reader.GetString(7);
                     temp.Password = reader.GetString(8);
-                    temp.BearerToken = reader.GetString(9);
-
+                    if (reader.IsDBNull(9))
+                    {
+                        temp.BearerToken = "";
+                    }
+                    else
+                    {
+                        temp.BearerToken = reader.GetString(9);
+                    }
                     userModel.Add(temp);
                 }
                 reader.Close();
