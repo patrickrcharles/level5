@@ -531,21 +531,31 @@ public class StatsManager : MonoBehaviour
 
     private void getUnsubmittedHighscores()
     {
-        // get unsubmitted scores
-        unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
-        numUnsubmittedHighscores = unsubmittedHighScores.Count;
-        // if count > 0,  set appropriate text
-        if (numUnsubmittedHighscores > 0)
+        try
         {
-            submittedHighscoresText.text = "submit scores";
-            numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
-            StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores) );
+            DBHelper.instance.DatabaseLocked = true;
+            // get unsubmitted scores
+            unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
+            numUnsubmittedHighscores = unsubmittedHighScores.Count;
+            // if count > 0,  set appropriate text
+            if (numUnsubmittedHighscores > 0)
+            {
+                submittedHighscoresText.text = "submit scores";
+                numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
+                StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
+            }
+            // if none, set appropriate text
+            if (numUnsubmittedHighscores == 0)
+            {
+                submittedHighscoresText.text = "no scores to submit";
+                numUnsubmittedHighscoresText.text = "";
+            }
+            DBHelper.instance.DatabaseLocked = false;
         }
-        // if none, set appropriate text
-        if (numUnsubmittedHighscores == 0)
+        catch(Exception e)
         {
-            submittedHighscoresText.text = "no scores to submit";
-            numUnsubmittedHighscoresText.text = "";
+            DBHelper.instance.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
         }
     }
 
@@ -556,6 +566,7 @@ public class StatsManager : MonoBehaviour
         {
             try
             {
+                DBHelper.instance.DatabaseLocked = true;
                 // counts number entries returned.
                 int index = 0;
                 // get highscore field from mode prefab
@@ -596,10 +607,12 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
                 }
                 initializeLocalPageNumberDisplay();
+                DBHelper.instance.DatabaseLocked = false;
             }
             catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
+                DBHelper.instance.DatabaseLocked = false;
                 return;
             }
         }
