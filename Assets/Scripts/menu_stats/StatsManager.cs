@@ -529,6 +529,39 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    public void submitUnsubmittedScores()
+    {
+        if (!String.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
+        {
+            try
+            {
+                DBHelper.instance.DatabaseLocked = true;
+                // get unsubmitted scores
+                unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
+                numUnsubmittedHighscores = unsubmittedHighScores.Count;
+                // if count > 0,  set appropriate text
+                if (numUnsubmittedHighscores > 0)
+                {
+                    submittedHighscoresText.text = "submit scores";
+                    numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
+                    StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
+                }
+                // if none, set appropriate text
+                if (numUnsubmittedHighscores == 0)
+                {
+                    submittedHighscoresText.text = "no scores to submit";
+                    numUnsubmittedHighscoresText.text = "";
+                }
+                DBHelper.instance.DatabaseLocked = false;
+            }
+            catch (Exception e)
+            {
+                DBHelper.instance.DatabaseLocked = false;
+                Debug.Log("ERROR : " + e);
+            }
+        }
+    }
+
     private void getUnsubmittedHighscores()
     {
         try
