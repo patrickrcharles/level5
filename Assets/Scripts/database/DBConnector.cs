@@ -63,7 +63,7 @@ public class DBConnector : MonoBehaviour
         {
             try
             {
-                createDatabase();
+                StartCoroutine( createDatabase());
             }
             catch (Exception e)
             {
@@ -79,8 +79,8 @@ public class DBConnector : MonoBehaviour
             {
                 SqliteConnection.CreateFile(filepath);
                 //Debug.Log("create file / !existed");
-                dropDatabase();
-                createDatabase();
+                StartCoroutine( dropDatabase());
+                StartCoroutine( createDatabase());
             }
             catch (Exception e)
             {
@@ -131,6 +131,7 @@ public class DBConnector : MonoBehaviour
 
             databaseCreated = true;
             //Debug.Log("databaseCreated : " + databaseCreated);
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
@@ -224,8 +225,10 @@ public class DBConnector : MonoBehaviour
     // =========================================================================
 
     // create tables if not created
-    void createDatabase()
+    IEnumerator createDatabase()
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -355,12 +358,15 @@ public class DBConnector : MonoBehaviour
         {
             Debug.Log("ERROR : " + e);
             dbHelper.DatabaseLocked = false;
-            return;
+            //return;
         }
     }
 
-    void dropDatabase()
+    IEnumerator dropDatabase()
     {
+        yield return new WaitUntil(()=> !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -385,12 +391,14 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return;
+            //return;
         }
     }
 
