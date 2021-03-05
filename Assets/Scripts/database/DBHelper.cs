@@ -269,8 +269,9 @@ public class DBHelper : MonoBehaviour
 
 
     // add default cheerleader data from PREFABS to DATABASE
-    public void InsertCheerleaderProfile(List<CheerleaderProfile> cheerleaderSelectedData)
+    public IEnumerator InsertCheerleaderProfile(List<CheerleaderProfile> cheerleaderSelectedData)
     {
+        yield return new WaitUntil(() => !databaseLocked);
         try
         {
             databaseLocked = true;
@@ -309,7 +310,7 @@ public class DBHelper : MonoBehaviour
         {
             DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return;
+            //return;
         }
     }
 
@@ -371,8 +372,9 @@ public class DBHelper : MonoBehaviour
     }
 
     // insert default Player profiles
-    public void InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
+    public IEnumerator InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
     {
+        yield return new WaitUntil(()=> !databaseLocked);
         try
         {
             databaseLocked = true;
@@ -427,7 +429,7 @@ public class DBHelper : MonoBehaviour
         {
             DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return;
+            //return;
         }
     }
 

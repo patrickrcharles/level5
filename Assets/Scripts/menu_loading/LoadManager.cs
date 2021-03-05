@@ -140,7 +140,7 @@ public class LoadManager : MonoBehaviour
         if (CharacterProfileTableCreated && !CharacterProfileTableExists)
         {
             playerSelectedData = loadDefaultPlayerShooterProfiles();
-            DBHelper.instance.InsertCharacterProfile(playerSelectedData);
+            StartCoroutine( DBHelper.instance.InsertCharacterProfile(playerSelectedData));
         }
         //table already exists + does NOT require default records
         if (!CharacterProfileTableCreated && CharacterProfileTableExists)
@@ -154,7 +154,7 @@ public class LoadManager : MonoBehaviour
             // load default data from prefabs
             cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
             // insert default into DB
-            DBHelper.instance.InsertCheerleaderProfile(cheerleaderSelectedData);
+            StartCoroutine( DBHelper.instance.InsertCheerleaderProfile(cheerleaderSelectedData));
         }
 
         //table already exists + does NOT require default records
