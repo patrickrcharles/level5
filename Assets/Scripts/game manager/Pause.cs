@@ -175,7 +175,6 @@ public class Pause : MonoBehaviour
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
-            //|| InputManager.GetButtonDown("Fire1")))
             {
                 reloadScene();
             }
@@ -183,14 +182,12 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                //Debug.Log("load start scene");
                 loadstartScreen();
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                //Debug.Log("toggle pause");
                 TogglePause();
             }
             // quit

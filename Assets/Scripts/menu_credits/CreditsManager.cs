@@ -16,29 +16,7 @@ public class CreditsManager : MonoBehaviour
     //version text
     private Text versionText;
 
-    //const object names
     private const string startButtonName = "press_start";
-    private const string statsMenuButtonName = "stats_menu";
-    private const string quitButtonName = "quit_game";
-    private const string optionsMenuButtonName = "options_menu";
-    private const string creditsMenuButtonName = "credits_menu";
-    private const string updateMenuButtonName = "update_menu";
-    private const string updatePointsAvailable = "update_points_available";
-
-    // scene name
-    private const string statsMenuSceneName = "level_00_stats";
-    private const string startMenuSceneName = "level_00_start";
-    private const string loadScreenSceneName = "level_00_loading";
-    private const string progressionScreenSceneName = "level_00_progression";
-    private const string creditsScreenSceneName = "level_00_credits";
-
-    private const string playerSelectButtonName = "player_select";
-    private const string playerSelectOptionButtonName = "player_selected_name";
-    private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
-    private const string playerSelectImageObjectName = "player_selected_image";
-    private const string playerSelectUnlockObjectName = "player_selected_unlock";
-    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
-    private const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
     public PlayerControls controls;
 
@@ -66,13 +44,6 @@ public class CreditsManager : MonoBehaviour
         //getUiObjectReferences();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        AnaylticsManager.MenuStartLoaded();
-    }
-
-
     // Update is called once per frame
     void Update()
     {
@@ -92,54 +63,18 @@ public class CreditsManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            loadMenu(startMenuSceneName);
+            loadStartMenu();
         }
-        // quit button | quit game
-        if ((controls.UINavigation.Submit.triggered
-             || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(quitButtonName))
-        {
-            Application.Quit();
-        }
-        // stats menu button | load stats menu
-        if ((controls.UINavigation.Submit.triggered
-             || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(statsMenuButtonName))
-        {
-            loadMenu(statsMenuSceneName);
-        }
-
-        // stats menu button | load stats menu
-        if ((controls.UINavigation.Submit.triggered
-             || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(updateMenuButtonName))
-        {
-            loadMenu(progressionScreenSceneName);
-        }
-        // crediys menu button | load stats menu
-        if ((controls.UINavigation.Submit.triggered
-             || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(creditsMenuButtonName))
-        {
-            loadMenu(creditsScreenSceneName);
-        }
-
-
-        // ================================== navigation =====================================================================
-        
     }
 
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
    
-    public void loadMenu(string sceneName)
+    public void loadStartMenu()
     {
-        //Debug.Log("load scene : " + sceneName);
-
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);
     }
 
-  
 
     // ============================  message display ==============================
     // used in this context to display if item is locked
@@ -150,22 +85,5 @@ public class CreditsManager : MonoBehaviour
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
     }
-
-    // ============================  navigation functions ==============================
-    
-
-    // ============================  public var references  ==============================
-    // dont think some of these are used, keep an eye on this on refactor
-    // button names
-    public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
-    public static string CreditsMenuButtonName => creditsMenuButtonName;
-    public static string StartButtonName => startButtonName;
-    public static string StatsMenuButtonName => statsMenuButtonName;
-    public static string QuitButtonName => quitButtonName;
-    //scene names
-    public static string StatsMenuSceneName => statsMenuSceneName;
-    public static string ProgressionScreenSceneName => progressionScreenSceneName;
-    public static string UpdateMenuButtonName => updateMenuButtonName;
-    public static string CreditsScreenSceneName => creditsScreenSceneName;
 
 }

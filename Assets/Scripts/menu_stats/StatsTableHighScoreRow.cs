@@ -55,19 +55,7 @@ public class StatsTableHighScoreRow : MonoBehaviour
         dateText.text = Date;
         hardcoreText.text = HardcoreEnabled;
         userNameText.text = UserName;
-
-        //Debug.Log("score = " + score + " | character =" +character + " | level = " + level + " | date = " +date);
     }
-
-    //public StatsTableHighScoreRow(string scor, string charact, string lvl, string dat, string hrdcor, string uname)
-    //{
-    //    UserName = uname;
-    //    Score = scor;
-    //    Character = charact;
-    //    Level = lvl;
-    //    Date = dat;
-    //    HardcoreEnabled = hrdcor;
-    //}
 
     public void  setRowValues(string scor, string charact, string lvl, string dat, string hrdcor, string uname)
     {
