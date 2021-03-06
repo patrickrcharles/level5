@@ -145,7 +145,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
         {
-            StatsManager.instance.loadMainMenu(StatsManager.MainMenuSceneName);
+            StatsManager.instance.loadMainMenu(SceneNameConstants.SCENE_NAME_level_00_start);
         }
         buttonPressed = false;
     }
@@ -167,46 +167,144 @@ public class TouchInputStatsScreenController : MonoBehaviour
 
     private void swipeUpOnOption()
     {
-        StatsManager.instance.changeHighScoreDataDisplay();
+        //StatsManager.instance.changeHighScoreDataDisplay();
         buttonPressed = true;
         //high score, mode change
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+        // local mode select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
         {
-            StatsManager.instance.changeSelectedMode("right");
-            //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
-            buttonPressed = true;
-        }
-        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        //{
-        //    StatsManager.instance.changeSelectedMode("right");
-        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
-        //    StatsManager.instance.changeHighScoreDataDisplay();
-        //    buttonPressed = true;
-        //}
-        buttonPressed = false;
-    }
-    private void swipeDownOnOption()
-    {
-        StatsManager.instance.changeHighScoreDataDisplay();
-        buttonPressed = true;
-        //high score, mode change
-        EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
-        {
+            //save previous button
+            StatsManager.instance.PreviousHighlightedButton = StatsManager.instance.CurrentHighlightedButton;
+            StatsManager.instance.LocalResultsPageNumber = 0;
+
             StatsManager.instance.changeSelectedMode("left");
             //StatsManager.instance.changeHighScoreModeNameDisplay();
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
-        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        //{
-        //    StatsManager.instance.changeSelectedMode("left");
-        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
-        //    StatsManager.instance.changeHighScoreDataDisplay();
-        //    buttonPressed = true;
-        //}
+        // online mode select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonOnlineName))
+        {
+            //save previous button
+            StatsManager.instance.PreviousHighlightedButton = StatsManager.instance.CurrentHighlightedButton;
+            StatsManager.instance.OnlineResultsPageNumber = 0;
+
+            StatsManager.instance.changeSelectedMode("left");
+            StatsManager.instance.changeHighScoreDataDisplayOnline();
+            buttonPressed = true;
+        }
+        // local page number
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.PageNumberLocalButtonName))
+        {
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.increaseLocalResultsPageNumber();
+            buttonPressed = true;
+        }
+        // online page number
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.PageNumberOnlineButtonName))
+        {
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.increaseOnlineResultsPageNumber();
+            buttonPressed = true;
+        }
+        // hardcore option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.HardcoreOptionButtonName))
+        {
+            Debug.Log("hardcore option");
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeSelectedHardcoreOption();
+            StatsManager.instance.initializeHardcoreOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        // traffic option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.TrafficOptionButtonName))
+        {
+            Debug.Log("traffic option");
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeSelectedTrafficOption();
+            StatsManager.instance.initializeTrafficOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        // enemies option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.EnemiesOptionButtonName))
+        {
+            Debug.Log("enemies option");
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeSelectedEnemiesOption();
+            StatsManager.instance.initializeEnemyOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        buttonPressed = false;
+    }
+    private void swipeDownOnOption()
+    {
+        //StatsManager.instance.changeHighScoreDataDisplay();
+        buttonPressed = true;
+        //high score, mode change
+        EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+        // local mode select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
+        {
+            //save previous button
+            StatsManager.instance.PreviousHighlightedButton = StatsManager.instance.CurrentHighlightedButton;
+            StatsManager.instance.LocalResultsPageNumber = 0;
+
+            StatsManager.instance.changeSelectedMode("right");
+            //StatsManager.instance.changeHighScoreModeNameDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        // online mode select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonOnlineName))
+        {
+            //save previous button
+            StatsManager.instance.PreviousHighlightedButton = StatsManager.instance.CurrentHighlightedButton;
+            StatsManager.instance.OnlineResultsPageNumber = 0;
+
+            StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeHighScoreDataDisplayOnline();
+            buttonPressed = true;
+        }
+        // local page number
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.PageNumberLocalButtonName))
+        {
+            StatsManager.instance.increaseLocalResultsPageNumber();
+            buttonPressed = true;
+        }
+        // online page number
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.PageNumberOnlineButtonName))
+        {
+            StatsManager.instance.increaseOnlineResultsPageNumber();
+            buttonPressed = true;
+        }
+        // hardcore option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.HardcoreOptionButtonName))
+        {
+            StatsManager.instance.changeSelectedHardcoreOption();
+            StatsManager.instance.initializeHardcoreOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        // traffic option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.TrafficOptionButtonName))
+        {
+            StatsManager.instance.changeSelectedTrafficOption();
+            StatsManager.instance.initializeTrafficOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
+        // enemies option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.EnemiesOptionButtonName))
+        {
+            StatsManager.instance.changeSelectedEnemiesOption();
+            StatsManager.instance.initializeEnemyOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
         buttonPressed = false;
     }
 }
