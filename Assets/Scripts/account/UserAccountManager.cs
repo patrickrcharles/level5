@@ -47,7 +47,7 @@ public class UserAccountManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-
+        instance = this;
         if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_loading))
         {
             StartCoroutine(loadUserData());
@@ -67,9 +67,12 @@ public class UserAccountManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject != null && usersLoaded)
             {
                 userNameSelected = EventSystem.current.currentSelectedGameObject.transform.parent.GetChild(0).GetComponent<Text>().text;
+                //Debug.Log("username " + userNameSelected);
             }
-            if (controls.Player.submit.triggered)
+            if (controls.UINavigation.Submit.triggered)
             {
+                //Debug.Log("controls.UINavigation.Submit.triggered");
+                //Debug.Log("EventSystem.current.currentSelectedGameObject.name : "+ EventSystem.current.currentSelectedGameObject.name);
                 if (EventSystem.current.currentSelectedGameObject.name != "continueButton") 
                 {
                     LoginButton();
@@ -83,6 +86,8 @@ public class UserAccountManager : MonoBehaviour
             }
         }
     }
+
+
 
     public void LoginButton()
     {
@@ -125,6 +130,7 @@ public class UserAccountManager : MonoBehaviour
                 {
                     messageText.text = "select user to log in";
                 }
+                DBHelper.instance.DatabaseLocked = false;
             }
             else
             {
@@ -133,22 +139,25 @@ public class UserAccountManager : MonoBehaviour
                 {
                     messageText.text = "no users found";
                 }
-                //SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
+                DBHelper.instance.DatabaseLocked = false;
             }
+            StartCoroutine(CreateUserButtons());
         }
         catch (Exception e)
         {
-            usersLoaded = false;
             Debug.Log("ERROR : " + e);
+            usersLoaded = false;
+            DBHelper.instance.DatabaseLocked = false;
             messageText.text = e.ToString();
+            StartCoroutine(CreateUserButtons());
         }
-
-        StartCoroutine(CreateUserButtons());
-
+        //StartCoroutine(CreateUserButtons());
     }
     IEnumerator CreateUserButtons()
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked );
+
         // for each, create empty object
         // add text + button that is clickable
 
@@ -160,7 +169,7 @@ public class UserAccountManager : MonoBehaviour
             foreach (UserModel u in userAccountData)
             {
                 // instantiate a max of 5 rows
-                if (index < 5)
+                if (index < 10)
                 {
                     GameObject prefabClone =
                     Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
@@ -188,4 +197,5 @@ public class UserAccountManager : MonoBehaviour
         }
     }
     public List<UserModel> UserAccountData { get => userAccountData; }
+    public bool UsersLoaded { get => usersLoaded; set => usersLoaded = value; }
 }

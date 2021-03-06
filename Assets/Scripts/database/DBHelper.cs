@@ -807,7 +807,7 @@ public class DBHelper : MonoBehaviour
                + "','" + user.LastLogin
                + "','" + user.Password + "')";
 
-            Debug.Log(sqlQuery1);
+            //Debug.Log(sqlQuery1);
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -891,6 +891,56 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
             Debug.Log("ERROR : " + e);
             return new List<UserModel>();
+        }
+    }
+
+    public bool localUserExists(UserModel user)
+    {
+        int count = 0;
+        try
+        {
+            DatabaseLocked = true;
+
+            String sqlQuery = "";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            if (!isTableEmpty(userTableName))
+            {
+                sqlQuery = "Select * From " + userTableName + " WHERE username = '" + user.UserName +"'";
+                //Debug.Log(sqlQuery);
+                dbcmd.CommandText = sqlQuery;
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    count++;
+                }
+
+                reader.Close();
+                reader = null;
+                dbcmd.Dispose();
+                dbcmd = null;
+                dbconn.Close();
+                dbconn = null;
+            }
+            databaseLocked = false;
+            if(count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            Debug.Log("ERROR : " + e);
+            return false;
         }
     }
     // update all time stats
@@ -2187,7 +2237,13 @@ public class DBHelper : MonoBehaviour
 
             if (!isTableEmpty(highScoresTableName))
             {
-                sqlQuery = "Select  * From " + highScoresTableName + " WHERE submittedToApi = 0";
+                sqlQuery = "Select  * From " + highScoresTableName 
+                    + " WHERE submittedToApi = 0 " 
+                    + " AND modeid != 99"
+                    + " AND username != ''";
+
+                Debug.Log(sqlQuery);
+
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 

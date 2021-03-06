@@ -45,7 +45,5 @@ public class PlatformCheck : MonoBehaviour
         //Debug.Log("standalone");
 #endif
 
-        //Debug.Log("QualitySettings.vSyncCount : " + QualitySettings.vSyncCount);
-        //Debug.Log("Application.targetFrameRate : " + Application.targetFrameRate);
     }
 }

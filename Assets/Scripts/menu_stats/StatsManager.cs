@@ -24,6 +24,10 @@ public class StatsManager : MonoBehaviour
     const string mainMenuButtonName = "main_menu";
     const string pageNumberLocalButtonName = "page_number_local";
     const string pageNumberOnlineButtonName = "page_number_online";
+    //options button names
+    const string hardcoreOptionButtonName = "hardcore_value_button";
+    const string trafficOptionButtonName = "traffic_value_button";
+    const string enemiesOptionButtonName = "enemies_value_button";
 
     // table names
     const string highScoreTableName = "high_scores_table";
@@ -31,7 +35,7 @@ public class StatsManager : MonoBehaviour
 
     // tag find high score rows that are instantiated
     const string highScoreRowTag = "high_score_row";
-    const string mainMenuSceneName = "level_00_start";
+    //const string mainMenuSceneName = "level_00_start";
 
     GameObject allTimeTableObject;
     GameObject highScoreTableObject;
@@ -258,6 +262,7 @@ public class StatsManager : MonoBehaviour
 
         // ================================== navigation =====================================================================
 
+#if UNITY_STANDALONE || UNITY_EDITOR
         // high scores table button selected
         if (currentHighlightedButton.Equals(trafficSelectValueName) && !buttonPressed)
         {
@@ -381,7 +386,6 @@ public class StatsManager : MonoBehaviour
                 changeHighScoreDataDisplayOnline();
                 buttonPressed = false;
             }
-            modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
         }
 
         // all time stats table button selected
@@ -403,13 +407,26 @@ public class StatsManager : MonoBehaviour
             if (controls.UINavigation.Submit.triggered)
             {
                 buttonPressed = true;
-                loadMainMenu(mainMenuSceneName);
+                loadMainMenu(SceneNameConstants.SCENE_NAME_level_00_start);
                 buttonPressed = false;
             }
         }
-        // main menu button selected
+        // local page number
         if (currentHighlightedButton.Equals(pageNumberLocalButtonName) && !buttonPressed)
         {
+            //if (previousHighlightedButton != modeSelectButtonName)
+            //{
+            //    changeHighScoreDataDisplayOnline();
+            //}
+            if (!highScoreTableObject.activeSelf)
+            {
+                highScoreTableObject.SetActive(true);
+            }
+            if (allTimeTableObject.activeSelf)
+            {
+                allTimeTableObject.SetActive(false);
+            }
+
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
                 buttonPressed = true;
@@ -423,9 +440,18 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = false;
             }
         }
-        // main menu button selected
+        // online page number
         if (currentHighlightedButton.Equals(pageNumberOnlineButtonName) && !buttonPressed)
         {
+            if (!highScoreTableObject.activeSelf)
+            {
+                highScoreTableObject.SetActive(true);
+            }
+            if (allTimeTableObject.activeSelf)
+            {
+                allTimeTableObject.SetActive(false);
+            }
+
             if (controls.UINavigation.Left.triggered && !buttonPressed)
             {
                 buttonPressed = true;
@@ -439,6 +465,7 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = false;
             }
         }
+#endif
         // save at end of frame
         previousHighlightedButton = currentHighlightedButton;
     }
@@ -575,7 +602,6 @@ public class StatsManager : MonoBehaviour
             {
                 submittedHighscoresText.text = "submit scores";
                 numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
-                StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
             }
             // if none, set appropriate text
             if (numUnsubmittedHighscores == 0)
@@ -649,6 +675,7 @@ public class StatsManager : MonoBehaviour
                 return;
             }
         }
+        modeSelectButtonText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     public void changeHighScoreDataDisplayOnline()
@@ -735,6 +762,7 @@ public class StatsManager : MonoBehaviour
                 return;
             }
         }
+        modeSelectButtonOnlineText.text = modesList[currentModeSelectedIndex].modeSelectedName;
     }
 
     // ============================  Initialize displays ==============================
@@ -928,5 +956,20 @@ public class StatsManager : MonoBehaviour
     public static string ModeSelectButtonName => modeSelectButtonName;
     public static string AlltimeSelectButtonName => alltimeSelectButtonName;
     public static string MainMenuButtonName => mainMenuButtonName;
-    public static string MainMenuSceneName => mainMenuSceneName;
+    public static string PageNumberLocalButtonName => pageNumberLocalButtonName;
+
+    public static string PageNumberOnlineButtonName => pageNumberOnlineButtonName;
+
+    public static string ModeSelectButtonOnlineName => modeSelectButtonOnlineName;
+
+    public static string HardcoreOptionButtonName => hardcoreOptionButtonName;
+
+    public static string TrafficOptionButtonName => trafficOptionButtonName;
+
+    public static string EnemiesOptionButtonName => enemiesOptionButtonName;
+
+    public string PreviousHighlightedButton { get => previousHighlightedButton; set => previousHighlightedButton = value; }
+    public string CurrentHighlightedButton { get => currentHighlightedButton; set => currentHighlightedButton = value; }
+    public int LocalResultsPageNumber { get => localResultsPageNumber; set => localResultsPageNumber = value; }
+    public int OnlineResultsPageNumber { get => onlineResultsPageNumber; set => onlineResultsPageNumber = value; }
 }

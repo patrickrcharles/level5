@@ -109,14 +109,7 @@ public class LoginManager : MonoBehaviour
 
     void Update()
     {
-#if UNITY_ANDROID || UNITY_IOS
-        // test onscreen keyboard
-        if (controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9)
-            && !buttonPressed)
-        {
-            Debug.Log("test on screen keyboard");
-        }
-#endif
+
         if (controls.UINavigation.Submit.triggered && !buttonPressed)
         {
             buttonPressed = true;
@@ -334,6 +327,25 @@ public class LoginManager : MonoBehaviour
             yield return new WaitUntil(() => !APIHelper.ApiLocked);
 
             StartCoroutine(APIHelper.PostToken(user));
+
+            yield return new WaitUntil(() => APIHelper.BearerToken != null);
+
+            // if local user doesnt exists, insert locally
+            if(!DBHelper.instance.localUserExists(user))
+            {
+                DBHelper.instance.DatabaseLocked = false;
+                // created on api, insert to local db
+                DBHelper.instance.InsertUser(user);
+            }
+            //DBHelper.instance.getUserProfileStats()
+            // wait for token
+            // if valid / bearerToken != null
+            // insert to local db if  < 5
+
+            //apiLocked = false;
+            //DBHelper.instance.DatabaseLocked = false;
+            //// created on api, insert to local db
+            //DBHelper.instance.InsertUser(user);
         }
     }
 
@@ -375,12 +387,12 @@ public class LoginManager : MonoBehaviour
     public void readFirstNameInput(string s)
     {
         firstNameInput = firstNameInputField.text;
-        Debug.Log(firstNameInput);
+        //Debug.Log(firstNameInput);
     }
     public void readLastNameInput(string s)
     {
         lastNameInput = lastNameInputField.text;
-        Debug.Log(lastNameInput);
+        //Debug.Log(lastNameInput);
     }
 
     public string GetExternalIpAdress()
