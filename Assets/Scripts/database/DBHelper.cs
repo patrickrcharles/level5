@@ -2240,9 +2240,10 @@ public class DBHelper : MonoBehaviour
                 sqlQuery = "Select  * From " + highScoresTableName 
                     + " WHERE submittedToApi = 0 " 
                     + " AND modeid != 99"
+                    + " AND username != '0'"
                     + " AND username != ''";
 
-                Debug.Log(sqlQuery);
+                //Debug.Log(sqlQuery);
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
