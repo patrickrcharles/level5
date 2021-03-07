@@ -251,14 +251,17 @@ public class StatsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // check for some button not selected
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            //Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
-        }
+        //// check for some button not selected
+        //if (EventSystem.current.currentSelectedGameObject == null)
+        //{
+        //    Debug.Log("if (EventSystem.current.currentSelectedGameObject == null) : ");
+        //    EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+        //}
 
-        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name;
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name;
+        }
 
         // ================================== navigation =====================================================================
 
