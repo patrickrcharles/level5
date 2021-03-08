@@ -71,13 +71,15 @@ public class UserAccountManager : MonoBehaviour
             }
             if (controls.UINavigation.Submit.triggered)
             {
-                //Debug.Log("controls.UINavigation.Submit.triggered");
-                //Debug.Log("EventSystem.current.currentSelectedGameObject.name : "+ EventSystem.current.currentSelectedGameObject.name);
-                if (EventSystem.current.currentSelectedGameObject.name != "continueButton") 
+                if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountLoginButton"))
                 {
                     LoginButton();
                 }
-                else
+                if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountRemoveButton"))
+                {
+                    RemoveUserButton();
+                }
+                if (EventSystem.current.currentSelectedGameObject.name.Equals("continueButton"))
                 {
                     GameOptions.userName = null;
                     GameOptions.userid = 0;
@@ -108,6 +110,15 @@ public class UserAccountManager : MonoBehaviour
         GameOptions.userName = "";
         GameOptions.userid = 0;
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+    }
+
+    public void RemoveUserButton()
+    {
+        // remove user from local database
+        // reload login scene
+        DBHelper.instance.deleteLocalUser(userNameSelected);
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+
     }
 
     IEnumerator loadUserData()
@@ -182,7 +193,7 @@ public class UserAccountManager : MonoBehaviour
                 }
                 index++;
             }
-            EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
+            //EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
         }
         else
         {
@@ -193,7 +204,7 @@ public class UserAccountManager : MonoBehaviour
             prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found" +
                 "\ngo to account and create one";
             prefabClone.transform.Find("userAccountLoginButton").GetComponent<Text>().text = "continue";
-            EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
+            //EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
         }
     }
     public List<UserModel> UserAccountData { get => userAccountData; }

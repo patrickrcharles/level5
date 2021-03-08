@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LocalAccount : MonoBehaviour
@@ -28,5 +29,13 @@ public class LocalAccount : MonoBehaviour
             GameOptions.userid = user.Userid;
             StartCoroutine(APIHelper.PostToken(user));
         }
+    }
+
+    public void RemoveUserButton()
+    {
+        // remove user from local database
+        // reload login scene
+        DBHelper.instance.deleteLocalUser(userNameSelected);
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
     }
 }

@@ -1671,6 +1671,40 @@ public class DBHelper : MonoBehaviour
         }
     }
 
+
+    public void deleteLocalUser(string username)
+    {
+        try
+        {
+            databaseLocked = true;
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = "DELETE FROM User Where username  = '" + username + "'";
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
+
+        }
+        catch (Exception e)
+        {
+            databaseLocked = false;
+            Debug.Log("ERROR : " + e);
+        }
+    }
+
     public void alterTableAddColumn(string tableName, string columnName, string type)
     {
         try
