@@ -195,13 +195,15 @@ public class StartManager : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
             disableButtonsNotUsedForTouchInput();
 #endif
+
+        StartCoroutine(InitializeDisplay());
     }
 
     // Start is called before the first frame update
     void Start()
     {
         AnaylticsManager.MenuStartLoaded();
-        StartCoroutine(InitializeDisplay());
+        //StartCoroutine(InitializeDisplay());
         //Debug.Log("startscreen : username : " + GameOptions.userName);
     }
 
@@ -502,24 +504,36 @@ public class StartManager : MonoBehaviour
     IEnumerator InitializeDisplay()
     {
         yield return new WaitUntil(() => dataLoaded);
-
         versionText.text = "Level 5 v." + Application.version;
+        //yield return new WaitForSeconds(0.05f);
         // display default data
         initializeCheerleaderDisplay();
+        //yield return new WaitForSeconds(0.05f);
         initializePlayerDisplay();
+        //yield return new WaitForSeconds(0.05f);
         initializeLevelDisplay();
+        //yield return new WaitForSeconds(0.05f);
         intializeModeDisplay();
+        //yield return new WaitForSeconds(0.05f);
         initializeTrafficOptionDisplay();
+        //yield return new WaitForSeconds(0.05f);
         initializeHardcoreOptionDisplay();
+        //yield return new WaitForSeconds(0.05f);
         setInitialGameOptions();
+        //yield return new WaitForSeconds(0.05f);
+
+        //Debug.Log(APIHelper.BearerToken);
+        //Debug.Log(string.IsNullOrEmpty(GameOptions.userName));
 
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
+            //Debug.Log("link");
         }
         if (APIHelper.BearerToken == null || string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
+            //Debug.Log("link");
         }
     }
     // ============================  get UI buttons / text references ==============================
@@ -664,8 +678,6 @@ public class StartManager : MonoBehaviour
     public void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
-        //Debug.Log("levelSelectedData.Count : " + levelSelectedData.Count);
-        //Debug.Log("levelSelectedIndex : " + levelSelectedIndex);
         levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
     }
@@ -1090,6 +1102,8 @@ public class StartManager : MonoBehaviour
     public static string ProgressionScreenSceneName => progressionScreenSceneName;
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
-    public static string CreditsScreenSceneName => creditsScreenSceneName;
 
+    public static string AccountMenuButtonName => accountMenuButtonName;
+
+    public static string CreditsMenuButtonName1 => creditsMenuButtonName;
 }
