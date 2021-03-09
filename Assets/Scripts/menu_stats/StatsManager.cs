@@ -245,6 +245,7 @@ public class StatsManager : MonoBehaviour
         changeHighScoreDataDisplay();
         changeHighScoreDataDisplayOnline();
         getUnsubmittedHighscores();
+        //submitUnsubmittedScores();
     }
 
 
@@ -582,6 +583,7 @@ public class StatsManager : MonoBehaviour
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
+                getUnsubmittedHighscores();
                 DBHelper.instance.DatabaseLocked = false;
             }
             catch (Exception e)

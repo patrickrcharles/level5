@@ -19,7 +19,7 @@ public class APIConnector : MonoBehaviour
 
     public void CreateNewUser(UserModel user)
     {
-        if (!RegexUtilities.IsValidEmail(user.Email))
+        if (!UtilityFunctions.IsValidEmail(user.Email))
         {
             // halt, fix email
             Debug.Log("invalid email address format ");

@@ -232,9 +232,17 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-        // start screen should be first scene in build
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+        if (DBConnector.instance != null)
+        {
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            // load screen should be first scene in build
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+        }
+        else
+        {
+            // load screen should be first scene in build
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+        }
     }
 
     public void reloadScene()

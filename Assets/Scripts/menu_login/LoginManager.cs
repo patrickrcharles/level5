@@ -176,7 +176,7 @@ public class LoginManager : MonoBehaviour
 
     public void checkEmailAddressFormat()
     {
-        if (!RegexUtilities.IsValidEmail(emailInput))
+        if (!UtilityFunctions.IsValidEmail(emailInput))
         {
             emailAddressIsValid = false;
         }
@@ -197,7 +197,7 @@ public class LoginManager : MonoBehaviour
         errorMessageUserName = "";
         errorMessageEmail = "";
 
-        if (!RegexUtilities.IsValidEmail(emailInput))
+        if (!UtilityFunctions.IsValidEmail(emailInput))
         {
             errorMessageEmail += "\nemail address is invalid format";
         }
@@ -311,10 +311,13 @@ public class LoginManager : MonoBehaviour
 
     private IEnumerator LoginUserCoroutine()
     {
+        float startTime;
+        float timeout = 10.0f;
+
         // check if user already exists or null
         if (string.IsNullOrEmpty(userNameInput))
         {
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_login);
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
         }
         else
         {
@@ -322,13 +325,18 @@ public class LoginManager : MonoBehaviour
             messageDisplay.text = getCheckUserName();
             UserModel user = APIHelper.GetUserByUserName(userNameInput);
 
-            yield return new WaitUntil(() => user != null);
+            // 10 second time out for all internet calls is a good idea
+            startTime = Time.time;
+
+            yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
             yield return new WaitUntil(() => !APIHelper.ApiLocked);
 
             StartCoroutine(APIHelper.PostToken(user));
+            startTime = Time.time;
 
-            yield return new WaitUntil(() => APIHelper.BearerToken != null);
+            // add 10 second timeout
+            yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime+timeout));
 
             // if local user doesnt exists, insert locally
             if(!DBHelper.instance.localUserExists(user))
@@ -337,33 +345,7 @@ public class LoginManager : MonoBehaviour
                 // created on api, insert to local db
                 DBHelper.instance.InsertUser(user);
             }
-            //DBHelper.instance.getUserProfileStats()
-            // wait for token
-            // if valid / bearerToken != null
-            // insert to local db if  < 5
-
-            //apiLocked = false;
-            //DBHelper.instance.DatabaseLocked = false;
-            //// created on api, insert to local db
-            //DBHelper.instance.InsertUser(user);
         }
-    }
-
-
-    private string RandomString(int length)
-    {
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var stringChars = new char[length];
-        var random = new Random();
-
-        for (int i = 0; i < stringChars.Length; i++)
-        {
-            stringChars[i] = chars[random.Next(chars.Length)];
-        }
-
-        var finalString = new String(stringChars);
-
-        return finalString;
     }
 
     public void readEmailAddressInput(string s)
@@ -375,24 +357,20 @@ public class LoginManager : MonoBehaviour
     public void readUsernameInput(string s)
     {
         userNameInput = usernameInputField.text;
-        //Debug.Log(userNameInput);
     }
 
     public void readPasswordInput(string s)
     {
         passwordInput = passwordInputField.text;
-        //Debug.Log(passwordInput);
     }
 
     public void readFirstNameInput(string s)
     {
         firstNameInput = firstNameInputField.text;
-        //Debug.Log(firstNameInput);
     }
     public void readLastNameInput(string s)
     {
         lastNameInput = lastNameInputField.text;
-        //Debug.Log(lastNameInput);
     }
 
     public string GetExternalIpAdress()
