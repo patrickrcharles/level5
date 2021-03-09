@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.Utility
 {
-    public static class RegexUtilities
+    public static class UtilityFunctions
     {
         public static bool IsValidEmail(string email)
         {
@@ -63,6 +61,43 @@ namespace Assets.Scripts.Utility
         public static bool ContainsWhiteSpace(String s)
         {
             return s.Contains(" ");
+        }
+
+        public static bool IsConnectedToInternet()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204"))
+                    return true;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("ERROR : " + e);
+                return false;
+            }
+        }
+
+        public static string RandomString(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new System.Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+
+            return finalString;
+        }
+
+        public static string GetExternalIpAdress()
+        {
+            string pubIp = new WebClient().DownloadString("https://api.ipify.org");
+            return pubIp;
         }
     }
 }
