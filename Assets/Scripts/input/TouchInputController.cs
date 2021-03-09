@@ -253,7 +253,7 @@ public class TouchInputController : MonoBehaviour
             && !buttonPressed)
         {
             //Debug.Log("start screen");
-            Pause.instance.loadstartScreen();
+            StartCoroutine( Pause.instance.loadstartScreen() );
             buttonPressed = true;
         }
         // cancel/unpause
@@ -269,7 +269,7 @@ public class TouchInputController : MonoBehaviour
             && !buttonPressed)
         {
             //Debug.Log("quit");
-            Pause.instance.quit();
+            StartCoroutine(Pause.instance.Quit());
             buttonPressed = true;
         }
         //// new stuff

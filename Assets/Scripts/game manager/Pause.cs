@@ -1,6 +1,7 @@
 ﻿
 using Assets.Scripts.database;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -182,7 +183,7 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                loadstartScreen();
+                StartCoroutine( loadstartScreen() );
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
@@ -194,7 +195,7 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                quit();
+               StartCoroutine( Quit());
             }
         }
     }
@@ -211,7 +212,7 @@ public class Pause : MonoBehaviour
         toggleUiStatsObject.SetActive(false);
     }
 
-    public void quit()
+    public IEnumerator Quit()
     {
         // update all time stats
         if (DBConnector.instance != null &&
@@ -219,10 +220,11 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-        Quit();
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        QuitApplication();
     }
 
-    public void loadstartScreen()
+    public IEnumerator loadstartScreen()
     {
         // update all time stats
         if (DBConnector.instance != null &&
@@ -230,8 +232,9 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
         // start screen should be first scene in build
-        SceneManager.LoadScene("level_00_loading");
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
     public void reloadScene()
@@ -394,7 +397,7 @@ public class Pause : MonoBehaviour
         }
     }
 
-    private void Quit()
+    private void QuitApplication()
     {
         Application.Quit();
     }

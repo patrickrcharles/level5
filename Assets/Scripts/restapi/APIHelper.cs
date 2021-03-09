@@ -525,10 +525,12 @@ namespace Assets.Scripts.restapi
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
                     Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                    apiLocked = false;
-                    DBHelper.instance.DatabaseLocked = false;
+                    apiLocked = false;                 
                     // created on api, insert to local db
                     DBHelper.instance.InsertUser(user);
+                    yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+
+                    SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
                 }
                 // failed
                 else
@@ -888,9 +890,10 @@ namespace Assets.Scripts.restapi
             }
 
             yield return new WaitUntil(() => !apiLocked);
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             //Debug.Log(APIHelper.bearerToken);
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_loading);
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
         }
     }
 }
