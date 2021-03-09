@@ -1,5 +1,6 @@
 using Assets.Scripts.database;
 using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -89,8 +90,6 @@ public class UserAccountManager : MonoBehaviour
         }
     }
 
-
-
     public void LoginButton()
     {
         //usersLoaded = false;
@@ -100,7 +99,15 @@ public class UserAccountManager : MonoBehaviour
             GameOptions.userName = userNameSelected;
             UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             GameOptions.userid = user.Userid;
-            StartCoroutine(APIHelper.PostToken(user));
+            // if connected to internet
+            if (UtilityFunctions.IsConnectedToInternet())
+            {
+                StartCoroutine(APIHelper.PostToken(user));
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+            }
         }
     }
 
