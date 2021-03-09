@@ -44,6 +44,14 @@ public class PlatformCheck : MonoBehaviour
         //inputSystemUIInputModule.ActivateModule();
         //Debug.Log("standalone");
 #endif
+        ////QualitySettings.vSyncCount = 1;
+        //QualitySettings.vSyncCount = 1;
+        //Application.targetFrameRate = 60;
 
+        //////inputSystemUIInputModule.DeactivateModule();
+        //inputSystemUIInputModule.enabled = false;
+        //standaloneInputModule.enabled = true;
+        ////standaloneInputModule.ActivateModule(); 
+        //Debug.Log("android");
     }
 }
