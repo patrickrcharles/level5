@@ -374,7 +374,7 @@ public class DBHelper : MonoBehaviour
     // insert default Player profiles
     public IEnumerator InsertCharacterProfile(List<CharacterProfile> shooterProfileList)
     {
-        yield return new WaitUntil(()=> !databaseLocked);
+        yield return new WaitUntil(() => !databaseLocked);
         try
         {
             databaseLocked = true;
@@ -909,7 +909,7 @@ public class DBHelper : MonoBehaviour
 
             if (!isTableEmpty(userTableName))
             {
-                sqlQuery = "Select * From " + userTableName + " WHERE username = '" + user.UserName +"'";
+                sqlQuery = "Select * From " + userTableName + " WHERE username = '" + user.UserName + "'";
                 //Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -927,7 +927,7 @@ public class DBHelper : MonoBehaviour
                 dbconn = null;
             }
             databaseLocked = false;
-            if(count > 0)
+            if (count > 0)
             {
                 return true;
             }
@@ -2271,8 +2271,8 @@ public class DBHelper : MonoBehaviour
 
             if (!isTableEmpty(highScoresTableName))
             {
-                sqlQuery = "Select  * From " + highScoresTableName 
-                    + " WHERE submittedToApi = 0 " 
+                sqlQuery = "Select  * From " + highScoresTableName
+                    + " WHERE submittedToApi = 0 "
                     + " AND modeid != 99"
                     + " AND username != '0'"
                     + " AND username != ''";
@@ -2325,6 +2325,8 @@ public class DBHelper : MonoBehaviour
                     highscore.MoneyBallAtt = reader.GetInt32(34);
                     highscore.EnemiesEnabled = reader.GetInt32(35);
                     highscore.UserName = reader.GetInt32(36).ToString();
+                    highscore.Userid = GameOptions.userid;
+                    Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
                     highscores.Add(highscore);
                     //Debug.Log("scoreid : " + highscore.Scoreid);
