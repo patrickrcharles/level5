@@ -585,6 +585,7 @@ public class StatsManager : MonoBehaviour
                 }
                 getUnsubmittedHighscores();
                 DBHelper.instance.DatabaseLocked = false;
+                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
             }
             catch (Exception e)
             {
