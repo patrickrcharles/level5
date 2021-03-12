@@ -28,6 +28,7 @@ namespace Assets.Scripts.restapi
         const string publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/modeid/";
         const string publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
         const string publicApiToken = "http://13.58.224.237/api/token/";
+        const string publicApplicationVersionCurrent = "http://13.58.224.237/api/application/version/current";
 
         // localhost testing
         const string localHostHighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
@@ -822,7 +823,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/token
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostToken(UserModel dBUserModel)
+        public static IEnumerator PostToken(UserModel user)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.
@@ -832,7 +833,7 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             //serialize highscore to json for HTTP POST
-            string toJson = JsonUtility.ToJson(dBUserModel);
+            string toJson = JsonUtility.ToJson(user);
 
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
@@ -873,8 +874,8 @@ namespace Assets.Scripts.restapi
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
                 //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                GameOptions.userName = dBUserModel.UserName;
-                GameOptions.userid = dBUserModel.Userid;
+                GameOptions.userName = user.UserName;
+                GameOptions.userid = user.Userid;
                 GameOptions.bearerToken = APIHelper.BearerToken;
 
                 apiLocked = false;
@@ -894,6 +895,63 @@ namespace Assets.Scripts.restapi
 
             //Debug.Log(APIHelper.bearerToken);
             SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+        }
+
+        //------------------------------------- GET Application  ----------------------------------------
+        // GET highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/modeid/{modeid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static string GetLatestBuildVersion()
+        {
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+
+            string currentVersion = "";
+            //build api request
+            string apiRequest = publicApplicationVersionCurrent; 
+
+            //int numResults = 0;
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "GET";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    //Debug.Log("result : " + result);
+                    //currentVersion = Convert.ToString(JsonConvert.DeserializeObject(result));
+                    currentVersion = result;
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                //Debug.Log("----------------- GetHighscoreCountByModeid() successful : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+            // failed
+            else
+            {
+                //Debug.Log("----------------- GetHighscoreCountByModeid() : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+            //Debug.Log("api : latest build : " + currentVersion);
+            return currentVersion;
         }
     }
 }
