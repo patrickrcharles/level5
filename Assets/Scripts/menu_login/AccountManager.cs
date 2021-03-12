@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class LoginManager : MonoBehaviour
+public class AccountManager : MonoBehaviour
 {
     Text messageDisplay;
     string errorMessageEmail = "";
@@ -208,10 +208,6 @@ public class LoginManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(emailInput))
         {
             errorMessageEmail += "\nemail address is empty or contains white space";
-        }
-        else
-        {
-            errorMessageEmail += "\nemail address : other problem";
         }
 
         //setErrorMessage();

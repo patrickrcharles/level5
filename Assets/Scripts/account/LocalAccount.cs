@@ -1,5 +1,6 @@
 using Assets.Scripts.database;
 using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,25 @@ public class LocalAccount : MonoBehaviour
             UserModel user = UserAccountManager.instance.UserAccountData.Where(x => x.UserName == userNameSelected).Single();
             GameOptions.userid = user.Userid;
             StartCoroutine(APIHelper.PostToken(user));
+        }
+        else
+        {
+            UserModel user = new UserModel();
+            GameOptions.userName = userNameSelected;
+
+            user.Userid = UserAccountManager.GuestUserid;
+            user.UserName = UserAccountManager.GuestPassword;
+            user.Password = "guest";
+
+            // if connected to internet
+            if (UtilityFunctions.IsConnectedToInternet())
+            {
+                StartCoroutine(APIHelper.PostToken(user));
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+            }
         }
     }
 

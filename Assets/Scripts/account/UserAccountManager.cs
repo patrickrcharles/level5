@@ -17,6 +17,8 @@ public class UserAccountManager : MonoBehaviour
     private List<UserModel> userAccountData;
 
     private bool usersLoaded = false;
+    const int guestUserid = 74;
+    const string guestPassword = "guest";
 
     [SerializeField]
     GameObject localAccountPrefab;
@@ -24,7 +26,7 @@ public class UserAccountManager : MonoBehaviour
     GameObject localAccountPrefabSpawnLocation;
     [SerializeField]
     List<GameObject> localAccounsList;
-
+    [SerializeField]
     string userNameSelected;
     [SerializeField]
     Text messageText;
@@ -65,23 +67,26 @@ public class UserAccountManager : MonoBehaviour
         // the sibling object text is a USERNAME stored locally and loaded into list
         if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_start))
         {
-            if (EventSystem.current.currentSelectedGameObject != null && usersLoaded)
+            if (EventSystem.current.currentSelectedGameObject != null )//&& usersLoaded)
             {
                 userNameSelected = EventSystem.current.currentSelectedGameObject.transform.parent.GetChild(0).GetComponent<Text>().text;
-                //Debug.Log("username " + userNameSelected);
             }
             if (controls.UINavigation.Submit.triggered)
             {
+                Debug.Log("loginbutton");
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountLoginButton"))
                 {
+                    Debug.Log("loginbutton");
                     LoginButton();
                 }
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountRemoveButton"))
                 {
+                    Debug.Log("loginbutton");
                     RemoveUserButton();
                 }
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("continueButton"))
                 {
+                    Debug.Log("loginbutton");
                     GameOptions.userName = null;
                     GameOptions.userid = 0;
                     ContinueButton();
@@ -92,28 +97,35 @@ public class UserAccountManager : MonoBehaviour
 
     public void LoginButton()
     {
-        //usersLoaded = false;
-        //Debug.Log("loginbutton");
+        UserModel user = new UserModel();
+
+        GameOptions.userName = userNameSelected;
         if (usersLoaded)
         {
-            GameOptions.userName = userNameSelected;
-            UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
+            user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
             GameOptions.userid = user.Userid;
-            // if connected to internet
-            if (UtilityFunctions.IsConnectedToInternet())
-            {
-                StartCoroutine(APIHelper.PostToken(user));
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
-            }
+        }
+        else
+        {
+            user.Userid = guestUserid;
+            user.UserName = userNameSelected;
+            user.Password = "guest";
+        }
+
+        // if connected to internet
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            StartCoroutine(APIHelper.PostToken(user));
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
         }
     }
 
     public void ContinueButton()
     {
-        //Debug.Log("ContinueButton");
+        Debug.Log("ContinueButton");
         GameOptions.userName = "";
         GameOptions.userid = 0;
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
@@ -174,16 +186,17 @@ public class UserAccountManager : MonoBehaviour
     IEnumerator CreateUserButtons()
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
-        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked );
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
         // for each, create empty object
         // add text + button that is clickable
 
         // flag for testing
         //usersLoaded = false;
+
+        int index = 0;
         if (usersLoaded)
         {
-            int index = 0;
             foreach (UserModel u in userAccountData)
             {
                 // instantiate a max of 5 rows
@@ -204,16 +217,31 @@ public class UserAccountManager : MonoBehaviour
         }
         else
         {
+            //GameObject prefabClone =
+            //    Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
+            //prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
+            //// get username text
+            //prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found" +
+            //    "\ngo to account and create one";
+            //prefabClone.transform.Find("userAccountLoginButton").GetComponent<Text>().text = "continue";
+            ////EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
+            UserModel u = new UserModel();
+            u.UserName = "guest";
+            u.Password = "guest";
+
             GameObject prefabClone =
                 Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
+            // set parent to object with vertical layout
             prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
-            // get username text
-            prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found" +
-                "\ngo to account and create one";
-            prefabClone.transform.Find("userAccountLoginButton").GetComponent<Text>().text = "continue";
-            //EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
+            // add to list
+            localAccounsList.Add(prefabClone);
+            //set text
+            localAccounsList[index].GetComponentInChildren<Text>().text = u.UserName;
         }
     }
     public List<UserModel> UserAccountData { get => userAccountData; }
     public bool UsersLoaded { get => usersLoaded; set => usersLoaded = value; }
+
+    public static int GuestUserid => guestUserid;
+    public static string GuestPassword => guestPassword;
 }
