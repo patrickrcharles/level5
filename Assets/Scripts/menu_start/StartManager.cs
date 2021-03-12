@@ -1,5 +1,6 @@
 ﻿
 using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,6 +69,8 @@ public class StartManager : MonoBehaviour
 
     //version text
     private Text versionText;
+    private Text latestVersionText;
+
     [SerializeField]
     private Text userNameText;
 
@@ -504,7 +507,16 @@ public class StartManager : MonoBehaviour
     IEnumerator InitializeDisplay()
     {
         yield return new WaitUntil(() => dataLoaded);
-        versionText.text = "Level 5 v." + Application.version;
+        versionText.text = "current version: " + Application.version;
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        }
+        else
+        {
+            latestVersionText.text = "latest version: no internet";
+        }
+
         //yield return new WaitForSeconds(0.05f);
         // display default data
         initializeCheerleaderDisplay();
@@ -572,6 +584,7 @@ public class StartManager : MonoBehaviour
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
+        latestVersionText = GameObject.Find("latestVersion").GetComponent<Text>();
         userNameText = GameObject.Find("username").GetComponent<Text>();
     }
 
