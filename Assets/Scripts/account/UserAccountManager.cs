@@ -73,20 +73,20 @@ public class UserAccountManager : MonoBehaviour
             }
             if (controls.UINavigation.Submit.triggered)
             {
-                Debug.Log("loginbutton");
+                //Debug.Log("loginbutton");
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountLoginButton"))
                 {
-                    Debug.Log("loginbutton");
+                    //Debug.Log("loginbutton");
                     LoginButton();
                 }
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountRemoveButton"))
                 {
-                    Debug.Log("loginbutton");
+                    //Debug.Log("loginbutton");
                     RemoveUserButton();
                 }
                 if (EventSystem.current.currentSelectedGameObject.name.Equals("continueButton"))
                 {
-                    Debug.Log("loginbutton");
+                    //Debug.Log("loginbutton");
                     GameOptions.userName = null;
                     GameOptions.userid = 0;
                     ContinueButton();
