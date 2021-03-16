@@ -217,7 +217,7 @@ public class DBConnector : MonoBehaviour
         dbHelper.UpdatePlayerProfileProgression(expGained);
     }
 
-    public void savePlayerAllTimeStats(BasketBallStats stats)
+    public void savePlayerAllTimeStats(GameStats stats)
     {
         dbHelper.UpdateAllTimeStats(stats);
     }

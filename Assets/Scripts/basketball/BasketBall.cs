@@ -13,7 +13,7 @@ public class BasketBall : MonoBehaviour
     AudioSource audioSource;
     CharacterProfile characterProfile;
     BasketBallState basketBallState;
-    BasketBallStats basketBallStats;
+    GameStats basketBallStats;
     Animator anim;
 
     GameObject basketBallSprite;
@@ -51,7 +51,7 @@ public class BasketBall : MonoBehaviour
         player = GameLevelManager.instance.Player;
         playerState = GameLevelManager.instance.PlayerController;
         rigidbody = GetComponent<Rigidbody>();
-        basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
+        basketBallStats = GameLevelManager.instance.Basketball.GetComponent<GameStats>();
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
         characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -775,7 +775,7 @@ public class BasketBall : MonoBehaviour
     // ============================= getters/ setters ======================================
 
     public float LastShotDistance { get => lastShotDistance; set => lastShotDistance = value; }
-    public BasketBallStats BasketBallStats => basketBallStats;
+    public GameStats BasketBallStats => basketBallStats;
     public BasketBallState BasketBallState => basketBallState;
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }

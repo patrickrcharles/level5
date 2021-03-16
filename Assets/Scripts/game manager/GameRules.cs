@@ -37,7 +37,7 @@ public class GameRules : MonoBehaviour
     bool gameModeRequiresConsecutiveShots;
 
     private Timer timer;
-    private BasketBallStats basketBallStats;
+    private GameStats basketBallStats;
 
     // object name that displays score
     private const string displayScoreObjectName = "display_score";

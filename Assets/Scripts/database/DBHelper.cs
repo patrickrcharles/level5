@@ -587,11 +587,11 @@ public class DBHelper : MonoBehaviour
     }
 
     // get All time stats. Used to update all time stats after a game session
-    internal BasketBallStats getAllTimeStats()
+    internal GameStats getAllTimeStats()
     {
         try
         {
-            BasketBallStats prevStats = gameObject.AddComponent<BasketBallStats>();
+            GameStats prevStats = gameObject.AddComponent<GameStats>();
 
             String sqlQuery = "";
             IDbConnection dbconn;
@@ -944,14 +944,14 @@ public class DBHelper : MonoBehaviour
         }
     }
     // update all time stats
-    internal void UpdateAllTimeStats(BasketBallStats stats)
+    internal void UpdateAllTimeStats(GameStats stats)
     {
         try
         {
             databaseLocked = true;
             String sqlQuery = "";
             // get prev stats that current stats will be added to
-            BasketBallStats prevStats = getAllTimeStats();
+            GameStats prevStats = getAllTimeStats();
 
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(connection);

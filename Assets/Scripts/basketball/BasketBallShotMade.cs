@@ -7,7 +7,7 @@ public class BasketBallShotMade : MonoBehaviour
 {
 
     BasketBallState _basketBallState;
-    BasketBallStats _basketBallStats;
+    GameStats _basketBallStats;
 
     //public int currentShotTestIndex;
 
@@ -45,7 +45,7 @@ public class BasketBallShotMade : MonoBehaviour
     void Start()
     {
         _basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
-        _basketBallStats = BasketBall.instance.GetComponent<BasketBallStats>();
+        _basketBallStats = BasketBall.instance.GetComponent<GameStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
         playerState = GameLevelManager.instance.PlayerController;

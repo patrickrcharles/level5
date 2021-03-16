@@ -69,7 +69,7 @@ public static class AnaylticsManager
             );
     }
 
-    public static void PointsScoredEnemiesEnabled(BasketBallStats basketBallStats)
+    public static void PointsScoredEnemiesEnabled(GameStats basketBallStats)
     {
         string eventName = "points scored : enemies enabled";
 
@@ -93,7 +93,7 @@ public static class AnaylticsManager
             }
             );
     }
-    public static void PointsScoredEnemiesDisabled(BasketBallStats basketBallStats)
+    public static void PointsScoredEnemiesDisabled(GameStats basketBallStats)
     {
         string eventName = "points scored : enemies disabled";
         AnalyticsResult analyticsResult =

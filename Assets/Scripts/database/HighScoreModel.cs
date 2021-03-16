@@ -53,7 +53,7 @@ namespace Assets.Scripts.database
         public int MoneyBallMade;
         public int MoneyBallAtt;
 
-        public HighScoreModel convertBasketBallStatsToModel(BasketBallStats stats)
+        public HighScoreModel convertBasketBallStatsToModel(GameStats stats)
         {
             int trafficEnabled = 0;
             if (GameOptions.trafficEnabled)

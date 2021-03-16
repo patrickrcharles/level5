@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BasketBallStats : MonoBehaviour
+public class GameStats : MonoBehaviour
 {
     //private int _playerId;
     //private string _playerName;
