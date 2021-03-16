@@ -37,6 +37,7 @@ public class StartManager : MonoBehaviour
     Button trafficSelectButton;
     Button hardcoreSelectButton;
     Button enemySelectButton;
+    Button sniperSelectButton;
     Button playerSelectButton;
     Button CheerleaderSelectButton;
     Button modeSelectButton;
@@ -66,6 +67,7 @@ public class StartManager : MonoBehaviour
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
     private Text enemySelectOptionText;
+    private Text sniperSelectOptionText;
 
     //version text
     private Text versionText;
@@ -83,13 +85,6 @@ public class StartManager : MonoBehaviour
     private const string updateMenuButtonName = "update_menu";
     private const string accountMenuButtonName = "account_menu";
     private const string updatePointsAvailable = "update_points_available";
-
-    // scene name
-    private const string statsMenuSceneName = "level_00_stats";
-    private const string loadScreenSceneName = "level_00_loading";
-    private const string progressionScreenSceneName = "level_00_progression";
-    private const string creditsScreenSceneName = "level_00_credits";
-    private const string accountScreenSceneName = "level_00_account";
 
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -131,12 +126,18 @@ public class StartManager : MonoBehaviour
     private const string enemySelectButtonName = "enemy_select";
     private const string enemySelectOptionName = "enemy_select_option";
 
+    //sniper
+    private const string sniperSelectButtonName = "sniper_select";
+    private const string sniperSelectOptionName = "sniper_select_option";
+
     [SerializeField]
     private bool trafficEnabled;
     [SerializeField]
     private bool hardcoreEnabled;
     [SerializeField]
     private bool enemiesEnabled;
+    [SerializeField]
+    private bool sniperEnabled;
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -269,7 +270,7 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadMenu(statsMenuSceneName);
+            loadMenu(SceneNameConstants.SCENE_NAME_level_00_stats);
         }
 
         // update menu button | load update menu
@@ -278,14 +279,14 @@ public class StartManager : MonoBehaviour
             && currentHighlightedButton.Equals(updateMenuButtonName))
         {
             GameOptions.playerSelectedIndex = playerSelectedIndex;
-            loadMenu(progressionScreenSceneName);
+            loadMenu(SceneNameConstants.SCENE_NAME_level_00_progression);
         }
         // credits menu button | load credits menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(creditsMenuButtonName))
         {
-            loadMenu(creditsScreenSceneName);
+            loadMenu(SceneNameConstants.SCENE_NAME_level_00_credits);
         }
 
         // account menu button | load account menu
@@ -315,7 +316,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
-            && !currentHighlightedButton.Equals(enemySelectOptionName))
+            && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -331,7 +333,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
             && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
-            && !currentHighlightedButton.Equals(enemySelectOptionName))
+            && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -402,6 +405,11 @@ public class StartManager : MonoBehaviour
                     changeSelectedEnemiesOption();
                     initializeEnemyOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(SniperSelectOptionName))
+                {
+                    changeSelectedSniperOption();
+                    initializeSniperOptionDisplay();
+                }
             }
             catch
             {
@@ -446,10 +454,10 @@ public class StartManager : MonoBehaviour
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
                 }
-                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                if (currentHighlightedButton.Equals(SniperSelectOptionName))
                 {
-                    changeSelectedEnemiesOption();
-                    initializeEnemyOptionDisplay();
+                    changeSelectedSniperOption();
+                    initializeSniperOptionDisplay();
                 }
             }
             catch
@@ -500,7 +508,7 @@ public class StartManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(loadScreenSceneName);
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
         }
     }
 
@@ -520,22 +528,14 @@ public class StartManager : MonoBehaviour
         //yield return new WaitForSeconds(0.05f);
         // display default data
         initializeCheerleaderDisplay();
-        //yield return new WaitForSeconds(0.05f);
         initializePlayerDisplay();
-        //yield return new WaitForSeconds(0.05f);
         initializeLevelDisplay();
-        //yield return new WaitForSeconds(0.05f);
         intializeModeDisplay();
-        //yield return new WaitForSeconds(0.05f);
         initializeTrafficOptionDisplay();
-        //yield return new WaitForSeconds(0.05f);
         initializeHardcoreOptionDisplay();
-        //yield return new WaitForSeconds(0.05f);
+        initializeSniperOptionDisplay();
         setInitialGameOptions();
         //yield return new WaitForSeconds(0.05f);
-
-        //Debug.Log(APIHelper.BearerToken);
-        //Debug.Log(string.IsNullOrEmpty(GameOptions.userName));
 
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
@@ -556,6 +556,7 @@ public class StartManager : MonoBehaviour
         trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
         hardcoreSelectButton = GameObject.Find(hardcoreSelectButtonName).GetComponent<Button>();
         enemySelectButton = GameObject.Find(enemySelectButtonName).GetComponent<Button>();
+        sniperSelectButton = GameObject.Find(sniperSelectButtonName).GetComponent<Button>();
         playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
         CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
@@ -577,10 +578,11 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
         cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
-        // traffic option selection text
+        // options selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
         enemySelectOptionText = GameObject.Find(enemySelectOptionName).GetComponent<Text>();
+        sniperSelectOptionText = GameObject.Find(SniperSelectOptionName).GetComponent<Text>();
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
@@ -651,6 +653,11 @@ public class StartManager : MonoBehaviour
         enemiesEnabled = !enemiesEnabled;
     }
 
+    public void changeSelectedSniperOption()
+    {
+        sniperEnabled = !sniperEnabled;
+    }
+
     // ============================  Initialize displays ==============================
     public void initializeTrafficOptionDisplay()
     {
@@ -685,6 +692,18 @@ public class StartManager : MonoBehaviour
         if (!enemiesEnabled)
         {
             enemySelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeSniperOptionDisplay()
+    {
+        if (sniperEnabled)
+        {
+            sniperSelectOptionText.text = "ON";
+        }
+        if (!sniperEnabled)
+        {
+            sniperSelectOptionText.text = "OFF";
         }
     }
 
@@ -943,6 +962,7 @@ public class StartManager : MonoBehaviour
         GameOptions.trafficEnabled = trafficEnabled;
         GameOptions.enemiesEnabled = enemiesEnabled;
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
+        GameOptions.sniperEnabled = sniperEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
@@ -1110,13 +1130,12 @@ public class StartManager : MonoBehaviour
     public static string StartButtonName => startButtonName;
     public static string StatsMenuButtonName => statsMenuButtonName;
     public static string QuitButtonName => quitButtonName;
-    //scene names
-    public static string StatsMenuSceneName => statsMenuSceneName;
-    public static string ProgressionScreenSceneName => progressionScreenSceneName;
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
 
     public static string AccountMenuButtonName => accountMenuButtonName;
 
     public static string CreditsMenuButtonName1 => creditsMenuButtonName;
+
+    public static string SniperSelectOptionName => sniperSelectOptionName;
 }
