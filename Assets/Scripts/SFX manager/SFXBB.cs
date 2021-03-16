@@ -41,6 +41,9 @@ public class SFXBB : MonoBehaviour
     public AudioClip projectileRocket;
     public AudioClip whipCrack;
     public AudioClip shootAutomaticAK47;
+    public AudioClip impactRiccochet1;
+    public AudioClip impactRiccochet2;
+    public AudioClip impactFabric;
 
     public static SFXBB instance;
 
