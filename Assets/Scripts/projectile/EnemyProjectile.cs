@@ -137,6 +137,7 @@ public class EnemyProjectile : MonoBehaviour
             && (other.gameObject.CompareTag("enemyHitbox")
             || other.gameObject.CompareTag("playerHitbox")))
         {
+            BasketBall.instance.BasketBallStats.SniperHits += 1;
             //Debug.Log("--- in player");
             // get position of impact to instantiate explosion object
             //Vector3 transformAtImpact = other.gameObject.transform.position;

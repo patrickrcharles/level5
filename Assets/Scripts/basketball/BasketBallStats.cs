@@ -2,8 +2,8 @@
 
 public class BasketBallStats : MonoBehaviour
 {
-    private int _playerId;
-    private string _playerName;
+    //private int _playerId;
+    //private string _playerName;
 
     private int _levelId;
     private string _levelName;
@@ -45,16 +45,19 @@ public class BasketBallStats : MonoBehaviour
     private int _minionsKilled;
     private int _bossKilled;
 
+    private int _sniperShots;
+    private int _sniperHits;
+
     private float _timePlayed;
 
-    //init from game options
-    void Start()
-    {
-        // for saving character specific info
-        // id and name use to construct key that will be stored
-        PlayerId = GameOptions.characterId;
-        PlayerName = GameOptions.characterObjectName;
-    }
+    ////init from game options
+    //void Start()
+    //{
+    //    // for saving character specific info
+    //    // id and name use to construct key that will be stored
+    //    PlayerId = GameOptions.characterId;
+    //    PlayerName = GameOptions.characterObjectName;
+    //}
 
     public int getExperienceGainedFromSession()
     {
@@ -78,7 +81,7 @@ public class BasketBallStats : MonoBehaviour
 
         if (GameOptions.trafficEnabled)
         {
-            experience *= (int)1.25f;
+            experience *= (int)1.15f;
         }
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
@@ -88,7 +91,11 @@ public class BasketBallStats : MonoBehaviour
         }
         if (GameOptions.hardcoreModeEnabled)
         {
-            experience *= 2;
+            experience *= (int)1.5f;
+        }
+        if (GameOptions.sniperEnabled)
+        {
+            experience *= (int)1.25f; ;
         }
 
         ExperienceGained = experience;
@@ -167,17 +174,17 @@ public class BasketBallStats : MonoBehaviour
         set => _totalDistance = value;
     }
 
-    public int PlayerId
-    {
-        get => _playerId;
-        set => _playerId = value;
-    }
+    //public int PlayerId
+    //{
+    //    get => _playerId;
+    //    set => _playerId = value;
+    //}
 
-    public string PlayerName
-    {
-        get => _playerName;
-        set => _playerName = value;
-    }
+    //public string PlayerName
+    //{
+    //    get => _playerName;
+    //    set => _playerName = value;
+    //}
 
     public int TotalPoints
     {
@@ -264,4 +271,6 @@ public class BasketBallStats : MonoBehaviour
     public int BossKilled { get => _bossKilled; set => _bossKilled = value; }
     public int MinionsKilled { get => _minionsKilled; set => _minionsKilled = value; }
     public int BonusPoints { get => _bonusPoints; set => _bonusPoints = value; }
+    public int SniperShots { get => _sniperShots; set => _sniperShots = value; }
+    public int SniperHits { get => _sniperHits; set => _sniperHits = value; }
 }

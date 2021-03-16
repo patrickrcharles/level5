@@ -65,6 +65,8 @@ public class SniperManager : MonoBehaviour
         yield return new WaitForSeconds(shootdelay);
         //Debug.Log("startSniper() after yield");
 
+        BasketBall.instance.BasketBallStats.SniperShots += 1;
+
         // get player position to attack
         PlayerPosAtShoot = player.transform.position;
         // edit prefab
