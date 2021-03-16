@@ -58,7 +58,7 @@ public class PlayerAnimationEvents : MonoBehaviour
             capsuleCollider = transform.root.GetComponent<CapsuleCollider>();
         }
 
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
         audioSource = GetComponent<AudioSource>();
 
         if (transform.Find(attackBoxText)!= null)
@@ -443,7 +443,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     void CheckAttackBoxActiveStatus()
     {
-        if (!GameLevelManager.instance.PlayerState.IsSpecialState()
+        if (!GameLevelManager.instance.PlayerController.IsSpecialState()
             && attackBox.activeSelf)
         {
             attackBox.SetActive(false);
