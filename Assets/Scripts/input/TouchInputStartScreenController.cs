@@ -154,6 +154,12 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeHardcoreOptionDisplay();
             buttonPressed = true;
         }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
 
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
@@ -179,7 +185,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         //stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
         {
-            StartManager.instance.loadMenu(StartManager.StatsMenuSceneName);
+            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         // start
@@ -192,7 +198,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
-            StartManager.instance.loadMenu(StartManager.ProgressionScreenSceneName);
+            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
         // credits
@@ -254,6 +260,12 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeHardcoreOptionDisplay();
             buttonPressed = true;
         }
+        if (prevSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -298,6 +310,13 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             StartManager.instance.changeSelectedHardcoreOption();
             StartManager.instance.initializeHardcoreOptionDisplay();
+            buttonPressed = true;
+        }
+        // sniper select
+        if (prevSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
         // player select
