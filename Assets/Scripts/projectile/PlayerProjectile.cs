@@ -17,7 +17,7 @@ public class PlayerProjectile : MonoBehaviour
     void Start()
     {
         rigidbody = transform.root.GetComponent<Rigidbody>();
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
         if (!thrownProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForce);
@@ -76,7 +76,6 @@ public class PlayerProjectile : MonoBehaviour
     {
         Destroy(transform.root.gameObject);
     }
-
 
 
     private void OnTriggerEnter(Collider other)
