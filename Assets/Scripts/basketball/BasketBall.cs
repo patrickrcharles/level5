@@ -49,7 +49,7 @@ public class BasketBall : MonoBehaviour
         instance = this;
 
         player = GameLevelManager.instance.Player;
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerController;
         rigidbody = GetComponent<Rigidbody>();
         basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();

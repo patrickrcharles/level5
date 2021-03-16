@@ -40,14 +40,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
         regenerateBlockRate = 0.5f;
         regenerateHealthRate = 1f;
     }
 
     private void Update()
     {
-        if (GameOptions.enemiesEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled)
         {
             if (health <= 0 && !IsDead)
             {

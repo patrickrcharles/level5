@@ -85,7 +85,9 @@ public class PlayerController : MonoBehaviour
     float screenYRange;
 
     // player take damage display
+    [SerializeField]
     Text damageDisplayValueText;
+    [SerializeField]
     GameObject damageDisplayObject;
     const string damageDisplayValueName = "player_damage_display_text";
 
@@ -134,10 +136,11 @@ public class PlayerController : MonoBehaviour
         screenYRange = Screen.width / 10;
 
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
+        damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
+
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
-            damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
             damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
         }
         else

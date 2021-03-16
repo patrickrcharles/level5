@@ -33,7 +33,7 @@ public class PlayerHealthBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameOptions.enemiesEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled)
         {
             instance = this;
             playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
@@ -80,15 +80,15 @@ public class PlayerHealthBar : MonoBehaviour
     {
         //transform.localScale = temp;
 
-        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "-" + damage.ToString();
+        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "-" + damage.ToString();
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "";
+        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "";
     }
     public IEnumerator DisplayCustomMessageOnDamageDisplay(string message)
     {
        
-        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = message;
+        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = message;
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerState.DamageDisplayValueText.text = "";
+        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "";
     }
 }

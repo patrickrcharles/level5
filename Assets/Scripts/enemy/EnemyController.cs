@@ -173,7 +173,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // ================== enemy idle ==========================
-        if ((GameLevelManager.instance.PlayerState.KnockedDown
+        if ((GameLevelManager.instance.PlayerController.KnockedDown
             || !canAttack
             || !enemyDetection.PlayerSighted)
             && currentState != AnimatorState_Attack)

@@ -110,8 +110,8 @@ public class BasketBallShotMarker : MonoBehaviour
             // max shot attempts reached
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
-                && !GameLevelManager.instance.PlayerState.hasBasketball
-                && !GameLevelManager.instance.PlayerState.inAir
+                && !GameLevelManager.instance.PlayerController.hasBasketball
+                && !GameLevelManager.instance.PlayerController.inAir
                 && !basketBallState.InAir)
             {
                 markerEnabled = false;

@@ -68,7 +68,7 @@ public class ShotMeter : MonoBehaviour
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.PlayerState.Grounded)
+        if (GameLevelManager.instance.PlayerController.Grounded)
         {
             slider.value = 0;
         }

@@ -7,7 +7,7 @@ public class GameLevelManager : MonoBehaviour
     // that can be retrieved across all scripts
     [SerializeField]
     private GameObject _player;
-    private PlayerController _playerState;
+    private PlayerController _playerController;
     private CharacterProfile _playerShooterProfile;
     private PlayerHealth _playerHealth;
     [SerializeField]
@@ -119,7 +119,7 @@ public class GameLevelManager : MonoBehaviour
         }
 
         _player = GameObject.FindWithTag("Player");
-        _playerState = _player.GetComponent<PlayerController>();
+        _playerController = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
         _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
         _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
@@ -144,7 +144,7 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            PlayerState.toggleRun();
+            PlayerController.toggleRun();
             _locked = false;
         }
 
@@ -260,7 +260,7 @@ public class GameLevelManager : MonoBehaviour
 
     public GameObject Player => _player;
 
-    public PlayerController PlayerState => _playerState;
+    public PlayerController PlayerController => _playerController;
 
     public Animator Anim { get; private set; }
 
