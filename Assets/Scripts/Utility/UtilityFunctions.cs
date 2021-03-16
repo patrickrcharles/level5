@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Utility
 {
@@ -98,6 +99,12 @@ namespace Assets.Scripts.Utility
         {
             string pubIp = new WebClient().DownloadString("https://api.ipify.org");
             return pubIp;
+        }
+
+        public static float GetRandomFloat(float min, float max)
+        {
+            float randNum = Random.Range(min, max);
+            return randNum;
         }
     }
 }
