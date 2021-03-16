@@ -66,6 +66,8 @@ public static class GameOptions
     static public bool trafficEnabled = false;
     static public bool enemiesEnabled = false;
 
+    static public bool sniperEnabled = false;
+
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
 
