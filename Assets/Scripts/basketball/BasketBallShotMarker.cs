@@ -183,7 +183,7 @@ public class BasketBallShotMarker : MonoBehaviour
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))
         {
-            displayCurrentMarkerStats.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints + "\n"
+            displayCurrentMarkerStats.text = "total points : " + BasketBall.instance.GameStats.TotalPoints + "\n"
                                              // + "current marker : " + positionMarkerId + "\n"
                                              + "made : " + ShotMade + " / " + ShotAttempt + "\n"
                                              + "remaining : " + (maxShotAttempt - ShotAttempt);

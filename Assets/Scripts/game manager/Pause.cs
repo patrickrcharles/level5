@@ -284,12 +284,12 @@ public class Pause : MonoBehaviour
         // convert basketball stats to high score model
         HighScoreModel dBHighScoreModel = new HighScoreModel();
         HighScoreModel dBHighScoreModelTemp = new HighScoreModel();
-        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.BasketBallStats);
+        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.GameStats);
 
         DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
         // update all time stats
-        DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
-        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
+        DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.GameStats);
+        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.GameStats.ExperienceGained);
     }
 
     private void setPauseScreen(bool value)

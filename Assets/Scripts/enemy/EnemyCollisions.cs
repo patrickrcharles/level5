@@ -102,14 +102,14 @@ public class EnemyCollisions : MonoBehaviour
                         //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
                     }
                     PlayerHealthBar.instance.setHealthSliderValue();
-                    BasketBall.instance.BasketBallStats.EnemiesKilled++;
+                    BasketBall.instance.GameStats.EnemiesKilled++;
                     if (enemyController.IsBoss)
                     {
-                        BasketBall.instance.BasketBallStats.BossKilled++;
+                        BasketBall.instance.GameStats.BossKilled++;
                     }
                     else
                     {
-                        BasketBall.instance.BasketBallStats.MinionsKilled++;
+                        BasketBall.instance.GameStats.MinionsKilled++;
                     }
                     if (BehaviorNpcCritical.instance != null)
                     {

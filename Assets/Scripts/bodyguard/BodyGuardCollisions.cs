@@ -99,7 +99,7 @@ public class BodyGuardCollisions : MonoBehaviour
                         //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
                     }
                     PlayerHealthBar.instance.setHealthSliderValue();
-                    BasketBall.instance.BasketBallStats.EnemiesKilled++;
+                    BasketBall.instance.GameStats.EnemiesKilled++;
                     if (BehaviorNpcCritical.instance != null)
                     {
                         BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
