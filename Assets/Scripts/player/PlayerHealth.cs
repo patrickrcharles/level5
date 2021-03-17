@@ -94,7 +94,10 @@ public class PlayerHealth : MonoBehaviour
         regenerateHealth = true;
         yield return new WaitForSeconds(regenerateHealthRate);
         health += 1f;
-        PlayerHealthBar.instance.setHealthSliderValue();
+        if (PlayerHealthBar.instance != null)
+        {
+            PlayerHealthBar.instance.setHealthSliderValue();
+        }
         regenerateHealth = false;
     }
 }
