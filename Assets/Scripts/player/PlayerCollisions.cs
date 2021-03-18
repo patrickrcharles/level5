@@ -27,7 +27,6 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (gameObject.CompareTag("playerHitbox")
             && playerState.inAir
             && playerState.currentState != playerState.dunkState
@@ -53,13 +52,13 @@ public class PlayerCollisions : MonoBehaviour
         && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
         && !locked)
         {
-            //bool critical = rollForCriticalShotChance(GameLevelManager.instance.PlayerShooterProfile.Luck);
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
             PlayerAttackBox playerAttackBox = null;
             int damage = 0;
             bool isKnockdown = false;
             bool isRake = false;
+
             if (other.GetComponent<EnemyAttackBox>() != null)
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
@@ -87,8 +86,7 @@ public class PlayerCollisions : MonoBehaviour
                 locked = true;
                 // deduct from player health 
                 playerHealth.Health -= damage;
-
-
+                // null check
                 if (PlayerHealthBar.instance != null) // null check for health bar
                 {
                     PlayerHealthBar.instance.setHealthSliderValue();

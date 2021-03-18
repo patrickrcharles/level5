@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
@@ -9,7 +8,6 @@ public class EnemyProjectile : MonoBehaviour
     public Vector3 projectileForceThrown;
     public Vector3 projectileForceSniper;
     new Rigidbody rigidbody;
-    //PlayerController playerController;
     public bool thrownProjectile;
     public bool impactProjectile;
     [SerializeField]
@@ -29,32 +27,36 @@ public class EnemyProjectile : MonoBehaviour
         rigidbody = transform.root.GetComponent<Rigidbody>();
         audioSource = transform.root.GetComponent<AudioSource>();
 
-        //playerController = GameLevelManager.instance.PlayerState;
+        // regular shoot
         if (!thrownProjectile && !sniperProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForce);
             Destroy(transform.root.gameObject, lifetime);
         }
+        // thrown projectile that explodes on impact
         if (thrownProjectile && !impactProjectile && !sniperProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForceThrown);
             impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_explosion") as GameObject;
             Destroy(transform.root.gameObject, lifetime);
         }
+        // not sure
         if (!thrownProjectile && !impactProjectile && !sniperProjectile)
         {
             Destroy(transform.root.gameObject, lifetime);
         }
+        // sniper shoot. impact on player and ground
         if (sniperProjectile)
         {
             impactSniperGroundPrefab = Resources.Load("Prefabs/projectile/projectile_impact_ground") as GameObject;
             impactSniperPlayerPrefab = Resources.Load("Prefabs/projectile/projectile_impact_player") as GameObject;
             audioSource.clip = null;
-            //Debug.Log("projectileForceSniper : " + projectileForceSniper );
             applyForceToDirectionVector(projectileForceSniper * 10);
             Destroy(transform.root.gameObject, lifetime);
         }
     }
+
+    // ------------------------------ move projectiles ------------------------------------------
 
     public void applyForceToDirectionFacingProjectile(float force)
     {
@@ -93,9 +95,10 @@ public class EnemyProjectile : MonoBehaviour
         Destroy(transform.root.gameObject);
     }
 
+    // ------------------------------ instantiate impact prefabs on collision ------------------------------------------
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("trigger this : " + gameObject.tag + "     other : " + other.gameObject.tag);
+        // thrown/shot projectile 
         if (thrownProjectile // thrown projectile          
             && !impactProjectile // does NOT explode on impact. bullet, laser, etc
             && !sniperProjectile
@@ -112,50 +115,33 @@ public class EnemyProjectile : MonoBehaviour
 
             DestroyProjectile();
         }
+        // sniper shot hits ground
         if (sniperProjectile
             && impactProjectile
             && (other.gameObject.CompareTag("ground") || other.gameObject.layer == 11))
         {
-            //Debug.Log("--- in ground");
-            // get position of impact to instantiate explosion object
-            //Vector3 transformAtImpact = other.gameObject.transform.position;
-
-            //Vector3 transformAtImpact = transform.position;
+            // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
 
-            //Debug.Log("trigger this : " + gameObject.tag + "     other : " + other.gameObject.name);
-            //Debug.Log("--- transformAtImpact : " + transformAtImpact);
-            //Debug.Log("--- spawnPoint : " + spawnPoint);
-
             Instantiate(impactSniperGroundPrefab, spawnPoint, Quaternion.identity);
-
             DestroyProjectile();
         }
+        // sniper shot hits player
         if (sniperProjectile
             && impactProjectile
             && (other.gameObject.CompareTag("enemyHitbox")
             || other.gameObject.CompareTag("playerHitbox")))
         {
-            BasketBall.instance.BasketBallStats.SniperHits += 1;
-            //Debug.Log("--- in player");
-            // get position of impact to instantiate explosion object
-            //Vector3 transformAtImpact = other.gameObject.transform.position;
-            Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
-            //Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
-            //Vector3 transformAtImpact = transform.position;
-            Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
+            // increase count
+            BasketBall.instance.GameStats.SniperHits += 1;
 
-            //Debug.Log("--- transformAtImpact : " + transformAtImpact);
-            //Debug.Log("--- spawnPoint : " + spawnPoint);
+            // instantiate at position player was standing when shot occurred
+            Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
+            Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
 
             Instantiate(impactSniperPlayerPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        //Debug.Log("collision this : " + gameObject.tag + "     other : " + other.gameObject.name);
     }
 }
