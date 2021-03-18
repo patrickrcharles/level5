@@ -67,6 +67,9 @@ public static class GameOptions
     static public bool enemiesEnabled = false;
 
     static public bool sniperEnabled = false;
+    static public bool sniperEnabledBullet = false;
+    static public bool sniperEnabledBulletAuto = false;
+    static public bool sniperEnabledLaser = false;
 
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
@@ -86,57 +89,4 @@ public static class GameOptions
     static public int userid;
     static public string bearerToken;
     static public int numOfLocalUsers;
-
-    //private void Awake()
-    //{
-    //    hardcoreModeEnabled = true;
-    //}
-
-    //void Start()
-    //{
-    //    levelSelectedName = SceneManager.GetActiveScene().name;
-    //    applicationVersion = Application.version;
-
-    //    if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(SystemInfo.processorType, "ARM", CompareOptions.IgnoreCase) >= 0)
-    //    {
-    //        if (Environment.Is64BitProcess)
-    //        {
-    //            //Debug.Log("ARM64");
-    //            GameOptions.architectureIs32bit = false;
-    //            GameOptions.architectureIs64bit = true;
-    //            GameOptions.architectureIsAndroid = true;
-    //        }
-
-    //        else
-    //        {
-    //            //Debug.Log("ARM");
-    //            GameOptions.architectureIs32bit = true;
-    //            GameOptions.architectureIs64bit = false;
-    //            GameOptions.architectureIsAndroid = true;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        // Must be in the x86 family.
-    //        if (Environment.Is64BitProcess)
-    //        {
-    //            //Debug.Log("x86_64");
-    //            GameOptions.architectureIs32bit = false;
-    //            GameOptions.architectureIs64bit = true;
-    //            GameOptions.architectureIsAndroid = false;
-    //        }
-    //        else
-    //        {
-    //            //Debug.Log("x86");
-    //            GameOptions.architectureIs32bit = true;
-    //            GameOptions.architectureIs64bit = false;
-    //            GameOptions.architectureIsAndroid = false;
-    //        }
-    //        //Debug.Log("32 bit : " + GameOptions.architectureIs32bit);
-    //        //Debug.Log("64 bit : " + GameOptions.architectureIs64bit);
-    //        //Debug.Log("android : " + GameOptions.architectureIsAndroid);
-    //    }
-    //    architectureInfoLoaded = true;
-    //    //Debug.Log("architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
-    //}
 }
