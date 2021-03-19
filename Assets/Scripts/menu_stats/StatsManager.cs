@@ -28,6 +28,7 @@ public class StatsManager : MonoBehaviour
     const string hardcoreOptionButtonName = "hardcore_value_button";
     const string trafficOptionButtonName = "traffic_value_button";
     const string enemiesOptionButtonName = "enemies_value_button";
+    const string sniperOptionButtonName = "sniper_value_button";
 
     // table names
     const string highScoreTableName = "high_scores_table";
@@ -71,6 +72,8 @@ public class StatsManager : MonoBehaviour
     private bool hardcoreEnabled;
     [SerializeField]
     private bool enemiesEnabled;
+    [SerializeField]
+    private bool sniperEnabled;
 
     //selectable option text
     [SerializeField]
@@ -79,6 +82,8 @@ public class StatsManager : MonoBehaviour
     private Text hardcoreSelectOptionText;
     [SerializeField]
     private Text enemySelectOptionText;
+    [SerializeField]
+    private Text sniperSelectOptionText;
     [SerializeField]
     private Text submittedHighscoresText;
     [SerializeField]
@@ -107,17 +112,10 @@ public class StatsManager : MonoBehaviour
 
     bool buttonPressed;
 
-    //traffic objects
-    //private const string trafficSelectButtonName = "traffic_name_button";
     private const string trafficSelectValueName = "traffic_value_button";
-
-    //hardcore mode
-    //private const string hardcoreSelectButtonName = "hardcore_name_button";
     private const string hardcoreSelectValueName = "hardcore_value_button";
-
-    //hardcore mode
-    //private const string enemySelectButtonName = "enemies_name_button";
     private const string enemySelectValueName = "enemies_value_button";
+    private const string sniperSelectValueName = "sniper_value_button";
 
     public int numLocalResults;
     public int numOnlineResults;
@@ -194,6 +192,7 @@ public class StatsManager : MonoBehaviour
                     hardcoreEnabled,
                     trafficEnabled,
                     enemiesEnabled,
+                    sniperEnabled,
                     localResultsPageNumber);
             }
             catch (Exception e)
@@ -240,8 +239,11 @@ public class StatsManager : MonoBehaviour
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
         initializeEnemyOptionDisplay();
+        initializeSniperOptionDisplay();
+
         initializeLocalPageNumberDisplay();
         initializeOnlinePageNumberDisplay();
+
         changeHighScoreDataDisplay();
         changeHighScoreDataDisplayOnline();
         getUnsubmittedHighscores();
@@ -299,6 +301,19 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = true;
                 changeSelectedEnemiesOption();
                 initializeEnemyOptionDisplay();
+                changeHighScoreDataDisplay();
+                buttonPressed = false;
+            }
+        }
+
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(sniperSelectValueName) && !buttonPressed)
+        {
+            if (controls.UINavigation.Up.triggered || controls.UINavigation.Down.triggered)
+            {
+                buttonPressed = true;
+                changeSelectedSniperOption();
+                initializeSniperOptionDisplay();
                 changeHighScoreDataDisplay();
                 buttonPressed = false;
             }
@@ -562,6 +577,7 @@ public class StatsManager : MonoBehaviour
 
     public void submitUnsubmittedScores()
     {
+        //Debug.Log("submitUnsubmittedScores");
         if (!String.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
         {
             try
@@ -573,19 +589,20 @@ public class StatsManager : MonoBehaviour
                 // if count > 0,  set appropriate text
                 if (numUnsubmittedHighscores > 0)
                 {
+                    //Debug.Log("if (numUnsubmittedHighscores > 0)");
                     submittedHighscoresText.text = "submit scores";
                     numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
-                    StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
+                    //StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
+                    APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores);
                 }
                 // if none, set appropriate text
                 if (numUnsubmittedHighscores == 0)
                 {
+                    //Debug.Log("if (numUnsubmittedHighscores == 0)");
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
-                getUnsubmittedHighscores();
-                DBHelper.instance.DatabaseLocked = false;
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
+               
             }
             catch (Exception e)
             {
@@ -593,6 +610,9 @@ public class StatsManager : MonoBehaviour
                 Debug.Log("ERROR : " + e);
             }
         }
+        getUnsubmittedHighscores();
+        DBHelper.instance.DatabaseLocked = false;
+        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
     }
 
     private void getUnsubmittedHighscores()
@@ -643,6 +663,7 @@ public class StatsManager : MonoBehaviour
                     hardcoreEnabled,
                     trafficEnabled,
                     enemiesEnabled,
+                    sniperEnabled,
                     localResultsPageNumber);
 
                 // get # of results for pageination display
@@ -657,7 +678,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = highScoreRowsDataList[i].Character;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = highScoreRowsDataList[i].Level;
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = highScoreRowsDataList[i].Date;
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = highScoreRowsDataList[i].HardcoreEnabled;
+                    //highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = highScoreRowsDataList[i].HardcoreEnabled;
                     index++;
                 }
                 // empty out rows if scores do not exist or there isnt at least 10
@@ -669,7 +690,7 @@ public class StatsManager : MonoBehaviour
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Character = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Level = "";
                     highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().Date = "";
-                    highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
+                    //highScoreRowsObjectsList[i].GetComponent<StatsTableHighScoreRow>().HardcoreEnabled = "";
                 }
                 initializeLocalPageNumberDisplay();
                 DBHelper.instance.DatabaseLocked = false;
@@ -703,13 +724,15 @@ public class StatsManager : MonoBehaviour
                 numOnlineResults = APIHelper.GetHighscoreCountByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
-                    Convert.ToInt32(enemiesEnabled));
+                    Convert.ToInt32(enemiesEnabled),
+                    Convert.ToInt32(sniperEnabled));
 
                 // scores got display
                 highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
                     Convert.ToInt32(enemiesEnabled),
+                    Convert.ToInt32(sniperEnabled), 
                     onlineResultsPageNumber,
                     10);
 
@@ -807,6 +830,17 @@ public class StatsManager : MonoBehaviour
             enemySelectOptionText.text = "OFF";
         }
     }
+    public void initializeSniperOptionDisplay()
+    {
+        if (sniperEnabled)
+        {
+            sniperSelectOptionText.text = "ON";
+        }
+        if (!sniperEnabled)
+        {
+            sniperSelectOptionText.text = "OFF";
+        }
+    }
 
     public void initializeLocalPageNumberDisplay()
     {
@@ -857,6 +891,10 @@ public class StatsManager : MonoBehaviour
     public void changeSelectedHardcoreOption()
     {
         hardcoreEnabled = !hardcoreEnabled;
+    }
+    public void changeSelectedSniperOption()
+    {
+        sniperEnabled = !sniperEnabled;
     }
 
     public void increaseLocalResultsPageNumber()
@@ -965,14 +1003,12 @@ public class StatsManager : MonoBehaviour
     public static string PageNumberLocalButtonName => pageNumberLocalButtonName;
 
     public static string PageNumberOnlineButtonName => pageNumberOnlineButtonName;
-
     public static string ModeSelectButtonOnlineName => modeSelectButtonOnlineName;
 
     public static string HardcoreOptionButtonName => hardcoreOptionButtonName;
-
     public static string TrafficOptionButtonName => trafficOptionButtonName;
-
     public static string EnemiesOptionButtonName => enemiesOptionButtonName;
+    public static string SniperOptionButtonName => sniperOptionButtonName;
 
     public string PreviousHighlightedButton { get => previousHighlightedButton; set => previousHighlightedButton = value; }
     public string CurrentHighlightedButton { get => currentHighlightedButton; set => currentHighlightedButton = value; }
