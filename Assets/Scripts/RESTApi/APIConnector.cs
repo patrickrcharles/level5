@@ -2,14 +2,6 @@
 using Assets.Scripts.database;
 using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
-using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using UnityEngine;
 using Random = System.Random;
 
@@ -38,6 +30,14 @@ public class APIConnector : MonoBehaviour
         // if not, create user
         // else return 'username already exists
     }
+
+    //private void Update()
+    //{
+    //    if (APIHelper.ApiLocked)
+    //    {
+    //        Debug.Log("--- apiLocked : " + APIHelper.ApiLocked);
+    //    }
+    //}
 }
 
 
