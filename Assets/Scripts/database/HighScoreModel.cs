@@ -52,6 +52,11 @@ namespace Assets.Scripts.database
         public int BonusPoints;
         public int MoneyBallMade;
         public int MoneyBallAtt;
+        public int SniperEnabled;
+        public int SniperMode;
+        public string SniperModeName;
+        public int SniperShots;
+        public int Sniperhits;
 
         public HighScoreModel convertBasketBallStatsToModel(GameStats stats)
         {
@@ -116,7 +121,29 @@ namespace Assets.Scripts.database
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
             model.Userid = GameOptions.userid;
-            //Debug.Log(" model.UserName : " + model.UserName);
+            model.SniperEnabled = Convert.ToInt32( GameOptions.sniperEnabled);
+            if (!GameOptions.sniperEnabled) 
+            {
+                model.SniperMode = 0;
+                model.SniperModeName = "none";
+            }
+            if (GameOptions.sniperEnabledBullet) 
+            {
+                model.SniperMode = 1;
+                model.SniperModeName = "single bullet";
+            }
+            if (GameOptions.sniperEnabledBulletAuto)
+            {
+                model.SniperMode = 2;
+                model.SniperModeName = "machine gun ";
+            }
+            if (GameOptions.sniperEnabledLaser) 
+            {
+                model.SniperMode = 3;
+                model.SniperModeName = "disintegration ray";
+            }
+            model.SniperShots = stats.SniperShots;
+            model.Sniperhits = stats.SniperHits;
 
             return model;
         }
@@ -191,8 +218,7 @@ namespace Assets.Scripts.database
                   DateTime.Now.Day.ToString()
                 + DateTime.Now.Month.ToString()
                 + DateTime.Now.Year.ToString()
-                + DateTime.Now.Second.ToString()
-                + DateTime.Now.Millisecond.ToString();
+                + DateTime.Now.Minute.ToString();
             //Debug.Log("----- uniqueModeDateIdentifier : " + uniqueModeDateIdentifier);
             //uniqueModeDateIdentifier
             //    = RemoveWhitespace(date)
