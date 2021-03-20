@@ -65,7 +65,7 @@ public class SFXBB : MonoBehaviour
 
     private void Update()
     {
-        if (!audioSource.isPlaying || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha0)))  
+        if (!audioSource.isPlaying || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha0)))
         {
             playNextSong();
         }
@@ -83,7 +83,7 @@ public class SFXBB : MonoBehaviour
     void playNextSong()
     {
         //int newIndex=0;
-        if(currentSongIndex == (musicList.Length-1))
+        if (currentSongIndex == (musicList.Length - 1))
         {
             currentSongIndex = 0;
         }

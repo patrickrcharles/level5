@@ -111,7 +111,7 @@ public class BasketBallShotMarker : MonoBehaviour
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
                 && !GameLevelManager.instance.PlayerController.hasBasketball
-                && !GameLevelManager.instance.PlayerController.inAir
+                && !GameLevelManager.instance.PlayerController.InAir
                 && !basketBallState.InAir)
             {
                 markerEnabled = false;
@@ -121,7 +121,7 @@ public class BasketBallShotMarker : MonoBehaviour
                 setDisplayText();
 
                 //check if last remaining shot marker
-                if (GameRules.instance.isGameOver())
+                if (GameRules.instance.IsGameOver())
                 {
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                     GameRules.instance.GameOver = true;
@@ -143,7 +143,7 @@ public class BasketBallShotMarker : MonoBehaviour
                 setDisplayText();
 
                 // check if last remaining shot marker
-                if (GameRules.instance.isGameOver())
+                if (GameRules.instance.IsGameOver())
                 {
 
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;

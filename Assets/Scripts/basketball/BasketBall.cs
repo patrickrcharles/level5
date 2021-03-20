@@ -138,9 +138,9 @@ public class BasketBall : MonoBehaviour
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
                 dropShadow.SetActive(false);
-                playerState.setPlayerAnim("hasBasketball", true);
+                playerState.SetPlayerAnim("hasBasketball", true);
                 //playerState.setPlayerAnim("walking", false);
-                playerState.setPlayerAnim("moonwalking", false);
+                playerState.SetPlayerAnim("moonwalking", false);
 
                 // move basketball to launch position and disable sprite
                 transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
@@ -262,13 +262,13 @@ public class BasketBall : MonoBehaviour
     {
 
         // set side or front shooting animation
-        if (playerState.facingFront) // facing straight toward bball goal
+        if (playerState.FacingFront) // facing straight toward bball goal
         {
-            playerState.setPlayerAnimTrigger("basketballShootFront");
+            playerState.SetPlayerAnimTrigger("basketballShootFront");
         }
         else // side of goal, relative postion
         {
-            playerState.setPlayerAnimTrigger("basketballShoot");
+            playerState.SetPlayerAnimTrigger("basketballShoot");
         }
 
         // reset ball rotation
@@ -308,7 +308,7 @@ public class BasketBall : MonoBehaviour
 
             if (basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
-                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest) )
+                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
             {
                 GameStats.MoneyBallAttempts++;
             }
@@ -475,7 +475,7 @@ public class BasketBall : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
         playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false);
+        playerState.SetPlayerAnim("hasBasketball", false);
 
         // analytics
         AnaylticsManager.PlayerShoot(playerState.Shotmeter.SliderValueOnButtonPress);

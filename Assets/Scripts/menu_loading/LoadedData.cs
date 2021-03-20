@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.database;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,7 +45,7 @@ public class LoadedData : MonoBehaviour
     {
         if (!dataLoaded)
         {
-            if(Time.time > timeoutEnd)
+            if (Time.time > timeoutEnd)
             {
                 dataLoaded = true;
             }

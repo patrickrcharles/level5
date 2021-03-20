@@ -3,7 +3,6 @@ using Assets.Scripts.database;
 using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
 using UnityEngine;
-using Random = System.Random;
 
 
 public class APIConnector : MonoBehaviour

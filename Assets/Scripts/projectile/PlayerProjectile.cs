@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
@@ -49,12 +47,12 @@ public class PlayerProjectile : MonoBehaviour
     public void applyForceToDirectionFacingProjectile(float force)
     {
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             //Debug.Log(" shoot right");
             rigidbody.AddForce(force, 0, 0, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             //Debug.Log(" shoot left");
             rigidbody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
@@ -63,11 +61,11 @@ public class PlayerProjectile : MonoBehaviour
     public void applyForceToDirectionFacingProjectile(Vector3 force)
     {
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
-            rigidbody.AddForce(force.x, force.y,force.z, ForceMode.VelocityChange);
+            rigidbody.AddForce(force.x, force.y, force.z, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             rigidbody.AddForce(-force.x, force.y, force.z, ForceMode.VelocityChange);
         }
@@ -81,7 +79,7 @@ public class PlayerProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // destroy thrown projectile on impact
-        if (thrownProjectile 
+        if (thrownProjectile
             && !impactProjectile
             && (other.CompareTag("ground") || other.CompareTag("enemyHitbox")))
         {

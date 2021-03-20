@@ -74,10 +74,10 @@ public class PlayerAttackQueue : MonoBehaviour
             maxEnemiesQueued = 2;
         }
 
-//        //#if UNITY_ANDROID && !UNITY_EDITOR
-//#if UNITY_ANDROID && !UNITY_EDITOR
-//            maxNumberOfEnemies = maxNumberOfEnemies/2;
-//#endif
+        //        //#if UNITY_ANDROID && !UNITY_EDITOR
+        //#if UNITY_ANDROID && !UNITY_EDITOR
+        //            maxNumberOfEnemies = maxNumberOfEnemies/2;
+        //#endif
 
         // check if attack slot open
         if (currentEnemiesQueued < maxEnemiesQueued)

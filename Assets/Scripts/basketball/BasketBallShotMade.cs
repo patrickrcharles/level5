@@ -170,7 +170,7 @@ public class BasketBallShotMade : MonoBehaviour
             && !GameRules.instance.GameModeFourPointContest
             && !GameRules.instance.GameModeAllPointContest
             && GameOptions.gameModeSelectedId != 19)
-            // game mode 19 is 1 pt per 10 feet of last shot made
+        // game mode 19 is 1 pt per 10 feet of last shot made
         {
             if (_basketBallState.TwoAttempt)
             {
@@ -227,7 +227,7 @@ public class BasketBallShotMade : MonoBehaviour
             // if player is on marker and marker enabled && not game mode 19
             if (_basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MarkerEnabled)
-            {                
+            {
                 //_basketBallStats.ShotMade++;
                 // if moneyball
                 if (_basketBallState.TwoAttempt)
@@ -267,7 +267,7 @@ public class BasketBallShotMade : MonoBehaviour
                 }
             }
             // is game mode 19 [Points By Distance]
-            if(GameOptions.gameModeSelectedId == 19)
+            if (GameOptions.gameModeSelectedId == 19)
             {
                 if (_basketBallState.TwoAttempt)
                 {

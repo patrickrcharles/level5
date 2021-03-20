@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BodyGuardCollisions : MonoBehaviour
 {
@@ -38,15 +35,15 @@ public class BodyGuardCollisions : MonoBehaviour
                 bodyGuardHealth.Health -= playerAttackBox.attackDamage;
             }
             if (other.GetComponent<EnemyAttackBox>() != null
-                && bodyGuardHealth !=null )
+                && bodyGuardHealth != null)
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-                bodyGuardHealth.Health -= (enemyAttackBox.attackDamage /2);
+                bodyGuardHealth.Health -= (enemyAttackBox.attackDamage / 2);
             }
             //update health slider
             bodyGuardHealthBar.setHealthSliderValue();
             // check if enemy dead
-            if (bodyGuardHealth.Health >= 0 )
+            if (bodyGuardHealth.Health >= 0)
             {
                 // player knock down attack
                 if (playerAttackBox != null
@@ -86,7 +83,7 @@ public class BodyGuardCollisions : MonoBehaviour
                 }
             }
             // else enemy is dead
-            if(bodyGuardHealth.Health <= 0 && !bodyGuardHealth.IsDead)
+            if (bodyGuardHealth.Health <= 0 && !bodyGuardHealth.IsDead)
             {
                 bodyGuardHealth.IsDead = true;
                 // killed by player attack box and NOT enemy friendly fire
@@ -119,7 +116,7 @@ public class BodyGuardCollisions : MonoBehaviour
     void enemyTakeDamage()
     {
         //Debug.Log("enemyTakeDamage()");
-        StartCoroutine( bodyGuardController.takeDamage());
+        StartCoroutine(bodyGuardController.takeDamage());
     }
 
     void enemyStepOnRake(Collider other)

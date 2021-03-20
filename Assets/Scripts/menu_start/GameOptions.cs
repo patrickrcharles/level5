@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Globalization;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public static class GameOptions 
+public static class GameOptions
 {
     static public string applicationVersion;
     static public string operatingSystemVersion;

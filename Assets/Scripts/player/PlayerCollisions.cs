@@ -28,7 +28,7 @@ public class PlayerCollisions : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (gameObject.CompareTag("playerHitbox")
-            && playerState.inAir
+            && playerState.InAir
             && playerState.currentState != playerState.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
@@ -39,7 +39,7 @@ public class PlayerCollisions : MonoBehaviour
             && other.CompareTag("ground")
             && playerState.currentState == playerState.inAirDunkState)
         {
-            playerState.setPlayerAnim("jump", false);
+            playerState.SetPlayerAnim("jump", false);
         }
 
         // if collsion between hitbox, vehicle, knocked down
@@ -141,14 +141,14 @@ public class PlayerCollisions : MonoBehaviour
         playerState.TakeDamage = true;
         playerState.KnockedDown = false;
         playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false);
+        playerState.SetPlayerAnim("hasBasketball", false);
     }
     void playerKnockedDown()
     {
         playerState.TakeDamage = false;
         playerState.KnockedDown = true;
         playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false);
+        playerState.SetPlayerAnim("hasBasketball", false);
     }
 
     void playerStepOnRake(Collider other)
@@ -158,6 +158,6 @@ public class PlayerCollisions : MonoBehaviour
         playerState.KnockedDown = false;
         playerState.hasBasketball = false;
         //StartCoroutine(playerState.PlayerFreezeForXSeconds(2f));             
-        playerState.setPlayerAnim("hasBasketball", false);
+        playerState.SetPlayerAnim("hasBasketball", false);
     }
 }

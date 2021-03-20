@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TouchInputStartScreenController : MonoBehaviour
 {
-//#if UNITY_ANDROID && !UNITY_EDITOR
+    //#if UNITY_ANDROID && !UNITY_EDITOR
     private Vector2 startTouchPosition, endTouchPosition;
 
     float swipeUpTolerance;
@@ -50,7 +50,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     void Update()
     {
         // if no button selected, return to previous
-        if(EventSystem.current.currentSelectedGameObject == null)
+        if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         }
@@ -85,7 +85,7 @@ public class TouchInputStartScreenController : MonoBehaviour
                 }
             }
             //swipe up on changeable options
-            if (touch.tapCount == 1  && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
@@ -342,5 +342,5 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
         buttonPressed = false;
     }
-//#endif
+    //#endif
 }

@@ -4,8 +4,6 @@ using Assets.Scripts.restapi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -602,7 +600,7 @@ public class StatsManager : MonoBehaviour
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
-               
+
             }
             catch (Exception e)
             {
@@ -637,7 +635,7 @@ public class StatsManager : MonoBehaviour
             }
             DBHelper.instance.DatabaseLocked = false;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             DBHelper.instance.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
@@ -708,7 +706,7 @@ public class StatsManager : MonoBehaviour
     public void changeHighScoreDataDisplayOnline()
     {
         // if not free play
-        if (GameObject.Find("restapi") != null )
+        if (GameObject.Find("restapi") != null)
         {
             try
             {
@@ -732,7 +730,7 @@ public class StatsManager : MonoBehaviour
                     Convert.ToInt32(hardcoreEnabled),
                     Convert.ToInt32(trafficEnabled),
                     Convert.ToInt32(enemiesEnabled),
-                    Convert.ToInt32(sniperEnabled), 
+                    Convert.ToInt32(sniperEnabled),
                     onlineResultsPageNumber,
                     10);
 
@@ -749,7 +747,8 @@ public class StatsManager : MonoBehaviour
                     index = 0;
                 }
                 //if modeid = free play, zero it out
-                if (modeid != 99) {
+                if (modeid != 99)
+                {
                     // updates row with new data
                     for (int i = 0; i < rowCount; i++)
                     {
@@ -868,7 +867,7 @@ public class StatsManager : MonoBehaviour
             numPages = (numOnlineResults / 10) + 1;
         }
 
-        if (numPages >  0)
+        if (numPages > 0)
         {
             pageNumberOnlineSelectButtonText.text = "page " + (onlineResultsPageNumber + 1) + " / " + numPages;
         }

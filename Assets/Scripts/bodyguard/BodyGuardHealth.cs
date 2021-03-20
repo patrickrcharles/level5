@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BodyGuardHealth : MonoBehaviour
 {
@@ -40,7 +38,7 @@ public class BodyGuardHealth : MonoBehaviour
 
         if (GameOptions.hardcoreModeEnabled)
         {
-            maxBodyGuardHealth += (maxBodyGuardHealth/4);
+            maxBodyGuardHealth += (maxBodyGuardHealth / 4);
         }
         health = maxBodyGuardHealth;
 

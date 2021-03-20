@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
-using Ping = System.Net.NetworkInformation.Ping;
 using Random = System.Random;
 
 namespace Assets.Scripts.database
@@ -121,13 +116,13 @@ namespace Assets.Scripts.database
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
             model.Userid = GameOptions.userid;
-            model.SniperEnabled = Convert.ToInt32( GameOptions.sniperEnabled);
-            if (!GameOptions.sniperEnabled) 
+            model.SniperEnabled = Convert.ToInt32(GameOptions.sniperEnabled);
+            if (!GameOptions.sniperEnabled)
             {
                 model.SniperMode = 0;
                 model.SniperModeName = "none";
             }
-            if (GameOptions.sniperEnabledBullet) 
+            if (GameOptions.sniperEnabledBullet)
             {
                 model.SniperMode = 1;
                 model.SniperModeName = "single bullet";
@@ -137,7 +132,7 @@ namespace Assets.Scripts.database
                 model.SniperMode = 2;
                 model.SniperModeName = "machine gun ";
             }
-            if (GameOptions.sniperEnabledLaser) 
+            if (GameOptions.sniperEnabledLaser)
             {
                 model.SniperMode = 3;
                 model.SniperModeName = "disintegration ray";
@@ -167,7 +162,7 @@ namespace Assets.Scripts.database
                              .Matches(externalIP)[0].ToString();
                 return externalIP;
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
                 return null;
@@ -184,7 +179,7 @@ namespace Assets.Scripts.database
                 using (client.OpenRead("http://google.com/generate_204"))
                     return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.Log("ERROR : " + e);
                 return false;

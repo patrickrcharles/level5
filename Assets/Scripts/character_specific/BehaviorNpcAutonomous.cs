@@ -79,7 +79,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
 
     void Update()
     {
-       
+
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
 

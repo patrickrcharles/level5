@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class BodyGuardDetection : MonoBehaviour
@@ -64,7 +62,7 @@ public class BodyGuardDetection : MonoBehaviour
         //    // move towards player
         //}
 
-        if(PlayerAttackQueue.instance.CurrentEnemiesQueued > 0)
+        if (PlayerAttackQueue.instance.CurrentEnemiesQueued > 0)
         {
             enemySighted = true;
         }

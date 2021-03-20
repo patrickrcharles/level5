@@ -2,7 +2,7 @@
 
 public class CallBallToPlayer : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     internal float pullSpeed;
     private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;

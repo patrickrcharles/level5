@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CheerleaderSwapAnimation : MonoBehaviour
 {
@@ -29,7 +26,7 @@ public class CheerleaderSwapAnimation : MonoBehaviour
 
     public void Update()
     {
-        if (GameLevelManager.instance.Controls.Other.change.enabled 
+        if (GameLevelManager.instance.Controls.Other.change.enabled
             && Input.GetKeyDown(KeyCode.Alpha9)
             && !swapped)
         {
@@ -41,7 +38,7 @@ public class CheerleaderSwapAnimation : MonoBehaviour
             else
             {
                 SetOriginalAnimation(anim);
-            }          
+            }
         }
     }
 

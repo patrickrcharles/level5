@@ -134,7 +134,7 @@ public class EnemyProjectile : MonoBehaviour
             || other.gameObject.CompareTag("playerHitbox")))
         {
             // increase count
-            BasketBall.instance.GameStats.SniperHits ++;
+            BasketBall.instance.GameStats.SniperHits++;
 
             // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyCollisions : MonoBehaviour
 {
@@ -40,16 +37,16 @@ public class EnemyCollisions : MonoBehaviour
                 //Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
             if (other.GetComponent<EnemyAttackBox>() != null
-                && enemyHealth !=null )
+                && enemyHealth != null)
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-                enemyHealth.Health -= (enemyAttackBox.attackDamage /2);
+                enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
                 //Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
             // check if enemy dead
-            if (enemyHealth.Health >= 0 )
+            if (enemyHealth.Health >= 0)
             {
                 // player knock down attack
                 if (playerAttackBox != null
@@ -89,7 +86,7 @@ public class EnemyCollisions : MonoBehaviour
                 }
             }
             // else enemy is dead
-            if(enemyHealth.Health <= 0 && !enemyHealth.IsDead)
+            if (enemyHealth.Health <= 0 && !enemyHealth.IsDead)
             {
                 enemyHealth.IsDead = true;
                 // killed by player attack box and NOT enemy friendly fire
@@ -130,7 +127,7 @@ public class EnemyCollisions : MonoBehaviour
     void enemyTakeDamage()
     {
         //Debug.Log("enemyTakeDamage()");
-        StartCoroutine( enemyController.takeDamage());
+        StartCoroutine(enemyController.takeDamage());
     }
 
     void enemyStepOnRake(Collider other)

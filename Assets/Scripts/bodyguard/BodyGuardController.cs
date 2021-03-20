@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections;
+﻿using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -121,7 +119,7 @@ public class BodyGuardController : MonoBehaviour
     private void FixedUpdate()
     {
         if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated)
-            //&& bodyGuardDetection.Attacking)
+        //&& bodyGuardDetection.Attacking)
         {
             pursuePlayer();
         }

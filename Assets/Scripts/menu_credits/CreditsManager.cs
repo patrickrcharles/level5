@@ -1,12 +1,8 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Random = System.Random;
 
 public class CreditsManager : MonoBehaviour
 {
@@ -69,7 +65,7 @@ public class CreditsManager : MonoBehaviour
 
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
-   
+
     public void loadStartMenu()
     {
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);

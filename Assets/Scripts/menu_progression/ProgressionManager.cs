@@ -333,17 +333,17 @@ public class ProgressionManager : MonoBehaviour
     public void subtractPoint()
     {
         buttonPressed = true;
-        if (currentHighlightedButton.Equals(progression3AccuracyName) 
+        if (currentHighlightedButton.Equals(progression3AccuracyName)
             && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateThreeAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression4AccuracyName) 
+        if (currentHighlightedButton.Equals(progression4AccuracyName)
             && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateFourAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression7AccuracyName) 
+        if (currentHighlightedButton.Equals(progression7AccuracyName)
             && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateSevenAccuracy(UpdateType.Subtract);

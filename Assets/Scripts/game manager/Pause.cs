@@ -183,7 +183,7 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                StartCoroutine( loadstartScreen() );
+                StartCoroutine(loadstartScreen());
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
@@ -195,7 +195,7 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-               StartCoroutine( Quit());
+                StartCoroutine(Quit());
             }
         }
     }

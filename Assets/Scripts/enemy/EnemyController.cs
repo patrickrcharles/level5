@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections;
+﻿using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -236,7 +234,7 @@ public class EnemyController : MonoBehaviour
         if (stateAttack)
         {
             FreezeEnemyPosition();
-            if (playerSwapAttack != null 
+            if (playerSwapAttack != null
                 && !longRangeAttack
                 && playerSwapAttack.closeAttacks != null
                 && playerSwapAttack.AnimatorOverrideController != null)

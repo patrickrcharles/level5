@@ -144,7 +144,7 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            PlayerController.toggleRun();
+            PlayerController.ToggleRun();
             _locked = false;
         }
 

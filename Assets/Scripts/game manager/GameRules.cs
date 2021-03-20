@@ -147,7 +147,7 @@ public class GameRules : MonoBehaviour
         if (gameModeRequiresShotMarkers3s || gameModeRequiresShotMarkers4s)
         {
             positionMarkersRequired = true;
-            setPositionMarkers();
+            SetPositionMarkers();
         }
     }
     // ================================================ Update ============================================
@@ -156,7 +156,7 @@ public class GameRules : MonoBehaviour
         //// update current score
         if (gameRulesEnabled)
         {
-            setScoreDisplayText();
+            SetScoreDisplayText();
         }
 
         // if game over, empty text display
@@ -183,7 +183,7 @@ public class GameRules : MonoBehaviour
 
             //pause on game over
             Pause.instance.TogglePause();
-            displayScoreText.text = getDisplayText(GameModeId);
+            displayScoreText.text = GetDisplayText(GameModeId);
 
             // ******** important : convert basketball stats to high score model
             HighScoreModel dBHighScoreModel = new HighScoreModel();
@@ -230,7 +230,7 @@ public class GameRules : MonoBehaviour
         // enable moneyball if game requires moneyball
         if (GameLevelManager.instance.Controls.Player.action.triggered && GameModeRequiresMoneyBall)
         {
-            toggleMoneyBall();
+            ToggleMoneyBall();
         }
 
         // if not enough money and moneyball required, disabled by default
@@ -254,7 +254,7 @@ public class GameRules : MonoBehaviour
 
     //===================================================== toggle money ball ====================================================
 
-    private void toggleMoneyBall()
+    private void ToggleMoneyBall()
     {
         if (PlayerStats.instance.Money >= 5 && !moneyBallEnabled)
         {
@@ -272,7 +272,7 @@ public class GameRules : MonoBehaviour
     }
 
     //===================================================== Position markers set up ====================================================
-    private void setPositionMarkers()
+    private void SetPositionMarkers()
     {
         // get all shot position marker objects
         basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
@@ -302,18 +302,18 @@ public class GameRules : MonoBehaviour
             }
         }
         // sort markers list by positionid
-        BasketBallShotMarkersList.Sort(sortByMarkerId);
+        BasketBallShotMarkersList.Sort(SortByMarkerId);
         // number of markers to complete ( all active and enabled sshot markers based on game options
         markersRemaining = BasketBallShotMarkersList.Count;
     }
 
-    static int sortByMarkerId(BasketBallShotMarker p1, BasketBallShotMarker p2)
+    static int SortByMarkerId(BasketBallShotMarker p1, BasketBallShotMarker p2)
     {
         return p1.PositionMarkerId.CompareTo(p2.PositionMarkerId);
     }
 
     // ================================================ set score display ============================================
-    public void setScoreDisplayText()
+    public void SetScoreDisplayText()
     {
         if (PlayerData.instance != null)
         {
@@ -498,44 +498,44 @@ public class GameRules : MonoBehaviour
     }
 
     // ================================================ get end game display text ============================================
-    private string getDisplayText(int modeId)
+    private string GetDisplayText(int modeId)
     {
         string displayText = "";
 
         if (gameModeId == 1)
         {
-            displayText = "You scored " + gameStats.TotalPoints + " total points\n\n" + getStatsTotals();
+            displayText = "You scored " + gameStats.TotalPoints + " total points\n\n" + GetStatsTotals();
         }
         if (gameModeId == 2)
         {
-            displayText = "You made " + gameStats.ThreePointerMade + " total 3 pointers\n\n" + getStatsTotals();
+            displayText = "You made " + gameStats.ThreePointerMade + " total 3 pointers\n\n" + GetStatsTotals();
         }
         if (gameModeId == 3)
         {
-            displayText = "You made " + gameStats.FourPointerMade + " total 4 pointers\n\n" + getStatsTotals();
+            displayText = "You made " + gameStats.FourPointerMade + " total 4 pointers\n\n" + GetStatsTotals();
         }
         if (gameModeId == 4)
         {
-            displayText = "You made " + gameStats.SevenPointerMade + " total 4 pointers\n\n" + getStatsTotals();
+            displayText = "You made " + gameStats.SevenPointerMade + " total 4 pointers\n\n" + GetStatsTotals();
         }
         if (gameModeId == 5)
         {
-            displayText = "Your longest shot made was " + (gameStats.LongestShotMade).ToString("0.00") + " ft.\n\n" + getStatsTotals();
+            displayText = "Your longest shot made was " + (gameStats.LongestShotMade).ToString("0.00") + " ft.\n\n" + GetStatsTotals();
         }
         if (gameModeId == 6)
         {
-            displayText = "Your total distance for shots made was " + (gameStats.TotalDistance).ToString("0.00") + " ft.\n\n" + getStatsTotals();
+            displayText = "Your total distance for shots made was " + (gameStats.TotalDistance).ToString("0.00") + " ft.\n\n" + GetStatsTotals();
         }
         if (gameModeId > 6 && gameModeId <= 12)
         {
             int minutes = Mathf.FloorToInt(gameStats.TimePlayed / 60);
             float seconds = (gameStats.TimePlayed - (minutes * 60));
             //displayText = "Your time was " + (counterTime).ToString("0.000") + "\n\n" + getStatsTotals();
-            displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + getStatsTotals();
+            displayText = "Your time was " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" + GetStatsTotals();
         }
         if (gameModeId == 14)
         {
-            displayText = "Your most consecutive shots was " + gameStats.MostConsecutiveShots + "\n\n" + getStatsTotals();
+            displayText = "Your most consecutive shots was " + gameStats.MostConsecutiveShots + "\n\n" + GetStatsTotals();
         }
         //if (gameModeId == 15)
         //{
@@ -543,7 +543,7 @@ public class GameRules : MonoBehaviour
         //}
         if (gameModeId == 15 || gameModeId == 16 || gameModeId == 17 || gameModeId == 18 || gameModeId == 19)
         {
-            displayText = "You scored " + gameStats.TotalPoints + " total points\n\n" + getStatsTotals();
+            displayText = "You scored " + gameStats.TotalPoints + " total points\n\n" + GetStatsTotals();
         }
         if (gameModeId == 20)
         {
@@ -552,21 +552,21 @@ public class GameRules : MonoBehaviour
         }
         if (gameModeId == 98)
         {
-            displayText = "Arcade mode\n\n" + getStatsTotals();
+            displayText = "Arcade mode\n\n" + GetStatsTotals();
         }
         if (gameModeId == 99 || gameModeId == 0)
         {
-            displayText = "Free Play mode\n\n" + getStatsTotals();
+            displayText = "Free Play mode\n\n" + GetStatsTotals();
         }
 
         return displayText;
     }
     // ================================================ get stats total ============================================
 
-    string getStatsTotals()
+    string GetStatsTotals()
     {
-        string scoreText = "";
-        if ((gameModeAllPointContest || gameModeFourPointContest || gameModeThreePointContest) 
+        string scoreText;
+        if ((gameModeAllPointContest || gameModeFourPointContest || gameModeThreePointContest)
             && !GameOptions.sniperEnabled)
         {
             scoreText = "shots  : " + gameStats.ShotMade + " / " + gameStats.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
@@ -602,7 +602,7 @@ public class GameRules : MonoBehaviour
                  + "longest shot distance : " + (Math.Round(gameStats.LongestShotMade, 2)).ToString("0.00") + " ft.\n"
                  + "total shots made distance : " + (Math.Round(gameStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
                  + "most consecutive shots : " + gameStats.MostConsecutiveShots + "\n"
-                 + "sniper accuracy : " + gameStats.SniperHits + " / "+ gameStats.SniperShots 
+                 + "sniper accuracy : " + gameStats.SniperHits + " / " + gameStats.SniperShots
                     + " " + UtilityFunctions.getPercentageFloat(gameStats.SniperHits, gameStats.SniperShots).ToString("00.0") + "%\n"
                  + "experience gained : " + gameStats.getExperienceGainedFromSession();
         }
@@ -626,7 +626,7 @@ public class GameRules : MonoBehaviour
         return scoreText;
     }
 
-    public bool isGameOver()
+    public bool IsGameOver()
     {
         // if all shot markers are cleared
         if (MarkersRemaining <= 0)
@@ -644,7 +644,7 @@ public class GameRules : MonoBehaviour
             if (modeRequiresCounter)
             {
                 // set timer score
-                setRequiresCounterLowScore();
+                SetRequiresCounterLowScore();
             }
             return true;
         }
@@ -654,7 +654,7 @@ public class GameRules : MonoBehaviour
         }
     }
 
-    private void setRequiresCounterLowScore()
+    private void SetRequiresCounterLowScore()
     {
         //*NOTE, these if statements could be replaced based on game mode ids but that would be hard coded
         // so unfortunately this is probably the best way to do it
@@ -699,11 +699,11 @@ public class GameRules : MonoBehaviour
         set => moneyBallEnabled = value;
     }
 
-    public float CounterTime
-    {
-        get => counterTime;
-        set => counterTime = value;
-    }
+    //public float CounterTime
+    //{
+    //    get => counterTime;
+    //    set => counterTime = value;
+    //}
 
     private void setTimer(float seconds)
     {

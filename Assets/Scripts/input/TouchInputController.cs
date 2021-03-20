@@ -110,7 +110,7 @@ public class TouchInputController : MonoBehaviour
                 startTouchPosition1 = touch1.position;
                 if (playerController.CanBlock && !playerController.hasBasketball)
                 {
-                    playerController.playerBlock();
+                    playerController.PlayerBlock();
                 }
             }
             if (touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
@@ -173,7 +173,7 @@ public class TouchInputController : MonoBehaviour
                     {
                         //Debug.Log("player attack ");
                         tap2Detected = false;
-                        playerController.playerAttack();
+                        playerController.PlayerAttack();
                     }
                     buttonPressed = false;
                 }
@@ -182,14 +182,14 @@ public class TouchInputController : MonoBehaviour
                 {
                     //Debug.Log("!tap2Detected && doubleTap2Detected");
                     buttonPressed = true;
-                    if (!playerController.inAir
+                    if (!playerController.InAir
                         && playerController.Grounded
                         && !playerController.KnockedDown)
                     {
                         //Debug.Log("player special attack ");
                         //doubleTap2Detected = false;
                         hold1Detected = false;
-                        playerController.playerSpecial();
+                        playerController.PlayerSpecial();
                     }
                     buttonPressed = false;
                 }
@@ -213,7 +213,7 @@ public class TouchInputController : MonoBehaviour
 
         if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
-            GameLevelManager.instance.PlayerController.touchControlJumpOrShoot(touch1.position);
+            GameLevelManager.instance.PlayerController.TouchControlJumpOrShoot(touch1.position);
             tap1Detected = false;
         }
 
@@ -253,7 +253,7 @@ public class TouchInputController : MonoBehaviour
             && !buttonPressed)
         {
             //Debug.Log("start screen");
-            StartCoroutine( Pause.instance.loadstartScreen() );
+            StartCoroutine(Pause.instance.loadstartScreen());
             buttonPressed = true;
         }
         // cancel/unpause

@@ -45,7 +45,7 @@ public class PlayerDunk : MonoBehaviour
     {
         CallBallToPlayer.instance.Locked = true;
         BasketBall.instance.BasketBallState.Locked = true;
-        playerController.checkIsPlayerFacingGoal(); // turns player facing rim
+        playerController.CheckIsPlayerFacingGoal(); // turns player facing rim
 
         float bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - transform.position.x;
         // shot type for stats
@@ -57,11 +57,11 @@ public class PlayerDunk : MonoBehaviour
         BasketBall.instance.LastShotDistance = tempDist;
 
         // determine which side to dunk on
-        if (bballRelativePositioning > 0 && !playerController.locked)
+        if (bballRelativePositioning > 0 && !playerController.Locked)
         {
             Launch(dunkPositionLeft);
         }
-        if (bballRelativePositioning < 0 && !playerController.locked)
+        if (bballRelativePositioning < 0 && !playerController.Locked)
         {
             Launch(dunkPositionRight);
         }
@@ -71,7 +71,7 @@ public class PlayerDunk : MonoBehaviour
     public IEnumerator TriggerDunkSequence()
     {
         playerController.FreezePlayerPosition();
-        playerController.playAnim("dunk");
+        playerController.PlayAnim("dunk");
 
         // wait for anim to start + finish
         yield return new WaitUntil(() => playerController.CurrentState == playerController.dunkState);
@@ -86,13 +86,13 @@ public class PlayerDunk : MonoBehaviour
         BasketBall.instance.transform.position = new Vector3(temp.x, temp.y, temp.z);
         //reset
         playerController.hasBasketball = false;
-        playerController.setPlayerAnim("hasBasketball", false);
+        playerController.SetPlayerAnim("hasBasketball", false);
     }
 
     // =================================== Launch ball function =======================================
     void Launch(Vector3 Target)
     {
-        playerController.locked = true;
+        playerController.Locked = true;
         playerController.RigidBody.velocity = Vector3.zero;
 
         Vector3 projectileXZPos = transform.position;
@@ -122,11 +122,11 @@ public class PlayerDunk : MonoBehaviour
         if (Math.Abs(globalVelocity.y) < 7 && Math.Abs(globalVelocity.z) < 7)
         {
             playerController.RigidBody.velocity = globalVelocity;
-            playerController.playAnim("inair_dunk");
+            playerController.PlayAnim("inair_dunk");
         }
 
         gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-        playerController.locked = false;
+        playerController.Locked = false;
 
     }
 

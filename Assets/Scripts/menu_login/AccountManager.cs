@@ -3,13 +3,11 @@ using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Random = System.Random;
 
 public class AccountManager : MonoBehaviour
 {
@@ -332,10 +330,10 @@ public class AccountManager : MonoBehaviour
             startTime = Time.time;
 
             // add 10 second timeout
-            yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime+timeout));
+            yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
 
             // if local user doesnt exists, insert locally
-            if(!DBHelper.instance.localUserExists(user))
+            if (!DBHelper.instance.localUserExists(user))
             {
                 DBHelper.instance.DatabaseLocked = false;
                 // created on api, insert to local db

@@ -57,7 +57,7 @@ public class StatsTableHighScoreRow : MonoBehaviour
         userNameText.text = UserName;
     }
 
-    public void  setRowValues(string scor, string charact, string lvl, string dat, string hrdcor, string uname)
+    public void setRowValues(string scor, string charact, string lvl, string dat, string hrdcor, string uname)
     {
         UserName = uname;
         Score = scor;

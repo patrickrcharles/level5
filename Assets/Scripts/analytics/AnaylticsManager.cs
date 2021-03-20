@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
@@ -74,7 +73,7 @@ public static class AnaylticsManager
         string eventName = "points scored : enemies enabled";
 
         int accuracy = 0;
-        if(basketBallStats.ShotAttempt != 0)
+        if (basketBallStats.ShotAttempt != 0)
         {
             accuracy = (basketBallStats.ShotMade / basketBallStats.ShotAttempt);
         }

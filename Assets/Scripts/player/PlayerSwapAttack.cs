@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = System.Random;
 
 public class PlayerSwapAttack : MonoBehaviour
@@ -37,7 +34,7 @@ public class PlayerSwapAttack : MonoBehaviour
             anim.runtimeAnimatorController = animatorOverrideController;
         }
         // else use default
-        else if(closeAttacks.Length == 1 && closeAttacks != null)
+        else if (closeAttacks.Length == 1 && closeAttacks != null)
         {
             animatorOverrideController["attack"] = closeAttacks[0];
             anim.runtimeAnimatorController = animatorOverrideController;

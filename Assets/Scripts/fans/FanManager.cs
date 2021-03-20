@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class FanManager : MonoBehaviour
@@ -27,7 +26,7 @@ public class FanManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject fan = transform.GetChild(i).gameObject;
-            if( !string.IsNullOrEmpty(GameOptions.characterObjectName) 
+            if (!string.IsNullOrEmpty(GameOptions.characterObjectName)
                 && fan.name.Contains(GameOptions.characterObjectName))
             {
                 fan.SetActive(false);
