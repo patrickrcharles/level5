@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.UI;
 using Touch = UnityEngine.Touch;
@@ -12,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
     //private AudioSource audiosource;
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
     private CharacterProfile characterProfile;
     private BasketBall basketball;
@@ -42,7 +41,7 @@ public class PlayerController : MonoBehaviour
     private bool canBlock;
 
     // player state bools
-    private bool running;
+    //private bool running = false;
     private bool runningToggle;
     public bool hasBasketball;
 
@@ -85,9 +84,7 @@ public class PlayerController : MonoBehaviour
     float screenYRange;
 
     // player take damage display
-    [SerializeField]
     Text damageDisplayValueText;
-    [SerializeField]
     GameObject damageDisplayObject;
     const string damageDisplayValueName = "player_damage_display_text";
 
@@ -111,7 +108,7 @@ public class PlayerController : MonoBehaviour
     {
         //audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
@@ -122,7 +119,7 @@ public class PlayerController : MonoBehaviour
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
-        facingRight = true;
+        FacingRight = true;
 
         movementSpeed = characterProfile.Speed;
         runningToggle = true;
@@ -138,7 +135,8 @@ public class PlayerController : MonoBehaviour
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
 
-        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
+        GameOptions.sniperEnabled = true; // test flag;
+        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
             damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
@@ -146,6 +144,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             damageDisplayObject.SetActive(false);
+        }
+
+        // custom knockdown time for sniper mode
+        if (GameOptions.sniperEnabled)
+        {
+            _knockDownTime = 0.75f;
         }
     }
 
@@ -191,10 +195,10 @@ public class PlayerController : MonoBehaviour
 
 #if UNITY_STANDALONE || UNITY_EDITOR
 
-                movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
-                movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
-                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-                        //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
+            movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
 
 #endif
 
@@ -205,13 +209,13 @@ public class PlayerController : MonoBehaviour
             if (jumpTrigger)
             {
                 jumpTrigger = false;
-                playerJump();
+                PlayerJump();
             }
             if (dunkTrigger
                 && (currentState != inAirDunkState || currentState != inAirDunkState)
-                && !inAir
+                && !InAir
                 && Grounded
-                && !locked)
+                && !Locked)
             {
                 dunkTrigger = false;
                 PlayerDunk.instance.playerDunk();
@@ -222,7 +226,7 @@ public class PlayerController : MonoBehaviour
                 //rigidBody.MovePosition(transform.position + movement);
                 transform.Translate(movement);
                 //isWalking(movement);
-                isWalking(movementHorizontal, movementVertical);
+                IsWalking(movementHorizontal, movementVertical);
             }
         }
     }
@@ -237,14 +241,14 @@ public class PlayerController : MonoBehaviour
         currentState = currentStateInfo.fullPathHash;
 
         // knocked down
-        if (KnockedDown && !locked)
+        if (KnockedDown && !Locked)
         {
-            locked = true;
+            Locked = true;
             StartCoroutine(PlayerKnockedDown());
         }
-        if (!KnockedDown && TakeDamage && !locked)
+        if (!KnockedDown && TakeDamage && !Locked)
         {
-            locked = true;
+            Locked = true;
             StartCoroutine(PlayerTakeDamage());
         }
 
@@ -268,17 +272,17 @@ public class PlayerController : MonoBehaviour
 
         // if run input or run toggle on
         if (GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
-            && !inAir
+            && !InAir
             && !KnockedDown
             && rigidBody.velocity.magnitude > 0.1f
-            && !locked)
+            && !Locked)
         {
-            running = true;
+            //running = true;
             anim.SetBool("moonwalking", true);
         }
         else
         {
-            running = false;
+            //running = false;
             //anim.SetBool("moonwalking", false);
         }
 
@@ -286,27 +290,27 @@ public class PlayerController : MonoBehaviour
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
             Math.Abs(playerRelativePositioning.z) < 2)
         {
-            facingFront = false;
+            FacingFront = false;
         }
         else
         {
-            facingFront = true;
+            FacingFront = true;
         }
 
         // set player shoot anim based on position
-        if (facingFront) // facing straight toward bball goal
+        if (FacingFront) // facing straight toward bball goal
         {
-            setPlayerAnim("basketballFacingFront", true);
+            SetPlayerAnim("basketballFacingFront", true);
         }
         else // side of goal, relative postion
         {
-            setPlayerAnim("basketballFacingFront", false);
+            SetPlayerAnim("basketballFacingFront", false);
         }
 
         // ----- control speed based on commands----------
         // idle, walk, walk with ball state
         if (currentState == idleState || currentState == walkState || currentState == bIdle
-            && !inAir
+            && !InAir
             && !KnockedDown)
         {
             movementSpeed = characterProfile.Speed;
@@ -326,9 +330,9 @@ public class PlayerController : MonoBehaviour
             movementSpeed = blockSpeed;
         }
         // inair state
-        if (inAir)//&& currentState != inAirDunkState)
+        if (InAir)//&& currentState != inAirDunkState)
         {
-            checkIsPlayerFacingGoal();
+            CheckIsPlayerFacingGoal();
             if (currentState != inAirDunkState)
             {
                 movementSpeed = inAirSpeed;
@@ -337,7 +341,7 @@ public class PlayerController : MonoBehaviour
         if (Grounded
             && !KnockedDown
             && !hasBasketball
-            && !inAir
+            && !InAir
             && currentState != dunkState)
         {
             canAttack = true;
@@ -357,7 +361,7 @@ public class PlayerController : MonoBehaviour
             && Grounded
             && !KnockedDown
             && !GameOptions.EnemiesOnlyEnabled
-            && !inAir)
+            && !InAir)
         {
             if (PlayerDunk.instance != null
                 && PlayerDunk.instance.PlayerCanDunk
@@ -372,7 +376,7 @@ public class PlayerController : MonoBehaviour
         }
         //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
-        if (inAir
+        if (InAir
             && hasBasketball
             && GameLevelManager.instance.Controls.Player.shoot.triggered
             && !GameOptions.EnemiesOnlyEnabled
@@ -381,9 +385,9 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("shoot");
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
-            checkIsPlayerFacingGoal(); // turns player facing rim
+            CheckIsPlayerFacingGoal(); // turns player facing rim
             Shotmeter.MeterEnded = true;
-            playerShoot();
+            PlayerShoot();
         }
         //------------------ attack -----------------------------------
 
@@ -393,7 +397,7 @@ public class PlayerController : MonoBehaviour
             && canAttack
             && GameOptions.enemiesEnabled)
         {
-            playerAttack();
+            PlayerAttack();
         }
         else
         {
@@ -409,7 +413,7 @@ public class PlayerController : MonoBehaviour
         {
             if (playerCanBlock)
             {
-                playerBlock();
+                PlayerBlock();
             }
             if (!playerCanBlock)
             {
@@ -419,7 +423,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // double check touch input not being used
-            if(!TouchInputController.instance.HoldDetected)
+            if (!TouchInputController.instance.HoldDetected)
             {
                 anim.SetBool("block", false);
             }
@@ -427,12 +431,12 @@ public class PlayerController : MonoBehaviour
 
         //------------------ special -----------------------------------
         if (GameLevelManager.instance.Controls.Player.special.triggered
-            && !inAir
+            && !InAir
             && Grounded
             && !KnockedDown
             && GameOptions.enemiesEnabled)
         {
-            playerSpecial();
+            PlayerSpecial();
         }
 
         // if player is falling, nto sure what this is useful for. comment out
@@ -446,14 +450,14 @@ public class PlayerController : MonoBehaviour
 #endif 
     }
 
-    public void touchControlJumpOrShoot(Vector2 touchPosition)
+    public void TouchControlJumpOrShoot(Vector2 touchPosition)
     {
         if (Grounded
             && !KnockedDown
             && hasBasketball
             && playerDistanceFromRimFeet > PlayerDunk.instance.DunkRangeFeet
             && touchPosition.x > (Screen.width / 2)
-            && !locked)
+            && !Locked)
         {
             jumpTrigger = true;
         }
@@ -461,30 +465,30 @@ public class PlayerController : MonoBehaviour
             && PlayerDunk.instance.PlayerCanDunk
             && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet
             && (currentState != inAirDunkState || currentState != inAirDunkState)
-            && !inAir
+            && !InAir
             && Grounded
             && hasBasketball
             && touchPosition.x > (Screen.width / 2)
-            && !locked)
+            && !Locked)
         {
             dunkTrigger = true;
         }
         // if has ball, is in air, and pressed shoot button.
         // shoot ball
-        if (inAir
+        if (InAir
             && hasBasketball
             && touchPosition.x > (Screen.width / 2)
             && (currentState != inAirDunkState || currentState != inAirDunkState))
         {
             CallBallToPlayer.instance.Locked = true;
             basketball.BasketBallState.Locked = true;
-            checkIsPlayerFacingGoal(); // turns player facing rim
+            CheckIsPlayerFacingGoal(); // turns player facing rim
             Shotmeter.MeterEnded = true;
-            playerShoot();
+            PlayerShoot();
         }
         // call ball
         if (!hasBasketball
-            && !inAir
+            && !InAir
             && basketball.BasketBallState.CanPullBall
             && !basketball.BasketBallState.Locked
             && Grounded
@@ -496,7 +500,7 @@ public class PlayerController : MonoBehaviour
             CallBallToPlayer.instance.Locked = false;
         }
     }
-    public void playerAttack()
+    public void PlayerAttack()
     {
         if (playerCanAttack)
         {
@@ -506,30 +510,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void playerBlock()
+    public void PlayerBlock()
     {
         anim.SetBool("block", true);
     }
 
-    public void playerShoot()
+    public void PlayerShoot()
     {
         basketball.shootBasketBall();
     }
 
-    public void playerSpecial()
+    public void PlayerSpecial()
     {
-        playAnim("special");
+        PlayAnim("special");
     }
-    public void checkIsPlayerFacingGoal()
+    public void CheckIsPlayerFacingGoal()
     {
-        if (bballRelativePositioning > 0 && !facingRight
+        if (bballRelativePositioning > 0 && !FacingRight
             && currentState != specialState
             && currentState != attackState)
         {
             Flip();
         }
 
-        if (bballRelativePositioning < 0f && facingRight
+        if (bballRelativePositioning < 0f && FacingRight
             && currentState != specialState
             && currentState != attackState)
         {
@@ -537,7 +541,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void playerJump()
+    public void PlayerJump()
     {
         rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
@@ -554,14 +558,14 @@ public class PlayerController : MonoBehaviour
 
     //-----------------------------------Walk function -----------------------------------------------------------------------
     //void isWalking(Vector3 movement)
-    void isWalking(float horizontal, float vertical)
+    void IsWalking(float horizontal, float vertical)
     {
         // if moving
         //if (horizontal > 0f || horizontal < 0f || vertical > 0f || vertical < 0f)
         if (horizontal != 0 || vertical != 0f)
         {
             // not in air
-            if (!inAir) // dont want walking animation playing while inAir
+            if (!InAir) // dont want walking animation playing while inAir
             {
                 anim.SetBool("walking", true);
                 // walking but running toggle is ON
@@ -577,16 +581,16 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("walking", false);
             anim.SetBool("moonwalking", false);
             //moonwalkAudio.enabled = false;
-            running = false;
+            //running = false;
         }
 
         // player moving right, not facing right
-        if (horizontal > 0 && !facingRight)//&& canMove)
+        if (horizontal > 0 && !FacingRight)//&& canMove)
         {
             Flip();
         }
         // player moving left, and facing right
-        if (horizontal < 0f && facingRight)//&& canMove)
+        if (horizontal < 0f && FacingRight)//&& canMove)
         {
             Flip();
         }
@@ -594,12 +598,12 @@ public class PlayerController : MonoBehaviour
 
     void Flip()
     {
-        facingRight = !facingRight;
+        FacingRight = !FacingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
 
-        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         {
             Vector3 damageScale = damageDisplayObject.transform.localScale;
             damageScale.x *= -1;
@@ -625,7 +629,7 @@ public class PlayerController : MonoBehaviour
 
         TakeDamage = false;
         KnockedDown = false;
-        locked = false;
+        Locked = false;
 
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
@@ -666,7 +670,7 @@ public class PlayerController : MonoBehaviour
 
         KnockedDown = false;
         TakeDamage = false;
-        locked = false;
+        Locked = false;
 
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
@@ -675,24 +679,24 @@ public class PlayerController : MonoBehaviour
     {
         anim.Play("knockedDown");
         AvoidedKnockDown = false;
-        locked = false;
+        Locked = false;
     }
 
     //------------------------- set animator parameters -----------------------
-    public void setPlayerAnim(string animationName, bool isTrue)
+    public void SetPlayerAnim(string animationName, bool isTrue)
     {
         anim.SetBool(animationName, isTrue);
     }
 
     //------------------------- set animator parameters -----------------------
-    public void setPlayerAnimTrigger(string animationName)
+    public void SetPlayerAnimTrigger(string animationName)
     {
         anim.SetTrigger(animationName);
     }
 
     //-------------------play animation function ------------------------------
     // provide access to what should be private animator
-    public void playAnim(string animationName)
+    public void PlayAnim(string animationName)
     {
         anim.Play(animationName);
     }
@@ -716,7 +720,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
-    public void toggleRun()
+    public void ToggleRun()
     {
         runningToggle = !runningToggle;
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
@@ -737,23 +741,23 @@ public class PlayerController : MonoBehaviour
         set { _grounded = value; }
     }
 
-    public bool inAir
+    public bool InAir
     {
         get { return _inAir; }
         set { _inAir = value; }
     }
 
-    public bool locked
+    public bool Locked
     {
         get { return _locked; }
         set { _locked = value; }
     }
 
-    public float rigidBodyYVelocity
-    {
-        get { return rigidBody.velocity.y; }
-    }
-    public bool facingFront
+    //public float RigidBodyYVelocity
+    //{
+    //    get { return rigidBody.velocity.y; }
+    //}
+    public bool FacingFront
     {
         get => _facingFront;
         set => _facingFront = value;
@@ -782,7 +786,7 @@ public class PlayerController : MonoBehaviour
     public int AttackState { get => attackState; set => attackState = value; }
     public int BlockState { get => blockState; set => blockState = value; }
     public int SpecialState { get => specialState; set => specialState = value; }
-    public bool facingRight { get => _facingRight; set => _facingRight = value; }
+    public bool FacingRight { get => _facingRight; set => _facingRight = value; }
     public bool CanAttack { get => canAttack; set => canAttack = value; }
     public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
     public bool CanBlock { get => canBlock; set => canBlock = value; }
