@@ -95,7 +95,7 @@ public class GameStats : MonoBehaviour
         }
         if (GameOptions.sniperEnabled)
         {
-            experience *= (int)1.25f; ;
+            experience *= (int)1.25f; 
         }
 
         ExperienceGained = experience;
