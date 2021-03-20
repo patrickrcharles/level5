@@ -106,6 +106,19 @@ namespace Assets.Scripts.Utility
             float randNum = Random.Range(min, max);
             return randNum;
         }
+
+        public static float getPercentageFloat(int made, int attempt)
+        {
+            if (attempt > 0)
+            {
+                float accuracy = (float)made / attempt;
+                return (accuracy * 100);
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
 
