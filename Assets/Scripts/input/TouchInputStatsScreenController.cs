@@ -238,6 +238,16 @@ public class TouchInputStatsScreenController : MonoBehaviour
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
         }
+        // sniper option search filter
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.SniperOptionButtonName))
+        {
+            Debug.Log("sniper option");
+            //StatsManager.instance.changeSelectedMode("right");
+            StatsManager.instance.changeSelectedSniperOption();
+            StatsManager.instance.initializeSniperOptionDisplay();
+            StatsManager.instance.changeHighScoreDataDisplay();
+            buttonPressed = true;
+        }
         buttonPressed = false;
     }
     private void swipeDownOnOption()
