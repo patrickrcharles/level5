@@ -72,6 +72,4 @@ public class PlayerHealthBar : MonoBehaviour
         yield return new WaitForSeconds(0.7f);
         GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "";
     }
-
-    //public Slider Slider => healthSlider;
 }
