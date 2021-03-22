@@ -1,13 +1,9 @@
 using Assets.Scripts.Utility;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SniperManager : MonoBehaviour
 {
-    [SerializeField]
-    PlayerController playerController;
-    [SerializeField]
     GameObject player;
     [SerializeField]
     GameObject projectileLaserPrefab;
@@ -28,6 +24,8 @@ public class SniperManager : MonoBehaviour
     }
     private void Start()
     {
+        GameOptions.sniperEnabled = true; //test flag
+        // auto start autonomous sniper system
         if (GameOptions.sniperEnabled)
         {
             instance = this;
@@ -54,29 +52,34 @@ public class SniperManager : MonoBehaviour
         {
             locked = true;
             float random = UtilityFunctions.GetRandomFloat(0, 4);
-            StartCoroutine( ShootSniper(random) );
+            //// test flag to enable
+            //GameOptions.sniperEnabledBullet = true;
+            if (GameOptions.sniperEnabledBullet)
+            {
+                StartCoroutine(StartSniperBullet(random));
+            }
+            if (GameOptions.sniperEnabledLaser)
+            {
+                StartCoroutine(StartSniperLaser(random));
+            }
         }
     }
 
-
-    IEnumerator ShootSniper(float shootdelay)
+    IEnumerator StartSniperBullet(float shootdelay)
     {
-        //Debug.Log("startSniper()");
         yield return new WaitForSeconds(shootdelay);
-        //Debug.Log("startSniper() after yield");
 
-        BasketBall.instance.BasketBallStats.SniperShots += 1;
+        BasketBall.instance.GameStats.SniperShots++;
 
         // get player position to attack
         PlayerPosAtShoot = player.transform.position;
         // edit prefab
         EnemyProjectile enemyProjectile = projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>();
-        //EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
         enemyProjectile.sniperProjectile = true;
         enemyProjectile.impactProjectile = true;
 
         // get vector to player
-        Vector3 direction = PlayerPosAtShoot - (gameObject.transform.position); 
+        Vector3 direction = PlayerPosAtShoot - (gameObject.transform.position);
         // set vector bullet direction
         enemyProjectile.projectileForceSniper = direction;
         //play sound
@@ -85,12 +88,42 @@ public class SniperManager : MonoBehaviour
         StartCoroutine(InstantiateBullet());
     }
 
+    IEnumerator StartSniperLaser(float shootdelay)
+    {
+        yield return new WaitForSeconds(shootdelay);
+
+        BasketBall.instance.GameStats.SniperShots++;
+
+        // get player position to attack
+        PlayerPosAtShoot = player.transform.position;
+        // edit prefab
+        EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
+        enemyProjectile.sniperProjectile = true;
+        enemyProjectile.impactProjectile = true;
+
+        // get vector to player
+        Vector3 direction = PlayerPosAtShoot - (gameObject.transform.position);
+        // set vector bullet direction
+        enemyProjectile.projectileForceSniper = direction;
+        //play sound
+        audioSource.PlayOneShot(SFXBB.instance.shootGun);
+        //audioSource.PlayOneShot(SFXBB.instance.deathRay);
+        StartCoroutine(InstantiateLaser());
+    }
+
     IEnumerator InstantiateBullet()
     {
         yield return new WaitForSeconds(bulletDelay);
         // instantiate bullet
-        //Instantiate(projectileLaserPrefab, gameObject.transform.position, Quaternion.identity);
         Instantiate(projectileBulletPrefab, gameObject.transform.position, Quaternion.identity);
+        locked = false;
+    }
+
+    IEnumerator InstantiateLaser()
+    {
+        yield return new WaitForSeconds(bulletDelay);
+        // instantiate laser
+        Instantiate(projectileLaserPrefab, gameObject.transform.position, Quaternion.identity);
         locked = false;
     }
     public Vector3 PlayerPosAtShoot { get => playerPosAtShoot; set => playerPosAtShoot = value; }
