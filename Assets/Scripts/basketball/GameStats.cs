@@ -87,7 +87,7 @@ public class GameStats : MonoBehaviour
         {
             experience += (MinionsKilled * 50);
             experience += (BossKilled * 150);
-            experience *= (int)1.5f;
+            experience *= (int)1.25f;
         }
         if (GameOptions.hardcoreModeEnabled)
         {
