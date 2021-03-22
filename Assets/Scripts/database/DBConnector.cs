@@ -63,7 +63,7 @@ public class DBConnector : MonoBehaviour
         {
             try
             {
-                StartCoroutine( createDatabase());
+                StartCoroutine(createDatabase());
             }
             catch (Exception e)
             {
@@ -79,8 +79,8 @@ public class DBConnector : MonoBehaviour
             {
                 SqliteConnection.CreateFile(filepath);
                 //Debug.Log("create file / !existed");
-                StartCoroutine( dropDatabase());
-                StartCoroutine( createDatabase());
+                StartCoroutine(dropDatabase());
+                StartCoroutine(createDatabase());
             }
             catch (Exception e)
             {
@@ -94,11 +94,12 @@ public class DBConnector : MonoBehaviour
             StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
             //StartCoroutine(setDatabaseVersion());
         }
-        //StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
+        StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
     }
 
     private void VerifyDatabase()
     {
+        //Debug.Log("VerifyDatabase() --start");
         string version = "";
 
         try
@@ -139,6 +140,7 @@ public class DBConnector : MonoBehaviour
             Debug.Log("ERROR : " + e);
             return;
         }
+        //Debug.Log("VerifyDatabase() --finish");
     }
 
     private int getDatabaseVersion()
@@ -274,7 +276,12 @@ public class DBConnector : MonoBehaviour
                 "moneyBallMade  INTEGER, " +
                 "moneyBallAtt  INTEGER, " +
                 "submittedToApi  INTEGER, " +
-                "username  TEXT DEAFAULT NULL); " +
+                "username  TEXT DEFAULT NULL, " +
+                "sniperEnabled  INTEGER DEFAULT 0, " +
+                "sniperMode  INTEGER DEFAULT 0, " +
+                "sniperModeName  TEXT DEFAULT none, " +
+                "sniperhits  INTEGER DEFAULT 0, " +
+                "sniperShots  INTEGER DEFAULT 0); " +
 
                 "DROP TABLE if exists Achievements; " +
 
@@ -326,7 +333,7 @@ public class DBConnector : MonoBehaviour
                 "unlockText   TEXT NOT NULL," +
                 "islocked  INTEGER DEFAULT 0);" +
 
-                "DROP TABLE if exists Users; " +
+                //"DROP TABLE if exists Users; " +
 
                 "CREATE TABLE if not exists User( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -366,7 +373,7 @@ public class DBConnector : MonoBehaviour
 
     IEnumerator dropDatabase()
     {
-        yield return new WaitUntil(()=> !dbHelper.DatabaseLocked);
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
         dbHelper.DatabaseLocked = true;
 
         try
@@ -477,7 +484,7 @@ public class DBConnector : MonoBehaviour
                 return false;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);

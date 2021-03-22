@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
@@ -21,13 +20,14 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 4;
+    private int currentDatabaseAppVersion = 5;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
     IDataReader reader;
     private IDbConnection dbconn;
 
+    [SerializeField]
     bool databaseLocked = false;
 
     Text message;
@@ -210,7 +210,8 @@ public class DBHelper : MonoBehaviour
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
-               "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName)  " +
+               "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName, sniperEnabled, sniperMode, sniperModeName," +
+               "sniperHits, sniperShots)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
                + "', '" + stats.Characterid
@@ -245,7 +246,12 @@ public class DBHelper : MonoBehaviour
                + stats.BonusPoints + "','"
                + stats.MoneyBallMade + "','"
                + stats.MoneyBallAtt + "','"
-               + stats.UserName + "')";
+               + stats.UserName + "','"
+               + stats.SniperEnabled + "','"
+               + stats.SniperMode + "','"
+               + stats.SniperModeName + "','"
+               + stats.Sniperhits + "','"
+               + stats.SniperShots + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1122,6 +1128,7 @@ public class DBHelper : MonoBehaviour
         bool hardcoreValue,
         bool trafficValue,
         bool enemiesValue,
+        bool sniperValue,
         int pageNumber)
     {
         List<StatsTableHighScoreRow> listOfValues = new List<StatsTableHighScoreRow>();
@@ -1136,6 +1143,7 @@ public class DBHelper : MonoBehaviour
         int hardcoreEnabled = 0;
         int trafficEnabled = 0;
         int enemiesEnabled = 0;
+        int sniperEnabled = 0;
         //int numberOfResultsPages = 0;
         //string numResultsQuery = "";
 
@@ -1163,10 +1171,11 @@ public class DBHelper : MonoBehaviour
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, " +
-                    "trafficEnabled, enemiesEnabled, userName FROM HighScores  WHERE modeid = " + modeid
+                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                     + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
                     + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
                     + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
+                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
                     + " ORDER BY "
                     + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
 
@@ -1174,10 +1183,11 @@ public class DBHelper : MonoBehaviour
             else
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled," +
-                    "trafficEnabled, enemiesEnabled, userName FROM HighScores  WHERE modeid = " + modeid
+                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
                     + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
                     + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
                     + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
+                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
                     + " ORDER BY "
                     + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
             }
@@ -1227,8 +1237,17 @@ public class DBHelper : MonoBehaviour
                 {
                     enemiesEnabled = reader.GetInt32(7);
                 }
+                // null check
+                if (reader.IsDBNull(8))
+                {
+                    sniperEnabled = 0;
+                }
+                else
+                {
+                    sniperEnabled = reader.GetInt32(8);
+                }
 
-                username = reader.GetString(8);
+                username = reader.GetString(9);
 
                 StatsTableHighScoreRow row = gameObject.AddComponent<StatsTableHighScoreRow>();
                 row.setRowValues(score, character, level, date, hardcore, username);
@@ -1684,7 +1703,7 @@ public class DBHelper : MonoBehaviour
             IDbCommand dbcmd = dbconn.CreateCommand();
 
             string sqlQuery = "DELETE FROM User Where username  = '" + username + "'";
-
+            //Debug.Log(sqlQuery);
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
 
@@ -1717,7 +1736,7 @@ public class DBHelper : MonoBehaviour
                 dbconn.Open(); //Open connection to the database.
                 IDbCommand dbcmd = dbconn.CreateCommand();
 
-                string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
+                string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT none;";
                 dbcmd.CommandText = sqlQuery;
 
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -1743,7 +1762,7 @@ public class DBHelper : MonoBehaviour
 
     public IEnumerator UpgradeDatabaseToVersion3()
     {
-        //Debug.Log("UpgradeDatabaseToVersion3()");
+        //Debug.Log("UpgradeDatabaseToVersion3() ---start");
         if (message != null)
         {
             message.text = "upgrading database...";
@@ -1751,7 +1770,7 @@ public class DBHelper : MonoBehaviour
 
         string table1 = "HighScores";
         string table2 = "User";
-
+        //highscore table
         string col1 = "scoreidUnique";
         string col2 = "platform";
         string col3 = "device";
@@ -1769,8 +1788,14 @@ public class DBHelper : MonoBehaviour
         string col15 = "moneyBallMade";
         string col16 = "moneyBallAtt";
         string col17 = "enemiesEnabled";
-        string col18 = "username";
-
+        string col18 = "userName";
+        // add sniper options to highscore
+        string col19 = "sniperEnabled";
+        string col20 = "sniperMode";
+        string col21 = "sniperModeName";
+        string col22 = "sniperHits";
+        string col23 = "sniperShots";
+        //user table
         string col1a = "userid";
         string col2a = "username";
         string col3a = "firstname";
@@ -1940,11 +1965,51 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table1, col18));
             databaseLocked = false;
         }
+        if (!doesColumnExist(table1, col19))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col19, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col19));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col20))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col20, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col20));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col21))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col21, typeText);
+            yield return new WaitUntil(() => doesColumnExist(table1, col21));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col22))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col22, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col22));
+            databaseLocked = false;
+        }
+        if (!doesColumnExist(table1, col23))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table1, col23, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table1, col23));
+            databaseLocked = false;
+        }
 
         // ------------------------- Upgrade Users table
 
         // drop user table
-        StartCoroutine(DBConnector.instance.dropDatabaseTable("User"));
+        //StartCoroutine(DBConnector.instance.dropDatabaseTable("User"));
         StartCoroutine(DBConnector.instance.createTableUser());
 
         yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
@@ -2043,9 +2108,10 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
         }
 
-        Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
         if (databaseSuccessfullyUpgraded)
         {
+            Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
+            databaseLocked = false;
             StartCoroutine(setDatabaseVersion());
         }
         else
@@ -2060,7 +2126,7 @@ public class DBHelper : MonoBehaviour
 
     public IEnumerator setDatabaseVersion()
     {
-        //Debug.Log("setDatabaseVersion");
+        //Debug.Log("setDatabaseVersion -- start");
         yield return new WaitUntil(() => !DatabaseLocked);
         try
         {
@@ -2087,6 +2153,7 @@ public class DBHelper : MonoBehaviour
             DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
         }
+        //Debug.Log("setDatabaseVersion -- start");
     }
 
     //public HighScoreModel getHighScoreFromDatabase(string scoreid)
@@ -2244,7 +2311,7 @@ public class DBHelper : MonoBehaviour
             dbconn.Close();
             dbconn = null;
 
-            //databaseLocked = false;
+            databaseLocked = false;
             //Debug.Log("score submitted to api");
         }
         catch (Exception e)
@@ -2286,8 +2353,8 @@ public class DBHelper : MonoBehaviour
                 {
                     HighScoreModel highscore = new HighScoreModel();
 
-                    if (reader.IsDBNull(1)) { highscore.Userid = 0; }
-                    else { highscore.Userid = reader.GetInt32(1); }
+                    //if (reader.IsDBNull(1)) { highscore.Userid = 0; }
+                    //else { highscore.Userid = reader.GetInt32(1); }
 
                     highscore.Modeid = reader.GetInt32(2);
                     highscore.Characterid = reader.GetInt32(3);
@@ -2319,17 +2386,24 @@ public class DBHelper : MonoBehaviour
                     highscore.FourAtt = reader.GetInt32(29);
                     highscore.SevenMade = reader.GetInt32(30);
                     highscore.SevenAtt = reader.GetInt32(31);
-                    highscore.BonusPoints = reader.GetInt32(31);
                     //highscore.submittedToApi = reader.GetInt32(32);
-                    highscore.MoneyBallMade = reader.GetInt32(33);
-                    highscore.MoneyBallAtt = reader.GetInt32(34);
-                    highscore.EnemiesEnabled = reader.GetInt32(35);
-                    highscore.UserName = reader.GetInt32(36).ToString();
+                    highscore.BonusPoints = reader.GetInt32(33);
+                    highscore.MoneyBallMade = reader.GetInt32(34);
+                    highscore.MoneyBallAtt = reader.GetInt32(35);
+                    highscore.EnemiesEnabled = reader.GetInt32(36);
+
+                    highscore.UserName = reader.GetString(37).ToString();
                     highscore.Userid = GameOptions.userid;
-                    Debug.Log("GameOptions.userid : " + GameOptions.userid);
+                    highscore.SniperMode = reader.GetInt32(38);
+                    highscore.SniperModeName = reader.GetString(39);
+                    highscore.SniperEnabled = reader.GetInt32(40);
+                    highscore.Sniperhits = reader.GetInt32(41);
+                    highscore.SniperShots = reader.GetInt32(42);
+                    //Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
                     highscores.Add(highscore);
                     //Debug.Log("scoreid : " + highscore.Scoreid);
+
                 }
             }
         }
