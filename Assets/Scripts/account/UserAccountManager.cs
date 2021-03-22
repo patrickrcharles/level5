@@ -58,43 +58,6 @@ public class UserAccountManager : MonoBehaviour
         controls = new PlayerControls();
     }
 
-    void Update()
-    {
-
-        //currentSelectedButton = EventSystem.current.currentSelectedGameObject.name;
-
-        // based on login button selected, get sibling text name. 
-        // the sibling object text is a USERNAME stored locally and loaded into list
-        if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_start))
-        {
-            if (EventSystem.current.currentSelectedGameObject != null )//&& usersLoaded)
-            {
-                userNameSelected = EventSystem.current.currentSelectedGameObject.transform.parent.GetChild(0).GetComponent<Text>().text;
-            }
-            if (controls.UINavigation.Submit.triggered)
-            {
-                //Debug.Log("loginbutton");
-                if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountLoginButton"))
-                {
-                    //Debug.Log("loginbutton");
-                    LoginButton();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals("userAccountRemoveButton"))
-                {
-                    //Debug.Log("loginbutton");
-                    RemoveUserButton();
-                }
-                if (EventSystem.current.currentSelectedGameObject.name.Equals("continueButton"))
-                {
-                    //Debug.Log("loginbutton");
-                    GameOptions.userName = null;
-                    GameOptions.userid = 0;
-                    ContinueButton();
-                }
-            }
-        }
-    }
-
     public void LoginButton()
     {
         UserModel user = new UserModel();
@@ -125,33 +88,49 @@ public class UserAccountManager : MonoBehaviour
 
     public void ContinueButton()
     {
-        Debug.Log("ContinueButton");
         GameOptions.userName = "";
         GameOptions.userid = 0;
         SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
     }
 
-    public void RemoveUserButton()
+    public IEnumerator RemoveUserButton(string userName)
     {
-        // remove user from local database
-        // reload login scene
-        DBHelper.instance.deleteLocalUser(userNameSelected);
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+        // set confirm button slected
+        Button selectedButton = GameObject.FindObjectOfType<ConfirmDialogue>().confirmButton;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(selectedButton.gameObject);
 
+        // wait for button press
+        yield return new WaitUntil(() => DialogueManager.instance.ButtonPressed);
+        // wait for confirm/cancel
+        yield return new WaitUntil(() => DialogueManager.instance.PreviousDialog.result != DialogueManager.instance.PreviousDialog.NONE);
+        // remove local user / reload scene
+        if (DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.YES)
+        {
+            DBHelper.instance.DatabaseLocked = true;
+            DBHelper.instance.deleteLocalUser(userName);
+
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+
+            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+        }
+        // do nothing
+        if(DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.CANCEL)
+        {
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+        }
     }
 
     IEnumerator loadUserData()
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-
         try
         {
+            DBHelper.instance.DatabaseLocked = true;
+            // get local users data
             userAccountData = DBHelper.instance.getUserProfileStats();
             GameOptions.numOfLocalUsers = userAccountData.Count;
-
-            //Debug.Log("GameOptions.numOfLocalUsers : " + GameOptions.numOfLocalUsers);
-            //Debug.Log("userAccountData.Count : " + userAccountData.Count);
 
             if (userAccountData.Count > 0)
             {
@@ -188,12 +167,6 @@ public class UserAccountManager : MonoBehaviour
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-        // for each, create empty object
-        // add text + button that is clickable
-
-        // flag for testing
-        //usersLoaded = false;
-
         int index = 0;
         if (usersLoaded)
         {
@@ -213,18 +186,9 @@ public class UserAccountManager : MonoBehaviour
                 }
                 index++;
             }
-            //EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
         }
         else
         {
-            //GameObject prefabClone =
-            //    Instantiate(localAccountPrefab, localAccountPrefabSpawnLocation.transform.position, Quaternion.identity);
-            //prefabClone.transform.SetParent(localAccountPrefabSpawnLocation.transform, false);
-            //// get username text
-            //prefabClone.transform.Find("userAccount").GetComponent<Text>().text = "no local user account found" +
-            //    "\ngo to account and create one";
-            //prefabClone.transform.Find("userAccountLoginButton").GetComponent<Text>().text = "continue";
-            ////EventSystem.current.SetSelectedGameObject(GameObject.FindObjectOfType<Button>().gameObject);
             UserModel u = new UserModel();
             u.UserName = "guest";
             u.Password = "guest";

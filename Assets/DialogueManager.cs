@@ -1,59 +1,52 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
     public ConfirmDialogue confirmationDialog;
     public Canvas canvas;
-
     private Coroutine coroutine;
+    ConfirmDialogue previousDialog;
+
+    bool buttonPressed = false;
+
+    public static DialogueManager instance;
 
     private void Start()
     {
-        coroutine = null;
+        instance = this;
+        Coroutine = null;
+        canvas = GameObject.FindObjectOfType<Canvas>();
     }
 
-    private void Update()
+    public IEnumerator ShowConfirmationDialog()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha9) == true)
-        {
-            if (coroutine == null)
-            {
-                coroutine = StartCoroutine(ShowConfirmationDialog());
-            }
-        }
-    }
-
-    IEnumerator ShowConfirmationDialog()
-    {
-        // whatever you're doing now with the temporary / placement preview building
         ConfirmDialogue dialog = Instantiate(confirmationDialog, canvas.transform); // instantiate the UI dialog box
-
+        PreviousDialog = dialog;
         while (dialog.result == dialog.NONE)
         {
-            //Debug.Log("Builder.ShowConfirmationDialog() - Yielding");
-
             yield return null; // wait
         }
 
         if (dialog.result == dialog.YES)
         {
-            // place the real building
-            Debug.Log("Builder.ShowConfirmationDialog(): Yes");
-            //isDialogueConfirmed(dialog);
+            buttonPressed = true;
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
-        else if (dialog.result == dialog.CANCEL)
+        if (dialog.result == dialog.CANCEL)
         {
-            // remove the temporary / preview building
-            Debug.Log("Builder.ShowConfirmationDialog(): Cancel");
-            //isDialogueConfirmed(dialog);
+            buttonPressed = true;
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
-
         Destroy(dialog.gameObject);
 
         coroutine = null;
     }
+
+    public Coroutine Coroutine { get => coroutine; set => coroutine = value; }
+    public ConfirmDialogue PreviousDialog { get => previousDialog; set => previousDialog = value; }
+    public bool ButtonPressed { get => buttonPressed; }
 
     //public bool isDialogueConfirmed(ConfirmDialogue dialog)
     //{

@@ -1,8 +1,6 @@
 using Assets.Scripts.database;
 using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +9,7 @@ using UnityEngine.UI;
 
 public class LocalAccount : MonoBehaviour
 {
+    [SerializeField]
     string userNameSelected;
 
     private void Update()
@@ -20,7 +19,7 @@ public class LocalAccount : MonoBehaviour
             userNameSelected = EventSystem.current.currentSelectedGameObject.transform.parent.GetChild(0).GetComponent<Text>().text;
         }
     }
-
+    // OnClick UI
     public void LoginButton()
     {
         if (UserAccountManager.instance.UsersLoaded)
@@ -50,12 +49,15 @@ public class LocalAccount : MonoBehaviour
             }
         }
     }
-
+    // OnClick UI
     public void RemoveUserButton()
     {
-        // remove user from local database
-        // reload login scene
-        DBHelper.instance.deleteLocalUser(userNameSelected);
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+        // bring up dialogue
+        if (DialogueManager.instance.Coroutine == null)
+        {
+            DialogueManager.instance.Coroutine = StartCoroutine(DialogueManager.instance.ShowConfirmationDialog());
+        }
+        // start coroutine to remove locally
+        StartCoroutine(UserAccountManager.instance.RemoveUserButton(userNameSelected));
     }
 }
