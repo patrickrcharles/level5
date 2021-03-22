@@ -1,13 +1,11 @@
 ﻿
 using Assets.Scripts.database;
-using Assets.Scripts.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,7 +45,7 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/scoreid/{scoreid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostHighscore(HighScoreModel dbHighScoreModel)
+        public static IEnumerator PostHighscore(HighScoreModel score)
         {
             // note * make this async. sending the request and hitting api should do
             // this automatically.
@@ -66,13 +64,14 @@ namespace Assets.Scripts.restapi
             //if (!APIHelper.ScoreIdExists(dbHighScoreModel.Scoreid))
             //{
             //serialize highscore to json for HTTP POST
-            string toJson = JsonUtility.ToJson(dbHighScoreModel);
+            string toJson = JsonUtility.ToJson(score);
 
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
             try
             {
+                //Debug.Log("try...post single score");
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
@@ -83,12 +82,14 @@ namespace Assets.Scripts.restapi
                     string json = toJson;
                     streamWriter.Write(json);
                     streamWriter.Flush();
+                    //Debug.Log(json);
                 }
                 // response
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    //Debug.Log("result : " + result);
                 }
             }
             // on web exception
@@ -105,17 +106,17 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
-                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                DBHelper.instance.setGameScoreSubmitted(dbHighScoreModel.Scoreid, true);
+                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
             // failed
             else
             {
-                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 //unlock api + database
-                DBHelper.instance.setGameScoreSubmitted(dbHighScoreModel.Scoreid, false);
+                DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
@@ -127,25 +128,11 @@ namespace Assets.Scripts.restapi
         // http://13.58.224.237/api/highscores/scoreid/{scoreid}
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostUnsubmittedHighscores(List<HighScoreModel> highscores)
+        public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
+            Debug.Log("PostUnsubmittedHighscores(List<HighScoreModel> highscores)");
             foreach (HighScoreModel score in highscores)
             {
-
-                // wait for database operations
-                yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-                //DBHelper.instance.DatabaseLocked = true;
-
-                // wait for api operations
-                yield return new WaitUntil(() => !apiLocked);
-                apiLocked = true;
-
-                //// verify unique scoreid does NOT exist in database already
-                //if (!APIHelper.ScoreIdExists(dbHighScoreModel.Scoreid))
-                //{
-
-                //**** wrap this in a loop and call it a day
-
                 //serialize highscore to json for HTTP POST
                 string toJson = JsonUtility.ToJson(score);
 
@@ -337,7 +324,7 @@ namespace Assets.Scripts.restapi
         // return true if status code == 200 ok
         // return false if status code != 200 ok
         public static List<StatsTableHighScoreRow> GetHighscoreByModeid(int modeid, int hardcore,
-            int traffic, int enemies, int page, int results)
+            int traffic, int enemies, int sniper, int page, int results)
         {
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
@@ -348,6 +335,7 @@ namespace Assets.Scripts.restapi
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
+                + "&sniper=" + sniper
                 + "&page=" + page
                 + "&results=" + results;
 
@@ -396,7 +384,7 @@ namespace Assets.Scripts.restapi
         // return true if status code == 200 ok
         // return false if status code != 200 ok
         public static int GetHighscoreCountByModeid(int modeid, int hardcore,
-            int traffic, int enemies)
+            int traffic, int enemies, int sniper)
         {
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
@@ -405,7 +393,8 @@ namespace Assets.Scripts.restapi
             string apiRequest = publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
-                + "&enemies=" + enemies;
+                + "&enemies=" + enemies
+                + "&sniper=" + sniper;
 
             //build api localhost request
             //string apiRequest = localHostHighScoresCountByModeid + modeid
@@ -526,7 +515,7 @@ namespace Assets.Scripts.restapi
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
                     Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                    apiLocked = false;                 
+                    apiLocked = false;
                     // created on api, insert to local db
                     DBHelper.instance.InsertUser(user);
                     yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
@@ -545,6 +534,7 @@ namespace Assets.Scripts.restapi
             else
             {
                 Debug.Log(" scoreid already exists : " + user.UserName);
+                apiLocked = false;
             }
         }
 
@@ -909,7 +899,7 @@ namespace Assets.Scripts.restapi
 
             string currentVersion = "";
             //build api request
-            string apiRequest = publicApplicationVersionCurrent; 
+            string apiRequest = publicApplicationVersionCurrent;
 
             //int numResults = 0;
             try

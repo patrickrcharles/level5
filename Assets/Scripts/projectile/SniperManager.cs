@@ -24,8 +24,8 @@ public class SniperManager : MonoBehaviour
     }
     private void Start()
     {
-        GameOptions.sniperEnabled = true; //test flag
-        // auto start autonomous sniper system
+        //GameOptions.sniperEnabled = true; //test flag
+        //// auto start autonomous sniper system
         if (GameOptions.sniperEnabled)
         {
             instance = this;
@@ -42,7 +42,6 @@ public class SniperManager : MonoBehaviour
         yield return new WaitUntil(() => GameLevelManager.instance.Player != null);
 
         player = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject;
-        GameOptions.sniperEnabled = true;
         audioSource = GetComponent<AudioSource>();
     }
 

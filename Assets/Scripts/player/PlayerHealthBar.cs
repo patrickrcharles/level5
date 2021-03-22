@@ -23,7 +23,7 @@ public class PlayerHealthBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameOptions.sniperEnabled = true; // test flag
+        //GameOptions.sniperEnabled = true; // test flag
         if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled || GameOptions.EnemiesOnlyEnabled)
         {
             instance = this;

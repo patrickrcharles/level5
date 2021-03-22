@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
 
-        GameOptions.sniperEnabled = true; // test flag;
+        //GameOptions.sniperEnabled = true; // test flag;
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
