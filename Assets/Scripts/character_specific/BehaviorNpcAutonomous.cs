@@ -26,7 +26,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     private float movementSpeed;
     private Rigidbody rigidBody;
     private NavMeshAgent navmeshAgent;
-    public SpriteRenderer currentSprite;
+    private Animator animator;
 
     //public GameObject playerHitbox;
     Animator anim;
@@ -37,6 +37,8 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     static int idleState2 = Animator.StringToHash("base.idle2");
     static int walkState = Animator.StringToHash("base.walk");
     static int runState = Animator.StringToHash("base.run");
+    static int attackState = Animator.StringToHash("base.attack");
+    //static int attackState = Animator.StringToHash("base.attack");
     [SerializeField]
     Vector3 playerRelativePosition;
     //[SerializeField]
@@ -49,6 +51,10 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     public bool insideRange;
     public bool movingToTarget;
 
+    // if npc has attack
+    [SerializeField]
+    public bool canAttack;
+
     public float maxDistance;
 
     private GameObject[] returnPositions;
@@ -60,7 +66,8 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         facingRight = true;
         //canMove = true;
         movementSpeed = walkMovementSpeed;
-        currentSprite = transform.Find("sprite").GetComponent<SpriteRenderer>();
+        //spriteRenderer = transform.Find("sprite").GetComponent<SpriteRenderer>();
+        animator = transform.Find("sprite").GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         navmeshAgent = GetComponent<NavMeshAgent>();
         anim = transform.Find("sprite").GetComponent<Animator>();
@@ -75,7 +82,6 @@ public class BehaviorNpcAutonomous : MonoBehaviour
 
         InvokeRepeating("checkNPCState", 0, 1f);
     }
-
 
     void Update()
     {
@@ -131,7 +137,10 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         }
 
         // if outside area
-        if (outsideRange && !movingToTarget && !locked)
+        if (outsideRange 
+            && !movingToTarget 
+            && !locked
+            && currentState != attackState)
         {
             locked = true;
             ignoreCollision = true;
@@ -148,23 +157,52 @@ public class BehaviorNpcAutonomous : MonoBehaviour
             && (other.CompareTag("Player") || other.CompareTag("basketball") || other.CompareTag("knock_down_attack"))
             && !ignoreCollision && !movingToTarget)
         {
-            movingToTarget = true;
-
-            Vector3 newVector = getRandomTransformFromPlayerPosition();
-            Vector3 oldVector = transform.position;
-            Vector3 relativePosition = newVector - oldVector;
-
-            if (relativePosition.x < 0 && facingRight)
+            if (!canAttack || !other.CompareTag("Player"))
             {
-                Flip();
+                movingToTarget = true;
+
+                Vector3 newVector = getRandomTransformFromPlayerPosition();
+                Vector3 oldVector = transform.position;
+                Vector3 relativePosition = newVector - oldVector;
+
+                if (relativePosition.x < 0 && facingRight)
+                {
+                    Flip();
+                }
+                if (relativePosition.x > 0 && !facingRight)
+                {
+                    Flip();
+                }
+                navmeshAgent.SetDestination(newVector);
+                //disable rotation
+                navmeshAgent.updateRotation = false;
             }
-            if (relativePosition.x > 0 && !facingRight)
+            if (canAttack && other.CompareTag("Player"))
             {
-                Flip();
+                Debug.Log("play attack anim");
+
+                animator.Play("attack");
+                // play anim then move
+
+                movingToTarget = true;
+
+                Vector3 newVector = getRandomTransformFromPlayerPosition();
+                Vector3 oldVector = transform.position;
+                Vector3 relativePosition = newVector - oldVector;
+
+                if (relativePosition.x < 0 && facingRight)
+                {
+                    Flip();
+                }
+                if (relativePosition.x > 0 && !facingRight)
+                {
+                    Flip();
+                }
+                navmeshAgent.SetDestination(newVector);
+                //disable rotation
+                navmeshAgent.updateRotation = false;
+
             }
-            navmeshAgent.SetDestination(newVector);
-            //disable rotation
-            navmeshAgent.updateRotation = false;
         }
     }
 
@@ -216,14 +254,17 @@ public class BehaviorNpcAutonomous : MonoBehaviour
 
     void isWalking(float speed)
     {
-        // if moving
-        if (speed > 0)
+        if (currentState != attackState || !canAttack)
         {
-            anim.SetBool("run", true);
-        }
-        else
-        {
-            anim.SetBool("run", false);
+            // if moving
+            if (speed > 0)
+            {
+                anim.SetBool("run", true);
+            }
+            else
+            {
+                anim.SetBool("run", false);
+            }
         }
     }
 
