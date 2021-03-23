@@ -9,6 +9,7 @@ public class StatsTableAllTime : MonoBehaviour
     const string fourName = "four_points";
     const string sevenName = "seven_points";
     const string moneyballName = "moneyball";
+    const string sniperName = "sniper";
     const string totalDistanceName = "total_distance";
     const string totalShotsName = "total_shots";
     const string consecutiveShotsName = "consecutive_shots";
@@ -25,6 +26,8 @@ public class StatsTableAllTime : MonoBehaviour
     const string sevenAttemptDBField = "sevenAtt";
     const string moneyballMadeDBField = "moneyBallMade";
     const string moneyballAttemptDBField = "moneyBallAtt";
+    const string sniperHitDBField = "sniperHits";
+    const string sniperShotDBField = "sniperShots";
     const string totalDistanceDBField = "totalDistance";
     const string totalPointsDBField = "totalPoints";
     const string timePlayedDBField = "timePlayed";
@@ -35,6 +38,7 @@ public class StatsTableAllTime : MonoBehaviour
     Text fourText;
     Text sevenText;
     Text moneyBallText;
+    Text sniperText;
     Text totalDistanceText;
     Text totalShotsText;
     Text consecutiveShotsText;
@@ -52,12 +56,12 @@ public class StatsTableAllTime : MonoBehaviour
         fourText = GameObject.Find(fourName).transform.GetChild(1).GetComponent<Text>();
         sevenText = GameObject.Find(sevenName).transform.GetChild(1).GetComponent<Text>();
         moneyBallText = GameObject.Find(moneyballName).transform.GetChild(1).GetComponent<Text>();
+        sniperText = GameObject.Find(sniperName).transform.GetChild(1).GetComponent<Text>();
         totalDistanceText = GameObject.Find(totalDistanceName).transform.GetChild(1).GetComponent<Text>();
         totalShotsText = GameObject.Find(totalShotsName).transform.GetChild(1).GetComponent<Text>();
         consecutiveShotsText = GameObject.Find(consecutiveShotsName).transform.GetChild(1).GetComponent<Text>();
         totalPointsText = GameObject.Find(totalPointsName).transform.GetChild(1).GetComponent<Text>();
         timePlayedText = GameObject.Find(timePlayedName).transform.GetChild(1).GetComponent<Text>();
-
     }
 
     // Update is called once per frame
@@ -92,6 +96,9 @@ public class StatsTableAllTime : MonoBehaviour
         int mbM = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballMadeDBField);
         int mbA = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", moneyballAttemptDBField);
 
+        int sHit = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sniperHitDBField);
+        int sShot = DBHelper.instance.getIntValueAllTimeFromTableByField("AllTimeStats", sniperShotDBField);
+
         float dist = DBHelper.instance.getFloatValueAllTimeFromTableByField("AllTimeStats", totalDistanceDBField);
 
         int shotsM = twoM + threeM + fourM + sevenM;
@@ -109,6 +116,7 @@ public class StatsTableAllTime : MonoBehaviour
         fourText.text = fourM + " / " + fourA + "  " + divideIntsReturnFloatPercentage(fourM, fourA).ToString("00.00") + "%";
         sevenText.text = sevenM + " / " + sevenA + "  " + divideIntsReturnFloatPercentage(sevenM, sevenA).ToString("00.00") + "%";
         moneyBallText.text = mbM + " / " + mbA + "  " + divideIntsReturnFloatPercentage(mbM, mbA).ToString("00.00") + "%";
+        sniperText.text = sHit + " / " + sShot + "  " + divideIntsReturnFloatPercentage(sHit, sShot).ToString("00.00") + "%";
 
         totalDistanceText.text = convertFeetToMiles(dist);
         totalShotsText.text = shotsM + " / " + shotsA + "  " + divideIntsReturnFloatPercentage(shotsM, shotsA).ToString("00.00") + "%";
