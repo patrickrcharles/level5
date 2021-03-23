@@ -20,7 +20,7 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 5;
+    private int currentDatabaseAppVersion = 6;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
@@ -639,6 +639,8 @@ public class DBHelper : MonoBehaviour
                     {
                         prevStats.EnemiesKilled = reader.GetInt32(14);
                     }
+                    prevStats.SniperHits = reader.GetInt32(15);
+                    prevStats.SniperShots = reader.GetInt32(16);
                 }
             }
             Destroy(prevStats, 5);
@@ -968,7 +970,7 @@ public class DBHelper : MonoBehaviour
             {
                 sqlQuery =
                "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
-               "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled)  " +
+               "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled, sniperHits, sniperShots)  " +
                "Values( '" +
                stats.TwoPointerMade + "', '" +
                stats.TwoPointerAttempts + "', '" +
@@ -984,7 +986,9 @@ public class DBHelper : MonoBehaviour
                stats.TotalDistance + "','" +
                stats.TimePlayed + "','" +
                stats.LongestShotMade + "','" +
-               stats.EnemiesKilled + "')";
+               stats.EnemiesKilled + "','" +
+               stats.SniperHits + "','" +
+               stats.SniperShots + "')";
             }
             else
             {
@@ -1005,6 +1009,8 @@ public class DBHelper : MonoBehaviour
                ", totalDistance =" + (prevStats.TotalDistance += stats.TotalDistance) +
                ", timePlayed = " + (prevStats.TimePlayed += stats.TimePlayed) +
                ", enemiesKilled = " + (prevStats.EnemiesKilled += stats.EnemiesKilled) +
+               ", sniperHits = " + (prevStats.SniperHits += stats.SniperHits) +
+               ", sniperShots = " + (prevStats.SniperShots += stats.SniperShots) +
                " WHERE ROWID = 1 ";
             }
 
@@ -1770,6 +1776,8 @@ public class DBHelper : MonoBehaviour
 
         string table1 = "HighScores";
         string table2 = "User";
+        string table3 = "AllTimeStats";
+
         //highscore table
         string col1 = "scoreidUnique";
         string col2 = "platform";
@@ -1806,6 +1814,9 @@ public class DBHelper : MonoBehaviour
         string col8a = "signupdate";
         string col9a = "lastlogin";
         string col10a = "bearerToken";
+        // all time stats table
+        string col1b = "sniperHits";
+        string col2b = "sniperShots";
 
         string typeText = "text";
         string typeInteger = "integer";
@@ -2011,7 +2022,6 @@ public class DBHelper : MonoBehaviour
         // drop user table
         //StartCoroutine(DBConnector.instance.dropDatabaseTable("User"));
         StartCoroutine(DBConnector.instance.createTableUser());
-
         yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
 
         // add scoreidunique column
@@ -2105,6 +2115,25 @@ public class DBHelper : MonoBehaviour
             databaseLocked = true;
             alterTableAddColumn(table2, col10a, typeInteger);
             yield return new WaitUntil(() => doesColumnExist(table2, col10a));
+            databaseLocked = false;
+        }
+        // all time stats
+        // sniper hits
+        if (!doesColumnExist(table3, col1b))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table3, col1b, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table3, col1b));
+            databaseLocked = false;
+        }
+        // sniper shots
+        if (!doesColumnExist(table3, col2b))
+        {
+            yield return new WaitUntil(() => !databaseLocked);
+            databaseLocked = true;
+            alterTableAddColumn(table3, col2b, typeInteger);
+            yield return new WaitUntil(() => doesColumnExist(table3, col2b));
             databaseLocked = false;
         }
 

@@ -94,7 +94,7 @@ public class DBConnector : MonoBehaviour
             StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
             //StartCoroutine(setDatabaseVersion());
         }
-        StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
+        //StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
     }
 
     private void VerifyDatabase()
@@ -301,7 +301,9 @@ public class DBConnector : MonoBehaviour
                 "totalDistance REAL, " +
                 "longestShot REAL, " +
                 "timePlayed   REAL," +
-                "enemiesKilled INTEGER DEFAULT 0); " +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "sniperHits INTEGER DEFAULT 0," +
+                "sniperShots INTEGER DEFAULT 0); " +
 
                 "CREATE TABLE if not exists CharacterProfile(" +
                 "id   INTEGER PRIMARY KEY, " +
