@@ -47,11 +47,16 @@ public class PlayerCollisions : MonoBehaviour
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox") || other.CompareTag("playerAttackBox"))
         && !playerState.KnockedDown
         && !playerState.TakeDamage
-        && (GameOptions.enemiesEnabled || GameOptions.trafficEnabled || other.transform.parent.name.Contains("rake") || GameOptions.sniperEnabled)
+        && (GameOptions.enemiesEnabled 
+        || GameOptions.trafficEnabled 
+        || other.transform.parent.name.Contains("rake")
+        || other.transform.root.name.Contains("snake")
+        || GameOptions.sniperEnabled)
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
         && !locked)
         {
+
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
             PlayerAttackBox playerAttackBox = null;
