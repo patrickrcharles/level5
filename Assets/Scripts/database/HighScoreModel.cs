@@ -70,6 +70,11 @@ namespace Assets.Scripts.database
             {
                 enemiesEnabled = 1;
             }
+            int sniperEnabled = 0;
+            if (GameOptions.sniperEnabled)
+            {
+                sniperEnabled = 1;
+            }
 
             HighScoreModel model = new HighScoreModel();
 
@@ -116,7 +121,7 @@ namespace Assets.Scripts.database
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
             model.Userid = GameOptions.userid;
-            model.SniperEnabled = Convert.ToInt32(GameOptions.sniperEnabled);
+            model.SniperEnabled = sniperEnabled;
             if (!GameOptions.sniperEnabled)
             {
                 model.SniperMode = 0;
