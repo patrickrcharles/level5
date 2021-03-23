@@ -187,8 +187,8 @@ public class GameRules : MonoBehaviour
 
             // ******** important : convert basketball stats to high score model
             HighScoreModel dBHighScoreModel = new HighScoreModel();
-            HighScoreModel user = new HighScoreModel();
-            user = dBHighScoreModel.convertBasketBallStatsToModel(gameStats);
+            HighScoreModel user = dBHighScoreModel.convertBasketBallStatsToModel(gameStats);
+            //user = dBHighScoreModel.convertBasketBallStatsToModel(gameStats);
 
             //save if at leat 1 minte played
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
