@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class SniperManager : MonoBehaviour
 {
-    GameObject player;
+    private GameObject playerHitbox;
+    private AudioSource audioSource;
+    private Vector3 playerPosAtShoot;
+    private PlayerController playerController;
+
     [SerializeField]
     GameObject projectileLaserPrefab;
     [SerializeField]
     GameObject projectileBulletPrefab;
-    private AudioSource audioSource;
     [SerializeField]
     float bulletDelay;
 
-    Vector3 playerPosAtShoot;
     bool locked = false;
 
     public static SniperManager instance;
@@ -40,14 +42,14 @@ public class SniperManager : MonoBehaviour
     IEnumerator LoadVariables()
     {
         yield return new WaitUntil(() => GameLevelManager.instance.Player != null);
-
-        player = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject;
+        playerController = GameLevelManager.instance.PlayerController;
+        playerHitbox = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject;
         audioSource = GetComponent<AudioSource>();
     }
 
     void startSniper()
     {
-        if (!locked && player != null)
+        if (!locked && playerHitbox != null)
         {
             locked = true;
             float random = UtilityFunctions.GetRandomFloat(0, 4);
@@ -66,12 +68,15 @@ public class SniperManager : MonoBehaviour
 
     IEnumerator StartSniperBullet(float shootdelay)
     {
+        // wait until player is not knocked down
+        yield return new WaitUntil( ()=> playerController.currentState != playerController.knockedDownState);
+        // add shoot delay
         yield return new WaitForSeconds(shootdelay);
-
+        // update stats
         BasketBall.instance.GameStats.SniperShots++;
 
         // get player position to attack
-        PlayerPosAtShoot = player.transform.position;
+        PlayerPosAtShoot = playerHitbox.transform.position;
         // edit prefab
         EnemyProjectile enemyProjectile = projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>();
         enemyProjectile.sniperProjectile = true;
@@ -94,7 +99,7 @@ public class SniperManager : MonoBehaviour
         BasketBall.instance.GameStats.SniperShots++;
 
         // get player position to attack
-        PlayerPosAtShoot = player.transform.position;
+        PlayerPosAtShoot = playerHitbox.transform.position;
         // edit prefab
         EnemyProjectile enemyProjectile = projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>();
         enemyProjectile.sniperProjectile = true;
