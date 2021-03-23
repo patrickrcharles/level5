@@ -36,9 +36,6 @@ namespace Assets.Scripts.restapi
         private static string bearerToken;
         private static string username;
 
-        public static string BearerToken { get => bearerToken; }
-        public static bool ApiLocked { get => apiLocked; set => apiLocked = value; }
-
         // -------------------------------------- HTTTP POST Highscore -------------------------------------------
 
         // POST highscore by scoreid by hitting api at
@@ -943,5 +940,8 @@ namespace Assets.Scripts.restapi
             //Debug.Log("api : latest build : " + currentVersion);
             return currentVersion;
         }
+
+        public static string BearerToken { get => bearerToken; }
+        public static bool ApiLocked { get => apiLocked; set => apiLocked = value; }
     }
 }
