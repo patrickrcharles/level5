@@ -53,8 +53,9 @@ public class SniperManager : MonoBehaviour
         {
             locked = true;
             float random = UtilityFunctions.GetRandomFloat(0, 4);
+
             //// test flag to enable
-            //GameOptions.sniperEnabledBullet = true;
+            GameOptions.sniperEnabledBullet = true;
             if (GameOptions.sniperEnabledBullet)
             {
                 StartCoroutine(StartSniperBullet(random));
