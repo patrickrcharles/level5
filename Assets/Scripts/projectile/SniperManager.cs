@@ -56,11 +56,11 @@ public class SniperManager : MonoBehaviour
 
             //// test flag to enable
             GameOptions.sniperEnabledBullet = true;
-            if (GameOptions.sniperEnabledBullet)
+            if (GameOptions.sniperEnabledBullet && GameOptions.sniperEnabled)
             {
                 StartCoroutine(StartSniperBullet(random));
             }
-            if (GameOptions.sniperEnabledLaser)
+            if (GameOptions.sniperEnabledLaser && GameOptions.sniperEnabled)
             {
                 StartCoroutine(StartSniperLaser(random));
             }
