@@ -15,20 +15,15 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     [SerializeField]
     public bool facingRight;
     public bool walking;
-    //public bool canMove;
 
-    public GameObject pos1, pos2, pos3;
+    public GameObject pos1, pos2, pos3, pos4, pos5;
 
     float distanceFromStartPos;
     bool locked;
-    //GameObject player;
 
     private float movementSpeed;
     private Rigidbody rigidBody;
     private NavMeshAgent navmeshAgent;
-    private Animator animator;
-
-    //public GameObject playerHitbox;
     Animator anim;
     AnimatorStateInfo currentStateInfo;
 
@@ -39,10 +34,9 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     static int runState = Animator.StringToHash("base.run");
     static int attackState = Animator.StringToHash("base.attack");
     //static int attackState = Animator.StringToHash("base.attack");
+
     [SerializeField]
     Vector3 playerRelativePosition;
-    //[SerializeField]
-    //bool waiting;
 
     public bool ignoreCollision;
     public bool idle;
@@ -62,22 +56,14 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //player = GameLevelManager.instance.Player;
         facingRight = true;
-        //canMove = true;
         movementSpeed = walkMovementSpeed;
-        //spriteRenderer = transform.Find("sprite").GetComponent<SpriteRenderer>();
-        animator = transform.Find("sprite").GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         navmeshAgent = GetComponent<NavMeshAgent>();
         anim = transform.Find("sprite").GetComponent<Animator>();
 
         // positions flash will retreat to
         returnPositions = GameObject.FindGameObjectsWithTag("flash_return_position");
-        pos1 = returnPositions[0];
-        pos2 = returnPositions[1];
-        pos3 = returnPositions[2];
-
         locked = false;
 
         InvokeRepeating("checkNPCState", 0, 1f);
@@ -112,7 +98,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
 
     private void checkNPCState()
     {
-        distanceFromStartPos = Vector3.Distance(transform.position, pos1.transform.position);
+        distanceFromStartPos = Vector3.Distance(transform.position, returnPositions[0].transform.position);
         //Debug.Log("distanceFromStartPos : " + ( distanceFromStartPos > maxDistance));
 
         if (distanceFromStartPos >= maxDistance && movingToTarget)
@@ -181,7 +167,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
             {
                 Debug.Log("play attack anim");
 
-                animator.Play("attack");
+                anim.Play("attack");
                 // play anim then move
 
                 movingToTarget = true;
@@ -210,9 +196,8 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(seconds);
 
-        List<GameObject> list = new List<GameObject> { pos1, pos2, pos3 };
-        int finder = Random.Range(0, list.Capacity - 1); //Then you just use this; nameDisplayString = names[finder];
-        GameObject randPos = list[finder];
+        int finder = Random.Range(0, returnPositions.Length); //Then you just use this; nameDisplayString = names[finder];
+        GameObject randPos = returnPositions[finder];
 
         Vector3 relativePosition = randPos.transform.position - transform.position;
 
@@ -276,13 +261,6 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         thisScale.x *= -1;
         transform.localScale = thisScale;
     }
-
-
-    //IEnumerator setWaitForXSeconds(float seconds)
-    //{
-    //    yield return new WaitForSecondsRealtime(seconds);
-    //    waiting = false;
-    //}
 
     private Vector3 getRandomTransformFromPlayerPosition()
     {
