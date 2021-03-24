@@ -20,7 +20,7 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 6;
+    private int currentDatabaseAppVersion = 7;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
