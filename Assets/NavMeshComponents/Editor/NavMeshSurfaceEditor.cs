@@ -143,7 +143,10 @@ namespace UnityEditor.AI
             return new Bounds(navSurface.transform.position, navSurface.size);
         }
 
+        [System.Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void OnInspectorGUI()
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             if (s_Styles == null)
                 s_Styles = new Styles();
@@ -363,6 +366,7 @@ namespace UnityEditor.AI
                 , surface.transform.position, surface.transform.rotation);
         }
 
+        [System.Obsolete]
         static void UpdateAsyncBuildOperations()
         {
             foreach (var oper in s_BakeOperations)
