@@ -195,6 +195,7 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
+            Debug.Log("ERROR : " + e);
             dbHelper.DatabaseLocked = false;
         }
     }
