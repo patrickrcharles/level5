@@ -219,13 +219,6 @@ namespace Assets.Scripts.database
                 + DateTime.Now.Month.ToString()
                 + DateTime.Now.Year.ToString()
                 + DateTime.Now.Minute.ToString();
-            //Debug.Log("----- uniqueModeDateIdentifier : " + uniqueModeDateIdentifier);
-            //uniqueModeDateIdentifier
-            //    = RemoveWhitespace(date)
-            //    + RemoveWhitespace(localZone.StandardName)
-            //    + RemoveWhitespace(GameOptions.levelDisplayName)
-            //    + RemoveWhitespace(GameOptions.playerDisplayName)
-            //    + RemoveWhitespace(GameOptions.gameModeSelectedName);
 
             foreach (NetworkInterface ninf in NetworkInterface.GetAllNetworkInterfaces())
             {
