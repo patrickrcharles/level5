@@ -108,11 +108,7 @@ public class DBConnector : MonoBehaviour
             dbconn.Open();
             dbcmd = dbconn.CreateCommand();
 
-            //string os = SystemInfo.operatingSystem;
-
             String sqlQuery = verifyDatabaseSqlQuery;
-
-            Debug.Log("sqlQuery : " + sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -120,7 +116,6 @@ public class DBConnector : MonoBehaviour
             while (reader.Read())
             {
                 version = reader.GetString(0);
-                Debug.Log(version);
             }
 
             reader.Close();
