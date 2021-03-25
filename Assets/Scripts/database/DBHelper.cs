@@ -33,10 +33,6 @@ public class DBHelper : MonoBehaviour
     Text message;
 
     public static DBHelper instance;
-    public bool DatabaseLocked { get => databaseLocked; set => databaseLocked = value; }
-
-
-    public int CurrentDatabaseAppVersion => currentDatabaseAppVersion;
 
     void Awake()
     {
@@ -106,92 +102,6 @@ public class DBHelper : MonoBehaviour
             Debug.Log("ERROR : " + e);
             return false;
         }
-    }
-
-    internal void InsertDefaultUserRecord()
-    {
-        try
-        {
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery1 =
-               "INSERT INTO User( " +
-               "id, " +
-               "userName, " +
-               "firstName," +
-               "middleName," +
-               "lastName," +
-               "email," +
-               "password," +
-               "version," +
-               "os)  " +
-
-               "Values( '" + 1
-               + "', '" + "placeholder"
-               + "','" + "placeholder"
-               + "','" + "placeholder"
-               + "','" + "placeholder"
-               + "','" + "email@placeholder.com"
-               + "','" + "password"
-               + "','" + "6.9.420"
-               + "','" + "os version')";
-
-            dbcmd.CommandText = sqlQuery1;
-            IDataReader reader = dbcmd.ExecuteReader();
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-        }
-        catch (Exception e)
-        {
-            DatabaseLocked = false;
-            Debug.Log("ERROR : " + e);
-            return;
-        }
-    }
-
-    public string RemoveWhitespace(string str)
-    {
-        return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
-    }
-
-    string generateUniqueScoreID()
-    {
-        string macAddress = "";
-        string uniqueScoreId = "";
-        string uniqueModeDateIdentifier = "";
-        //TimeZone localZone = TimeZone.CurrentTimeZone;
-
-        uniqueModeDateIdentifier = DateTime.Now.Day.ToString()
-            + DateTime.Now.Month.ToString()
-            + DateTime.Now.Year.ToString()
-            + DateTime.Now.Second;
-        Debug.Log("----- uniqueScoreId : " + uniqueScoreId);
-        //uniqueModeDateIdentifier
-        //    = RemoveWhitespace(date)
-        //    + RemoveWhitespace(localZone.StandardName)
-        //    + RemoveWhitespace(GameOptions.levelDisplayName)
-        //    + RemoveWhitespace(GameOptions.playerDisplayName)
-        //    + RemoveWhitespace(GameOptions.gameModeSelectedName);
-
-        foreach (NetworkInterface ninf in NetworkInterface.GetAllNetworkInterfaces())
-        {
-            if (ninf.NetworkInterfaceType != NetworkInterfaceType.Ethernet) continue;
-            if (ninf.OperationalStatus == OperationalStatus.Up)
-            {
-                macAddress += ninf.GetPhysicalAddress().ToString();
-                break;
-            }
-        }
-        uniqueScoreId = macAddress + uniqueModeDateIdentifier + SystemInfo.deviceUniqueIdentifier;
-
-        return uniqueScoreId;
     }
 
     // insert current game's stats and score
@@ -272,7 +182,6 @@ public class DBHelper : MonoBehaviour
             return;
         }
     }
-
 
     // add default cheerleader data from PREFABS to DATABASE
     public IEnumerator InsertCheerleaderProfile(List<CheerleaderProfile> cheerleaderSelectedData)
@@ -435,7 +344,6 @@ public class DBHelper : MonoBehaviour
         {
             DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //return;
         }
     }
 
@@ -484,7 +392,6 @@ public class DBHelper : MonoBehaviour
 
                         cmd.CommandText = sqlQuery;
                         cmd.ExecuteNonQuery();
-
                     }
                     tr.Commit();
                 }
@@ -784,13 +691,11 @@ public class DBHelper : MonoBehaviour
         }
     }
 
-
     // insert current game's stats and score
     public void InsertUser(UserModel user)
     {
         StartCoroutine(InsertUserCoroutine(user));
     }
-
 
     private IEnumerator InsertUserCoroutine(UserModel user)
     {
@@ -1167,13 +1072,7 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            //numResultsQuery = "SELECT  * FROM HighScores  WHERE modeid = " + modeid
-            //        + " AND hardcoreEnabled = 0 ORDER BY " + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
-            //numberOfResultsPages = getNumberOfResults(numResultsQuery);
-
             // game modes that require float values/ low time as high score
-
-
             if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, " +
@@ -1432,53 +1331,6 @@ public class DBHelper : MonoBehaviour
             return value;
         }
     }
-
-    public int getIntSumByTableByField(String tableName, String field)
-    {
-
-        int value = 0;
-
-        try
-        {
-            databaseLocked = true;
-
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            // sum all values in column
-            string sqlQuery = "SELECT SUM(" + field + ") FROM " + tableName;
-
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-
-            // check if table is empty
-            if (!isTableEmpty(tableName))
-            {
-                while (reader.Read())
-                {
-                    value = reader.GetInt32(0);
-                    //Debug.Log(" value : " + value);
-                }
-                reader.Close();
-                reader = null;
-                dbcmd.Dispose();
-                dbcmd = null;
-                dbconn.Close();
-                dbconn = null;
-            }
-
-            databaseLocked = false;
-            return value;
-        }
-        catch (Exception e)
-        {
-            databaseLocked = false;
-            Debug.Log("ERROR : " + e);
-            return value;
-        }
-    }
     //====================================================================================================
     public float getFloatValueHighScoreFromTableByFieldAndModeId(String tableName, String field, int modeid, String order, int hardcore)
     {
@@ -1655,48 +1507,6 @@ public class DBHelper : MonoBehaviour
         }
     }
 
-    public float deleteRecordFromTableByID(String tableName, String idName, int id)
-    {
-        float value = 0;
-
-        try
-        {
-            databaseLocked = true;
-
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery = "DELETE FROM " + tableName + " Where " + idName + " = " + id;
-
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                value = reader.GetFloat(0);
-            }
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-
-            databaseLocked = false;
-
-            return value;
-        }
-        catch (Exception e)
-        {
-            databaseLocked = false;
-            Debug.Log("ERROR : " + e);
-            return value;
-        }
-    }
-
-
     public void deleteLocalUser(string username)
     {
         try
@@ -1754,7 +1564,6 @@ public class DBHelper : MonoBehaviour
                 dbconn.Close();
                 dbconn = null;
             }
-            //databaseLocked = false;
         }
         catch (Exception e)
         {
@@ -1774,35 +1583,36 @@ public class DBHelper : MonoBehaviour
             message.text = "upgrading database...";
         }
 
-        string table1 = "HighScores";
+        //string table1 = "HighScores";
         string table2 = "User";
         string table3 = "AllTimeStats";
 
         //highscore table
-        string col1 = "scoreidUnique";
-        string col2 = "platform";
-        string col3 = "device";
-        string col4 = "ipaddress";
-        string col5 = "twoMade";
-        string col6 = "twoAtt";
-        string col7 = "threeMade";
-        string col8 = "threeAtt";
-        string col9 = "fourMade";
-        string col10 = "fourAtt";
-        string col11 = "sevenMade";
-        string col12 = "sevenAtt";
-        string col13 = "submittedToApi";
-        string col14 = "bonusPoints";
-        string col15 = "moneyBallMade";
-        string col16 = "moneyBallAtt";
-        string col17 = "enemiesEnabled";
-        string col18 = "userName";
-        // add sniper options to highscore
-        string col19 = "sniperEnabled";
-        string col20 = "sniperMode";
-        string col21 = "sniperModeName";
-        string col22 = "sniperHits";
-        string col23 = "sniperShots";
+        //string col1 = "scoreidUnique";
+        //string col2 = "platform";
+        //string col3 = "device";
+        //string col4 = "ipaddress";
+        //string col5 = "twoMade";
+        //string col6 = "twoAtt";
+        //string col7 = "threeMade";
+        //string col8 = "threeAtt";
+        //string col9 = "fourMade";
+        //string col10 = "fourAtt";
+        //string col11 = "sevenMade";
+        //string col12 = "sevenAtt";
+        //string col13 = "submittedToApi";
+        //string col14 = "bonusPoints";
+        //string col15 = "moneyBallMade";
+        //string col16 = "moneyBallAtt";
+        //string col17 = "enemiesEnabled";
+        //string col18 = "userName";
+        ////string col181 = "username";
+        //// add sniper options to highscore
+        //string col19 = "sniperEnabled";
+        //string col20 = "sniperMode";
+        //string col21 = "sniperModeName";
+        //string col22 = "sniperHits";
+        //string col23 = "sniperShots";
         //user table
         string col1a = "userid";
         string col2a = "username";
@@ -1822,200 +1632,210 @@ public class DBHelper : MonoBehaviour
         string typeInteger = "integer";
 
         // ------------------------- Upgrade HighScores table
-        // add scoreidunique column
-        if (!doesColumnExist(table1, col1))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col1, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col1));
-            databaseLocked = false;
-        }
-        // add platform column
-        if (!doesColumnExist(table1, col2))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col2, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col2));
-            databaseLocked = false;
-        }
-        // add device column
-        if (!doesColumnExist(table1, col3))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col3, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col3));
-            databaseLocked = false;
-        }
-        // add ipaddress column
-        if (!doesColumnExist(table1, col4))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col4, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col4));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col5))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col5, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col5));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col6))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col6, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col6));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col7))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col7, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col7));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col8))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col8, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col8));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col9))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col9, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col9));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col10))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col10, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col10));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col11))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col11, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col11));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col12))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col12, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col12));
-            databaseLocked = false;
-        }
+        //// add scoreidunique column
+        //if (!doesColumnExist(table1, col1))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col1, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col1));
+        //    databaseLocked = false;
+        //}
+        //// add platform column
+        //if (!doesColumnExist(table1, col2))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col2, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col2));
+        //    databaseLocked = false;
+        //}
+        //// add device column
+        //if (!doesColumnExist(table1, col3))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col3, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col3));
+        //    databaseLocked = false;
+        //}
+        //// add ipaddress column
+        //if (!doesColumnExist(table1, col4))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col4, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col4));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col5))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col5, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col5));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col6))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col6, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col6));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col7))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col7, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col7));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col8))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col8, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col8));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col9))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col9, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col9));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col10))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col10, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col10));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col11))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col11, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col11));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col12))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col12, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col12));
+        //    databaseLocked = false;
+        //}
 
-        if (!doesColumnExist(table1, col13))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col13, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col13));
-            databaseLocked = false;
-        }
+        //if (!doesColumnExist(table1, col13))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col13, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col13));
+        //    databaseLocked = false;
+        //}
 
-        if (!doesColumnExist(table1, col14))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col14, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col14));
-            databaseLocked = false;
-        }
+        //if (!doesColumnExist(table1, col14))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col14, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col14));
+        //    databaseLocked = false;
+        //}
 
-        if (!doesColumnExist(table1, col15))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col15, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col15));
-            databaseLocked = false;
-        }
+        //if (!doesColumnExist(table1, col15))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col15, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col15));
+        //    databaseLocked = false;
+        //}
 
-        if (!doesColumnExist(table1, col16))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col16, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col16));
-            databaseLocked = false;
-        }
+        //if (!doesColumnExist(table1, col16))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col16, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col16));
+        //    databaseLocked = false;
+        //}
 
-        if (!doesColumnExist(table1, col17))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col17, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col17));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table1, col18))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col18, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col18));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col19))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col19, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col19));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col20))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col20, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col20));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col21))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col21, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table1, col21));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col22))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col22, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col22));
-            databaseLocked = false;
-        }
-        if (!doesColumnExist(table1, col23))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table1, col23, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table1, col23));
-            databaseLocked = false;
-        }
+        //if (!doesColumnExist(table1, col17))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col17, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col17));
+        //    databaseLocked = false;
+        //}
+        ////// if "username" column exists
+        ////if (doesColumnExist(table1, col181))
+        ////{
+        ////    yield return new WaitUntil(() => !databaseLocked);
+        ////    databaseLocked = true;
+        ////    //alterTableAddColumn(table1, col18, typeText);
+        ////    alterTableRenameColumn(table1, col181, col18, typeText);
+        ////    yield return new WaitUntil(() => doesColumnExist(table1, col18));
+        ////    databaseLocked = false;
+        ////}
+        //// if "userName" column DOES NOT exists
+        //if (!doesColumnExist(table1, col18))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col18, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col18));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col19))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col19, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col19));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col20))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col20, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col20));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col21))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col21, typeText);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col21));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col22))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col22, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col22));
+        //    databaseLocked = false;
+        //}
+        //if (!doesColumnExist(table1, col23))
+        //{
+        //    yield return new WaitUntil(() => !databaseLocked);
+        //    databaseLocked = true;
+        //    alterTableAddColumn(table1, col23, typeInteger);
+        //    yield return new WaitUntil(() => doesColumnExist(table1, col23));
+        //    databaseLocked = false;
+        //}
 
         // ------------------------- Upgrade Users table
 
@@ -2050,7 +1870,7 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => !databaseLocked);
             databaseLocked = true;
             alterTableAddColumn(table2, col3a, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table2, col3));
+            yield return new WaitUntil(() => doesColumnExist(table2, col3a));
             databaseLocked = false;
         }
 
@@ -2117,8 +1937,13 @@ public class DBHelper : MonoBehaviour
             yield return new WaitUntil(() => doesColumnExist(table2, col10a));
             databaseLocked = false;
         }
-        // all time stats
-        // sniper hits
+        yield return new WaitUntil(() => doesColumnExist(table2, col10a));
+        // verify all time stats table
+        StartCoroutine(DBConnector.instance.createTableAllTimeStats());
+        yield return new WaitUntil(() => DBConnector.instance.tableExists(allTimeStatsTableName));
+        //yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
+
+        // verify new columns added
         if (!doesColumnExist(table3, col1b))
         {
             yield return new WaitUntil(() => !databaseLocked);
@@ -2137,19 +1962,20 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
         }
 
+        if (message != null)
+        {
+            message.text = "";
+        }
         if (databaseSuccessfullyUpgraded)
         {
             Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
-            databaseLocked = false;
+            yield return new WaitUntil(() => !databaseLocked);
             StartCoroutine(setDatabaseVersion());
         }
         else
         {
+            databaseLocked = false;
             Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
-        }
-        if (message != null)
-        {
-            message.text = "";
         }
     }
 
@@ -2157,113 +1983,36 @@ public class DBHelper : MonoBehaviour
     {
         //Debug.Log("setDatabaseVersion -- start");
         yield return new WaitUntil(() => !DatabaseLocked);
+        DatabaseLocked = true;
         try
         {
+            Debug.Log("try...");
             //Debug.Log("try...");
-            DatabaseLocked = true;
-            dbconn = new SqliteConnection(connection);
-            dbconn.Open();
-            dbcmd = dbconn.CreateCommand();
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
-
+            string sqlQuery = String.Format("PRAGMA main.user_version = " + currentDatabaseAppVersion);
             dbcmd.CommandText = sqlQuery;
-            dbcmd.ExecuteScalar();
+            IDataReader reader = dbcmd.ExecuteReader();
 
+            reader.Close();
+            reader = null;
             dbcmd.Dispose();
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
 
-            DatabaseLocked = false;
+            databaseLocked = false;
         }
         catch (Exception e)
         {
             DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
+            Debug.Log("setDatabaseVersion -- failed");
         }
-        //Debug.Log("setDatabaseVersion -- start");
     }
-
-    //public HighScoreModel getHighScoreFromDatabase(string scoreid)
-    //{
-    //    HighScoreModel highscore = new HighScoreModel();
-    //    databaseLocked = true;
-    //    try
-    //    {
-    //        String sqlQuery = "";
-    //        IDbConnection dbconn;
-    //        dbconn = (IDbConnection)new SqliteConnection(connection);
-    //        dbconn.Open(); //Open connection to the database.
-    //        IDbCommand dbcmd = dbconn.CreateCommand();
-
-    //        //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
-
-    //        if (!isTableEmpty(highScoresTableName))
-    //        {
-    //            //Debug.Log(" table is not empty");
-    //            sqlQuery = "Select  * From " + highScoresTableName + " WHERE scoreid =" + scoreid;
-    //            Debug.Log(sqlQuery);
-    //            dbcmd.CommandText = sqlQuery;
-    //            IDataReader reader = dbcmd.ExecuteReader();
-
-    //            while (reader.Read())
-    //            {
-    //                //highscore.Id = reader.GetInt32(0);
-
-    //                if (reader.IsDBNull(1)) { highscore.Userid = 0; }
-    //                else { highscore.Userid = reader.GetInt32(1); }
-
-    //                highscore.Modeid = reader.GetInt32(2);
-    //                highscore.Characterid = reader.GetInt32(3);
-    //                highscore.Character = reader.GetString(4);
-    //                highscore.Levelid = reader.GetInt32(5);
-    //                highscore.Level = reader.GetString(6);
-    //                highscore.Os = reader.GetString(7);
-    //                highscore.Version = reader.GetString(8);
-    //                highscore.Date = reader.GetString(9);
-    //                highscore.Time = reader.GetFloat(10);
-    //                highscore.TotalPoints = reader.GetInt32(11);
-    //                highscore.LongestShot = reader.GetFloat(12);
-    //                highscore.TotalDistance = reader.GetFloat(13);
-    //                highscore.MaxShotMade = reader.GetInt32(14);
-    //                highscore.MaxShotAtt = reader.GetInt32(15);
-    //                highscore.ConsecutiveShots = reader.GetInt32(16);
-    //                highscore.TrafficEnabled = reader.GetInt32(17);
-    //                highscore.HardcoreEnabled = reader.GetInt32(18);
-    //                highscore.EnemiesKilled = reader.GetInt32(19);
-    //                highscore.Scoreid = reader.GetString(20);
-    //                highscore.Platform = reader.GetString(21);
-    //                highscore.Device = reader.GetString(22);
-    //                highscore.Ipaddress = reader.GetString(23);
-    //                highscore.TwoMade = reader.GetInt32(24);
-    //                highscore.TwoAtt = reader.GetInt32(25);
-    //                highscore.ThreeMade = reader.GetInt32(26);
-    //                highscore.ThreeAtt = reader.GetInt32(27);
-    //                highscore.FourMade = reader.GetInt32(28);
-    //                highscore.FourAtt = reader.GetInt32(29);
-    //                highscore.SevenMade = reader.GetInt32(30);
-    //                highscore.SevenAtt = reader.GetInt32(31);
-    //                highscore.BonusPoints = reader.GetInt32(31);
-    //                //highscore.submittedToApi = reader.GetInt32(32);
-    //                highscore.MoneyBallMade = reader.GetInt32(33);
-    //                highscore.MoneyBallAtt = reader.GetInt32(34);
-    //                highscore.EnemiesEnabled = reader.GetInt32(35);
-
-    //                Debug.Log("------------------------------------------ db action finished");
-    //            }
-    //        }
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Debug.Log("EXCEPTION : " + e);
-    //        DatabaseLocked = false;
-    //        return null;
-    //    }
-    //    databaseLocked = false;
-    //    //Destroy(highscore, 5);
-    //    return highscore;
-    //}
 
     public bool doesColumnExist(string tableName, string columnName)
     {
@@ -2291,21 +2040,22 @@ public class DBHelper : MonoBehaviour
                     return true;
                 }
             }
-            //databaseLocked = false;
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+
+            databaseLocked = false;
         }
         catch
         {
             databaseLocked = false;
             return false;
         }
-        //Debug.Log("---------- column : " + columnName + " return FALSE");
         return false;
-    }
-
-    public string GetExternalIpAdress()
-    {
-        string pubIp = new WebClient().DownloadString("https://api.ipify.org");
-        return pubIp;
     }
 
     // insert current game's stats and score
@@ -2349,7 +2099,6 @@ public class DBHelper : MonoBehaviour
             Debug.Log("ERROR : " + e);
         }
     }
-
 
     public List<HighScoreModel> getUnsubmittedHighScoreFromDatabase()
     {
@@ -2431,8 +2180,6 @@ public class DBHelper : MonoBehaviour
                     //Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
                     highscores.Add(highscore);
-                    //Debug.Log("scoreid : " + highscore.Scoreid);
-
                 }
             }
         }
@@ -2447,13 +2194,6 @@ public class DBHelper : MonoBehaviour
         return highscores;
     }
 
-    //public void alterTableRemoveColumn(string tableName, string columnName, string type)
-    //{
-    //    string sqlQueryCheckForColumn = "SELECT* FROM sqlite_master WHERE type = '" + tableName + "' AND name = '" + columnName + "' AND sql LIKE '%skiptime%'";
-
-    //    string sqlQuery = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName + " " + type + " NOT NULL DEFAULT 0;";
-
-    //    Debug.Log(sqlQueryCheckForColumn);
-    //    Debug.Log(sqlQuery);
-    //}
+    public bool DatabaseLocked { get => databaseLocked; set => databaseLocked = value; }
+    public int CurrentDatabaseAppVersion => currentDatabaseAppVersion;
 }
