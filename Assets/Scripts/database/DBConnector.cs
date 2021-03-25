@@ -22,7 +22,7 @@ public class DBConnector : MonoBehaviour
     const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    //private const int currentDatabaseAppVersion = 3;
+    private const int currentDatabaseAppVersion = 7; // 3/25/21
 
     Text messageText;
 
@@ -94,7 +94,7 @@ public class DBConnector : MonoBehaviour
             //StartCoroutine(dropDatabase());
             //StartCoroutine(createDatabase());
             StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
-            //StartCoroutine(setDatabaseVersion());
+            StartCoroutine(setDatabaseVersion());
         }
     }
 
@@ -176,34 +176,33 @@ public class DBConnector : MonoBehaviour
         return value;
     }
 
-    //public IEnumerator setDatabaseVersion()
-    //{
-    //    yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
-    //    try
-    //    {
-    //        dbHelper.DatabaseLocked = true;
-    //        dbconn = new SqliteConnection(connection);
-    //        dbconn.Open();
-    //        dbcmd = dbconn.CreateCommand();
+    public IEnumerator setDatabaseVersion()
+    {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        try
+        {
+            dbHelper.DatabaseLocked = true;
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
 
-    //        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
+            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
 
-    //        dbcmd.CommandText = sqlQuery;
-    //        dbcmd.ExecuteScalar();
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
 
-    //        dbcmd.Dispose();
-    //        dbcmd = null;
-    //        dbconn.Close();
-    //        dbconn = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
 
-    //        dbHelper.DatabaseLocked = false;
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        dbHelper.DatabaseLocked = false;
-    //    }
-    //}
-
+            dbHelper.DatabaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+        }
+    }
 
     // ============================ Save stats ===============================
     public void savePlayerGameStats(HighScoreModel dbHighScoreModel)
