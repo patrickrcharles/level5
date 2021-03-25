@@ -61,8 +61,8 @@ public class UserAccountManager : MonoBehaviour
     public void LoginButton()
     {
         UserModel user = new UserModel();
-
         GameOptions.userName = userNameSelected;
+
         if (usersLoaded)
         {
             user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
@@ -205,7 +205,6 @@ public class UserAccountManager : MonoBehaviour
     }
     public List<UserModel> UserAccountData { get => userAccountData; }
     public bool UsersLoaded { get => usersLoaded; set => usersLoaded = value; }
-
     public static int GuestUserid => guestUserid;
     public static string GuestPassword => guestPassword;
 }
