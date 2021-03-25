@@ -89,17 +89,17 @@ public class DBConnector : MonoBehaviour
                 return;
             }
         }
-        if (getDatabaseVersion() != dbHelper.CurrentDatabaseAppVersion)
+        if (getDatabaseVersion() < dbHelper.CurrentDatabaseAppVersion)
         {
+            //StartCoroutine(dropDatabase());
+            //StartCoroutine(createDatabase());
             StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
             //StartCoroutine(setDatabaseVersion());
         }
-        //StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
     }
 
     private void VerifyDatabase()
     {
-        //Debug.Log("VerifyDatabase() --start");
         string version = "";
 
         try
@@ -112,7 +112,7 @@ public class DBConnector : MonoBehaviour
 
             String sqlQuery = verifyDatabaseSqlQuery;
 
-            //Debug.Log("sqlQuery : " + sqlQuery);
+            Debug.Log("sqlQuery : " + sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -120,7 +120,7 @@ public class DBConnector : MonoBehaviour
             while (reader.Read())
             {
                 version = reader.GetString(0);
-                //Debug.Log(version);
+                Debug.Log(version);
             }
 
             reader.Close();
@@ -131,7 +131,6 @@ public class DBConnector : MonoBehaviour
             dbconn = null;
 
             databaseCreated = true;
-            //Debug.Log("databaseCreated : " + databaseCreated);
             dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
@@ -140,7 +139,6 @@ public class DBConnector : MonoBehaviour
             Debug.Log("ERROR : " + e);
             return;
         }
-        //Debug.Log("VerifyDatabase() --finish");
     }
 
     private int getDatabaseVersion()
@@ -161,7 +159,6 @@ public class DBConnector : MonoBehaviour
             {
                 value = reader.GetInt32(0);
             }
-
             reader.Close();
             reader = null;
             dbcmd.Dispose();
@@ -239,6 +236,8 @@ public class DBConnector : MonoBehaviour
 
             string sqlQuery = String.Format(
 
+                //"DROP TABLE if exists HighScores; " +
+
                 "CREATE TABLE if not exists HighScores(" +
                 "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "scoreidUnique   TEXT," +
@@ -276,11 +275,11 @@ public class DBConnector : MonoBehaviour
                 "moneyBallMade  INTEGER, " +
                 "moneyBallAtt  INTEGER, " +
                 "submittedToApi  INTEGER, " +
-                "username  TEXT DEFAULT NULL, " +
+                "userName  TEXT DEFAULT NULL, " +
                 "sniperEnabled  INTEGER DEFAULT 0, " +
                 "sniperMode  INTEGER DEFAULT 0, " +
                 "sniperModeName  TEXT DEFAULT none, " +
-                "sniperhits  INTEGER DEFAULT 0, " +
+                "sniperHits  INTEGER DEFAULT 0, " +
                 "sniperShots  INTEGER DEFAULT 0); " +
 
                 "DROP TABLE if exists Achievements; " +
@@ -386,7 +385,7 @@ public class DBConnector : MonoBehaviour
 
             // DROP TABLE [IF EXISTS] [schema_name.]table_name;
             string sqlQuery = String.Format(
-                "DROP TABLE if exists AllTimeStats; " +
+                //"DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists Achievements; " +
                 //"DROP TABLE if exists CharacterProfile; " +
                 //"DROP TABLE if exists CheerleaderProfile; " +
@@ -475,14 +474,15 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
-
             // if correct table name is returned and at least 1 table names exists
             if (count > 0 && value.Equals(tableName))
             {
+                dbHelper.DatabaseLocked = false;
                 return true;
             }
             else
             {
+                dbHelper.DatabaseLocked = false;
                 return false;
             }
         }
@@ -615,6 +615,60 @@ public class DBConnector : MonoBehaviour
             //"isLocked   INTEGER DEFAULT 1);");
 
             //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbconn.Close();
+            dbconn = null;
+
+            dbcmd.Dispose();
+            dbcmd = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
+        }
+    }
+
+    public IEnumerator createTableAllTimeStats()
+    {
+        //Debug.Log("createDatabase()");
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+
+        dbHelper.DatabaseLocked = true;
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists AllTimeStats(" +
+                "userid INTEGER UNIQUE," +
+                "twoMade   INTEGER, " +
+                "twoAtt    INTEGER, " +
+                "threeMade INTEGER, " +
+                "threeAtt  INTEGER, " +
+                "fourMade  INTEGER, " +
+                "fourAtt   INTEGER, " +
+                "sevenMade INTEGER, " +
+                "sevenAtt  INTEGER, " +
+                "moneyBallMade INTEGER, " +
+                "moneyBallAtt  INTEGER, " +
+                "totalPoints  INTEGER, " +
+                "totalDistance REAL, " +
+                "longestShot REAL, " +
+                "timePlayed   REAL," +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "sniperHits INTEGER DEFAULT 0," +
+                "sniperShots INTEGER DEFAULT 0); ");
+
+            Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
