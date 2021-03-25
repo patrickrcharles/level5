@@ -372,4 +372,9 @@ public class AccountManager : MonoBehaviour
         string pubIp = new WebClient().DownloadString("https://api.ipify.org");
         return pubIp;
     }
+
+    public static string MainMenuButtonName => mainMenuButtonName;
+    public static string StatsMenuButtonName => statsMenuButtonName;
+    public static string ProgressionMenuButtonName => progressionMenuButtonName;
+    public static string CreditsMenuButtonName => creditsMenuButtonName;
 }
