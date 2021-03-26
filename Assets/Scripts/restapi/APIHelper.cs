@@ -13,25 +13,6 @@ namespace Assets.Scripts.restapi
 {
     public static class APIHelper
     {
-        // api web hosted
-        const string publicApi = "http://13.58.224.237/api/";
-        const string publicApiUsers = "http://13.58.224.237/api/users";
-        const string publicApiUsersByUserid = "http://13.58.224.237/api/users/userid";
-        const string publicApiUsersByUserName = "http://13.58.224.237/api/users/username/";
-        const string publicApiUsersByEmail = "http://13.58.224.237/api/users/email/";
-        const string publicApiHighScores = "http://13.58.224.237/api/highscores/";
-        const string publicApiHighScoresByScoreid = "http://13.58.224.237/api/highscores/scoreid/";
-        const string publicApiHighScoresByModeid = "http://13.58.224.237/api/highscores/modeid/";
-        const string publicApiHighScoresCountByModeid = "http://13.58.224.237/api/highscores/modeid/count/";
-        const string publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/modeid/";
-        const string publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
-        const string publicApiToken = "http://13.58.224.237/api/token/";
-        const string publicApplicationVersionCurrent = "http://13.58.224.237/api/application/version/current";
-
-        // localhost testing
-        const string localHostHighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
-        const string localHostHighScoresCountByModeid = "https://localhost:44362/api/highscores/modeid/count/";
-
         static bool apiLocked;
         private static string bearerToken;
         private static string username;
@@ -69,7 +50,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 //Debug.Log("try...post single score");
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -138,7 +119,7 @@ namespace Assets.Scripts.restapi
 
                 try
                 {
-                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores) as HttpWebRequest;
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
                     httpWebRequest.ContentType = "application/json; charset=utf-8";
                     httpWebRequest.Method = "POST";
                     httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -213,7 +194,7 @@ namespace Assets.Scripts.restapi
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiHighScores + dbHighScoreModel.Scoreid) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores + dbHighScoreModel.Scoreid) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "PUT";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -274,7 +255,7 @@ namespace Assets.Scripts.restapi
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 //httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -328,7 +309,7 @@ namespace Assets.Scripts.restapi
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
             // build api request
-            string apiRequest = publicApiHighScoresByModeidInGameDisplay + modeid
+            string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplay + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
@@ -387,7 +368,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
 
             //build api request
-            string apiRequest = publicApiHighScoresCountByModeid + modeid
+            string apiRequest =  Constants.API_ADDRESS_DEV_publicApiHighScoresByModeid + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
@@ -472,7 +453,7 @@ namespace Assets.Scripts.restapi
                 HttpStatusCode statusCode;
                 try
                 {
-                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiUsers) as HttpWebRequest;
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiUsers) as HttpWebRequest;
                     httpWebRequest.ContentType = "application/json; charset=utf-8";
                     httpWebRequest.Method = "POST";
                     //post
@@ -549,7 +530,7 @@ namespace Assets.Scripts.restapi
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByUserName + username)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
 
@@ -628,11 +609,11 @@ namespace Assets.Scripts.restapi
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
-            //Debug.Log("scoredidexists uri :" + (publicApiHighScoresByScoreid + scoreid));
+            //Debug.Log("scoredidexists uri :" + (Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid));
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
 
@@ -676,7 +657,7 @@ namespace Assets.Scripts.restapi
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByUserName + username)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 //httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -719,7 +700,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByEmail + email)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByEmail + email)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -763,7 +744,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((publicApiUsersByUserName + username)) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -826,7 +807,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(publicApiToken) as HttpWebRequest;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiToken) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
 
@@ -896,7 +877,7 @@ namespace Assets.Scripts.restapi
 
             string currentVersion = "";
             //build api request
-            string apiRequest = publicApplicationVersionCurrent;
+            string apiRequest = Constants.API_ADDRESS_DEV_publicApplicationVersionCurrent;
 
             //int numResults = 0;
             try
