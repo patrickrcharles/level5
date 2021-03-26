@@ -52,6 +52,10 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             prevSelectedGameObject = EventSystem.current.currentSelectedGameObject;
         }
+        if (EventSystem.current == null)
+        {
+            EventSystem.current.SetSelectedGameObject(prevSelectedGameObject); // + "_description";
+        }
 
         if (Input.touchCount > 0 && !buttonPressed)
         {
@@ -94,7 +98,8 @@ public class TouchInputStatsScreenController : MonoBehaviour
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
             {
-                activateDoubleTappedButton();
+                //activateDoubleTappedButton();
+                swipeUpOnOption();
             }
         }
     }
@@ -125,30 +130,53 @@ public class TouchInputStatsScreenController : MonoBehaviour
         }
     }
 
-    private void activateDoubleTappedButton()
-    {
-        buttonPressed = true;
-        //high score, mode change
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
-        {
-            StatsManager.instance.changeSelectedMode("right");
-            //StatsManager.instance.changeHighScoreModeNameDisplay();
-            StatsManager.instance.changeHighScoreDataDisplay();
-        }
-        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
-        //{
-        //    StatsManager.instance.changeSelectedMode("right");
-        //    //StatsManager.instance.changeHighScoreModeNameDisplay();
-        //    StatsManager.instance.changeHighScoreDataDisplay();
-        //}
+    //private void activateDoubleTappedButton()
+    //{
+    //    buttonPressed = true;
+    //    //high score, mode change
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
+    //    {
+    //        swipeUpOnOption();
+    //        StatsManager.instance.changeHighScoreDataDisplay();
+    //    }
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.HardcoreOptionButtonName))
+    //    {
+    //        StatsManager.instance.changeSelectedMode("right");
+    //        //StatsManager.instance.changeHighScoreModeNameDisplay();
+    //        StatsManager.instance.changeHighScoreDataDisplay();
+    //    }
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.TrafficOptionButtonName))
+    //    {
+    //        StatsManager.instance.changeSelectedMode("right");
+    //        //StatsManager.instance.changeHighScoreModeNameDisplay();
+    //        StatsManager.instance.changeHighScoreDataDisplay();
+    //    }
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.EnemiesOptionButtonName))
+    //    {
+    //        StatsManager.instance.changeSelectedEnemiesOption();
+    //        //StatsManager.instance.changeHighScoreModeNameDisplay();
+    //        StatsManager.instance.changeHighScoreDataDisplay();
+    //    }
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.SniperOptionButtonName))
+    //    {
+    //        StatsManager.instance.changeSelectedMode("right");
+    //        //StatsManager.instance.changeHighScoreModeNameDisplay();
+    //        StatsManager.instance.changeHighScoreDataDisplay();
+    //    }
+    //    //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonHardcoreName))
+    //    //{
+    //    //    StatsManager.instance.changeSelectedMode("right");
+    //    //    //StatsManager.instance.changeHighScoreModeNameDisplay();
+    //    //    StatsManager.instance.changeHighScoreDataDisplay();
+    //    //}
 
-        // player select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
-        {
-            StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
-        }
-        buttonPressed = false;
-    }
+    //    // player select
+    //    if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
+    //    {
+    //        StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
+    //    }
+    //    buttonPressed = false;
+    //}
 
     private void selectPressedButton()
     {
@@ -211,7 +239,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // hardcore option search filter
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.HardcoreOptionButtonName))
         {
-            Debug.Log("hardcore option");
+            //Debug.Log("hardcore option");
             //StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeSelectedHardcoreOption();
             StatsManager.instance.initializeHardcoreOptionDisplay();
@@ -221,7 +249,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // traffic option search filter
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.TrafficOptionButtonName))
         {
-            Debug.Log("traffic option");
+            //Debug.Log("traffic option");
             //StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeSelectedTrafficOption();
             StatsManager.instance.initializeTrafficOptionDisplay();
@@ -231,7 +259,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // enemies option search filter
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.EnemiesOptionButtonName))
         {
-            Debug.Log("enemies option");
+            //Debug.Log("enemies option");
             //StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeSelectedEnemiesOption();
             StatsManager.instance.initializeEnemyOptionDisplay();
@@ -241,12 +269,18 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // sniper option search filter
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.SniperOptionButtonName))
         {
-            Debug.Log("sniper option");
+            //Debug.Log("sniper option");
             //StatsManager.instance.changeSelectedMode("right");
             StatsManager.instance.changeSelectedSniperOption();
             StatsManager.instance.initializeSniperOptionDisplay();
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
+        }
+        
+        // player select
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
+        {
+            StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
         }
         buttonPressed = false;
     }

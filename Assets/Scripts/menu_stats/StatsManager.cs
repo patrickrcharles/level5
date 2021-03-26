@@ -266,7 +266,7 @@ public class StatsManager : MonoBehaviour
 
         // ================================== navigation =====================================================================
 
-#if UNITY_STANDALONE || UNITY_EDITOR
+//#if UNITY_STANDALONE || UNITY_EDITOR
         // high scores table button selected
         if (currentHighlightedButton.Equals(trafficSelectValueName) && !buttonPressed)
         {
@@ -482,7 +482,7 @@ public class StatsManager : MonoBehaviour
                 buttonPressed = false;
             }
         }
-#endif
+//#endif
         // save at end of frame
         previousHighlightedButton = currentHighlightedButton;
     }
