@@ -335,7 +335,7 @@ namespace Assets.Scripts.restapi
             catch (WebException e)
             {
                 httpResponse = (HttpWebResponse)e.Response;
-                Debug.Log("----------------- ERROR : " + e);
+                //Debug.Log("----------------- ERROR : " + e);
                 apiLocked = false;
             }
 
@@ -368,7 +368,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
 
             //build api request
-            string apiRequest =  Constants.API_ADDRESS_DEV_publicApiHighScoresByModeid + modeid
+            string apiRequest =  Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
