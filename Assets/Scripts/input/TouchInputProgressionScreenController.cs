@@ -208,14 +208,14 @@ public class TouchInputProgressionScreenController : MonoBehaviour
             && !buttonPressed)
         {
             Debug.Log("load start");
-            ProgressionManager.instance.loadScene(SceneNameConstants.SCENE_NAME_level_00_start);
+            ProgressionManager.instance.loadScene(Constants.SCENE_NAME_level_00_start);
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(ProgressionManager.StatsMenuButtonName)
             && !buttonPressed)
         {
             Debug.Log("load stats");
-            ProgressionManager.instance.loadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
+            ProgressionManager.instance.loadScene(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(ProgressionManager.QuitButtonName)

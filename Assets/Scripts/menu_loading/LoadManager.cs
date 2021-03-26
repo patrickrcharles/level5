@@ -71,13 +71,13 @@ public class LoadManager : MonoBehaviour
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
                 //Debug.Log("String.IsNullOrEmpty("+GameOptions.previousSceneName+")");
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
                 //Debug.Log("SceneManager.LoadScene(GameOptions.previousSceneName)");
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
     }

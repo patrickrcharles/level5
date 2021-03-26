@@ -1,4 +1,4 @@
-public static class SceneNameConstants
+public static class Constants
 {
     public const string SCENE_NAME_level_00_account = "level_00_account";
     public const string SCENE_NAME_level_00_credits = "level_00_credits";

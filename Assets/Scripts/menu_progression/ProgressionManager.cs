@@ -173,7 +173,7 @@ public class ProgressionManager : MonoBehaviour
             && currentHighlightedButton.Equals(startButtonName))
         {
             confirmChanges();
-            loadScene(SceneNameConstants.SCENE_NAME_level_00_start);
+            loadScene(Constants.SCENE_NAME_level_00_start);
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -189,7 +189,7 @@ public class ProgressionManager : MonoBehaviour
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
             confirmChanges();
-            loadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
+            loadScene(Constants.SCENE_NAME_level_00_stats);
         }
 
         // ================================== navigation =====================================================================
@@ -566,7 +566,7 @@ public class ProgressionManager : MonoBehaviour
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
                 GameOptions.previousSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
             }
             else
             {

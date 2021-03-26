@@ -88,7 +88,7 @@ public class GameLevelManager : MonoBehaviour
     private void Start()
     {
         // return to this if n
-        GameOptions.previousSceneName = SceneNameConstants.SCENE_NAME_level_00_loading;
+        GameOptions.previousSceneName = Constants.SCENE_NAME_level_00_loading;
 
         // analytic event
         if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))

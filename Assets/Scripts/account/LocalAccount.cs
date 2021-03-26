@@ -45,7 +45,7 @@ public class LocalAccount : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
             }
         }
     }

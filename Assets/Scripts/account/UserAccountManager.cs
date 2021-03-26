@@ -51,7 +51,7 @@ public class UserAccountManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        if (!SceneManager.GetActiveScene().name.Equals(SceneNameConstants.SCENE_NAME_level_00_loading))
+        if (!SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_loading))
         {
             StartCoroutine(loadUserData());
         }
@@ -82,7 +82,7 @@ public class UserAccountManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         }
     }
 
@@ -90,7 +90,7 @@ public class UserAccountManager : MonoBehaviour
     {
         GameOptions.userName = "";
         GameOptions.userid = 0;
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
     }
 
     public IEnumerator RemoveUserButton(string userName)
@@ -112,7 +112,7 @@ public class UserAccountManager : MonoBehaviour
 
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_login);
         }
         // do nothing
         if(DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.CANCEL)

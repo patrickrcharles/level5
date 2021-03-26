@@ -114,22 +114,22 @@ public class TouchInputAccountScreenController : MonoBehaviour
         // main menu
         if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.MainMenuButtonName))
         {
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_start);
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_start);
         }
         //stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.StatsMenuButtonName))
         {
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_stats);
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_stats);
         }
         //progression
         if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.ProgressionMenuButtonName))
         {
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_progression);
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_progression);
         }
         //credits
         if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.CreditsMenuButtonName))
         {
-            SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_credits);
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
         }
         buttonPressed = false;
     }

@@ -270,7 +270,7 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadMenu(SceneNameConstants.SCENE_NAME_level_00_stats);
+            loadMenu(Constants.SCENE_NAME_level_00_stats);
         }
 
         // update menu button | load update menu
@@ -279,14 +279,14 @@ public class StartManager : MonoBehaviour
             && currentHighlightedButton.Equals(updateMenuButtonName))
         {
             GameOptions.playerSelectedIndex = playerSelectedIndex;
-            loadMenu(SceneNameConstants.SCENE_NAME_level_00_progression);
+            loadMenu(Constants.SCENE_NAME_level_00_progression);
         }
         // credits menu button | load credits menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(creditsMenuButtonName))
         {
-            loadMenu(SceneNameConstants.SCENE_NAME_level_00_credits);
+            loadMenu(Constants.SCENE_NAME_level_00_credits);
         }
 
         // account menu button | load account menu
@@ -303,7 +303,7 @@ public class StartManager : MonoBehaviour
             //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
             //}
 
-            loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
+            loadMenu(Constants.SCENE_NAME_level_00_account);
         }
 
 
@@ -508,7 +508,7 @@ public class StartManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         }
     }
 

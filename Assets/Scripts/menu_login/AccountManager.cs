@@ -151,22 +151,22 @@ public class AccountManager : MonoBehaviour
             // main menu
             if (EventSystem.current.currentSelectedGameObject.name.Equals(mainMenuButtonName))
             {
-                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_start);
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_start);
             }
             //stats
             if (EventSystem.current.currentSelectedGameObject.name.Equals(statsMenuButtonName))
             {
-                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_stats);
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_stats);
             }
             //progression
             if (EventSystem.current.currentSelectedGameObject.name.Equals(progressionMenuButtonName))
             {
-                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_progression);
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_progression);
             }
             //credits
             if (EventSystem.current.currentSelectedGameObject.name.Equals(creditsMenuButtonName))
             {
-                SceneManager.LoadSceneAsync(SceneNameConstants.SCENE_NAME_level_00_credits);
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
             }
             buttonPressed = false;
         }
@@ -311,7 +311,7 @@ public class AccountManager : MonoBehaviour
         // check if user already exists or null
         if (string.IsNullOrEmpty(userNameInput))
         {
-            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_login);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_login);
         }
         else
         {

@@ -68,7 +68,7 @@ public class CreditsManager : MonoBehaviour
 
     public void loadStartMenu()
     {
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_start);
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
     }
 
 

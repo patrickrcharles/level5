@@ -517,7 +517,7 @@ namespace Assets.Scripts.restapi
                     DBHelper.instance.InsertUser(user);
                     yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-                    SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+                    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
                 }
                 // failed
                 else
@@ -881,7 +881,7 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             //Debug.Log(APIHelper.bearerToken);
-            SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_loading);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         }
 
         //------------------------------------- GET Application  ----------------------------------------

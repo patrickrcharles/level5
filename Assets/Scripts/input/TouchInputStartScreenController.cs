@@ -185,7 +185,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         //stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
         {
-            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_stats);
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         // start
@@ -198,14 +198,14 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
-            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_progression);
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
         // credits
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CreditsMenuButtonName))
         {
             //Debug.Log("load prgression screen");
-            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_credits);
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_credits);
             buttonPressed = true;
         }
         // quit
@@ -217,7 +217,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         //account
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.AccountMenuButtonName))
         {
-            StartManager.instance.loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_account);
             buttonPressed = true;
         }
         buttonPressed = false;

@@ -145,7 +145,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
         {
-            StatsManager.instance.loadMainMenu(SceneNameConstants.SCENE_NAME_level_00_start);
+            StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
         }
         buttonPressed = false;
     }

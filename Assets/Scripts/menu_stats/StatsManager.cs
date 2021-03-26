@@ -424,7 +424,7 @@ public class StatsManager : MonoBehaviour
             if (controls.UINavigation.Submit.triggered)
             {
                 buttonPressed = true;
-                loadMainMenu(SceneNameConstants.SCENE_NAME_level_00_start);
+                loadMainMenu(Constants.SCENE_NAME_level_00_start);
                 buttonPressed = false;
             }
         }
@@ -610,7 +610,7 @@ public class StatsManager : MonoBehaviour
         }
         getUnsubmittedHighscores();
         DBHelper.instance.DatabaseLocked = false;
-        SceneManager.LoadScene(SceneNameConstants.SCENE_NAME_level_00_stats);
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_stats);
     }
 
     private void getUnsubmittedHighscores()
