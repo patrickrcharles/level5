@@ -15,11 +15,11 @@ public class DBConnector : MonoBehaviour
     private String filepath;
 
     // table names
-    const String tableNameAllTimeStats = "AllTimeStats";
-    const String tableNameCharacterProfile = "CharacterProfile";
-    const String tableNameCheerleaderProfile = "CheerleaderProfile";
-    const String tableNameHighScores = "HighScores";
-    const String tableNameUser = "User";
+    //const String tableNameAllTimeStats = "AllTimeStats";
+    //const String tableNameCharacterProfile = "CharacterProfile";
+    //const String tableNameCheerleaderProfile = "CheerleaderProfile";
+    //const String tableNameHighScores = "HighScores";
+    //const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
     private const int currentDatabaseAppVersion = 7; // 3/25/21

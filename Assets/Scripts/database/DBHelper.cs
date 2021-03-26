@@ -20,7 +20,7 @@ public class DBHelper : MonoBehaviour
     private const String highScoresTableName = "HighScores";
     private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 7;
+    private int currentDatabaseAppVersion = 8;
     bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
@@ -547,7 +547,9 @@ public class DBHelper : MonoBehaviour
                         prevStats.EnemiesKilled = reader.GetInt32(14);
                     }
                     prevStats.SniperHits = reader.GetInt32(15);
+                    //prevStats.SniperHits = Convert.ToInt32(reader.GetInt32(15));
                     prevStats.SniperShots = reader.GetInt32(16);
+                    //prevStats.SniperShots = Convert.ToInt32(reader.GetInt32(16));
                 }
             }
             Destroy(prevStats, 5);
@@ -1310,8 +1312,8 @@ public class DBHelper : MonoBehaviour
 
             while (reader.Read())
             {
-                value = reader.GetInt32(0);
-                //Debug.Log(" value : " + value);
+                value =  reader.GetInt32(0);
+                Debug.Log(" value : " + value);
             }
             reader.Close();
             reader = null;
@@ -1328,6 +1330,7 @@ public class DBHelper : MonoBehaviour
         {
             databaseLocked = false;
             Debug.Log("ERROR : " + e);
+            Debug.Log(" value : " + value);
             return value;
         }
     }
@@ -1939,6 +1942,7 @@ public class DBHelper : MonoBehaviour
         }
         yield return new WaitUntil(() => doesColumnExist(table2, col10a));
         // verify all time stats table
+        StartCoroutine(DBConnector.instance.dropDatabaseTable(allTimeStatsTableName));
         StartCoroutine(DBConnector.instance.createTableAllTimeStats());
         yield return new WaitUntil(() => DBConnector.instance.tableExists(allTimeStatsTableName));
         //yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
