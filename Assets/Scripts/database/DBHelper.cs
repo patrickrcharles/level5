@@ -517,38 +517,38 @@ public class DBHelper : MonoBehaviour
             if (!isTableEmpty(allTimeStatsTableName))
             {
                 //Debug.Log(" table is not empty");
-                sqlQuery = "Select  * From " + allTimeStatsTableName;
+                sqlQuery = "Select * From " + allTimeStatsTableName;
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    prevStats.TwoPointerMade = reader.GetInt32(0);
-                    prevStats.TwoPointerAttempts = reader.GetInt32(1);
-                    prevStats.ThreePointerMade = reader.GetInt32(2);
-                    prevStats.ThreePointerAttempts = reader.GetInt32(3);
-                    prevStats.FourPointerMade = reader.GetInt32(4);
-                    prevStats.FourPointerAttempts = reader.GetInt32(5);
-                    prevStats.SevenPointerMade = reader.GetInt32(6);
-                    prevStats.SevenPointerAttempts = reader.GetInt32(7);
-                    prevStats.MoneyBallMade = reader.GetInt32(8);
-                    prevStats.MoneyBallAttempts = reader.GetInt32(9);
-                    prevStats.TotalPoints = reader.GetInt32(10);
-                    prevStats.TotalDistance = reader.GetFloat(11);
-                    prevStats.LongestShotMade = reader.GetFloat(12);
-                    prevStats.TimePlayed = reader.GetFloat(13);
-                    if (reader.IsDBNull(14))
+                    prevStats.TwoPointerMade = reader.GetInt32(1);
+                    prevStats.TwoPointerAttempts = reader.GetInt32(2);
+                    prevStats.ThreePointerMade = reader.GetInt32(3);
+                    prevStats.ThreePointerAttempts = reader.GetInt32(4);
+                    prevStats.FourPointerMade = reader.GetInt32(5);
+                    prevStats.FourPointerAttempts = reader.GetInt32(6);
+                    prevStats.SevenPointerMade = reader.GetInt32(7);
+                    prevStats.SevenPointerAttempts = reader.GetInt32(8);
+                    prevStats.MoneyBallMade = reader.GetInt32(9);
+                    prevStats.MoneyBallAttempts = reader.GetInt32(10);
+                    prevStats.TotalPoints = reader.GetInt32(11);
+                    prevStats.TotalDistance = reader.GetFloat(12);
+                    prevStats.LongestShotMade = reader.GetFloat(13);
+                    prevStats.TimePlayed = reader.GetFloat(14);
+                    if (reader.IsDBNull(15))
                     {
                         prevStats.EnemiesKilled = 0;
                     }
                     else
                     {
-                        prevStats.EnemiesKilled = reader.GetInt32(14);
+                        prevStats.EnemiesKilled = reader.GetInt32(15);
                     }
-                    prevStats.SniperHits = reader.GetInt32(15);
+                    prevStats.SniperHits = reader.GetInt32(16);
                     //prevStats.SniperHits = Convert.ToInt32(reader.GetInt32(15));
-                    prevStats.SniperShots = reader.GetInt32(16);
+                    prevStats.SniperShots = reader.GetInt32(17);
                     //prevStats.SniperShots = Convert.ToInt32(reader.GetInt32(16));
                 }
             }
@@ -1313,7 +1313,7 @@ public class DBHelper : MonoBehaviour
             while (reader.Read())
             {
                 value =  reader.GetInt32(0);
-                Debug.Log(" value : " + value);
+                //Debug.Log(" value : " + value);
             }
             reader.Close();
             reader = null;
