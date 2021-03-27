@@ -66,9 +66,14 @@ public class GameStats : MonoBehaviour
 
         // get 1 - sniper accuracy. ex. if sniper accuracy = 30%, return 70%
         // player will receive that percentage of xp bonus. higher % for lower snipe accuracy
+
         float inverseSniperAccuracy = (1 - UtilityFunctions.getPercentageFloat(SniperHits, SniperShots));
-        experience += Mathf.RoundToInt(500 * inverseSniperAccuracy);
-        // +15 for gettign hit
+        if (inverseSniperAccuracy > 0)
+        {
+            experience += Mathf.RoundToInt(500 * inverseSniperAccuracy);
+        }
+
+        // +15 for getting hit
         experience += (SniperHits * 15);
 
         experience += (ShotAttempt * 10);
@@ -95,6 +100,7 @@ public class GameStats : MonoBehaviour
         {
             experience += (MinionsKilled * 50);
             experience += (BossKilled * 150);
+
             experience *= (int)1.25f;
         }
         if (GameOptions.hardcoreModeEnabled)
