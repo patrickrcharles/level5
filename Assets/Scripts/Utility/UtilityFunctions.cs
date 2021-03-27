@@ -111,7 +111,7 @@ namespace Assets.Scripts.Utility
         {
             if (attempt > 0)
             {
-                float accuracy = (float)made / attempt;
+                float accuracy = (float)made / (float)attempt;
                 return (accuracy * 100);
             }
             else
