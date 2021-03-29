@@ -140,7 +140,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     {
         //if ((gameObject.name.Contains("flash") || gameObject.name.Contains("mouse") || gameObject.name.Contains("ghost")) 
         if (gameObject.CompareTag("auto_npc")
-            && (other.CompareTag("Player") || other.CompareTag("basketball") || other.CompareTag("knock_down_attack"))
+            && (other.CompareTag("Player") || other.CompareTag("enemy")  || other.CompareTag("basketball") || other.CompareTag("knock_down_attack"))
             && !ignoreCollision && !movingToTarget)
         {
             if (!canAttack || !other.CompareTag("Player"))
@@ -163,7 +163,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
                 //disable rotation
                 navmeshAgent.updateRotation = false;
             }
-            if (canAttack && other.CompareTag("Player"))
+            if (canAttack && (other.CompareTag("Player") || other.CompareTag("enemy")) )
             {
                 Debug.Log("play attack anim");
 
