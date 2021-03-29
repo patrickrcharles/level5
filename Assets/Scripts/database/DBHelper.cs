@@ -1075,7 +1075,7 @@ public class DBHelper : MonoBehaviour
             IDbCommand dbcmd = dbconn.CreateCommand();
 
             sqlQuery = BuildSqlQueryForGetHighScoreRows(field, modeid, hardcoreValue, trafficValue, enemiesValue, sniperValue, pageNumberOffset);
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
