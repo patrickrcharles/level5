@@ -20,6 +20,7 @@ public class EnemyCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("ENEMY trigger : this : " + gameObject.tag + "  other.tag : " + other.tag);
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
@@ -46,7 +47,7 @@ public class EnemyCollisions : MonoBehaviour
             //update health slider
             enemyHealthBar.setHealthSliderValue();
             // check if enemy dead
-            if (enemyHealth.Health >= 0)
+            if (enemyHealth.Health > 0)
             {
                 // player knock down attack
                 if (playerAttackBox != null

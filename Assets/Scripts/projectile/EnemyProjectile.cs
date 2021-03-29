@@ -127,14 +127,17 @@ public class EnemyProjectile : MonoBehaviour
             Instantiate(impactSniperGroundPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
-        // sniper shot hits player
+        // sniper shot hits player or enemy
         if (sniperProjectile
             && impactProjectile
             && (other.gameObject.CompareTag("enemyHitbox")
             || other.gameObject.CompareTag("playerHitbox")))
         {
-            // increase count
-            BasketBall.instance.GameStats.SniperHits++;
+            if (other.gameObject.CompareTag("playerHitbox"))
+            {
+                // if player hit, increase count
+                BasketBall.instance.GameStats.SniperHits++;
+            }
 
             // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
