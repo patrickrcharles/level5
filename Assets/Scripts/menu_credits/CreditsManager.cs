@@ -14,6 +14,13 @@ public class CreditsManager : MonoBehaviour
 
     private const string startButtonName = "press_start";
 
+    private const string webLinkMusic = "https://www.instagram.com/stustumaru/";
+    private const string webLinkDevProgress = "https://www.instagram.com/patrickcharlez/";
+    private const string webLinkDevWebSite = "http://13.58.224.237/highscores";
+    private const string webLinkGooglePLay = "https://play.google.com/store/apps/details?id=com.level5.level5";
+    private const string webLinkItchIo = "https://skeleton-district.itch.io/level-5";
+    private const string webLinkBugReportEmail = "mailto:levelfivegames@gmail.com?subject=BugReport";
+
     public PlayerControls controls;
 
     public static CreditsManager instance;
@@ -82,4 +89,28 @@ public class CreditsManager : MonoBehaviour
         messageText.text = "";
     }
 
+    public void OpenMusicSite()
+    {
+        Application.OpenURL(webLinkMusic);
+    }
+    public void OpenDevProgressSite()
+    {
+        Application.OpenURL(webLinkDevProgress);
+    }
+    public void OpenDevWebSite()
+    {
+        Application.OpenURL(webLinkDevWebSite);
+    }
+    public void OpenGooglePlaySite()
+    {
+        Application.OpenURL(webLinkGooglePLay);
+    }
+    public void OpenItchIoSite()
+    {
+        Application.OpenURL(webLinkItchIo);
+    }
+    public void OpenBugReportEmail()
+    {
+        Application.OpenURL(webLinkBugReportEmail);
+    }
 }
