@@ -308,14 +308,26 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
-            // build api request
-            string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplay + modeid
-                + "?hardcore=" + hardcore
-                + "&traffic=" + traffic
-                + "&enemies=" + enemies
-                + "&sniper=" + sniper
-                + "&page=" + page
-                + "&results=" + results;
+            // build api request.
+            // if no filter selected, get all scores for modeid
+            // else, get specific scores
+            string apiRequest = "";
+            if (hardcore == 0 && traffic == 0 && enemies == 0 && traffic == 0)
+            {
+                apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplayAll + modeid
+                    + "?page=" + page
+                    + "&results=" + results;
+            }
+            else
+            {
+                apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplayFiltered + modeid
+                    + "?hardcore=" + hardcore
+                    + "&traffic=" + traffic
+                    + "&enemies=" + enemies
+                    + "&sniper=" + sniper
+                    + "&page=" + page
+                    + "&results=" + results;
+            }
 
             try
             {
