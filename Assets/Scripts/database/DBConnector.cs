@@ -663,7 +663,7 @@ public class DBConnector : MonoBehaviour
                 "sniperHits INTEGER DEFAULT 0," +
                 "sniperShots INTEGER DEFAULT 0); ");
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();

@@ -1074,30 +1074,8 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            // game modes that require float values/ low time as high score
-            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
-            {
-                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, " +
-                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
-                    + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
-                    + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
-                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
-                    + " ORDER BY "
-                    + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
-
-            }
-            else
-            {
-                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled," +
-                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
-                    + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
-                    + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
-                    + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
-                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
-                    + " ORDER BY "
-                    + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
-            }
+            sqlQuery = BuildSqlQueryForGetHighScoreRows(field, modeid, hardcoreValue, trafficValue, enemiesValue, sniperValue, pageNumberOffset);
+            Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1117,44 +1095,52 @@ public class DBHelper : MonoBehaviour
                 level = reader.GetString(2);
                 date = reader.GetString(3);
                 time = reader.GetFloat(4);
-                // null check
-                if (reader.IsDBNull(5))
+                // if filters selected
+                if (hardcoreValue || trafficValue || enemiesValue || sniperValue)
                 {
-                    hardcoreEnabled = 0;
+                    // null check
+                    if (reader.IsDBNull(5))
+                    {
+                        hardcoreEnabled = 0;
+                    }
+                    else
+                    {
+                        hardcoreEnabled = reader.GetInt32(5);
+                    }
+                    // null check
+                    if (reader.IsDBNull(6))
+                    {
+                        trafficEnabled = 0;
+                    }
+                    else
+                    {
+                        trafficEnabled = reader.GetInt32(6);
+                    }
+                    // null check
+                    if (reader.IsDBNull(7))
+                    {
+                        enemiesEnabled = 0;
+                    }
+                    else
+                    {
+                        enemiesEnabled = reader.GetInt32(7);
+                    }
+                    // null check
+                    if (reader.IsDBNull(8))
+                    {
+                        sniperEnabled = 0;
+                    }
+                    else
+                    {
+                        sniperEnabled = reader.GetInt32(8);
+                    }
+                    username = reader.GetString(9);
                 }
+                // filters not selected
                 else
                 {
-                    hardcoreEnabled = reader.GetInt32(5);
+                    username = reader.GetString(5);
                 }
-                // null check
-                if (reader.IsDBNull(6))
-                {
-                    trafficEnabled = 0;
-                }
-                else
-                {
-                    trafficEnabled = reader.GetInt32(6);
-                }
-                // null check
-                if (reader.IsDBNull(7))
-                {
-                    enemiesEnabled = 0;
-                }
-                else
-                {
-                    enemiesEnabled = reader.GetInt32(7);
-                }
-                // null check
-                if (reader.IsDBNull(8))
-                {
-                    sniperEnabled = 0;
-                }
-                else
-                {
-                    sniperEnabled = reader.GetInt32(8);
-                }
-
-                username = reader.GetString(9);
 
                 StatsTableHighScoreRow row = gameObject.AddComponent<StatsTableHighScoreRow>();
                 row.setRowValues(score, character, level, date, hardcore, username);
@@ -1194,6 +1180,58 @@ public class DBHelper : MonoBehaviour
             databaseLocked = false;
             return listOfValues;
         }
+    }
+
+    private static string BuildSqlQueryForGetHighScoreRows(string field, int modeid, bool hardcoreValue, bool trafficValue, bool enemiesValue, bool sniperValue, int pageNumberOffset)
+    {
+        string sqlQuery;
+        // if no filter selected, return all
+        if (!hardcoreValue && !trafficValue && !enemiesValue && !sniperValue)
+        {
+            // game modes that require float values/ low time as high score
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, userName FROM HighScores  WHERE modeid = " + modeid
+                    + " ORDER BY "
+                    + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, userName FROM HighScores  WHERE modeid = " + modeid
+                    + " ORDER BY "
+                    + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+            }
+        }
+        // filters selected, filter results
+        else
+        {
+            // game modes that require float values/ low time as high score
+            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, " +
+                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
+                    + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
+                    + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
+                    + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
+                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
+                    + " ORDER BY "
+                    + field + " ASC,time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+
+            }
+            else
+            {
+                sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled," +
+                    "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
+                    + " AND hardcoreEnabled = " + Convert.ToInt32(hardcoreValue)
+                    + " AND trafficEnabled = " + Convert.ToInt32(trafficValue)
+                    + " AND enemiesEnabled = " + Convert.ToInt32(enemiesValue)
+                    + " AND sniperEnabled = " + Convert.ToInt32(sniperValue)
+                    + " ORDER BY "
+                    + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
+            }
+        }
+
+        return sqlQuery;
     }
 
     public int getNumberOfResults(string field, int modeid, bool hardcoreValue, int pageNumber)
