@@ -34,7 +34,8 @@ public static class Constants
     public const string API_ADDRESS_DEV_publicApiHighScoresByScoreid = "http://13.58.224.237/api/highscores/scoreid/";
     public const string API_ADDRESS_DEV_publicApiHighScoresByModeid = "http://13.58.224.237/api/highscores/modeid/";
     public const string API_ADDRESS_DEV_publicApiHighScoresCountByModeid = "http://13.58.224.237/api/highscores/modeid/count/";
-    public const string API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplay = "http://13.58.224.237/api/highscores/modeid/";
+    public const string API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplayAll = "http://13.58.224.237/api/highscores/modeid/all/";
+    public const string API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplayFiltered = "http://13.58.224.237/api/highscores/modeid/filter/";
     public const string API_ADDRESS_DEV_publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
     public const string API_ADDRESS_DEV_publicApiToken = "http://13.58.224.237/api/token/";
     public const string API_ADDRESS_DEV_publicApplicationVersionCurrent = "http://13.58.224.237/api/application/version/current";
