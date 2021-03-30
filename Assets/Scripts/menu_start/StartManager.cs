@@ -1138,4 +1138,6 @@ public class StartManager : MonoBehaviour
     public static string CreditsMenuButtonName1 => creditsMenuButtonName;
 
     public static string SniperSelectOptionName => sniperSelectOptionName;
+
+    public int PlayerSelectedIndex => playerSelectedIndex;
 }

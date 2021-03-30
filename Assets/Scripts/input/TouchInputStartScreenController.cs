@@ -198,6 +198,7 @@ public class TouchInputStartScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
+            GameOptions.playerSelectedIndex = StartManager.instance.PlayerSelectedIndex;
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
