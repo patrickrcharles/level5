@@ -725,6 +725,11 @@ public class StatsManager : MonoBehaviour
                     Convert.ToInt32(enemiesEnabled),
                     Convert.ToInt32(sniperEnabled));
 
+                //Debug.Log("numOnlineResults : " + numOnlineResults);
+                //Debug.Log("-Convert.ToInt32(hardcoreEnabled) : " + Convert.ToInt32(hardcoreEnabled));
+                //Debug.Log("-Convert.ToInt32(traffEnabled) : " + Convert.ToInt32(trafficEnabled));
+                //Debug.Log("-Convert.ToInt32(enemyEnabled) : " + Convert.ToInt32(enemiesEnabled));
+                //Debug.Log("-Convert.ToInt32(sniperEnabled) : " + Convert.ToInt32(sniperEnabled));
                 // scores got display
                 highScoreRowList = APIHelper.GetHighscoreByModeid(modeid,
                     Convert.ToInt32(hardcoreEnabled),
@@ -733,6 +738,8 @@ public class StatsManager : MonoBehaviour
                     Convert.ToInt32(sniperEnabled),
                     onlineResultsPageNumber,
                     10);
+
+                //Debug.Log("numOnlineResults : " + numOnlineResults);
 
                 int rowCount;
                 // if list  < 10 AND not empty

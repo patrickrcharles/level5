@@ -312,7 +312,7 @@ namespace Assets.Scripts.restapi
             // if no filter selected, get all scores for modeid
             // else, get specific scores
             string apiRequest = "";
-            if (hardcore == 0 && traffic == 0 && enemies == 0 && traffic == 0)
+            if (hardcore == 0 && traffic == 0 && enemies == 0 && sniper == 0)
             {
                 apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresByModeidInGameDisplayAll + modeid
                     + "?page=" + page
@@ -328,7 +328,7 @@ namespace Assets.Scripts.restapi
                     + "&page=" + page
                     + "&results=" + results;
             }
-
+            Debug.Log("apiRequest : \n" + apiRequest);
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
@@ -341,6 +341,7 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     highScoresList = JsonConvert.DeserializeObject<List<StatsTableHighScoreRow>>(result);
+                    //Debug.Log("results : \n" + result);
                 }
             }
             // on web exception
