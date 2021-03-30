@@ -38,6 +38,9 @@ public class BasketBallShotMarker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _shotMade = 0;
+        _shotAttempt = 0;
+
         // get reference for accessing basketball state
         basketBallState = GameLevelManager.instance.Basketball.BasketBallState;
         displayCurrentMarkerStats = GameObject.Find(displayStatsTextObject).GetComponent<Text>();
