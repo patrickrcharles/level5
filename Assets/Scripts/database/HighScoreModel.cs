@@ -127,17 +127,17 @@ namespace Assets.Scripts.database
                 model.SniperMode = 0;
                 model.SniperModeName = "none";
             }
-            if (GameOptions.sniperEnabledBullet)
+            if (GameOptions.sniperEnabledBullet && GameOptions.sniperEnabled)
             {
                 model.SniperMode = 1;
                 model.SniperModeName = "single bullet";
             }
-            if (GameOptions.sniperEnabledBulletAuto)
+            if (GameOptions.sniperEnabledBulletAuto && GameOptions.sniperEnabled)
             {
                 model.SniperMode = 2;
                 model.SniperModeName = "machine gun ";
             }
-            if (GameOptions.sniperEnabledLaser)
+            if (GameOptions.sniperEnabledLaser && GameOptions.sniperEnabled)
             {
                 model.SniperMode = 3;
                 model.SniperModeName = "disintegration ray";
