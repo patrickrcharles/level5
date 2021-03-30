@@ -310,11 +310,11 @@ public class BasketBallShotMade : MonoBehaviour
                 int max = GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MaxShotMade;
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
             }
-            // no money ball, update current shot marker stats
-            else
-            {
-                GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
-            }
+            //// no money ball, update current shot marker stats
+            //else
+            //{
+            //    GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
+            //}
         }
     }
 
