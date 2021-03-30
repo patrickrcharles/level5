@@ -217,12 +217,12 @@ public class ProgressionManager : MonoBehaviour
         // ================================== confirmation dialogue / save / reset ===================================================
 
         // save button triggered
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(saveButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(saveButtonName) && !buttonPressed)
         {
             saveChanges();
         }
         // reset button triggered
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(resetButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(resetButtonName) && !buttonPressed)
         {
             // enable confirmation object
             // set selected object to confirm button
@@ -232,12 +232,12 @@ public class ProgressionManager : MonoBehaviour
             // reset stats
             //EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
         }
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName) && !buttonPressed)
         {
             confirmChanges();
         }
         // cancel popup
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName) && !buttonPressed)
         {
             // do nothing, continue state
 
@@ -246,13 +246,15 @@ public class ProgressionManager : MonoBehaviour
         // ================================== change options =============================================================
         // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !buttonPressed)
         {
             changePlayerUp();
         }
         // down, change option
         if (controls.UINavigation.Down.triggered && !buttonPressed
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !buttonPressed)
         {
             changePlayerDown();
 
@@ -260,13 +262,15 @@ public class ProgressionManager : MonoBehaviour
         // add a point to selected category
         if (!buttonPressed && dataLoaded
             && progressionState.PointsAvailable > 0
-            && controls.UINavigation.Submit.triggered)
+            && controls.UINavigation.Submit.triggered
+            && !buttonPressed)
         {
             addPoint();
         }
         // subtract a point
         if (!buttonPressed && dataLoaded
-            && controls.UINavigation.Cancel.triggered)
+            && controls.UINavigation.Cancel.triggered
+            && !buttonPressed)
         {
             subtractPoint();
         }
@@ -347,18 +351,23 @@ public class ProgressionManager : MonoBehaviour
 
     public void saveChanges()
     {
+        buttonPressed = true;
         confirmationDialogueBox.SetActive(true);
         EventSystem.current.SetSelectedGameObject(GameObject.Find(confirmButtonName).gameObject);
+        buttonPressed = false;
     }
 
     public void cancelChanges()
     {
+        buttonPressed = true;
         confirmationDialogueBox.SetActive(false);
         EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
+        buttonPressed = false;
     }
 
     public void resetChanges()
     {
+        buttonPressed = true;
         resetUpdatePoints();
         // reset player state
         progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
@@ -366,6 +375,7 @@ public class ProgressionManager : MonoBehaviour
         initializePlayerDisplay();
 
         EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
+        buttonPressed = false;
     }
 
     public void confirmChanges()
@@ -456,6 +466,7 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        buttonPressed = false;
     }
     public void updateFourAccuracy(UpdateType updateType)
     {
@@ -490,6 +501,7 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        buttonPressed = false;
     }
     public void updateSevenAccuracy(UpdateType updateType)
     {
@@ -525,6 +537,7 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        buttonPressed = false;
     }
 
 
