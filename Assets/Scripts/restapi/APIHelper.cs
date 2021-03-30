@@ -328,7 +328,7 @@ namespace Assets.Scripts.restapi
                     + "&page=" + page
                     + "&results=" + results;
             }
-            Debug.Log("apiRequest : \n" + apiRequest);
+            //Debug.Log("apiRequest : \n" + apiRequest);
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;

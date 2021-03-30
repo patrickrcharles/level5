@@ -2161,8 +2161,7 @@ public class DBHelper : MonoBehaviour
                 sqlQuery = "Select  * From " + highScoresTableName
                     + " WHERE submittedToApi = 0 "
                     + " AND modeid != 99"
-                    + " AND username != '0'"
-                    + " AND username != ''";
+                    + " AND userName != 0";
 
                 //Debug.Log(sqlQuery);
 
@@ -2175,7 +2174,7 @@ public class DBHelper : MonoBehaviour
 
                     //if (reader.IsDBNull(1)) { highscore.Userid = 0; }
                     //else { highscore.Userid = reader.GetInt32(1); }
-
+                    highscore.Scoreid = reader.GetString(1);
                     highscore.Modeid = reader.GetInt32(2);
                     highscore.Characterid = reader.GetInt32(3);
                     highscore.Character = reader.GetString(4);
@@ -2193,8 +2192,8 @@ public class DBHelper : MonoBehaviour
                     highscore.ConsecutiveShots = reader.GetInt32(16);
                     highscore.TrafficEnabled = reader.GetInt32(17);
                     highscore.HardcoreEnabled = reader.GetInt32(18);
-                    highscore.EnemiesKilled = reader.GetInt32(19);
-                    highscore.Scoreid = reader.GetString(20);
+                    highscore.EnemiesEnabled = reader.GetInt32(19);
+                    highscore.EnemiesKilled = reader.GetInt32(20);
                     highscore.Platform = reader.GetString(21);
                     highscore.Device = reader.GetString(22);
                     highscore.Ipaddress = reader.GetString(23);
@@ -2206,22 +2205,34 @@ public class DBHelper : MonoBehaviour
                     highscore.FourAtt = reader.GetInt32(29);
                     highscore.SevenMade = reader.GetInt32(30);
                     highscore.SevenAtt = reader.GetInt32(31);
-                    //highscore.submittedToApi = reader.GetInt32(32);
-                    highscore.BonusPoints = reader.GetInt32(33);
-                    highscore.MoneyBallMade = reader.GetInt32(34);
-                    highscore.MoneyBallAtt = reader.GetInt32(35);
-                    highscore.EnemiesEnabled = reader.GetInt32(36);
-
-                    highscore.UserName = reader.GetString(37).ToString();
+                    highscore.BonusPoints = reader.GetInt32(32);
+                    highscore.MoneyBallMade = reader.GetInt32(33);
+                    highscore.MoneyBallAtt = reader.GetInt32(34);
+                    //highscore.submittedToApi = reader.GetInt32(36);
+                    highscore.UserName = reader.GetString(36).ToString();
                     highscore.Userid = GameOptions.userid;
+                    highscore.SniperEnabled = reader.GetInt32(37);
                     highscore.SniperMode = reader.GetInt32(38);
                     highscore.SniperModeName = reader.GetString(39);
-                    highscore.SniperEnabled = reader.GetInt32(40);
-                    highscore.Sniperhits = reader.GetInt32(41);
-                    highscore.SniperShots = reader.GetInt32(42);
+                    highscore.Sniperhits = reader.GetInt32(40);
+                    highscore.SniperShots = reader.GetInt32(41);
                     //Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
-                    highscores.Add(highscore);
+                    // if username empty on unsubmitted score
+                    // but user logged in [gameoptions.username != null/empty
+                    // add logged in username to score and submit
+                    if ( (string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
+                        && (!string.IsNullOrWhiteSpace(GameOptions.userName) || !string.IsNullOrEmpty(GameOptions.userName)) )
+                    {
+                        highscore.UserName = GameOptions.userName;
+                        highscores.Add(highscore);
+                    }
+                    // if username != null or empty, add to list
+                    // this will catch if user has logged in
+                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)))
+                    {
+                        highscores.Add(highscore);
+                    }
                 }
             }
         }
