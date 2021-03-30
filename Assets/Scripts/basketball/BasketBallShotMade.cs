@@ -20,9 +20,7 @@ public class BasketBallShotMade : MonoBehaviour
     const string moneyPrefabPath = "Prefabs/objects/money";
     private GameObject moneyClone;
 
-    [SerializeField]
     int _consecutiveShotsMade;
-
     int _currentShotMade;
     int _currentShotAttempts;
 
@@ -131,7 +129,7 @@ public class BasketBallShotMade : MonoBehaviour
     {
         // first thing, update shot made total
         _basketBallStats.ShotMade++;
-
+        Debug.Log("_basketBallStats.ShotMade++ : " + _basketBallStats.ShotMade);
         // ==================== consecutive shots logic ==============================
 
         // get current state of shots made/attempted
@@ -302,7 +300,8 @@ public class BasketBallShotMade : MonoBehaviour
         }
 
         // ==================== requires position markers logic ==============================
-        if (_basketBallState.PlayerOnMarkerOnShoot)
+        if (_basketBallState.PlayerOnMarkerOnShoot 
+            && (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s))
         {
             // if money ball enabled
             if (_basketBallState.MoneyBallEnabledOnShoot)
@@ -310,7 +309,7 @@ public class BasketBallShotMade : MonoBehaviour
                 int max = GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MaxShotMade;
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
             }
-            //// no money ball, update current shot marker stats
+            // no money ball, update current shot marker stats
             //else
             //{
             //    GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
