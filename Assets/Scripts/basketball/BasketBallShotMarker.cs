@@ -38,6 +38,9 @@ public class BasketBallShotMarker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _shotMade = 0;
+        _shotAttempt = 0;
+
         // get reference for accessing basketball state
         basketBallState = GameLevelManager.instance.Basketball.BasketBallState;
         displayCurrentMarkerStats = GameObject.Find(displayStatsTextObject).GetComponent<Text>();
@@ -102,16 +105,16 @@ public class BasketBallShotMarker : MonoBehaviour
             }
         }
 
-        // if game mode IS 3,4, all point contest
+        // if game mode IS 3/4/all point contest
         if (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest)
         {
-            // max shot attempst reached
+            // max shot attempts reached
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
-                && !GameLevelManager.instance.PlayerState.hasBasketball
-                && !GameLevelManager.instance.PlayerState.inAir
+                && !GameLevelManager.instance.PlayerController.hasBasketball
+                && !GameLevelManager.instance.PlayerController.InAir
                 && !basketBallState.InAir)
             {
                 markerEnabled = false;
@@ -121,14 +124,14 @@ public class BasketBallShotMarker : MonoBehaviour
                 setDisplayText();
 
                 //check if last remaining shot marker
-                if (GameRules.instance.isGameOver())
+                if (GameRules.instance.IsGameOver())
                 {
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                     GameRules.instance.GameOver = true;
                 }
             }
         }
-        // game mode is NOT 3,4 , All point contest
+        // game mode is NOT 3/4/All point contest
         if (!GameRules.instance.GameModeThreePointContest
             || !GameRules.instance.GameModeFourPointContest
             || !GameRules.instance.GameModeAllPointContest)
@@ -143,7 +146,7 @@ public class BasketBallShotMarker : MonoBehaviour
                 setDisplayText();
 
                 // check if last remaining shot marker
-                if (GameRules.instance.isGameOver())
+                if (GameRules.instance.IsGameOver())
                 {
 
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
@@ -183,7 +186,7 @@ public class BasketBallShotMarker : MonoBehaviour
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))
         {
-            displayCurrentMarkerStats.text = "total points : " + BasketBall.instance.BasketBallStats.TotalPoints + "\n"
+            displayCurrentMarkerStats.text = "total points : " + BasketBall.instance.GameStats.TotalPoints + "\n"
                                              // + "current marker : " + positionMarkerId + "\n"
                                              + "made : " + ShotMade + " / " + ShotAttempt + "\n"
                                              + "remaining : " + (maxShotAttempt - ShotAttempt);

@@ -73,6 +73,7 @@ public class Timer : MonoBehaviour
         else
         {
             timerEnabled = false;
+            displayTimer = false;
         }
 
         timerText.text = "";
@@ -116,7 +117,7 @@ public class Timer : MonoBehaviour
             // not consecutive game mode
             if (!BasketBall.instance.BasketBallState.InAir
                 // player in air, has ball
-                && !(GameLevelManager.instance.PlayerState.hasBasketball && GameLevelManager.instance.PlayerState.inAir)
+                && !(GameLevelManager.instance.PlayerController.hasBasketball && GameLevelManager.instance.PlayerController.InAir)
                 // not consecutive shots game mode
                 && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
@@ -145,7 +146,6 @@ public class Timer : MonoBehaviour
                 shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
             }
         }
-
         if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
         {
             if (minutes < 1)
@@ -180,4 +180,5 @@ public class Timer : MonoBehaviour
     }
 
     public Text ScoreClockText { get => scoreClockText; set => scoreClockText = value; }
+    public float Seconds { get => seconds; }
 }

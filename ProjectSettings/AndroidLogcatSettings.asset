@@ -3,75 +3,51 @@
     "m_SelectedPackage": {
         "deviceId": "R52N61C2WFZ",
         "name": "com.level5.level5",
-        "processId": 31806,
+        "processId": 24480,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 26070,
+            "exited": true
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 21609,
+            "exited": true
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 21696,
+            "exited": true
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
+            "name": "com.level5.level5",
+            "processId": 22214,
+            "exited": true
+        },
+        {
+            "deviceId": "R52N61C2WFZ",
             "name": "com.sec.android.app.launcher",
-            "processId": 8768,
+            "processId": 18208,
             "exited": false
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 18493,
+            "processId": 23582,
             "exited": true
         },
         {
             "deviceId": "R52N61C2WFZ",
             "name": "com.level5.level5",
-            "processId": 19763,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 20602,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 23032,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 25350,
-            "exited": true
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 28991,
-            "exited": false
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 29626,
-            "exited": false
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 30547,
-            "exited": false
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 30956,
-            "exited": false
-        },
-        {
-            "deviceId": "R52N61C2WFZ",
-            "name": "com.level5.level5",
-            "processId": 31806,
+            "processId": 24480,
             "exited": false
         },
         {

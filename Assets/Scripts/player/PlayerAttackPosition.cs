@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerAttackPosition : MonoBehaviour
 {
@@ -16,7 +14,7 @@ public class PlayerAttackPosition : MonoBehaviour
 
     void updateAttackPositionTransform()
     {
-        if(enemyEngaged == null)
+        if (enemyEngaged == null)
         {
             engaged = false;
         }

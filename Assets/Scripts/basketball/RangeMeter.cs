@@ -40,7 +40,7 @@ public class RangeMeter : MonoBehaviour
 
     void setSliderValue()
     {
-        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerState.PlayerDistanceFromRim * 6)) * 100;
+        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
         sliderText.text = slider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
     }

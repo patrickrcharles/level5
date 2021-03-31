@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
@@ -28,7 +27,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"traffic", GameOptions.trafficEnabled },
                 {"deviceType", SystemInfo.deviceType },
@@ -46,7 +45,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"traffic", GameOptions.trafficEnabled },
                 {"deviceType", SystemInfo.deviceType },
@@ -63,18 +62,18 @@ public static class AnaylticsManager
             Analytics.CustomEvent(eventName,
             new Dictionary<string, object>
             {
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"slider value", sliderValue }
             }
             );
     }
 
-    public static void PointsScoredEnemiesEnabled(BasketBallStats basketBallStats)
+    public static void PointsScoredEnemiesEnabled(GameStats basketBallStats)
     {
         string eventName = "points scored : enemies enabled";
 
         int accuracy = 0;
-        if(basketBallStats.ShotAttempt != 0)
+        if (basketBallStats.ShotAttempt != 0)
         {
             accuracy = (basketBallStats.ShotMade / basketBallStats.ShotAttempt);
         }
@@ -83,7 +82,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"points", basketBallStats.TotalPoints },
                 {"accuracy", accuracy.ToString("##.####") },
@@ -93,7 +92,7 @@ public static class AnaylticsManager
             }
             );
     }
-    public static void PointsScoredEnemiesDisabled(BasketBallStats basketBallStats)
+    public static void PointsScoredEnemiesDisabled(GameStats basketBallStats)
     {
         string eventName = "points scored : enemies disabled";
         AnalyticsResult analyticsResult =
@@ -101,7 +100,7 @@ public static class AnaylticsManager
             new Dictionary<string, object>
             {
                 {"game mode", GameOptions.gameModeSelectedName },
-                {"player", GameOptions.playerDisplayName },
+                {"player", GameOptions.characterDisplayName },
                 {"cheerleader", GameOptions.cheerleaderDisplayName },
                 {"points", basketBallStats.TotalPoints },
                 {"accuracy", (basketBallStats.ShotMade / basketBallStats.ShotAttempt).ToString("##.####") },

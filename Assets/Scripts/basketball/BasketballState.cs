@@ -56,7 +56,7 @@ public class BasketBallState : MonoBehaviour
     void Update()
     {
 
-        PlayerDistanceFromRim = GameLevelManager.instance.PlayerState.PlayerDistanceFromRim;
+        PlayerDistanceFromRim = GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
         //PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
         //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 

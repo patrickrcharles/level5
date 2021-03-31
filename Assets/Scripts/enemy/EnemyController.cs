@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections;
+﻿using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -173,7 +171,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // ================== enemy idle ==========================
-        if ((GameLevelManager.instance.PlayerState.KnockedDown
+        if ((GameLevelManager.instance.PlayerController.KnockedDown
             || !canAttack
             || !enemyDetection.PlayerSighted)
             && currentState != AnimatorState_Attack)
@@ -236,7 +234,7 @@ public class EnemyController : MonoBehaviour
         if (stateAttack)
         {
             FreezeEnemyPosition();
-            if (playerSwapAttack != null 
+            if (playerSwapAttack != null
                 && !longRangeAttack
                 && playerSwapAttack.closeAttacks != null
                 && playerSwapAttack.AnimatorOverrideController != null)

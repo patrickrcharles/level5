@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityStandardAssets.Effects;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
@@ -58,12 +57,12 @@ public class PlayerAnimationEvents : MonoBehaviour
             capsuleCollider = transform.root.GetComponent<CapsuleCollider>();
         }
 
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
         audioSource = GetComponent<AudioSource>();
 
-        if (transform.Find(attackBoxText)!= null)
+        if (transform.Find(attackBoxText) != null)
         {
-            attackBox = transform.Find(attackBoxText).gameObject;        
+            attackBox = transform.Find(attackBoxText).gameObject;
             disableAttackBox();
         }
         else
@@ -143,12 +142,12 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     IEnumerator ShootAutomaticWeapon(int numBullets)
     {
-        for(int i = 0; i < numBullets; i++)
+        for (int i = 0; i < numBullets; i++)
         {
             instantiateProjectileBulletAuto();
             yield return new WaitForSeconds(0.1f);
         }
-    }   
+    }
 
     public void instantiateProjectileMolotov()
     {
@@ -167,12 +166,12 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void applyForceToDirectionFacingXAndY(float force)
     {
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             //apply to X
             playerController.RigidBody.AddForce(force, force, 0, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(-force, force, 0, ForceMode.VelocityChange);
         }
@@ -182,11 +181,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void applyForceToDirectionFacingProjectile(float force)
     {
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(force, 0, 0, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
         }
@@ -195,11 +194,11 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void applyForceToDirectionFacing()
     {
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(2.5f, 1.5f, 0, ForceMode.VelocityChange);
         }
-        if(!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(-2.5f, 1.5f, 0, ForceMode.VelocityChange);
         }
@@ -207,12 +206,12 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void applyForceToXDirectionFacing(float Xforce)
     {
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             //apply to X
             playerController.RigidBody.AddForce(Xforce, 0, 0, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(-Xforce, 0, 0, ForceMode.VelocityChange);
         }
@@ -223,12 +222,12 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         Debug.Log("force : " + Xforce);
         // get direction facing
-        if (playerController.facingRight)
+        if (playerController.FacingRight)
         {
             //apply to X
             playerController.RigidBody.AddForce(-Xforce, 2, 0, ForceMode.VelocityChange);
         }
-        if (!playerController.facingRight)
+        if (!playerController.FacingRight)
         {
             playerController.RigidBody.AddForce(Xforce, 2, 0, ForceMode.VelocityChange);
         }
@@ -443,7 +442,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     void CheckAttackBoxActiveStatus()
     {
-        if (!GameLevelManager.instance.PlayerState.IsSpecialState()
+        if (!GameLevelManager.instance.PlayerController.IsSpecialState()
             && attackBox.activeSelf)
         {
             attackBox.SetActive(false);

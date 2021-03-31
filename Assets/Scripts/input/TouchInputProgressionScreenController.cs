@@ -203,18 +203,19 @@ public class TouchInputProgressionScreenController : MonoBehaviour
             ProgressionManager.instance.cancelChanges();
             buttonPressed = true;
         }
+        // footer
         if (EventSystem.current.currentSelectedGameObject.name.Equals(ProgressionManager.StartButtonName)
             && !buttonPressed)
         {
             Debug.Log("load start");
-            ProgressionManager.instance.loadScene(ProgressionManager.SceneStartName);
+            ProgressionManager.instance.loadScene(Constants.SCENE_NAME_level_00_start);
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(ProgressionManager.StatsMenuButtonName)
             && !buttonPressed)
         {
             Debug.Log("load stats");
-            ProgressionManager.instance.loadScene(ProgressionManager.SceneStatsName);
+            ProgressionManager.instance.loadScene(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(ProgressionManager.QuitButtonName)

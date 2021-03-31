@@ -20,7 +20,7 @@ public class BehaviorNpcCritical : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerController;
         npcName = gameObject.transform.root.name;
     }
 

@@ -47,11 +47,6 @@ public class ProgressionManager : MonoBehaviour
     private const string quitButtonName = "quit_game";
     //private const string optionsMenuButtonName = "options_menu";
 
-    // scene name
-    private const string sceneStatsName = "level_00_stats";
-    private const string sceneLoadingName = "level_00_loading";
-    private const string sceneStartName = "level_00_start";
-
     // button names
     private const string playerSelectButtonName = "player_select_button";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -109,8 +104,6 @@ public class ProgressionManager : MonoBehaviour
     public static string ResetButtonName => resetButtonName;
     public ProgressionState ProgressionState { get => progressionState; set => progressionState = value; }
     public bool DataLoaded { get => dataLoaded; }
-    public static string SceneStatsName => sceneStatsName;
-    public static string SceneStartName => sceneStartName;
 
     public enum UpdateType
     {
@@ -180,7 +173,7 @@ public class ProgressionManager : MonoBehaviour
             && currentHighlightedButton.Equals(startButtonName))
         {
             confirmChanges();
-            loadScene(sceneStartName);
+            loadScene(Constants.SCENE_NAME_level_00_start);
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -196,7 +189,7 @@ public class ProgressionManager : MonoBehaviour
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
             confirmChanges();
-            loadScene(sceneStatsName);
+            loadScene(Constants.SCENE_NAME_level_00_stats);
         }
 
         // ================================== navigation =====================================================================
@@ -224,12 +217,12 @@ public class ProgressionManager : MonoBehaviour
         // ================================== confirmation dialogue / save / reset ===================================================
 
         // save button triggered
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(saveButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(saveButtonName) && !buttonPressed)
         {
             saveChanges();
         }
         // reset button triggered
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(resetButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(resetButtonName) && !buttonPressed)
         {
             // enable confirmation object
             // set selected object to confirm button
@@ -239,12 +232,12 @@ public class ProgressionManager : MonoBehaviour
             // reset stats
             //EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
         }
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(confirmButtonName) && !buttonPressed)
         {
             confirmChanges();
         }
         // cancel popup
-        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName))
+        if (controls.UINavigation.Submit.triggered && currentHighlightedButton.Equals(cancelButtonName) && !buttonPressed)
         {
             // do nothing, continue state
 
@@ -253,13 +246,15 @@ public class ProgressionManager : MonoBehaviour
         // ================================== change options =============================================================
         // up, change options
         if (controls.UINavigation.Up.triggered && !buttonPressed
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !buttonPressed)
         {
             changePlayerUp();
         }
         // down, change option
         if (controls.UINavigation.Down.triggered && !buttonPressed
-            && currentHighlightedButton.Equals(playerSelectOptionButtonName))
+            && currentHighlightedButton.Equals(playerSelectOptionButtonName)
+            && !buttonPressed)
         {
             changePlayerDown();
 
@@ -267,13 +262,15 @@ public class ProgressionManager : MonoBehaviour
         // add a point to selected category
         if (!buttonPressed && dataLoaded
             && progressionState.PointsAvailable > 0
-            && controls.UINavigation.Submit.triggered)
+            && controls.UINavigation.Submit.triggered
+            && !buttonPressed)
         {
             addPoint();
         }
         // subtract a point
         if (!buttonPressed && dataLoaded
-            && controls.UINavigation.Cancel.triggered)
+            && controls.UINavigation.Cancel.triggered
+            && !buttonPressed)
         {
             subtractPoint();
         }
@@ -333,15 +330,18 @@ public class ProgressionManager : MonoBehaviour
     public void subtractPoint()
     {
         buttonPressed = true;
-        if (currentHighlightedButton.Equals(progression3AccuracyName) && progressionState.AddTo3 > 0)
+        if (currentHighlightedButton.Equals(progression3AccuracyName)
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateThreeAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression4AccuracyName) && progressionState.AddTo4 > 0)
+        if (currentHighlightedButton.Equals(progression4AccuracyName)
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateFourAccuracy(UpdateType.Subtract);
         }
-        if (currentHighlightedButton.Equals(progression7AccuracyName) && progressionState.AddTo7 > 0)
+        if (currentHighlightedButton.Equals(progression7AccuracyName)
+            && (progressionState.AddTo3 > 0 || progressionState.AddToRange > 0))
         {
             updateSevenAccuracy(UpdateType.Subtract);
         }
@@ -351,18 +351,23 @@ public class ProgressionManager : MonoBehaviour
 
     public void saveChanges()
     {
+        buttonPressed = true;
         confirmationDialogueBox.SetActive(true);
         EventSystem.current.SetSelectedGameObject(GameObject.Find(confirmButtonName).gameObject);
+        buttonPressed = false;
     }
 
     public void cancelChanges()
     {
+        buttonPressed = true;
         confirmationDialogueBox.SetActive(false);
         EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
+        buttonPressed = false;
     }
 
     public void resetChanges()
     {
+        buttonPressed = true;
         resetUpdatePoints();
         // reset player state
         progressionState.initializeState(playerSelectedData[playerSelectedIndex]);
@@ -370,6 +375,7 @@ public class ProgressionManager : MonoBehaviour
         initializePlayerDisplay();
 
         EventSystem.current.SetSelectedGameObject(GameObject.Find(progression3AccuracyName).gameObject);
+        buttonPressed = false;
     }
 
     public void confirmChanges()
@@ -453,6 +459,14 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        // if maxed out, update range
+        else
+        {
+            updateBonusRangeDistance(updateType);
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
+        buttonPressed = false;
     }
     public void updateFourAccuracy(UpdateType updateType)
     {
@@ -481,6 +495,13 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        else
+        {
+            updateBonusRangeDistance(updateType);
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
+        buttonPressed = false;
     }
     public void updateSevenAccuracy(UpdateType updateType)
     {
@@ -510,6 +531,13 @@ public class ProgressionManager : MonoBehaviour
             updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
             initializePlayerDisplay();
         }
+        else
+        {
+            updateBonusRangeDistance(updateType);
+            updateStaticCharacterStatistics(playerSelectedData[playerSelectedIndex]);
+            initializePlayerDisplay();
+        }
+        buttonPressed = false;
     }
 
 
@@ -551,7 +579,7 @@ public class ProgressionManager : MonoBehaviour
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
                 GameOptions.previousSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneLoadingName);
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
             }
             else
             {
@@ -620,7 +648,6 @@ public class ProgressionManager : MonoBehaviour
 
     public void initializePlayerDisplay()
     {
-        //Debug.Log("initializePlayerDisplay()");
         try
         {
             // name and portrait
@@ -725,13 +752,48 @@ public class ProgressionManager : MonoBehaviour
                 + nextlvl.ToString("F0") + "\n";
             playerProgressionUpdatePointsText.text = "points available : " + progressionState.PointsAvailable.ToString();
             // not sure what this is for but im not gonna touch it yet
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
             return;
         }
+    }
+
+    void updateBonusRangeDistance(UpdateType updateType)
+    {
+        //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+        //bonusRangeText.text = "+" + progressionState.AddToRange;
+        switch (updateType)
+        {
+            case UpdateType.Add:
+                {
+                    progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+                    bonusRangeText.text = "+" + progressionState.AddToRange;
+                    progressionState.PointsAvailable--;
+                    progressionState.PointsUsedThisSession++;
+
+                    break;
+                }
+            case UpdateType.Subtract:
+                {
+                    progressionState.AddToRange -= 5;
+                    //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+                    bonusRangeText.text = "+" + progressionState.AddToRange;
+                    progressionState.PointsAvailable++;
+                    progressionState.PointsUsedThisSession--;
+                    break;
+                }
+            default: break;
+        }
+
+        //progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
+        //bonusRangeText.text = "+" + progressionState.AddToRange;
+        //Debug.Log("progressionState.AddToRange : " + progressionState.AddToRange);
+        //progressionState.PointsAvailable--;
+        //progressionState.PointsUsedThisSession++;
+        //progressionState.Range = (int)(playerSelectedData[playerSelectedIndex].Range + progressionState.AddToRange);
     }
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================

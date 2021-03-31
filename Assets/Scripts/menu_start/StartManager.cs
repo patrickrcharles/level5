@@ -1,4 +1,6 @@
 ﻿
+using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,19 +14,15 @@ public class StartManager : MonoBehaviour
 {
     [SerializeField]
     public string currentHighlightedButton;
-
     //list of all shooter profiles with player data
     [SerializeField]
     private List<CharacterProfile> playerSelectedData;
-
     // list off cheerleader profile data
     [SerializeField]
     private List<CheerleaderProfile> cheerleaderSelectedData;
-
     // list off level  data
     [SerializeField]
     private List<StartScreenLevelSelected> levelSelectedData;
-
     //mode selected objects
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
@@ -38,6 +36,8 @@ public class StartManager : MonoBehaviour
     Button levelSelectButton;
     Button trafficSelectButton;
     Button hardcoreSelectButton;
+    Button enemySelectButton;
+    Button sniperSelectButton;
     Button playerSelectButton;
     Button CheerleaderSelectButton;
     Button modeSelectButton;
@@ -63,25 +63,28 @@ public class StartManager : MonoBehaviour
     private Text modeSelectOptionText;
     private Text ModeSelectOptionDescriptionText;
 
-    //traffic
+    //selectable option text
     private Text trafficSelectOptionText;
     private Text hardcoreSelectOptionText;
+    private Text enemySelectOptionText;
+    private Text sniperSelectOptionText;
 
     //version text
     private Text versionText;
+    private Text latestVersionText;
+
+    [SerializeField]
+    private Text userNameText;
 
     //const object names
     private const string startButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
     private const string quitButtonName = "quit_game";
     private const string optionsMenuButtonName = "options_menu";
+    private const string creditsMenuButtonName = "credits_menu";
     private const string updateMenuButtonName = "update_menu";
+    private const string accountMenuButtonName = "account_menu";
     private const string updatePointsAvailable = "update_points_available";
-
-    // scene name
-    private const string statsMenuSceneName = "level_00_stats";
-    private const string loadScreenSceneName = "level_00_loading";
-    private const string progressionScreenSceneName = "level_00_progression";
 
     private const string playerSelectButtonName = "player_select";
     private const string playerSelectOptionButtonName = "player_selected_name";
@@ -119,10 +122,22 @@ public class StartManager : MonoBehaviour
     private const string hardcoreSelectButtonName = "hardcore_select";
     private const string hardcoreSelectOptionName = "hardcore_select_option";
 
+    //hardcore mode
+    private const string enemySelectButtonName = "enemy_select";
+    private const string enemySelectOptionName = "enemy_select_option";
+
+    //sniper
+    private const string sniperSelectButtonName = "sniper_select";
+    private const string sniperSelectOptionName = "sniper_select_option";
+
     [SerializeField]
-    private bool trafficEnabled;    
+    private bool trafficEnabled;
     [SerializeField]
     private bool hardcoreEnabled;
+    [SerializeField]
+    private bool enemiesEnabled;
+    [SerializeField]
+    private bool sniperEnabled;
 
     private int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -184,13 +199,16 @@ public class StartManager : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
             disableButtonsNotUsedForTouchInput();
 #endif
+
+        StartCoroutine(InitializeDisplay());
     }
 
     // Start is called before the first frame update
     void Start()
     {
         AnaylticsManager.MenuStartLoaded();
-        StartCoroutine(InitializeDisplay());
+        //StartCoroutine(InitializeDisplay());
+        //Debug.Log("startscreen : username : " + GameOptions.userName);
     }
 
 
@@ -252,24 +270,41 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(statsMenuButtonName))
         {
-            loadMenu(statsMenuSceneName);
+            loadMenu(Constants.SCENE_NAME_level_00_stats);
         }
 
-        // stats menu button | load stats menu
+        // update menu button | load update menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(updateMenuButtonName))
         {
             GameOptions.playerSelectedIndex = playerSelectedIndex;
-            loadMenu(progressionScreenSceneName);
+            loadMenu(Constants.SCENE_NAME_level_00_progression);
         }
-        //// stats menu button | load stats menu
-        //if ((controls.UINavigation.Submit.triggered
-        //     || controls.Player.shoot.triggered)
-        //    && currentHighlightedButton.Equals(progressionScreenSceneName))
-        //{
-        //    loadMenu(progressionScreenSceneName);
-        //}
+        // credits menu button | load credits menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(creditsMenuButtonName))
+        {
+            loadMenu(Constants.SCENE_NAME_level_00_credits);
+        }
+
+        // account menu button | load account menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(accountMenuButtonName))
+        {
+            //if ( GameOptions.numOfLocalUsers < 5)
+            //{
+            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
+            //}
+            //else
+            //{
+            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
+            //}
+
+            loadMenu(Constants.SCENE_NAME_level_00_account);
+        }
 
 
         // ================================== navigation =====================================================================
@@ -280,7 +315,9 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
-            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
+            && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -295,7 +332,9 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
-            && !currentHighlightedButton.Equals(hardcoreSelectOptionName))
+            && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
+            && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
             EventSystem.current.SetSelectedGameObject(EventSystem.current.currentSelectedGameObject
@@ -329,7 +368,7 @@ public class StartManager : MonoBehaviour
         {
             buttonPressed = true;
             try
-            {           
+            {
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -360,6 +399,16 @@ public class StartManager : MonoBehaviour
                 {
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                {
+                    changeSelectedEnemiesOption();
+                    initializeEnemyOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(SniperSelectOptionName))
+                {
+                    changeSelectedSniperOption();
+                    initializeSniperOptionDisplay();
                 }
             }
             catch
@@ -404,6 +453,11 @@ public class StartManager : MonoBehaviour
                 {
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(SniperSelectOptionName))
+                {
+                    changeSelectedSniperOption();
+                    initializeSniperOptionDisplay();
                 }
             }
             catch
@@ -454,15 +508,24 @@ public class StartManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(loadScreenSceneName);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         }
     }
 
     IEnumerator InitializeDisplay()
     {
         yield return new WaitUntil(() => dataLoaded);
+        versionText.text = "current version: " + Application.version;
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        }
+        else
+        {
+            latestVersionText.text = "latest version: no internet";
+        }
 
-        versionText.text = "Level 5 v."+ Application.version;
+        //yield return new WaitForSeconds(0.05f);
         // display default data
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
@@ -470,8 +533,20 @@ public class StartManager : MonoBehaviour
         intializeModeDisplay();
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
+        initializeSniperOptionDisplay();
         setInitialGameOptions();
+        //yield return new WaitForSeconds(0.05f);
 
+        if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
+        {
+            userNameText.text = "username : " + GameOptions.userName + " connected";
+            //Debug.Log("link");
+        }
+        if (APIHelper.BearerToken == null || string.IsNullOrEmpty(GameOptions.userName))
+        {
+            userNameText.text = "username : " + GameOptions.userName + " disconnected";
+            //Debug.Log("link");
+        }
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
@@ -480,6 +555,8 @@ public class StartManager : MonoBehaviour
         levelSelectButton = GameObject.Find(levelSelectButtonName).GetComponent<Button>();
         trafficSelectButton = GameObject.Find(trafficSelectButtonName).GetComponent<Button>();
         hardcoreSelectButton = GameObject.Find(hardcoreSelectButtonName).GetComponent<Button>();
+        enemySelectButton = GameObject.Find(enemySelectButtonName).GetComponent<Button>();
+        sniperSelectButton = GameObject.Find(sniperSelectButtonName).GetComponent<Button>();
         playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
         CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
@@ -501,17 +578,21 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
         cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
-        // traffic option selection text
+        // options selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
+        enemySelectOptionText = GameObject.Find(enemySelectOptionName).GetComponent<Text>();
+        sniperSelectOptionText = GameObject.Find(SniperSelectOptionName).GetComponent<Text>();
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
+        latestVersionText = GameObject.Find("latestVersion").GetComponent<Text>();
+        userNameText = GameObject.Find("username").GetComponent<Text>();
     }
 
     private void setInitialGameOptions()
     {
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
@@ -526,7 +607,7 @@ public class StartManager : MonoBehaviour
 
         Random random = new Random();
         int randNum = random.Next(1, 3);
-        //Debug.Log("*************************************** rand num value : " + randNum);
+        Debug.Log("*************************************** rand num value : " + randNum);
 
         if (randNum == 1)
         {
@@ -567,6 +648,16 @@ public class StartManager : MonoBehaviour
         hardcoreEnabled = !hardcoreEnabled;
     }
 
+    public void changeSelectedEnemiesOption()
+    {
+        enemiesEnabled = !enemiesEnabled;
+    }
+
+    public void changeSelectedSniperOption()
+    {
+        sniperEnabled = !sniperEnabled;
+    }
+
     // ============================  Initialize displays ==============================
     public void initializeTrafficOptionDisplay()
     {
@@ -592,6 +683,30 @@ public class StartManager : MonoBehaviour
         }
     }
 
+    public void initializeEnemyOptionDisplay()
+    {
+        if (enemiesEnabled)
+        {
+            enemySelectOptionText.text = "ON";
+        }
+        if (!enemiesEnabled)
+        {
+            enemySelectOptionText.text = "OFF";
+        }
+    }
+
+    public void initializeSniperOptionDisplay()
+    {
+        if (sniperEnabled)
+        {
+            sniperSelectOptionText.text = "ON";
+        }
+        if (!sniperEnabled)
+        {
+            sniperSelectOptionText.text = "OFF";
+        }
+    }
+
     public void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
@@ -613,47 +728,6 @@ public class StartManager : MonoBehaviour
             playerProgressionStatsText.enabled = false;
 
             playerSelectedIsLockedObject.SetActive(false);
-
-            // check if players is locked
-
-            //foreach (CheerleaderProfile cl in cheerleaderSelectedData)
-            //{
-            //    if (AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId) != null)
-            //    {
-            //        Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.CheerleaderId == cl.CheerleaderId);
-            //        cl.IsLocked = tempAchieve.IsLocked;
-            //        cl.UnlockCharacterText = tempAchieve.AchievementDescription;
-            //    }
-            //    // none selected
-            //    if (cl.CheerleaderId == 0)
-            //    {
-            //        cl.IsLocked = false;
-            //        cl.UnlockCharacterText = "";
-            //    }
-            //}
-
-            //if (cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            //{
-            //    // get achievement progress for display
-            //    Achievement tempAchieve =
-            //        AchievementManager.instance.AchievementList
-            //        .Find(x => x.CheerleaderId == cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderId);
-
-            //    // disable text and unlock text
-            //    cheerleaderSelectedIsLockedObject.SetActive(true);
-            //    cheerleaderSelectUnlockText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].UnlockCharacterText
-            //        + "\nprogress " + tempAchieve.ActivationValueProgressionInt
-            //        + " / " + tempAchieve.ActivationValueInt;
-            //}
-            //// if player is locked or free play mode selected
-            //if (!cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked
-            //    || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-            //    || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-            //{
-            //    //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
-            //    cheerleaderSelectedIsLockedObject.SetActive(false);
-            //    cheerleaderSelectUnlockText.text = "";
-            //}
 
             cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
             cheerleaderSelectOptionImage.sprite = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderPortrait;
@@ -693,31 +767,6 @@ public class StartManager : MonoBehaviour
 
             playerProgressionCategoryText.enabled = true;
             playerProgressionStatsText.enabled = true;
-
-            ////Debug.Log("***************************************** 1");
-            //if (playerSelectedData[playerSelectedIndex].IsLocked)
-            //{
-            //    // get player achievement status
-            //    Achievement tempAchieve = AchievementManager.instance.AchievementList.Find(x => x.PlayerId == playerSelectedData[playerSelectedIndex].PlayerId);
-            //    playerSelectedIsLockedObject.SetActive(true);
-
-            //    // disable text and unlock text
-            //    //cheerleaderSelectedIsLockedObject.SetActive(true);
-            //    if (tempAchieve.IsProgressiveCount)
-            //    {
-            //        //Debug.Log("========================================================== temp.progress : " + tempAchieve.ActivationValueProgressionInt);
-
-            //        playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText
-            //            + "\nprogress " + tempAchieve.ActivationValueProgressionInt
-            //            + " / " + tempAchieve.ActivationValueInt;
-            //    }
-            //    else
-            //    {
-            //        playerSelectUnlockText.text = playerSelectedData[playerSelectedIndex].UnlockCharacterText;
-            //    }
-            //}
-
-            //Debug.Log("***************************************** 2");
 
             // if player is locked or free play mode selected
             if (!playerSelectedData[playerSelectedIndex].IsLocked
@@ -785,7 +834,7 @@ public class StartManager : MonoBehaviour
             }
 
             //Debug.Log("***************************************** 8");
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         }
         catch (Exception e)
@@ -850,17 +899,18 @@ public class StartManager : MonoBehaviour
     {
         //Debug.Log("setGameOptions()");
 
-        GameOptions.playerId = playerSelectedData[playerSelectedIndex].PlayerId;
-        GameOptions.playerDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
+        GameOptions.characterId = playerSelectedData[playerSelectedIndex].PlayerId;
+        GameOptions.characterDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
 
         // if Wizard of Boat selected, randomly choose which one to spawn
         if (playerSelectedData[playerSelectedIndex].PlayerDisplayName.ToLower().Contains("boat"))
         {
-            GameOptions.playerObjectName = getRandomWizardOfBoat();
+            GameOptions.characterObjectName = getRandomWizardOfBoat();
+            Debug.Log("GameOptions.characterObjectName : " + GameOptions.characterObjectName);
         }
         else
         {
-            GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+            GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
 
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
@@ -909,9 +959,10 @@ public class StartManager : MonoBehaviour
         GameOptions.cheerleaderSelectedIndex = cheerleaderSelectedIndex;
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
-        //GameOptions.trafficEnabled = trafficEnabled;
-        GameOptions.enemiesEnabled = trafficEnabled;
+        GameOptions.trafficEnabled = trafficEnabled;
+        GameOptions.enemiesEnabled = enemiesEnabled;
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
+        GameOptions.sniperEnabled = sniperEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
@@ -921,6 +972,12 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.enemiesEnabled = true;
         }
+
+        if (!levelSelectedData[levelSelectedIndex].LevelHasTraffic)
+        {
+            GameOptions.trafficEnabled = false;
+        }
+
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
         PlayerData.instance.loadStatsFromDatabase();
@@ -950,7 +1007,7 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             playerSelectedIndex--;
         }
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerObjectName);
     }
     public void changeSelectedPlayerDown()
@@ -965,7 +1022,7 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             playerSelectedIndex++;
         }
-        GameOptions.playerObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
 
     public void changeSelectedCheerleaderUp()
@@ -1063,24 +1120,24 @@ public class StartManager : MonoBehaviour
 
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
+    // button names
     public static string PlayerSelectOptionButtonName => playerSelectOptionButtonName;
     public static string CheerleaderSelectOptionButtonName => cheerleaderSelectOptionButtonName;
     public static string LevelSelectOptionButtonName => levelSelectOptionButtonName;
     public static string ModeSelectOptionButtonName => modeSelectOptionButtonName;
+    public static string CreditsMenuButtonName => creditsMenuButtonName;
     public static string TrafficSelectOptionName => trafficSelectOptionName;
     public static string StartButtonName => startButtonName;
     public static string StatsMenuButtonName => statsMenuButtonName;
     public static string QuitButtonName => quitButtonName;
-    public static string StatsMenuSceneName => statsMenuSceneName;
-    public static string ProgressionScreenSceneName => progressionScreenSceneName;
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
-    //public Button LevelSelectButton { get => levelSelectButton; set => levelSelectButton = value; }
-    //public Button TrafficSelectButton { get => trafficSelectButton; set => trafficSelectButton = value; }
-    //public Button PlayerSelectButton1 { get => playerSelectButton; set => playerSelectButton = value; }
-    //public Button CheerleaderSelectButton1 { get => CheerleaderSelectButton; set => CheerleaderSelectButton = value; }
-    //public Button ModeSelectButton { get => modeSelectButton; set => modeSelectButton = value; }
-    //public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; set => playerSelectedData = value; }
 
+    public static string AccountMenuButtonName => accountMenuButtonName;
 
+    public static string CreditsMenuButtonName1 => creditsMenuButtonName;
+
+    public static string SniperSelectOptionName => sniperSelectOptionName;
+
+    public int PlayerSelectedIndex => playerSelectedIndex;
 }

@@ -2,7 +2,7 @@
 
 public class CallBallToPlayer : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     internal float pullSpeed;
     private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;
@@ -24,7 +24,7 @@ public class CallBallToPlayer : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerController;
         basketBall = GameLevelManager.instance.Basketball;
         _basketBallState = basketBall.GetComponent<BasketBallState>();
         basketballRigidBody = basketBall.GetComponent<Rigidbody>();
@@ -47,7 +47,7 @@ public class CallBallToPlayer : MonoBehaviour
     {
         if (GameLevelManager.instance.Controls.Player.shoot.triggered
             && GameLevelManager.instance.Controls.Other.change.ReadValue<float>() == 0
-            && GameLevelManager.instance.PlayerState.CurrentState != GameLevelManager.instance.PlayerState.BlockState
+            && GameLevelManager.instance.PlayerController.CurrentState != GameLevelManager.instance.PlayerController.BlockState
             && !playerState.hasBasketball
             && _basketBallState.CanPullBall
             && !_basketBallState.Locked

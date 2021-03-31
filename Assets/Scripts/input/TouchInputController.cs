@@ -62,7 +62,7 @@ public class TouchInputController : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
     }
 
     //#if UNITY_ANDROID && !UNITY_EDITOR
@@ -101,16 +101,16 @@ public class TouchInputController : MonoBehaviour
                 //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
                 && !buttonPressed
                 && touch1.position.x < (Screen.width / 2)
-                && touch1.position.y > (Screen.height / 2)
-                //&& startTouchPosition1.x < (Screen.height / 2)
+                && touch1.position.y > (Screen.height / 3)
                 && playerController.PlayerCanBlock
+                && playerController.PlayerHealth.Block > 0
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
             {
                 hold1Detected = true;
                 startTouchPosition1 = touch1.position;
                 if (playerController.CanBlock && !playerController.hasBasketball)
                 {
-                    playerController.playerBlock();
+                    playerController.PlayerBlock();
                 }
             }
             if (touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
@@ -173,7 +173,7 @@ public class TouchInputController : MonoBehaviour
                     {
                         //Debug.Log("player attack ");
                         tap2Detected = false;
-                        playerController.playerAttack();
+                        playerController.PlayerAttack();
                     }
                     buttonPressed = false;
                 }
@@ -182,14 +182,14 @@ public class TouchInputController : MonoBehaviour
                 {
                     //Debug.Log("!tap2Detected && doubleTap2Detected");
                     buttonPressed = true;
-                    if (!playerController.inAir
+                    if (!playerController.InAir
                         && playerController.Grounded
                         && !playerController.KnockedDown)
                     {
                         //Debug.Log("player special attack ");
                         //doubleTap2Detected = false;
                         hold1Detected = false;
-                        playerController.playerSpecial();
+                        playerController.PlayerSpecial();
                     }
                     buttonPressed = false;
                 }
@@ -213,7 +213,7 @@ public class TouchInputController : MonoBehaviour
 
         if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
-            GameLevelManager.instance.PlayerState.touchControlJumpOrShoot(touch1.position);
+            GameLevelManager.instance.PlayerController.TouchControlJumpOrShoot(touch1.position);
             tap1Detected = false;
         }
 
@@ -253,7 +253,7 @@ public class TouchInputController : MonoBehaviour
             && !buttonPressed)
         {
             //Debug.Log("start screen");
-            Pause.instance.loadstartScreen();
+            StartCoroutine(Pause.instance.loadstartScreen());
             buttonPressed = true;
         }
         // cancel/unpause
@@ -269,7 +269,7 @@ public class TouchInputController : MonoBehaviour
             && !buttonPressed)
         {
             //Debug.Log("quit");
-            Pause.instance.quit();
+            StartCoroutine(Pause.instance.Quit());
             buttonPressed = true;
         }
         //// new stuff

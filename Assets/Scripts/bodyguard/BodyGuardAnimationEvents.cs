@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BodyGuardAnimationEvents : MonoBehaviour
@@ -76,7 +74,7 @@ public class BodyGuardAnimationEvents : MonoBehaviour
 
     void checkAttackBoxDisabledCorrectly()
     {
-        if (enemyController != null  &&  !enemyController.stateAttack)
+        if (enemyController != null && !enemyController.stateAttack)
         {
             disableAttackBox();
         }
@@ -178,7 +176,7 @@ public class BodyGuardAnimationEvents : MonoBehaviour
         {
             audioSource.PlayOneShot(SFXBB.instance.knockedDown);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log("exception e :" + e);
         }

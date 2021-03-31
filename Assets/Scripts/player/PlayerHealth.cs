@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -40,14 +39,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        playerController = GameLevelManager.instance.PlayerState;
+        playerController = GameLevelManager.instance.PlayerController;
         regenerateBlockRate = 0.5f;
         regenerateHealthRate = 1f;
     }
 
     private void Update()
     {
-        if (GameOptions.enemiesEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled)
         {
             if (health <= 0 && !IsDead)
             {
@@ -94,7 +93,10 @@ public class PlayerHealth : MonoBehaviour
         regenerateHealth = true;
         yield return new WaitForSeconds(regenerateHealthRate);
         health += 1f;
-        PlayerHealthBar.instance.setHealthSliderValue();
+        if (PlayerHealthBar.instance != null)
+        {
+            PlayerHealthBar.instance.setHealthSliderValue();
+        }
         regenerateHealth = false;
     }
 }

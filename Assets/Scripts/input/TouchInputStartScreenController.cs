@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TouchInputStartScreenController : MonoBehaviour
 {
-//#if UNITY_ANDROID && !UNITY_EDITOR
+    //#if UNITY_ANDROID && !UNITY_EDITOR
     private Vector2 startTouchPosition, endTouchPosition;
 
     float swipeUpTolerance;
@@ -50,7 +50,7 @@ public class TouchInputStartScreenController : MonoBehaviour
     void Update()
     {
         // if no button selected, return to previous
-        if(EventSystem.current.currentSelectedGameObject == null)
+        if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         }
@@ -85,7 +85,7 @@ public class TouchInputStartScreenController : MonoBehaviour
                 }
             }
             //swipe up on changeable options
-            if (touch.tapCount == 1  && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+            if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
                 && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
                 && swipeDistance > 0 // swipe down
                 && (startTouchPosition.x > (Screen.width / 2))) // if swipe on right 1/2 of screen)) 
@@ -154,6 +154,12 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeHardcoreOptionDisplay();
             buttonPressed = true;
         }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
 
         // player select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
@@ -176,25 +182,43 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.intializeModeDisplay();
             buttonPressed = true;
         }
+        //stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
         {
-            StartManager.instance.loadMenu(StartManager.StatsMenuSceneName);
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
+        // start
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
         {
             StartManager.instance.loadGame();
             buttonPressed = true;
         }
+        // update /progression
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
-            StartManager.instance.loadMenu(StartManager.ProgressionScreenSceneName);
+            GameOptions.playerSelectedIndex = StartManager.instance.PlayerSelectedIndex;
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
+        // credits
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CreditsMenuButtonName))
+        {
+            //Debug.Log("load prgression screen");
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_credits);
+            buttonPressed = true;
+        }
+        // quit
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
         {
             Application.Quit();
+            buttonPressed = true;
+        }
+        //account
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.AccountMenuButtonName))
+        {
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_account);
             buttonPressed = true;
         }
         buttonPressed = false;
@@ -235,6 +259,12 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             StartManager.instance.changeSelectedHardcoreOption();
             StartManager.instance.initializeHardcoreOptionDisplay();
+            buttonPressed = true;
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
         // player select
@@ -283,6 +313,13 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeHardcoreOptionDisplay();
             buttonPressed = true;
         }
+        // sniper select
+        if (prevSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -306,5 +343,5 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
         buttonPressed = false;
     }
-//#endif
+    //#endif
 }

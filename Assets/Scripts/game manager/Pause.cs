@@ -1,5 +1,7 @@
 ﻿
+using Assets.Scripts.database;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -174,7 +176,6 @@ public class Pause : MonoBehaviour
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
-            //|| InputManager.GetButtonDown("Fire1")))
             {
                 reloadScene();
             }
@@ -182,21 +183,19 @@ public class Pause : MonoBehaviour
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                //Debug.Log("load start scene");
-                loadstartScreen();
+                StartCoroutine(loadstartScreen());
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                //Debug.Log("toggle pause");
                 TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
-                quit();
+                StartCoroutine(Quit());
             }
         }
     }
@@ -213,7 +212,7 @@ public class Pause : MonoBehaviour
         toggleUiStatsObject.SetActive(false);
     }
 
-    public void quit()
+    public IEnumerator Quit()
     {
         // update all time stats
         if (DBConnector.instance != null &&
@@ -221,10 +220,11 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-        Quit();
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        QuitApplication();
     }
 
-    public void loadstartScreen()
+    public IEnumerator loadstartScreen()
     {
         // update all time stats
         if (DBConnector.instance != null &&
@@ -232,8 +232,17 @@ public class Pause : MonoBehaviour
         {
             updateFreePlayStats();
         }
-        // start screen should be first scene in build
-        SceneManager.LoadScene("level_00_loading");
+        if (DBConnector.instance != null)
+        {
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            // load screen should be first scene in build
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        }
+        else
+        {
+            // load screen should be first scene in build
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        }
     }
 
     public void reloadScene()
@@ -272,10 +281,15 @@ public class Pause : MonoBehaviour
         //set time played to stopped
         GameRules.instance.setTimePlayed();
         // save free play stats
-        DBConnector.instance.savePlayerGameStats(BasketBall.instance.BasketBallStats);
+        // convert basketball stats to high score model
+        HighScoreModel dBHighScoreModel = new HighScoreModel();
+        HighScoreModel dBHighScoreModelTemp = new HighScoreModel();
+        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.GameStats);
+
+        DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
         // update all time stats
-        DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.BasketBallStats);
-        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.BasketBallStats.ExperienceGained);
+        DBConnector.instance.savePlayerAllTimeStats(BasketBall.instance.GameStats);
+        DBConnector.instance.savePlayerProfileProgression(BasketBall.instance.GameStats.ExperienceGained);
     }
 
     private void setPauseScreen(bool value)
@@ -391,7 +405,7 @@ public class Pause : MonoBehaviour
         }
     }
 
-    private void Quit()
+    private void QuitApplication()
     {
         Application.Quit();
     }

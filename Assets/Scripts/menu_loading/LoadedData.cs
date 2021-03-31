@@ -19,7 +19,8 @@ public class LoadedData : MonoBehaviour
 
     [SerializeField] private bool dataLoaded;
 
-    CharacterProfile currentPlayer;
+    float timeoutStart;
+    float timeoutEnd;
 
     public static LoadedData instance;
 
@@ -38,20 +39,37 @@ public class LoadedData : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoadStartScreenData());
+    }
 
+    private void Update()
+    {
+        if (!dataLoaded)
+        {
+            if (Time.time > timeoutEnd)
+            {
+                dataLoaded = true;
+            }
+        }
     }
 
     IEnumerator LoadStartScreenData()
     {
+        timeoutStart = Time.time;
+        timeoutEnd = Time.time + 30;
 
         yield return new WaitUntil(() => LoadManager.instance.playerDataLoaded);
         playerSelectedData = LoadManager.instance.PlayerSelectedData;
+
         yield return new WaitUntil(() => LoadManager.instance.cheerleaderDataLoaded);
         cheerleaderSelectedData = LoadManager.instance.CheerleaderSelectedData;
+
         yield return new WaitUntil(() => LoadManager.instance.levelDataLoaded);
         levelSelectedData = LoadManager.instance.LevelSelectedData;
+
         yield return new WaitUntil(() => LoadManager.instance.modeDataLoaded);
         modeSelectedData = LoadManager.instance.ModeSelectedData;
+
+
         if (playerSelectedData != null
             && cheerleaderSelectedData != null
             && levelSelectedData != null

@@ -7,7 +7,7 @@ public class GameLevelManager : MonoBehaviour
     // that can be retrieved across all scripts
     [SerializeField]
     private GameObject _player;
-    private PlayerController _playerState;
+    private PlayerController _playerController;
     private CharacterProfile _playerShooterProfile;
     private PlayerHealth _playerHealth;
     [SerializeField]
@@ -88,7 +88,7 @@ public class GameLevelManager : MonoBehaviour
     private void Start()
     {
         // return to this if n
-        GameOptions.previousSceneName = "level_00_start";
+        GameOptions.previousSceneName = Constants.SCENE_NAME_level_00_loading;
 
         // analytic event
         if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
@@ -119,7 +119,7 @@ public class GameLevelManager : MonoBehaviour
         }
 
         _player = GameObject.FindWithTag("Player");
-        _playerState = _player.GetComponent<PlayerController>();
+        _playerController = _player.GetComponent<PlayerController>();
         _playerShooterProfile = _player.GetComponent<CharacterProfile>();
         _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
         _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
@@ -144,7 +144,7 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            PlayerState.toggleRun();
+            PlayerController.ToggleRun();
             _locked = false;
         }
 
@@ -173,7 +173,7 @@ public class GameLevelManager : MonoBehaviour
             {
                 //Debug.Log("veh  : " + veh.name);
                 //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
-                if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && veh.name.Contains(GameOptions.playerObjectName))
+                if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && veh.name.Contains(GameOptions.characterObjectName))
                 {
                     //Debug.Log("disable veh  : " + veh.name);
                     veh.SetActive(false);
@@ -184,7 +184,7 @@ public class GameLevelManager : MonoBehaviour
         _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
         foreach (var npc in _npcObjects)
         {
-            if (!string.IsNullOrEmpty(GameOptions.playerObjectName) && npc.name.Contains(GameOptions.playerObjectName))
+            if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && npc.name.Contains(GameOptions.characterObjectName))
             {
                 //Debug.Log("disable npc  : " + npc.name);
                 npc.SetActive(false);
@@ -219,9 +219,9 @@ public class GameLevelManager : MonoBehaviour
     private void checkPlayerPrefabExists()
     {
         // if player selected is not null / player not selected
-        if (!string.IsNullOrEmpty(GameOptions.playerObjectName))
+        if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
         {
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.playerObjectName;
+            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
             //Debug.Log("load prefab");y analyticsvalidotr not working
 
@@ -260,7 +260,7 @@ public class GameLevelManager : MonoBehaviour
 
     public GameObject Player => _player;
 
-    public PlayerController PlayerState => _playerState;
+    public PlayerController PlayerController => _playerController;
 
     public Animator Anim { get; private set; }
 

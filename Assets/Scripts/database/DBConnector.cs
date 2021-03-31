@@ -1,6 +1,8 @@
 ﻿
+using Assets.Scripts.database;
 using Mono.Data.Sqlite;
 using System;
+using System.Collections;
 using System.Data;
 using System.IO;
 using UnityEngine;
@@ -13,15 +15,14 @@ public class DBConnector : MonoBehaviour
     private String filepath;
 
     // table names
-    const String tableNameAchievements = "Achievements";
-    const String tableNameAllTimeStats = "AllTimeStats";
-    const String tableNameCharacterProfile = "CharacterProfile";
-    const String tableNameCheerleaderProfile = "CheerleaderProfile";
-    const String tableNameHighScores = "HighScores";
-    const String tableNameUser = "User";
+    //const String tableNameAllTimeStats = "AllTimeStats";
+    //const String tableNameCharacterProfile = "CharacterProfile";
+    //const String tableNameCheerleaderProfile = "CheerleaderProfile";
+    //const String tableNameHighScores = "HighScores";
+    //const String tableNameUser = "User";
     const String verifyDatabaseSqlQuery = "SELECT name FROM sqlite_master WHERE type='table';";
 
-    private const int currentDatabaseAppVersion = 1;
+    private const int currentDatabaseAppVersion = 7; // 3/25/21
 
     Text messageText;
 
@@ -48,9 +49,7 @@ public class DBConnector : MonoBehaviour
             Destroy(gameObject);
         }
 
-
         filepath = Application.persistentDataPath + databaseNamePath;
-        //Debug.Log(filepath);
         connection = "URI=file:" + Application.persistentDataPath + databaseNamePath; //Path to database
 
         dbHelper = gameObject.GetComponent<DBHelper>();
@@ -64,46 +63,39 @@ public class DBConnector : MonoBehaviour
         {
             try
             {
-                createDatabase();
+                StartCoroutine(createDatabase());
             }
             catch (Exception e)
             {
+                dbHelper.DatabaseLocked = false;
                 Debug.Log("ERROR : " + e);
-                //messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
         // if database doesnt exist
-        if (!File.Exists(filepath) )
-        //|| !integrityCheck()
-        //|| !Application.version.Equals(getDatabaseVersion()))
+        if (!File.Exists(filepath))
         {
             try
             {
                 SqliteConnection.CreateFile(filepath);
                 //Debug.Log("create file / !existed");
-                dropDatabase();
-                createDatabase();
+                StartCoroutine(dropDatabase());
+                StartCoroutine(createDatabase());
             }
             catch (Exception e)
             {
+                dbHelper.DatabaseLocked = false;
                 Debug.Log("ERROR : " + e);
-                //messageText.text += "\n" + e;
-                //SendEmail.instance.//SendEmailOnEvent("ERROR : create database", //messageText.text);
                 return;
             }
         }
-        if(getDatabaseVersion() != currentDatabaseAppVersion)
+        if (getDatabaseVersion() < dbHelper.CurrentDatabaseAppVersion)
         {
-            //Debug.Log("db version mismatch : ");
-            //Debug.Log("     current db version : " + getDatabaseVersion());
-            //Debug.Log("     new db version : " + currentDatabaseAppVersion);
-            dropDatabase();
-            createDatabase();
-            setDatabaseVersion();
+            //StartCoroutine(dropDatabase());
+            //StartCoroutine(createDatabase());
+            StartCoroutine(dbHelper.UpgradeDatabaseToVersion3());
+            StartCoroutine(setDatabaseVersion());
         }
-
     }
 
     private void VerifyDatabase()
@@ -116,11 +108,7 @@ public class DBConnector : MonoBehaviour
             dbconn.Open();
             dbcmd = dbconn.CreateCommand();
 
-            //string os = SystemInfo.operatingSystem;
-
             String sqlQuery = verifyDatabaseSqlQuery;
-
-            //Debug.Log("sqlQuery : " + sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -128,7 +116,6 @@ public class DBConnector : MonoBehaviour
             while (reader.Read())
             {
                 version = reader.GetString(0);
-                //Debug.Log(version);
             }
 
             reader.Close();
@@ -139,182 +126,84 @@ public class DBConnector : MonoBehaviour
             dbconn = null;
 
             databaseCreated = true;
-            //Debug.Log("databaseCreated : " + databaseCreated);
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
+            dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
+            return;
         }
     }
-
-
-    //private string getDatabaseVersion()
-    //{
-    //    string version = "";
-
-    //    if (tableExists("User"))
-    //    {
-    //        try
-    //        {
-    //            dbconn = new SqliteConnection(connection);
-    //            dbconn.Open();
-    //            dbcmd = dbconn.CreateCommand();
-
-    //            //string os = SystemInfo.operatingSystem;
-
-    //            String sqlQuery = "SELECT version FROM User WHERE id = 1 ";
-
-    //            //Debug.Log("sqlQuery : " + sqlQuery);
-
-    //            dbcmd.CommandText = sqlQuery;
-    //            IDataReader reader = dbcmd.ExecuteReader();
-
-    //            while (reader.Read())
-    //            {
-    //                version = reader.GetString(0);
-    //            }
-
-    //            reader.Close();
-    //            reader = null;
-    //            dbcmd.Dispose();
-    //            dbcmd = null;
-    //            dbconn.Close();
-    //            dbconn = null;
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Debug.Log("ERROR : " + e);
-    //            //messageText.text += "\n" + e;
-    //        }
-    //    }
-    //    return version;
-    //}
-
-    private bool integrityCheck()
-    {
-        string value = "";
-
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
-
-        //string sqlQuery = "PRAGMA integrity_check";
-        string sqlQuery = "pragma quick_check";
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            value = reader.GetString(0);
-        }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        if (value.ToLower() == "ok")
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
 
     private int getDatabaseVersion()
     {
         int value = 0;
-
-        string sqlQuery = "PRAGMA user_version";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetInt32(0);
-            //Debug.Log("pragma version : " + value);
-        }
+            string sqlQuery = "PRAGMA user_version";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
 
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetInt32(0);
+            }
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
+            return 0;
+        }
 
         return value;
     }
 
-    private void setDatabaseVersion()
+    public IEnumerator setDatabaseVersion()
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        try
+        {
+            dbHelper.DatabaseLocked = true;
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
 
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
+            string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion + "'";
 
-        //string sqlQuery = "SELECT prevScoresInserted from User where rowid = 1";
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
 
-        //string sqlQuery = "PRAGMA integrity_check";
-        //string sqlQuery = "PRAGMA table_info('Achievements')";
-        string sqlQuery = "PRAGMA main.user_version = '" + currentDatabaseAppVersion +"'";
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
 
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
-
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        Debug.Log("db version : ");
-        Debug.Log("     current db version : " + getDatabaseVersion());
-        //Debug.Log("     sqlite getversion : " + dbconn.);
-        Debug.Log("     new db version : " + currentDatabaseAppVersion);
+            dbHelper.DatabaseLocked = false;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERROR : " + e);
+            dbHelper.DatabaseLocked = false;
+        }
     }
-
-    //IEnumerator updateAchievements()
-    //{
-    //    // wait for achievement list to be created
-    //    yield return new WaitUntil(() => AchievementManager.instance.ListCreated == true);
-
-    //    // check if dbhelper is null and if achievement table is null
-    //    if (dbHelper != null )
-    //    {
-    //        try
-    //        {
-    //            dbHelper.UpdateAchievementStats();
-    //        }
-    //        catch
-    //        {
-    //            Debug.Log("exception : dbhelper == null");
-    //        }
-    //    }
-    //}
 
     // ============================ Save stats ===============================
-    public void savePlayerGameStats(BasketBallStats stats)
+    public void savePlayerGameStats(HighScoreModel dbHighScoreModel)
     {
-        dbHelper.InsertGameScore(stats);
-    }
-
-    public void saveAchievementStats()
-    {
-        dbHelper.UpdateAchievementStats();
+        dbHelper.InsertGameScore(dbHighScoreModel);
     }
 
     public void savePlayerProfileProgression(float expGained)
@@ -322,52 +211,31 @@ public class DBConnector : MonoBehaviour
         dbHelper.UpdatePlayerProfileProgression(expGained);
     }
 
-    public void savePlayerAllTimeStats(BasketBallStats stats)
+    public void savePlayerAllTimeStats(GameStats stats)
     {
         dbHelper.UpdateAllTimeStats(stats);
     }
 
     // =========================================================================
 
-    // set user's current device in User table
-    void SetCurrentUserDevice()
-    {
-        dbconn = new SqliteConnection(connection);
-        dbconn.Open();
-        dbcmd = dbconn.CreateCommand();
-
-        string version = Application.version;
-        string os = SystemInfo.operatingSystem;
-
-        String sqlQuery = "Update User SET os = '" + os + "', version = '" + version + "'WHERE id = 1 ";
-
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteScalar();
-        dbconn.Close();
-
-        databaseCreated = true;
-    }
-
     // create tables if not created
-    void createDatabase()
+    IEnumerator createDatabase()
     {
-        //Debug.Log("createDatabase()");
-        //messageText.text += "\n" + "createDatabase()";
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
         try
         {
             dbconn = new SqliteConnection(connection);
-            //messageText.text += "\n" + "dbconn = new SqliteConnection(connection);";
-
             dbconn.Open();
-            //messageText.text += "\n" + "dbconn.Open();";
-
             dbcmd = dbconn.CreateCommand();
-            //messageText.text += "\n" + "dbcmd = dbconn.CreateCommand();";
 
             string sqlQuery = String.Format(
+
+                //"DROP TABLE if exists HighScores; " +
+
                 "CREATE TABLE if not exists HighScores(" +
                 "scoreid   INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "playerid  INTEGER," +
+                "scoreidUnique   TEXT," +
                 "modeid    INTEGER, " +
                 "characterid   INTEGER, " +
                 "character   TEXT, " +
@@ -383,11 +251,36 @@ public class DBConnector : MonoBehaviour
                 "maxShotMade   INTEGER, " +
                 "maxShotAtt    INTEGER, " +
                 "consecutiveShots   INTEGER," +
-                "trafficEnabled	INTEGER," +
-                "hardcoreEnabled INTEGER, " +
-                "enemiesKilled INTEGER DEFAULT 0); " +
+                "trafficEnabled	INTEGER DEFAULT 0," +
+                "hardcoreEnabled INTEGER DEFAULT 0, " +
+                "enemiesEnabled INTEGER DEFAULT 0, " +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "platform    TEXT," +
+                "device    TEXT," +
+                "ipaddress   TEXT," +
+                "twoMade   INTEGER, " +
+                "twoAtt    INTEGER, " +
+                "threeMade INTEGER, " +
+                "threeAtt  INTEGER, " +
+                "fourMade  INTEGER, " +
+                "fourAtt   INTEGER, " +
+                "sevenMade INTEGER, " +
+                "sevenAtt  INTEGER, " +
+                "bonusPoints  INTEGER, " +
+                "moneyBallMade  INTEGER, " +
+                "moneyBallAtt  INTEGER, " +
+                "submittedToApi  INTEGER, " +
+                "userName  TEXT DEFAULT NULL, " +
+                "sniperEnabled  INTEGER DEFAULT 0, " +
+                "sniperMode  INTEGER DEFAULT 0, " +
+                "sniperModeName  TEXT DEFAULT none, " +
+                "sniperHits  INTEGER DEFAULT 0, " +
+                "sniperShots  INTEGER DEFAULT 0); " +
+
+                "DROP TABLE if exists Achievements; " +
 
                 "CREATE TABLE if not exists AllTimeStats(" +
+                "userid INTEGER UNIQUE," +
                 "twoMade   INTEGER, " +
                 "twoAtt    INTEGER, " +
                 "threeMade INTEGER, " +
@@ -402,26 +295,9 @@ public class DBConnector : MonoBehaviour
                 "totalDistance REAL, " +
                 "longestShot REAL, " +
                 "timePlayed   REAL," +
-                "enemiesKilled INTEGER DEFAULT 0); " +
-
-                "CREATE TABLE if not exists Achievements(" +
-                "aid   INTEGER PRIMARY KEY, " +
-                "charid   INTEGER DEFAULT 0 ," +
-                "cheerid   INTEGER DEFAULT 0 ," +
-                "levelid   INTEGER DEFAULT 0 ," +
-                "modeid    INTEGER DEFAULT 0 ," +
-                "name  TEXT NOT NULL," +
-                "description   TEXT NOT NULL," +
-                "required_charid   INTEGER DEFAULT 0 ," +
-                "required_cheerid   INTEGER DEFAULT 0 ," +
-                "required_levelid  INTEGER DEFAULT 0 ," +
-                "required_modeid   INTEGER DEFAULT 0 ," +
-                "activevalue_int   INTEGER DEFAULT 0 ," +
-                "activevalue_float REAL," +
-                "activevalue_progress_int  INTEGER DEFAULT 0 ," +
-                "activevalue_progress_float  REAL," +
-                "islocked  INTEGER DEFAULT 0 );" +
-                //"islocked  INTEGER INTEGER DEFAULT 1 );" +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "sniperHits INTEGER DEFAULT 0," +
+                "sniperShots INTEGER DEFAULT 0); " +
 
                 "CREATE TABLE if not exists CharacterProfile(" +
                 "id   INTEGER PRIMARY KEY, " +
@@ -451,19 +327,22 @@ public class DBConnector : MonoBehaviour
                 "name   TEXT NOT NULL," +
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
-                "islocked  INTEGER DEFAULT 0);");
-                //"islocked  INTEGER DEFAULT 1);" +
+                "islocked  INTEGER DEFAULT 0);" +
 
-                //"CREATE TABLE if not exists User( " +
-                //"id    INTEGER PRIMARY KEY, " +
-                //"userName  INTEGER, " +
-                //"firstName TEXT, " +
-                //"middleName    INTEGER, " +
-                //"lastName  INTEGER, " +
-                //"email TEXT, " +
-                //"password  TEXT, " +
-                //"version   TEXT, " +
-                //"os    TEXT);");
+                //"DROP TABLE if exists Users; " +
+
+                "CREATE TABLE if not exists User( " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "userid INTEGER UNIQUE," +
+                "username  TEXT UNIQUE, " +
+                "firstname TEXT, " +
+                "lastname  TEXT, " +
+                "email TEXT, " +
+                "ipaddress TEXT, " +
+                "signupdate TEXT, " +
+                "lastlogin TEXT, " +
+                "password TEXT, " +
+                "bearerToken TEXT);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
@@ -483,14 +362,16 @@ public class DBConnector : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("ERROR : " + e);
-            return;
-        } 
+            dbHelper.DatabaseLocked = false;
+            //return;
+        }
     }
 
-
-    void dropDatabase()
+    IEnumerator dropDatabase()
     {
-        Debug.Log("drop database");
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -499,12 +380,12 @@ public class DBConnector : MonoBehaviour
 
             // DROP TABLE [IF EXISTS] [schema_name.]table_name;
             string sqlQuery = String.Format(
+                //"DROP TABLE if exists AllTimeStats; " +
                 "DROP TABLE if exists Achievements; " +
-                "DROP TABLE if exists AllTimeStats; " +
-                "DROP TABLE if exists CharacterProfile; " +
-                "DROP TABLE if exists CheerleaderProfile; " +
+                //"DROP TABLE if exists CharacterProfile; " +
+                //"DROP TABLE if exists CheerleaderProfile; " +
                 "DROP TABLE if exists HighScores; ");
-                //"DROP TABLE if exists User; ");
+            //"DROP TABLE if exists User; ");
 
             //Debug.Log(sqlQuery);
 
@@ -515,18 +396,22 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
+            dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //SendEmail.instance.//SendEmailOnEvent("ERROR : dropDatabase", e.ToString());
-            return;
+            //return;
         }
     }
 
-    public void dropDatabaseTable(string tableName)
+    public IEnumerator dropDatabaseTable(string tableName)
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         try
         {
             dbconn = new SqliteConnection(connection);
@@ -544,14 +429,12 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
+            dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "ERROR : dropDatabaseTable(" + tableName + ")";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-            return;
         }
     }
 
@@ -561,37 +444,47 @@ public class DBConnector : MonoBehaviour
         int count = 0;
         string value = null;
 
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(connection);
-        dbconn.Open(); //Open connection to the database.
-        IDbCommand dbcmd = dbconn.CreateCommand();
-
-        string sqlQuery = String.Format(
-            "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + tableName + "';");
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            value = reader.GetString(0);
-            count++;
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(connection);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + tableName + "';");
+
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value = reader.GetString(0);
+                count++;
+            }
+
+            reader.Close();
+            reader = null;
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            dbconn = null;
+            // if correct table name is returned and at least 1 table names exists
+            if (count > 0 && value.Equals(tableName))
+            {
+                dbHelper.DatabaseLocked = false;
+                return true;
+            }
+            else
+            {
+                dbHelper.DatabaseLocked = false;
+                return false;
+            }
         }
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
-
-        // if correct table name is returned and at least 1 table names exists
-        if (count > 0 && value.Equals(tableName))
+        catch (Exception e)
         {
-            return true;
-        }
-        else
-        {
+            dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
             return false;
         }
     }
@@ -646,65 +539,11 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
+            dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCharacterProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-
             return;
         }
     }
-
-    public void createTableAchievements()
-    {
-
-        Debug.Log("createTableAchievements");
-        try
-        {
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery =
-                "CREATE TABLE if not exists Achievements(" +
-                "aid   INTEGER PRIMARY KEY, " +
-                "charid   INTEGER DEFAULT 0," +
-                "cheerid   INTEGER DEFAULT 0," +
-                "levelid   INTEGER DEFAULT 0," +
-                "modeid    INTEGER DEFAULT 0," +
-                "name  TEXT NOT NULL," +
-                "description   TEXT NOT NULL," +
-                "required_charid   INTEGER DEFAULT 0," +
-                "required_cheerid   INTEGER DEFAULT 0," +
-                "required_levelid  INTEGER DEFAULT 0," +
-                "required_modeid   INTEGER DEFAULT 0," +
-                "activevalue_int   INTEGER DEFAULT 0," +
-                "activevalue_float REAL DEFAULT 0," +
-                "activevalue_progress_int  INTEGER DEFAULT 0," +
-                "activevalue_progress_float    REAL DEFAULT 0," +
-                "islocked  INTEGER DEFAULT 0);";
-            //"islocked  INTEGER DEFAULT 1);";
-
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-        }
-        catch (Exception e)
-        {
-            Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCharacterProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
-            return;
-        }
-    }
-
 
     public void createTableCheerleaderProfile()
     {
@@ -724,7 +563,6 @@ public class DBConnector : MonoBehaviour
                 "objectName   TEXT NOT NULL," +
                 "unlockText   TEXT NOT NULL," +
                 "islocked  INTEGER DEFAULT 0);";
-            //"islocked  INTEGER DEFAULT 1);";
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -737,11 +575,112 @@ public class DBConnector : MonoBehaviour
         }
         catch (Exception e)
         {
+            dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            //messageText.text += "\n" + e;
-            //string text = "createTableCheerleaderProfile()";
-            //SendEmail.instance.//SendEmailOnEvent(text, e.ToString());
             return;
+        }
+    }
+
+    public IEnumerator createTableUser()
+    {
+        //Debug.Log("createDatabase()");
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+
+        dbHelper.DatabaseLocked = true;
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists User( " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "userid INTEGER UNIQUE," +
+                "username  TEXT UNIQUE, " +
+                "firstname TEXT, " +
+                "lastname  TEXT, " +
+                "email TEXT, " +
+                "ipaddress TEXT, " +
+                "signupdate TEXT, " +
+                "lastlogin TEXT, " +
+                "password TEXT, " +
+                "bearerToken TEXT);");
+
+            //"isLocked   INTEGER DEFAULT 1);");
+
+            //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbconn.Close();
+            dbconn = null;
+
+            dbcmd.Dispose();
+            dbcmd = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
+        }
+    }
+
+    public IEnumerator createTableAllTimeStats()
+    {
+        //Debug.Log("createDatabase()");
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+
+        dbHelper.DatabaseLocked = true;
+        try
+        {
+            dbconn = new SqliteConnection(connection);
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+
+            string sqlQuery = String.Format(
+                "CREATE TABLE if not exists AllTimeStats(" +
+                "userid INTEGER UNIQUE," +
+                "twoMade   INTEGER, " +
+                "twoAtt    INTEGER, " +
+                "threeMade INTEGER, " +
+                "threeAtt  INTEGER, " +
+                "fourMade  INTEGER, " +
+                "fourAtt   INTEGER, " +
+                "sevenMade INTEGER, " +
+                "sevenAtt  INTEGER, " +
+                "moneyBallMade INTEGER, " +
+                "moneyBallAtt  INTEGER, " +
+                "totalPoints  INTEGER, " +
+                "totalDistance REAL, " +
+                "longestShot REAL, " +
+                "timePlayed   REAL," +
+                "enemiesKilled INTEGER DEFAULT 0," +
+                "sniperHits INTEGER DEFAULT 0," +
+                "sniperShots INTEGER DEFAULT 0); ");
+
+            //Debug.Log(sqlQuery);
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+
+            dbconn.Close();
+            dbconn = null;
+
+            dbcmd.Dispose();
+            dbcmd = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch (Exception e)
+        {
+            dbHelper.DatabaseLocked = false;
+            Debug.Log("ERROR : " + e);
         }
     }
 }

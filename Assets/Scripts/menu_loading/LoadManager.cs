@@ -45,7 +45,7 @@ public class LoadManager : MonoBehaviour
     [SerializeField] internal bool levelDataLoaded = false;
     [SerializeField] internal bool modeDataLoaded = false;
 
-    const string startSceneName = "level_00_start";
+    //const string startSceneName = "level_00_start";
 
     //bool isLocked = false;
 
@@ -56,7 +56,7 @@ public class LoadManager : MonoBehaviour
     {
         instance = this;
 
-        StartCoroutine(LoadAllData());
+        LoadAllData();
         //StartCoroutine(verifyCharacterProfileTable());
         //StartCoroutine(verifyCheerleaderProfileTable());
         //StartCoroutine(LoadGameData());
@@ -64,27 +64,27 @@ public class LoadManager : MonoBehaviour
 
     private void Update()
     {
-        // if achievements loaded and other data lists loaded
         // load start screen
-        if ((AchievementManager.instance.achievementsLoaded || AchievementManager.instance == null)
-            && LoadedData.instance.DataLoaded)
+        if (LoadedData.instance.DataLoaded)
         {
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                SceneManager.LoadScene(startSceneName);
+                //Debug.Log("String.IsNullOrEmpty("+GameOptions.previousSceneName+")");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
-                SceneManager.LoadScene(GameOptions.previousSceneName);
+                //Debug.Log("SceneManager.LoadScene(GameOptions.previousSceneName)");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
     }
 
-    IEnumerator LoadAllData()
+    public void LoadAllData()
     {
-        yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
+        //yield return new WaitUntil(() => GameOptions.architectureInfoLoaded == true);
         //Debug.Log("LoadAllData : architectureInfoLoaded : " + GameOptions.architectureInfoLoaded);
         StartCoroutine(verifyCharacterProfileTable());
         StartCoroutine(verifyCheerleaderProfileTable());
@@ -94,9 +94,6 @@ public class LoadManager : MonoBehaviour
     IEnumerator verifyCharacterProfileTable()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
-
 
         // if CharacterProfile table does exist
         if (DBConnector.instance.tableExists("CharacterProfile")
@@ -108,7 +105,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            DBConnector.instance.dropDatabaseTable("CharacterProfile");
+            StartCoroutine(DBConnector.instance.dropDatabaseTable("CharacterProfile"));
             //create table
             DBConnector.instance.createTableCharacterProfile();
             CharacterProfileTableCreated = true;
@@ -118,8 +115,6 @@ public class LoadManager : MonoBehaviour
     IEnumerator verifyCheerleaderProfileTable()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
         if (DBConnector.instance.tableExists("CheerleaderProfile")
             && !DBHelper.instance.isTableEmpty("CheerleaderProfile"))
@@ -130,7 +125,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // drop table just in case of error
-            DBConnector.instance.dropDatabaseTable("CheerleaderProfile");
+            StartCoroutine(DBConnector.instance.dropDatabaseTable("CheerleaderProfile"));
             //create table
             DBConnector.instance.createTableCheerleaderProfile();
             CheerleaderProfileTableCreated = true;
@@ -142,14 +137,12 @@ public class LoadManager : MonoBehaviour
     IEnumerator LoadGameData()
     {
         yield return new WaitUntil(() => DBConnector.instance.DatabaseCreated == true);
-        yield return new WaitUntil(() => AchievementManager.instance != null);
-        yield return new WaitUntil(() => AchievementManager.instance.achievementsLoaded == true);
 
         // insert default player profiles + table did not already exits
         if (CharacterProfileTableCreated && !CharacterProfileTableExists)
         {
             playerSelectedData = loadDefaultPlayerShooterProfiles();
-            DBHelper.instance.InsertCharacterProfile(playerSelectedData);
+            StartCoroutine(DBHelper.instance.InsertCharacterProfile(playerSelectedData));
         }
         //table already exists + does NOT require default records
         if (!CharacterProfileTableCreated && CharacterProfileTableExists)
@@ -163,7 +156,7 @@ public class LoadManager : MonoBehaviour
             // load default data from prefabs
             cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
             // insert default into DB
-            DBHelper.instance.InsertCheerleaderProfile(cheerleaderSelectedData);
+            StartCoroutine(DBHelper.instance.InsertCheerleaderProfile(cheerleaderSelectedData));
         }
 
         //table already exists + does NOT require default records
@@ -178,18 +171,16 @@ public class LoadManager : MonoBehaviour
     }
 
     IEnumerator InsertNewCharacterToDB(CharacterProfile character)
-    {        
+    {
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
         DBHelper.instance.InsertCharacterProfile(character);
-
-        Debug.Log("player record inserted");
     }
 
     IEnumerator InsertNewCheerleaderToDB(CheerleaderProfile cheerleader)
     {
         yield return new WaitUntil(() => DBHelper.instance.DatabaseLocked == false);
         DBHelper.instance.InsertCheerleaderProfile(cheerleader);
-        
+
         Debug.Log("cheerleader record inserted");
     }
 
@@ -435,6 +426,5 @@ public class LoadManager : MonoBehaviour
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
     }
-
 }
 

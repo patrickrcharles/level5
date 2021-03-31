@@ -7,7 +7,7 @@ public class BasketBallShotMade : MonoBehaviour
 {
 
     BasketBallState _basketBallState;
-    BasketBallStats _basketBallStats;
+    GameStats _basketBallStats;
 
     //public int currentShotTestIndex;
 
@@ -20,9 +20,7 @@ public class BasketBallShotMade : MonoBehaviour
     const string moneyPrefabPath = "Prefabs/objects/money";
     private GameObject moneyClone;
 
-    [SerializeField]
     int _consecutiveShotsMade;
-
     int _currentShotMade;
     int _currentShotAttempts;
 
@@ -45,10 +43,10 @@ public class BasketBallShotMade : MonoBehaviour
     void Start()
     {
         _basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
-        _basketBallStats = BasketBall.instance.GetComponent<BasketBallStats>();
+        _basketBallStats = BasketBall.instance.GetComponent<GameStats>();
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerController;
 
         // path to money prfab
         moneyClone = Resources.Load(moneyPrefabPath) as GameObject;
@@ -131,7 +129,7 @@ public class BasketBallShotMade : MonoBehaviour
     {
         // first thing, update shot made total
         _basketBallStats.ShotMade++;
-
+        Debug.Log("_basketBallStats.ShotMade++ : " + _basketBallStats.ShotMade);
         // ==================== consecutive shots logic ==============================
 
         // get current state of shots made/attempted
@@ -170,7 +168,7 @@ public class BasketBallShotMade : MonoBehaviour
             && !GameRules.instance.GameModeFourPointContest
             && !GameRules.instance.GameModeAllPointContest
             && GameOptions.gameModeSelectedId != 19)
-            // game mode 19 is 1 pt per 10 feet of last shot made
+        // game mode 19 is 1 pt per 10 feet of last shot made
         {
             if (_basketBallState.TwoAttempt)
             {
@@ -227,7 +225,7 @@ public class BasketBallShotMade : MonoBehaviour
             // if player is on marker and marker enabled && not game mode 19
             if (_basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].MarkerEnabled)
-            {                
+            {
                 //_basketBallStats.ShotMade++;
                 // if moneyball
                 if (_basketBallState.TwoAttempt)
@@ -254,9 +252,11 @@ public class BasketBallShotMade : MonoBehaviour
                     pointsScored = 7;
                 }
                 // if moneyball / last shot on marker (5/5)
-                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5)
+                if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5
+                    && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
                 {
                     _basketBallStats.TotalPoints += (pointsScored * 2);
+                    _basketBallStats.MoneyBallMade++;
                 }
                 // not last shot on marker (1-4/5)
                 else
@@ -264,8 +264,8 @@ public class BasketBallShotMade : MonoBehaviour
                     _basketBallStats.TotalPoints += pointsScored;
                 }
             }
-            // is game mode 19
-            if(GameOptions.gameModeSelectedId == 19)
+            // is game mode 19 [Points By Distance]
+            if (GameOptions.gameModeSelectedId == 19)
             {
                 if (_basketBallState.TwoAttempt)
                 {
@@ -300,7 +300,8 @@ public class BasketBallShotMade : MonoBehaviour
         }
 
         // ==================== requires position markers logic ==============================
-        if (_basketBallState.PlayerOnMarkerOnShoot)
+        if (_basketBallState.PlayerOnMarkerOnShoot 
+            && (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s))
         {
             // if money ball enabled
             if (_basketBallState.MoneyBallEnabledOnShoot)
@@ -309,10 +310,10 @@ public class BasketBallShotMade : MonoBehaviour
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
             }
             // no money ball, update current shot marker stats
-            else
-            {
-                GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
-            }
+            //else
+            //{
+            //    GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
+            //}
         }
     }
 

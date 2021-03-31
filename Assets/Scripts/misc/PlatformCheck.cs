@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.SceneManagement;
 
 public class PlatformCheck : MonoBehaviour
 {
@@ -32,7 +31,6 @@ public class PlatformCheck : MonoBehaviour
         standaloneInputModule.enabled = true;
         //standaloneInputModule.ActivateModule(); 
         Debug.Log("android");
-
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
@@ -43,6 +41,16 @@ public class PlatformCheck : MonoBehaviour
         standaloneInputModule.enabled = false;
         inputSystemUIInputModule.enabled = true;
         //inputSystemUIInputModule.ActivateModule();
+        //Debug.Log("standalone");
 #endif
+        ////QualitySettings.vSyncCount = 1;
+        //QualitySettings.vSyncCount = 1;
+        //Application.targetFrameRate = 60;
+
+        //////inputSystemUIInputModule.DeactivateModule();
+        //inputSystemUIInputModule.enabled = false;
+        //standaloneInputModule.enabled = true;
+        ////standaloneInputModule.ActivateModule(); 
+        //Debug.Log("android");
     }
 }

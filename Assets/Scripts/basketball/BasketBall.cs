@@ -13,7 +13,7 @@ public class BasketBall : MonoBehaviour
     AudioSource audioSource;
     CharacterProfile characterProfile;
     BasketBallState basketBallState;
-    BasketBallStats basketBallStats;
+    GameStats gameStats;
     Animator anim;
 
     GameObject basketBallSprite;
@@ -49,9 +49,9 @@ public class BasketBall : MonoBehaviour
         instance = this;
 
         player = GameLevelManager.instance.Player;
-        playerState = GameLevelManager.instance.PlayerState;
+        playerState = GameLevelManager.instance.PlayerController;
         rigidbody = GetComponent<Rigidbody>();
-        basketBallStats = GameLevelManager.instance.Basketball.GetComponent<BasketBallStats>();
+        gameStats = GameLevelManager.instance.Basketball.GetComponent<GameStats>();
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
         characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -93,7 +93,7 @@ public class BasketBall : MonoBehaviour
             {
                 scoreText.text = "";
                 shootProfileText.text = "";
-                uiStatsBackground.SetActive(false); 
+                uiStatsBackground.SetActive(false);
             }
         }
         InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
@@ -132,15 +132,15 @@ public class BasketBall : MonoBehaviour
             }
 
             //if player has ball and hasnt shot
-            if (playerState.hasBasketball 
-                && playerState.currentState!= playerState.dunkState)//&& !basketBallState.Thrown)
+            if (playerState.hasBasketball
+                && playerState.currentState != playerState.dunkState)//&& !basketBallState.Thrown)
             {
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
                 dropShadow.SetActive(false);
-                playerState.setPlayerAnim("hasBasketball", true);
+                playerState.SetPlayerAnim("hasBasketball", true);
                 //playerState.setPlayerAnim("walking", false);
-                playerState.setPlayerAnim("moonwalking", false);
+                playerState.SetPlayerAnim("moonwalking", false);
 
                 // move basketball to launch position and disable sprite
                 transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
@@ -237,7 +237,7 @@ public class BasketBall : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if basketball enters player hitbox
-        if (gameObject.CompareTag("basketball") 
+        if (gameObject.CompareTag("basketball")
             && other.gameObject.CompareTag("playerHitbox")
             && !basketBallState.Thrown)
         {
@@ -262,32 +262,32 @@ public class BasketBall : MonoBehaviour
     {
 
         // set side or front shooting animation
-        if (playerState.facingFront) // facing straight toward bball goal
+        if (playerState.FacingFront) // facing straight toward bball goal
         {
-            playerState.setPlayerAnimTrigger("basketballShootFront");
+            playerState.SetPlayerAnimTrigger("basketballShootFront");
         }
         else // side of goal, relative postion
         {
-            playerState.setPlayerAnimTrigger("basketballShoot");
+            playerState.SetPlayerAnimTrigger("basketballShoot");
         }
 
         // reset ball rotation
         // #NOTE : hopefully this check works for issue : ball is hot but doesnt go toward goal
         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
 
-        //================== anim stuff 
-        // check for and set money ball
-        if (GameRules.instance.MoneyBallEnabled)
-        {
-            basketBallState.MoneyBallEnabledOnShoot = true;
-            PlayerStats.instance.Money -= 5; // moneyball spent
-            BasketBallStats.MoneyBallAttempts++;
-            GameRules.instance.MoneyBallEnabled = false;
-        }
-        else
-        {
-            basketBallState.MoneyBallEnabledOnShoot = false;
-        }
+        //// check for and set money ball
+        //if (GameRules.instance.MoneyBallEnabled)
+        //{
+        //    basketBallState.MoneyBallEnabledOnShoot = true;
+        //    PlayerStats.instance.Money -= 5; // moneyball spent
+        //    BasketBallStats.MoneyBallAttempts++;
+        //    GameRules.instance.MoneyBallEnabled = false;
+        //}
+        //else
+        //{
+        //    basketBallState.MoneyBallEnabledOnShoot = false;
+        //}
+
 
         //// let basketball rim know current statistics of made/attempt for every shot
         //// this is more determining consecutive shots
@@ -306,10 +306,17 @@ public class BasketBall : MonoBehaviour
             // update shot attempt stat for marker position shot from
             GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
 
+            if (basketBallState.PlayerOnMarkerOnShoot
+                && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
+                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
+            {
+                GameStats.MoneyBallAttempts++;
+            }
+
             if (GameRules.instance.MoneyBallEnabled)
             {
                 basketBallState.MoneyBallEnabledOnShoot = true;
-                basketBallStats.MoneyBallAttempts++;
+                gameStats.MoneyBallAttempts++;
             }
         }
         //calculate shot distance 
@@ -332,25 +339,25 @@ public class BasketBall : MonoBehaviour
         if (basketBallState.TwoPoints)
         {
             basketBallState.TwoAttempt = true;
-            basketBallStats.TwoPointerAttempts++;
+            gameStats.TwoPointerAttempts++;
         }
         if (basketBallState.ThreePoints)
         {
             basketBallState.ThreeAttempt = true;
-            basketBallStats.ThreePointerAttempts++;
+            gameStats.ThreePointerAttempts++;
         }
         if (basketBallState.FourPoints)
         {
             basketBallState.FourAttempt = true;
-            basketBallStats.FourPointerAttempts++;
+            gameStats.FourPointerAttempts++;
         }
         if (basketBallState.SevenPoints)
         {
             basketBallState.SevenAttempt = true;
-            basketBallStats.SevenPointerAttempts++;
+            gameStats.SevenPointerAttempts++;
         }
         // update total; shot attempst
-        basketBallStats.ShotAttempt++;
+        gameStats.ShotAttempt++;
     }
 
     // =================================== Launch ball function =======================================
@@ -421,7 +428,7 @@ public class BasketBall : MonoBehaviour
         // range modifier always factors in
         accuracyModifierZ = getRangeModifier();
 
-        if(accuracyModifierZ != 0)
+        if (accuracyModifierZ != 0)
         {
             shotMeterMessageZ = "+ range modifer";
         }
@@ -444,7 +451,7 @@ public class BasketBall : MonoBehaviour
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
             // shot meter message 
-            if(critical)
+            if (critical)
             {
                 shotMeterMessage = "swish + critical";
             }
@@ -468,7 +475,7 @@ public class BasketBall : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
         playerState.hasBasketball = false;
-        playerState.setPlayerAnim("hasBasketball", false);
+        playerState.SetPlayerAnim("hasBasketball", false);
 
         // analytics
         AnaylticsManager.PlayerShoot(playerState.Shotmeter.SliderValueOnButtonPress);
@@ -494,7 +501,7 @@ public class BasketBall : MonoBehaviour
         float percent = random.Next(1, 100);
         if (percent <= maxPercent)
         {
-            BasketBallStats.CriticalRolled++;
+            GameStats.CriticalRolled++;
             return true;
         }
 
@@ -648,25 +655,25 @@ public class BasketBall : MonoBehaviour
 
     public void updateScoreText()
     {
-        scoreText.text = "shots  : " + basketBallStats.ShotMade + " / " + basketBallStats.ShotAttempt + "  " +
+        scoreText.text = "shots  : " + gameStats.ShotMade + " / " + gameStats.ShotAttempt + "  " +
                          getTotalPointAccuracy().ToString("0.00") + "\n"
-                         + "points : " + basketBallStats.TotalPoints + "\n"
-                         + "2 pointers : " + basketBallStats.TwoPointerMade + " / " +
-                         basketBallStats.TwoPointerAttempts + "  " + getTwoPointAccuracy().ToString("0.00") + "%\n"
-                         + "3 pointers : " + basketBallStats.ThreePointerMade + " / " +
-                         basketBallStats.ThreePointerAttempts + "  " + getThreePointAccuracy().ToString("0.00") + "%\n"
-                         + "4 pointers : " + basketBallStats.FourPointerMade + " / " +
-                         basketBallStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
-                         + "7 pointers : " + basketBallStats.SevenPointerMade + " / " +
-                         basketBallStats.SevenPointerAttempts + "  " + getSevenPointAccuracy().ToString("0.00") + "%\n"
+                         + "points : " + gameStats.TotalPoints + "\n"
+                         + "2 pointers : " + gameStats.TwoPointerMade + " / " +
+                         gameStats.TwoPointerAttempts + "  " + getTwoPointAccuracy().ToString("0.00") + "%\n"
+                         + "3 pointers : " + gameStats.ThreePointerMade + " / " +
+                         gameStats.ThreePointerAttempts + "  " + getThreePointAccuracy().ToString("0.00") + "%\n"
+                         + "4 pointers : " + gameStats.FourPointerMade + " / " +
+                         gameStats.FourPointerAttempts + "  : " + getFourPointAccuracy().ToString("0.00") + "%\n"
+                         + "7 pointers : " + gameStats.SevenPointerMade + " / " +
+                         gameStats.SevenPointerAttempts + "  " + getSevenPointAccuracy().ToString("0.00") + "%\n"
                          + "last shot distance : " + (Math.Round(lastShotDistance, 2) * 6f).ToString("0.00") + " ft." +
                          "\n"
                          + "longest shot distance : " +
-                         (Math.Round(basketBallStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
-                         "criticals rolled : " + basketBallStats.CriticalRolled + " / " + basketBallStats.ShotAttempt
+                         (Math.Round(gameStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
+                         "criticals rolled : " + gameStats.CriticalRolled + " / " + gameStats.ShotAttempt
                          + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
                          + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade + "\n"
-                         + "current exp : " + basketBallStats.getExperienceGainedFromSession();
+                         + "current exp : " + gameStats.getExperienceGainedFromSession();
     }
 
     // ============================= convert to percentages ======================================
@@ -674,9 +681,9 @@ public class BasketBall : MonoBehaviour
     //  this format will not work for some reason -- (float)(num1 / num2 to work);
     public float getCriticalPercentage()
     {
-        if (basketBallStats.CriticalRolled > 0)
+        if (gameStats.CriticalRolled > 0)
         {
-            float accuracy = (float)basketBallStats.CriticalRolled / basketBallStats.ShotAttempt;
+            float accuracy = (float)gameStats.CriticalRolled / gameStats.ShotAttempt;
             return (accuracy * 100);
         }
         else
@@ -687,9 +694,9 @@ public class BasketBall : MonoBehaviour
 
     public float getTotalPointAccuracy()
     {
-        if (basketBallStats.ShotAttempt > 0)
+        if (gameStats.ShotAttempt > 0)
         {
-            accuracy = (float)basketBallStats.ShotMade / basketBallStats.ShotAttempt;
+            accuracy = (float)gameStats.ShotMade / gameStats.ShotAttempt;
             return (accuracy * 100);
         }
         else
@@ -700,9 +707,9 @@ public class BasketBall : MonoBehaviour
 
     public float getTwoPointAccuracy()
     {
-        if (basketBallStats.TwoPointerAttempts > 0)
+        if (gameStats.TwoPointerAttempts > 0)
         {
-            float accuracy = (float)basketBallStats.TwoPointerMade / basketBallStats.TwoPointerAttempts;
+            float accuracy = (float)gameStats.TwoPointerMade / gameStats.TwoPointerAttempts;
             return (accuracy * 100);
         }
         else
@@ -713,9 +720,9 @@ public class BasketBall : MonoBehaviour
 
     public float getThreePointAccuracy()
     {
-        if (basketBallStats.ThreePointerAttempts > 0)
+        if (gameStats.ThreePointerAttempts > 0)
         {
-            float accuracy = (float)basketBallStats.ThreePointerMade / basketBallStats.ThreePointerAttempts;
+            float accuracy = (float)gameStats.ThreePointerMade / gameStats.ThreePointerAttempts;
             return (accuracy * 100);
         }
         else
@@ -726,9 +733,9 @@ public class BasketBall : MonoBehaviour
 
     public float getFourPointAccuracy()
     {
-        if (basketBallStats.FourPointerAttempts > 0)
+        if (gameStats.FourPointerAttempts > 0)
         {
-            float accuracy = (float)basketBallStats.FourPointerMade / basketBallStats.FourPointerAttempts;
+            float accuracy = (float)gameStats.FourPointerMade / gameStats.FourPointerAttempts;
             return (accuracy * 100);
         }
         else
@@ -739,9 +746,9 @@ public class BasketBall : MonoBehaviour
 
     public float getSevenPointAccuracy()
     {
-        if (basketBallStats.SevenPointerAttempts > 0)
+        if (gameStats.SevenPointerAttempts > 0)
         {
-            float accuracy = (float)basketBallStats.SevenPointerMade / basketBallStats.SevenPointerAttempts;
+            float accuracy = (float)gameStats.SevenPointerMade / gameStats.SevenPointerAttempts;
             return (accuracy * 100);
         }
         else
@@ -750,10 +757,25 @@ public class BasketBall : MonoBehaviour
         }
     }
 
+    public float getAccuracy(int made, int attempt)
+    {
+        if (attempt > 0)
+        {
+            float accuracy = (float)made / attempt;
+            return (accuracy * 100);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+
     // ============================= getters/ setters ======================================
 
     public float LastShotDistance { get => lastShotDistance; set => lastShotDistance = value; }
-    public BasketBallStats BasketBallStats => basketBallStats;
+    public GameStats GameStats => gameStats;
     public BasketBallState BasketBallState => basketBallState;
     public bool UiStatsEnabled { get; private set; }
     public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
