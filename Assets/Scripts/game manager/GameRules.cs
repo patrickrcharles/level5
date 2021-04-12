@@ -603,7 +603,7 @@ public class GameRules : MonoBehaviour
                  + "total shots made distance : " + (Math.Round(gameStats.TotalDistance, 2)).ToString("0.00") + " ft.\n"
                  + "most consecutive shots : " + gameStats.MostConsecutiveShots + "\n"
                  + "sniper accuracy : " + gameStats.SniperHits + " / " + gameStats.SniperShots
-                    + " " + UtilityFunctions.getPercentageFloat(gameStats.SniperHits, gameStats.SniperShots).ToString("00.0") + "%\n"
+                    + " " + UtilityFunctions.GetPercentageFloat(gameStats.SniperHits, gameStats.SniperShots).ToString("00.0") + "%\n"
                  + "experience gained : " + gameStats.getExperienceGainedFromSession();
         }
         else

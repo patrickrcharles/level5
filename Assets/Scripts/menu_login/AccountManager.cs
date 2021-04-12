@@ -174,7 +174,7 @@ public class AccountManager : MonoBehaviour
 
     public void checkEmailAddressFormat()
     {
-        if (!UtilityFunctions.IsValidEmail(emailInput))
+        if (!UtilityFunctions.IsValidEmailFormat(emailInput))
         {
             emailAddressIsValid = false;
         }
@@ -195,7 +195,7 @@ public class AccountManager : MonoBehaviour
         errorMessageUserName = "";
         errorMessageEmail = "";
 
-        if (!UtilityFunctions.IsValidEmail(emailInput))
+        if (!UtilityFunctions.IsValidEmailFormat(emailInput))
         {
             errorMessageEmail += "\nemail address is invalid format";
         }
