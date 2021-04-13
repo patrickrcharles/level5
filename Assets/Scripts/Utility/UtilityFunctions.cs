@@ -9,7 +9,7 @@ namespace Assets.Scripts.Utility
 {
     public static class UtilityFunctions
     {
-        public static bool IsValidEmailFormat(string email)
+        public static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Utility
             }
         }
 
-        public static string GetRandomString_AlphaNum(int length)
+        public static string RandomString(int length)
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var stringChars = new char[length];
@@ -113,24 +113,11 @@ namespace Assets.Scripts.Utility
             return randNum;
         }
 
-        public static float GetPercentageFloat(int numerator, int divisor)
+        public static float getPercentageFloat(int made, int attempt)
         {
-            if (divisor > 0)
+            if (attempt > 0)
             {
-                float accuracy = (float)numerator / (float)divisor;
-                return (accuracy * 100);
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        public static float GetPercentageFloat(float numerator, float divisor)
-        {
-            if (divisor > 0)
-            {
-                float accuracy = (float)numerator / (float)divisor;
+                float accuracy = (float)made / (float)attempt;
                 return (accuracy * 100);
             }
             else
