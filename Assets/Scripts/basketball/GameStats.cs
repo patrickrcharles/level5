@@ -67,7 +67,7 @@ public class GameStats : MonoBehaviour
         // get 1 - sniper accuracy. ex. if sniper accuracy = 30%, return 70%
         // player will receive that percentage of xp bonus. higher % for lower snipe accuracy
 
-        float inverseSniperAccuracy = (1 - UtilityFunctions.GetPercentageFloat(SniperHits, SniperShots));
+        float inverseSniperAccuracy = (1 - UtilityFunctions.getPercentageFloat(SniperHits, SniperShots));
         if (inverseSniperAccuracy > 0)
         {
             experience += Mathf.RoundToInt(500 * inverseSniperAccuracy);
