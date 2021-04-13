@@ -8,10 +8,9 @@ public class EnemyControllerAuto : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody rigidBody;
-    private EnemyDetection enemyDetection;
     private SpriteRenderer spriteRenderer;
-    private PlayerSwapAttack playerSwapAttack;
     // target for enemy to move to
+    [SerializeField]
     private Vector3 targetPosition;
 
     [SerializeField]
@@ -36,19 +35,7 @@ public class EnemyControllerAuto : MonoBehaviour
     public float attackCooldown;
     [SerializeField]
     private float relativePositionToGoal;
-    //[SerializeField]
-    //private float distanceFromPlayer;
-    //[SerializeField]
-    //private float minDistanceCloseAttack;
-    //[SerializeField]
-    //private float maxDistanceLongRangeAttack;
-    //[SerializeField]
-    //private float minDistanceLongRangeAttack;
-    //[SerializeField]
-    //bool hasLongRangeAttack;
-    //[SerializeField]
-    //private bool longRangeAttack;
-    //[SerializeField]
+    [SerializeField]
     private float knockDownTime;
     [SerializeField]
     private float takeDamageTime;
@@ -56,6 +43,12 @@ public class EnemyControllerAuto : MonoBehaviour
     bool isMinion;
     [SerializeField]
     bool isBoss;
+
+    [SerializeField]
+    bool hasBall;
+
+    [SerializeField]
+    public bool targetCreated;
 
     //const string lightningAnimName = "lightning";
 
@@ -74,20 +67,12 @@ public class EnemyControllerAuto : MonoBehaviour
     //public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    //bool playerInLineOfSight = false;
-    //[SerializeField]
-    //private float lineOfSight;
-    //public float lineOfSightVariance;
-
-    //public bool canAttack;
-    //bool inAttackQueue;
-
     [SerializeField]
     bool enemyUsesPhysics;
     [SerializeField]
     GameObject dropShadow;
 
-    Vector3 originalPosition;
+    Vector3 randomShootingPosition;
 
     // Use this for initialization
     void Start()
@@ -97,17 +82,6 @@ public class EnemyControllerAuto : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        enemyDetection = gameObject.GetComponent<EnemyDetection>();
-        originalPosition = transform.position;
-        //canAttack = true;
-
-        //playerSwapAttack = GetComponent<PlayerSwapAttack>();
-
-        //if (attackCooldown == 0) { attackCooldown = 1f; }
-        ////if (knockDownTime == 0) { knockDownTime = 2f; }
-        //if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
-        ////if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
-        //if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
 
         if (isMinion)
         {
@@ -124,31 +98,20 @@ public class EnemyControllerAuto : MonoBehaviour
             takeDamageTime = 0.3f;
         }
 
-        //if (GameOptions.hardcoreModeEnabled)
-        //{
-        //    movementSpeed *= 1.25f;
-        //    attackCooldown *= 0.5f;
-        //}
-
         basketballRim = GameObject.Find("rim");
-
         // put enemy on the ground. some are spawning up pretty high
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
-
-        InvokeRepeating("generateRandomShootingPosition", 0, 2f);
     }
 
     private void FixedUpdate()
     {
-        if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated
-            && enemyDetection.Attacking)
+        if (stateWalk 
+            && currentState != AnimatorState_Knockdown 
+            && currentState != AnimatorState_Disintegrated)
         {
             goToShootingPosition();
         }
-        //if (statePatrol)
-        //{
-        //    returnToPatrol();
-        //}
+
         if (enemyUsesPhysics)
         {
             dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
@@ -187,48 +150,29 @@ public class EnemyControllerAuto : MonoBehaviour
         //{
         //    stateIdle = false;
         //}
-        // if ball is in air, enemy idle
-        if (GameLevelManager.instance.Basketball.BasketBallState.InAir 
-            && currentState != AnimatorState_Knockdown
-            && currentState != AnimatorState_Walk
-            && currentState != AnimatorState_Attack
-            && currentState != AnimatorState_Lightning)
-        {
-            stateIdle = true;
-            //if idle stop rigidbody
-            rigidBody.velocity = Vector3.zero;
-        }
-        else
-        {
-            stateIdle = false;
-        }
-        // ================== enemy attack state ==========================
-        //if (math.abs(relativePositionToGoal) <= maxDistanceLongRangeAttack
-        //    && math.abs(relativePositionToGoal) >= minDistanceLongRangeAttack
-        //    && hasLongRangeAttack
-        //    //&& math.abs(lineOfSight) <= lineOfSightVariance
-        //    && canAttack)
-        //{
-        //    longRangeAttack = true;
-        //    stateAttack = true;
-        //}
 
-        //else if (math.abs(relativePositionToGoal) < minDistanceCloseAttack
-        //    && math.abs(lineOfSight) <= lineOfSightVariance
-        //    && !longRangeAttack
-        //    && canAttack)
+        //// if ball is in air, enemy idle
+        //if (GameLevelManager.instance.Basketball.BasketBallState.InAir
+        //    && currentState != AnimatorState_Knockdown
+        //    && currentState != AnimatorState_Walk
+        //    && currentState != AnimatorState_Attack
+        //    && currentState != AnimatorState_Lightning)
         //{
-        //    stateAttack = true;
-        //    longRangeAttack = false;
+        //    stateIdle = true;
+        //    //if idle stop rigidbody
+        //    rigidBody.velocity = Vector3.zero;
         //}
         //else
         //{
-        //    stateAttack = false;
-        //    longRangeAttack = false;
+        //    stateIdle = false;
         //}
+
+
         // ================== enemy walk state ==========================
-        if (currentState != AnimatorState_Knockdown
-            && currentState != AnimatorState_Disintegrated)
+        if ( !stateIdle
+            && currentState != AnimatorState_Knockdown
+            && currentState != AnimatorState_Disintegrated
+            && currentState != AnimatorState_Idle)
         {
             stateWalk = true;
         }
@@ -241,32 +185,21 @@ public class EnemyControllerAuto : MonoBehaviour
         if (stateWalk)//|| statePatrol)
         {
             anim.SetBool("walk", true);
+            // generate position
+            if (!targetCreated) 
+            {
+                generateRandomShootingPosition();
+            }
+            // move to position
+            // check if arrived at position
+            // -- if arrived, statewalk = false
+            // ---- stateShoot = true
         }
         else
         {
             anim.SetBool("walk", false);
         }
-        //if (stateAttack)
-        //{
-        //    FreezeEnemyPosition();
-        //    if (playerSwapAttack != null
-        //        && !longRangeAttack
-        //        && playerSwapAttack.closeAttacks != null
-        //        && playerSwapAttack.AnimatorOverrideController != null)
-        //    {
-        //        playerSwapAttack.setCloseAttack();
-        //    }
-        //    if (playerSwapAttack != null
-        //        && playerSwapAttack.AnimatorOverrideController != null
-        //        && longRangeAttack
-        //        && playerSwapAttack.longRangeAttack != null)
-        //    {
-        //        playerSwapAttack.setLongRangeAttack();
-        //    }
 
-        //    anim.SetTrigger("attack");
-        //    StartCoroutine(AttackCooldown(attackCooldown));
-        //}
         if (relativePositionToGoal < 0 && !facingRight)
         {
             Flip();
@@ -314,22 +247,6 @@ public class EnemyControllerAuto : MonoBehaviour
                 | RigidbodyConstraints.FreezePositionY;
         }
     }
-
-    //IEnumerator AttackCooldown(float seconds)
-    //{
-
-    //    canAttack = false;
-    //    // wait for animator state to get to attack 
-    //    yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
-    //    // wait for animation to finish
-    //    yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
-    //    stateAttack = false;
-    //    // enemy can move again
-    //    UnFreezeEnemyPosition();
-    //    //wait for cooldown
-    //    yield return new WaitForSecondsRealtime(seconds);
-    //    canAttack = true;
-    //}
 
     void Flip()
     {
@@ -391,13 +308,6 @@ public class EnemyControllerAuto : MonoBehaviour
         FreezeEnemyPosition();
         playAnimation("disintegrated");
         yield return new WaitForSeconds(1.5f);
-
-        if (enemyDetection.Attacking)
-        {
-            //Debug.Log("========================== enemy killed : " + gameObject.name + " :  remove from attack queue");
-            int attackPositionId = enemyDetection.AttackPositionId;
-            PlayerAttackQueue.instance.removeEnemyFromQueue(gameObject, attackPositionId);
-        }
         //yield return new WaitUntil( ()=> PlayerAttackQueue.instance.AttackSlotOpen);
         Destroy(gameObject);
     }
@@ -433,39 +343,34 @@ public class EnemyControllerAuto : MonoBehaviour
 
     public void goToShootingPosition()
     {
-        //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
+        Debug.Log("goToShootingPosition()");
 
-        //// if no bodyguards found
-        //if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
-        //{
-        //    targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
-        //}
-        //// if bodyguards, attack 1 first bodyguard
-        //else
-        //{
-        //    targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
-        //}
+        targetPosition = (randomShootingPosition - transform.position).normalized;
         movement = targetPosition * (movementSpeed * Time.deltaTime);
-        //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
-        //transform.Translate(movement);
+    }
 
-        //Debug.Log(gameObject.transform.root.name + " -- currentSpeed : " + currentSpeed);
-
+    public void AutoPlayerArrivedAtMarker()
+    {
+        Debug.Log("");
+        stateWalk = false;
+        stateIdle = true;
     }
 
     private void generateRandomShootingPosition()
     {
 
-        //Vector3 randomShootingPosition = GetRandomThreePointPosition(relativePositionToGoal);
-        Vector3 randomShootingPosition = GetRandomFourPointPosition(relativePositionToGoal);
+        Debug.Log("-----generateRandomShootingPosition()");
+        randomShootingPosition = GetRandomFourPointPosition(relativePositionToGoal);
+        targetPosition = randomShootingPosition;
 
         GameObject prefabClone =
         Instantiate(prefabMarkerToInstantiate, randomShootingPosition, Quaternion.Euler(new Vector3(-90, 0, 0)));
         // set parent to object with vertical layout
         //prefabClone.transform.SetParent(basketballRim.transform, false);
-        Destroy(prefabClone.gameObject, 3);
+        //Destroy(prefabClone.gameObject, 3);
         //return 0.0f;
+        targetCreated = true;
     }
 
     private Vector3 GetRandomThreePointPosition(float relativePos)
@@ -481,7 +386,6 @@ public class EnemyControllerAuto : MonoBehaviour
         rimVectorOnGround.y = 0.0f;
         // get random radius between 3 and 4 point line
         float randomRadius = (Random.Range(threePointDistance + 0.5f, fourPointDistance - 0.8f));
-        //Debug.Log("randomRadius : " + randomRadius);
         // random angle
         float randomAngle = 0;
         // get X, Z points for vector
@@ -545,33 +449,4 @@ public class EnemyControllerAuto : MonoBehaviour
 
         return randomShootingPosition;
     }
-    //public void returnToPatrol()
-    //{
-    //    //Debug.Log(gameObject.name + "  is returning to Vector3  : " + originalPosition);
-    //    if (Vector3.Distance(gameObject.transform.position, originalPosition) > 1)
-    //    {
-    //        targetPosition = (originalPosition - transform.position).normalized;
-    //        movement = targetPosition * (movementSpeed * Time.deltaTime);
-    //        //movement = targetPosition * (movementSpeed * Time.deltaTime);
-    //        rigidBody.MovePosition(transform.position + movement);
-    //    }
-    //    else
-    //    {
-    //        statePatrol = false;
-    //    }
-    //}
-
-    //public void UpdateDistanceFromPlayer()
-    //{
-    //    if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
-    //    {
-    //        distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
-    //        lineOfSight = GameLevelManager.instance.Player.transform.position.z - transform.position.z;
-    //    }
-    //    else
-    //    {
-    //        distanceFromPlayer = Vector3.Distance(PlayerAttackQueue.instance.BodyGuards[0].transform.position, transform.position);
-    //        lineOfSight = PlayerAttackQueue.instance.BodyGuards[0].transform.position.z - transform.position.z;
-    //    }
-    //}
 }
