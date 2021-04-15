@@ -21,7 +21,7 @@ public class DevFunctions : MonoBehaviour
     }
     private void Start()
     {
-        player = GameLevelManager.instance.PlayerShooterProfile;
+        player = GameLevelManager.instance.CharacterProfile;
         //debugText = GameObject.Find("debug_text").GetComponent<Text>();
         messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
 

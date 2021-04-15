@@ -43,9 +43,17 @@ public class BasketBallState : MonoBehaviour
 
     void Start()
     {
-
-        // position of basketball infront of player
-        _basketBallPosition = GameLevelManager.instance.Player.transform.Find("basketBall_position").gameObject;
+        switch (GameLevelManager.instance.IsAutoPlayer)
+        {
+            case true:
+                _basketBallPosition = GameLevelManager.instance.AutoPlayer.transform.Find("basketBall_position").gameObject;
+                break;
+            case false:
+                _basketBallPosition = GameLevelManager.instance.Player.transform.Find("basketBall_position").gameObject;
+                break;
+        }
+        //// position of basketball infront of player
+        //_basketBallPosition = GameLevelManager.instance.Player.transform.Find("basketBall_position").gameObject;
 
         //position to shoot basketball at (middle of rim)
         _basketBallTarget = GameObject.Find("basketBall_target");

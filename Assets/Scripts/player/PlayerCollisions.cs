@@ -53,7 +53,7 @@ public class PlayerCollisions : MonoBehaviour
         || other.transform.root.name.Contains("snake")
         || GameOptions.sniperEnabled)
         // roll for evade attack chance
-        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
+        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.CharacterProfile.Luck)
         && !locked)
         {
 

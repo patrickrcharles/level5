@@ -28,7 +28,7 @@ public class RangeMeter : MonoBehaviour
 
         //range = characterProfile.Range;
 
-        statText.text = "range : " + GameLevelManager.instance.PlayerShooterProfile.Range + " ft";
+        statText.text = "range : " + GameLevelManager.instance.CharacterProfile.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
@@ -40,7 +40,7 @@ public class RangeMeter : MonoBehaviour
 
     void setSliderValue()
     {
-        slider.value = (GameLevelManager.instance.PlayerShooterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
+        slider.value = (GameLevelManager.instance.CharacterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
         sliderText.text = slider.value.ToString("0") + "%";
         //Debug.Log("slider.value : " + slider.value.ToString());
     }
