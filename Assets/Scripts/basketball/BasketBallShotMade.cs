@@ -7,7 +7,7 @@ public class BasketBallShotMade : MonoBehaviour
 {
 
     BasketBallState _basketBallState;
-    GameStats _basketBallStats;
+    GameStats gameStats;
 
     //public int currentShotTestIndex;
 
@@ -42,8 +42,9 @@ public class BasketBallShotMade : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
-        _basketBallStats = BasketBall.instance.GetComponent<GameStats>();
+        //_basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
+        _basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        gameStats = GameLevelManager.instance.GameStats;
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
         playerState = GameLevelManager.instance.PlayerController;
@@ -69,14 +70,14 @@ public class BasketBallShotMade : MonoBehaviour
             audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
             // add to total shot distance made total
-            _basketBallStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
+            gameStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
 
             //Debug.Log(" last shot : " + BasketBall.instance.LastShotDistance * 6);
             //Debug.Log(" long shot : " + _basketBallStats.LongestShotMade);
             // is this the longest shot made?
-            if ((BasketBall.instance.LastShotDistance * 6) > _basketBallStats.LongestShotMade)
+            if ((BasketBall.instance.LastShotDistance * 6) > gameStats.LongestShotMade)
             {
-                _basketBallStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
+                gameStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
             }
             // play rim animation
             anim.Play("madeshot");
@@ -128,13 +129,13 @@ public class BasketBallShotMade : MonoBehaviour
     private void updateShotMadeBasketBallStats()
     {
         // first thing, update shot made total
-        _basketBallStats.ShotMade++;
-        Debug.Log("_basketBallStats.ShotMade++ : " + _basketBallStats.ShotMade);
+        gameStats.ShotMade++;
+        //Debug.Log("_basketBallStats.ShotMade++ : " + _basketBallStats.ShotMade);
         // ==================== consecutive shots logic ==============================
 
         // get current state of shots made/attempted
-        _currentShotMade = (int)_basketBallStats.ShotMade;
-        _currentShotAttempts = (int)_basketBallStats.ShotAttempt;
+        _currentShotMade = (int)gameStats.ShotMade;
+        _currentShotAttempts = (int)gameStats.ShotAttempt;
 
         // if current is == expected made/attempt, increment consecutive and not a 2 point shot
         // 
@@ -157,9 +158,9 @@ public class BasketBallShotMade : MonoBehaviour
             _expectedShotAttempts = _currentShotAttempts + 1;
         }
         // if current consecutive greater than previous high consecutive
-        if (ConsecutiveShotsMade > _basketBallStats.MostConsecutiveShots)
+        if (ConsecutiveShotsMade > gameStats.MostConsecutiveShots)
         {
-            _basketBallStats.MostConsecutiveShots = ConsecutiveShotsMade;
+            gameStats.MostConsecutiveShots = ConsecutiveShotsMade;
         }
 
         // ==================== point total logic ==============================
@@ -173,49 +174,49 @@ public class BasketBallShotMade : MonoBehaviour
             if (_basketBallState.TwoAttempt)
             {
                 //Debug.Log("twopointer made");
-                _basketBallStats.TwoPointerMade++;
-                _basketBallStats.TotalPoints += 2;
+                gameStats.TwoPointerMade++;
+                gameStats.TotalPoints += 2;
             }
 
             if (_basketBallState.ThreeAttempt)
             {
-                _basketBallStats.ThreePointerMade++;
+                gameStats.ThreePointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
                 if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
-                    _basketBallStats.TotalPoints += 4;
+                    gameStats.TotalPoints += 4;
                 }
                 else
                 {
-                    _basketBallStats.TotalPoints += 3;
+                    gameStats.TotalPoints += 3;
                 }
             }
 
             if (_basketBallState.FourAttempt)
             {
-                _basketBallStats.FourPointerMade++;
+                gameStats.FourPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
                 if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
-                    _basketBallStats.TotalPoints += 6;
+                    gameStats.TotalPoints += 6;
                 }
                 else
                 {
-                    _basketBallStats.TotalPoints += 4;
+                    gameStats.TotalPoints += 4;
                 }
 
             }
             if (_basketBallState.SevenAttempt)
             {
-                _basketBallStats.SevenPointerMade++;
+                gameStats.SevenPointerMade++;
                 // if consecutive > 5 and game mode for 'Total Points+'
                 if (ConsecutiveShotsMade >= GameRules.instance.InThePocketActivateValue && GameOptions.gameModeSelectedId == 15)
                 {
-                    _basketBallStats.TotalPoints += 10;
+                    gameStats.TotalPoints += 10;
                 }
                 else
                 {
-                    _basketBallStats.TotalPoints += 7;
+                    gameStats.TotalPoints += 7;
                 }
             }
         }
@@ -230,38 +231,38 @@ public class BasketBallShotMade : MonoBehaviour
                 // if moneyball
                 if (_basketBallState.TwoAttempt)
                 {
-                    _basketBallStats.TwoPointerMade++;
+                    gameStats.TwoPointerMade++;
                     pointsScored = 2;
                 }
 
                 if (_basketBallState.ThreeAttempt)
                 {
-                    _basketBallStats.ThreePointerMade++;
+                    gameStats.ThreePointerMade++;
                     pointsScored = 3;
                 }
 
                 if (_basketBallState.FourAttempt)
                 {
-                    _basketBallStats.FourPointerMade++;
+                    gameStats.FourPointerMade++;
                     pointsScored = 4;
                 }
 
                 if (_basketBallState.SevenAttempt)
                 {
-                    _basketBallStats.SevenPointerMade++;
+                    gameStats.SevenPointerMade++;
                     pointsScored = 7;
                 }
                 // if moneyball / last shot on marker (5/5)
                 if (GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotAttempt == 5
                     && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
                 {
-                    _basketBallStats.TotalPoints += (pointsScored * 2);
-                    _basketBallStats.MoneyBallMade++;
+                    gameStats.TotalPoints += (pointsScored * 2);
+                    gameStats.MoneyBallMade++;
                 }
                 // not last shot on marker (1-4/5)
                 else
                 {
-                    _basketBallStats.TotalPoints += pointsScored;
+                    gameStats.TotalPoints += pointsScored;
                 }
             }
             // is game mode 19 [Points By Distance]
@@ -269,34 +270,34 @@ public class BasketBallShotMade : MonoBehaviour
             {
                 if (_basketBallState.TwoAttempt)
                 {
-                    _basketBallStats.TwoPointerMade++;
+                    gameStats.TwoPointerMade++;
                 }
 
                 if (_basketBallState.ThreeAttempt)
                 {
-                    _basketBallStats.ThreePointerMade++;
+                    gameStats.ThreePointerMade++;
                 }
 
                 if (_basketBallState.FourAttempt)
                 {
-                    _basketBallStats.FourPointerMade++;
+                    gameStats.FourPointerMade++;
                 }
 
                 if (_basketBallState.SevenAttempt)
                 {
-                    _basketBallStats.SevenPointerMade++;
+                    gameStats.SevenPointerMade++;
                 }
                 // reset point scored if Points By Distance mode
                 pointsScored = 0;
                 pointsScored = Mathf.FloorToInt((BasketBall.instance.LastShotDistance * 6) / 10);
                 //Debug.Log("game mode 19 : pointsScored : " + pointsScored);
-                _basketBallStats.TotalPoints += pointsScored;
+                gameStats.TotalPoints += pointsScored;
             }
         }
         // moneyball stats
         if (_basketBallState.MoneyBallEnabledOnShoot)
         {
-            _basketBallStats.MoneyBallMade++;
+            gameStats.MoneyBallMade++;
         }
 
         // ==================== requires position markers logic ==============================
