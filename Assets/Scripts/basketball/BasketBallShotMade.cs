@@ -7,6 +7,7 @@ public class BasketBallShotMade : MonoBehaviour
 {
 
     BasketBallState _basketBallState;
+    [SerializeField]
     GameStats gameStats;
 
     //public int currentShotTestIndex;
@@ -311,10 +312,10 @@ public class BasketBallShotMade : MonoBehaviour
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade = max;
             }
             // no money ball, update current shot marker stats
-            //else
-            //{
-            //    GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
-            //}
+            else
+            {
+                GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
+            }
         }
     }
 
