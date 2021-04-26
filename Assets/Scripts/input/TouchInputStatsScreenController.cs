@@ -75,11 +75,11 @@ public class TouchInputStatsScreenController : MonoBehaviour
             {
                 //change option
                 swipeDownOnOption();
-                // reset previous button to active button
-                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
-                {
-                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
-                }
+                //// reset previous button to active button
+                //if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                //{
+                //    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                //}
             }
             //swipe up on changeable options
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
@@ -89,11 +89,11 @@ public class TouchInputStatsScreenController : MonoBehaviour
             {
                 //change option
                 swipeUpOnOption();
-                // reset previous button to active button
-                if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
-                {
-                    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
-                }
+                //// reset previous button to active button
+                //if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+                //{
+                //    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+                //}
             }
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
@@ -282,6 +282,11 @@ public class TouchInputStatsScreenController : MonoBehaviour
         {
             StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
         }
+        // reset previous button to active button
+        if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+        {
+            EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+        }
         buttonPressed = false;
     }
     private void swipeDownOnOption()
@@ -358,6 +363,12 @@ public class TouchInputStatsScreenController : MonoBehaviour
             StatsManager.instance.initializeSniperOptionDisplay();
             StatsManager.instance.changeHighScoreDataDisplay();
             buttonPressed = true;
+        }
+
+        // reset previous button to active button
+        if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+        {
+            EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         }
         buttonPressed = false;
     }
