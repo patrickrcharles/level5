@@ -24,7 +24,6 @@ public class GameStats : MonoBehaviour
     private int _fourPointerAttempts;
     private int _sevenPointerAttempts;
     private int _moneyBallAttempts;
-
     private int _shotAttempt;
     private int _shotMade;
     private float _longestShotMade;
