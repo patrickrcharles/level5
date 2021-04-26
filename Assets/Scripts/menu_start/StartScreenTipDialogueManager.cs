@@ -24,11 +24,17 @@ public class StartScreenTipDialogueManager : MonoBehaviour
 
     [SerializeField]
     Text tipText;
+
+    [SerializeField]
+    Text headerText;
+
     [SerializeField]
     List<PlayerTips> tipsList;
 
     int randomTipIndex = 0;
     PlayerControls controls;
+
+    bool buttonPressed = false;
 
     public Button CancelButton { get => cancelButton; set => cancelButton = value; }
     public Button NextButton { get => nextButton; set => nextButton = value; }
@@ -90,6 +96,7 @@ public class StartScreenTipDialogueManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
         GameOptions.tipDialogueLoadedOnStart = true;
+        headerText.text = "Tip" + "    " + (randomTipIndex + 1) + " / " + (tipsList.Count);
     }
 
     private void CloseTipDialogue()
@@ -99,19 +106,22 @@ public class StartScreenTipDialogueManager : MonoBehaviour
     }
     public void NextTipButton()
     {
-        //  16 < 17
-        if (randomTipIndex < tipsList.Count - 1)
+        buttonPressed = true;
+
+        if (randomTipIndex < (tipsList.Count - 1))
         {
             randomTipIndex++;
             tipText.text = tipsList[randomTipIndex].tip;
         }
-        // 17 = 17, 18 < 17
         else
         {
             randomTipIndex = 0;
             tipText.text = tipsList[0].tip;
         }
         EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
+        headerText.text = "Tip" + "    " + (randomTipIndex + 1) + " / " + (tipsList.Count);
+
+        buttonPressed = false;
     }
 
     public void CancelButtonOnClick()
@@ -123,6 +133,9 @@ public class StartScreenTipDialogueManager : MonoBehaviour
     public void NextButtonOnClick()
     {
         result = NEXT;
-        NextTipButton();
+        if (!buttonPressed)
+        {
+            NextTipButton();
+        }
     }
 }

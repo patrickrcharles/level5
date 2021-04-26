@@ -635,6 +635,7 @@ public class ProgressionManager : MonoBehaviour
         addTo4Text = GameObject.Find(progression4AccuracyName).GetComponent<Text>();
         addTo7Text = GameObject.Find(progression7AccuracyName).GetComponent<Text>();
     }
+
     public void disableButtonsNotUsedForTouchInput()
     {
         //Debug.Log("disable buttons for touch");
@@ -861,6 +862,7 @@ public class ProgressionManager : MonoBehaviour
         {
             progressionState.Accuracy7 = progressionState.MaxSevenAccuraccy;
         }
+
         progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
         progressionState.Range = (int)(originalCharState.Range + progressionState.AddToRange);
     }
