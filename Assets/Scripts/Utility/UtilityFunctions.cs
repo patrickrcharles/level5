@@ -107,7 +107,7 @@ namespace Assets.Scripts.Utility
             return randNum;
         }
 
-        public static float GetRandomInteger(int min, int max)
+        public static int GetRandomInteger(int min, int max)
         {
             int randNum = Random.Range(min, max);
             return randNum;
