@@ -1,6 +1,8 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OptionsManager : MonoBehaviour
@@ -59,9 +61,28 @@ public class OptionsManager : MonoBehaviour
 
     PlayerControls controls;
 
-    public static OptionsManager instance;
+    //public static OptionsManager instance;
 
+    //#if UNITY_ANDROID && !UNITY_EDITOR
+    //private Vector2 startTouchPosition, endTouchPosition;
+    //float swipeUpTolerance;
+    //float swipeDownTolerance;
+    //float swipeDistance;
+
+    //GameObject prevSelectedGameObject;
+    //[SerializeField]
+    //GraphicRaycaster m_Raycaster;
+    //[SerializeField]
+    //PointerEventData m_PointerEventData;
+    //[SerializeField]
+    //EventSystem m_EventSystem;
+
+    //Touch touch;
+    //[SerializeField]
     //bool buttonPressed;
+
+    [SerializeField]
+    ChangeOptionType optionType;
 
     enum textureQuality
     {
@@ -69,6 +90,12 @@ public class OptionsManager : MonoBehaviour
         Half = 1,
         Quarter = 2,
         Eighth = 3
+    }
+    public enum ChangeOptionType
+    {
+        NEXT = 0,
+        PREVIOUS = 1,
+        NONE = 2
     }
 
     private void OnEnable()
@@ -84,11 +111,11 @@ public class OptionsManager : MonoBehaviour
         controls.Other.Disable();
     }
 
-    //private Text gameModeSelectText;
     void Awake()
     {
-        instance = this;
+        //instance = this;
         controls = new PlayerControls();
+        //initializeTouchControls();
         //buttonPressed = false;
 
         resolutions = Screen.resolutions;
@@ -97,40 +124,37 @@ public class OptionsManager : MonoBehaviour
         GameObject.Find(resolutionCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.ToString();
         GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text = Screen.currentResolution.ToString();
         GameObject.Find(dpiCurrentTextName).GetComponent<Text>().text = Screen.dpi.ToString();
-        GameObject.Find(refreshRateCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString() + " Hz";
+        GameObject.Find(dpiSelectOptionButtonName).GetComponent<Text>().text = Screen.dpi.ToString();
+        //GameObject.Find(refreshRateCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString() + " Hz";
 
+        Debug.Log("QualitySettings.vSyncCount 1 : " + QualitySettings.vSyncCount);
         if (QualitySettings.vSyncCount == 0)
         {
+            GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "Off";
             GameObject.Find(vsyncCurrentTextName).GetComponent<Text>().text = "Off";
         }
         else
         {
+            GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "On";
             GameObject.Find(vsyncCurrentTextName).GetComponent<Text>().text = "On";
         }
+        Debug.Log("QualitySettings.vSyncCount 2 : " + QualitySettings.vSyncCount);
 
-        if (Application.targetFrameRate < 0)
+        if (Application.targetFrameRate < 0 && QualitySettings.vSyncCount == 0)
         {
             GameObject.Find(frameRateCurrentTextName).GetComponent<Text>().text = "unlimited";
+            GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text = "unlimited";
         }
         else
         {
             GameObject.Find(frameRateCurrentTextName).GetComponent<Text>().text = Application.targetFrameRate.ToString();
+            GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text = Application.targetFrameRate.ToString();
         }
-        GameObject.Find(refreshRateOptionButtonName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString();
 
+        GameObject.Find(dpiSelectOptionButtonName).GetComponent<Text>().text = Screen.dpi.ToString();
+
+        //GameObject.Find(refreshRateOptionButtonName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString();
     }
-
-
-    //public static T GetEnumValue<T>(int intValue) where T : struct, IConvertible
-    //{
-    //    Type enumType = typeof(T);
-    //    if (!enumType.IsEnum)
-    //    {
-    //        throw new Exception("T must be an Enumeration type.");
-    //    }
-
-    //    return (T)Enum.ToObject(enumType, intValue);
-    //}
 
     // Start is called before the first frame update
     void Start()
@@ -138,66 +162,74 @@ public class OptionsManager : MonoBehaviour
         resolutionSelectedIndex = 0;
         dpiSelectedIndex = 0;
         frameRateSelectedIndex = 0;
+        optionType = ChangeOptionType.NONE;
 
+        //prevSelectedGameObject = EventSystem.current.firstSelectedGameObject;
+        //swipeUpTolerance = Screen.height / 7;
+        //swipeDownTolerance = Screen.height / 5;
+        //prevSelectedGameObject = EventSystem.current.firstSelectedGameObject;
+        ////Debug.Log("screen width : " + Screen.width);
+
+        //buttonPressed = false;
+        if (EventSystem.current == null)
+        {
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+        }
         //var resolutions = Screen.resolutions;
         //var refreshRates = new Int32[resolutions.Length];
 
         //for (var c = 0; c < refreshRates.Length; c++)
         //{
         //    refreshRates[c] = resolutions[c].refreshRate;
-        //    Debug.Log("refresh rate : " + resolutions[c].refreshRate);
+        //   //Debug.Log("refresh rate : " + resolutions[c].refreshRate);
         //}
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            //Debug.Log("change rez");
-            changeResolution();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            //Debug.Log("change dpi");
-            changeScreenDpi();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            //Debug.Log("change dpi");
-            changeTargetFps();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            //Debug.Log("change dpi");
-            changeVSync();
-        }
-    }
 
-    private void changeVSync()
+    public void ChangeVSync()
     {
-        if (QualitySettings.vSyncCount == 0)
-        {
-            QualitySettings.vSyncCount = 1;
-        }
-        else
+        Debug.Log("change vsync");
+        Debug.Log("QualitySettings.vSyncCount 1 : " + QualitySettings.vSyncCount);
+        // check current setting and change
+        // vsync on, turn off
+        if (QualitySettings.vSyncCount == 1)
         {
             QualitySettings.vSyncCount = 0;
-        }
-
-        if (QualitySettings.vSyncCount == 0)
-        {
             GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "Off";
+            // turn off target frame rate
+            Application.targetFrameRate = -1;
+            GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
+                "unlimited";
+        }
+        // vsync off, turn on
+        else
+        {
+            QualitySettings.vSyncCount = 1;
+            GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "On";
+            // turn target frame rate to default
+            frameRateSelectedIndex = 0;
+            Application.targetFrameRate = 30;
+            //Application.targetFrameRate += 30;
+            GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
+                Application.targetFrameRate.ToString("###") + " fps";
+
+            //Debug.Log("targetFrameRate : " + Application.targetFrameRate.ToString("###"));
+        }
+        //Debug.Log("vsync : " + QualitySettings.vSyncCount);
+        Debug.Log("QualitySettings.vSyncCount 1 : " + QualitySettings.vSyncCount);
+    }
+
+    public void changeResolution()
+    {
+
+        if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
+        {
+            resolutionSelectedIndex++;
         }
         else
         {
-            GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "On";
+            resolutionSelectedIndex--;
         }
-        Debug.Log("vsync : " + QualitySettings.vSyncCount);
-    }
-
-    private void changeResolution()
-    {
-        resolutionSelectedIndex++;
         //Debug.Log("resolutionSelectedIndex : " + resolutionSelectedIndex);
         //Debug.Log("resolutions.Length : " + resolutions.Length);
 
@@ -214,10 +246,18 @@ public class OptionsManager : MonoBehaviour
         }
     }
 
-    private void changeScreenDpi()
+    public void changeScreenDpi()
     {
+        if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
+        {
+            dpiSelectedIndex++;
+        }
+        else
+        {
+            dpiSelectedIndex--;
+        }
+
         float scale = 1;
-        dpiSelectedIndex++;
         if (dpiSelectedIndex >= 5)
         {
             dpiSelectedIndex = 0;
@@ -227,7 +267,7 @@ public class OptionsManager : MonoBehaviour
             GameObject.Find(dpiSelectOptionButtonName).GetComponent<Text>().text =
                 (Screen.dpi * QualitySettings.resolutionScalingFixedDPIFactor).ToString("####");
 
-            Debug.Log("dpi current x " + scale + " : " + (Screen.dpi * scale).ToString("000.00"));
+           //Debug.Log("dpi current x " + scale + " : " + (Screen.dpi * scale).ToString("000.00"));
             //return percent.ToString("00.00") + " miles";
         }
         else
@@ -237,7 +277,7 @@ public class OptionsManager : MonoBehaviour
             GameObject.Find(dpiSelectOptionButtonName).GetComponent<Text>().text =
                 (Screen.dpi * QualitySettings.resolutionScalingFixedDPIFactor).ToString("####");
 
-            Debug.Log("dpi current x " + scale + " : " + (Screen.dpi * scale).ToString("000.00"));
+           //Debug.Log("dpi current x " + scale + " : " + (Screen.dpi * scale).ToString("000.00"));
 
         }
         //Debug.Log("screen dpi * scale : " + Screen.dpi * scale );
@@ -245,21 +285,29 @@ public class OptionsManager : MonoBehaviour
         //Debug.Log("dpiSelectedIndex : " + dpiSelectedIndex);
     }
 
-    private void changeTargetFps()
+    public void changeTargetFps()
     {
         if (QualitySettings.vSyncCount == 1)
         {
-            frameRateSelectedIndex++;
+            if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
+            {
+                frameRateSelectedIndex++;
+            }
+            else
+            {
+                frameRateSelectedIndex--;
+            }
+
             if (frameRateSelectedIndex >= 10)
             {
                 frameRateSelectedIndex = 0;
                 Application.targetFrameRate = 30;
                 //QualitySettings.resolutionScalingFixedDPIFactor = scale;
-                Application.targetFrameRate += 30;
+                //Application.targetFrameRate += 30;
                 GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
                     Application.targetFrameRate.ToString("###") + " fps";
 
-                Debug.Log("targetFrameRate : " + Application.targetFrameRate.ToString("###"));
+               //Debug.Log("targetFrameRate : " + Application.targetFrameRate.ToString("###"));
                 //return percent.ToString("00.00") + " miles";
             }
             else
@@ -275,7 +323,7 @@ public class OptionsManager : MonoBehaviour
                 GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
                     Application.targetFrameRate.ToString("###") + " fps";
 
-                Debug.Log("targetFrameRate : " + Application.targetFrameRate.ToString("###"));
+               //Debug.Log("targetFrameRate : " + Application.targetFrameRate.ToString("###"));
             }
         }
         else
@@ -284,9 +332,165 @@ public class OptionsManager : MonoBehaviour
             GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
                 "unlimited";
         }
-        Debug.Log("frameRateSelectedIndex : " + frameRateSelectedIndex);
+       //Debug.Log("frameRateSelectedIndex : " + frameRateSelectedIndex);
         //Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
         //Debug.Log("dpiSelectedIndex : " + dpiSelectedIndex);
     }
 
+    public void loadStartScreen()
+    {
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
+    }
+
+    //private void Update()
+    //{
+    //    SwipeCheck();
+    //}
+
+    //private void SwipeCheck()
+    //{
+    //    // if no button selected, return to previous
+    //    if (EventSystem.current.currentSelectedGameObject == null)
+    //    {
+    //        EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+    //    }
+    //    // save previous button until a touch is made
+    //    if (!buttonPressed && Input.touchCount == 0)
+    //    {
+    //        prevSelectedGameObject = EventSystem.current.currentSelectedGameObject;
+    //    }
+    //    // if touch
+    //    if (Input.touchCount > 0 && !buttonPressed)
+    //    {
+    //       //Debug.Log("        if (Input.touchCount > 0 && !buttonPressed)");
+
+    //        Touch touch = Input.touches[0];
+    //        if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
+    //        {
+    //            startTouchPosition = touch.position;
+    //        }
+    //        endTouchPosition = touch.position;
+    //        swipeDistance = endTouchPosition.y - startTouchPosition.y;
+
+    //        // swipe down on changeable options
+    //        if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+    //            && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+    //            && swipeDistance < 0 // swipe down
+    //            && (startTouchPosition.x > (Screen.width / 4))) // if swipe on right 1/2 of screen)) 
+    //        {
+    //            //change option
+    //            swipeDownOnOption();
+    //            // reset previous button to active button
+    //            if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+    //            {
+    //                EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+    //            }
+    //        }
+    //        //swipe up on changeable options
+    //        if (touch.tapCount == 1 && touch.phase == TouchPhase.Ended // finger stoppped moving | *tapcount = 1 keeps pause from being called twice
+    //            && Mathf.Abs(swipeDistance) > swipeDownTolerance // swipe is long enough
+    //            && swipeDistance > 0 // swipe down
+    //            && (startTouchPosition.x > (Screen.width / 4))) // if swipe on right 1/2 of screen)) 
+    //        {
+    //            //change option
+    //            swipeUpOnOption();
+    //            // reset previous button to active button
+    //            if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
+    //            {
+    //                EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+    //            }
+    //        }
+    //        // on double tap, perform actions
+    //        if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
+    //        {
+    //            activateDoubleTappedButton();
+    //        }
+    //    }
+    //}
+
+    //private void initializeTouchControls()
+    //{
+
+    //    //check if startmanager is empty and find correct GraphicRaycaster and EventSystem
+    //    if (GameObject.FindObjectOfType<OptionsManager>() != null)
+    //    {
+    //        //Fetch the Raycaster from the GameObject (the Canvas)
+    //        //m_Raycaster = StartManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
+    //        m_Raycaster = GameObject.Find("OptionManager").GetComponentInChildren<GraphicRaycaster>();
+    //        //Fetch the Event System from the Scene
+    //        m_EventSystem = GameObject.Find("OptionManager").GetComponentInChildren<EventSystem>();
+    //    }
+    //    // else, this is not the startscreen and disable object
+    //    else
+    //    {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
+
+    //private void activateDoubleTappedButton()
+    //{
+    //    swipeDownOnOption();
+    //}
+
+
+
+    //private void swipeUpOnOption()
+    //{
+    //   //Debug.Log("swipe up");
+
+    //    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+    //    //check highlighted button
+    //    if (prevSelectedGameObject.name.Equals(resolutionSelectOptionButtonName))
+    //    {
+    //        changeResolution(ChangeOptionType.PREVIOUS);
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(vsyncSelectOptionButtonName))
+    //    {
+    //        ChangeVSync();
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(dpiSelectOptionButtonName))
+    //    {
+    //        changeScreenDpi(ChangeOptionType.PREVIOUS);
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(frameRateOptionButtonName))
+    //    {
+    //        changeTargetFps(ChangeOptionType.PREVIOUS);
+    //        buttonPressed = true;
+    //    }
+
+    //    buttonPressed = false;
+    //}
+
+    //private void swipeDownOnOption()
+    //{
+    //   //Debug.Log("swipe down");
+
+    //    EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+    //    //check highlighted button
+    //    if (prevSelectedGameObject.name.Equals(resolutionSelectOptionButtonName))
+    //    {
+    //        changeResolution(ChangeOptionType.NEXT);
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(vsyncSelectOptionButtonName))
+    //    {
+    //        ChangeVSync();
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(dpiSelectOptionButtonName))
+    //    {
+    //        changeScreenDpi(ChangeOptionType.NEXT);
+    //        buttonPressed = true;
+    //    }
+    //    if (prevSelectedGameObject.name.Equals(frameRateOptionButtonName))
+    //    {
+    //        changeTargetFps(ChangeOptionType.NEXT);
+    //        buttonPressed = true;
+    //    }
+
+    //    buttonPressed = false;
+    //}
 }
