@@ -108,7 +108,7 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
-            Debug.Log("PostUnsubmittedHighscores(List<HighScoreModel> highscores)");
+            //Debug.Log("PostUnsubmittedHighscores(List<HighScoreModel> highscores)");
             foreach (HighScoreModel score in highscores)
             {
                 //serialize highscore to json for HTTP POST
