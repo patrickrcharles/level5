@@ -305,6 +305,12 @@ public class StartManager : MonoBehaviour
 
             loadMenu(Constants.SCENE_NAME_level_00_account);
         }
+        if ((controls.UINavigation.Submit.triggered
+            || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(optionsMenuButtonName))
+        {
+            loadMenu(Constants.SCENE_NAME_level_00_options);
+        }
 
 
         // ================================== navigation =====================================================================
