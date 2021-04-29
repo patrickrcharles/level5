@@ -221,6 +221,12 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_account);
             buttonPressed = true;
         }
+        //options
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.OptionsMenuButtonName))
+        //{
+        //    StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
+        //    buttonPressed = true;
+        //}
         buttonPressed = false;
     }
 

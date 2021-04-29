@@ -305,12 +305,12 @@ public class StartManager : MonoBehaviour
 
             loadMenu(Constants.SCENE_NAME_level_00_account);
         }
-        if ((controls.UINavigation.Submit.triggered
-            || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(optionsMenuButtonName))
-        {
-            loadMenu(Constants.SCENE_NAME_level_00_options);
-        }
+        //if ((controls.UINavigation.Submit.triggered
+        //    || controls.Player.shoot.triggered)
+        //    && currentHighlightedButton.Equals(optionsMenuButtonName))
+        //{
+        //    loadMenu(Constants.SCENE_NAME_level_00_options);
+        //}
 
 
         // ================================== navigation =====================================================================
@@ -1138,12 +1138,10 @@ public class StartManager : MonoBehaviour
     public static string QuitButtonName => quitButtonName;
     public static string UpdateMenuButtonName => updateMenuButtonName;
     public static string HardcoreSelectOptionName => hardcoreSelectOptionName;
-
     public static string AccountMenuButtonName => accountMenuButtonName;
-
     public static string CreditsMenuButtonName1 => creditsMenuButtonName;
-
     public static string SniperSelectOptionName => sniperSelectOptionName;
 
     public int PlayerSelectedIndex => playerSelectedIndex;
+    public static string OptionsMenuButtonName => optionsMenuButtonName;
 }
