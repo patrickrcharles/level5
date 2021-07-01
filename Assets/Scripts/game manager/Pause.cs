@@ -123,10 +123,9 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("Update()" );
         //pause ESC, submit, cancel
-        if (GameLevelManager.instance.Controls.Player.submit.triggered
-            || GameLevelManager.instance.Controls.Player.cancel.triggered
+        if (//GameLevelManager.instance.Controls.UINavigation.Submit.triggered||
+             GameLevelManager.instance.Controls.UINavigation.Cancel.triggered
             //|| GameLevelManager.Instance.Controls.Player.esc.triggered
             && !GameLevelManager.instance.GameOver)
         {
