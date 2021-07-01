@@ -133,7 +133,7 @@ public class EnemyProjectile : MonoBehaviour
             && (other.gameObject.CompareTag("enemyHitbox")
             || other.gameObject.CompareTag("playerHitbox")))
         {
-            if (other.gameObject.CompareTag("playerHitbox"))
+            if (other.gameObject.CompareTag("playerHitbox") && sniperProjectile)
             {
                 // if player hit, increase count
                 BasketBall.instance.GameStats.SniperHits++;
