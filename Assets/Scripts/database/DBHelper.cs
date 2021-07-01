@@ -2163,8 +2163,6 @@ public class DBHelper : MonoBehaviour
                     + " AND modeid != 99"
                     + " AND userName != 0";
 
-                //Debug.Log(sqlQuery);
-
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
@@ -2216,12 +2214,11 @@ public class DBHelper : MonoBehaviour
                     highscore.SniperModeName = reader.GetString(39);
                     highscore.Sniperhits = reader.GetInt32(40);
                     highscore.SniperShots = reader.GetInt32(41);
-                    //Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
                     // if username empty on unsubmitted score
                     // but user logged in [gameoptions.username != null/empty
                     // add logged in username to score and submit
-                    if ( (string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
+                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
                         && (!string.IsNullOrWhiteSpace(GameOptions.userName) || !string.IsNullOrEmpty(GameOptions.userName)) )
                     {
                         highscore.UserName = GameOptions.userName;
@@ -2229,7 +2226,7 @@ public class DBHelper : MonoBehaviour
                     }
                     // if username != null or empty, add to list
                     // this will catch if user has logged in
-                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)))
+                    if (!string.IsNullOrEmpty(highscore.UserName) || !string.IsNullOrWhiteSpace(highscore.UserName))
                     {
                         highscores.Add(highscore);
                     }
