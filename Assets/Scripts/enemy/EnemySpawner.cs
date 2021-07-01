@@ -27,7 +27,8 @@ public class EnemySpawner : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("enemy") != null)
         {
             // this needs to second option or enabling it will spawn enemies
-            GameOptions.enemiesEnabled = true;
+            // ***** DISABLE FOR TESTING
+            //GameOptions.enemiesEnabled = true;
             GameObject[] enemyHealthList = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in enemyHealthList)
             {
