@@ -4,15 +4,17 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyControllerAuto : MonoBehaviour
+public class AutoPlayerControllerTest : MonoBehaviour
 {
     private Animator anim;
+    [SerializeField]
     private Rigidbody rigidBody;
     private SpriteRenderer spriteRenderer;
     // target for enemy to move to
     [SerializeField]
     private Vector3 targetPosition;
-
+   [SerializeField]
+    public bool targetCreated;
     [SerializeField]
     GameObject prefabMarkerToInstantiate;
     [SerializeField]
@@ -47,8 +49,7 @@ public class EnemyControllerAuto : MonoBehaviour
     [SerializeField]
     bool hasBall;
 
-    [SerializeField]
-    public bool targetCreated;
+ 
 
     //const string lightningAnimName = "lightning";
 
@@ -73,6 +74,11 @@ public class EnemyControllerAuto : MonoBehaviour
     GameObject dropShadow;
 
     Vector3 randomShootingPosition;
+
+    public float jumpForce = 4f;
+    bool jumptrigger = false;
+
+    public bool HasBall { get => hasBall; set => hasBall = value; }
 
     // Use this for initialization
     void Start()
@@ -115,6 +121,11 @@ public class EnemyControllerAuto : MonoBehaviour
         if (enemyUsesPhysics)
         {
             dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
+        }
+        if (jumptrigger)
+        {
+            jumptrigger = false;
+            AutoPlayerJump();
         }
     }
 
@@ -166,25 +177,36 @@ public class EnemyControllerAuto : MonoBehaviour
         //{
         //    stateIdle = false;
         //}
-
+        // ================== if does not have ball ==========================
+        if (!hasBall
+            && currentState != AnimatorState_Knockdown
+            && currentState != AnimatorState_Disintegrated)
+        {
+            Debug.Log("CPU call ball");
+            CallBallToPlayer.instance.Locked = true;
+            CallBallToPlayer.instance.pullBallToPlayer();
+            CallBallToPlayer.instance.Locked = false;
+        }
 
         // ================== enemy walk state ==========================
         if ( !stateIdle
             && currentState != AnimatorState_Knockdown
-            && currentState != AnimatorState_Disintegrated
-            && currentState != AnimatorState_Idle)
+            && currentState != AnimatorState_Disintegrated)
         {
+            Debug.Log("stateWalk : true");
             stateWalk = true;
         }
         else
         {
+            Debug.Log("stateWalk : false");
             stateWalk = false;
         }
         // ================== animation walk state ==========================
         //if (rigidBody.velocity.sqrMagnitude > 0)
         if (stateWalk)//|| statePatrol)
         {
-            anim.SetBool("walk", true);
+            Debug.Log("if(statewalk)");
+            anim.SetBool("walking", true);
             // generate position
             if (!targetCreated) 
             {
@@ -197,7 +219,7 @@ public class EnemyControllerAuto : MonoBehaviour
         }
         else
         {
-            anim.SetBool("walk", false);
+            anim.SetBool("walking", false);
         }
 
         if (relativePositionToGoal < 0 && !facingRight)
@@ -264,6 +286,22 @@ public class EnemyControllerAuto : MonoBehaviour
     public void playAnimation(string animationName)
     {
         anim.Play(animationName);
+    }
+
+    public void AutoPlayerJump()
+    {
+        Debug.Log("player jump");
+        rigidBody.velocity = Vector3.up * jumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        //jumpStartTime = Time.time;
+
+        //Shotmeter.MeterStarted = true;
+        //Shotmeter.MeterStartTime = Time.time;
+        //// if not dunking, start shot meter
+        //if (currentState != inAirDunkState)
+        //{
+        //    Shotmeter.MeterStarted = true;
+        //    Shotmeter.MeterStartTime = Time.time;
+        //}
     }
 
     public IEnumerator struckByLighning()
@@ -355,6 +393,7 @@ public class EnemyControllerAuto : MonoBehaviour
         Debug.Log("");
         stateWalk = false;
         stateIdle = true;
+        jumptrigger = true;
     }
 
     private void generateRandomShootingPosition()

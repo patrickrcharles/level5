@@ -162,12 +162,12 @@ public class BasketBallShotMarkerAuto : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         // if player enters shot marker area
-        if ((other.gameObject.CompareTag("playerHitbox") || other.gameObject.CompareTag("enemyHitboxAuto"))  
+        if ((other.gameObject.CompareTag("playerHitbox") || other.gameObject.CompareTag("autoPlayerHitbox"))  
             && gameObject.CompareTag("shotMarkerAuto")
             && detectCollisions)
         {
             Debug.Log("enemy cpu ENTER marker");
-            EnemyControllerAuto enemy = other.transform.parent.GetComponent<EnemyControllerAuto>();
+            AutoPlayerControllerTest enemy = other.transform.parent.GetComponent<AutoPlayerControllerTest>();
             enemy.AutoPlayerArrivedAtMarker();
             //enemy.targetCreated = false;
             _playerOnMarker = true;
@@ -177,7 +177,7 @@ public class BasketBallShotMarkerAuto : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         // if player exits shot marker area
-        if ((other.gameObject.CompareTag("playerHitbox") || other.gameObject.CompareTag("enemyHitboxAuto"))
+        if ((other.gameObject.CompareTag("playerHitbox") || other.gameObject.CompareTag("autoPlayerHitbox"))
             && gameObject.CompareTag("shotMarkerAuto")
                 && detectCollisions)
         {
