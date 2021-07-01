@@ -575,7 +575,6 @@ public class StatsManager : MonoBehaviour
 
     public void submitUnsubmittedScores()
     {
-        //Debug.Log("submitUnsubmittedScores");
         if (!String.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
         {
             try
@@ -587,16 +586,13 @@ public class StatsManager : MonoBehaviour
                 // if count > 0,  set appropriate text
                 if (numUnsubmittedHighscores > 0)
                 {
-                    //Debug.Log("if (numUnsubmittedHighscores > 0)");
                     submittedHighscoresText.text = "submit scores";
                     numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
-                    //StartCoroutine(APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores));
                     APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores);
                 }
                 // if none, set appropriate text
                 if (numUnsubmittedHighscores == 0)
                 {
-                    //Debug.Log("if (numUnsubmittedHighscores == 0)");
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
@@ -621,6 +617,7 @@ public class StatsManager : MonoBehaviour
             // get unsubmitted scores
             unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
             numUnsubmittedHighscores = unsubmittedHighScores.Count;
+
             // if count > 0,  set appropriate text
             if (numUnsubmittedHighscores > 0)
             {
