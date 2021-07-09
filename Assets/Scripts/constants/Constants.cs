@@ -1,3 +1,5 @@
+using UnityEngine.SceneManagement;
+
 public static class Constants
 {
     // scene name constants
@@ -23,6 +25,7 @@ public static class Constants
     public const string SCENE_NAME_level_12_theater = "level_12_theater";
     public const string SCENE_NAME_level_13_rustys = "level_13_rustys";
     public const string SCENE_NAME_level_14_dome = "level_14_dome";
+    public const string SCENE_NAME_level_15_cocaine_island = "level_15_cocaine_island";
 
     // dev server api address constants
     public const string API_ADDRESS_DEV_publicApi = "http://13.58.224.237/api/";
@@ -43,4 +46,5 @@ public static class Constants
     // localhost testing
     public const string API_ADDRESS_LOCALHOST_HighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
     public const string API_ADDRESS_LOCALHOST_HighScoresCountByModeid = "https://localhost:44362/api/highscores/modeid/count/";
+
 }
