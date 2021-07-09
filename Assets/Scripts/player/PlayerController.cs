@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
 
-        playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, 0, bballRimVector.z));
+        playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, transform.position.y, bballRimVector.z));
         playerDistanceFromRimFeet = playerDistanceFromRim * 6;
 
         // if run input or run toggle on

@@ -117,7 +117,6 @@ public class GameStats : MonoBehaviour
         {
             ExperienceGained = 0;
         }
-
         return ExperienceGained;
     }
 

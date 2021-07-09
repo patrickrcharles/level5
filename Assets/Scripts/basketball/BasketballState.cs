@@ -19,9 +19,7 @@ public class BasketBallState : MonoBehaviour
     private bool _dunk;
     private bool _inAir;
     private bool _thrown;
-    [SerializeField]
     private bool _locked;
-    [SerializeField]
     private bool _canPullBall;
     private bool _grounded;
 

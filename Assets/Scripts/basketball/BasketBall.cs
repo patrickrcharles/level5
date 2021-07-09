@@ -334,8 +334,11 @@ public class BasketBall : MonoBehaviour
             }
         }
         //calculate shot distance 
-        Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
-            0, basketBallState.BasketBallTarget.transform.position.z);
+        Vector3 tempPos = new Vector3(
+            basketBallState.BasketBallTarget.transform.position.x,
+            (basketBallState.BasketBallTarget.transform.position.y-1.2f), 
+            basketBallState.BasketBallTarget.transform.position.z);
+
         float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
         lastShotDistance = tempDist;
 

@@ -102,6 +102,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnDefaultBoss()
     {
+        Debug.Break();
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         if (numberToSpawn > 0)
         {
@@ -124,6 +125,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
+
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 

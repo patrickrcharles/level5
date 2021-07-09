@@ -12,7 +12,7 @@ public class FanManager : MonoBehaviour
         // position transform relative to basketball goal
         basketBallGoalPosition = GameObject.Find("rim");
         //Debug.Log("vector : " + basketBallGoalPosition.transform.position);
-        transform.position = new Vector3(basketBallGoalPosition.transform.position.x, 0, basketBallGoalPosition.transform.position.z);
+        transform.position = new Vector3(basketBallGoalPosition.transform.position.x, GameLevelManager.instance.TerrainHeight, basketBallGoalPosition.transform.position.z);
         //Debug.Log("vector : " + position);
         //transform.position = position;
         fansList = getFans();

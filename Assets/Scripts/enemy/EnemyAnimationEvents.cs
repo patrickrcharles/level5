@@ -79,10 +79,14 @@ public class EnemyAnimationEvents : MonoBehaviour
             disableAttackBox();
         }
     }
-
-    public void instantiateProjectileLazer()
+    // need to add paramters for knockdown + damage
+    public void instantiateProjectileLazer(int damage)
     {
+
+        projectileLaserPrefab.GetComponentInChildren<EnemyAttackBox>().attackDamage = damage;
+        //projectileLaserPrefab.GetComponentInChildren<EnemyAttackBox>().knockDownAttack = false;
         projectileLaserPrefab.GetComponentInChildren<EnemyProjectile>().facingRight = enemyController.facingRight;
+
         Instantiate(projectileLaserPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
     public void instantiateProjectileFlameThrower()

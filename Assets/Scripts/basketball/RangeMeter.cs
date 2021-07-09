@@ -17,7 +17,7 @@ public class RangeMeter : MonoBehaviour
     const string statsTextName = "range_slider_stats_text";
 
     [SerializeField]
-    //float range;
+    float range;
 
     void Start()
     {

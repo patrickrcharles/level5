@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLevelManager : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class GameLevelManager : MonoBehaviour
 
     PlayerControls controls;
     FloatingJoystick joystick;
+
+    float terrainHeight;
 
     const string basketBallPrefabPath = "Prefabs/basketball/basketball";
     const string basketBallPrefabAutoPath = "Prefabs/basketball/basketballAuto";
@@ -130,6 +133,20 @@ public class GameLevelManager : MonoBehaviour
             _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
             _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
             Anim = Player.GetComponentInChildren<Animator>();
+
+            //terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+            terrainHeight = Player.transform.position.y;
+        }
+        else
+        {
+            if(SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
+            {
+                terrainHeight = 145;
+            }
+            else
+            {
+                terrainHeight = 0;
+            }
         }
         if (GameObject.FindWithTag("autoPlayer") != null)
         {
@@ -296,4 +313,5 @@ public class GameLevelManager : MonoBehaviour
     public bool IsAutoPlayer { get => isAutoPlayer; set => isAutoPlayer = value; }
     public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
     public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
+    public float TerrainHeight { get => terrainHeight;}
 }
