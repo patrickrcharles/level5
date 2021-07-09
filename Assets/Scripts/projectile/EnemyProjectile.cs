@@ -98,6 +98,17 @@ public class EnemyProjectile : MonoBehaviour
     // ------------------------------ instantiate impact prefabs on collision ------------------------------------------
     private void OnTriggerEnter(Collider other)
     {
+        // regular enemy projectile
+        // sniper shot hits ground
+        if (!sniperProjectile
+            && !impactProjectile
+            && !thrownProjectile
+            && (other.CompareTag("enemyHitbox") || other.CompareTag("playerHitbox")))
+        {
+            //Debug.Log("collision between ::" + gameObject.name + ":: and ::" + other.name + "::");
+            DestroyProjectile();
+        }
+
         // thrown/shot projectile 
         if (thrownProjectile // thrown projectile          
             && !impactProjectile // does NOT explode on impact. bullet, laser, etc
@@ -122,7 +133,7 @@ public class EnemyProjectile : MonoBehaviour
         {
             // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
-            Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
+            Vector3 spawnPoint = new Vector3(transformAtImpact.x, GameLevelManager.instance.TerrainHeight, transformAtImpact.z);
 
             Instantiate(impactSniperGroundPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
@@ -141,7 +152,7 @@ public class EnemyProjectile : MonoBehaviour
 
             // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
-            Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
+            Vector3 spawnPoint = new Vector3(transformAtImpact.x, GameLevelManager.instance.TerrainHeight, transformAtImpact.z);
 
             Instantiate(impactSniperPlayerPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
