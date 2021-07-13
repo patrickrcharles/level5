@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Touch = UnityEngine.Touch;
 
-public class VehicleRacingController : MonoBehaviour
+public class RacingVehicleController : MonoBehaviour
 {
     // components 
     private Animator anim;
@@ -13,7 +13,7 @@ public class VehicleRacingController : MonoBehaviour
     //private AudioSource audiosource;
     //private SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
-    private CharacterProfile characterProfile;
+    private RacingVehicleProfile vehicleProfile;
     //private BasketBall basketball;
     //private ShotMeter shotmeter;
     //private PlayerSwapAttack playerSwapAttack;
@@ -33,7 +33,9 @@ public class VehicleRacingController : MonoBehaviour
     private bool _facingRight;
     private bool _facingFront;
     private bool _locked;
+    [SerializeField]
     private bool _inAir;
+    [SerializeField]
     private bool _grounded;
     private bool _knockedDown;
     private bool _takeDamage;
@@ -86,19 +88,23 @@ public class VehicleRacingController : MonoBehaviour
     public int inAirDunkState = Animator.StringToHash("base.inair.inair_dunk");
     public int dunkState = Animator.StringToHash("base.inair.dunk");
     private bool runningToggle = true;
+    private bool jumpTrigger;
+
+    [SerializeField]
+    private Text vehicleCurrentSpeedText;
 
     void Start()
     {
         //audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
-        characterProfile = GetComponent<CharacterProfile>();
+        vehicleProfile = GetComponent<RacingVehicleProfile>();
         rigidBody = GetComponent<Rigidbody>();
 
         dropShadow = transform.root.transform.Find("drop_shadow").gameObject;
         FacingRight = true;
 
-        //movementSpeed = characterProfile.Speed;
-        movementSpeed = 3;
+        movementSpeed = vehicleProfile.Speed;
+        //movementSpeed = 3;
 
         if (_knockDownTime == 0) { _knockDownTime = 1.5f; }
         if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
@@ -177,20 +183,35 @@ public class VehicleRacingController : MonoBehaviour
             //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
 
 #endif
-            if(RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 1)
+
+            if (RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 1
+                && movementSpeed < vehicleProfile.MaxSpeed)
             {
-                Debug.Log("movementSpeed : "+ movementSpeed);
-                movementSpeed = (movementSpeed * 1.002f);
+                //Debug.Log("movementSpeed : "+ movementSpeed);
+                movementSpeed = (movementSpeed * vehicleProfile.Acceleration);
             }
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
-            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            if (RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 0
+                //&& RacingGameManager.instance.Controls.Player.run.ReadValue<float>() > 1
+                && rigidBody.velocity.magnitude > 0
+                && movementSpeed > vehicleProfile.Speed)
+            {
+                //Debug.Log("moving but not holding shift");
+                // lose 1% of speed per frame
+                movementSpeed -= (movementSpeed/100);
+            }
+                //else
+                //{
+                //    movementSpeed = (movementSpeed * vehicleProfile.Acceleration);
+                //}
+                //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+                //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
+                movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
             // check jump trigger and execute jump
-            //if (jumpTrigger)
-            //{
-            //    jumpTrigger = false;
-            //    PlayerJump();
-            //}
+            if (jumpTrigger)
+            {
+                jumpTrigger = false;
+                PlayerJump();
+            }
             //if (dunkTrigger
             //    && (currentState != inAirDunkState || currentState != inAirDunkState)
             //    && !InAir
@@ -220,6 +241,11 @@ public class VehicleRacingController : MonoBehaviour
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
 
+
+        vehicleCurrentSpeedText.text = "speed : " + movementSpeed.ToString() 
+            + "\nmax speed : "+ vehicleProfile.MaxSpeed
+            + "\nacceleration : "+ vehicleProfile.Acceleration
+            + "\njump : "+ vehicleProfile.JumpForce;
         // knocked down
         if (KnockedDown && !Locked)
         {
@@ -294,7 +320,8 @@ public class VehicleRacingController : MonoBehaviour
             && !InAir
             && !KnockedDown)
         {
-            movementSpeed = characterProfile.Speed;
+            //Debug.Log("idlestate -----------------------------------------------");
+            movementSpeed = vehicleProfile.Speed;
         }
         //// if run state
         //if (currentState == run ) //|| (runningToggle || running) )
@@ -336,25 +363,25 @@ public class VehicleRacingController : MonoBehaviour
 
 #if UNITY_STANDALONE || UNITY_EDITOR
         //------------------ jump -----------------------------------
-        //if (GameLevelManager.instance.Controls.Player.jump.triggered
-        //    //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
-        //    //&& hasBasketball
-        //    && Grounded
-        //    && !KnockedDown
-        //    && !GameOptions.EnemiesOnlyEnabled
-        //    && !InAir)
-        //{
-        //    if (PlayerDunk.instance != null
-        //        && PlayerDunk.instance.PlayerCanDunk
-        //        && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
-        //    {
-        //        dunkTrigger = true;
-        //    }
-        //    else
-        //    {
-        //        jumpTrigger = true;
-        //    }
-        //}
+        if (RacingGameManager.instance.Controls.Player.jump.triggered
+            //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
+            //&& hasBasketball
+            && Grounded
+            && !KnockedDown
+            && !GameOptions.EnemiesOnlyEnabled
+            && !InAir)
+        {
+            //if (PlayerDunk.instance != null
+            //    && PlayerDunk.instance.PlayerCanDunk
+            //    && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
+            //{
+            //    dunkTrigger = true;
+            //}
+            //else
+            //{
+                jumpTrigger = true;
+            //}
+        }
         //------------------ shoot -----------------------------------
         //// if has ball, is in air, and pressed shoot button.
         //if (InAir
@@ -524,7 +551,7 @@ public class VehicleRacingController : MonoBehaviour
 
     public void PlayerJump()
     {
-        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.velocity = Vector3.up * vehicleProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
 
         //Shotmeter.MeterStarted = true;

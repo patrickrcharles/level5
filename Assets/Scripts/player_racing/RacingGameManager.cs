@@ -10,7 +10,7 @@ public class RacingGameManager : MonoBehaviour
     private GameObject _player;
     private GameObject _autoPlayer;
     [SerializeField]
-    private VehicleRacingController _playerController;
+    private RacingVehicleController _playerController;
     //private AutoPlayerController _autoPlayerController;
     private CharacterProfile _characterProfile;
     //private PlayerHealth _playerHealth;
@@ -124,7 +124,7 @@ public class RacingGameManager : MonoBehaviour
         if (GameObject.FindWithTag("Player") != null)
         {
             _player = GameObject.FindWithTag("Player");
-            _playerController = _player.GetComponent<VehicleRacingController>();
+            _playerController = _player.GetComponent<RacingVehicleController>();
             _characterProfile = _player.GetComponent<CharacterProfile>();
             //_playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
             //_playerHealth = _player.GetComponentInChildren<PlayerHealth>();
@@ -294,7 +294,7 @@ public class RacingGameManager : MonoBehaviour
 
     public GameObject Player => _player;
 
-    public VehicleRacingController PlayerController => _playerController;
+    public RacingVehicleController PlayerController => _playerController;
     //public AutoPlayerController AutoPlayerController => _autoPlayerController;
     public Animator Anim { get; private set; }
     public bool GameOver { get; set; }

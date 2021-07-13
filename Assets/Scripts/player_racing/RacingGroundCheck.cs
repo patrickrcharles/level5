@@ -3,7 +3,7 @@
 public class RacingGroundCheck : MonoBehaviour
 {
     public float initialHeight, finalHeight;
-    private VehicleRacingController playerController;
+    private RacingVehicleController playerController;
 
 
     private void Start()
