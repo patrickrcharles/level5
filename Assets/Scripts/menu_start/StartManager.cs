@@ -973,6 +973,8 @@ public class StartManager : MonoBehaviour
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
 
+        GameOptions.levelRequiresWeather = levelSelectedData[levelSelectedIndex].LevelHasWeather;
+
         // if enemies only mode, enable enemies whether it was selected or not
         if (GameOptions.EnemiesOnlyEnabled)
         {

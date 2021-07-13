@@ -9,6 +9,7 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private string levelDescription;
     [SerializeField] private bool levelRequiresTimeOfDay;
     [SerializeField] private bool levelHasTraffic;
+    [SerializeField] private bool levelHasWeather;
 
     public string LevelDescription
     {
@@ -35,4 +36,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     }
     public bool LevelRequiresTimeOfDay { get => levelRequiresTimeOfDay; set => levelRequiresTimeOfDay = value; }
     public bool LevelHasTraffic { get => levelHasTraffic; set => levelHasTraffic = value; }
+    public bool LevelHasWeather { get => levelHasWeather; set => levelHasWeather = value; }
 }
