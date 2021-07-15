@@ -269,7 +269,6 @@ public class RacingVehicleController : MonoBehaviour
         {
             //float terrainYHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
             //Debug.Log("terrainYHeight : " + terrainYHeight);
-            Debug.Log("RacingGameManager.instance.TerrainHeight : " + RacingGameManager.instance.TerrainHeight);
 
             dropShadow.transform.position = new Vector3(transform.root.position.x, RacingGameManager.instance.TerrainHeight+0.01f,
             transform.root.position.z);

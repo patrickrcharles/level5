@@ -12,7 +12,8 @@ public class RacingGameManager : MonoBehaviour
     [SerializeField]
     private RacingVehicleController _playerController;
     //private AutoPlayerController _autoPlayerController;
-    private CharacterProfile _characterProfile;
+    [SerializeField]
+    private RacingVehicleProfile _characterProfile;
     //private PlayerHealth _playerHealth;
     //[SerializeField]
     //private PlayerAttackQueue _playerAttackQueue;
@@ -125,7 +126,7 @@ public class RacingGameManager : MonoBehaviour
         {
             _player = GameObject.FindWithTag("Player");
             _playerController = _player.GetComponent<RacingVehicleController>();
-            _characterProfile = _player.GetComponent<CharacterProfile>();
+            _characterProfile = _player.GetComponent<RacingVehicleProfile>();
             //_playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
             //_playerHealth = _player.GetComponentInChildren<PlayerHealth>();
             Anim = Player.GetComponentInChildren<Animator>();
@@ -303,7 +304,7 @@ public class RacingGameManager : MonoBehaviour
     public BasketBall Basketball { get => _basketball; set => _basketball = value; }
     //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
-    public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
+    public RacingVehicleProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     //public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
     //public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
     public bool IsAutoPlayer { get => isAutoPlayer; set => isAutoPlayer = value; }
