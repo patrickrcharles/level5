@@ -388,10 +388,18 @@ public class ProgressionManager : MonoBehaviour
         playerSelectedData[playerSelectedIndex].Luck = progressionState.Luck;
         playerSelectedData[playerSelectedIndex].PointsAvailable = progressionState.PointsAvailable;
 
+        //***********************************************************
+        // stats not saved correctly after max levels for 3/4/7
         progressionState.PointsUsedThisSession =
             progressionState.AddTo3
             + progressionState.AddTo4
             + progressionState.AddTo7;
+
+        if(progressionState.PointsUsedThisSession == 0 && progressionState.AddToRange > 0)
+        {
+            progressionState.PointsUsedThisSession = progressionState.AddToRange/5;
+        }
+        //***********************************************************
 
         playerSelectedData[playerSelectedIndex].PointsUsed += progressionState.PointsUsedThisSession;
 
