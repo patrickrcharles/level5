@@ -120,6 +120,11 @@ public class OptionsManager : MonoBehaviour
 
         resolutions = Screen.resolutions;
 
+        foreach(Resolution r in resolutions)
+        {
+            Debug.Log("resolution : " + r.ToString());
+        }
+
         //current
         GameObject.Find(resolutionCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.ToString();
         GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text = Screen.currentResolution.ToString();
@@ -127,7 +132,6 @@ public class OptionsManager : MonoBehaviour
         GameObject.Find(dpiSelectOptionButtonName).GetComponent<Text>().text = Screen.dpi.ToString();
         //GameObject.Find(refreshRateCurrentTextName).GetComponent<Text>().text = Screen.currentResolution.refreshRate.ToString() + " Hz";
 
-        Debug.Log("QualitySettings.vSyncCount 1 : " + QualitySettings.vSyncCount);
         if (QualitySettings.vSyncCount == 0)
         {
             GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "Off";
@@ -138,7 +142,6 @@ public class OptionsManager : MonoBehaviour
             GameObject.Find(vsyncSelectOptionButtonName).GetComponent<Text>().text = "On";
             GameObject.Find(vsyncCurrentTextName).GetComponent<Text>().text = "On";
         }
-        Debug.Log("QualitySettings.vSyncCount 2 : " + QualitySettings.vSyncCount);
 
         if (Application.targetFrameRate < 0 && QualitySettings.vSyncCount == 0)
         {
@@ -217,33 +220,40 @@ public class OptionsManager : MonoBehaviour
         }
         //Debug.Log("vsync : " + QualitySettings.vSyncCount);
         Debug.Log("QualitySettings.vSyncCount 1 : " + QualitySettings.vSyncCount);
+        PlayerPrefs.Save();
     }
 
     public void changeResolution()
     {
 
-        if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
-        {
-            resolutionSelectedIndex++;
-        }
-        else
-        {
-            resolutionSelectedIndex--;
-        }
-        //Debug.Log("resolutionSelectedIndex : " + resolutionSelectedIndex);
-        //Debug.Log("resolutions.Length : " + resolutions.Length);
+        //if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
+        //{
+        //    resolutionSelectedIndex++;
+        //}
+        //else
+        //{
+        //    resolutionSelectedIndex--;
+        //}
+        ////Debug.Log("resolutionSelectedIndex : " + resolutionSelectedIndex);
+        ////Debug.Log("resolutions.Length : " + resolutions.Length);
 
-        if (resolutionSelectedIndex >= resolutions.Length)
-        {
-            resolutionSelectedIndex = 0;
-            GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
-                resolutions[resolutionSelectedIndex].ToString();
-        }
-        else
-        {
-            GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
-                resolutions[resolutionSelectedIndex].ToString();
-        }
+        //if (resolutionSelectedIndex >= resolutions.Length)
+        //{
+        //    resolutionSelectedIndex = 0;
+        //    GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
+        //        resolutions[resolutionSelectedIndex].ToString();
+        //}
+        //else
+        //{
+        //    GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
+        //        resolutions[resolutionSelectedIndex].ToString();
+        //}
+
+        //// apply changes
+        //int width = resolutions[resolutionSelectedIndex].width;
+        //int height = resolutions[resolutionSelectedIndex].height;
+        //Screen.SetResolution(height, width, true);
+        //PlayerPrefs.Save();
     }
 
     public void changeScreenDpi()
@@ -280,6 +290,7 @@ public class OptionsManager : MonoBehaviour
            //Debug.Log("dpi current x " + scale + " : " + (Screen.dpi * scale).ToString("000.00"));
 
         }
+        PlayerPrefs.Save();
         //Debug.Log("screen dpi * scale : " + Screen.dpi * scale );
         //Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
         //Debug.Log("dpiSelectedIndex : " + dpiSelectedIndex);
@@ -332,13 +343,15 @@ public class OptionsManager : MonoBehaviour
             GameObject.Find(frameRateOptionButtonName).GetComponent<Text>().text =
                 "unlimited";
         }
-       //Debug.Log("frameRateSelectedIndex : " + frameRateSelectedIndex);
+        //Debug.Log("frameRateSelectedIndex : " + frameRateSelectedIndex);
         //Debug.Log("rez scale : " + QualitySettings.resolutionScalingFixedDPIFactor);
         //Debug.Log("dpiSelectedIndex : " + dpiSelectedIndex);
+        PlayerPrefs.Save();
     }
 
     public void loadStartScreen()
     {
+        PlayerPrefs.Save();
         SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
     }
 
