@@ -72,7 +72,7 @@ namespace Assets.Scripts.restapi
             catch (WebException e)
             {
                 httpResponse = (HttpWebResponse)e.Response;
-                Debug.Log("----------------- ERROR : " + e);
+                //Debug.Log("----------------- ERROR : " + e);
                 //unlock api + database
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -82,7 +82,7 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
-                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -90,7 +90,7 @@ namespace Assets.Scripts.restapi
             // failed
             else
             {
-                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 //unlock api + database
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
                 apiLocked = false;
