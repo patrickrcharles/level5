@@ -20,24 +20,28 @@ public class EnemyHealth : MonoBehaviour
 
     private void Start()
     {
-        enemyController = gameObject.transform.root.GetComponent<EnemyController>();
-        // default
-        if (enemyController.IsMinion)
+        // if enemy controller exists
+        if (gameObject.transform.root.GetComponent<EnemyController>() != null)
         {
-            maxEnemyHealth = 50;
+            enemyController = gameObject.transform.root.GetComponent<EnemyController>();
+            // default
+            if (enemyController.IsMinion)
+            {
+                maxEnemyHealth = 50;
+            }
+            else if (enemyController.IsBoss)
+            {
+                maxEnemyHealth = 150;
+            }
+            else
+            {
+                maxEnemyHealth = 50;
+            }
+            if (GameOptions.hardcoreModeEnabled)
+            {
+                maxEnemyHealth += (maxEnemyHealth / 4);
+            }
+            health = maxEnemyHealth;
         }
-        else if (enemyController.IsBoss)
-        {
-            maxEnemyHealth = 150;
-        }
-        else
-        {
-            maxEnemyHealth = 50;
-        }
-        if (GameOptions.hardcoreModeEnabled)
-        {
-            maxEnemyHealth += (maxEnemyHealth / 4);
-        }
-        health = maxEnemyHealth;
     }
 }

@@ -22,7 +22,7 @@ public class PlatformCheck : MonoBehaviour
         }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        //QualitySettings.vSyncCount = 1;
+        
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
 
@@ -30,7 +30,7 @@ public class PlatformCheck : MonoBehaviour
         inputSystemUIInputModule.enabled = false;
         standaloneInputModule.enabled = true;
         //standaloneInputModule.ActivateModule(); 
-        Debug.Log("android");
+        //Debug.Log("android");
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
@@ -43,9 +43,9 @@ public class PlatformCheck : MonoBehaviour
         //inputSystemUIInputModule.ActivateModule();
         //Debug.Log("standalone");
 #endif
+        //////QualitySettings.vSyncCount = 1;
         ////QualitySettings.vSyncCount = 1;
-        //QualitySettings.vSyncCount = 1;
-        //Application.targetFrameRate = 60;
+        ////Application.targetFrameRate = 60;
 
         //////inputSystemUIInputModule.DeactivateModule();
         //inputSystemUIInputModule.enabled = false;

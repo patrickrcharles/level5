@@ -81,9 +81,12 @@ public static class GameOptions
 
 
     static public bool levelRequiresTimeOfDay = true;
+    static public bool levelRequiresWeather = false;
 
     static public string userName;
     static public int userid;
     static public string bearerToken;
     static public int numOfLocalUsers;
+
+    static public bool tipDialogueLoadedOnStart;
 }

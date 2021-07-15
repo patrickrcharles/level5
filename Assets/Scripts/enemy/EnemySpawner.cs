@@ -27,7 +27,8 @@ public class EnemySpawner : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("enemy") != null)
         {
             // this needs to second option or enabling it will spawn enemies
-            GameOptions.enemiesEnabled = true;
+            // ***** DISABLE FOR TESTING
+            //GameOptions.enemiesEnabled = true;
             GameObject[] enemyHealthList = GameObject.FindGameObjectsWithTag("enemy");
             foreach (GameObject go in enemyHealthList)
             {
@@ -101,6 +102,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnDefaultBoss()
     {
+        Debug.Break();
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         if (numberToSpawn > 0)
         {
@@ -123,6 +125,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
+
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 

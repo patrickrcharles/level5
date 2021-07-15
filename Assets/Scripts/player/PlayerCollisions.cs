@@ -27,6 +27,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (gameObject.CompareTag("playerHitbox")
             && playerState.InAir
             && playerState.currentState != playerState.dunkState
@@ -47,13 +48,13 @@ public class PlayerCollisions : MonoBehaviour
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox") || other.CompareTag("playerAttackBox"))
         && !playerState.KnockedDown
         && !playerState.TakeDamage
-        && (GameOptions.enemiesEnabled 
-        || GameOptions.trafficEnabled 
+        && (GameOptions.enemiesEnabled
+        || GameOptions.trafficEnabled
         || other.transform.parent.name.Contains("rake")
         || other.transform.root.name.Contains("snake")
         || GameOptions.sniperEnabled)
         // roll for evade attack chance
-        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.PlayerShooterProfile.Luck)
+        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.CharacterProfile.Luck)
         && !locked)
         {
 

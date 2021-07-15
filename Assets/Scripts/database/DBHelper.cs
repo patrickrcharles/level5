@@ -240,7 +240,7 @@ public class DBHelper : MonoBehaviour
             int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 3000));
 
             // gained a level
-            if (currentLevel > prevLevel)
+            if(currentLevel > prevLevel)
             {
                 PlayerData.instance.UpdatePointsAvailable++;
             }
@@ -265,8 +265,6 @@ public class DBHelper : MonoBehaviour
                + ", level = " + currentLevel
                + ", pointsAvailable = " + updatePointsAvailable
                + " WHERE charid = " + GameOptions.characterId;
-
-            //Debug.Log(sqlQuery1);
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -590,11 +588,7 @@ public class DBHelper : MonoBehaviour
                 //CharacterProfile temp = new CharacterProfile();
                 while (reader.Read())
                 {
-                    //CharacterProfile temp = null;
-                    //CharacterProfile temp = new CharacterProfile();
                     CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
-
-                    //CharacterProfile temp = gameObject.AddComponent<CharacterProfile>();
 
                     temp.PlayerId = reader.GetInt32(0);
                     temp.PlayerDisplayName = reader.GetString(1);
@@ -617,6 +611,12 @@ public class DBHelper : MonoBehaviour
                     temp.Release = reader.GetInt32(18);
                     temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
                     characterStats.Add(temp);
+
+                    //Debug.Log("-------------------------------------------------------------------------------");
+                    //Debug.Log(temp.PlayerDisplayName + " PointsAvailable : " + temp.PointsAvailable);
+                    //Debug.Log(temp.PointsUsed + " PointsUsed : " + temp.PointsUsed);
+                    //Debug.Log(temp.Level + " level : " + temp.Level);
+                    //Debug.Log(temp.Experience + " experience : " + temp.Experience);
 
                     Destroy(temp);
                 }
@@ -2163,8 +2163,6 @@ public class DBHelper : MonoBehaviour
                     + " AND modeid != 99"
                     + " AND userName != 0";
 
-                //Debug.Log(sqlQuery);
-
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
@@ -2216,12 +2214,11 @@ public class DBHelper : MonoBehaviour
                     highscore.SniperModeName = reader.GetString(39);
                     highscore.Sniperhits = reader.GetInt32(40);
                     highscore.SniperShots = reader.GetInt32(41);
-                    //Debug.Log("GameOptions.userid : " + GameOptions.userid);
 
                     // if username empty on unsubmitted score
                     // but user logged in [gameoptions.username != null/empty
                     // add logged in username to score and submit
-                    if ( (string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
+                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
                         && (!string.IsNullOrWhiteSpace(GameOptions.userName) || !string.IsNullOrEmpty(GameOptions.userName)) )
                     {
                         highscore.UserName = GameOptions.userName;
@@ -2229,7 +2226,7 @@ public class DBHelper : MonoBehaviour
                     }
                     // if username != null or empty, add to list
                     // this will catch if user has logged in
-                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)))
+                    if (!string.IsNullOrEmpty(highscore.UserName) || !string.IsNullOrWhiteSpace(highscore.UserName))
                     {
                         highscores.Add(highscore);
                     }

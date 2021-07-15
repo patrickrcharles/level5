@@ -255,19 +255,20 @@ public class PlayerController : MonoBehaviour
         // keep drop shadow on ground at all times
         if (Grounded)
         {
-            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
+            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.position.y + 0.01f,
                 transform.root.position.z);
         }
         if (!Grounded) // player in air
         {
-            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
+            float terrainYHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
+            dropShadow.transform.position = new Vector3(transform.root.position.x, terrainYHeight,
             transform.root.position.z);
         }
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
 
-        playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, 0, bballRimVector.z));
+        playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, transform.position.y, bballRimVector.z));
         playerDistanceFromRimFeet = playerDistanceFromRim * 6;
 
         // if run input or run toggle on

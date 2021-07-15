@@ -60,21 +60,19 @@ namespace Assets.Scripts.restapi
                     string json = toJson;
                     streamWriter.Write(json);
                     streamWriter.Flush();
-                    //Debug.Log(json);
                 }
                 // response
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    //Debug.Log("result : " + result);
                 }
             }
             // on web exception
             catch (WebException e)
             {
                 httpResponse = (HttpWebResponse)e.Response;
-                Debug.Log("----------------- ERROR : " + e);
+                //Debug.Log("----------------- ERROR : " + e);
                 //unlock api + database
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -84,7 +82,7 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
-                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -92,7 +90,7 @@ namespace Assets.Scripts.restapi
             // failed
             else
             {
-                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 //unlock api + database
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
                 apiLocked = false;
@@ -108,7 +106,6 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
-            Debug.Log("PostUnsubmittedHighscores(List<HighScoreModel> highscores)");
             foreach (HighScoreModel score in highscores)
             {
                 //serialize highscore to json for HTTP POST
@@ -127,6 +124,7 @@ namespace Assets.Scripts.restapi
                     using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                     {
                         string json = toJson;
+
                         streamWriter.Write(json);
                         streamWriter.Flush();
                     }
@@ -141,7 +139,6 @@ namespace Assets.Scripts.restapi
                 catch (WebException e)
                 {
                     httpResponse = (HttpWebResponse)e.Response;
-                    Debug.Log("----------------- ERROR : " + e);
                     //unlock api + database
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
@@ -152,6 +149,14 @@ namespace Assets.Scripts.restapi
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
                     Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+                // if conflict (scoreid already exists in database)
+                if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+                {
+                    Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
                     DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;

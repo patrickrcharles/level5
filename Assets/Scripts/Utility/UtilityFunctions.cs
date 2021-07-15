@@ -107,6 +107,12 @@ namespace Assets.Scripts.Utility
             return randNum;
         }
 
+        public static int GetRandomInteger(int min, int max)
+        {
+            int randNum = Random.Range(min, max);
+            return randNum;
+        }
+
         public static float getPercentageFloat(int made, int attempt)
         {
             if (attempt > 0)

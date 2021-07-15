@@ -50,6 +50,7 @@ public class TrafficManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        // NOTE : for testing purposes
         //GameOptions.trafficEnabled = true;
 
         // if traffic enabled

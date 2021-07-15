@@ -8,7 +8,6 @@ using Random = System.Random;
 public class BasketBall : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
-    PlayerController playerState;
     new Rigidbody rigidbody;
     AudioSource audioSource;
     CharacterProfile characterProfile;
@@ -21,6 +20,11 @@ public class BasketBall : MonoBehaviour
     GameObject basketBallTarget;
 
     GameObject player;
+    GameObject autoPlayer;
+
+    PlayerController playerState;
+    AutoPlayerController autoPlayerState;
+
     GameObject dropShadow;
 
     Text scoreText;
@@ -48,12 +52,22 @@ public class BasketBall : MonoBehaviour
     {
         instance = this;
 
-        player = GameLevelManager.instance.Player;
-        playerState = GameLevelManager.instance.PlayerController;
+        if (GameLevelManager.instance.IsAutoPlayer)
+        {
+            autoPlayer = GameLevelManager.instance.AutoPlayer;
+            autoPlayerState = GameLevelManager.instance.AutoPlayerController;          
+            //characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+        }
+        if (!GameLevelManager.instance.IsAutoPlayer)
+        {
+            player = GameLevelManager.instance.Player;
+            playerState = GameLevelManager.instance.PlayerController;
+            characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+        }
+
         rigidbody = GetComponent<Rigidbody>();
-        gameStats = GameLevelManager.instance.Basketball.GetComponent<GameStats>();
+        gameStats = GameLevelManager.instance.GameStats;
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
-        characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         //basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
@@ -320,8 +334,11 @@ public class BasketBall : MonoBehaviour
             }
         }
         //calculate shot distance 
-        Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
-            0, basketBallState.BasketBallTarget.transform.position.z);
+        Vector3 tempPos = new Vector3(
+            basketBallState.BasketBallTarget.transform.position.x,
+            (basketBallState.BasketBallTarget.transform.position.y-1.2f), 
+            basketBallState.BasketBallTarget.transform.position.z);
+
         float tempDist = Vector3.Distance(tempPos, basketBallPosition.transform.position);
         lastShotDistance = tempDist;
 

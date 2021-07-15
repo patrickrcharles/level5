@@ -11,17 +11,27 @@ public class ConfirmDialogue : MonoBehaviour
 
     public Button confirmButton;
     public Button cancelButton;
+    //public Button nextButton;
 
     public Button ConfirmButton { get => confirmButton; set => confirmButton = value; }
     public Button CancelButton { get => cancelButton; set => cancelButton = value; }
+    //public Button NextButton { get => nextButton; set => nextButton = value; }
 
     private void Awake()
     {
         confirmButton = GameObject.Find("confirm_button").GetComponent<Button>();
         confirmButton.onClick.AddListener(ConfirmButtonOnClick);
 
-        cancelButton = GameObject.Find("cancel_button").GetComponent<Button>();
-        cancelButton.onClick.AddListener(CancelButtonOnClick);
+        if (GameObject.Find("cancel_button") != null)
+        {
+            cancelButton = GameObject.Find("cancel_button").GetComponent<Button>();
+            cancelButton.onClick.AddListener(CancelButtonOnClick);
+        }
+        //if (GameObject.Find("next_button") != null)
+        //{
+        //    cancelButton = GameObject.Find("next_button").GetComponent<Button>();
+        //    cancelButton.onClick.AddListener(NextButtonOnClick);
+        //}
 
         EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }

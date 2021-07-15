@@ -388,10 +388,18 @@ public class ProgressionManager : MonoBehaviour
         playerSelectedData[playerSelectedIndex].Luck = progressionState.Luck;
         playerSelectedData[playerSelectedIndex].PointsAvailable = progressionState.PointsAvailable;
 
+        //***********************************************************
+        // stats not saved correctly after max levels for 3/4/7
         progressionState.PointsUsedThisSession =
             progressionState.AddTo3
             + progressionState.AddTo4
             + progressionState.AddTo7;
+
+        if(progressionState.PointsUsedThisSession == 0 && progressionState.AddToRange > 0)
+        {
+            progressionState.PointsUsedThisSession = progressionState.AddToRange/5;
+        }
+        //***********************************************************
 
         playerSelectedData[playerSelectedIndex].PointsUsed += progressionState.PointsUsedThisSession;
 
@@ -635,6 +643,7 @@ public class ProgressionManager : MonoBehaviour
         addTo4Text = GameObject.Find(progression4AccuracyName).GetComponent<Text>();
         addTo7Text = GameObject.Find(progression7AccuracyName).GetComponent<Text>();
     }
+
     public void disableButtonsNotUsedForTouchInput()
     {
         //Debug.Log("disable buttons for touch");
@@ -861,6 +870,7 @@ public class ProgressionManager : MonoBehaviour
         {
             progressionState.Accuracy7 = progressionState.MaxSevenAccuraccy;
         }
+
         progressionState.AddToRange = progressionState.PointsUsedThisSession * 5;
         progressionState.Range = (int)(originalCharState.Range + progressionState.AddToRange);
     }

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class cameraUpdater : MonoBehaviour
 {
@@ -48,19 +49,21 @@ public class cameraUpdater : MonoBehaviour
     private bool isLockOnGoalCamera;
 
     bool onGoalCameraEnabled;
-
+    bool smoothCameraMotion;
 
     // flag for activating weather system prefab
     // set this in camera manager because it is based on a specific level
     // GM if( level requires weather ) --> for each cam, requires weather = true;
     // Cam Update if(requires weather) weather.setActive(true)
-    [SerializeField]
     GameObject weatherSystemObject;
+    [SerializeField]
     bool requiresWeatherSystem;
     public bool RequiresWeatherSystem { get => requiresWeatherSystem; set => requiresWeatherSystem = value; }
 
     void Start()
     {
+        requiresWeatherSystem = GameOptions.levelRequiresWeather;
+
         // get weather system object reference
         foreach (Transform t in gameObject.transform)
         {
@@ -69,7 +72,7 @@ public class cameraUpdater : MonoBehaviour
             if (t.CompareTag("weather_system") && !t.name.Contains("goal"))
             {
                 weatherSystemObject = t.gameObject;
-                if (requiresWeatherSystem)
+                if (requiresWeatherSystem || SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_03_snow))
                 {
                     //Debug.Log("WEATHER ACTIVE -- \ntransform name : " + t.name + "  transform tage : " + t.tag);
                     weatherSystemObject.SetActive(true);
@@ -81,7 +84,17 @@ public class cameraUpdater : MonoBehaviour
             }
         }
 
-        basketBallRim = GameLevelManager.instance.BasketballRimVector;
+        if (GameLevelManager.instance != null)
+        {
+            basketBallRim = GameLevelManager.instance.BasketballRimVector;
+            player = GameLevelManager.instance.Player;
+            smoothCameraMotion = true;
+        }
+        else
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            smoothCameraMotion = false;
+        }
 
         cam = GetComponent<Camera>();
         //cam.depth = -5;
@@ -95,7 +108,7 @@ public class cameraUpdater : MonoBehaviour
         // will check settings and set intial camera
         setCamera();
 
-        player = GameLevelManager.instance.Player;
+  
         //relCameraPos = player.position - transform.position;
 
     }
@@ -103,9 +116,11 @@ public class cameraUpdater : MonoBehaviour
 
     void Update()
     {
-
-        playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
-        playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+        if (GameLevelManager.instance != null) 
+        {
+            playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
+            playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+        }
 
         if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
         {
@@ -148,8 +163,11 @@ public class cameraUpdater : MonoBehaviour
 
     void FixedUpdate()
     {
-        playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
-        playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+        if (GameLevelManager.instance != null)
+        {
+            playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
+            playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
+        }
 
         //if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
         //{
@@ -219,9 +237,16 @@ public class cameraUpdater : MonoBehaviour
     private void updatePositionOnPlayer()
     {
         Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
-        Vector3 desiredPosition = targetPosition;
-        Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.deltaTime);
-        transform.position = smoothedPosition;
+        if (smoothCameraMotion)
+        {
+            Vector3 desiredPosition = targetPosition;
+            Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.deltaTime);
+            transform.position = smoothedPosition;
+        }
+        else
+        {
+            transform.position = targetPosition;
+        }
     }
 
     private void updatePositionNearGoal()

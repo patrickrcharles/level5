@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLevelManager : MonoBehaviour
 {
@@ -7,15 +8,20 @@ public class GameLevelManager : MonoBehaviour
     // that can be retrieved across all scripts
     [SerializeField]
     private GameObject _player;
+    private GameObject _autoPlayer;
     private PlayerController _playerController;
-    private CharacterProfile _playerShooterProfile;
+    private AutoPlayerController _autoPlayerController;
+    private CharacterProfile _characterProfile;
     private PlayerHealth _playerHealth;
     [SerializeField]
     private PlayerAttackQueue _playerAttackQueue;
+    [SerializeField]
+    private GameStats _gameStats;
 
     //BasketBall objects
     private GameObject _basketballPrefab;
-    private GameObject _cheerleaderPrefab;
+    private GameObject _basketballPrefabAuto;
+    //private GameObject _cheerleaderPrefab;
 
     //spawn locations
     private GameObject _basketballSpawnLocation;
@@ -26,6 +32,7 @@ public class GameLevelManager : MonoBehaviour
     //private GameObject _basketballObject;
     private Vector3 _basketballRimVector;
 
+
     private GameObject _playerClone;
     private GameObject _cheerleaderClone;
 
@@ -35,10 +42,15 @@ public class GameLevelManager : MonoBehaviour
     PlayerControls controls;
     FloatingJoystick joystick;
 
+    float terrainHeight;
+
     const string basketBallPrefabPath = "Prefabs/basketball/basketball";
+    const string basketBallPrefabAutoPath = "Prefabs/basketball/basketballAuto";
 
     public static GameLevelManager instance;
     private bool _locked;
+
+    bool isAutoPlayer;
 
     private void OnEnable()
     {
@@ -66,6 +78,7 @@ public class GameLevelManager : MonoBehaviour
         {
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
         }
+        _gameStats = GetComponent<GameStats>();
 
         // spawn locations
         _playerSpawnLocation = GameObject.Find("player_spawn_location");
@@ -110,21 +123,42 @@ public class GameLevelManager : MonoBehaviour
         //    RenderSettings.ambientLight = Color.white;
         //}
 
-
         _locked = false;
         //set up player/basketball read only references for use in other classes
-        if (GameObject.FindWithTag("Player") == null)
+        if (GameObject.FindWithTag("Player") != null)
         {
-            Debug.Log("null player");
+            _player = GameObject.FindWithTag("Player");
+            _playerController = _player.GetComponent<PlayerController>();
+            _characterProfile = _player.GetComponent<CharacterProfile>();
+            _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
+            _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
+            Anim = Player.GetComponentInChildren<Animator>();
+
+            //terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+            terrainHeight = Player.transform.position.y;
         }
-
-        _player = GameObject.FindWithTag("Player");
-        _playerController = _player.GetComponent<PlayerController>();
-        _playerShooterProfile = _player.GetComponent<CharacterProfile>();
-        _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
-        _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
-
-        Anim = Player.GetComponentInChildren<Animator>();
+        else
+        {
+            if(SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
+            {
+                terrainHeight = 145;
+            }
+            else
+            {
+                terrainHeight = 0;
+            }
+        }
+        if (GameObject.FindWithTag("autoPlayer") != null)
+        {
+            Debug.Log("auto player");
+            _autoPlayer = GameObject.FindWithTag("autoPlayer");
+            _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
+            isAutoPlayer = true;
+        }
+        else
+        {
+            isAutoPlayer = false;
+        }
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
         // instead of an overlay. this is for a slight performance increase
@@ -209,11 +243,15 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkBasketballPrefabExists()
     {
-        if (GameObject.FindWithTag("basketball") == null)
+        if (GameObject.FindWithTag("basketball") == null && !isAutoPlayer)
         {
             _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
-            Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
         }
+        if (GameObject.FindWithTag("basketball") == null && isAutoPlayer)
+        {
+            _basketballPrefab = Resources.Load(basketBallPrefabAutoPath) as GameObject;
+        }
+        Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
     }
 
     private void checkPlayerPrefabExists()
@@ -229,7 +267,7 @@ public class GameLevelManager : MonoBehaviour
 
         //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
         // if no player, spawn player
-        if (GameObject.FindWithTag("Player") == null)
+        if (GameObject.FindWithTag("Player") == null )//&& GameObject.FindWithTag("autoPlayer") == null)
         {
             if (_playerClone != null)
             {
@@ -261,16 +299,19 @@ public class GameLevelManager : MonoBehaviour
     public GameObject Player => _player;
 
     public PlayerController PlayerController => _playerController;
-
+    public AutoPlayerController AutoPlayerController => _autoPlayerController;
     public Animator Anim { get; private set; }
-
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
     public FloatingJoystick Joystick { get => joystick; }
     public BasketBall Basketball { get => _basketball; set => _basketball = value; }
     //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
-    public CharacterProfile PlayerShooterProfile { get => _playerShooterProfile; set => _playerShooterProfile = value; }
+    public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
     public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
+    public bool IsAutoPlayer { get => isAutoPlayer; set => isAutoPlayer = value; }
+    public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
+    public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
+    public float TerrainHeight { get => terrainHeight;}
 }
