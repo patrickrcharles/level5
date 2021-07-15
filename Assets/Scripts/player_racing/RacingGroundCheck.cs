@@ -3,6 +3,7 @@
 public class RacingGroundCheck : MonoBehaviour
 {
     public float initialHeight, finalHeight;
+    [SerializeField]
     private RacingVehicleController playerController;
 
 
@@ -16,54 +17,43 @@ public class RacingGroundCheck : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
+        //Debug.Log("collision --- other.gameObject.layer : " + other.gameObject.layer + "     gameObject.transform.parent.tag : " + gameObject.transform.parent.tag);
         // later 11 is ground/terrain
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("Player"))
         {
-            //initialHeight = _player.transform.position.y;
-            //if (finalHeight - initialHeight > 1)
-            //{
-            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-            //}
 
             playerController.Grounded = true;
             playerController.InAir = false;
             playerController.SetPlayerAnim("jump", false);
 
-            //reset state flags
-            //CallBallToPlayer.instance.Locked = false;
         }
-        if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
+        if (other.gameObject.CompareTag("grindable") && gameObject.transform.parent.CompareTag("Player"))
         {
-            //initialHeight = _player.transform.position.y;
-            //if (finalHeight - initialHeight > 1)
-            //{
-            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-            //}
 
-            //basketBallState.Grounded = true;
-            //basketBallState.InAir = false;
+            playerController.IsGrinding = true;
+            playerController.Grounded = false;
+            playerController.InAir = false;
+            playerController.PlayAnim("knockedDown");
+
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
+        //Debug.Log("collision --- other.gameObject.layer : " + other.gameObject.layer + "     gameObject.transform.parent.tag : " + gameObject.transform.parent.tag);
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("Player"))
         {
             playerController.Grounded = false;
             playerController.InAir = true;
             playerController.SetPlayerAnim("jump", true);
         }
+        if (other.gameObject.CompareTag("grindable") && gameObject.transform.parent.CompareTag("Player"))
+        {
+            playerController.IsGrinding = false;
+            playerController.Grounded = false;
+            playerController.InAir = true;
+            playerController.SetPlayerAnim("jump", true);
 
-        //if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
-        //{
-        //    //initialHeight = _player.transform.position.y;
-        //    //if (finalHeight - initialHeight > 1)
-        //    //{
-        //    //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
-        //    //}
-
-        //    //basketBallState.Grounded = false;
-        //    //basketBallState.InAir = true;
-        //}
+        }
     }
 }

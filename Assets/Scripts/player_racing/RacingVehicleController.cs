@@ -43,6 +43,7 @@ public class RacingVehicleController : MonoBehaviour
     private bool canAttack;
     private bool canBlock;
 
+    private bool _isGrinding;
 
     Vector3 playerRelativePositioning;
     //Vector3 bballRimVector;
@@ -266,8 +267,11 @@ public class RacingVehicleController : MonoBehaviour
         }
         if (!Grounded) // player in air
         {
-            float terrainYHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
-            dropShadow.transform.position = new Vector3(transform.root.position.x, terrainYHeight,
+            //float terrainYHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
+            //Debug.Log("terrainYHeight : " + terrainYHeight);
+            Debug.Log("RacingGameManager.instance.TerrainHeight : " + RacingGameManager.instance.TerrainHeight);
+
+            dropShadow.transform.position = new Vector3(transform.root.position.x, RacingGameManager.instance.TerrainHeight+0.01f,
             transform.root.position.z);
         }
 
@@ -304,23 +308,25 @@ public class RacingVehicleController : MonoBehaviour
             FacingFront = true;
         }
 
-        // set player shoot anim based on position
-        if (FacingFront) // facing straight toward bball goal
-        {
-            SetPlayerAnim("basketballFacingFront", true);
-        }
-        else // side of goal, relative postion
-        {
-            SetPlayerAnim("basketballFacingFront", false);
-        }
+        //// set player shoot anim based on position
+        //if (FacingFront) // facing straight toward bball goal
+        //{
+        //    SetPlayerAnim("basketballFacingFront", true);
+        //}
+        //else // side of goal, relative postion
+        //{
+        //    SetPlayerAnim("basketballFacingFront", false);
+        //}
 
         // ----- control speed based on commands----------
         // idle, walk, walk with ball state
-        if (currentState == idleState /*|| currentState == walkState || currentState == bIdle*/
+        if (/*currentState == idleState || currentState == walkState || currentState == bIdle*/
+            rigidBody.velocity.magnitude == 0
             && !InAir
             && !KnockedDown)
         {
-            //Debug.Log("idlestate -----------------------------------------------");
+            //Debug.Log("reset speed to 0 -----------------------------------------------");
+            //Debug.Log("== rigidBody.velocity.magnitude : "+ rigidBody.velocity.magnitude);
             movementSpeed = vehicleProfile.Speed;
         }
         //// if run state
@@ -366,7 +372,7 @@ public class RacingVehicleController : MonoBehaviour
         if (RacingGameManager.instance.Controls.Player.jump.triggered
             //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
             //&& hasBasketball
-            && Grounded
+            && (Grounded || IsGrinding) 
             && !KnockedDown
             && !GameOptions.EnemiesOnlyEnabled
             && !InAir)
@@ -801,6 +807,7 @@ public class RacingVehicleController : MonoBehaviour
     public Animator Anim { get => anim; set => anim = value; }
     //public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
     public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
+    public bool IsGrinding { get => _isGrinding; set => _isGrinding = value; }
     //public float PlayerDistanceFromRim { get => playerDistanceFromRim; set => playerDistanceFromRim = value; }
     //public PlayerHealth PlayerHealth { get => playerHealth; set => playerHealth = value; }
 }
