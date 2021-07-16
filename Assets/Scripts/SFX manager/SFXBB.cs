@@ -3,7 +3,8 @@ using Random = System.Random;
 
 public class SFXBB : MonoBehaviour
 {
-
+    [SerializeField]
+    private bool musicEnabled;
     private AudioSource audioSource;
 
     [SerializeField]
@@ -65,7 +66,7 @@ public class SFXBB : MonoBehaviour
 
     private void Update()
     {
-        if (!audioSource.isPlaying || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha0)))
+        if (!audioSource.isPlaying & musicEnabled || (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha0)))
         {
             playNextSong();
         }
@@ -73,11 +74,14 @@ public class SFXBB : MonoBehaviour
 
     void playRandomSong()
     {
-        Random random = new Random();
-        int randNum = random.Next(0, musicList.Length);
-        currentSongIndex = randNum;
-        audioSource.clip = musicList[currentSongIndex];
-        audioSource.Play();
+        if (musicEnabled)
+        {
+            Random random = new Random();
+            int randNum = random.Next(0, musicList.Length);
+            currentSongIndex = randNum;
+            audioSource.clip = musicList[currentSongIndex];
+            audioSource.Play();
+        }
     }
 
     void playNextSong()
