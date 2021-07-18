@@ -460,6 +460,11 @@ public class StartManager : MonoBehaviour
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                {
+                    changeSelectedEnemiesOption();
+                    initializeEnemyOptionDisplay();
+                }
                 if (currentHighlightedButton.Equals(SniperSelectOptionName))
                 {
                     changeSelectedSniperOption();
