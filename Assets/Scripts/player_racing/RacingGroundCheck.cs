@@ -33,7 +33,7 @@ public class RacingGroundCheck : MonoBehaviour
             playerController.IsGrinding = true;
             playerController.Grounded = false;
             playerController.InAir = false;
-            playerController.PlayAnim("knockedDown");
+            playerController.PlayAnim("grind");
 
         }
     }
