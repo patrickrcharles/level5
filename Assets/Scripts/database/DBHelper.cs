@@ -2010,7 +2010,7 @@ public class DBHelper : MonoBehaviour
         }
         if (databaseSuccessfullyUpgraded)
         {
-            Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
+            //Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
             yield return new WaitUntil(() => !databaseLocked);
             StartCoroutine(setDatabaseVersion());
         }
@@ -2028,7 +2028,7 @@ public class DBHelper : MonoBehaviour
         DatabaseLocked = true;
         try
         {
-            Debug.Log("try...");
+            //Debug.Log("try...");
             //Debug.Log("try...");
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(connection);
@@ -2046,7 +2046,7 @@ public class DBHelper : MonoBehaviour
             dbconn.Close();
             dbconn = null;
 
-            databaseLocked = false;
+            DatabaseLocked = false;
         }
         catch (Exception e)
         {
