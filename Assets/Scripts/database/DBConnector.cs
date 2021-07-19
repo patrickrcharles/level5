@@ -230,7 +230,7 @@ public class DBConnector : MonoBehaviour
             dbconn.Open();
             dbcmd = dbconn.CreateCommand();
 
-            Debug.Log("create database");
+            //Debug.Log("create database");
 
             string sqlQuery = String.Format(
 
