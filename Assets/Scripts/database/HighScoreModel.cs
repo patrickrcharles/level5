@@ -218,7 +218,8 @@ namespace Assets.Scripts.database
                   DateTime.Now.Day.ToString()
                 + DateTime.Now.Month.ToString()
                 + DateTime.Now.Year.ToString()
-                + DateTime.Now.Minute.ToString();
+                + DateTime.Now.Minute.ToString()
+                + Utility.UtilityFunctions.RandomString(8);
 
             foreach (NetworkInterface ninf in NetworkInterface.GetAllNetworkInterfaces())
             {
