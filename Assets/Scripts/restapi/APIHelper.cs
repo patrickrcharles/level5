@@ -15,7 +15,7 @@ namespace Assets.Scripts.restapi
     {
         static bool apiLocked;
         private static string bearerToken;
-        private static string username;
+        //private static string username;
 
         // -------------------------------------- HTTTP POST Highscore -------------------------------------------
 
