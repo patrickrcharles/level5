@@ -21,6 +21,7 @@ public class LoadedData : MonoBehaviour
 
     float timeoutStart;
     float timeoutEnd;
+    float timeoutMax = 10;
 
     public static LoadedData instance;
 
@@ -55,7 +56,7 @@ public class LoadedData : MonoBehaviour
     IEnumerator LoadStartScreenData()
     {
         timeoutStart = Time.time;
-        timeoutEnd = Time.time + 30;
+        timeoutEnd = Time.time + timeoutMax;
 
         yield return new WaitUntil(() => LoadManager.instance.playerDataLoaded);
         playerSelectedData = LoadManager.instance.PlayerSelectedData;
