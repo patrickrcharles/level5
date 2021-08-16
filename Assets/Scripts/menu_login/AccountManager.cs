@@ -29,6 +29,10 @@ public class AccountManager : MonoBehaviour
     const string passwordInputFieldName = "PasswordInputField";
     const string firstNameInputFieldName = "FirstNameInputField";
     const string lastNameInputFieldName = "LastNameInputField";
+    // scene link buttons
+    const string createNewButtonName = "createNew";
+    const string loginExistingButtonName = "loginExisting";
+    const string loginLocalButtonName = "loginLocal";
     // footer button names
     const string mainMenuButtonName = "press_start";
     const string statsMenuButtonName = "stats_menu";
@@ -96,13 +100,17 @@ public class AccountManager : MonoBehaviour
 
     private void Start()
     {
-        emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
-        usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
-        passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
-        firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
-        lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
-        messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageDisplay.text = "";
+        // if current scene is NOT account scene (with links to login scenes)
+        if (!SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_account))
+        {
+            emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
+            usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
+            passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
+            firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
+            lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
+            messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
+            messageDisplay.text = "";
+        }
     }
 
     void Update()
@@ -167,6 +175,21 @@ public class AccountManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject.name.Equals(creditsMenuButtonName))
             {
                 SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
+            }
+            // create new
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(createNewButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_createNew);
+            }
+            // login existing
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(loginExistingButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginExisting);
+            }
+            // login local
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(loginLocalButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginLocal);
             }
             buttonPressed = false;
         }
@@ -311,7 +334,7 @@ public class AccountManager : MonoBehaviour
         // check if user already exists or null
         if (string.IsNullOrEmpty(userNameInput))
         {
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_login);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
         }
         else
         {
@@ -377,4 +400,7 @@ public class AccountManager : MonoBehaviour
     public static string StatsMenuButtonName => statsMenuButtonName;
     public static string ProgressionMenuButtonName => progressionMenuButtonName;
     public static string CreditsMenuButtonName => creditsMenuButtonName;
+    public static string CreateNewButtonName => createNewButtonName;
+    public static string LoginExistingButtonName => loginExistingButtonName;
+    public static string LoginLocalButtonName => loginLocalButtonName;
 }

@@ -131,6 +131,21 @@ public class TouchInputAccountScreenController : MonoBehaviour
         {
             SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
         }
+        // create new
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginExistingButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_createNew);
+        }
+        // login existing
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginExistingButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginExisting);
+        }
+        // login local
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginLocalButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginLocal);
+        }
         buttonPressed = false;
     }
 
