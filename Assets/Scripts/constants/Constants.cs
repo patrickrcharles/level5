@@ -4,9 +4,11 @@ public static class Constants
 {
     // scene name constants
     public const string SCENE_NAME_level_00_account = "level_00_account";
+    public const string SCENE_NAME_level_00_account_createNew = "level_00_account_createNew";
+    public const string SCENE_NAME_level_00_account_loginExisting = "level_00_account_loginExisting";
+    public const string SCENE_NAME_level_00_account_loginLocal = "level_00_account_loginLocal";
     public const string SCENE_NAME_level_00_credits = "level_00_credits";
     public const string SCENE_NAME_level_00_loading = "level_00_loading";
-    public const string SCENE_NAME_level_00_login = "level_00_login";
     public const string SCENE_NAME_level_00_options = "level_00_options";
     public const string SCENE_NAME_level_00_progression = "level_00_progression";
     public const string SCENE_NAME_level_00_start = "level_00_start";
