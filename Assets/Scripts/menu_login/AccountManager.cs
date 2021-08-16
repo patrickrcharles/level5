@@ -38,6 +38,7 @@ public class AccountManager : MonoBehaviour
     const string statsMenuButtonName = "stats_menu";
     const string progressionMenuButtonName = "update_menu";
     const string creditsMenuButtonName = "credits_menu";
+    const string accountMenuButtonName = "account_menu";
 
     string emailInput;
     string userNameInput;
@@ -103,11 +104,15 @@ public class AccountManager : MonoBehaviour
         // if current scene is NOT account scene (with links to login scenes)
         if (!SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_account))
         {
-            emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
+
             usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
             passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
-            firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
-            lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
+            if (SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_account_createNew))
+            {
+                emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
+                firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
+                lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
+            }
             messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
             messageDisplay.text = "";
         }
@@ -190,6 +195,11 @@ public class AccountManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject.name.Equals(loginLocalButtonName))
             {
                 SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginLocal);
+            }
+            // account
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(accountMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account);
             }
             buttonPressed = false;
         }
@@ -331,38 +341,63 @@ public class AccountManager : MonoBehaviour
         float startTime;
         float timeout = 10.0f;
 
-        // check if user already exists or null
-        if (string.IsNullOrEmpty(userNameInput))
+        checkUserName();
+        messageDisplay.text = getCheckUserName();
+        UserModel user = APIHelper.GetUserByUserName(userNameInput);
+
+        // 10 second time out for all internet calls is a good idea
+        startTime = Time.time;
+
+        yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+        StartCoroutine(APIHelper.PostToken(user));
+        startTime = Time.time;
+
+        // add 10 second timeout
+        yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+
+        // if local user doesnt exists, insert locally
+        if (!DBHelper.instance.localUserExists(user))
         {
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
+            DBHelper.instance.DatabaseLocked = false;
+            // created on api, insert to local db
+            DBHelper.instance.InsertUser(user);
         }
-        else
-        {
-            checkUserName();
-            messageDisplay.text = getCheckUserName();
-            UserModel user = APIHelper.GetUserByUserName(userNameInput);
 
-            // 10 second time out for all internet calls is a good idea
-            startTime = Time.time;
+        //// check if user already exists or null
+        //if (string.IsNullOrEmpty(userNameInput))
+        //{
+        //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
+        //}
+        //else
+        //{
+        //    checkUserName();
+        //    messageDisplay.text = getCheckUserName();
+        //    UserModel user = APIHelper.GetUserByUserName(userNameInput);
 
-            yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
-            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-            yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        //    // 10 second time out for all internet calls is a good idea
+        //    startTime = Time.time;
 
-            StartCoroutine(APIHelper.PostToken(user));
-            startTime = Time.time;
+        //    yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
+        //    yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        //    yield return new WaitUntil(() => !APIHelper.ApiLocked);
 
-            // add 10 second timeout
-            yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+        //    StartCoroutine(APIHelper.PostToken(user));
+        //    startTime = Time.time;
 
-            // if local user doesnt exists, insert locally
-            if (!DBHelper.instance.localUserExists(user))
-            {
-                DBHelper.instance.DatabaseLocked = false;
-                // created on api, insert to local db
-                DBHelper.instance.InsertUser(user);
-            }
-        }
+        //    // add 10 second timeout
+        //    yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+
+        //    // if local user doesnt exists, insert locally
+        //    if (!DBHelper.instance.localUserExists(user))
+        //    {
+        //        DBHelper.instance.DatabaseLocked = false;
+        //        // created on api, insert to local db
+        //        DBHelper.instance.InsertUser(user);
+        //    }
+        //}
     }
 
     public void readEmailAddressInput(string s)
@@ -403,4 +438,5 @@ public class AccountManager : MonoBehaviour
     public static string CreateNewButtonName => createNewButtonName;
     public static string LoginExistingButtonName => loginExistingButtonName;
     public static string LoginLocalButtonName => loginLocalButtonName;
+    public static string AccountMenuButtonName => accountMenuButtonName;
 }

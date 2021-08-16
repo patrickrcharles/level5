@@ -880,7 +880,10 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             //Debug.Log(APIHelper.bearerToken);
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            }
         }
 
         //------------------------------------- GET Application  ----------------------------------------
