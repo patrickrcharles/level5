@@ -25,18 +25,7 @@ public class APIConnector : MonoBehaviour
             Debug.Log("username does not exist");
             StartCoroutine(APIHelper.PostUser(user));
         }
-
-        // if not, create user
-        // else return 'username already exists
     }
-
-    //private void Update()
-    //{
-    //    if (APIHelper.ApiLocked)
-    //    {
-    //        Debug.Log("--- apiLocked : " + APIHelper.ApiLocked);
-    //    }
-    //}
 }
 
 

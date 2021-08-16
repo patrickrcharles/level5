@@ -329,11 +329,10 @@ public class AccountManager : MonoBehaviour
     public void LoginUser()
     {
         StartCoroutine(LoginUserCoroutine());
-
-        //GameOptions.userName = userNameSelected;
-        //UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
-        //GameOptions.userid = user.Userid;
-        //StartCoroutine(APIHelper.PostToken(user));
+    }
+    public void LoginUser(string username)
+    {
+        StartCoroutine(LoginUserCoroutine(username));
     }
 
     private IEnumerator LoginUserCoroutine()
@@ -365,39 +364,37 @@ public class AccountManager : MonoBehaviour
             // created on api, insert to local db
             DBHelper.instance.InsertUser(user);
         }
+    }
 
-        //// check if user already exists or null
-        //if (string.IsNullOrEmpty(userNameInput))
-        //{
-        //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
-        //}
-        //else
-        //{
-        //    checkUserName();
-        //    messageDisplay.text = getCheckUserName();
-        //    UserModel user = APIHelper.GetUserByUserName(userNameInput);
+    private IEnumerator LoginUserCoroutine(string username)
+    {
+        float startTime;
+        float timeout = 10.0f;
 
-        //    // 10 second time out for all internet calls is a good idea
-        //    startTime = Time.time;
+        checkUserName();
+        messageDisplay.text = getCheckUserName();
+        UserModel user = APIHelper.GetUserByUserName(username);
 
-        //    yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
-        //    yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-        //    yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        // 10 second time out for all internet calls is a good idea
+        startTime = Time.time;
 
-        //    StartCoroutine(APIHelper.PostToken(user));
-        //    startTime = Time.time;
+        yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
 
-        //    // add 10 second timeout
-        //    yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+        StartCoroutine(APIHelper.PostToken(user));
+        startTime = Time.time;
 
-        //    // if local user doesnt exists, insert locally
-        //    if (!DBHelper.instance.localUserExists(user))
-        //    {
-        //        DBHelper.instance.DatabaseLocked = false;
-        //        // created on api, insert to local db
-        //        DBHelper.instance.InsertUser(user);
-        //    }
-        //}
+        // add 10 second timeout
+        yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+
+        // if local user doesnt exists, insert locally
+        if (!DBHelper.instance.localUserExists(user))
+        {
+            DBHelper.instance.DatabaseLocked = false;
+            // created on api, insert to local db
+            DBHelper.instance.InsertUser(user);
+        }
     }
 
     public void readEmailAddressInput(string s)
