@@ -112,7 +112,7 @@ public class UserAccountManager : MonoBehaviour
 
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_login);
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
         }
         // do nothing
         if(DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.CANCEL)
