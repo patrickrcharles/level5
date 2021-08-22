@@ -168,7 +168,6 @@ public class GameLevelManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         //turn on : toggle run
@@ -196,7 +195,6 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkPlayerIsNpcInScene()
     {
-        //Debug.Log("checkPlayerIsNpcInScene() : traffic : "+ GameOptions.trafficEnabled);
         // check if player is 'a vehicle' ex. Sam on skateboard, Rad Tony on horse
         if (GameOptions.trafficEnabled)
         {
@@ -205,8 +203,6 @@ public class GameLevelManager : MonoBehaviour
             // check if player is vehicle in scene
             foreach (var veh in _vehicleObjects)
             {
-                //Debug.Log("veh  : " + veh.name);
-                //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
                 if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && veh.name.Contains(GameOptions.characterObjectName))
                 {
                     //Debug.Log("disable veh  : " + veh.name);
@@ -261,40 +257,24 @@ public class GameLevelManager : MonoBehaviour
         {
             string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
             _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-            //Debug.Log("load prefab");y analyticsvalidotr not working
-
         }
 
-        //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
         // if no player, spawn player
         if (GameObject.FindWithTag("Player") == null )//&& GameObject.FindWithTag("autoPlayer") == null)
         {
             if (_playerClone != null)
             {
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                //Debug.Log("player spawned : " + _playerClone.name);
             }
             else
             {
                 // spawn default character
                 string playerPrefabPath = "Prefabs/characters/players/player_drblood";
-                //Debug.Log("playerPrefabPath : " + playerPrefabPath);
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-                //Debug.Log("_playerClone : " + _playerClone);
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
             }
         }
     }
-
-    //private string GetCurrentSceneName()
-    //{
-    //    return SceneManager.GetActiveScene().name;
-    //}
-
-    //private void Quit()
-    //{
-    //    Application.Quit();
-    //}
 
     public GameObject Player => _player;
 
@@ -305,7 +285,6 @@ public class GameLevelManager : MonoBehaviour
     public PlayerControls Controls { get => controls; set => controls = value; }
     public FloatingJoystick Joystick { get => joystick; }
     public BasketBall Basketball { get => _basketball; set => _basketball = value; }
-    //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
     public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
