@@ -52,9 +52,6 @@ public class AccountManager : MonoBehaviour
     InputField firstNameInputField;
     InputField lastNameInputField;
 
-    //[SerializeField]
-    //GameObject currentSelectedObject;
-
     // button objects
     [SerializeField]
     GameObject emailAddressTextButtonObject;
@@ -96,7 +93,7 @@ public class AccountManager : MonoBehaviour
     {
         // mapped controls
         controls = new PlayerControls();
-        apiConnector = GameObject.FindObjectOfType<APIConnector>();
+        apiConnector = FindObjectOfType<APIConnector>();
     }
 
     private void Start()
