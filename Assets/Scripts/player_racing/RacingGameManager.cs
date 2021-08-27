@@ -12,7 +12,8 @@ public class RacingGameManager : MonoBehaviour
     [SerializeField]
     private RacingVehicleController _playerController;
     //private AutoPlayerController _autoPlayerController;
-    private CharacterProfile _characterProfile;
+    [SerializeField]
+    private RacingVehicleProfile _characterProfile;
     //private PlayerHealth _playerHealth;
     //[SerializeField]
     //private PlayerAttackQueue _playerAttackQueue;
@@ -22,18 +23,9 @@ public class RacingGameManager : MonoBehaviour
     //spawn locations
     private GameObject _basketballSpawnLocation;
     private GameObject _playerSpawnLocation;
-    private GameObject _cheerleaderSpawnLocation;
 
-    private BasketBall _basketball;
-    //private GameObject _basketballObject;
-    private Vector3 _basketballRimVector;
-
-
-    private GameObject _playerClone;
-    private GameObject _cheerleaderClone;
-
-    GameObject[] _npcObjects;
-    GameObject[] _vehicleObjects;
+    [SerializeField]
+    private GameObject cinderBlockPrefab;
 
     PlayerControls controls;
     FloatingJoystick joystick;
@@ -125,7 +117,7 @@ public class RacingGameManager : MonoBehaviour
         {
             _player = GameObject.FindWithTag("Player");
             _playerController = _player.GetComponent<RacingVehicleController>();
-            _characterProfile = _player.GetComponent<CharacterProfile>();
+            _characterProfile = _player.GetComponent<RacingVehicleProfile>();
             //_playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
             //_playerHealth = _player.GetComponentInChildren<PlayerHealth>();
             Anim = Player.GetComponentInChildren<Animator>();
@@ -190,52 +182,52 @@ public class RacingGameManager : MonoBehaviour
         }
     }
 
-    private void checkPlayerIsNpcInScene()
-    {
-        //Debug.Log("checkPlayerIsNpcInScene() : traffic : "+ GameOptions.trafficEnabled);
-        // check if player is 'a vehicle' ex. Sam on skateboard, Rad Tony on horse
-        if (GameOptions.trafficEnabled)
-        {
-            _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
+    //private void checkPlayerIsNpcInScene()
+    //{
+    //    //Debug.Log("checkPlayerIsNpcInScene() : traffic : "+ GameOptions.trafficEnabled);
+    //    // check if player is 'a vehicle' ex. Sam on skateboard, Rad Tony on horse
+    //    if (GameOptions.trafficEnabled)
+    //    {
+    //        _vehicleObjects = GameObject.FindGameObjectsWithTag("vehicle");
 
-            // check if player is vehicle in scene
-            foreach (var veh in _vehicleObjects)
-            {
-                //Debug.Log("veh  : " + veh.name);
-                //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
-                if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && veh.name.Contains(GameOptions.characterObjectName))
-                {
-                    //Debug.Log("disable veh  : " + veh.name);
-                    veh.SetActive(false);
-                }
-            }
-        }
-        // check if player is an npc, ex. ??? on slab
-        _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
-        foreach (var npc in _npcObjects)
-        {
-            if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && npc.name.Contains(GameOptions.characterObjectName))
-            {
-                //Debug.Log("disable npc  : " + npc.name);
-                npc.SetActive(false);
-            }
-        }
-    }
+    //        // check if player is vehicle in scene
+    //        foreach (var veh in _vehicleObjects)
+    //        {
+    //            //Debug.Log("veh  : " + veh.name);
+    //            //Debug.Log("GameOptions.playerObjectName : " + GameOptions.playerObjectName);
+    //            if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && veh.name.Contains(GameOptions.characterObjectName))
+    //            {
+    //                //Debug.Log("disable veh  : " + veh.name);
+    //                veh.SetActive(false);
+    //            }
+    //        }
+    //    }
+    //    // check if player is an npc, ex. ??? on slab
+    //    _npcObjects = GameObject.FindGameObjectsWithTag("auto_npc");
+    //    foreach (var npc in _npcObjects)
+    //    {
+    //        if (!string.IsNullOrEmpty(GameOptions.characterObjectName) && npc.name.Contains(GameOptions.characterObjectName))
+    //        {
+    //            //Debug.Log("disable npc  : " + npc.name);
+    //            npc.SetActive(false);
+    //        }
+    //    }
+    //}
 
-    private void checkCheerleaderPrefabExists()
-    {
-        if (GameObject.FindWithTag("cheerleader") == null
-            && GameOptions.cheerleaderObjectName != null)
-        {
-            string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
-            _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
+    //private void checkCheerleaderPrefabExists()
+    //{
+    //    if (GameObject.FindWithTag("cheerleader") == null
+    //        && GameOptions.cheerleaderObjectName != null)
+    //    {
+    //        string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
+    //        _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
 
-            if (_cheerleaderClone != null)
-            {
-                Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
-            }
-        }
-    }
+    //        if (_cheerleaderClone != null)
+    //        {
+    //            Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
+    //        }
+    //    }
+    //}
 
     //private void checkBasketballPrefabExists()
     //{
@@ -250,37 +242,37 @@ public class RacingGameManager : MonoBehaviour
     //    Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
     //}
 
-    private void checkPlayerPrefabExists()
-    {
-        // if player selected is not null / player not selected
-        if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
-        {
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
-            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-            //Debug.Log("load prefab");y analyticsvalidotr not working
+    //private void checkPlayerPrefabExists()
+    //{
+    //    // if player selected is not null / player not selected
+    //    if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
+    //    {
+    //        string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
+    //        _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+    //        //Debug.Log("load prefab");y analyticsvalidotr not working
 
-        }
+    //    }
 
-        //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
-        // if no player, spawn player
-        if (GameObject.FindWithTag("Player") == null )//&& GameObject.FindWithTag("autoPlayer") == null)
-        {
-            if (_playerClone != null)
-            {
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-                //Debug.Log("player spawned : " + _playerClone.name);
-            }
-            else
-            {
-                // spawn default character
-                string playerPrefabPath = "Prefabs/characters/players/player_drblood";
-                //Debug.Log("playerPrefabPath : " + playerPrefabPath);
-                _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-                //Debug.Log("_playerClone : " + _playerClone);
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-            }
-        }
-    }
+    //    //Debug.Log("GameObject.FindWithTag(Player) : " + GameObject.FindWithTag("Player"));
+    //    // if no player, spawn player
+    //    if (GameObject.FindWithTag("Player") == null )//&& GameObject.FindWithTag("autoPlayer") == null)
+    //    {
+    //        if (_playerClone != null)
+    //        {
+    //            Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+    //            //Debug.Log("player spawned : " + _playerClone.name);
+    //        }
+    //        else
+    //        {
+    //            // spawn default character
+    //            string playerPrefabPath = "Prefabs/characters/players/player_drblood";
+    //            //Debug.Log("playerPrefabPath : " + playerPrefabPath);
+    //            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
+    //            //Debug.Log("_playerClone : " + _playerClone);
+    //            Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
+    //        }
+    //    }
+    //}
 
     //private string GetCurrentSceneName()
     //{
@@ -300,14 +292,15 @@ public class RacingGameManager : MonoBehaviour
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
     public FloatingJoystick Joystick { get => joystick; }
-    public BasketBall Basketball { get => _basketball; set => _basketball = value; }
-    //public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
-    public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
-    public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
+    //public BasketBall Basketball { get => _basketball; set => _basketball = value; }
+    ////public GameObject BasketballObject { get => _basketballObject; set => _basketballObject = value; }
+    //public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
+    public RacingVehicleProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     //public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
     //public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
     public bool IsAutoPlayer { get => isAutoPlayer; set => isAutoPlayer = value; }
     public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
     public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
     public float TerrainHeight { get => terrainHeight;}
+    public GameObject CinderBlockPrefab { get => cinderBlockPrefab;  }
 }

@@ -23,7 +23,7 @@ public class RacingAnimationEvents : MonoBehaviour
         //}
         // check if attack box is active and should not be
 
-        InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
+        //InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
     }
 
     // function - Invoke Repeating

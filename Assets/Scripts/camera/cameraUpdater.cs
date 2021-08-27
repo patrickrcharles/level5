@@ -49,6 +49,7 @@ public class cameraUpdater : MonoBehaviour
     private bool isLockOnGoalCamera;
 
     bool onGoalCameraEnabled;
+    [SerializeField]
     bool smoothCameraMotion;
 
     // flag for activating weather system prefab
@@ -58,6 +59,9 @@ public class cameraUpdater : MonoBehaviour
     GameObject weatherSystemObject;
     [SerializeField]
     bool requiresWeatherSystem;
+    [SerializeField]
+    private float cameraOffset;
+
     public bool RequiresWeatherSystem { get => requiresWeatherSystem; set => requiresWeatherSystem = value; }
 
     void Start()
@@ -236,7 +240,7 @@ public class cameraUpdater : MonoBehaviour
 
     private void updatePositionOnPlayer()
     {
-        Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        Vector3 targetPosition = new Vector3(player.transform.position.x + cameraOffset, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
         if (smoothCameraMotion)
         {
             Vector3 desiredPosition = targetPosition;

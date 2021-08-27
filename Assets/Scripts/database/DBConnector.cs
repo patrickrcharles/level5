@@ -116,6 +116,7 @@ public class DBConnector : MonoBehaviour
             while (reader.Read())
             {
                 version = reader.GetString(0);
+                //Debug.Log("verify db  version : " + version);
             }
 
             reader.Close();
@@ -228,6 +229,8 @@ public class DBConnector : MonoBehaviour
             dbconn = new SqliteConnection(connection);
             dbconn.Open();
             dbcmd = dbconn.CreateCommand();
+
+            //Debug.Log("create database");
 
             string sqlQuery = String.Format(
 
@@ -489,8 +492,11 @@ public class DBConnector : MonoBehaviour
         }
     }
 
-    public void createTableCharacterProfile()
+    public IEnumerator CreateTableCharacterProfile()
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         //Debug.Log("createDatabase()");
         try
         {
@@ -536,17 +542,21 @@ public class DBConnector : MonoBehaviour
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
+
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return;
         }
     }
 
-    public void createTableCheerleaderProfile()
+    public IEnumerator  CreateTableCheerleaderProfile()
     {
+        yield return new WaitUntil(() => !dbHelper.DatabaseLocked);
+        dbHelper.DatabaseLocked = true;
+
         try
         {
             //Debug.Log(" public void createTableCheerleaderProfile()");
@@ -572,12 +582,13 @@ public class DBConnector : MonoBehaviour
             dbcmd = null;
             dbconn.Close();
             dbconn = null;
+
+            dbHelper.DatabaseLocked = false;
         }
         catch (Exception e)
         {
             dbHelper.DatabaseLocked = false;
             Debug.Log("ERROR : " + e);
-            return;
         }
     }
 

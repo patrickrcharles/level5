@@ -460,6 +460,11 @@ public class StartManager : MonoBehaviour
                     changeSelectedHardcoreOption();
                     initializeHardcoreOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(enemySelectOptionName))
+                {
+                    changeSelectedEnemiesOption();
+                    initializeEnemyOptionDisplay();
+                }
                 if (currentHighlightedButton.Equals(SniperSelectOptionName))
                 {
                     changeSelectedSniperOption();
@@ -613,7 +618,7 @@ public class StartManager : MonoBehaviour
 
         Random random = new Random();
         int randNum = random.Next(1, 3);
-        Debug.Log("*************************************** rand num value : " + randNum);
+        //Debug.Log("*************************************** rand num value : " + randNum);
 
         if (randNum == 1)
         {
@@ -912,7 +917,7 @@ public class StartManager : MonoBehaviour
         if (playerSelectedData[playerSelectedIndex].PlayerDisplayName.ToLower().Contains("boat"))
         {
             GameOptions.characterObjectName = getRandomWizardOfBoat();
-            Debug.Log("GameOptions.characterObjectName : " + GameOptions.characterObjectName);
+            //Debug.Log("GameOptions.characterObjectName : " + GameOptions.characterObjectName);
         }
         else
         {

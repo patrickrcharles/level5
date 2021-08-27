@@ -281,11 +281,13 @@ public class TouchInputStatsScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.MainMenuButtonName))
         {
             StatsManager.instance.loadMainMenu(Constants.SCENE_NAME_level_00_start);
+            buttonPressed = true;
         }
         // reset previous button to active button
         if (EventSystem.current.currentSelectedGameObject != prevSelectedGameObject)
         {
             EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+            buttonPressed = true;
         }
         buttonPressed = false;
     }

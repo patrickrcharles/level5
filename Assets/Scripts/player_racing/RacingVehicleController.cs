@@ -22,14 +22,15 @@ public class RacingVehicleController : MonoBehaviour
     // walk speed #review can potentially remove
     [SerializeField]
     private float movementSpeed;
-    [SerializeField]
-    private float inAirSpeed; // leave serialized
-    [SerializeField]
-    private float blockSpeed; // leave serialized
+    //[SerializeField]
+    //private float inAirSpeed; // leave serialized
+    //[SerializeField]
+    //private float blockSpeed; // leave serialized
     //[SerializeField]
     //private float attackSpeed; // leave serialized
 
     // get/set for following at bottom of class
+    [SerializeField]
     private bool _facingRight;
     private bool _facingFront;
     private bool _locked;
@@ -49,10 +50,10 @@ public class RacingVehicleController : MonoBehaviour
     //Vector3 bballRimVector;
 
     // customizable options
-    [SerializeField]
-    private bool playerCanBlock;
-    [SerializeField]
-    private bool playerCanAttack;
+    //[SerializeField]
+    //private bool playerCanBlock;
+    //[SerializeField]
+    //private bool playerCanAttack;
     [SerializeField]
     float _knockDownTime;
     [SerializeField]
@@ -60,6 +61,7 @@ public class RacingVehicleController : MonoBehaviour
 
     // movement variables
     Vector3 movement;
+    [SerializeField]
     float movementHorizontal;
     float movementVertical;
 
@@ -109,7 +111,7 @@ public class RacingVehicleController : MonoBehaviour
 
         if (_knockDownTime == 0) { _knockDownTime = 1.5f; }
         if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
-        if (blockSpeed == 0) { blockSpeed = 0.2f; }
+        //if (blockSpeed == 0) { blockSpeed = 0.2f; }
         //if (attackSpeed == 0) { attackSpeed = 0f; }
 
         screenXRange = Screen.width / 10;
@@ -186,27 +188,41 @@ public class RacingVehicleController : MonoBehaviour
 #endif
 
             if (RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 1
-                && movementSpeed < vehicleProfile.MaxSpeed)
+                && movementSpeed < vehicleProfile.MaxSpeed
+                && !KnockedDown)
             {
                 //Debug.Log("movementSpeed : "+ movementSpeed);
                 movementSpeed = (movementSpeed * vehicleProfile.Acceleration);
             }
-            if (RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 0
+            if ((RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 0
                 //&& RacingGameManager.instance.Controls.Player.run.ReadValue<float>() > 1
                 && rigidBody.velocity.magnitude > 0
                 && movementSpeed > vehicleProfile.Speed)
+                || KnockedDown)
             {
                 //Debug.Log("moving but not holding shift");
                 // lose 1% of speed per frame
-                movementSpeed -= (movementSpeed/100);
+                movementSpeed -= (movementSpeed / 100);
             }
-                //else
-                //{
-                //    movementSpeed = (movementSpeed * vehicleProfile.Acceleration);
-                //}
-                //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-                //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
-                movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+            //else
+            //{
+            //    movementSpeed = (movementSpeed * vehicleProfile.Acceleration);
+            //}
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
+            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
+
+            // max Z speed is default speed
+            if (movementSpeed > (vehicleProfile.MaxSpeed * 0.75f))
+            {
+                movementVertical *= 0.25f;
+            }
+            // less than default 50% turning
+            if( movementSpeed > 0.1 && movementSpeed < vehicleProfile.Speed)
+            {
+                movementVertical *= 0.5f;
+            }
+
+            movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
             // check jump trigger and execute jump
             if (jumpTrigger)
             {
@@ -243,10 +259,10 @@ public class RacingVehicleController : MonoBehaviour
         currentState = currentStateInfo.fullPathHash;
 
 
-        vehicleCurrentSpeedText.text = "speed : " + movementSpeed.ToString() 
-            + "\nmax speed : "+ vehicleProfile.MaxSpeed
-            + "\nacceleration : "+ vehicleProfile.Acceleration
-            + "\njump : "+ vehicleProfile.JumpForce;
+        vehicleCurrentSpeedText.text = "speed : " + movementSpeed.ToString()
+            + "\nmax speed : " + vehicleProfile.MaxSpeed
+            + "\nacceleration : " + vehicleProfile.Acceleration
+            + "\njump : " + vehicleProfile.JumpForce;
         // knocked down
         if (KnockedDown && !Locked)
         {
@@ -269,9 +285,8 @@ public class RacingVehicleController : MonoBehaviour
         {
             //float terrainYHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
             //Debug.Log("terrainYHeight : " + terrainYHeight);
-            Debug.Log("RacingGameManager.instance.TerrainHeight : " + RacingGameManager.instance.TerrainHeight);
 
-            dropShadow.transform.position = new Vector3(transform.root.position.x, RacingGameManager.instance.TerrainHeight+0.01f,
+            dropShadow.transform.position = new Vector3(transform.root.position.x, RacingGameManager.instance.TerrainHeight + 0.01f,
             transform.root.position.z);
         }
 
@@ -298,14 +313,15 @@ public class RacingVehicleController : MonoBehaviour
         }
 
         // determine if player animation is shooting from or facing basket
-        if (Math.Abs(playerRelativePositioning.x) > 2 &&
-            Math.Abs(playerRelativePositioning.z) < 2)
-        {
-            FacingFront = false;
-        }
-        else
+        //if (Math.Abs(playerRelativePositioning.x) > 2 &&
+        //    Math.Abs(playerRelativePositioning.z) < 2)
+        if (movementHorizontal > 0)
         {
             FacingFront = true;
+        }
+        if (movementHorizontal < 0)
+        {
+            FacingFront = false;
         }
 
         //// set player shoot anim based on position
@@ -372,7 +388,7 @@ public class RacingVehicleController : MonoBehaviour
         if (RacingGameManager.instance.Controls.Player.jump.triggered
             //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
             //&& hasBasketball
-            && (Grounded || IsGrinding) 
+            && (Grounded || IsGrinding)
             && !KnockedDown
             && !GameOptions.EnemiesOnlyEnabled
             && !InAir)
@@ -385,7 +401,7 @@ public class RacingVehicleController : MonoBehaviour
             //}
             //else
             //{
-                jumpTrigger = true;
+            jumpTrigger = true;
             //}
         }
         //------------------ shoot -----------------------------------
@@ -802,7 +818,7 @@ public class RacingVehicleController : MonoBehaviour
     public int SpecialState { get => specialState; set => specialState = value; }
     public bool FacingRight { get => _facingRight; set => _facingRight = value; }
     public bool CanAttack { get => canAttack; set => canAttack = value; }
-    public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
+    //public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
     public bool CanBlock { get => canBlock; set => canBlock = value; }
     public Animator Anim { get => anim; set => anim = value; }
     //public AudioSource Audiosource { get => audiosource; set => audiosource = value; }

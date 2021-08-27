@@ -42,8 +42,8 @@ public class RacingVehicleCollisions : MonoBehaviour
         //{
         //    playerState.SetPlayerAnim("jump", false);
         //}
-        Debug.Log("gameObject.tag : " + gameObject.tag);
-        Debug.Log("other.tag : " + other.tag);
+        //Debug.Log("gameObject.tag : " + gameObject.tag);
+        //Debug.Log("other.tag : " + other.tag);
         // if collsion between hitbox, vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
         && other.CompareTag("obstacle")

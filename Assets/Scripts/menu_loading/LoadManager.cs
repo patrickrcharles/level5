@@ -107,7 +107,7 @@ public class LoadManager : MonoBehaviour
             // drop table just in case of error
             StartCoroutine(DBConnector.instance.dropDatabaseTable("CharacterProfile"));
             //create table
-            DBConnector.instance.createTableCharacterProfile();
+            StartCoroutine(DBConnector.instance.CreateTableCharacterProfile());
             CharacterProfileTableCreated = true;
         }
     }
@@ -127,7 +127,7 @@ public class LoadManager : MonoBehaviour
             // drop table just in case of error
             StartCoroutine(DBConnector.instance.dropDatabaseTable("CheerleaderProfile"));
             //create table
-            DBConnector.instance.createTableCheerleaderProfile();
+            StartCoroutine( DBConnector.instance.CreateTableCheerleaderProfile());
             CheerleaderProfileTableCreated = true;
         }
 

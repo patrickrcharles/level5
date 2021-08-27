@@ -1270,17 +1270,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e2ad1c17-f9a6-4e8e-8cf5-6ce779c6d239"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6439f8c3-095f-46c4-8bd7-2246f449f240"",
                     ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button4"",
                     ""interactions"": """",

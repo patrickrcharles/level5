@@ -29,11 +29,16 @@ public class AccountManager : MonoBehaviour
     const string passwordInputFieldName = "PasswordInputField";
     const string firstNameInputFieldName = "FirstNameInputField";
     const string lastNameInputFieldName = "LastNameInputField";
+    // scene link buttons
+    const string createNewButtonName = "createNew";
+    const string loginExistingButtonName = "loginExisting";
+    const string loginLocalButtonName = "loginLocal";
     // footer button names
     const string mainMenuButtonName = "press_start";
     const string statsMenuButtonName = "stats_menu";
     const string progressionMenuButtonName = "update_menu";
     const string creditsMenuButtonName = "credits_menu";
+    const string accountMenuButtonName = "account_menu";
 
     string emailInput;
     string userNameInput;
@@ -46,9 +51,6 @@ public class AccountManager : MonoBehaviour
     InputField passwordInputField;
     InputField firstNameInputField;
     InputField lastNameInputField;
-
-    //[SerializeField]
-    //GameObject currentSelectedObject;
 
     // button objects
     [SerializeField]
@@ -91,18 +93,26 @@ public class AccountManager : MonoBehaviour
     {
         // mapped controls
         controls = new PlayerControls();
-        apiConnector = GameObject.FindObjectOfType<APIConnector>();
+        apiConnector = FindObjectOfType<APIConnector>();
     }
 
     private void Start()
     {
-        emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
-        usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
-        passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
-        firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
-        lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
-        messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageDisplay.text = "";
+        // if current scene is NOT account scene (with links to login scenes)
+        if (!SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_account))
+        {
+
+            usernameInputField = GameObject.Find("UserNameInputField").GetComponent<InputField>();
+            passwordInputField = GameObject.Find("PasswordInputField").GetComponent<InputField>();
+            if (SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_account_createNew))
+            {
+                emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
+                firstNameInputField = GameObject.Find("FirstNameInputField").GetComponent<InputField>();
+                lastNameInputField = GameObject.Find("LastNameInputField").GetComponent<InputField>();
+            }
+            messageDisplay = GameObject.Find("messageDisplay").GetComponent<Text>();
+            messageDisplay.text = "";
+        }
     }
 
     void Update()
@@ -167,6 +177,26 @@ public class AccountManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject.name.Equals(creditsMenuButtonName))
             {
                 SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
+            }
+            // create new
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(createNewButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_createNew);
+            }
+            // login existing
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(loginExistingButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginExisting);
+            }
+            // login local
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(loginLocalButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginLocal);
+            }
+            // account
+            if (EventSystem.current.currentSelectedGameObject.name.Equals(accountMenuButtonName))
+            {
+                SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account);
             }
             buttonPressed = false;
         }
@@ -296,11 +326,10 @@ public class AccountManager : MonoBehaviour
     public void LoginUser()
     {
         StartCoroutine(LoginUserCoroutine());
-
-        //GameOptions.userName = userNameSelected;
-        //UserModel user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
-        //GameOptions.userid = user.Userid;
-        //StartCoroutine(APIHelper.PostToken(user));
+    }
+    public void LoginUser(string username)
+    {
+        StartCoroutine(LoginUserCoroutine(username));
     }
 
     private IEnumerator LoginUserCoroutine()
@@ -308,37 +337,60 @@ public class AccountManager : MonoBehaviour
         float startTime;
         float timeout = 10.0f;
 
-        // check if user already exists or null
-        if (string.IsNullOrEmpty(userNameInput))
+        checkUserName();
+        messageDisplay.text = getCheckUserName();
+        UserModel user = APIHelper.GetUserByUserName(userNameInput);
+
+        // 10 second time out for all internet calls is a good idea
+        startTime = Time.time;
+
+        yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+        StartCoroutine(APIHelper.PostToken(user));
+        startTime = Time.time;
+
+        // add 10 second timeout
+        yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+
+        // if local user doesnt exists, insert locally
+        if (!DBHelper.instance.localUserExists(user))
         {
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_login);
+            DBHelper.instance.DatabaseLocked = false;
+            // created on api, insert to local db
+            DBHelper.instance.InsertUser(user);
         }
-        else
+    }
+
+    private IEnumerator LoginUserCoroutine(string username)
+    {
+        float startTime;
+        float timeout = 10.0f;
+
+        checkUserName();
+        messageDisplay.text = getCheckUserName();
+        UserModel user = APIHelper.GetUserByUserName(username);
+
+        // 10 second time out for all internet calls is a good idea
+        startTime = Time.time;
+
+        yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
+        yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+        StartCoroutine(APIHelper.PostToken(user));
+        startTime = Time.time;
+
+        // add 10 second timeout
+        yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
+
+        // if local user doesnt exists, insert locally
+        if (!DBHelper.instance.localUserExists(user))
         {
-            checkUserName();
-            messageDisplay.text = getCheckUserName();
-            UserModel user = APIHelper.GetUserByUserName(userNameInput);
-
-            // 10 second time out for all internet calls is a good idea
-            startTime = Time.time;
-
-            yield return new WaitUntil(() => user != null || (Time.time > startTime + timeout));
-            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-            yield return new WaitUntil(() => !APIHelper.ApiLocked);
-
-            StartCoroutine(APIHelper.PostToken(user));
-            startTime = Time.time;
-
-            // add 10 second timeout
-            yield return new WaitUntil(() => APIHelper.BearerToken != null || (Time.time > startTime + timeout));
-
-            // if local user doesnt exists, insert locally
-            if (!DBHelper.instance.localUserExists(user))
-            {
-                DBHelper.instance.DatabaseLocked = false;
-                // created on api, insert to local db
-                DBHelper.instance.InsertUser(user);
-            }
+            DBHelper.instance.DatabaseLocked = false;
+            // created on api, insert to local db
+            DBHelper.instance.InsertUser(user);
         }
     }
 
@@ -377,4 +429,8 @@ public class AccountManager : MonoBehaviour
     public static string StatsMenuButtonName => statsMenuButtonName;
     public static string ProgressionMenuButtonName => progressionMenuButtonName;
     public static string CreditsMenuButtonName => creditsMenuButtonName;
+    public static string CreateNewButtonName => createNewButtonName;
+    public static string LoginExistingButtonName => loginExistingButtonName;
+    public static string LoginLocalButtonName => loginLocalButtonName;
+    public static string AccountMenuButtonName => accountMenuButtonName;
 }

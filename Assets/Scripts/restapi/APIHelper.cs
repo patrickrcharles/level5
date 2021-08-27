@@ -15,7 +15,7 @@ namespace Assets.Scripts.restapi
     {
         static bool apiLocked;
         private static string bearerToken;
-        private static string username;
+        //private static string username;
 
         // -------------------------------------- HTTTP POST Highscore -------------------------------------------
 
@@ -480,7 +480,7 @@ namespace Assets.Scripts.restapi
                         string json = toJson;
                         streamWriter.Write(json);
                         streamWriter.Flush();
-                        Debug.Log(json);
+                        //Debug.Log(json);
                     }
                     // response
                     httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -493,6 +493,7 @@ namespace Assets.Scripts.restapi
 
                         Debug.Log("userid from api : " + userid);
                         Debug.Log("userid going to db : " + user.Userid);
+
                     }
                 }
                 // on web exception
@@ -503,6 +504,7 @@ namespace Assets.Scripts.restapi
                     //unlock api + database
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
+
                 }
 
                 statusCode = httpResponse.StatusCode;
@@ -516,7 +518,11 @@ namespace Assets.Scripts.restapi
                     DBHelper.instance.InsertUser(user);
                     yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
-                    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+                    // attempt to login newly created user
+                    AccountManager account = GameObject.FindObjectOfType<AccountManager>();
+                    account.LoginUser(user.UserName);
+
+                    //SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
                 }
                 // failed
                 else
@@ -773,6 +779,7 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    Debug.Log(result);
                     user = (UserModel)JsonConvert.DeserializeObject<UserModel>(result);
                 }
             }
@@ -880,7 +887,10 @@ namespace Assets.Scripts.restapi
             yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             //Debug.Log(APIHelper.bearerToken);
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            }
         }
 
         //------------------------------------- GET Application  ----------------------------------------

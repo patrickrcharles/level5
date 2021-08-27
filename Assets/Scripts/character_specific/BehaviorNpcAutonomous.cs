@@ -159,9 +159,12 @@ public class BehaviorNpcAutonomous : MonoBehaviour
                 {
                     Flip();
                 }
-                navmeshAgent.SetDestination(newVector);
-                //disable rotation
-                navmeshAgent.updateRotation = false;
+                if (navmeshAgent != null)
+                {
+                    navmeshAgent.SetDestination(newVector);
+                    //disable rotation
+                    navmeshAgent.updateRotation = false;
+                }
             }
             if (canAttack && (other.CompareTag("Player") || other.CompareTag("enemy")) )
             {

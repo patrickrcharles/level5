@@ -86,11 +86,11 @@ public class TouchInputAccountScreenController : MonoBehaviour
         //check if startmanager is empty and find correct GraphicRaycaster and EventSystem
         if (GameObject.FindObjectOfType<AccountManager>() != null)
         {
-            accountManagerObject = GameObject.Find("AccountManager");
+            accountManagerObject = FindObjectOfType<AccountManager>().gameObject;
             //Fetch the Raycaster from the GameObject (the Canvas)
-            m_Raycaster = GameObject.Find("AccountManager").GetComponentInChildren<GraphicRaycaster>();
+            m_Raycaster = FindObjectOfType<AccountManager>().gameObject.GetComponentInChildren<GraphicRaycaster>();
             //Fetch the Event System from the Scene
-            m_EventSystem = GameObject.Find("AccountManager").GetComponentInChildren<EventSystem>();
+            m_EventSystem = FindObjectOfType<AccountManager>().gameObject.GetComponentInChildren<EventSystem>();
         }
         // else, this is not the startscreen and disable object
         else
@@ -130,6 +130,26 @@ public class TouchInputAccountScreenController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.CreditsMenuButtonName))
         {
             SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
+        }
+        // create new
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginExistingButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_createNew);
+        }
+        // login existing
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginExistingButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginExisting);
+        }
+        // login local
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginLocalButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_loginLocal);
+        }
+        // account
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.AccountMenuButtonName))
+        {
+            SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account);
         }
         buttonPressed = false;
     }
