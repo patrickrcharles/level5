@@ -405,6 +405,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""51afde47-5282-4237-a149-c3cc4d027d69"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""db7f5c47-3050-44e9-8d8f-e3cef86d2d6f"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
