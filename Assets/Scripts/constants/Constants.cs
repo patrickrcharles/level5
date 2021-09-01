@@ -49,4 +49,11 @@ public static class Constants
     public const string API_ADDRESS_LOCALHOST_HighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
     public const string API_ADDRESS_LOCALHOST_HighScoresCountByModeid = "https://localhost:44362/api/highscores/modeid/count/";
 
+    //sqlite Database tables
+    public const string LOCAL_DATABASE_tableName_allTimeStats = "AllTimeStats";
+    public const string LOCAL_DATABASE_tableName_characterProfile = "CharacterProfile";
+    public const string LOCAL_DATABASE_tableName_cheerleaderProfile = "CheerleaderProfile";
+    public const string LOCAL_DATABASE_tableName_highscores = "HighScores";
+    public const string LOCAL_DATABASE_tableName_user = "User";
+
 }
