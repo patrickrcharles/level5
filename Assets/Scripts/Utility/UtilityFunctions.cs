@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.Net;
-using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using Ping = System.Net.NetworkInformation.Ping;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Utility
@@ -79,11 +79,21 @@ namespace Assets.Scripts.Utility
 
         public static bool IsConnectedToInternet()
         {
+            //Debug.Log("IsConnectedToInternet()");
+            string host = "www.google.com";
+            Ping p = new Ping();
             try
             {
-                using (var client = new WebClient())
-                using (client.OpenRead("http://google.com/generate_204"))
+                PingReply reply = p.Send(host, 2000);
+
+                if (reply.Status == IPStatus.Success)
+                {
                     return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {
