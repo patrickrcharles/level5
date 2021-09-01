@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Ping = System.Net.NetworkInformation.Ping;
 
 public class UserAccountManager : MonoBehaviour
 {
@@ -115,7 +116,7 @@ public class UserAccountManager : MonoBehaviour
             SceneManager.LoadScene(Constants.SCENE_NAME_level_00_account_loginLocal);
         }
         // do nothing
-        if(DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.CANCEL)
+        if (DialogueManager.instance.PreviousDialog.result == DialogueManager.instance.PreviousDialog.CANCEL)
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
@@ -125,21 +126,26 @@ public class UserAccountManager : MonoBehaviour
     {
         yield return new WaitUntil(() => DBHelper.instance != null);
         yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+
         try
         {
             DBHelper.instance.DatabaseLocked = true;
-            // get local users data
-            userAccountData = DBHelper.instance.getUserProfileStats();
-            GameOptions.numOfLocalUsers = userAccountData.Count;
-
-            if (userAccountData.Count > 0)
+            // check if database is empty
+            if (!DBHelper.instance.isTableEmpty(Constants.LOCAL_DATABASE_tableName_user))
             {
-                usersLoaded = true;
-                if (messageText != null)
+                // get local users data
+                userAccountData = DBHelper.instance.getUserProfileStats();
+                GameOptions.numOfLocalUsers = userAccountData.Count;
+
+                if (userAccountData.Count > 0)
                 {
-                    messageText.text = "select user to log in";
+                    usersLoaded = true;
+                    if (messageText != null)
+                    {
+                        messageText.text = "select user to log in";
+                    }
+                    DBHelper.instance.DatabaseLocked = false;
                 }
-                DBHelper.instance.DatabaseLocked = false;
             }
             else
             {
@@ -203,6 +209,7 @@ public class UserAccountManager : MonoBehaviour
             localAccounsList[index].GetComponentInChildren<Text>().text = u.UserName;
         }
     }
+
     public List<UserModel> UserAccountData { get => userAccountData; }
     public bool UsersLoaded { get => usersLoaded; set => usersLoaded = value; }
     public static int GuestUserid => guestUserid;
