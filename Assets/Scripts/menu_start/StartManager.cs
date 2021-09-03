@@ -27,7 +27,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
-    private Text playerSelectUnlockText;
+    //private Text playerSelectUnlockText;
 
     [SerializeField]
     private Text cheerleaderSelectUnlockText;
@@ -107,7 +107,6 @@ public class StartManager : MonoBehaviour
     //level objects
     private const string levelSelectButtonName = "level_select";
     private const string levelSelectOptionButtonName = "level_selected_name";
-    //private const string levelSelectImageObjectName = "level_selected_image"; // no other refences in solution
 
     //mode objects
     private const string modeSelectButtonName = "mode_select";
@@ -143,12 +142,6 @@ public class StartManager : MonoBehaviour
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int cheerleaderSelectedIndex;
-
-    [SerializeField]
-    GameObject playerSelectedIsLockedObject;
-
-    [SerializeField]
-    GameObject cheerleaderSelectedIsLockedObject;
 
     [SerializeField]
     public PlayerControls controls;
@@ -207,8 +200,6 @@ public class StartManager : MonoBehaviour
     void Start()
     {
         AnaylticsManager.MenuStartLoaded();
-        //StartCoroutine(InitializeDisplay());
-        //Debug.Log("startscreen : username : " + GameOptions.userName);
     }
 
 
@@ -483,7 +474,6 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
-        //Debug.Log("updateLevelAndExperienceFromDatabase");
         foreach (CharacterProfile s in playerSelectedData)
         {
             s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
@@ -546,17 +536,14 @@ public class StartManager : MonoBehaviour
         initializeHardcoreOptionDisplay();
         initializeSniperOptionDisplay();
         setInitialGameOptions();
-        //yield return new WaitForSeconds(0.05f);
 
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
-            //Debug.Log("link");
         }
         if (APIHelper.BearerToken == null || string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
-            //Debug.Log("link");
         }
     }
     // ============================  get UI buttons / text references ==============================
@@ -573,21 +560,17 @@ public class StartManager : MonoBehaviour
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
 
         // player object with lock texture and unlock text
-        playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
         playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
         playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
         playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
-        playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
         playerSelectCategoryStatsText = GameObject.Find(playerSelectStatsCategoryName).GetComponent<Text>();
         playerProgressionStatsText = GameObject.Find(playerProgressionStatsName).GetComponent<Text>();
         playerProgressionCategoryText = GameObject.Find(playerProgressionName).GetComponent<Text>();
         playerProgressionUpdatePointsText = GameObject.Find(updatePointsAvailable).GetComponent<Text>();
 
         // friend object with lock texture and unlock text
-        cheerleaderSelectedIsLockedObject = GameObject.Find(cheerleaderSelectIsLockedObjectName);
         cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
-        cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
         // options selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
@@ -618,7 +601,6 @@ public class StartManager : MonoBehaviour
 
         Random random = new Random();
         int randNum = random.Next(1, 3);
-        //Debug.Log("*************************************** rand num value : " + randNum);
 
         if (randNum == 1)
         {
@@ -732,13 +714,10 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectOptionImage.enabled = true;
             playerSelectOptionImage.enabled = false;
             playerSelectOptionStatsText.enabled = false;
-            playerSelectedIsLockedObject.SetActive(false);
             playerSelectCategoryStatsText.enabled = false;
 
             playerProgressionCategoryText.enabled = false;
             playerProgressionStatsText.enabled = false;
-
-            playerSelectedIsLockedObject.SetActive(false);
 
             cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
             cheerleaderSelectOptionImage.sprite = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderPortrait;
@@ -769,34 +748,16 @@ public class StartManager : MonoBehaviour
         try
         {
             cheerleaderSelectOptionImage.enabled = false;
-            cheerleaderSelectedIsLockedObject.SetActive(false);
 
             playerSelectOptionImage.enabled = true;
             playerSelectOptionStatsText.enabled = true;
-            playerSelectedIsLockedObject.SetActive(true);
             playerSelectCategoryStatsText.enabled = true;
 
             playerProgressionCategoryText.enabled = true;
             playerProgressionStatsText.enabled = true;
 
-            // if player is locked or free play mode selected
-            if (!playerSelectedData[playerSelectedIndex].IsLocked
-                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-            {
-                //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
-                playerSelectedIsLockedObject.SetActive(false);
-                playerSelectUnlockText.text = "";
-            }
-
-
-            //Debug.Log("***************************************** 3");
-
             playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
             playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
-
-
-            //Debug.Log("***************************************** 4");
 
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
@@ -808,32 +769,14 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
 
-
-            //Debug.Log("***************************************** 5");
-
-            /*
-             * FAILS HERE
-             */
-
             playerSelectedData[playerSelectedIndex].Level =
                 (playerSelectedData[playerSelectedIndex].Experience / 3000);
             int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
-
-
-            //Debug.Log("***************************************** 6");
-            //Debug.Log("experience : " + playerSelectedData[playerSelectedIndex].Experience);
-            //Debug.Log("points available : " + playerSelectedData[playerSelectedIndex].PointsAvailable);
-            //Debug.Log("level : " + playerSelectedData[playerSelectedIndex].Level);
-            //Debug.Log("next level : " + nextlvl);
 
             playerProgressionStatsText.text = playerSelectedData[playerSelectedIndex].Level.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Experience.ToString("F0") + "\n"
                 + nextlvl.ToString("F0") + "\n";
 
-            //Debug.Log("====================================playerProgressionUpdatePointsText.text : " + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString());
-
-
-            //Debug.Log("***************************************** 7");
             // player points avaiable for upgrade
             if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
             {
@@ -866,21 +809,6 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        //Debug.Log("load game");
-        //Debug.Log("scene name : " + sceneName);
-        //Debug.Log("playerSelectedData[playerSelectedIndex].IsLocked : " + playerSelectedData[playerSelectedIndex].IsLocked);
-        //Debug.Log("cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked : " + cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked);
-
-        //// check if Player selected is locked
-        //if ((playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-        //    && !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-        //    && !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-        //{
-        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    messageText.text = " Bruh, it's locked. pick something else";
-        //    // turn off text display after 5 seconds
-        //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
-        //}
 
         // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
         if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
@@ -908,8 +836,6 @@ public class StartManager : MonoBehaviour
     // this is necessary for setting Game Rules on game manager
     private void setGameOptions()
     {
-        //Debug.Log("setGameOptions()");
-
         GameOptions.characterId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.characterDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
 
@@ -945,7 +871,6 @@ public class StartManager : MonoBehaviour
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
         {
-            //Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
             GameOptions.customTimer = modeSelectedData[modeSelectedIndex].CustomTimer;
         }
         else
@@ -1051,7 +976,6 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectedIndex--;
         }
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
     public void changeSelectedCheerleaderDown()
@@ -1067,7 +991,6 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectedIndex++;
         }
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
     public void changeSelectedLevelUp()
@@ -1148,7 +1071,6 @@ public class StartManager : MonoBehaviour
     public static string AccountMenuButtonName => accountMenuButtonName;
     public static string CreditsMenuButtonName1 => creditsMenuButtonName;
     public static string SniperSelectOptionName => sniperSelectOptionName;
-
     public int PlayerSelectedIndex => playerSelectedIndex;
     public static string OptionsMenuButtonName => optionsMenuButtonName;
 }
