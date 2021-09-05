@@ -293,4 +293,5 @@ public class GameLevelManager : MonoBehaviour
     public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
     public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
     public float TerrainHeight { get => terrainHeight;}
+    public GameObject PlayerSpawnLocation { get => _playerSpawnLocation; set => _playerSpawnLocation = value; }
 }
