@@ -30,7 +30,6 @@ public class PlayerCollisions : MonoBehaviour
         // check for fall respawner
         if (gameObject.CompareTag("playerHitbox") && other.CompareTag("fallRespawner"))
         {
-            Debug.Log("fall respawn trigger");
             GameLevelManager.instance.Player.transform.position 
                 = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
                 //= new Vector3(GameLevelManager.instance.PlayerSpawnLocation.transform.position.x,
