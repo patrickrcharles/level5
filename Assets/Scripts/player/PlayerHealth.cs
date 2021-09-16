@@ -56,7 +56,7 @@ public class PlayerHealth : MonoBehaviour
         // rate of 1f is equal to +1 every 1 second or +100 in 100 seconds (1 min 40 secs)
         // rate of 0.04f is equal to +1 every 0.04 second or +100 in 4 seconds 
         regenerateBlockRate = 0.5f;
-        regenerateHealthRate = 1f;
+        regenerateHealthRate = 2f;
         regenerateSpecialRate = 0.04f;
     }
 
