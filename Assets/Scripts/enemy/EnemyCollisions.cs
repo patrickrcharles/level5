@@ -34,14 +34,14 @@ public class EnemyCollisions : MonoBehaviour
             {
                 
                 enemyHealth.Health -= playerAttackBox.attackDamage;
-                Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
+                //Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
             if (enemyAttackBox != null
                 && enemyHealth != null
                 && !enemyController.stateKnockDown)
             {
                 enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
-                Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
+                //Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
