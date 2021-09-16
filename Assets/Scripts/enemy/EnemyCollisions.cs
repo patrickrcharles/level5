@@ -20,29 +20,28 @@ public class EnemyCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("ENEMY trigger : this : " + gameObject.tag + "  other.tag : " + other.tag);
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             && enemyHealth != null
             && enemyHealthBar != null)
         {
-            PlayerAttackBox playerAttackBox = null;
-            EnemyAttackBox enemyAttackBox = null;
+            PlayerAttackBox playerAttackBox = other.GetComponent<PlayerAttackBox>();
+            EnemyAttackBox enemyAttackBox = other.GetComponent<EnemyAttackBox>();
 
-            //Debug.Log(gameObject.transform.root.name + " attacked by " + other.transform.root.name);
-            if (other.GetComponent<PlayerAttackBox>() != null)
+            if (playerAttackBox != null
+                && !enemyController.stateKnockDown)
             {
-                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                
                 enemyHealth.Health -= playerAttackBox.attackDamage;
-                //Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
+                Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
-            if (other.GetComponent<EnemyAttackBox>() != null
-                && enemyHealth != null)
+            if (enemyAttackBox != null
+                && enemyHealth != null
+                && !enemyController.stateKnockDown)
             {
-                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
                 enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
-                //Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
+                Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
