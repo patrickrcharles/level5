@@ -184,7 +184,8 @@ public class TouchInputController : MonoBehaviour
                     buttonPressed = true;
                     if (!playerController.InAir
                         && playerController.Grounded
-                        && !playerController.KnockedDown)
+                        && !playerController.KnockedDown
+                        && playerController.PlayerHealth.Special == playerController.PlayerHealth.MaxSpecial)
                     {
                         //Debug.Log("player special attack ");
                         //doubleTap2Detected = false;
