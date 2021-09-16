@@ -45,6 +45,7 @@ public static class Constants
     public const string API_ADDRESS_DEV_publicApiHighScoresByPlatform = "http://13.58.224.237/api/highscores/platform/";
     public const string API_ADDRESS_DEV_publicApiToken = "http://13.58.224.237/api/token/";
     public const string API_ADDRESS_DEV_publicApplicationVersionCurrent = "http://13.58.224.237/api/application/version/current";
+    public const string API_ADDRESS_DEV_publicUserReport = "http://13.58.224.237/api/userreport";
 
     // localhost testing
     public const string API_ADDRESS_LOCALHOST_HighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";
