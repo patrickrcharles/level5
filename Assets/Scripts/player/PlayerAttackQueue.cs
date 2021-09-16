@@ -56,12 +56,12 @@ public class PlayerAttackQueue : MonoBehaviour
         // if fighting only game mode/ hardcore OFF
         if (GameOptions.EnemiesOnlyEnabled && !GameOptions.hardcoreModeEnabled)
         {
-            maxEnemiesQueued = 4;
+            maxEnemiesQueued = 2;
         }
         // if fighting only game mode/ hardcore ON
         else if (GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
         {
-            maxEnemiesQueued = 6;
+            maxEnemiesQueued = 4;
         }
         // if only hardcore ON
         else if (!GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
