@@ -44,6 +44,7 @@ public class PlayerHealthBar : MonoBehaviour
             characterNameText.text = GameLevelManager.instance.Player.GetComponent<CharacterProfile>().PlayerDisplayName;
             setHealthSliderValue();
             setBlockSliderValue();
+            setSpecialSliderValue();
         }
         else
         {
