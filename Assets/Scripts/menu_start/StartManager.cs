@@ -811,8 +811,7 @@ public class StartManager : MonoBehaviour
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
 
         // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
-        if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
+        if (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
             || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
         {
             // load player progression info
@@ -934,6 +933,7 @@ public class StartManager : MonoBehaviour
     // ============================  navigation functions ==============================
     public void changeSelectedPlayerUp()
     {
+
         // if default index (first in list), go to end of list
         if (playerSelectedIndex == 0)
         {
@@ -944,6 +944,15 @@ public class StartManager : MonoBehaviour
         {
             // if not first index, decrement
             playerSelectedIndex--;
+        }
+        // check for fighting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsFighter
+            && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || enemiesEnabled))
+        {
+            // increment index. run function again
+            playerSelectedIndex--;
+            changeSelectedPlayerUp();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         //Debug.Log("player selected : " + GameOptions.playerObjectName);
@@ -959,6 +968,14 @@ public class StartManager : MonoBehaviour
         {
             //if not first index, increment
             playerSelectedIndex++;
+        }
+        // check for fighting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsFighter
+            && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || enemiesEnabled))
+        {
+            playerSelectedIndex++;
+            changeSelectedPlayerDown();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
