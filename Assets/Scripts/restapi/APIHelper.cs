@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.restapi
 {
@@ -812,17 +813,12 @@ namespace Assets.Scripts.restapi
         }
         // -------------------------------------- HTTTP POST User report -------------------------------------------
 
-        // POST Token by User model to get token
-        // http://13.58.224.237/api/token
+        // POST user report
+        // http://13.58.224.237/api/userreports
         // return true if status code == 200 ok
         // return false if status code != 200 ok
-        public static IEnumerator PostReport(UserReportModel userReport)
+        public static IEnumerator PostReport(UserReportModel userReport, InputField inputField)
         {
-            // note * make this async. sending the request and hitting api should do
-            // this automatically.
-            // put something like if(!201 created, try again) limit to 10 tries
-            // check uniquescoreid not already inserted. hit that api first, then proceed
-            // wait for database operations
             if (DBHelper.instance != null)
             {
                 yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
@@ -839,18 +835,12 @@ namespace Assets.Scripts.restapi
                 userReport.UserName = "not logged in";
             }
             userReport.IpAddress = UtilityFunctions.GetExternalIpAdress();
-            //userReport.Date = DateTime.Now;
-
-            //Debug.Log("userReport.Date : " + userReport.Date.ToString());
-
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(userReport);
-            Debug.Log("toJson : " + toJson);
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
             try
             {
-                //string localhost = "https://localhost:44362/api/userreport";
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicUserReport) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
@@ -867,7 +857,6 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    //Debug.Log("result : " + result.ToString());
                     bearerToken = result;
                 }
             }
@@ -876,37 +865,26 @@ namespace Assets.Scripts.restapi
             {
                 httpResponse = (HttpWebResponse)e.Response;
                 Debug.Log("----------------- ERROR : " + e);
-                //unlock api + database
                 apiLocked = false;
-                //DBHelper.instance.DatabaseLocked = false;
             }
 
             statusCode = httpResponse.StatusCode;
 
             // if successful
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
                 Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
-                //DBHelper.instance.DatabaseLocked = false;
             }
             // failed
             else
             {
                 Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
-                //unlock api + database
                 apiLocked = false;
-                //DBHelper.instance.DatabaseLocked = false;
             }
+            inputField.text = "HTTP POST successful : " + (int)statusCode + " " + statusCode;
 
             yield return new WaitUntil(() => !apiLocked);
-            //yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-
-            ////Debug.Log(APIHelper.bearerToken);
-            //if (httpResponse.StatusCode == HttpStatusCode.OK)
-            //{
-            //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
-            //}
         }
 
         // -------------------------------------- HTTTP POST Token -------------------------------------------
