@@ -1215,17 +1215,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""abfaaee3-1729-41b9-8afe-9e715a369503"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""ec125c74-0ce0-482e-9097-8380cfe39ede"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",

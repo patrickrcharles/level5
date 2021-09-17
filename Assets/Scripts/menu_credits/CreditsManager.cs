@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using Assets.Scripts.restapi;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -13,6 +15,8 @@ public class CreditsManager : MonoBehaviour
     private Text versionText;
 
     private const string startButtonName = "press_start";
+    private const string inputFieldButtonName = "ReportInputField";
+    private const string submitReportButtonName = "submit_report";
 
     private const string webLinkMusic = "https://www.instagram.com/stustumaru/";
     private const string webLinkDevProgress = "https://www.instagram.com/patrickcharlez/";
@@ -20,6 +24,13 @@ public class CreditsManager : MonoBehaviour
     private const string webLinkGooglePLay = "https://play.google.com/store/apps/details?id=com.level5.level5";
     private const string webLinkItchIo = "https://skeleton-district.itch.io/level-5";
     private const string webLinkBugReportEmail = "mailto:levelfivegames@gmail.com?subject=BugReport";
+
+    [SerializeField]
+    private GameObject submitReportButtonObject;
+    [SerializeField]
+    string reportInput;
+    [SerializeField]
+    InputField reportInputField;
 
     public PlayerControls controls;
 
@@ -45,6 +56,7 @@ public class CreditsManager : MonoBehaviour
         controls = new PlayerControls();
         // find all button / text / etc and assign to variables
         //getUiObjectReferences();
+        reportInputField = GameObject.Find(inputFieldButtonName).GetComponent<InputField>();
     }
 
     // Update is called once per frame
@@ -60,13 +72,29 @@ public class CreditsManager : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
 
-        // ================================== footer buttons =====================================================================
+        // ================================== footer buttons =========================
         // start button | start game
         if ((controls.UINavigation.Submit.triggered
-             || controls.Player.shoot.triggered)
+            || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
             loadStartMenu();
+        }
+
+        // ================================== submit report ====================
+        // on submit/enter if (input field) highlight submit button
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(inputFieldButtonName)
+            && controls.UINavigation.Submit.triggered)
+        {
+            EventSystem.current.SetSelectedGameObject(submitReportButtonObject);
+        }
+        if ((controls.UINavigation.Submit.triggered
+            || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(submitReportButtonName))
+        {
+            UserReportModel userReportModel = new UserReportModel();
+            userReportModel.Report = reportInput;
+            StartCoroutine( APIHelper.PostReport(userReportModel));
         }
     }
 
@@ -87,6 +115,11 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(seconds);
         Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
         messageText.text = "";
+    }
+
+    public void readReportInput(string s)
+    {
+        reportInput = reportInputField.text;
     }
 
     public void OpenMusicSite()
