@@ -94,7 +94,7 @@ public class CreditsManager : MonoBehaviour
         {
             UserReportModel userReportModel = new UserReportModel();
             userReportModel.Report = reportInput;
-            StartCoroutine( APIHelper.PostReport(userReportModel));
+            StartCoroutine( APIHelper.PostReport(userReportModel, reportInputField));
         }
     }
 
