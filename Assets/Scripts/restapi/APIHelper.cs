@@ -388,7 +388,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
 
             //build api request
-            string apiRequest =  Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
+            string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
@@ -823,8 +823,10 @@ namespace Assets.Scripts.restapi
             // put something like if(!201 created, try again) limit to 10 tries
             // check uniquescoreid not already inserted. hit that api first, then proceed
             // wait for database operations
-            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-            yield return new WaitUntil(() => !APIHelper.ApiLocked);
+            if (DBHelper.instance != null)
+            {
+                yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            }
 
             if (!String.IsNullOrEmpty(GameOptions.userName))
             {
@@ -843,7 +845,7 @@ namespace Assets.Scripts.restapi
 
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(userReport);
-            //Debug.Log("toJson : " + toJson);
+            Debug.Log("toJson : " + toJson);
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
             try
@@ -876,7 +878,7 @@ namespace Assets.Scripts.restapi
                 Debug.Log("----------------- ERROR : " + e);
                 //unlock api + database
                 apiLocked = false;
-                DBHelper.instance.DatabaseLocked = false;
+                //DBHelper.instance.DatabaseLocked = false;
             }
 
             statusCode = httpResponse.StatusCode;
@@ -886,7 +888,7 @@ namespace Assets.Scripts.restapi
             {
                 Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
-                DBHelper.instance.DatabaseLocked = false;
+                //DBHelper.instance.DatabaseLocked = false;
             }
             // failed
             else
@@ -894,11 +896,11 @@ namespace Assets.Scripts.restapi
                 Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
                 //unlock api + database
                 apiLocked = false;
-                DBHelper.instance.DatabaseLocked = false;
+                //DBHelper.instance.DatabaseLocked = false;
             }
 
             yield return new WaitUntil(() => !apiLocked);
-            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            //yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
 
             ////Debug.Log(APIHelper.bearerToken);
             //if (httpResponse.StatusCode == HttpStatusCode.OK)
