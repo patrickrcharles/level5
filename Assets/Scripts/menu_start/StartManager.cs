@@ -812,7 +812,7 @@ public class StartManager : MonoBehaviour
 
         // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
         if (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
+            || !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
         {
             // load player progression info
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
