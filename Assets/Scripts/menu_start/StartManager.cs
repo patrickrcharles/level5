@@ -137,7 +137,6 @@ public class StartManager : MonoBehaviour
     private bool enemiesEnabled;
     [SerializeField]
     private bool sniperEnabled;
-
     private int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
@@ -950,12 +949,10 @@ public class StartManager : MonoBehaviour
             && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
             || enemiesEnabled))
         {
-            // increment index. run function again
-            playerSelectedIndex--;
+            //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerUp();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerObjectName);
     }
     public void changeSelectedPlayerDown()
     {
@@ -974,7 +971,7 @@ public class StartManager : MonoBehaviour
             && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
             || enemiesEnabled))
         {
-            playerSelectedIndex++;
+            //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerDown();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
