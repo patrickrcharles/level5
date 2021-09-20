@@ -819,6 +819,8 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static IEnumerator PostReport(UserReportModel userReport, InputField inputField)
         {
+            Debug.Log("PostReport");
+            apiLocked = true;
             if (DBHelper.instance != null)
             {
                 yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
@@ -865,6 +867,7 @@ namespace Assets.Scripts.restapi
             {
                 httpResponse = (HttpWebResponse)e.Response;
                 Debug.Log("----------------- ERROR : " + e);
+                inputField.text = "ERROR : " + e;
                 apiLocked = false;
             }
 
@@ -874,16 +877,16 @@ namespace Assets.Scripts.restapi
             if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
                 Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                inputField.text = "HTTP POST successful : " + (int)statusCode + " " + statusCode;
                 apiLocked = false;
             }
             // failed
             else
             {
                 Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                inputField.text = "HTTP POST failed : " + (int)statusCode + " " + statusCode;
                 apiLocked = false;
             }
-            inputField.text = "HTTP POST successful : " + (int)statusCode + " " + statusCode;
-
             yield return new WaitUntil(() => !apiLocked);
         }
 
@@ -977,6 +980,7 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static string GetLatestBuildVersion()
         {
+            apiLocked = true;
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
