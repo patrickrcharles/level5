@@ -26,22 +26,32 @@ public class EnemyCollisions : MonoBehaviour
             && enemyHealth != null
             && enemyHealthBar != null)
         {
-            PlayerAttackBox playerAttackBox = other.GetComponent<PlayerAttackBox>();
-            EnemyAttackBox enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+            PlayerAttackBox playerAttackBox = null;
+            EnemyAttackBox enemyAttackBox = null; ;
+
+            if (other.CompareTag("playerAttackBox"))
+            {
+                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+            }
+            if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
+            {
+                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+            }
+
+            bool isRake = false;
 
             if (playerAttackBox != null
                 && !enemyController.stateKnockDown)
             {
-                
                 enemyHealth.Health -= playerAttackBox.attackDamage;
-                //Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
             if (enemyAttackBox != null
                 && enemyHealth != null
                 && !enemyController.stateKnockDown)
             {
-                enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
-                //Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
+                isRake = enemyAttackBox.isRake;
+                //enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
+                enemyHealth.Health -= enemyAttackBox.attackDamage;
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
@@ -78,8 +88,11 @@ public class EnemyCollisions : MonoBehaviour
                 }
                 else
                 {
-                    enemyTakeDamage();
-                    if (other.transform.parent.name.Contains("rake"))
+                    if (!isRake)
+                    {
+                        enemyTakeDamage();
+                    }
+                    if (isRake)
                     {
                         enemyStepOnRake(other);
                     }
@@ -113,7 +126,6 @@ public class EnemyCollisions : MonoBehaviour
                         BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
                     }
                 }
-
                 StartCoroutine(enemyController.killEnemy());
             }
         }
@@ -126,7 +138,6 @@ public class EnemyCollisions : MonoBehaviour
 
     void enemyTakeDamage()
     {
-        //Debug.Log("enemyTakeDamage()");
         StartCoroutine(enemyController.takeDamage());
     }
 
