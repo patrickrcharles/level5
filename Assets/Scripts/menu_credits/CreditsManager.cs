@@ -90,11 +90,10 @@ public class CreditsManager : MonoBehaviour
         }
         if ((controls.UINavigation.Submit.triggered
             || controls.Player.shoot.triggered)
-            && currentHighlightedButton.Equals(submitReportButtonName))
+            && currentHighlightedButton.Equals(submitReportButtonName)
+            && !APIHelper.ApiLocked)
         {
-            UserReportModel userReportModel = new UserReportModel();
-            userReportModel.Report = reportInput;
-            StartCoroutine( APIHelper.PostReport(userReportModel, reportInputField));
+            SubmitReport();
         }
     }
 
@@ -145,5 +144,11 @@ public class CreditsManager : MonoBehaviour
     public void OpenBugReportEmail()
     {
         Application.OpenURL(webLinkBugReportEmail);
+    }
+    public void SubmitReport()
+    {
+        UserReportModel userReportModel = new UserReportModel();
+        userReportModel.Report = reportInput;
+        StartCoroutine(APIHelper.PostReport(userReportModel, reportInputField));
     }
 }
