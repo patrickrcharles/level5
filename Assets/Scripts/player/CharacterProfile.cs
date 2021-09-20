@@ -54,7 +54,7 @@ public class CharacterProfile : MonoBehaviour
             //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
-        if (GameOptions.arcadeModeEnabled)
+        if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected ==0 )
         {
             //Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
             Accuracy2Pt = 100;
