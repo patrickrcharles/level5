@@ -32,9 +32,6 @@ public class PlayerCollisions : MonoBehaviour
         {
             GameLevelManager.instance.Player.transform.position 
                 = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
-                //= new Vector3(GameLevelManager.instance.PlayerSpawnLocation.transform.position.x,
-                //GameLevelManager.instance.PlayerSpawnLocation.transform.position.y+ 5,
-                //GameLevelManager.instance.PlayerSpawnLocation.transform.position.z);
         }
 
         if (gameObject.CompareTag("playerHitbox")
@@ -59,7 +56,7 @@ public class PlayerCollisions : MonoBehaviour
         && !playerState.TakeDamage
         && (GameOptions.enemiesEnabled
         || GameOptions.trafficEnabled
-        || other.transform.parent.name.Contains("rake")
+        || GameOptions.obstaclesEnabled
         || other.transform.root.name.Contains("snake")
         || GameOptions.sniperEnabled)
         // roll for evade attack chance
@@ -73,26 +70,27 @@ public class PlayerCollisions : MonoBehaviour
             int damage = 0;
             bool isKnockdown = false;
             bool isRake = false;
-
-            if (other.GetComponent<EnemyAttackBox>() != null)
-            {
-                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-                damage = enemyAttackBox.attackDamage;
-                isKnockdown = enemyAttackBox.knockDownAttack;
-                if (enemyAttackBox.transform.parent.name.Contains("rake"))
-                {
-                    isRake = true;
-                }
-            }
-            if (other.GetComponent<PlayerAttackBox>() != null)
+            // get attack box player/enemy
+            if (other.CompareTag("playerAttackBox"))
             {
                 playerAttackBox = other.GetComponent<PlayerAttackBox>();
+            }
+            if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
+            {
+                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+            }
+            // check if player attack
+            if (enemyAttackBox != null)
+            {
+                isRake = enemyAttackBox.isRake;
+                damage = enemyAttackBox.attackDamage;
+                isKnockdown = enemyAttackBox.knockDownAttack;
+            }
+            //check if enemy attack
+            if (playerAttackBox != null)
+            {
                 damage = playerAttackBox.attackDamage;
                 isKnockdown = playerAttackBox.knockDownAttack;
-                if (playerAttackBox.transform.parent.name.Contains("rake"))
-                {
-                    isRake = true;
-                }
             }
 
             // player is not blocking
@@ -119,6 +117,7 @@ public class PlayerCollisions : MonoBehaviour
                     // if stepped on rake
                     if (isRake)
                     {
+                        Debug.Log("stepped on rake");
                         playerStepOnRake(other);
                     }
                 }
@@ -144,7 +143,10 @@ public class PlayerCollisions : MonoBehaviour
         float percent = random.Next(1, 100);
         if (percent <= maxPercent)
         {
-            StartCoroutine(PlayerHealthBar.instance.DisplayCustomMessageOnDamageDisplay("dodged"));
+            if (PlayerHealthBar.instance != null)
+            {
+                StartCoroutine(PlayerHealthBar.instance.DisplayCustomMessageOnDamageDisplay("dodged"));
+            }
             return true;
         }
 
