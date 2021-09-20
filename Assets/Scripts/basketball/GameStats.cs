@@ -117,6 +117,10 @@ public class GameStats : MonoBehaviour
         {
             ExperienceGained = 0;
         }
+        if(GameOptions.difficultySelected == 0)
+        {
+            ExperienceGained = ExperienceGained /2;
+        }
         return ExperienceGained;
     }
 
