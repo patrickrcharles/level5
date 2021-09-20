@@ -226,34 +226,34 @@ public class OptionsManager : MonoBehaviour
     public void changeResolution()
     {
 
-        //if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
-        //{
-        //    resolutionSelectedIndex++;
-        //}
-        //else
-        //{
-        //    resolutionSelectedIndex--;
-        //}
-        ////Debug.Log("resolutionSelectedIndex : " + resolutionSelectedIndex);
-        ////Debug.Log("resolutions.Length : " + resolutions.Length);
+        if (optionType == ChangeOptionType.NEXT || optionType == ChangeOptionType.NONE)
+        {
+            resolutionSelectedIndex++;
+        }
+        else
+        {
+            resolutionSelectedIndex--;
+        }
+        //Debug.Log("resolutionSelectedIndex : " + resolutionSelectedIndex);
+        //Debug.Log("resolutions.Length : " + resolutions.Length);
 
-        //if (resolutionSelectedIndex >= resolutions.Length)
-        //{
-        //    resolutionSelectedIndex = 0;
-        //    GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
-        //        resolutions[resolutionSelectedIndex].ToString();
-        //}
-        //else
-        //{
-        //    GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
-        //        resolutions[resolutionSelectedIndex].ToString();
-        //}
+        if (resolutionSelectedIndex >= resolutions.Length)
+        {
+            resolutionSelectedIndex = 0;
+            GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
+                resolutions[resolutionSelectedIndex].ToString();
+        }
+        else
+        {
+            GameObject.Find(resolutionSelectOptionButtonName).GetComponent<Text>().text =
+                resolutions[resolutionSelectedIndex].ToString();
+        }
 
-        //// apply changes
-        //int width = resolutions[resolutionSelectedIndex].width;
-        //int height = resolutions[resolutionSelectedIndex].height;
-        //Screen.SetResolution(height, width, true);
-        //PlayerPrefs.Save();
+        // apply changes
+        int width = resolutions[resolutionSelectedIndex].width;
+        int height = resolutions[resolutionSelectedIndex].height;
+        Screen.SetResolution(height, width, true);
+        PlayerPrefs.Save();
     }
 
     public void changeScreenDpi()
