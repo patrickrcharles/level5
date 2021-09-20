@@ -62,7 +62,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled)
+        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled
+            || GameOptions.obstaclesEnabled)
         {
             if (health <= 0 && !IsDead)
             {
