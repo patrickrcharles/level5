@@ -68,6 +68,8 @@ public static class GameOptions
     static public bool sniperEnabledBulletAuto = false;
     static public bool sniperEnabledLaser = false;
 
+    static public int difficultySelected = 1;
+
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
 
@@ -89,4 +91,5 @@ public static class GameOptions
     static public int numOfLocalUsers;
 
     static public bool tipDialogueLoadedOnStart;
+    static public bool obstaclesEnabled;
 }
