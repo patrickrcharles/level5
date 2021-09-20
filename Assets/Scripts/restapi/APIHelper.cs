@@ -830,12 +830,17 @@ namespace Assets.Scripts.restapi
             {
                 userReport.UserId = GameOptions.userid;
                 userReport.UserName = GameOptions.userName;
+   
             }
             else
             {
                 userReport.UserId = 999;
                 userReport.UserName = "not logged in";
             }
+            userReport.Os = SystemInfo.operatingSystem;
+            userReport.Device = SystemInfo.deviceModel;
+            userReport.DeviceName = SystemInfo.deviceModel;
+            userReport.Version = Application.version;
             userReport.IpAddress = UtilityFunctions.GetExternalIpAdress();
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(userReport);

@@ -13,6 +13,10 @@ namespace Assets.Scripts.Models
         public string UserName ;
         public string Report ;
         public string IpAddress ;
+        public string Os;
+        public string Device;
+        public string DeviceName;
+        public string Version;
         public DateTime Date ;
     }
 }
