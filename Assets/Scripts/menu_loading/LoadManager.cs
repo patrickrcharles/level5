@@ -30,36 +30,25 @@ public class LoadManager : MonoBehaviour
     private List<StartScreenModeSelected> modeSelectedData;
     public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
 
-    private int playerSelectedIndex;
-    private int levelSelectedIndex;
-    private int modeSelectedIndex;
-    private int cheerleaderSelectedIndex;
 
     bool CharacterProfileTableExists = false;
     bool CharacterProfileTableCreated = false;
-
-    public static LoadManager instance;
 
     [SerializeField] internal bool playerDataLoaded = false;
     [SerializeField] internal bool cheerleaderDataLoaded = false;
     [SerializeField] internal bool levelDataLoaded = false;
     [SerializeField] internal bool modeDataLoaded = false;
 
-    //const string startSceneName = "level_00_start";
-
-    //bool isLocked = false;
-
     private bool CheerleaderProfileTableExists;
     private bool CheerleaderProfileTableCreated;
+
+    public static LoadManager instance;
 
     void Awake()
     {
         instance = this;
 
         LoadAllData();
-        //StartCoroutine(verifyCharacterProfileTable());
-        //StartCoroutine(verifyCheerleaderProfileTable());
-        //StartCoroutine(LoadGameData());
     }
 
     private void Update()
@@ -70,13 +59,11 @@ public class LoadManager : MonoBehaviour
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                //Debug.Log("String.IsNullOrEmpty("+GameOptions.previousSceneName+")");
                 SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
-                //Debug.Log("SceneManager.LoadScene(GameOptions.previousSceneName)");
                 SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
