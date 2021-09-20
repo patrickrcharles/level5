@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Ping = System.Net.NetworkInformation.Ping;
 
 public class UserAccountManager : MonoBehaviour
 {
@@ -52,11 +51,11 @@ public class UserAccountManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        controls = new PlayerControls();
         if (!SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_00_loading))
         {
             StartCoroutine(loadUserData());
         }
-        controls = new PlayerControls();
     }
 
     public void LoginButton()
@@ -144,7 +143,6 @@ public class UserAccountManager : MonoBehaviour
                     {
                         messageText.text = "select user to log in";
                     }
-                    DBHelper.instance.DatabaseLocked = false;
                 }
             }
             else
@@ -154,8 +152,8 @@ public class UserAccountManager : MonoBehaviour
                 {
                     messageText.text = "no users found";
                 }
-                DBHelper.instance.DatabaseLocked = false;
             }
+            DBHelper.instance.DatabaseLocked = false;
             StartCoroutine(CreateUserButtons());
         }
         catch (Exception e)
@@ -166,7 +164,7 @@ public class UserAccountManager : MonoBehaviour
             messageText.text = e.ToString();
             StartCoroutine(CreateUserButtons());
         }
-        //StartCoroutine(CreateUserButtons());
+        DBHelper.instance.DatabaseLocked = false;
     }
     IEnumerator CreateUserButtons()
     {
