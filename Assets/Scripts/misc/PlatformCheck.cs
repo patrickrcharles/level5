@@ -22,7 +22,7 @@ public class PlatformCheck : MonoBehaviour
         }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        
+
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
 
@@ -30,27 +30,27 @@ public class PlatformCheck : MonoBehaviour
         inputSystemUIInputModule.enabled = false;
         standaloneInputModule.enabled = true;
         //standaloneInputModule.ActivateModule(); 
-        //Debug.Log("android");
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
-        //#if UNITY_STANDALONE
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = -1;
+
         //standaloneInputModule.DeactivateModule();
-        standaloneInputModule.enabled = false;
-        inputSystemUIInputModule.enabled = true;
+        // if win/osx but has touch support
+        if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            inputSystemUIInputModule.enabled = false;
+            standaloneInputModule.enabled = true;
+        }
+        // no touch support
+        if (!Input.touchSupported || SystemInfo.deviceType != DeviceType.Handheld)
+        {
+            standaloneInputModule.enabled = false;
+            inputSystemUIInputModule.enabled = true;
+        }
         //inputSystemUIInputModule.ActivateModule();
         //Debug.Log("standalone");
 #endif
-        //////QualitySettings.vSyncCount = 1;
-        ////QualitySettings.vSyncCount = 1;
-        ////Application.targetFrameRate = 60;
-
-        //////inputSystemUIInputModule.DeactivateModule();
-        //inputSystemUIInputModule.enabled = false;
-        //standaloneInputModule.enabled = true;
-        ////standaloneInputModule.ActivateModule(); 
-        //Debug.Log("android");
     }
 }
