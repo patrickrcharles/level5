@@ -148,6 +148,18 @@ namespace Assets.Scripts.Utility
                 return 0;
             }
         }
+
+        public static bool rollForCriticalInt(int max)
+        {
+            int percent = Random.Range(0, 100);
+            //float percent = randNum.Next(1, 100);
+            if (percent <= max)
+            {
+                //Debug.Log("roll for critical : " + percent + "  max chance : " + max);
+                return true;
+            }
+            return false;
+        }
     }
 }
 
