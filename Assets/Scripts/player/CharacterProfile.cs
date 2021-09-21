@@ -42,7 +42,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private int pointsAvailable;
     [SerializeField] private int pointsUsed;
     [SerializeField] private decimal money;
-    [SerializeField] private bool isLocked;
+    [SerializeField] private bool isFighter;
     [SerializeField] private string unlockCharacterText;
 
 
@@ -54,7 +54,7 @@ public class CharacterProfile : MonoBehaviour
             //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
-        if (GameOptions.arcadeModeEnabled)
+        if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected ==0 )
         {
             //Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
             Accuracy2Pt = 100;
@@ -238,10 +238,11 @@ public class CharacterProfile : MonoBehaviour
         set => shootAngle = value;
     }
     public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
-    public bool IsLocked { get => isLocked; set => isLocked = value; }
     public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
     public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
     public int PointsUsed { get => pointsUsed; set => pointsUsed = value; }
     public int Range { get => range; set => range = value; }
     public int Release { get => release; set => release = value; }
+    public bool IsFighter { get => isFighter; set => isFighter = value; }
+    public bool IsLocked { get; internal set; }
 }

@@ -27,7 +27,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
 
-    private Text playerSelectUnlockText;
+    //private Text playerSelectUnlockText;
 
     [SerializeField]
     private Text cheerleaderSelectUnlockText;
@@ -38,6 +38,8 @@ public class StartManager : MonoBehaviour
     Button hardcoreSelectButton;
     Button enemySelectButton;
     Button sniperSelectButton;
+    Button difficultySelectButton;
+    Button obstacleSelectButton;
     Button playerSelectButton;
     Button CheerleaderSelectButton;
     Button modeSelectButton;
@@ -64,10 +66,20 @@ public class StartManager : MonoBehaviour
     private Text ModeSelectOptionDescriptionText;
 
     //selectable option text
+    [SerializeField]
     private Text trafficSelectOptionText;
+    [SerializeField]
     private Text hardcoreSelectOptionText;
+    [SerializeField]
     private Text enemySelectOptionText;
+    [SerializeField]
     private Text sniperSelectOptionText;
+    [SerializeField]
+    private Text difficultySelectOptionText;
+    [SerializeField]
+    private Text difficultySelectOptionDescriptionText;
+    [SerializeField]
+    private Text obstacleSelectOptionText;
 
     //version text
     private Text versionText;
@@ -90,8 +102,8 @@ public class StartManager : MonoBehaviour
     private const string playerSelectOptionButtonName = "player_selected_name";
     private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
     private const string playerSelectImageObjectName = "player_selected_image";
-    private const string playerSelectUnlockObjectName = "player_selected_unlock";
-    private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
+    //private const string playerSelectUnlockObjectName = "player_selected_unlock";
+    //private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
     private const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
     private const string playerProgressionName = "player_progression";
@@ -107,7 +119,6 @@ public class StartManager : MonoBehaviour
     //level objects
     private const string levelSelectButtonName = "level_select";
     private const string levelSelectOptionButtonName = "level_selected_name";
-    //private const string levelSelectImageObjectName = "level_selected_image"; // no other refences in solution
 
     //mode objects
     private const string modeSelectButtonName = "mode_select";
@@ -129,6 +140,13 @@ public class StartManager : MonoBehaviour
     //sniper
     private const string sniperSelectButtonName = "sniper_select";
     private const string sniperSelectOptionName = "sniper_select_option";
+    //difficulty
+    private const string difficultySelectButtonName = "difficulty_select";
+    private const string difficultySelectOptionName = "difficulty_select_option";
+    private const string difficultySelectDescriptionName = "difficulty_selected_description";
+    //obstacle
+    private const string obstacleSelectButtonName = "obstacle_select";
+    private const string obstacleSelectOptionName = "obstacle_select_option";
 
     [SerializeField]
     private bool trafficEnabled;
@@ -137,18 +155,15 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private bool enemiesEnabled;
     [SerializeField]
+    private bool obstaclesEnabled;
+    [SerializeField]
+    private int difficultySelected;
+    [SerializeField]
     private bool sniperEnabled;
-
     private int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int cheerleaderSelectedIndex;
-
-    [SerializeField]
-    GameObject playerSelectedIsLockedObject;
-
-    [SerializeField]
-    GameObject cheerleaderSelectedIsLockedObject;
 
     [SerializeField]
     public PlayerControls controls;
@@ -176,7 +191,6 @@ public class StartManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-
         StartCoroutine(getLoadedData());
 
         controls = new PlayerControls();
@@ -190,6 +204,8 @@ public class StartManager : MonoBehaviour
         modeSelectedIndex = GameOptions.modeSelectedIndex;
         trafficEnabled = GameOptions.enemiesEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
+        difficultySelected = GameOptions.difficultySelected;
+        obstaclesEnabled = GameOptions.obstaclesEnabled;
 
         // update experience and levels
         // recommended here because experience will be gained after every game played
@@ -207,8 +223,6 @@ public class StartManager : MonoBehaviour
     void Start()
     {
         AnaylticsManager.MenuStartLoaded();
-        //StartCoroutine(InitializeDisplay());
-        //Debug.Log("startscreen : username : " + GameOptions.userName);
     }
 
 
@@ -323,6 +337,8 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
             && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(difficultySelectOptionName)
+            && !currentHighlightedButton.Equals(obstacleSelectOptionName)
             && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
@@ -339,7 +355,9 @@ public class StartManager : MonoBehaviour
             && !currentHighlightedButton.Equals(cheerleaderSelectOptionButtonName)
             && !currentHighlightedButton.Equals(trafficSelectOptionName)
             && !currentHighlightedButton.Equals(hardcoreSelectOptionName)
+            && !currentHighlightedButton.Equals(difficultySelectOptionName)
             && !currentHighlightedButton.Equals(enemySelectOptionName)
+            && !currentHighlightedButton.Equals(obstacleSelectOptionName)
             && !currentHighlightedButton.Equals(SniperSelectOptionName))
         {
             buttonPressed = true;
@@ -416,6 +434,16 @@ public class StartManager : MonoBehaviour
                     changeSelectedSniperOption();
                     initializeSniperOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(difficultySelectOptionName))
+                {
+                    changeSelectedDifficultyOption();
+                    initializeDifficultyOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(ObstacleSelectOptionName))
+                {
+                    changeSelectedObstacleOption();
+                    initializeObstacleOptionDisplay();
+                }
             }
             catch
             {
@@ -470,6 +498,16 @@ public class StartManager : MonoBehaviour
                     changeSelectedSniperOption();
                     initializeSniperOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(difficultySelectOptionName))
+                {
+                    changeSelectedDifficultyOption();
+                    initializeDifficultyOptionDisplay();
+                }
+                if (currentHighlightedButton.Equals(ObstacleSelectOptionName))
+                {
+                    changeSelectedObstacleOption();
+                    initializeObstacleOptionDisplay();
+                }
             }
             catch
             {
@@ -483,7 +521,6 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => dataLoaded);
 
-        //Debug.Log("updateLevelAndExperienceFromDatabase");
         foreach (CharacterProfile s in playerSelectedData)
         {
             s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
@@ -493,7 +530,6 @@ public class StartManager : MonoBehaviour
 
     IEnumerator getLoadedData()
     {
-
         if (LoadedData.instance != null)
         {
             yield return new WaitUntil(() => LoadedData.instance.PlayerSelectedData != null);
@@ -526,16 +562,6 @@ public class StartManager : MonoBehaviour
     IEnumerator InitializeDisplay()
     {
         yield return new WaitUntil(() => dataLoaded);
-        versionText.text = "current version: " + Application.version;
-        if (UtilityFunctions.IsConnectedToInternet())
-        {
-            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        }
-        else
-        {
-            latestVersionText.text = "latest version: no internet";
-        }
-
         //yield return new WaitForSeconds(0.05f);
         // display default data
         initializeCheerleaderDisplay();
@@ -545,19 +571,29 @@ public class StartManager : MonoBehaviour
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
         initializeSniperOptionDisplay();
+        initializeDifficultyOptionDisplay();
+        initializeObstacleOptionDisplay();
         setInitialGameOptions();
-        //yield return new WaitForSeconds(0.05f);
 
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
-            //Debug.Log("link");
         }
         if (APIHelper.BearerToken == null || string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
-            //Debug.Log("link");
         }
+        versionText.text = "current version: " + Application.version;
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        //if (UtilityFunctions.IsConnectedToInternet())
+        //{
+        //    latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        //}
+        //else
+        //{
+        //    latestVersionText.text = "latest version: no internet";
+        //}
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
@@ -568,32 +604,32 @@ public class StartManager : MonoBehaviour
         hardcoreSelectButton = GameObject.Find(hardcoreSelectButtonName).GetComponent<Button>();
         enemySelectButton = GameObject.Find(enemySelectButtonName).GetComponent<Button>();
         sniperSelectButton = GameObject.Find(sniperSelectButtonName).GetComponent<Button>();
-        playerSelectButton = GameObject.Find(playerSelectButtonName).GetComponent<Button>();
+        difficultySelectButton = GameObject.Find(difficultySelectButtonName).GetComponent<Button>();
+        obstacleSelectButton = GameObject.Find(sniperSelectButtonName).GetComponent<Button>();
+        playerSelectButton = GameObject.Find(obstacleSelectButtonName).GetComponent<Button>();
         CheerleaderSelectButton = GameObject.Find(cheerleaderSelectButtonName).GetComponent<Button>();
         modeSelectButton = GameObject.Find(modeSelectButtonName).GetComponent<Button>();
 
         // player object with lock texture and unlock text
-        playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
         playerSelectOptionText = GameObject.Find(playerSelectOptionButtonName).GetComponent<Text>();
         playerSelectOptionStatsText = GameObject.Find(playerSelectStatsObjectName).GetComponent<Text>();
         playerSelectOptionImage = GameObject.Find(playerSelectImageObjectName).GetComponent<Image>();
-        playerSelectUnlockText = GameObject.Find(playerSelectUnlockObjectName).GetComponent<Text>();
         playerSelectCategoryStatsText = GameObject.Find(playerSelectStatsCategoryName).GetComponent<Text>();
         playerProgressionStatsText = GameObject.Find(playerProgressionStatsName).GetComponent<Text>();
         playerProgressionCategoryText = GameObject.Find(playerProgressionName).GetComponent<Text>();
         playerProgressionUpdatePointsText = GameObject.Find(updatePointsAvailable).GetComponent<Text>();
 
         // friend object with lock texture and unlock text
-        cheerleaderSelectedIsLockedObject = GameObject.Find(cheerleaderSelectIsLockedObjectName);
         cheerleaderSelectOptionText = GameObject.Find(cheerleaderSelectOptionButtonName).GetComponent<Text>();
         cheerleaderSelectOptionImage = GameObject.Find(cheerleaderSelectImageObjectName).GetComponent<Image>();
-        cheerleaderSelectUnlockText = GameObject.Find(cheerleaderSelectUnlockObjectName).GetComponent<Text>();
 
         // options selection text
         trafficSelectOptionText = GameObject.Find(trafficSelectOptionName).GetComponent<Text>();
         hardcoreSelectOptionText = GameObject.Find(hardcoreSelectOptionName).GetComponent<Text>();
         enemySelectOptionText = GameObject.Find(enemySelectOptionName).GetComponent<Text>();
         sniperSelectOptionText = GameObject.Find(SniperSelectOptionName).GetComponent<Text>();
+        difficultySelectOptionText = GameObject.Find(difficultySelectOptionName).GetComponent<Text>();
+        obstacleSelectOptionText = GameObject.Find(obstacleSelectOptionName).GetComponent<Text>();
 
         //version
         versionText = GameObject.Find("version").GetComponent<Text>();
@@ -618,7 +654,6 @@ public class StartManager : MonoBehaviour
 
         Random random = new Random();
         int randNum = random.Next(1, 3);
-        //Debug.Log("*************************************** rand num value : " + randNum);
 
         if (randNum == 1)
         {
@@ -669,7 +704,35 @@ public class StartManager : MonoBehaviour
         sniperEnabled = !sniperEnabled;
     }
 
+    public void changeSelectedObstacleOption()
+    {
+        obstaclesEnabled = !obstaclesEnabled;
+    }
+
+    public void changeSelectedDifficultyOption()
+    {
+        //Debug.Log("change difficulty");
+        if(difficultySelected == 0)
+        {
+            difficultySelected = 1;
+        }
+        else
+        {
+            difficultySelected = 0;
+        }
+        //if (difficultySelected == 1)
+        //{
+        //    difficultySelected = 0;
+        //}
+        //Debug.Log("difficulty : "+ difficultySelected);
+        //if (difficultySelected == 2)
+        //{
+        //    difficultySelected = 0;
+        //}
+    }
+
     // ============================  Initialize displays ==============================
+
     public void initializeTrafficOptionDisplay()
     {
         if (trafficEnabled)
@@ -718,6 +781,37 @@ public class StartManager : MonoBehaviour
         }
     }
 
+    public void initializeDifficultyOptionDisplay()
+    {
+        difficultySelectOptionDescriptionText = GameObject.Find(difficultySelectDescriptionName).GetComponent<Text>();
+        if (difficultySelected == 0)
+        {
+            difficultySelectOptionText.text = "easy";
+            difficultySelectOptionDescriptionText.text = "max stats | half the experience";
+        }
+        if (difficultySelected == 1)
+        {
+            difficultySelectOptionText.text = "normal";
+            difficultySelectOptionDescriptionText.text = "basic stats | full experience";
+        }
+        //if (difficultySelected == 2)
+        //{
+        //    difficultySelectOptionText.text = "hard";
+        //}
+    }
+
+    public void initializeObstacleOptionDisplay()
+    {
+        if (obstaclesEnabled)
+        {
+            obstacleSelectOptionText.text = "ON";
+        }
+        if (!obstaclesEnabled)
+        {
+            obstacleSelectOptionText.text = "OFF";
+        }
+    }
+
     public void initializeLevelDisplay()
     {
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
@@ -732,13 +826,10 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectOptionImage.enabled = true;
             playerSelectOptionImage.enabled = false;
             playerSelectOptionStatsText.enabled = false;
-            playerSelectedIsLockedObject.SetActive(false);
             playerSelectCategoryStatsText.enabled = false;
 
             playerProgressionCategoryText.enabled = false;
             playerProgressionStatsText.enabled = false;
-
-            playerSelectedIsLockedObject.SetActive(false);
 
             cheerleaderSelectOptionText.text = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderDisplayName;
             cheerleaderSelectOptionImage.sprite = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderPortrait;
@@ -764,39 +855,22 @@ public class StartManager : MonoBehaviour
         ModeSelectOptionDescriptionText.text = modeSelectedData[modeSelectedIndex].ModeDescription;
     }
 
+
     public void initializePlayerDisplay()
     {
         try
         {
             cheerleaderSelectOptionImage.enabled = false;
-            cheerleaderSelectedIsLockedObject.SetActive(false);
 
             playerSelectOptionImage.enabled = true;
             playerSelectOptionStatsText.enabled = true;
-            playerSelectedIsLockedObject.SetActive(true);
             playerSelectCategoryStatsText.enabled = true;
 
             playerProgressionCategoryText.enabled = true;
             playerProgressionStatsText.enabled = true;
 
-            // if player is locked or free play mode selected
-            if (!playerSelectedData[playerSelectedIndex].IsLocked
-                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-                || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-            {
-                //playerSelectedIsLockedObject = GameObject.Find(playerSelectIsLockedObjectName);
-                playerSelectedIsLockedObject.SetActive(false);
-                playerSelectUnlockText.text = "";
-            }
-
-
-            //Debug.Log("***************************************** 3");
-
             playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
             playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
-
-
-            //Debug.Log("***************************************** 4");
 
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
@@ -808,36 +882,18 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
 
-
-            //Debug.Log("***************************************** 5");
-
-            /*
-             * FAILS HERE
-             */
-
             playerSelectedData[playerSelectedIndex].Level =
                 (playerSelectedData[playerSelectedIndex].Experience / 3000);
             int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
-
-
-            //Debug.Log("***************************************** 6");
-            //Debug.Log("experience : " + playerSelectedData[playerSelectedIndex].Experience);
-            //Debug.Log("points available : " + playerSelectedData[playerSelectedIndex].PointsAvailable);
-            //Debug.Log("level : " + playerSelectedData[playerSelectedIndex].Level);
-            //Debug.Log("next level : " + nextlvl);
 
             playerProgressionStatsText.text = playerSelectedData[playerSelectedIndex].Level.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Experience.ToString("F0") + "\n"
                 + nextlvl.ToString("F0") + "\n";
 
-            //Debug.Log("====================================playerProgressionUpdatePointsText.text : " + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString());
-
-
-            //Debug.Log("***************************************** 7");
             // player points avaiable for upgrade
             if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
             {
-                playerProgressionUpdatePointsText.text = "+ " + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
+                playerProgressionUpdatePointsText.text = "+" + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
             }
             else
             {
@@ -866,35 +922,18 @@ public class StartManager : MonoBehaviour
 
         // i create the string this way so that i can have a description of the level so i know what im opening
         string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
-        //Debug.Log("load game");
-        //Debug.Log("scene name : " + sceneName);
-        //Debug.Log("playerSelectedData[playerSelectedIndex].IsLocked : " + playerSelectedData[playerSelectedIndex].IsLocked);
-        //Debug.Log("cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked : " + cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked);
-
-        //// check if Player selected is locked
-        //if ((playerSelectedData[playerSelectedIndex].IsLocked || cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-        //    && !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-        //    && !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
-        //{
-        //    Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        //    messageText.text = " Bruh, it's locked. pick something else";
-        //    // turn off text display after 5 seconds
-        //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
-        //}
 
         // if player not locked, cheerleader not locked, mode contains 'free', mode not aracde mode
-        if ((!playerSelectedData[playerSelectedIndex].IsLocked && !cheerleaderSelectedData[cheerleaderSelectedIndex].IsLocked)
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
-            || modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
+        if (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
+            || !modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("arcade"))
         {
             // load player progression info
             PlayerData.instance.CurrentExperience = playerSelectedData[playerSelectedIndex].Experience;
             PlayerData.instance.CurrentLevel = playerSelectedData[playerSelectedIndex].Level;
             PlayerData.instance.UpdatePointsAvailable = playerSelectedData[playerSelectedIndex].PointsAvailable;
             PlayerData.instance.UpdatePointsUsed = playerSelectedData[playerSelectedIndex].PointsUsed;
-
-            SceneManager.LoadScene(sceneName);
         }
+        SceneManager.LoadScene(sceneName);
     }
 
     public void loadMenu(string sceneName)
@@ -908,8 +947,6 @@ public class StartManager : MonoBehaviour
     // this is necessary for setting Game Rules on game manager
     private void setGameOptions()
     {
-        //Debug.Log("setGameOptions()");
-
         GameOptions.characterId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.characterDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
 
@@ -945,7 +982,6 @@ public class StartManager : MonoBehaviour
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
         {
-            //Debug.Log("modeSelectedData[modeSelectedIndex].CustomTimer : " + modeSelectedData[modeSelectedIndex].CustomTimer);
             GameOptions.customTimer = modeSelectedData[modeSelectedIndex].CustomTimer;
         }
         else
@@ -979,6 +1015,8 @@ public class StartManager : MonoBehaviour
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
 
         GameOptions.levelRequiresWeather = levelSelectedData[levelSelectedIndex].LevelHasWeather;
+        GameOptions.difficultySelected = difficultySelected;
+        GameOptions.obstaclesEnabled = obstaclesEnabled;
 
         // if enemies only mode, enable enemies whether it was selected or not
         if (GameOptions.EnemiesOnlyEnabled)
@@ -1009,6 +1047,7 @@ public class StartManager : MonoBehaviour
     // ============================  navigation functions ==============================
     public void changeSelectedPlayerUp()
     {
+
         // if default index (first in list), go to end of list
         if (playerSelectedIndex == 0)
         {
@@ -1020,8 +1059,15 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             playerSelectedIndex--;
         }
+        // check for fighting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsFighter
+            && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || enemiesEnabled))
+        {
+            //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerUp();
+        }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerObjectName);
     }
     public void changeSelectedPlayerDown()
     {
@@ -1034,6 +1080,14 @@ public class StartManager : MonoBehaviour
         {
             //if not first index, increment
             playerSelectedIndex++;
+        }
+        // check for fighting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsFighter
+            && (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || enemiesEnabled))
+        {
+            //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerDown();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
@@ -1051,7 +1105,6 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectedIndex--;
         }
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
     public void changeSelectedCheerleaderDown()
@@ -1067,7 +1120,6 @@ public class StartManager : MonoBehaviour
             cheerleaderSelectedIndex++;
         }
         GameOptions.cheerleaderObjectName = cheerleaderSelectedData[cheerleaderSelectedIndex].CheerleaderObjectName;
-        //Debug.Log("player selected : " + GameOptions.playerSelected);
     }
 
     public void changeSelectedLevelUp()
@@ -1148,7 +1200,14 @@ public class StartManager : MonoBehaviour
     public static string AccountMenuButtonName => accountMenuButtonName;
     public static string CreditsMenuButtonName1 => creditsMenuButtonName;
     public static string SniperSelectOptionName => sniperSelectOptionName;
-
     public int PlayerSelectedIndex => playerSelectedIndex;
     public static string OptionsMenuButtonName => optionsMenuButtonName;
+
+    public static string DifficultySelectButtonName => difficultySelectButtonName;
+
+    public static string EnemySelectOptionName => enemySelectOptionName;
+
+    public static string DifficultySelectOptionName => difficultySelectOptionName;
+
+    public static string ObstacleSelectOptionName => obstacleSelectOptionName;
 }

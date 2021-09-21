@@ -117,6 +117,14 @@ public class AccountManager : MonoBehaviour
 
     void Update()
     {
+        // check for some button not selected
+        if (EventSystem.current != null)
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject); // + "_description";
+            }
+        }
 
         if (controls.UINavigation.Submit.triggered && !buttonPressed)
         {

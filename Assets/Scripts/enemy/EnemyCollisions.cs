@@ -20,7 +20,6 @@ public class EnemyCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("ENEMY trigger : this : " + gameObject.tag + "  other.tag : " + other.tag);
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
@@ -28,21 +27,31 @@ public class EnemyCollisions : MonoBehaviour
             && enemyHealthBar != null)
         {
             PlayerAttackBox playerAttackBox = null;
-            EnemyAttackBox enemyAttackBox = null;
+            EnemyAttackBox enemyAttackBox = null; ;
 
-            //Debug.Log(gameObject.transform.root.name + " attacked by " + other.transform.root.name);
-            if (other.GetComponent<PlayerAttackBox>() != null)
+            if (other.CompareTag("playerAttackBox"))
             {
                 playerAttackBox = other.GetComponent<PlayerAttackBox>();
-                enemyHealth.Health -= playerAttackBox.attackDamage;
-                //Debug.Log("--------- took + " + playerAttackBox.attackDamage + " damage");
             }
-            if (other.GetComponent<EnemyAttackBox>() != null
-                && enemyHealth != null)
+            if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             {
                 enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-                enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
-                //Debug.Log("--------- took + " + (enemyAttackBox.attackDamage / 2) + " damage");
+            }
+
+            bool isRake = false;
+
+            if (playerAttackBox != null
+                && !enemyController.stateKnockDown)
+            {
+                enemyHealth.Health -= playerAttackBox.attackDamage;
+            }
+            if (enemyAttackBox != null
+                && enemyHealth != null
+                && !enemyController.stateKnockDown)
+            {
+                isRake = enemyAttackBox.isRake;
+                //enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
+                enemyHealth.Health -= enemyAttackBox.attackDamage;
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
@@ -79,8 +88,11 @@ public class EnemyCollisions : MonoBehaviour
                 }
                 else
                 {
-                    enemyTakeDamage();
-                    if (other.transform.parent.name.Contains("rake"))
+                    if (!isRake)
+                    {
+                        enemyTakeDamage();
+                    }
+                    if (isRake)
                     {
                         enemyStepOnRake(other);
                     }
@@ -114,7 +126,6 @@ public class EnemyCollisions : MonoBehaviour
                         BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
                     }
                 }
-
                 StartCoroutine(enemyController.killEnemy());
             }
         }
@@ -127,7 +138,6 @@ public class EnemyCollisions : MonoBehaviour
 
     void enemyTakeDamage()
     {
-        //Debug.Log("enemyTakeDamage()");
         StartCoroutine(enemyController.takeDamage());
     }
 

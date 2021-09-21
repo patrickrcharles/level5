@@ -10,6 +10,8 @@ public class PlayerHealthBar : MonoBehaviour
     public Slider healthSlider;
     [SerializeField]
     public Slider blockSlider;
+    [SerializeField]
+    public Slider specialSlider;
 
     [SerializeField]
     Text characterNameText;
@@ -24,15 +26,20 @@ public class PlayerHealthBar : MonoBehaviour
     void Start()
     {
         //GameOptions.sniperEnabled = true; // test flag
-        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled || GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.enemiesEnabled 
+            || GameOptions.sniperEnabled 
+            || GameOptions.EnemiesOnlyEnabled
+            || GameOptions.obstaclesEnabled)
         {
             instance = this;
             playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
             healthSlider = transform.Find("health_bar").GetComponent<Slider>();
             blockSlider = transform.Find("block_bar").GetComponent<Slider>();
+            specialSlider = transform.Find("special_bar").GetComponent<Slider>();
 
             healthSlider.maxValue = playerHealth.MaxHealth;
             blockSlider.maxValue = playerHealth.MaxBlock;
+            specialSlider.maxValue = playerHealth.MaxSpecial;
 
             characterNameText = GameObject.Find(characterNameName).GetComponent<Text>();
             healthSliderValueText = GameObject.Find(healthSliderValueName).GetComponent<Text>();
@@ -40,6 +47,7 @@ public class PlayerHealthBar : MonoBehaviour
             characterNameText.text = GameLevelManager.instance.Player.GetComponent<CharacterProfile>().PlayerDisplayName;
             setHealthSliderValue();
             setBlockSliderValue();
+            setSpecialSliderValue();
         }
         else
         {
@@ -56,6 +64,11 @@ public class PlayerHealthBar : MonoBehaviour
     public void setBlockSliderValue()
     {
         blockSlider.value = playerHealth.Block;
+    }
+
+    public void setSpecialSliderValue()
+    {
+        specialSlider.value = playerHealth.Special;
     }
 
     public IEnumerator DisplayDamageTakenValue(int damage)

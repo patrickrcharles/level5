@@ -76,16 +76,6 @@ public class EnemyController : MonoBehaviour
     GameObject dropShadow;
 
     Vector3 originalPosition;
-    public bool StateWalk { get => stateWalk; set => stateWalk = value; }
-    public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
-    public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
-    public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
-    public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
-    public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
-    public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
-    public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
-    public bool IsMinion { get => isMinion; set => isMinion = value; }
-    public bool IsBoss { get => isBoss; set => isBoss = value; }
     //[SerializeField]
     //float currentSpeed;
 
@@ -149,7 +139,8 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyUsesPhysics)
         {
-            dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
+            dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 
+                GameLevelManager.instance.TerrainHeight + 0.01f, dropShadow.transform.position.z);
         }
     }
 
@@ -211,6 +202,7 @@ public class EnemyController : MonoBehaviour
         // ================== enemy walk state ==========================
         if (enemyDetection.PlayerSighted
             && !stateAttack
+            && !stateIdle
             && canAttack
             && currentState != AnimatorState_Knockdown
             && currentState != AnimatorState_Disintegrated)
@@ -476,4 +468,15 @@ public class EnemyController : MonoBehaviour
             lineOfSight = PlayerAttackQueue.instance.BodyGuards[0].transform.position.z - transform.position.z;
         }
     }
+
+    public bool StateWalk { get => stateWalk; set => stateWalk = value; }
+    public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
+    public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
+    public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
+    public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
+    public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
+    public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
+    public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
+    public bool IsMinion { get => isMinion; set => isMinion = value; }
+    public bool IsBoss { get => isBoss; set => isBoss = value; }
 }

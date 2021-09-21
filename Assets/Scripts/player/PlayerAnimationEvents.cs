@@ -44,8 +44,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         if (transform.Find("projectileSpawn") != null)
         {
-            projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser") as GameObject;
-            projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_magnum") as GameObject;
+            projectileLaserPrefab = Resources.Load("Prefabs/projectile/projectile_laser_player") as GameObject;
+            projectileBulletPrefab = Resources.Load("Prefabs/projectile/projectile_bullet_player") as GameObject;
             projectileAutomaticBulletPrefab = Resources.Load("Prefabs/projectile/projectile_automatic_bullet") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
             projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;

@@ -435,7 +435,8 @@ public class PlayerController : MonoBehaviour
             && !InAir
             && Grounded
             && !KnockedDown
-            && GameOptions.enemiesEnabled)
+            && GameOptions.enemiesEnabled
+            && PlayerHealth.Special == PlayerHealth.MaxSpecial)
         {
             PlayerSpecial();
         }
@@ -523,6 +524,8 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerSpecial()
     {
+        playerHealth.Special = 0;
+        PlayerHealthBar.instance.setSpecialSliderValue();
         PlayAnim("special");
     }
     public void CheckIsPlayerFacingGoal()

@@ -30,36 +30,25 @@ public class LoadManager : MonoBehaviour
     private List<StartScreenModeSelected> modeSelectedData;
     public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
 
-    private int playerSelectedIndex;
-    private int levelSelectedIndex;
-    private int modeSelectedIndex;
-    private int cheerleaderSelectedIndex;
 
     bool CharacterProfileTableExists = false;
     bool CharacterProfileTableCreated = false;
-
-    public static LoadManager instance;
 
     [SerializeField] internal bool playerDataLoaded = false;
     [SerializeField] internal bool cheerleaderDataLoaded = false;
     [SerializeField] internal bool levelDataLoaded = false;
     [SerializeField] internal bool modeDataLoaded = false;
 
-    //const string startSceneName = "level_00_start";
-
-    //bool isLocked = false;
-
     private bool CheerleaderProfileTableExists;
     private bool CheerleaderProfileTableCreated;
+
+    public static LoadManager instance;
 
     void Awake()
     {
         instance = this;
 
         LoadAllData();
-        //StartCoroutine(verifyCharacterProfileTable());
-        //StartCoroutine(verifyCheerleaderProfileTable());
-        //StartCoroutine(LoadGameData());
     }
 
     private void Update()
@@ -70,13 +59,11 @@ public class LoadManager : MonoBehaviour
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                //Debug.Log("String.IsNullOrEmpty("+GameOptions.previousSceneName+")");
                 SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
-                //Debug.Log("SceneManager.LoadScene(GameOptions.previousSceneName)");
                 SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
@@ -303,38 +290,38 @@ public class LoadManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             CheerleaderProfile temp = obj.GetComponent<CheerleaderProfile>();
-
+            cheerList.Add(temp);
             // need to create a copy to keep prefab from changing
 
-            // if character not in database, but prefab exists -- insert into DB and add to list
-            if (!dbCheerList.Any(item => item.CheerleaderId == temp.CheerleaderId))
-            {
-                //isLocked = true;
-                // get default profile for chracter to be inserted
-                string defaultPath = "Prefabs/menu_start/cheerleader_default_objects/cheerleader_selected_"
-                    + temp.CheerleaderId.ToString("00") + "_" + temp.CheerleaderObjectName;
+            //// if character not in database, but prefab exists -- insert into DB and add to list
+            //if (!dbCheerList.Any(item => item.CheerleaderId == temp.CheerleaderId))
+            //{
+            //    //isLocked = true;
+            //    // get default profile for chracter to be inserted
+            //    string defaultPath = "Prefabs/menu_start/cheerleader_default_objects/cheerleader_selected_"
+            //        + temp.CheerleaderId.ToString("00") + "_" + temp.CheerleaderObjectName;
 
-                Debug.Log("defaultPath : " + defaultPath);
+            //    Debug.Log("defaultPath : " + defaultPath);
 
-                CheerleaderProfile defaultTemp = Resources.Load<GameObject>(defaultPath).GetComponent<CheerleaderProfile>();
-                // insert to DB
-                StartCoroutine(InsertNewCheerleaderToDB(defaultTemp));
-                // add to current list to be loaded
-                dbCheerList.Add(temp);
-            }
+            //    CheerleaderProfile defaultTemp = Resources.Load<GameObject>(defaultPath).GetComponent<CheerleaderProfile>();
+            //    //// insert to DB
+            //    //StartCoroutine(InsertNewCheerleaderToDB(defaultTemp));
+            //    // add to current list to be loaded
+            //    dbCheerList.Add(temp);
+            //}
 
-            // load stats from DB, but load portrait from prefab
-            temp.CheerleaderId = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderId;
-            temp.CheerleaderDisplayName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderDisplayName;
-            temp.CheerleaderObjectName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderObjectName;
-            temp.UnlockCharacterText = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).UnlockCharacterText;
+            //// load stats from DB, but load portrait from prefab
+            //temp.CheerleaderId = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderId;
+            //temp.CheerleaderDisplayName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderDisplayName;
+            //temp.CheerleaderObjectName = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).CheerleaderObjectName;
+            //temp.UnlockCharacterText = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).UnlockCharacterText;
 
-            temp.IsLocked = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).IsLocked;
+            //temp.IsLocked = dbCheerList.Find(x => x.CheerleaderId == temp.CheerleaderId).IsLocked;
             /*
              * Portrait should already be loaded from prefab
              */
 
-            cheerList.Add(temp);
+            //cheerList.Add(temp);
             //if (!temp.IsLocked)
             //{
             //    Debug.Log("--------------------------------- ADD CHEER DB DATA TO PREFAB--------------------------");

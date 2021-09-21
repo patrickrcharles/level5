@@ -92,8 +92,10 @@ public class DBHelper : MonoBehaviour
             //if table contains records
             if (count == 0)
             {
+                DatabaseLocked = false;
                 return true;
             }
+            DatabaseLocked = false;
             return false;
         }
         catch (Exception e)

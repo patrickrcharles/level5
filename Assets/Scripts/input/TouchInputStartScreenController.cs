@@ -133,6 +133,7 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     private void activateDoubleTappedButton()
     {
+        buttonPressed = true;
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         //level select
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
@@ -148,6 +149,12 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeTrafficOptionDisplay();
             buttonPressed = true;
         }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        {
+            StartManager.instance.changeSelectedEnemiesOption();
+            StartManager.instance.initializeEnemyOptionDisplay();
+            buttonPressed = true;
+        }
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
         {
             StartManager.instance.changeSelectedHardcoreOption();
@@ -158,6 +165,18 @@ public class TouchInputStartScreenController : MonoBehaviour
         {
             StartManager.instance.changeSelectedSniperOption();
             StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        {
+            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.initializeDifficultyOptionDisplay();
+            buttonPressed = true;
+        }
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
+        {
+            StartManager.instance.changeSelectedObstacleOption();
+            StartManager.instance.initializeObstacleOptionDisplay();
             buttonPressed = true;
         }
 
@@ -273,6 +292,21 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
+        if (prevSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        {
+            StartManager.instance.changeSelectedEnemiesOption();
+            StartManager.instance.initializeEnemyOptionDisplay();
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        {
+            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.initializeDifficultyOptionDisplay();
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
+        {
+            StartManager.instance.changeSelectedObstacleOption();
+            StartManager.instance.initializeObstacleOptionDisplay();
+        }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {
@@ -325,6 +359,21 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedSniperOption();
             StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        {
+            StartManager.instance.changeSelectedEnemiesOption();
+            StartManager.instance.initializeEnemyOptionDisplay();
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        {
+            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.initializeDifficultyOptionDisplay();
+        }
+        if (prevSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
+        {
+            StartManager.instance.changeSelectedObstacleOption();
+            StartManager.instance.initializeObstacleOptionDisplay();
         }
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))

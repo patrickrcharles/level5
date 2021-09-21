@@ -1,5 +1,7 @@
 ﻿
 using Assets.Scripts.database;
+using Assets.Scripts.Models;
+using Assets.Scripts.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -8,6 +10,7 @@ using System.IO;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.restapi
 {
@@ -386,7 +389,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
 
             //build api request
-            string apiRequest =  Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
+            string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
                 + "&traffic=" + traffic
                 + "&enemies=" + enemies
@@ -808,7 +811,89 @@ namespace Assets.Scripts.restapi
 
             return user;
         }
+        // -------------------------------------- HTTTP POST User report -------------------------------------------
 
+        // POST user report
+        // http://13.58.224.237/api/userreports
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static IEnumerator PostReport(UserReportModel userReport, InputField inputField)
+        {
+            Debug.Log("PostReport");
+            apiLocked = true;
+            if (DBHelper.instance != null)
+            {
+                yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            }
+
+            if (!String.IsNullOrEmpty(GameOptions.userName))
+            {
+                userReport.UserId = GameOptions.userid;
+                userReport.UserName = GameOptions.userName;
+   
+            }
+            else
+            {
+                userReport.UserId = 999;
+                userReport.UserName = "not logged in";
+            }
+            userReport.Os = SystemInfo.operatingSystem;
+            userReport.Device = SystemInfo.deviceModel;
+            userReport.DeviceName = SystemInfo.deviceModel;
+            userReport.Version = Application.version;
+            userReport.IpAddress = UtilityFunctions.GetExternalIpAdress();
+            //serialize highscore to json for HTTP POST
+            string toJson = JsonUtility.ToJson(userReport);
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicUserReport) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "POST";
+
+                //post
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = toJson;
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                }
+                // response
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    bearerToken = result;
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                inputField.text = "ERROR : " + e;
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.Created)
+            {
+                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                inputField.text = "HTTP POST successful : " + (int)statusCode + " " + statusCode;
+                apiLocked = false;
+            }
+            // failed
+            else
+            {
+                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                inputField.text = "HTTP POST failed : " + (int)statusCode + " " + statusCode;
+                apiLocked = false;
+            }
+            yield return new WaitUntil(() => !apiLocked);
+        }
 
         // -------------------------------------- HTTTP POST Token -------------------------------------------
 
@@ -900,6 +985,7 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static string GetLatestBuildVersion()
         {
+            apiLocked = true;
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 

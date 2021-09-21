@@ -102,7 +102,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnDefaultBoss()
     {
-        Debug.Break();
+        //Debug.Break();
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         if (numberToSpawn > 0)
         {

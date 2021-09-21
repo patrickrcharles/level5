@@ -42,18 +42,18 @@ public class CameraManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //if (GameLevelManager.instance.Controls.Other.change.enabled
-        //    &&
-        //    GameLevelManager.instance.Controls.Other.toggle_camera_keyboard.triggered
-        //    && !locked
-        //    && !Pause.instance.Paused)
-        //{
-        //    locked = true;
-        //    switchCamera();
-        //}
-    }
+    //void Update()
+    //{
+    //    //if (GameLevelManager.instance.Controls.Other.change.enabled
+    //    //    &&
+    //    //    GameLevelManager.instance.Controls.Other.toggle_camera_keyboard.triggered
+    //    //    && !locked
+    //    //    && !Pause.instance.Paused)
+    //    //{
+    //    //    locked = true;
+    //    //    switchCamera();
+    //    //}
+    //}
 
     void setDefaultCamera()
     {

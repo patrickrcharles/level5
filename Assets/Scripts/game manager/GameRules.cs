@@ -79,6 +79,9 @@ public class GameRules : MonoBehaviour
     float timePlayedEnd;
     int inThePocketActivateValue;
 
+    [SerializeField]
+    private GameObject _rakesClone;
+
     private void Awake()
     {
         if (instance == null)
@@ -148,6 +151,13 @@ public class GameRules : MonoBehaviour
         {
             positionMarkersRequired = true;
             SetPositionMarkers();
+        }
+        if (GameOptions.obstaclesEnabled)
+        {
+            Vector3 vector = new Vector3(GameLevelManager.instance.BasketballRimVector.x, 
+                GameLevelManager.instance.TerrainHeight,
+                GameLevelManager.instance.BasketballRimVector.z);
+            Instantiate(_rakesClone, vector, Quaternion.identity);
         }
     }
     // ================================================ Update ============================================

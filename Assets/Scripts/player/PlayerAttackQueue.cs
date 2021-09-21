@@ -71,7 +71,7 @@ public class PlayerAttackQueue : MonoBehaviour
         //default
         else
         {
-            maxEnemiesQueued = 2;
+            maxEnemiesQueued = 3;
         }
 
         //        //#if UNITY_ANDROID && !UNITY_EDITOR
