@@ -128,8 +128,11 @@ public class PlayerCollisions : MonoBehaviour
                 // blocking play sound
                 // block meter goes down
                 SFXBB.instance.playSFX(SFXBB.instance.blocked);
-                playerHealth.Block -= enemyAttackBox.attackDamage;
                 PlayerHealthBar.instance.setBlockSliderValue();
+                if (enemyAttackBox != null)
+                {
+                    playerHealth.Block -= enemyAttackBox.attackDamage;
+                }
                 locked = false;
             }
             locked = false;
