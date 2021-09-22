@@ -281,11 +281,11 @@ public class PlayerController : MonoBehaviour
             //running = true;
             anim.SetBool("moonwalking", true);
         }
-        else
-        {
-            //running = false;
-            //anim.SetBool("moonwalking", false);
-        }
+        //else
+        //{
+        //    //running = false;
+        //    //anim.SetBool("moonwalking", false);
+        //}
 
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
@@ -396,7 +396,9 @@ public class PlayerController : MonoBehaviour
             && GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
             && !hasBasketball
             && canAttack
-            && GameOptions.enemiesEnabled)
+            && GameOptions.enemiesEnabled
+            && currentState != attackState
+            && currentState != specialState)
         {
             PlayerAttack();
         }
