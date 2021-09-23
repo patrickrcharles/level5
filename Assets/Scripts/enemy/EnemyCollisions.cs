@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Utility;
+using UnityEngine;
 
 public class EnemyCollisions : MonoBehaviour
 {
@@ -10,12 +11,15 @@ public class EnemyCollisions : MonoBehaviour
     [SerializeField]
     EnemyHealth enemyHealth;
     int maxEnemyHealth;
+    [SerializeField]
+    int luck;
 
     private void Start()
     {
         enemyController = gameObject.transform.root.GetComponent<EnemyController>();
         enemyHealth = GetComponent<EnemyHealth>();
         enemyHealthBar = transform.parent.GetComponentInChildren<EnemyHealthBar>();
+        if(luck == 0) { luck = 10; }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,8 +59,8 @@ public class EnemyCollisions : MonoBehaviour
             }
             //update health slider
             enemyHealthBar.setHealthSliderValue();
-            // check if enemy dead
-            if (enemyHealth.Health > 0)
+            // check if enemy dead + enemy fails to roll critical to dodge
+            if (enemyHealth.Health > 0 && !UtilityFunctions.rollForCriticalInt(luck))
             {
                 // player knock down attack
                 if (playerAttackBox != null
