@@ -43,6 +43,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private int pointsUsed;
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
+    [SerializeField] private bool isShooter;
     [SerializeField] private string unlockCharacterText;
 
 
@@ -245,4 +246,5 @@ public class CharacterProfile : MonoBehaviour
     public int Release { get => release; set => release = value; }
     public bool IsFighter { get => isFighter; set => isFighter = value; }
     public bool IsLocked { get; internal set; }
+    public bool IsShooter { get => isShooter; set => isShooter = value; }
 }
