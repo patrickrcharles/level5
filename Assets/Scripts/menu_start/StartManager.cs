@@ -1067,6 +1067,14 @@ public class StartManager : MonoBehaviour
             //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerUp();
         }
+        // check for shooting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsShooter
+            && (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || !enemiesEnabled))
+        {
+            //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerUp();
+        }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
     }
     public void changeSelectedPlayerDown()
@@ -1087,6 +1095,14 @@ public class StartManager : MonoBehaviour
             || enemiesEnabled))
         {
             //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerDown();
+        }
+        // check for shooting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsShooter
+            && (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            || !enemiesEnabled))
+        {
+            //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerDown();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
