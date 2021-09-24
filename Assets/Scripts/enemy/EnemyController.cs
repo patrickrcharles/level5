@@ -27,6 +27,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private float distanceFromPlayer;
     [SerializeField]
+    private float distanceFromBodyGuard;
+    [SerializeField]
     private float minDistanceCloseAttack;
     [SerializeField]
     private float maxDistanceLongRangeAttack;
@@ -93,7 +95,7 @@ public class EnemyController : MonoBehaviour
 
         playerSwapAttack = GetComponent<PlayerSwapAttack>();
 
-        if (attackCooldown == 0) { attackCooldown = 1f; }
+        if (attackCooldown == 0) { attackCooldown = 0.75f; }
         //if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
@@ -102,15 +104,15 @@ public class EnemyController : MonoBehaviour
         if (isMinion)
         {
             attackCooldown = 1.5f;
-            walkMovementSpeed = 1.25f;
-            runMovementSpeed = 1.6f;
+            walkMovementSpeed = 1.5f;
+            runMovementSpeed = 2f;
             takeDamageTime = 0.4f;
         }
         if (isBoss)
         {
-            attackCooldown = 1.2f;
-            walkMovementSpeed = 1.5f;
-            runMovementSpeed = 2f;
+            attackCooldown = 1f;
+            walkMovementSpeed = 2f;
+            runMovementSpeed = 2.5f;
             takeDamageTime = 0.3f;
         }
 
@@ -131,7 +133,7 @@ public class EnemyController : MonoBehaviour
         if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated
             && enemyDetection.Attacking)
         {
-            pursuePlayer();
+            pursueTarget();
         }
         if (statePatrol)
         {
@@ -417,7 +419,7 @@ public class EnemyController : MonoBehaviour
     //    return randNum;
     //}
 
-    public void pursuePlayer()
+    public void pursueTarget()
     {
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
 
@@ -471,7 +473,7 @@ public class EnemyController : MonoBehaviour
 
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }
     public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
-    public float DistanceFromPlayer { get => distanceFromPlayer; set => distanceFromPlayer = value; }
+    public float DistanceFromPlayer { get => distanceFromPlayer;  }
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
     public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
@@ -479,4 +481,5 @@ public class EnemyController : MonoBehaviour
     public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
     public bool IsMinion { get => isMinion; set => isMinion = value; }
     public bool IsBoss { get => isBoss; set => isBoss = value; }
+    public float DistanceFromBodyGuard { get => distanceFromBodyGuard; }
 }
