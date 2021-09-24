@@ -35,6 +35,9 @@ TextureImporter:
   - first:
       213: 8112229622299212819
     second: powerman_walk_10
+  - first:
+      213: 6128146078692860204
+    second: powerman_walk_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -352,7 +355,7 @@ TextureImporter:
       name: powerman_walk_9
       rect:
         serializedVersion: 2
-        x: 384
+        x: 192
         y: 0
         width: 192
         height: 192
@@ -373,7 +376,7 @@ TextureImporter:
       name: powerman_walk_10
       rect:
         serializedVersion: 2
-        x: 576
+        x: 384
         y: 0
         width: 192
         height: 192
@@ -386,6 +389,27 @@ TextureImporter:
       bones: []
       spriteID: 31cbb8d6cdd649070800000000000000
       internalID: 8112229622299212819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: powerman_walk_11
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c21e038e36c8b0550800000000000000
+      internalID: 6128146078692860204
       vertices: []
       indices: 
       edges: []
