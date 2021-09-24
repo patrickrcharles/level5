@@ -23,6 +23,9 @@ TextureImporter:
   - first:
       213: -7293198237631443708
     second: powerman_attack_6
+  - first:
+      213: -280661655629615163
+    second: powerman_attack_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -136,12 +139,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 48
     textureCompression: 2
-    compressionQuality: 50
+    compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -290,6 +293,27 @@ TextureImporter:
       bones: []
       spriteID: 40d097908da59ca90800000000000000
       internalID: -7293198237631443708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: powerman_attack_7
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cfaf1216b3ea1cf0800000000000000
+      internalID: -280661655629615163
       vertices: []
       indices: 
       edges: []
