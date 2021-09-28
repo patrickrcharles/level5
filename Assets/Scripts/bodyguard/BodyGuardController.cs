@@ -60,6 +60,8 @@ public class BodyGuardController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
+    public bool bodyGuardEngaged = false;
+
     //bool playerInLineOfSight = false;
     public float lineOfSight;
     public float lineOfSightVariance;
@@ -221,7 +223,7 @@ public class BodyGuardController : MonoBehaviour
             {
                 playerSwapAttack.setLongRangeAttack();
             }
-            Debug.Log("trigger attack");
+            //Debug.Log("trigger attack");
             anim.SetTrigger("attack");
             StartCoroutine(AttackCooldown(attackCooldown));
         }
