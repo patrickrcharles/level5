@@ -41,7 +41,6 @@ public class BodyGuardHealth : MonoBehaviour
             maxBodyGuardHealth += (maxBodyGuardHealth / 4);
         }
         health = maxBodyGuardHealth;
-
         bodyGuardController = transform.parent.GetComponent<BodyGuardController>();
     }
 }
