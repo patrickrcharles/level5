@@ -1068,9 +1068,10 @@ public class StartManager : MonoBehaviour
             changeSelectedPlayerUp();
         }
         // check for shooting modes + if player is fighter
+        // check for shooting modes + if player is fighter
         if (!playerSelectedData[playerSelectedIndex].IsShooter
-            && (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            || !enemiesEnabled))
+            && !modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !enemiesEnabled)
         {
             //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerUp();
@@ -1099,8 +1100,8 @@ public class StartManager : MonoBehaviour
         }
         // check for shooting modes + if player is fighter
         if (!playerSelectedData[playerSelectedIndex].IsShooter
-            && (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            || !enemiesEnabled))
+            && !modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !enemiesEnabled)
         {
             //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerDown();
