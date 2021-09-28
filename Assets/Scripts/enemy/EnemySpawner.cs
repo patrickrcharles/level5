@@ -63,7 +63,6 @@ public class EnemySpawner : MonoBehaviour
                 maxNumberOfEnemies = 6;
             }
 
-
 #if UNITY_ANDROID && !UNITY_EDITOR
             maxNumberOfEnemies = maxNumberOfEnemies/2;
 #endif
@@ -81,21 +80,27 @@ public class EnemySpawner : MonoBehaviour
     void spawnDefaultMinions()
     {
         int numberToSpawn = maxNumberOfEnemies - numberOfMinions - numberOfBoss;
+
+        Random random = new Random();
         if (numberToSpawn > 0)
         {
             for (int i = 0; i < numberToSpawn; i++)
             {
+                //Random random = new Random();
+                int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+                //Debug.Log("randomIndex : " + randomIndex + "  max : "+ (enemyMinionPrefabs.Count - 1));
+                Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 // if spawn more enemies than enemy list has, spawn random enemy
-                if (i >= enemyMinionPrefabs.Count)
-                {
-                    Random random = new Random();
-                    int randomIndex = random.Next(0, maxNumberOfMinions - 1);
-                    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
-                }
-                else
-                {
-                    Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
-                }
+                //if (i >= enemyMinionPrefabs.Count)
+                //{
+                //    Random random = new Random();
+                //    int randomIndex = random.Next(0, maxNumberOfMinions - 1);
+                //    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
+                //}
+                //else
+                //{
+                //    Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
+                //}
             }
         }
     }
@@ -104,6 +109,8 @@ public class EnemySpawner : MonoBehaviour
     {
         //Debug.Break();
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
+        Random random = new Random();
+        int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
         if (numberToSpawn > 0)
         {
             for (int i = 0; i < numberToSpawn; i++)
@@ -111,13 +118,13 @@ public class EnemySpawner : MonoBehaviour
                 // if spawn more enemies than enemy list has, spawn random enemy
                 if (i >= enemyBossPrefabs.Count)
                 {
-                    Random random = new Random();
-                    int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+                    //Random random = new Random();
+                    //int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
                     Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
+                    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 }
             }
         }
@@ -129,15 +136,37 @@ public class EnemySpawner : MonoBehaviour
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 
-        // if spawn more enemies than enemy list has, spawn random enemy
-        if (randomIndex >= enemyMinionPrefabs.Count)
+        int spawnIndex = 0;
+        if(randomIndex >= spawnPositions.Count-1)
         {
-            Instantiate(enemyMinionPrefabs[0], spawnPositions[randomIndex].transform.position, Quaternion.identity);
+            spawnIndex = spawnPositions.Count - 1;
         }
         else
         {
-            Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
+            spawnIndex = randomIndex;
         }
+        // if spawn more enemies than enemy list has, spawn random enemy
+        if (randomIndex >= enemyMinionPrefabs.Count)
+        {
+            Instantiate(enemyMinionPrefabs[0], spawnPositions[spawnIndex].transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[spawnIndex].transform.position, Quaternion.identity);
+        }
+
+        //Random random = new Random();
+        //int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+        //GameObject[] enemyList = GameObject.FindGameObjectsWithTag("enemy");
+        //GameObject enemy = null;
+
+        ////int index = enemyList.Where(x => x.name)
+        //foreach (GameObject go in enemyList)
+        //{
+        //    enemy = enemyMinionPrefabs.Where(x => !x.name.Contains(go.name)).First();
+        //    Debug.Log("enemy to spawn : " + go.name);
+        //}
+        //Instantiate(enemy, spawnPositions[randomIndex].transform.position, Quaternion.identity);
     }
 
     void spawnBoss()
