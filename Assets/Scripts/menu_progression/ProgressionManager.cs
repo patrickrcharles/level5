@@ -549,21 +549,21 @@ public class ProgressionManager : MonoBehaviour
     }
 
 
-    private void loadScene()
-    {
-        throw new NotImplementedException();
-    }
+    //private void loadScene()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    IEnumerator UpdateLevelAndExperienceFromDatabase()
-    {
-        yield return new WaitUntil(() => dataLoaded);
+    //IEnumerator UpdateLevelAndExperienceFromDatabase()
+    //{
+    //    yield return new WaitUntil(() => dataLoaded);
 
-        foreach (CharacterProfile s in playerSelectedData)
-        {
-            s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
-            s.Level = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "level", s.PlayerId);
-        }
-    }
+    //    foreach (CharacterProfile s in playerSelectedData)
+    //    {
+    //        s.Experience = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "experience", s.PlayerId);
+    //        s.Level = DBHelper.instance.getIntValueFromTableByFieldAndCharId("CharacterProfile", "level", s.PlayerId);
+    //    }
+    //}
 
     IEnumerator getLoadedData()
     {
