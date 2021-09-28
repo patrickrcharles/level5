@@ -40,7 +40,7 @@ public class BodyGuardAnimationEvents : MonoBehaviour
             enemyController = transform.parent.GetComponent<EnemyController>();
         }
 
-        attackBox = transform.parent.Find("attackBox").gameObject;
+        attackBox = transform.Find("attackBox").gameObject;
         if (!attackBoxAlwaysOn)
         {
             disableAttackBox();
