@@ -99,14 +99,15 @@ namespace Assets.Scripts.database
             model.EnemiesKilled = stats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
-            if (IsConnectedToInternet())
-            {
-                model.Ipaddress = GetExternalIpAdress();
-            }
-            else
-            {
-                model.Ipaddress = "noConnectivity" + RandomString(8);
-            }
+            //if (IsConnectedToInternet())
+            //{
+            //    model.Ipaddress = GetExternalIpAdress();
+            //}
+            //else
+            //{
+            //    model.Ipaddress = "noConnectivity" + RandomString(8);
+            //}
+            model.Ipaddress = GetExternalIpAdress();
             model.TwoMade = stats.TwoPointerMade;
             model.TwoAtt = stats.TwoPointerAttempts;
             model.ThreeMade = stats.ThreePointerMade;
