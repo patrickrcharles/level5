@@ -24,6 +24,8 @@ public class CreditsManager : MonoBehaviour
     private const string webLinkGooglePLay = "https://play.google.com/store/apps/details?id=com.level5.level5";
     private const string webLinkItchIo = "https://skeleton-district.itch.io/level-5";
     private const string webLinkBugReportEmail = "mailto:levelfivegames@gmail.com?subject=BugReport";
+    private const string webLinkNftCollection = "https://opensea.io/collection/level5dudes";
+    private const string webLinkNftAirdrop = "http://www.skeletondistrict.com/nftairdrop/";
 
     [SerializeField]
     private GameObject submitReportButtonObject;
@@ -144,6 +146,14 @@ public class CreditsManager : MonoBehaviour
     public void OpenBugReportEmail()
     {
         Application.OpenURL(webLinkBugReportEmail);
+    }
+    public void OpenNftCollection()
+    {
+        Application.OpenURL(webLinkNftCollection);
+    }
+    public void OpenNftAirdrop()
+    {
+        Application.OpenURL(webLinkNftAirdrop);
     }
     public void SubmitReport()
     {
