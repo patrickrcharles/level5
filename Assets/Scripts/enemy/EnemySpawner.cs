@@ -58,6 +58,10 @@ public class EnemySpawner : MonoBehaviour
             {
                 maxNumberOfEnemies = 8;
             }
+            else if (GameOptions.battleRoyalEnabled)
+            {
+                maxNumberOfEnemies = 4;
+            }
             else
             {
                 maxNumberOfEnemies = 6;
