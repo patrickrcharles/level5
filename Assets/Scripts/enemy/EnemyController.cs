@@ -123,7 +123,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // put enemy on the ground. some are spawning up pretty high
-        gameObject.transform.position = new Vector3(gameObject.transform.position.x, GameLevelManager.instance.TerrainHeight, gameObject.transform.position.z);
+        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, GameLevelManager.instance.TerrainHeight, gameObject.transform.position.z);
 
         InvokeRepeating("UpdateDistanceFromPlayer", 0, 0.1f);
     }
