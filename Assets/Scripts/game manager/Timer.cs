@@ -34,7 +34,11 @@ public class Timer : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            timerText = GetComponent<Text>();
+            if (GetComponent<Text>() != null)
+            {
+                timerText = GetComponent<Text>();
+                timerText.text = "";
+            }
         }
         else
         {
@@ -44,9 +48,16 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-
-        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
-        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+        if (GameObject.Find("shot_clock") != null)
+        {
+            shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+            shotClockText.text = "";
+        }
+        if (GameObject.Find("score_clock") != null)
+        {
+            scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+            scoreClockText.text = "";
+        }
 
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
@@ -75,10 +86,6 @@ public class Timer : MonoBehaviour
             timerEnabled = false;
             displayTimer = false;
         }
-
-        timerText.text = "";
-        shotClockText.text = "";
-        scoreClockText.text = "";
     }
 
     void Update()
