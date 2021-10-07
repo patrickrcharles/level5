@@ -271,7 +271,7 @@ public class EnemyController : MonoBehaviour
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
-                | RigidbodyConstraints.FreezePositionY
+                //| RigidbodyConstraints.FreezePositionY
                 | RigidbodyConstraints.FreezePositionZ
                 | RigidbodyConstraints.FreezePositionX;
         }
@@ -289,8 +289,8 @@ public class EnemyController : MonoBehaviour
         {
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
-                | RigidbodyConstraints.FreezeRotationY
-                | RigidbodyConstraints.FreezePositionY;
+                | RigidbodyConstraints.FreezeRotationY;
+                //| RigidbodyConstraints.FreezePositionY;
         }
     }
 
