@@ -4,6 +4,7 @@ using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -712,7 +713,7 @@ public class StartManager : MonoBehaviour
     public void changeSelectedDifficultyOption()
     {
         //Debug.Log("change difficulty");
-        if(difficultySelected == 0)
+        if (difficultySelected == 0)
         {
             difficultySelected = 1;
         }
@@ -961,6 +962,8 @@ public class StartManager : MonoBehaviour
             GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
 
+        Debug.Log(levelSelectedIndex);
+        Debug.Log(levelSelectedData[levelSelectedIndex].LevelObjectName);
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
@@ -1017,6 +1020,8 @@ public class StartManager : MonoBehaviour
         GameOptions.levelRequiresWeather = levelSelectedData[levelSelectedIndex].LevelHasWeather;
         GameOptions.difficultySelected = difficultySelected;
         GameOptions.obstaclesEnabled = obstaclesEnabled;
+
+        GameOptions.battleRoyalEnabled = modeSelectedData[modeSelectedIndex].IsBattleRoyal;
 
         // if enemies only mode, enable enemies whether it was selected or not
         if (GameOptions.EnemiesOnlyEnabled)
@@ -1151,7 +1156,20 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             levelSelectedIndex--;
         }
+        // if mode is shooting, level is not
+        if (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+        {
+            changeSelectedLevelUp();
+        }
+        // mode is fighting, level is not
+        if (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+        {
+            changeSelectedLevelUp();
+        }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+
     }
     public void changeSelectedLevelDown()
     {
@@ -1165,7 +1183,20 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             levelSelectedIndex++;
         }
+        // if mode is shooting, level is not
+        if (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+        {
+            changeSelectedLevelDown();
+        }
+        // mode is fighting, level is not
+        if (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+        {
+            changeSelectedLevelDown();
+        }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+
     }
     public void changeSelectedModeUp()
     {
@@ -1178,6 +1209,10 @@ public class StartManager : MonoBehaviour
         {
             // if not first index, decrement
             modeSelectedIndex--;
+        }
+        if(modeSelectedData[modeSelectedIndex].ModeId == 21)
+        {
+            levelSelectedIndex = 15;
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
@@ -1195,7 +1230,10 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             modeSelectedIndex++;
         }
-
+        if (modeSelectedData[modeSelectedIndex].ModeId == 21)
+        {
+            levelSelectedIndex = 15;
+        }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
     }
