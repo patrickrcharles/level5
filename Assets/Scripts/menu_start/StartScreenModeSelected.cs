@@ -26,6 +26,7 @@ public class StartScreenModeSelected : MonoBehaviour
 
     [SerializeField] private bool arcadeModeActive;
     [SerializeField] private bool enemiesOnlyEnabled;
+    [SerializeField] private bool isBattleRoyal;
 
     public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
@@ -79,4 +80,5 @@ public class StartScreenModeSelected : MonoBehaviour
     public bool GameModeAllPointContest { get => gameModeAllPointContest; set => gameModeAllPointContest = value; }
     public float CustomTimer { get => customTimer; set => customTimer = value; }
     public bool ArcadeModeActive { get => arcadeModeActive; set => arcadeModeActive = value; }
+    public bool IsBattleRoyal { get => isBattleRoyal; }
 }
