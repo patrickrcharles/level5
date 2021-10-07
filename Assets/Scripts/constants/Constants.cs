@@ -29,6 +29,7 @@ public static class Constants
     public const string SCENE_NAME_level_14_dome = "level_14_dome";
     public const string SCENE_NAME_level_15_cocaine_island = "level_15_cocaine_island";
     public const string SCENE_NAME_level_16_boner_mountain = "level_16_boner_mountain";
+    public const string SCENE_NAME_level_17_steel_cage = "level_17_steel_cage";
 
     // dev server api address constants
     public const string API_ADDRESS_DEV_publicApi = "http://skeletondistrict.com/api/";
