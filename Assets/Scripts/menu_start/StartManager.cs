@@ -757,7 +757,6 @@ public class StartManager : MonoBehaviour
             hardcoreSelectOptionText.text = "OFF";
         }
     }
-
     public void initializeEnemyOptionDisplay()
     {
         if (enemiesEnabled)
@@ -769,7 +768,6 @@ public class StartManager : MonoBehaviour
             enemySelectOptionText.text = "OFF";
         }
     }
-
     public void initializeSniperOptionDisplay()
     {
         if (sniperEnabled)
@@ -781,7 +779,6 @@ public class StartManager : MonoBehaviour
             sniperSelectOptionText.text = "OFF";
         }
     }
-
     public void initializeDifficultyOptionDisplay()
     {
         difficultySelectOptionDescriptionText = GameObject.Find(difficultySelectDescriptionName).GetComponent<Text>();
@@ -800,7 +797,6 @@ public class StartManager : MonoBehaviour
         //    difficultySelectOptionText.text = "hard";
         //}
     }
-
     public void initializeObstacleOptionDisplay()
     {
         if (obstaclesEnabled)
@@ -1057,7 +1053,6 @@ public class StartManager : MonoBehaviour
         if (playerSelectedIndex == 0)
         {
             playerSelectedIndex = playerSelectedData.Count - 1;
-
         }
         else
         {
@@ -1212,7 +1207,7 @@ public class StartManager : MonoBehaviour
         }
         if(modeSelectedData[modeSelectedIndex].ModeId == 21)
         {
-            levelSelectedIndex = 15;
+            levelSelectedIndex = 16;
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
@@ -1257,12 +1252,8 @@ public class StartManager : MonoBehaviour
     public static string SniperSelectOptionName => sniperSelectOptionName;
     public int PlayerSelectedIndex => playerSelectedIndex;
     public static string OptionsMenuButtonName => optionsMenuButtonName;
-
     public static string DifficultySelectButtonName => difficultySelectButtonName;
-
     public static string EnemySelectOptionName => enemySelectOptionName;
-
     public static string DifficultySelectOptionName => difficultySelectOptionName;
-
     public static string ObstacleSelectOptionName => obstacleSelectOptionName;
 }
