@@ -93,7 +93,14 @@ public class EnemySpawner : MonoBehaviour
                 //Random random = new Random();
                 int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
                 //Debug.Log("randomIndex : " + randomIndex + "  max : "+ (enemyMinionPrefabs.Count - 1));
-                Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
+                if (i > spawnPositions.Count-1)
+                {
+                    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[0].transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
+                }
                 // if spawn more enemies than enemy list has, spawn random enemy
                 //if (i >= enemyMinionPrefabs.Count)
                 //{
@@ -136,12 +143,12 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
-
+        Debug.Log("spawn minion");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 
         int spawnIndex = 0;
-        if(randomIndex >= spawnPositions.Count-1)
+        if (randomIndex >= spawnPositions.Count - 1)
         {
             spawnIndex = spawnPositions.Count - 1;
         }
@@ -196,6 +203,7 @@ public class EnemySpawner : MonoBehaviour
         numberOfMinions = GameObject.FindGameObjectsWithTag("enemy").Length;
         numberOfBoss = getNumberOfBoss();
 
+        Debug.Log("numberOfMinions : " + numberOfMinions);
         if (numberOfMinions < maxNumberOfMinions)
         {
             Random random = new Random();
