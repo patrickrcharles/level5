@@ -103,7 +103,7 @@ public class PlayerHealth : MonoBehaviour
         block += 1f;
         if (PlayerHealthBar.instance != null)
         {
-            PlayerHealthBar.instance.setHealthSliderValue();
+            PlayerHealthBar.instance.setBlockSliderValue();
         }
         regenerateBlock = false;
     }
