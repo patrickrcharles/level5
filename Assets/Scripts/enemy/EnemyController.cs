@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -81,6 +82,9 @@ public class EnemyController : MonoBehaviour
     GameObject dropShadow;
 
     Vector3 originalPosition;
+    [SerializeField]
+    private GameObject damageDisplayObject;
+
     //[SerializeField]
     //float currentSpeed;
 
@@ -93,6 +97,8 @@ public class EnemyController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
+        damageDisplayObject = transform.FindDeepChild("enemy_damage_display_text").gameObject;
+
         originalPosition = transform.position;
         canAttack = true;
 
@@ -103,7 +109,7 @@ public class EnemyController : MonoBehaviour
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
-        if(knockBackForce == 0) { knockBackForce = 3f; }
+        if (knockBackForce == 0) { knockBackForce = 3f; }
 
         if (isMinion)
         {
@@ -168,8 +174,8 @@ public class EnemyController : MonoBehaviour
         }
 
         // ================== enemy idle ==========================
-        if ((GameLevelManager.instance.PlayerController.KnockedDown
-            || !canAttack
+        if ((/*GameLevelManager.instance.PlayerController.KnockedDown*/
+            !canAttack
             || !enemyDetection.PlayerSighted)
             && currentState != AnimatorState_Attack)
         {
@@ -269,7 +275,7 @@ public class EnemyController : MonoBehaviour
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
                 | RigidbodyConstraints.FreezePositionZ;
-                //| RigidbodyConstraints.FreezePositionX;
+            //| RigidbodyConstraints.FreezePositionX;
         }
         else
         {
@@ -296,7 +302,7 @@ public class EnemyController : MonoBehaviour
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY;
-                //| RigidbodyConstraints.FreezePositionY;
+            //| RigidbodyConstraints.FreezePositionY;
         }
     }
 
@@ -318,11 +324,21 @@ public class EnemyController : MonoBehaviour
 
     void Flip()
     {
-        //Debug.Log(" Flip()");
         facingRight = !facingRight;
         Vector3 thisScale = transform.localScale;
         thisScale.x *= -1;
         transform.localScale = thisScale;
+
+        if ((GameOptions.enemiesEnabled
+            || GameOptions.EnemiesOnlyEnabled
+            || GameOptions.sniperEnabled
+            || GameOptions.battleRoyalEnabled)
+            && damageDisplayObject != null)
+        {
+            Vector3 messageScale = damageDisplayObject.transform.localScale;
+            messageScale.x *= -1;
+            damageDisplayObject.transform.localScale = messageScale;
+        }
     }
 
     public void setPlayerAnim(string animationName, bool isTrue)
@@ -370,7 +386,7 @@ public class EnemyController : MonoBehaviour
             UnFreezeEnemyPosition();
             rigidBody.velocity = Vector3.zero;
             //apply to X
-            RigidBody.AddForce(-knockBackForce, knockBackForce/2, 0, ForceMode.VelocityChange);
+            RigidBody.AddForce(-knockBackForce, knockBackForce / 2, 0, ForceMode.VelocityChange);
         }
         if (!facingRight)
         {
@@ -416,12 +432,12 @@ public class EnemyController : MonoBehaviour
         {
             UnFreezeEnemyPosition();
             //apply to X
-            RigidBody.AddForce(-knockBackForce/2, 0, 0, ForceMode.VelocityChange);
+            RigidBody.AddForce(-knockBackForce / 2, 0, 0, ForceMode.VelocityChange);
         }
         if (!facingRight)
         {
             UnFreezeEnemyPosition();
-            RigidBody.AddForce(knockBackForce/2, 0, 0, ForceMode.VelocityChange);
+            RigidBody.AddForce(knockBackForce / 2, 0, 0, ForceMode.VelocityChange);
         }
         yield return new WaitForSecondsRealtime(takeDamageTime);
         anim.SetBool("takeDamage", false);
@@ -527,7 +543,7 @@ public class EnemyController : MonoBehaviour
 
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }
     public float RelativePositionToPlayer { get => relativePositionToPlayer; set => relativePositionToPlayer = value; }
-    public float DistanceFromPlayer { get => distanceFromPlayer;  }
+    public float DistanceFromPlayer { get => distanceFromPlayer; }
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
     public bool InAttackQueue { get => inAttackQueue; set => inAttackQueue = value; }
