@@ -19,7 +19,11 @@ public class EnemyCollisions : MonoBehaviour
         enemyController = gameObject.transform.root.GetComponent<EnemyController>();
         enemyHealth = GetComponent<EnemyHealth>();
         enemyHealthBar = transform.parent.GetComponentInChildren<EnemyHealthBar>();
-        if(luck == 0) { luck = 10; }
+        if (luck == 0)
+        {
+            if (enemyController.IsBoss) { luck = 10; };
+            if (enemyController.IsMinion) { luck = 5; };
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,104 +37,141 @@ public class EnemyCollisions : MonoBehaviour
             PlayerAttackBox playerAttackBox = null;
             EnemyAttackBox enemyAttackBox = null; ;
 
-            if (other.CompareTag("playerAttackBox"))
+            // check for enemy dodge
+            bool enemyDodge = false;
+            if (UtilityFunctions.rollForCriticalInt(luck))
             {
-                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                enemyDodge = true;
+                StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay("dodged"));
             }
-            if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
+            if (!enemyDodge)
             {
-                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
-            }
+                if (other.CompareTag("playerAttackBox"))
+                {
+                    playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                }
+                if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
+                {
+                    enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+                }
 
-            bool isRake = false;
-
-            if (playerAttackBox != null
-                && !enemyController.stateKnockDown)
-            {
-                enemyHealth.Health -= playerAttackBox.attackDamage;
-            }
-            if (enemyAttackBox != null
-                && enemyHealth != null
-                && !enemyController.stateKnockDown)
-            {
-                isRake = enemyAttackBox.isRake;
-                //enemyHealth.Health -= (enemyAttackBox.attackDamage / 2);
-                enemyHealth.Health -= enemyAttackBox.attackDamage;
-            }
-            //update health slider
-            enemyHealthBar.setHealthSliderValue();
-            // check if enemy dead + enemy fails to roll critical to dodge
-            if (enemyHealth.Health > 0 && !UtilityFunctions.rollForCriticalInt(luck))
-            {
-                // player knock down attack
+                bool isRake = false;
+                string damageDisplayMessage;
+                // ------------------ player attacks enemy -----------------------
+                // player attack. reduce health
                 if (playerAttackBox != null
-                    && playerAttackBox.knockDownAttack
-                    && !playerAttackBox.disintegrateAttack)
+                    && !enemyController.stateKnockDown)
                 {
-                    enemyKnockedDown();
-                }
-                // if !knock down + is disintegrate
-                else if (playerAttackBox != null
-                    && !playerAttackBox.knockDownAttack
-                    && playerAttackBox.disintegrateAttack)
-                {
-                    enemyDisintegrated();
-                }
-                // enemy attack / friendly fire /vehicle
-                else if (enemyAttackBox != null
-                    && enemyAttackBox.knockDownAttack
-                    && !enemyAttackBox.disintegrateAttack)
-                {
-                    enemyKnockedDown();
-                }
-                // if !knock down + is disintegrate
-                else if (enemyAttackBox != null
-                    && !enemyAttackBox.knockDownAttack
-                    && enemyAttackBox.disintegrateAttack)
-                {
-                    enemyDisintegrated();
-                }
-                else
-                {
-                    if (!isRake)
+                    damageDisplayMessage = "-" + playerAttackBox.attackDamage;
+                    if (UtilityFunctions.rollForCriticalInt(luck))
                     {
-                        enemyTakeDamage();
-                    }
-                    if (isRake)
-                    {
-                        enemyStepOnRake(other);
-                    }
-                }
-            }
-            // else enemy is dead
-            if (enemyHealth.Health <= 0 && !enemyHealth.IsDead)
-            {
-                enemyHealth.IsDead = true;
-                // killed by player attack box and NOT enemy friendly fire
-                if (playerAttackBox != null && enemyHealth.IsDead)
-                {
-                    if (!GameOptions.EnemiesOnlyEnabled)
-                    {
-                        // if not enemies only game mode, player can receive health per kill
-                        GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
-                        //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
-                    }
-                    PlayerHealthBar.instance.setHealthSliderValue();
-                    BasketBall.instance.GameStats.EnemiesKilled++;
-                    if (enemyController.IsBoss)
-                    {
-                        BasketBall.instance.GameStats.BossKilled++;
+                        enemyHealth.Health -= playerAttackBox.attackDamage *= 2;
+                        damageDisplayMessage = "2x damage -" + playerAttackBox.attackDamage;
                     }
                     else
                     {
-                        BasketBall.instance.GameStats.MinionsKilled++;
+                        enemyHealth.Health -= playerAttackBox.attackDamage;
                     }
-                    if (BehaviorNpcCritical.instance != null)
+                    StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay(damageDisplayMessage));
+                }
+                // ------------------ enemy attacks enemy -----------------------
+                // enemy attack. reduce damage to %50
+                if (enemyAttackBox != null
+                    && enemyHealth != null
+                    && !enemyController.stateKnockDown)
+                {
+                    isRake = enemyAttackBox.isRake;
+                    // if rake/obstacle 100% damage
+                    if (isRake)
                     {
-                        BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+                        damageDisplayMessage = "-" + enemyAttackBox.attackDamage;
+                        enemyHealth.Health -= enemyAttackBox.attackDamage;
+                    }
+                    // if enemy 50% damage
+                    else
+                    {
+                        damageDisplayMessage = "-" + enemyAttackBox.attackDamage * 0.5f;
+                        enemyHealth.Health -= enemyAttackBox.attackDamage/2;
+                    }
+                    StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay(damageDisplayMessage));
+                }
+                //update health slider
+                enemyHealthBar.setHealthSliderValue();
+
+                // check if enemy dead + enemy fails to roll critical to dodge
+                if (enemyHealth.Health > 0)
+                {
+                    // player knock down attack
+                    if (playerAttackBox != null
+                        && playerAttackBox.knockDownAttack
+                        && !playerAttackBox.disintegrateAttack)
+                    {
+                        enemyKnockedDown();
+                    }
+                    // if !knock down + is disintegrate
+                    else if (playerAttackBox != null
+                        && !playerAttackBox.knockDownAttack
+                        && playerAttackBox.disintegrateAttack)
+                    {
+                        enemyDisintegrated();
+                    }
+                    // enemy attack / friendly fire /vehicle
+                    else if (enemyAttackBox != null
+                        && enemyAttackBox.knockDownAttack
+                        && !enemyAttackBox.disintegrateAttack)
+                    {
+                        enemyKnockedDown();
+                    }
+                    // if !knock down + is disintegrate
+                    else if (enemyAttackBox != null
+                        && !enemyAttackBox.knockDownAttack
+                        && enemyAttackBox.disintegrateAttack)
+                    {
+                        enemyDisintegrated();
+                    }
+                    else
+                    {
+                        if (!isRake)
+                        {
+                            enemyTakeDamage();
+                        }
+                        if (isRake)
+                        {
+                            enemyStepOnRake(other);
+                        }
                     }
                 }
-                StartCoroutine(enemyController.killEnemy());
+
+                // else enemy is dead
+                if (enemyHealth.Health <= 0 && !enemyHealth.IsDead)
+                {
+                    enemyHealth.IsDead = true;
+                    // killed by player attack box and NOT enemy friendly fire
+                    if (playerAttackBox != null && enemyHealth.IsDead)
+                    {
+                        if (!GameOptions.EnemiesOnlyEnabled)
+                        {
+                            // if not enemies only game mode, player can receive health per kill
+                            GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
+                            //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
+                        }
+                        PlayerHealthBar.instance.setHealthSliderValue();
+                        BasketBall.instance.GameStats.EnemiesKilled++;
+                        if (enemyController.IsBoss)
+                        {
+                            BasketBall.instance.GameStats.BossKilled++;
+                        }
+                        else
+                        {
+                            BasketBall.instance.GameStats.MinionsKilled++;
+                        }
+                        if (BehaviorNpcCritical.instance != null)
+                        {
+                            BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+                        }
+                    }
+                    StartCoroutine(enemyController.killEnemy());
+                }
             }
         }
     }
