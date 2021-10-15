@@ -85,12 +85,13 @@ public class EnemySpawner : MonoBehaviour
             spawnDefaultBoss();
 
             // start function to check status of current enemies
-            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 10f);
+            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 2f);
         }
         if (GameOptions.battleRoyalEnabled)
         {
             battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
-            InvokeRepeating("spawnBattleRoyalContestant", 0, 5f);
+            InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
+            //spawnBattleRoyalContestant();
         }
     }
 
@@ -260,7 +261,7 @@ public class EnemySpawner : MonoBehaviour
             if(getNumberOfBoss() == 0)
             {
                 randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
-                Instantiate(enemyBossPrefabs[0], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
             }
             else
             {
