@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ public class EnemyController : MonoBehaviour
     private float maxDistanceLongRangeAttack;
     [SerializeField]
     private float minDistanceLongRangeAttack;
+    [SerializeField]
+    private float knockBackForce;
     [SerializeField]
     bool hasLongRangeAttack;
     [SerializeField]
@@ -100,6 +103,7 @@ public class EnemyController : MonoBehaviour
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
+        if(knockBackForce == 0) { knockBackForce = 3f; }
 
         if (isMinion)
         {
@@ -141,8 +145,8 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyUsesPhysics)
         {
-            dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 
-                GameLevelManager.instance.TerrainHeight + 0.01f, dropShadow.transform.position.z);
+            dropShadow.transform.position = new Vector3(dropShadow.transform.position.x,
+                gameObject.transform.position.y + 0.01f, dropShadow.transform.position.z);
         }
     }
 
@@ -265,6 +269,7 @@ public class EnemyController : MonoBehaviour
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
                 | RigidbodyConstraints.FreezePositionZ;
+                //| RigidbodyConstraints.FreezePositionX;
         }
         else
         {
@@ -281,6 +286,7 @@ public class EnemyController : MonoBehaviour
     {
         if (enemyUsesPhysics)
         {
+            rigidBody.velocity = Vector3.zero;
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY;
@@ -354,13 +360,28 @@ public class EnemyController : MonoBehaviour
     {
         stateKnockDown = true;
         FreezeEnemyPosition();
+        //UnFreezeEnemyPosition(); 
         anim.SetBool("knockdown", true);
         yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         playAnimation("knockdown");
+        // get direction facing
+        if (facingRight)
+        {
+            UnFreezeEnemyPosition();
+            rigidBody.velocity = Vector3.zero;
+            //apply to X
+            RigidBody.AddForce(-knockBackForce, knockBackForce/2, 0, ForceMode.VelocityChange);
+        }
+        if (!facingRight)
+        {
+            UnFreezeEnemyPosition();
+            rigidBody.velocity = Vector3.zero;
+            RigidBody.AddForce(knockBackForce, knockBackForce / 2, 0, ForceMode.VelocityChange);
+        }
         yield return new WaitForSeconds(knockDownTime);
         anim.SetBool("knockdown", false);
         stateKnockDown = false;
-        UnFreezeEnemyPosition();
+        //UnFreezeEnemyPosition();
 
         stateKnockDown = false;
     }
@@ -385,13 +406,23 @@ public class EnemyController : MonoBehaviour
     public IEnumerator takeDamage()
     {
         stateKnockDown = true;
-
         FreezeEnemyPosition();
         //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.SetBool("takeDamage", true);
         playAnimation("takeDamage");
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
         //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
+        if (facingRight)
+        {
+            UnFreezeEnemyPosition();
+            //apply to X
+            RigidBody.AddForce(-knockBackForce/2, 0, 0, ForceMode.VelocityChange);
+        }
+        if (!facingRight)
+        {
+            UnFreezeEnemyPosition();
+            RigidBody.AddForce(knockBackForce/2, 0, 0, ForceMode.VelocityChange);
+        }
         yield return new WaitForSecondsRealtime(takeDamageTime);
         anim.SetBool("takeDamage", false);
         UnFreezeEnemyPosition();
@@ -433,6 +464,29 @@ public class EnemyController : MonoBehaviour
         {
             targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
         }
+        movement = targetPosition * (movementSpeed * Time.deltaTime);
+        //movement = targetPosition * (movementSpeed * Time.deltaTime);
+        rigidBody.MovePosition(transform.position + movement);
+        //transform.Translate(movement);
+
+        //Debug.Log(gameObject.transform.root.name + " -- currentSpeed : " + currentSpeed);
+
+    }
+
+    public void moveToTarget(List<GameObject> waypoints)
+    {
+        //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
+
+        //// if no bodyguards found
+        //if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        //{
+        //    targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
+        //}
+        //// if bodyguards, attack 1 first bodyguard
+        //else
+        //{
+        //    targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
+        //}
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
