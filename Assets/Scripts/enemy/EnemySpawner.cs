@@ -20,12 +20,16 @@ public class EnemySpawner : MonoBehaviour
     int maxNumberOfBoss = 1;
     [SerializeField]
     int maxNumberOfMinions;
+    [SerializeField]
+    GameObject battleRoyallSpawnPosition;
 
     private void Awake()
     {
+        GameOptions.battleRoyalEnabled = true;
         // get number of enemies already in scene
         if (GameObject.FindGameObjectWithTag("enemy") != null)
         {
+            GameOptions.enemiesEnabled = true;
             // this needs to second option or enabling it will spawn enemies
             // ***** DISABLE FOR TESTING
             //GameOptions.enemiesEnabled = true;
@@ -52,19 +56,23 @@ public class EnemySpawner : MonoBehaviour
         //    GameOptions.enemiesEnabled = true;
         //}
         // if enemies in scene, spawn max
-        if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled)
+        if ((GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled) && GameOptions.gameModeHasBeenSelected)
         {
-            if (GameOptions.hardcoreModeEnabled)
+            if (GameOptions.hardcoreModeEnabled && GameOptions.EnemiesOnlyEnabled)
             {
                 maxNumberOfEnemies = 8;
             }
-            else if (GameOptions.battleRoyalEnabled)
+            if (GameOptions.hardcoreModeEnabled && !GameOptions.EnemiesOnlyEnabled)
+            {
+                maxNumberOfEnemies = 6;
+            }
+            else if (GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
             {
                 maxNumberOfEnemies = 4;
             }
             else
             {
-                maxNumberOfEnemies = 6;
+                maxNumberOfEnemies = 2;
             }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -77,7 +85,12 @@ public class EnemySpawner : MonoBehaviour
             spawnDefaultBoss();
 
             // start function to check status of current enemies
-            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 0, 2f);
+            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 10f);
+        }
+        if (GameOptions.battleRoyalEnabled)
+        {
+            battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
+            InvokeRepeating("spawnBattleRoyalContestant", 0, 5f);
         }
     }
 
@@ -92,8 +105,8 @@ public class EnemySpawner : MonoBehaviour
             {
                 //Random random = new Random();
                 int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
-                //Debug.Log("randomIndex : " + randomIndex + "  max : "+ (enemyMinionPrefabs.Count - 1));
-                if (i > spawnPositions.Count-1)
+                //Debug.Log("randomIndex : " + randomIndex + "  max : " + (enemyMinionPrefabs.Count - 1));
+                if (i > spawnPositions.Count - 1)
                 {
                     Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[0].transform.position, Quaternion.identity);
                 }
@@ -143,7 +156,6 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
-        Debug.Log("spawn minion");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
 
@@ -189,10 +201,12 @@ public class EnemySpawner : MonoBehaviour
         if (randomIndex >= enemyBossPrefabs.Count - 1)
         {
             Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
+            numberOfBoss++;
         }
         else
         {
             Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
+            numberOfBoss++;
         }
     }
 
@@ -203,7 +217,7 @@ public class EnemySpawner : MonoBehaviour
         numberOfMinions = GameObject.FindGameObjectsWithTag("enemy").Length;
         numberOfBoss = getNumberOfBoss();
 
-        Debug.Log("numberOfMinions : " + numberOfMinions);
+        //Debug.Log("numberOfMinions : " + numberOfMinions);
         if (numberOfMinions < maxNumberOfMinions)
         {
             Random random = new Random();
@@ -234,5 +248,46 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         return value;
+    }
+
+    void spawnBattleRoyalContestant()
+    {
+        int randomIndex = 0;
+        Random random = new Random();
+
+        if (GameOptions.battleRoyalEnabled)
+        {
+            if(getNumberOfBoss() == 0)
+            {
+                randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+                Instantiate(enemyBossPrefabs[0], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+                // if spawn more enemies than enemy list has, spawn random enemy
+                if (randomIndex >= enemyMinionPrefabs.Count)
+                {
+                    Instantiate(enemyMinionPrefabs[0], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(enemyMinionPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                }
+            }
+        }
+
+        //Random random = new Random();
+        //int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+        //GameObject[] enemyList = GameObject.FindGameObjectsWithTag("enemy");
+        //GameObject enemy = null;
+
+        ////int index = enemyList.Where(x => x.name)
+        //foreach (GameObject go in enemyList)
+        //{
+        //    enemy = enemyMinionPrefabs.Where(x => !x.name.Contains(go.name)).First();
+        //    Debug.Log("enemy to spawn : " + go.name);
+        //}
+        //Instantiate(enemy, spawnPositions[randomIndex].transform.position, Quaternion.identity);
     }
 }
