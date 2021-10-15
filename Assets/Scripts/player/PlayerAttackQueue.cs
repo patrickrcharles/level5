@@ -30,14 +30,6 @@ public class PlayerAttackQueue : MonoBehaviour
 
     public static PlayerAttackQueue instance;
 
-    public int CurrentEnemiesQueued { get => currentEnemiesQueued; set => currentEnemiesQueued = value; }
-    public bool LockAttackQueue { get => attackQueueLocked; set => attackQueueLocked = value; }
-    public bool AttackSlotOpen { get => attackSlotOpen; set => attackSlotOpen = value; }
-    public GameObject[] AttackPositions { get => attackPositions; set => attackPositions = value; }
-    public List<GameObject> EnemiesQueued { get => enemiesQueued; set => enemiesQueued = value; }
-    public List<GameObject> BodyGuards { get => bodyGuards; set => bodyGuards = value; }
-    public bool BodyGuardEngaged { get => bodyGuardEngaged; set => bodyGuardEngaged = value; }
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -61,17 +53,22 @@ public class PlayerAttackQueue : MonoBehaviour
         // if fighting only game mode/ hardcore ON
         else if (GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
         {
-            maxEnemiesQueued = 6;
+            maxEnemiesQueued = 8;
         }
         // if only hardcore ON
         else if (!GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
         {
-            maxEnemiesQueued = 4;
+            maxEnemiesQueued = 6;
+        }
+        // if only hardcore ON
+        else if (GameOptions.battleRoyalEnabled)
+        {
+            maxEnemiesQueued = 20;
         }
         //default
         else
         {
-            maxEnemiesQueued = 3;
+            maxEnemiesQueued = 4;
         }
 
         //        //#if UNITY_ANDROID && !UNITY_EDITOR
@@ -199,7 +196,31 @@ public class PlayerAttackQueue : MonoBehaviour
                         bodyGuardEngaged = true;
                     }
                 }
-                //Debug.Log("++++++++++++++++++++++++" + enemy.name + " added to attack queue");               
+                if (GameOptions.battleRoyalEnabled
+                    && attackPosition.engaged
+                    && !enemyDetection.Attacking
+                    && currentEnemiesQueued < maxEnemiesQueued)
+                {
+                    //attackPosition.engaged = true;
+                    //attackPosition.enemyEngaged = enemy;
+
+                    enemyDetection.Attacking = true;
+                    if (!bodyGuardEngaged)
+                    {
+                        enemyDetection.AttackPositionId = attackPosition.attackPositionId;
+                        // this triggers 'pursue player' in enemy controller 
+                        enemyDetection.PlayerSighted = true;
+
+                        currentEnemiesQueued++;
+                        // add enemy to queue
+                        enemiesQueued.Add(enemy);
+                        AttackSlotOpen = false;
+                    }
+                    else
+                    {
+                        bodyGuardEngaged = true;
+                    }
+                }
             }
         }
         LockAttackQueue = false;
@@ -244,4 +265,12 @@ public class PlayerAttackQueue : MonoBehaviour
 
         return tempList;
     }
+
+    public int CurrentEnemiesQueued { get => currentEnemiesQueued; set => currentEnemiesQueued = value; }
+    public bool LockAttackQueue { get => attackQueueLocked; set => attackQueueLocked = value; }
+    public bool AttackSlotOpen { get => attackSlotOpen; set => attackSlotOpen = value; }
+    public GameObject[] AttackPositions { get => attackPositions; set => attackPositions = value; }
+    public List<GameObject> EnemiesQueued { get => enemiesQueued; set => enemiesQueued = value; }
+    public List<GameObject> BodyGuards { get => bodyGuards; set => bodyGuards = value; }
+    public bool BodyGuardEngaged { get => bodyGuardEngaged; set => bodyGuardEngaged = value; }
 }
