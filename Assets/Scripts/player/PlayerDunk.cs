@@ -31,8 +31,11 @@ public class PlayerDunk : MonoBehaviour
     }
     private void Start()
     {
-        dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
-        dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        if (GameObject.Find("basketball_goal") != null)
+        {
+            dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
+            dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        }
         playerController = GameLevelManager.instance.PlayerController;
         // default dunk values
         jumpAngle = 45;
