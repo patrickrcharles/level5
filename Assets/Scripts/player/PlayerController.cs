@@ -138,8 +138,14 @@ public class PlayerController : MonoBehaviour
         //GameOptions.sniperEnabled = true; // test flag;
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         {
-            playerSwapAttack = GetComponent<PlayerSwapAttack>();
-            damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
+            if (GetComponent<PlayerSwapAttack>() != null)
+            {
+                playerSwapAttack = GetComponent<PlayerSwapAttack>();
+            }
+            if (damageDisplayObject.GetComponent<Canvas>() != null)
+            {
+                damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
+            }
         }
         else
         {
@@ -551,9 +557,11 @@ public class PlayerController : MonoBehaviour
     {
         rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
-
-        Shotmeter.MeterStarted = true;
-        Shotmeter.MeterStartTime = Time.time;
+        if (!GameOptions.battleRoyalEnabled || !GameOptions.EnemiesOnlyEnabled)
+        {
+            Shotmeter.MeterStarted = true;
+            Shotmeter.MeterStartTime = Time.time;
+        }
         //// if not dunking, start shot meter
         //if (currentState != inAirDunkState)
         //{
