@@ -10,51 +10,6 @@ namespace Assets.Scripts.Utility
 {
     public static class UtilityFunctions
     {
-        //public static bool IsValidEmail(string email)
-        //{
-        //    if (string.IsNullOrWhiteSpace(email))
-        //    {
-        //        return false;
-        //    }
-        //    try
-        //    {
-        //        // Normalize the domain
-        //        email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
-        //                              RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-        //        // Examines the domain part of the email and normalizes it.
-        //        string DomainMapper(Match match)
-        //        {
-        //            // Use IdnMapping class to convert Unicode domain names.
-        //            var idn = new IdnMapping();
-
-        //            // Pull out and process domain name (throws ArgumentException on invalid)
-        //            string domainName = idn.GetAscii(match.Groups[2].Value);
-
-        //            return match.Groups[1].Value + domainName;
-        //        }
-        //    }
-        //    catch (RegexMatchTimeoutException)
-        //    {
-        //        return false;
-        //    }
-        //    catch (ArgumentException)
-        //    {
-        //        return false;
-        //    }
-
-        //    try
-        //    {
-        //        return Regex.IsMatch(email,
-        //            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-        //            RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-        //    }
-        //    catch (RegexMatchTimeoutException)
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public static bool IsValidEmail(string email)
         {
             try
@@ -67,17 +22,14 @@ namespace Assets.Scripts.Utility
                 return false;
             }
         }
-
         public static string RemoveWhitespace(string str)
         {
             return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
-
         public static bool ContainsWhiteSpace(String s)
         {
             return s.Contains(" ");
         }
-
         public static bool IsConnectedToInternet()
         {
             //Debug.Log("IsConnectedToInternet()");
@@ -118,25 +70,22 @@ namespace Assets.Scripts.Utility
 
             return finalString;
         }
-
         public static string GetExternalIpAdress()
         {
             string pubIp = new WebClient().DownloadString("https://api.ipify.org");
             return pubIp;
         }
-
         public static float GetRandomFloat(float min, float max)
         {
             float randNum = Random.Range(min, max);
+            Debug.Log("random float : " + randNum);
             return randNum;
         }
-
         public static int GetRandomInteger(int min, int max)
         {
             int randNum = Random.Range(min, max);
             return randNum;
         }
-
         public static float getPercentageFloat(int made, int attempt)
         {
             if (attempt > 0)
@@ -149,7 +98,6 @@ namespace Assets.Scripts.Utility
                 return 0;
             }
         }
-
         public static bool rollForCriticalInt(int max)
         {
             int percent = Random.Range(0, 100);
