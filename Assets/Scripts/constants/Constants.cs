@@ -30,6 +30,7 @@ public static class Constants
     public const string SCENE_NAME_level_15_cocaine_island = "level_15_cocaine_island";
     public const string SCENE_NAME_level_16_boner_mountain = "level_16_boner_mountain";
     public const string SCENE_NAME_level_17_steel_cage = "level_17_steel_cage";
+    public const string SCENE_NAME_level_18_aveb2 = "level_18_aveb2";
 
     // dev server api address constants
     public const string API_ADDRESS_DEV_publicApi = "http://skeletondistrict.com/api/";
@@ -59,4 +60,6 @@ public static class Constants
     public const string LOCAL_DATABASE_tableName_highscores = "HighScores";
     public const string LOCAL_DATABASE_tableName_user = "User";
 
+    // prefabs paths
+    public const string PREFAB_PATH_character_rob_perillo = "Prefabs/characters/npc_specific/npc_rob";
 }
