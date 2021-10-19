@@ -50,7 +50,6 @@ public class RandomEvents : MonoBehaviour
 
     private void invokeGodOfThunder()
     {
-        Debug.Log("invoke godOfThunder");
         InstantiateRob();
         // if enemies
         // if health < 50
