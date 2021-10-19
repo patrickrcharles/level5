@@ -78,6 +78,7 @@ public class SniperManager : MonoBehaviour
 
         // get player position to attack
         PlayerPosAtShoot = playerHitbox.transform.position;
+        //PlayerPosAtShoot = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject.transform.position;
         // edit prefab
         EnemyProjectile enemyProjectile = projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>();
         enemyProjectile.sniperProjectile = true;
