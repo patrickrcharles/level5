@@ -203,7 +203,7 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
-        trafficEnabled = GameOptions.enemiesEnabled;
+        trafficEnabled = GameOptions.trafficEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
         difficultySelected = GameOptions.difficultySelected;
         obstaclesEnabled = GameOptions.obstaclesEnabled;
@@ -958,8 +958,6 @@ public class StartManager : MonoBehaviour
             GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
 
-        Debug.Log(levelSelectedIndex);
-        Debug.Log(levelSelectedData[levelSelectedIndex].LevelObjectName);
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
@@ -1019,6 +1017,8 @@ public class StartManager : MonoBehaviour
 
         GameOptions.battleRoyalEnabled = modeSelectedData[modeSelectedIndex].IsBattleRoyal;
 
+        GameOptions.gameModeRequiresPlayerSurvive = modeSelectedData[modeSelectedIndex].GameModeRequiresPlayerSurvive;
+
         // if enemies only mode, enable enemies whether it was selected or not
         if (GameOptions.EnemiesOnlyEnabled)
         {
@@ -1029,6 +1029,10 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.trafficEnabled = false;
         }
+        //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
+        //{
+        //    levelSelectedIndex = 15;
+        //}
 
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
@@ -1207,7 +1211,7 @@ public class StartManager : MonoBehaviour
         }
         if(modeSelectedData[modeSelectedIndex].ModeId == 21)
         {
-            levelSelectedIndex = 16;
+            levelSelectedIndex = levelSelectedData.IndexOf(levelSelectedData.Where(x => x.LevelId == 17).FirstOrDefault());
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
@@ -1224,10 +1228,6 @@ public class StartManager : MonoBehaviour
         {
             //if not first index, increment
             modeSelectedIndex++;
-        }
-        if (modeSelectedData[modeSelectedIndex].ModeId == 21)
-        {
-            levelSelectedIndex = 15;
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
