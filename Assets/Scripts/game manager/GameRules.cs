@@ -145,7 +145,6 @@ public class GameRules : MonoBehaviour
 
         // init markers
         gameRulesEnabled = true;
-
         // enable/disable necessary shot markers for game mode
         if (gameModeRequiresShotMarkers3s || gameModeRequiresShotMarkers4s)
         {
@@ -236,11 +235,11 @@ public class GameRules : MonoBehaviour
             GameLevelManager.instance.GameOver = true;
         }
 
-        // enable moneyball if game requires moneyball
-        if (GameLevelManager.instance.Controls.Player.action.triggered && GameModeRequiresMoneyBall)
-        {
-            ToggleMoneyBall();
-        }
+        //// enable moneyball if game requires moneyball
+        //if (GameLevelManager.instance.Controls.Player.action.triggered && GameModeRequiresMoneyBall)
+        //{
+        //    ToggleMoneyBall();
+        //}
 
         // if not enough money and moneyball required, disabled by default
         if (GameModeRequiresMoneyBall && PlayerStats.instance.Money < 5)
@@ -258,7 +257,20 @@ public class GameRules : MonoBehaviour
     {
         // time played end
         timePlayedEnd = Time.time;
-        gameStats.TimePlayed = timePlayedEnd - timePlayedStart;
+        // if player is killed in a game mode that requires a counter
+        // if player is killed, high score is being set as time killed
+        // must complete game mode to get high score
+
+        if (GameOptions.gameModeRequiresPlayerSurvive
+            && GameLevelManager.instance.PlayerHealth.IsDead)
+        {
+            gameStats.TimePlayed = 999f;
+        }
+        else
+        {
+            gameStats.TimePlayed = timePlayedEnd - timePlayedStart;
+        }
+        Debug.Log(gameStats.TimePlayed);
     }
 
     //===================================================== toggle money ball ====================================================
@@ -471,14 +483,29 @@ public class GameRules : MonoBehaviour
 
                 Timer.instance.ScoreClockText.text = GameLevelManager.instance.GameStats.TotalPoints.ToString();
             }
-            if (gameModeId == 20)
+            if (gameModeId == 20 )
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
 
                 displayCurrentScoreText.text =
                     "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
-                Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
+                if (Timer.instance.ScoreClockText != null)
+                {
+                    Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
+                }
             }
+            //if (gameModeId == 21)
+            //{
+            //    displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
+
+            //    displayCurrentScoreText.text =
+            //        "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
+            //    if (Timer.instance.ScoreClockText != null)
+            //    {
+            //        Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
+            //    }
+            //}
+
             if (gameModeId == 0 || gameModeId == 99 || gameModeId == 98)
             {
                 displayCurrentScoreText.text = "longest shot : " + (gameStats.LongestShotMade).ToString("0.00")
@@ -559,6 +586,11 @@ public class GameRules : MonoBehaviour
             displayText = "You Bashed up " + gameStats.EnemiesKilled + " nerds"
                 + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession(); ;
         }
+        //if (gameModeId == 21)
+        //{
+        //    displayText = "You Bashed up " + gameStats.EnemiesKilled + " nerds"
+        //        + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession(); ;
+        //}
         if (gameModeId == 98)
         {
             displayText = "Arcade mode\n\n" + GetStatsTotals();
