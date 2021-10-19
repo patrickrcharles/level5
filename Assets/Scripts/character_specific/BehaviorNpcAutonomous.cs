@@ -52,10 +52,16 @@ public class BehaviorNpcAutonomous : MonoBehaviour
     public float maxDistance;
 
     private GameObject[] returnPositions;
+    private GameObject spriteObject;
 
     // Use this for initialization
     void Start()
     {
+        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
+        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        {
+            spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
         facingRight = true;
         movementSpeed = walkMovementSpeed;
         rigidBody = GetComponent<Rigidbody>();
