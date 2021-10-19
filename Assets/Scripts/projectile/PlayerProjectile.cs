@@ -83,9 +83,10 @@ public class PlayerProjectile : MonoBehaviour
             && !impactProjectile
             && (other.CompareTag("ground") || other.CompareTag("enemyHitbox")))
         {
-            //Debug.Log("collision between : " + gameObject.name + " and " + other.name);
+            Debug.Log("collision between : " + gameObject.name + " and " + other.name);
             Vector3 transformAtImpact = gameObject.transform.position;
-            Vector3 spawnPoint = new Vector3(transformAtImpact.x, 0, transformAtImpact.z);
+            //Vector3 transformAtImpact = other.transform.position;
+            Vector3 spawnPoint = new Vector3(transformAtImpact.x, other.transform.position.y, transformAtImpact.z);
             // explode object
             //Debug.Log("projectile should explode");
             //Debug.Log("instantiate fire object");
