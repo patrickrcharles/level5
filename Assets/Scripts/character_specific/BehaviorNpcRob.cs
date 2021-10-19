@@ -4,9 +4,15 @@ public class BehaviorNpcRob : MonoBehaviour
 {
     [SerializeField] GameObject[] enemies;
     private AudioSource audioSource;
+    private GameObject spriteObject;
 
     private void Start()
     {
+        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
+        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        {
+            spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
         enemies = GameObject.FindGameObjectsWithTag("enemy");
         if (GameLevelManager.instance.Basketball != null)
         {
