@@ -9,6 +9,9 @@ public class EnemyController : MonoBehaviour
     private Animator anim;
     private Rigidbody rigidBody;
     private EnemyDetection enemyDetection;
+    [SerializeField]
+    private EnemyHealth enemyHealth;
+    private EnemyHealthBar enemyHealthBar;
     private SpriteRenderer spriteRenderer;
     private PlayerSwapAttack playerSwapAttack;
     // target for enemy to move to
@@ -84,6 +87,8 @@ public class EnemyController : MonoBehaviour
     Vector3 originalPosition;
     [SerializeField]
     private GameObject damageDisplayObject;
+    [SerializeField]
+    private GameObject spriteObject;
 
     //[SerializeField]
     //float currentSpeed;
@@ -91,12 +96,17 @@ public class EnemyController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
+
+
         facingRight = true;
-        movementSpeed = walkMovementSpeed;
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
+        enemyHealthBar = gameObject.GetComponentInChildren<EnemyHealthBar>();
+
+        enemyHealth = gameObject.GetComponentInChildren<EnemyHealth>();
         damageDisplayObject = transform.FindDeepChild("enemy_damage_display_text").gameObject;
 
         originalPosition = transform.position;
@@ -113,25 +123,36 @@ public class EnemyController : MonoBehaviour
 
         if (isMinion)
         {
-            attackCooldown = 1.5f;
-            walkMovementSpeed = 1.5f;
-            runMovementSpeed = 2f;
+            attackCooldown = 1.25f;
+            walkMovementSpeed = 2f;
+            runMovementSpeed = 3f;
             takeDamageTime = 0.4f;
         }
         if (isBoss)
         {
             attackCooldown = 1f;
-            walkMovementSpeed = 2f;
-            runMovementSpeed = 2.5f;
+            walkMovementSpeed = 3f;
+            runMovementSpeed = 4f;
             takeDamageTime = 0.3f;
         }
 
+        movementSpeed = walkMovementSpeed;
         if (GameOptions.hardcoreModeEnabled)
         {
             movementSpeed *= 1.25f;
             attackCooldown *= 0.5f;
         }
 
+        if (damageDisplayObject.GetComponent<Canvas>() != null)
+        {
+            damageDisplayObject.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
+        }
+        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        {
+            Debug.Log("enemyHealthBar.gameObject : "+ enemyHealthBar.gameObject );
+            spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            enemyHealthBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
         // put enemy on the ground. some are spawning up pretty high
         //gameObject.transform.position = new Vector3(gameObject.transform.position.x, GameLevelManager.instance.TerrainHeight, gameObject.transform.position.z);
 
@@ -352,33 +373,27 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator struckByLighning()
     {
+        // enemy takes 10 damage
+        enemyHealth.Health -= 10;
+        enemyHealthBar.setHealthSliderValue();
+        StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay("-10"));
+
         stateKnockDown = true;
         FreezeEnemyPosition();
         GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.Play("lightning");
         yield return new WaitUntil(() => currentState == AnimatorState_Lightning);
-        //anim.SetBool("knockdown", true);
-        //yield return new WaitForSeconds(1);
         StartCoroutine(knockedDown());
-
-        ////anim.SetBool("knockdown", true);
-        //playAnimation("knockdown");
-        //yield return new WaitForSeconds(knockDownTime);
-        //anim.SetBool("knockdown", false);
-        //stateKnockDown = false;
-        //UnFreezeEnemyPosition();
-
-        //stateKnockDown = false;
     }
-
 
     public IEnumerator knockedDown()
     {
+        //Debug.Log("asdasdasd");
+        yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         stateKnockDown = true;
         FreezeEnemyPosition();
         //UnFreezeEnemyPosition(); 
         anim.SetBool("knockdown", true);
-        yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         playAnimation("knockdown");
         // get direction facing
         if (facingRight)
