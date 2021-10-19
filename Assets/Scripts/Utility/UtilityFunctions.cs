@@ -78,7 +78,6 @@ namespace Assets.Scripts.Utility
         public static float GetRandomFloat(float min, float max)
         {
             float randNum = Random.Range(min, max);
-            Debug.Log("random float : " + randNum);
             return randNum;
         }
         public static int GetRandomInteger(int min, int max)
