@@ -6,7 +6,7 @@ using Random = System.Random;
 public class PlayerCollisions : MonoBehaviour
 {
     [SerializeField]
-    PlayerController playerState;
+    PlayerController playerController;
     [SerializeField]
     PlayerHealth playerHealth;
     [SerializeField]
@@ -21,7 +21,7 @@ public class PlayerCollisions : MonoBehaviour
     IEnumerator GetPlayerObjects()
     {
         yield return new WaitUntil(() => GameLevelManager.instance.PlayerController != null);
-        playerState = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController;
         playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
     }
 
@@ -35,8 +35,8 @@ public class PlayerCollisions : MonoBehaviour
         }
 
         if (gameObject.CompareTag("playerHitbox")
-            && playerState.InAir
-            && playerState.currentState != playerState.dunkState
+            && playerController.InAir
+            && playerController.currentState != playerController.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
             StartCoroutine(PlayerDunk.instance.TriggerDunkSequence());
@@ -44,16 +44,16 @@ public class PlayerCollisions : MonoBehaviour
         // player sometimes gets stuck in inair dunk state
         if (gameObject.CompareTag("playerHitbox")
             && other.CompareTag("ground")
-            && playerState.currentState == playerState.inAirDunkState)
+            && playerController.currentState == playerController.inAirDunkState)
         {
-            playerState.SetPlayerAnim("jump", false);
+            playerController.SetPlayerAnim("jump", false);
         }
 
         // if collsion between hitbox, vehicle, knocked down
         if (gameObject.CompareTag("playerHitbox")
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox") || other.CompareTag("playerAttackBox"))
-        && !playerState.KnockedDown
-        && !playerState.TakeDamage
+        && !playerController.KnockedDown
+        && !playerController.TakeDamage
         && (GameOptions.enemiesEnabled
         || GameOptions.trafficEnabled
         || GameOptions.obstaclesEnabled
@@ -63,7 +63,7 @@ public class PlayerCollisions : MonoBehaviour
         && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.CharacterProfile.Luck)
         && !locked)
         {
-
+            //Debug.Log("this : " + gameObject.name + "    other : " + other.name);
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
             PlayerAttackBox playerAttackBox = null;
@@ -94,7 +94,7 @@ public class PlayerCollisions : MonoBehaviour
             }
 
             // player is not blocking
-            if (playerState.CurrentState != playerState.BlockState)
+            if (playerController.CurrentState != playerController.BlockState)
             {
                 locked = true;
                 // deduct from player health 
@@ -123,7 +123,7 @@ public class PlayerCollisions : MonoBehaviour
                 }
             }
             // player is blocking
-            if (playerState.CurrentState == playerState.BlockState)
+            if (playerController.CurrentState == playerController.BlockState)
             {
                 // blocking play sound
                 // block meter goes down
@@ -158,26 +158,26 @@ public class PlayerCollisions : MonoBehaviour
 
     void playerTakeDamage()
     {
-        playerState.TakeDamage = true;
-        playerState.KnockedDown = false;
-        playerState.hasBasketball = false;
-        playerState.SetPlayerAnim("hasBasketball", false);
+        playerController.TakeDamage = true;
+        playerController.KnockedDown = false;
+        playerController.hasBasketball = false;
+        playerController.SetPlayerAnim("hasBasketball", false);
     }
     void playerKnockedDown()
     {
-        playerState.TakeDamage = false;
-        playerState.KnockedDown = true;
-        playerState.hasBasketball = false;
-        playerState.SetPlayerAnim("hasBasketball", false);
+        playerController.TakeDamage = false;
+        playerController.KnockedDown = true;
+        playerController.hasBasketball = false;
+        playerController.SetPlayerAnim("hasBasketball", false);
     }
 
     void playerStepOnRake(Collider other)
     {
         other.transform.parent.GetComponentInChildren<Animator>().Play("attack");
-        playerState.TakeDamage = true;
-        playerState.KnockedDown = false;
-        playerState.hasBasketball = false;
+        playerController.TakeDamage = true;
+        playerController.KnockedDown = false;
+        playerController.hasBasketball = false;
         //StartCoroutine(playerState.PlayerFreezeForXSeconds(2f));             
-        playerState.SetPlayerAnim("hasBasketball", false);
+        playerController.SetPlayerAnim("hasBasketball", false);
     }
 }
