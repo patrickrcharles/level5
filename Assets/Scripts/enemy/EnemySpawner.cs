@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        GameOptions.battleRoyalEnabled = true;
+        //GameOptions.battleRoyalEnabled = true;
         // get number of enemies already in scene
         if (GameObject.FindGameObjectWithTag("enemy") != null)
         {
@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 maxNumberOfEnemies = 6;
             }
-            else if (GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
+            else if (GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected || GameOptions.enemiesEnabled)
             {
                 maxNumberOfEnemies = 4;
             }
@@ -80,12 +80,14 @@ public class EnemySpawner : MonoBehaviour
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
 
-            // spawn enemies if necessary
-            spawnDefaultMinions();
-            spawnDefaultBoss();
-
-            // start function to check status of current enemies
-            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 2f);
+            if (!GameOptions.battleRoyalEnabled)
+            {
+                // spawn enemies if necessary
+                spawnDefaultMinions();
+                spawnDefaultBoss();
+                // start function to check status of current enemies
+                InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 2f);
+            }
         }
         if (GameOptions.battleRoyalEnabled)
         {
