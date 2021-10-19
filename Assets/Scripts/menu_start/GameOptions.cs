@@ -93,4 +93,5 @@ public static class GameOptions
     static public bool tipDialogueLoadedOnStart;
     static public bool obstaclesEnabled;
     static public bool battleRoyalEnabled;
+    static public bool gameModeRequiresPlayerSurvive;
 }
