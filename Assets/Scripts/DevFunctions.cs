@@ -51,28 +51,14 @@ public class DevFunctions : MonoBehaviour
 
     private void InstantiateRob()
     {
-        Debug.Log("InstantiateRob()");
-
-        GameObject _playerSpawnLocation = GameObject.Find("player_spawn_location");
-        string playerPrefabPath = "Prefabs/characters/players/npc_specific/npc_rob";
+        Vector3 _playerSpawnLocation = GameLevelManager.instance.Player.transform.position;
+        Vector3 spawn = new Vector3(_playerSpawnLocation.x + 1.5f,
+            _playerSpawnLocation.y,
+            _playerSpawnLocation.z);
+        string playerPrefabPath = "Prefabs/characters/npc_specific/npc_rob";
         GameObject _playerClone = Resources.Load(playerPrefabPath) as GameObject;
 
-        Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-    }
-
-    private void testLightningStrike()
-    {
-        enemies = GameObject.FindGameObjectsWithTag("enemy");
-
-        foreach (GameObject enemy in enemies)
-        {
-            EnemyController enemyController = enemy.GetComponent<EnemyController>();
-
-            if (enemyController.SpriteRenderer.isVisible)
-            {
-                StartCoroutine(enemyController.struckByLighning());
-            }
-        }
+        Instantiate(_playerClone, spawn, Quaternion.identity);
     }
 
     public void setMaxPlayerStats()
