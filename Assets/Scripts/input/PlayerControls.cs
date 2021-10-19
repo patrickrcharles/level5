@@ -35,6 +35,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""callball"",
+                    ""type"": ""Button"",
+                    ""id"": ""2578b0db-9c51-4ae8-9e89-2deeb4408229"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""shoot"",
                     ""type"": ""Button"",
                     ""id"": ""374df6de-afc2-4a1d-90e1-7e77e00e7305"",
@@ -59,9 +67,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""action"",
+                    ""name"": ""attack"",
                     ""type"": ""Button"",
                     ""id"": ""a11e26b5-34ce-4e0b-a23a-56a35216b149"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""block"",
+                    ""type"": ""Button"",
+                    ""id"": ""88245111-0c79-484d-bb02-df755af62c86"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -132,61 +148,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""right"",
                     ""id"": ""45a5aa61-0904-4e40-a6f2-bbab89342d7d"",
                     ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Arrows"",
-                    ""id"": ""89baf106-f97e-4fdd-b912-a38c4f1c6c81"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""a0ec396c-0a26-4af8-b3e7-da161da7be1f"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""f7461f59-ca60-4120-90a7-93c192205973"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""c64d7164-2689-4562-88b5-1bf8d9b4d828"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""a13f13be-c5c6-43ff-9420-e4ebb5db7c60"",
-                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -361,19 +322,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4baba7f1-4f44-4515-84f1-86f45d7cc0f5"",
-                    ""path"": ""<Keyboard>/rightCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""11715e0f-f18b-4287-b035-9600fa835721"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -384,18 +334,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""53ee70ca-a722-4040-8dc3-ab9a6bb223e4"",
-                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f72306fb-b9b2-40af-aad2-3c6c153c02de"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -483,51 +422,40 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""50d64718-7252-4eac-aac8-22ca38f6c427"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""action"",
+                    ""action"": ""attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""a7a2a8c2-59a6-486d-8cd0-32393a77f772"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""action"",
+                    ""action"": ""attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""8a2db1c3-60d7-4e29-a257-06a9a21f5c13"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9072ad66-5d48-43b5-9885-f113545807de"",
-                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/trigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""action"",
+                    ""action"": ""attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""348078d7-8409-445d-a155-ec065c950533"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -598,6 +526,105 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcb0ad82-eb20-432d-a2f7-d4ba1f73866f"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""407a95cf-ed23-4e71-81ed-c8a19c8c325a"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ed1dc3a-8ac5-4a5b-91b0-7d4a1b17d36e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2019b5ef-e98b-4bca-9bb5-9669fa161f7b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ebeba14-db01-4fac-8041-6b6215d7c76d"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4ffce25-ab3b-47f9-85c1-337f8978d3e2"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5512d8a2-d359-4b51-8371-7d5836f68d08"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""callball"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75a07ef2-8ace-4742-ade8-747616759e25"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""callball"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc57fd67-7e5e-4562-8045-98d357d23cfc"",
+                    ""path"": ""<HID::Sony PLAYSTATION(R)3 Controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""callball"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1536,16 +1563,29 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""keyboard1"",
+            ""bindingGroup"": ""keyboard1"",
+            ""devices"": []
+        },
+        {
+            ""name"": ""keyboard2"",
+            ""bindingGroup"": ""keyboard2"",
+            ""devices"": []
+        }
+    ]
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_movement = m_Player.FindAction("movement", throwIfNotFound: true);
         m_Player_jump = m_Player.FindAction("jump", throwIfNotFound: true);
+        m_Player_callball = m_Player.FindAction("callball", throwIfNotFound: true);
         m_Player_shoot = m_Player.FindAction("shoot", throwIfNotFound: true);
         m_Player_cancel = m_Player.FindAction("cancel", throwIfNotFound: true);
         m_Player_submit = m_Player.FindAction("submit", throwIfNotFound: true);
-        m_Player_action = m_Player.FindAction("action", throwIfNotFound: true);
+        m_Player_attack = m_Player.FindAction("attack", throwIfNotFound: true);
+        m_Player_block = m_Player.FindAction("block", throwIfNotFound: true);
         m_Player_special = m_Player.FindAction("special", throwIfNotFound: true);
         m_Player_run = m_Player.FindAction("run", throwIfNotFound: true);
         // PlayerTouch
@@ -1625,10 +1665,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_movement;
     private readonly InputAction m_Player_jump;
+    private readonly InputAction m_Player_callball;
     private readonly InputAction m_Player_shoot;
     private readonly InputAction m_Player_cancel;
     private readonly InputAction m_Player_submit;
-    private readonly InputAction m_Player_action;
+    private readonly InputAction m_Player_attack;
+    private readonly InputAction m_Player_block;
     private readonly InputAction m_Player_special;
     private readonly InputAction m_Player_run;
     public struct PlayerActions
@@ -1637,10 +1679,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @movement => m_Wrapper.m_Player_movement;
         public InputAction @jump => m_Wrapper.m_Player_jump;
+        public InputAction @callball => m_Wrapper.m_Player_callball;
         public InputAction @shoot => m_Wrapper.m_Player_shoot;
         public InputAction @cancel => m_Wrapper.m_Player_cancel;
         public InputAction @submit => m_Wrapper.m_Player_submit;
-        public InputAction @action => m_Wrapper.m_Player_action;
+        public InputAction @attack => m_Wrapper.m_Player_attack;
+        public InputAction @block => m_Wrapper.m_Player_block;
         public InputAction @special => m_Wrapper.m_Player_special;
         public InputAction @run => m_Wrapper.m_Player_run;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1658,6 +1702,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @callball.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCallball;
+                @callball.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCallball;
+                @callball.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCallball;
                 @shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
                 @shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
                 @shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
@@ -1667,9 +1714,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @submit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
                 @submit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
                 @submit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
-                @action.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction;
-                @action.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction;
-                @action.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAction;
+                @attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                @block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                @block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                 @special.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
                 @special.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
                 @special.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
@@ -1686,6 +1736,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @jump.started += instance.OnJump;
                 @jump.performed += instance.OnJump;
                 @jump.canceled += instance.OnJump;
+                @callball.started += instance.OnCallball;
+                @callball.performed += instance.OnCallball;
+                @callball.canceled += instance.OnCallball;
                 @shoot.started += instance.OnShoot;
                 @shoot.performed += instance.OnShoot;
                 @shoot.canceled += instance.OnShoot;
@@ -1695,9 +1748,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @submit.started += instance.OnSubmit;
                 @submit.performed += instance.OnSubmit;
                 @submit.canceled += instance.OnSubmit;
-                @action.started += instance.OnAction;
-                @action.performed += instance.OnAction;
-                @action.canceled += instance.OnAction;
+                @attack.started += instance.OnAttack;
+                @attack.performed += instance.OnAttack;
+                @attack.canceled += instance.OnAttack;
+                @block.started += instance.OnBlock;
+                @block.performed += instance.OnBlock;
+                @block.canceled += instance.OnBlock;
                 @special.started += instance.OnSpecial;
                 @special.performed += instance.OnSpecial;
                 @special.canceled += instance.OnSpecial;
@@ -1943,14 +1999,34 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         }
     }
     public OtherActions @Other => new OtherActions(this);
+    private int m_keyboard1SchemeIndex = -1;
+    public InputControlScheme keyboard1Scheme
+    {
+        get
+        {
+            if (m_keyboard1SchemeIndex == -1) m_keyboard1SchemeIndex = asset.FindControlSchemeIndex("keyboard1");
+            return asset.controlSchemes[m_keyboard1SchemeIndex];
+        }
+    }
+    private int m_keyboard2SchemeIndex = -1;
+    public InputControlScheme keyboard2Scheme
+    {
+        get
+        {
+            if (m_keyboard2SchemeIndex == -1) m_keyboard2SchemeIndex = asset.FindControlSchemeIndex("keyboard2");
+            return asset.controlSchemes[m_keyboard2SchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCallball(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
-        void OnAction(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
         void OnSpecial(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
     }
