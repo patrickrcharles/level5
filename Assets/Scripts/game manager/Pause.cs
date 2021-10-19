@@ -125,7 +125,7 @@ public class Pause : MonoBehaviour
     {
         //pause ESC, submit, cancel
         if (//GameLevelManager.instance.Controls.UINavigation.Submit.triggered||
-             GameLevelManager.instance.Controls.UINavigation.Cancel.triggered
+             GameLevelManager.instance.Controls.Player.cancel.triggered
             //|| GameLevelManager.Instance.Controls.Player.esc.triggered
             && !GameLevelManager.instance.GameOver)
         {
