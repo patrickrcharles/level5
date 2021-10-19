@@ -168,11 +168,10 @@ public class GameLevelManager : MonoBehaviour
             GameObject.Find("shot_clock").GetComponent<Canvas>().worldCamera = Camera.main;
         }
 
-        if (!GameOptions.gameModeHasBeenSelected)
+        if (!GameOptions.gameModeHasBeenSelected && GameOptions.battleRoyalEnabled)
         {
             GameOptions.enemiesEnabled = true;
             GameObject.Find("basketball_goal").SetActive(false);
-
         }
     }
 
