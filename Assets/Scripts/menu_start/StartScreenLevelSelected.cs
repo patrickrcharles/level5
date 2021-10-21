@@ -12,6 +12,7 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private bool levelHasWeather;
     [SerializeField] private bool isFightingLevel;
     [SerializeField] private bool isShootingLevel;
+    [SerializeField] private bool isBattleRoyalLevel;
 
     public string LevelDescription
     {
@@ -41,4 +42,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     public bool LevelHasWeather { get => levelHasWeather; set => levelHasWeather = value; }
     public bool IsFightingLevel { get => isFightingLevel; }
     public bool IsShootingLevel { get => isShootingLevel;  }
+    public bool IsBattleRoyalLevel { get => isBattleRoyalLevel; }
 }
