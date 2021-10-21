@@ -376,6 +376,7 @@ public class EnemyController : MonoBehaviour
         // enemy takes 10 damage
         enemyHealth.Health -= 10;
         enemyHealthBar.setHealthSliderValue();
+
         StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay("-10"));
 
         stateKnockDown = true;
@@ -383,7 +384,15 @@ public class EnemyController : MonoBehaviour
         GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.Play("lightning");
         yield return new WaitUntil(() => currentState == AnimatorState_Lightning);
-        StartCoroutine(knockedDown());
+
+        if (enemyHealth.Health <= 0 && !enemyHealth.IsDead)
+        {
+            enemyIsDead();
+        }
+        else
+        {
+            StartCoroutine(knockedDown());
+        }
     }
 
     public IEnumerator knockedDown()
@@ -438,11 +447,8 @@ public class EnemyController : MonoBehaviour
     {
         stateKnockDown = true;
         FreezeEnemyPosition();
-        //GameObject.Find("camera_flash").GetComponent<Animator>().Play("camera_flash");
         anim.SetBool("takeDamage", true);
         playAnimation("takeDamage");
-        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("lightning"));
-        //yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("knockdown"));
         if (facingRight)
         {
             UnFreezeEnemyPosition();
@@ -472,14 +478,6 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
         stateKnockDown = false;
     }
-
-    //int RandomNumber(int min, int max)
-    //{
-    //    System.Random rnd = new System.Random();
-    //    int randNum = rnd.Next(min, max);
-    //    //Debug.Log("generate randNum : " + randNum);
-    //    return randNum;
-    //}
 
     public void pursueTarget()
     {
@@ -554,6 +552,44 @@ public class EnemyController : MonoBehaviour
             distanceFromPlayer = Vector3.Distance(PlayerAttackQueue.instance.BodyGuards[0].transform.position, transform.position);
             lineOfSight = PlayerAttackQueue.instance.BodyGuards[0].transform.position.z - transform.position.z;
         }
+    }
+
+    private void enemyIsDead()
+    {
+        enemyHealth.IsDead = true;
+
+        if (GameLevelManager.instance.PlayerHealth.Health < GameLevelManager.instance.PlayerHealth.MaxHealth)
+        {
+            if (IsBoss)
+            {
+                GameLevelManager.instance.PlayerHealth.Health += 5;
+            }
+            if (IsMinion)
+            {
+                GameLevelManager.instance.PlayerHealth.Health += 2;
+                //Debug.Log("ADD HEALTH : 2");
+            }
+            if (GameLevelManager.instance.PlayerHealth.Health > GameLevelManager.instance.PlayerHealth.MaxHealth)
+            {
+                GameLevelManager.instance.PlayerHealth.Health = GameLevelManager.instance.PlayerHealth.MaxHealth;
+            }
+        }
+        PlayerHealthBar.instance.setHealthSliderValue();
+        BasketBall.instance.GameStats.EnemiesKilled++;
+        if (IsBoss)
+        {
+
+            BasketBall.instance.GameStats.BossKilled++;
+        }
+        else
+        {
+            BasketBall.instance.GameStats.MinionsKilled++;
+        }
+        if (BehaviorNpcCritical.instance != null)
+        {
+            BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+        }
+        StartCoroutine(killEnemy());
     }
 
     public bool StateWalk { get => stateWalk; set => stateWalk = value; }

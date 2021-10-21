@@ -146,53 +146,51 @@ public class EnemyCollisions : MonoBehaviour
                 // else enemy is dead
                 if (enemyHealth.Health <= 0 && !enemyHealth.IsDead)
                 {
-                    enemyHealth.IsDead = true;
-                    // killed by player attack box and NOT enemy friendly fire
-                    if (playerAttackBox != null && enemyHealth.IsDead)
-                    {
-                        if (GameLevelManager.instance.PlayerHealth.Health < GameLevelManager.instance.PlayerHealth.MaxHealth)
-                        {
-                            if (enemyController.IsBoss)
-                            {
-                                //Debug.Log("ADD HEALTH : 5");
-                                GameLevelManager.instance.PlayerHealth.Health += 5;
-                            }
-                            if (enemyController.IsMinion)
-                            {
-                                GameLevelManager.instance.PlayerHealth.Health += 2;
-                                //Debug.Log("ADD HEALTH : 2");
-                            }
-                            if (GameLevelManager.instance.PlayerHealth.Health > GameLevelManager.instance.PlayerHealth.MaxHealth)
-                            {
-                                GameLevelManager.instance.PlayerHealth.Health = GameLevelManager.instance.PlayerHealth.MaxHealth;
-                            }
-                        }
-                        //if (!GameOptions.EnemiesOnlyEnabled)
-                        //{
-                        //    // if not enemies only game mode, player can receive health per kill
-                        //    GameLevelManager.instance.PlayerHealth.Health += (enemyHealth.MaxEnemyHealth / 10);
-                        //    //Debug.Log("add to player health : " + (enemyHealth.MaxEnemyHealth / 10));
-                        //}
-                        PlayerHealthBar.instance.setHealthSliderValue();
-                        BasketBall.instance.GameStats.EnemiesKilled++;
-                        if (enemyController.IsBoss)
-                        {
-
-                            BasketBall.instance.GameStats.BossKilled++;
-                        }
-                        else
-                        {
-                            BasketBall.instance.GameStats.MinionsKilled++;
-                        }
-                        if (BehaviorNpcCritical.instance != null)
-                        {
-                            BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
-                        }
-                    }
-                    StartCoroutine(enemyController.killEnemy());
+                    enemyIsDead(playerAttackBox);
                 }
             }
         }
+    }
+
+    private void enemyIsDead(PlayerAttackBox playerAttackBox)
+    {
+        enemyHealth.IsDead = true;
+        // killed by player attack box and NOT enemy friendly fire
+        if (playerAttackBox != null && enemyHealth.IsDead)
+        {
+            if (GameLevelManager.instance.PlayerHealth.Health < GameLevelManager.instance.PlayerHealth.MaxHealth)
+            {
+                if (enemyController.IsBoss)
+                {
+                    GameLevelManager.instance.PlayerHealth.Health += 5;
+                }
+                if (enemyController.IsMinion)
+                {
+                    GameLevelManager.instance.PlayerHealth.Health += 2;
+                    //Debug.Log("ADD HEALTH : 2");
+                }
+                if (GameLevelManager.instance.PlayerHealth.Health > GameLevelManager.instance.PlayerHealth.MaxHealth)
+                {
+                    GameLevelManager.instance.PlayerHealth.Health = GameLevelManager.instance.PlayerHealth.MaxHealth;
+                }
+            }
+            PlayerHealthBar.instance.setHealthSliderValue();
+            BasketBall.instance.GameStats.EnemiesKilled++;
+            if (enemyController.IsBoss)
+            {
+
+                BasketBall.instance.GameStats.BossKilled++;
+            }
+            else
+            {
+                BasketBall.instance.GameStats.MinionsKilled++;
+            }
+            if (BehaviorNpcCritical.instance != null)
+            {
+                BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
+            }
+        }
+        StartCoroutine(enemyController.killEnemy());
     }
 
     private void enemyDisintegrated()
