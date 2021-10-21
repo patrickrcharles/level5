@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 maxNumberOfEnemies = 6;
             }
-            else if (GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected || GameOptions.enemiesEnabled)
+            else if (!GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected || GameOptions.enemiesEnabled)
             {
                 maxNumberOfEnemies = 4;
             }
@@ -91,6 +91,7 @@ public class EnemySpawner : MonoBehaviour
         }
         if (GameOptions.battleRoyalEnabled)
         {
+            maxNumberOfEnemies = 20;
             battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
             InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
             //spawnBattleRoyalContestant();
