@@ -29,7 +29,7 @@ public static class Constants
     public const string SCENE_NAME_level_14_dome = "level_14_dome";
     public const string SCENE_NAME_level_15_cocaine_island = "level_15_cocaine_island";
     public const string SCENE_NAME_level_16_boner_mountain = "level_16_boner_mountain";
-    public const string SCENE_NAME_level_17_steel_cage = "level_17_steel_cage";
+    public const string SCENE_NAME_level_17_steel_cage = "level_17_rumble_pit";
     public const string SCENE_NAME_level_18_aveb2 = "level_18_aveb2";
 
     // dev server api address constants
