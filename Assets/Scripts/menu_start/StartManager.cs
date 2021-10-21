@@ -1016,11 +1016,12 @@ public class StartManager : MonoBehaviour
         GameOptions.obstaclesEnabled = obstaclesEnabled;
 
         GameOptions.battleRoyalEnabled = modeSelectedData[modeSelectedIndex].IsBattleRoyal;
+        Debug.Log("GameOptions.battleRoyalEnabled : " + GameOptions.battleRoyalEnabled);
 
         GameOptions.gameModeRequiresPlayerSurvive = modeSelectedData[modeSelectedIndex].GameModeRequiresPlayerSurvive;
 
         // if enemies only mode, enable enemies whether it was selected or not
-        if (GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled)
         {
             GameOptions.enemiesEnabled = true;
         }
@@ -1156,8 +1157,8 @@ public class StartManager : MonoBehaviour
             levelSelectedIndex--;
         }
         // if mode is shooting, level is not
-        if (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !levelSelectedData[levelSelectedIndex].IsShootingLevel))
         {
             changeSelectedLevelUp();
         }
@@ -1167,8 +1168,21 @@ public class StartManager : MonoBehaviour
         {
             changeSelectedLevelUp();
         }
+        // mode is battle royal, level is not
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelUp();
+        }
+        // mode is not battle royal, level is not
+        if (!modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelUp();
+        }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
-
+        initializeLevelDisplay();
+        //intializeModeDisplay();
     }
     public void changeSelectedLevelDown()
     {
@@ -1188,13 +1202,27 @@ public class StartManager : MonoBehaviour
         {
             changeSelectedLevelDown();
         }
-        // mode is fighting, level is not
+        // mode is is battle royal, level is not
         if (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
             && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
         {
             changeSelectedLevelDown();
         }
+        // mode is battle royal, level is not
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelDown();
+        }
+        // mode is not battle royal, level is not
+        if (!modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelDown();
+        }
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+        initializeLevelDisplay();
+        //intializeModeDisplay();
 
     }
     public void changeSelectedModeUp()
@@ -1209,12 +1237,16 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             modeSelectedIndex--;
         }
-        if(modeSelectedData[modeSelectedIndex].ModeId == 21)
+        // mode is not battle royal, level is not
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
         {
-            levelSelectedIndex = levelSelectedData.IndexOf(levelSelectedData.Where(x => x.LevelId == 17).FirstOrDefault());
+            changeSelectedLevelUp();
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
+        intializeModeDisplay();
+        initializeLevelDisplay();
     }
 
     public void changeSelectedModeDown()
@@ -1229,8 +1261,15 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             modeSelectedIndex++;
         }
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelDown();
+        }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
+        intializeModeDisplay();
+        initializeLevelDisplay();
     }
 
     // ============================  public var references  ==============================
