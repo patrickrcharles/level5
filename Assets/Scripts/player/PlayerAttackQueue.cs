@@ -49,31 +49,26 @@ public class PlayerAttackQueue : MonoBehaviour
         if (GameOptions.EnemiesOnlyEnabled && !GameOptions.hardcoreModeEnabled)
         {
             maxEnemiesQueued = 4;
-            Debug.Log("maxEnemiesQueued : " + maxEnemiesQueued);
         }
         // if fighting only game mode/ hardcore ON
         if (GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
         {
             maxEnemiesQueued = 8;
-            Debug.Log("maxEnemiesQueued : " + maxEnemiesQueued);
         }
         // if only hardcore ON
         if (!GameOptions.EnemiesOnlyEnabled && GameOptions.hardcoreModeEnabled)
         {
             maxEnemiesQueued = 6;
-            Debug.Log("maxEnemiesQueued : " + maxEnemiesQueued);
         }
         // if only hardcore ON
         if (GameOptions.battleRoyalEnabled)
         {
             maxEnemiesQueued = 20;
-            Debug.Log("maxEnemiesQueued : " + maxEnemiesQueued);
         }
         //default
         else
         {
             maxEnemiesQueued = 4;
-            Debug.Log("maxEnemiesQueued : " + maxEnemiesQueued);
         }
 
         //        //#if UNITY_ANDROID && !UNITY_EDITOR
