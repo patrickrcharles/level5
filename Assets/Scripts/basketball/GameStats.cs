@@ -190,18 +190,6 @@ public class GameStats : MonoBehaviour
         set => _totalDistance = value;
     }
 
-    //public int PlayerId
-    //{
-    //    get => _playerId;
-    //    set => _playerId = value;
-    //}
-
-    //public string PlayerName
-    //{
-    //    get => _playerName;
-    //    set => _playerName = value;
-    //}
-
     public int TotalPoints
     {
         get => _totalPoints;
