@@ -153,7 +153,7 @@ public class GameRules : MonoBehaviour
         }
         if (GameOptions.obstaclesEnabled)
         {
-            Vector3 vector = new Vector3(GameLevelManager.instance.BasketballRimVector.x, 
+            Vector3 vector = new Vector3(GameLevelManager.instance.BasketballRimVector.x,
                 GameLevelManager.instance.TerrainHeight,
                 GameLevelManager.instance.BasketballRimVector.z);
             Instantiate(_rakesClone, vector, Quaternion.identity);
@@ -216,7 +216,7 @@ public class GameRules : MonoBehaviour
                     {
                         DBHelper.instance.setGameScoreSubmitted(user.Scoreid, false);
                     }
-                }             
+                }
                 DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.GameStats);
                 DBConnector.instance.savePlayerProfileProgression(GameLevelManager.instance.GameStats.getExperienceGainedFromSession());
 
@@ -483,9 +483,20 @@ public class GameRules : MonoBehaviour
 
                 Timer.instance.ScoreClockText.text = GameLevelManager.instance.GameStats.TotalPoints.ToString();
             }
-            if (gameModeId == 20 )
+            if (gameModeId == 20)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
+
+                displayCurrentScoreText.text =
+                    "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
+                if (Timer.instance.ScoreClockText != null)
+                {
+                    Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
+                }
+            }
+            if (gameModeId == 21)
+            {
+                displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilledBattleRoyal;
 
                 displayCurrentScoreText.text =
                     "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
@@ -584,13 +595,16 @@ public class GameRules : MonoBehaviour
         if (gameModeId == 20)
         {
             displayText = "You Bashed up " + gameStats.EnemiesKilled + " nerds"
-                + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession(); ;
+                + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession();
         }
-        //if (gameModeId == 21)
-        //{
-        //    displayText = "You Bashed up " + gameStats.EnemiesKilled + " nerds"
-        //        + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession(); ;
-        //}
+        if (gameModeId == 21)
+        {
+            int minutes = Mathf.FloorToInt(gameStats.TimePlayed / 60);
+            float seconds = (gameStats.TimePlayed - (minutes * 60));
+            displayText = "You Bashed up " + gameStats.EnemiesKilled + " nerds"
+                + "\n\nYou survived for  : " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n" 
+                + "\n\nexperience gained : " + gameStats.getExperienceGainedFromSession();
+        }
         if (gameModeId == 98)
         {
             displayText = "Arcade mode\n\n" + GetStatsTotals();
@@ -739,12 +753,6 @@ public class GameRules : MonoBehaviour
         get => moneyBallEnabled;
         set => moneyBallEnabled = value;
     }
-
-    //public float CounterTime
-    //{
-    //    get => counterTime;
-    //    set => counterTime = value;
-    //}
 
     private void setTimer(float seconds)
     {
