@@ -259,7 +259,7 @@ public class EnemySpawner : MonoBehaviour
         int randomIndex = 0;
         Random random = new Random();
 
-        if (GameOptions.battleRoyalEnabled)
+        if (GameOptions.battleRoyalEnabled && !GameOptions.hardcoreModeEnabled)
         {
             if(getNumberOfBoss() == 0)
             {
@@ -280,18 +280,10 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-
-        //Random random = new Random();
-        //int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
-        //GameObject[] enemyList = GameObject.FindGameObjectsWithTag("enemy");
-        //GameObject enemy = null;
-
-        ////int index = enemyList.Where(x => x.name)
-        //foreach (GameObject go in enemyList)
-        //{
-        //    enemy = enemyMinionPrefabs.Where(x => !x.name.Contains(go.name)).First();
-        //    Debug.Log("enemy to spawn : " + go.name);
-        //}
-        //Instantiate(enemy, spawnPositions[randomIndex].transform.position, Quaternion.identity);
+        if (GameOptions.battleRoyalEnabled && GameOptions.hardcoreModeEnabled)
+        {
+            randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+            Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+        }
     }
 }
