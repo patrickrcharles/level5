@@ -92,7 +92,7 @@ public class cameraUpdater : MonoBehaviour
             }
         }
 
-        if (GameLevelManager.instance != null)
+        if (GameLevelManager.instance != null && basketBallRim!= null)
         {
             basketBallRim = GameLevelManager.instance.BasketballRimVector;
             player = GameLevelManager.instance.Player;
