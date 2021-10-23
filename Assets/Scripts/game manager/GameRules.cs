@@ -270,7 +270,6 @@ public class GameRules : MonoBehaviour
         {
             gameStats.TimePlayed = timePlayedEnd - timePlayedStart;
         }
-        Debug.Log(gameStats.TimePlayed);
     }
 
     //===================================================== toggle money ball ====================================================
@@ -494,9 +493,20 @@ public class GameRules : MonoBehaviour
                     Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
                 }
             }
-            if (gameModeId == 21)
+            if (gameModeId == 21 )
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilledBattleRoyal;
+
+                displayCurrentScoreText.text =
+                    "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
+                if (Timer.instance.ScoreClockText != null)
+                {
+                    Timer.instance.ScoreClockText.text = (GameLevelManager.instance.GameStats.EnemiesKilled).ToString();
+                }
+            }
+            if (gameModeId == 22)
+            {
+                displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilledCageMatch;
 
                 displayCurrentScoreText.text =
                     "nerds bashed : " + (GameLevelManager.instance.GameStats.EnemiesKilled);
