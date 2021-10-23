@@ -13,6 +13,7 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private bool isFightingLevel;
     [SerializeField] private bool isShootingLevel;
     [SerializeField] private bool isBattleRoyalLevel;
+    [SerializeField] private bool isCageMatchLevel;
 
     public string LevelDescription
     {
@@ -43,4 +44,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     public bool IsFightingLevel { get => isFightingLevel; }
     public bool IsShootingLevel { get => isShootingLevel;  }
     public bool IsBattleRoyalLevel { get => isBattleRoyalLevel; }
+    public bool IsCageMatchLevel { get => isCageMatchLevel;  }
 }
