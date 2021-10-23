@@ -46,7 +46,7 @@ public class PlayerData : MonoBehaviour
 
     private int _enemiesKilled = 0;
     private int _enemiesKilledBattleRoyal = 0;
-
+    private int _enemiesKilledCageMatch;
     [SerializeField]
     private int _currentExperience = 0;
     [SerializeField]
@@ -125,6 +125,7 @@ public class PlayerData : MonoBehaviour
             TotalPointsByDistance = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 19, "DESC", hardcoreValue);
             _enemiesKilled = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 20, "DESC", hardcoreValue);
             _enemiesKilledBattleRoyal = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 21, "DESC", hardcoreValue);
+            _enemiesKilledCageMatch = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 22, "DESC", hardcoreValue);
         }
     }
 
@@ -170,5 +171,6 @@ public class PlayerData : MonoBehaviour
     public float TotalPointsByDistance { get => _totalPointsByDistance; set => _totalPointsByDistance = value; }
     public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
     public int EnemiesKilledBattleRoyal { get => _enemiesKilledBattleRoyal; set => _enemiesKilledBattleRoyal = value; }
+    public int EnemiesKilledCageMatch { get => _enemiesKilledCageMatch; set => _enemiesKilledCageMatch = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }
