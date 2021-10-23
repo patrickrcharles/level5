@@ -309,24 +309,8 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(accountMenuButtonName))
         {
-            //if ( GameOptions.numOfLocalUsers < 5)
-            //{
-            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
-            //}
-            //else
-            //{
-            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
-            //}
-
             loadMenu(Constants.SCENE_NAME_level_00_account);
         }
-        //if ((controls.UINavigation.Submit.triggered
-        //    || controls.Player.shoot.triggered)
-        //    && currentHighlightedButton.Equals(optionsMenuButtonName))
-        //{
-        //    loadMenu(Constants.SCENE_NAME_level_00_options);
-        //}
-
 
         // ================================== navigation =====================================================================
         // up, option select
@@ -587,14 +571,7 @@ public class StartManager : MonoBehaviour
         versionText.text = "current version: " + Application.version;
         yield return new WaitUntil(() => !APIHelper.ApiLocked);
         latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        //if (UtilityFunctions.IsConnectedToInternet())
-        //{
-        //    latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        //}
-        //else
-        //{
-        //    latestVersionText.text = "latest version: no internet";
-        //}
+
     }
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
@@ -654,9 +631,9 @@ public class StartManager : MonoBehaviour
     {
 
         Random random = new Random();
-        int randNum = random.Next(1, 3);
+        int randNum = random.Next(1, 100);
 
-        if (randNum == 1)
+        if (randNum > 50)
         {
             return "wob1";
         }
@@ -1016,7 +993,7 @@ public class StartManager : MonoBehaviour
         GameOptions.obstaclesEnabled = obstaclesEnabled;
 
         GameOptions.battleRoyalEnabled = modeSelectedData[modeSelectedIndex].IsBattleRoyal;
-        Debug.Log("GameOptions.battleRoyalEnabled : " + GameOptions.battleRoyalEnabled);
+        GameOptions.cageMatchEnabled = modeSelectedData[modeSelectedIndex].IsCageMatch;
 
         GameOptions.gameModeRequiresPlayerSurvive = modeSelectedData[modeSelectedIndex].GameModeRequiresPlayerSurvive;
 
@@ -1156,33 +1133,30 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             levelSelectedIndex--;
         }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
+        }
+
         // if mode is shooting, level is not
-        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            && !levelSelectedData[levelSelectedIndex].IsShootingLevel))
+        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+            // mode has enemies, level isnt a fighting level
+            || (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+            // battle royal mode, level isnt battle royal level
+            || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // not battle royal mode, level is battle royal
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // mode is cage match, level is not cage match
+            || (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+            //mode is not cage match, level is cage match
+            || (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelUp();
         }
-        // mode is fighting, level is not
-        if (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
-        {
-            changeSelectedLevelUp();
-        }
-        // mode is battle royal, level is not
-        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
-            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-        {
-            changeSelectedLevelUp();
-        }
-        // mode is not battle royal, level is not
-        if (!modeSelectedData[modeSelectedIndex].IsBattleRoyal
-            && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-        {
-            changeSelectedLevelUp();
-        }
+
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         initializeLevelDisplay();
-        //intializeModeDisplay();
+        intializeModeDisplay();
     }
     public void changeSelectedLevelDown()
     {
@@ -1196,33 +1170,29 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             levelSelectedIndex++;
         }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelDown();
+        }
         // if mode is shooting, level is not
-        if (!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+            // mode has enemies, level isnt a fighting level
+            || (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+            // battle royal mode, level isnt battle royal level
+            || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // not battle royal mode, level is battle royal
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // mode is cage match, level is not cage match
+            || (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+            //mode is not cage match, level is cage match
+            || (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelDown();
         }
-        // mode is is battle royal, level is not
-        if (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
-            && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
-        {
-            changeSelectedLevelDown();
-        }
-        // mode is battle royal, level is not
-        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
-            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-        {
-            changeSelectedLevelDown();
-        }
-        // mode is not battle royal, level is not
-        if (!modeSelectedData[modeSelectedIndex].IsBattleRoyal
-            && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-        {
-            changeSelectedLevelDown();
-        }
+
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         initializeLevelDisplay();
-        //intializeModeDisplay();
+        intializeModeDisplay();
 
     }
     public void changeSelectedModeUp()
@@ -1240,6 +1210,10 @@ public class StartManager : MonoBehaviour
         // mode is not battle royal, level is not
         if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
             && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelUp();
+        }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelUp();
         }
@@ -1265,6 +1239,10 @@ public class StartManager : MonoBehaviour
             && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
         {
             changeSelectedLevelDown();
+        }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
         }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
