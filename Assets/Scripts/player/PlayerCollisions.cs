@@ -35,6 +35,7 @@ public class PlayerCollisions : MonoBehaviour
         }
 
         if (gameObject.CompareTag("playerHitbox")
+            && (!GameOptions.battleRoyalEnabled || !GameOptions.cageMatchEnabled || !GameOptions.EnemiesOnlyEnabled)
             && playerController.InAir
             && playerController.currentState != playerController.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
