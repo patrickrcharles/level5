@@ -50,6 +50,10 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        if (!GameOptions.cageMatchEnabled && GameObject.Find("steel_cage") != null)
+        {
+            GameObject.Find("steel_cage").SetActive(false);
+        }
         //// this needs to second option or enabling it will spawn enemies
         //if (GameObject.FindGameObjectWithTag("enemy") != null)
         //{
@@ -62,11 +66,15 @@ public class EnemySpawner : MonoBehaviour
             {
                 maxNumberOfEnemies = 8;
             }
-            if (GameOptions.hardcoreModeEnabled && !GameOptions.EnemiesOnlyEnabled)
+            else if (GameOptions.hardcoreModeEnabled && !GameOptions.EnemiesOnlyEnabled)
             {
                 maxNumberOfEnemies = 6;
             }
             else if (!GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected || GameOptions.enemiesEnabled)
+            {
+                maxNumberOfEnemies = 4;
+            }
+            else if (GameOptions.cageMatchEnabled)
             {
                 maxNumberOfEnemies = 4;
             }
@@ -80,16 +88,16 @@ public class EnemySpawner : MonoBehaviour
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
 
-            if (!GameOptions.battleRoyalEnabled)
+            if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
             {
                 // spawn enemies if necessary
                 spawnDefaultMinions();
                 spawnDefaultBoss();
                 // start function to check status of current enemies
-                InvokeRepeating("getNumberOfCurrentEnemiesInScene", 1, 2f);
+                InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
             }
         }
-        if (GameOptions.battleRoyalEnabled)
+        if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
         {
             maxNumberOfEnemies = 20;
             battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
@@ -100,8 +108,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnDefaultMinions()
     {
-        int numberToSpawn = maxNumberOfEnemies - numberOfMinions - numberOfBoss;
-
+        int numberToSpawn = maxNumberOfMinions - numberOfMinions - numberOfBoss;
         Random random = new Random();
         if (numberToSpawn > 0)
         {
@@ -118,17 +125,6 @@ public class EnemySpawner : MonoBehaviour
                 {
                     Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 }
-                // if spawn more enemies than enemy list has, spawn random enemy
-                //if (i >= enemyMinionPrefabs.Count)
-                //{
-                //    Random random = new Random();
-                //    int randomIndex = random.Next(0, maxNumberOfMinions - 1);
-                //    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
-                //}
-                //else
-                //{
-                //    Instantiate(enemyMinionPrefabs[i], spawnPositions[i].transform.position, Quaternion.identity);
-                //}
             }
         }
     }
@@ -152,7 +148,7 @@ public class EnemySpawner : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
+                    Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 }
             }
         }
@@ -181,19 +177,6 @@ public class EnemySpawner : MonoBehaviour
         {
             Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[spawnIndex].transform.position, Quaternion.identity);
         }
-
-        //Random random = new Random();
-        //int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
-        //GameObject[] enemyList = GameObject.FindGameObjectsWithTag("enemy");
-        //GameObject enemy = null;
-
-        ////int index = enemyList.Where(x => x.name)
-        //foreach (GameObject go in enemyList)
-        //{
-        //    enemy = enemyMinionPrefabs.Where(x => !x.name.Contains(go.name)).First();
-        //    Debug.Log("enemy to spawn : " + go.name);
-        //}
-        //Instantiate(enemy, spawnPositions[randomIndex].transform.position, Quaternion.identity);
     }
 
     void spawnBoss()
