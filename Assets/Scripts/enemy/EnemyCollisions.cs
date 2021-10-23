@@ -28,8 +28,11 @@ public class EnemyCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         // if this object is enemy hitbox and (player attack box or enemy attack box)
         if (gameObject.CompareTag("enemyHitbox")
+            // NOT enemy projectile
+            && !other.transform.root.CompareTag("enemyProjectile")
             && (other.CompareTag("playerAttackBox") || other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             && enemyHealth != null
             && enemyHealthBar != null)
