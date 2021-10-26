@@ -48,6 +48,7 @@ public static class Constants
     public const string API_ADDRESS_DEV_publicApiToken = "http://skeletondistrict.com/api/token/";
     public const string API_ADDRESS_DEV_publicApplicationVersionCurrent = "http://skeletondistrict.com/api/application/version/current";
     public const string API_ADDRESS_DEV_publicUserReport = "http://skeletondistrict.com/api/userreport";
+    public const string API_ADDRESS_DEV_publicServerMessages = "http://skeletondistrict.com/api/servermessages";
 
     // localhost testing
     public const string API_ADDRESS_LOCALHOST_HighScoresByModeidInGameDisplay = "https://localhost:44362/api/highscores/game/modeid/";

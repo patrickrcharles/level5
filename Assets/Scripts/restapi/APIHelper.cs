@@ -1036,6 +1036,64 @@ namespace Assets.Scripts.restapi
             return currentVersion;
         }
 
+        //------------------------------------- GET Application  ----------------------------------------
+        // GET highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/modeid/{modeid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static List<ServerMessageModel> GetServerMessages()
+        {
+            apiLocked = true;
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+
+            List<ServerMessageModel> messages = new List<ServerMessageModel>();
+            //build api request
+            string apiRequest = Constants.API_ADDRESS_DEV_publicServerMessages;
+
+            //int numResults = 0;
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "GET";
+                //httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Debug.Log("result : " + result);
+                    messages = (List<ServerMessageModel>)JsonConvert.DeserializeObject<List<ServerMessageModel>>(result);
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                //Debug.Log("----------------- GetHighscoreCountByModeid() successful : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+            // failed
+            else
+            {
+                //Debug.Log("----------------- GetHighscoreCountByModeid() : " + (int)statusCode + " " + statusCode);
+                apiLocked = false;
+            }
+            //Debug.Log("api : latest build : " + currentVersion);
+            Debug.Log("messages : " + messages);
+            return messages;
+        }
+
         public static string BearerToken { get => bearerToken; }
         public static bool ApiLocked { get => apiLocked; set => apiLocked = value; }
     }
