@@ -316,6 +316,11 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
+            // fighting modes
+            if (modeid > 19 && modeid < 23)
+            {
+                enemies = 1;
+            }
             // build api request.
             // if no filter selected, get all scores for modeid
             // else, get specific scores
@@ -388,6 +393,12 @@ namespace Assets.Scripts.restapi
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
+            //fighting modes
+            if(modeid > 19 && modeid < 23)
+            {
+                enemies = 1;
+            }
+
             //build api request
             string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
@@ -400,7 +411,7 @@ namespace Assets.Scripts.restapi
             //    + "?hardcore=" + hardcore
             //    + "&traffic=" + traffic
             //    + "&enemies=" + enemies;
-
+            //Debug.Log(apiRequest);
             int numResults = 0;
             try
             {
@@ -414,6 +425,7 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     numResults = Convert.ToInt32(JsonConvert.DeserializeObject(result));
+                    //Debug.Log("numresults : " + numResults);
                 }
             }
             // on web exception
@@ -1063,7 +1075,7 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    Debug.Log("result : " + result);
+                    //Debug.Log("result : " + result);
                     messages = (List<ServerMessageModel>)JsonConvert.DeserializeObject<List<ServerMessageModel>>(result);
                 }
             }
@@ -1090,7 +1102,7 @@ namespace Assets.Scripts.restapi
                 apiLocked = false;
             }
             //Debug.Log("api : latest build : " + currentVersion);
-            Debug.Log("messages : " + messages);
+            //Debug.Log("messages : " + messages);
             return messages;
         }
 
