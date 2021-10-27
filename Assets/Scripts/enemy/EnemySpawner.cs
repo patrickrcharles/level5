@@ -115,8 +115,8 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < numberToSpawn; i++)
             {
                 //Random random = new Random();
-                int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
-                //Debug.Log("randomIndex : " + randomIndex + "  max : " + (enemyMinionPrefabs.Count - 1));
+                int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
+                //Debug.Log("randomIndex : " + randomIndex + "  max : " + (enemyMinionPrefabs.Count));
                 if (i > spawnPositions.Count - 1)
                 {
                     Instantiate(enemyMinionPrefabs[randomIndex], spawnPositions[0].transform.position, Quaternion.identity);
@@ -134,7 +134,7 @@ public class EnemySpawner : MonoBehaviour
         //Debug.Break();
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         Random random = new Random();
-        int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+        int randomIndex = random.Next(0, enemyBossPrefabs.Count);
         if (numberToSpawn > 0)
         {
             for (int i = 0; i < numberToSpawn; i++)
@@ -143,7 +143,7 @@ public class EnemySpawner : MonoBehaviour
                 if (i >= enemyBossPrefabs.Count)
                 {
                     //Random random = new Random();
-                    //int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+                    //int randomIndex = random.Next(0, enemyBossPrefabs.Count);
                     Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[i].transform.position, Quaternion.identity);
                 }
                 else
@@ -157,7 +157,7 @@ public class EnemySpawner : MonoBehaviour
     void spawnSingleMinion()
     {
         Random random = new Random();
-        int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+        int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
 
         int spawnIndex = 0;
         if (randomIndex >= spawnPositions.Count - 1)
@@ -182,10 +182,10 @@ public class EnemySpawner : MonoBehaviour
     void spawnBoss()
     {
         Random random = new Random();
-        int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+        int randomIndex = random.Next(0, enemyBossPrefabs.Count);
 
         // if spawn more enemies than enemy list has, spawn random enemy
-        if (randomIndex >= enemyBossPrefabs.Count - 1)
+        if (randomIndex >= enemyBossPrefabs.Count)
         {
             Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
             numberOfBoss++;
@@ -208,7 +208,7 @@ public class EnemySpawner : MonoBehaviour
         if (numberOfMinions < maxNumberOfMinions)
         {
             Random random = new Random();
-            int randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+            int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
 
             // update spawner location so spawn locations is near player
             spawnSingleMinion();
@@ -216,7 +216,7 @@ public class EnemySpawner : MonoBehaviour
         if (numberOfBoss < maxNumberOfBoss)
         {
             Random random = new Random();
-            int randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+            int randomIndex = random.Next(0, enemyBossPrefabs.Count);
 
             // update spawner location so spawn locations is near player
             spawnBoss();
@@ -246,12 +246,12 @@ public class EnemySpawner : MonoBehaviour
         {
             if(getNumberOfBoss() == 0)
             {
-                randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+                randomIndex = random.Next(0, enemyBossPrefabs.Count);
                 Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
             }
             else
             {
-                randomIndex = random.Next(0, enemyMinionPrefabs.Count - 1);
+                randomIndex = random.Next(0, enemyMinionPrefabs.Count);
                 // if spawn more enemies than enemy list has, spawn random enemy
                 if (randomIndex >= enemyMinionPrefabs.Count)
                 {
@@ -265,7 +265,7 @@ public class EnemySpawner : MonoBehaviour
         }
         if (GameOptions.battleRoyalEnabled && GameOptions.hardcoreModeEnabled)
         {
-            randomIndex = random.Next(0, enemyBossPrefabs.Count - 1);
+            randomIndex = random.Next(0, enemyBossPrefabs.Count);
             Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
         }
     }
