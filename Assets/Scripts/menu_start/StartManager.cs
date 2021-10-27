@@ -1,10 +1,8 @@
 ﻿
 using Assets.Scripts.restapi;
-using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -762,16 +760,17 @@ public class StartManager : MonoBehaviour
         if (difficultySelected == 0)
         {
             difficultySelectOptionText.text = "easy";
-            difficultySelectOptionDescriptionText.text = "max stats | half the experience";
+            difficultySelectOptionDescriptionText.text = "max stats | 0.5x experience";
         }
         if (difficultySelected == 1)
         {
             difficultySelectOptionText.text = "normal";
-            difficultySelectOptionDescriptionText.text = "basic stats | full experience";
+            difficultySelectOptionDescriptionText.text = "basic stats | 1x experience";
         }
         //if (difficultySelected == 2)
         //{
-        //    difficultySelectOptionText.text = "hard";
+        //    difficultySelectOptionText.text = "hardcore";
+        //    difficultySelectOptionDescriptionText.text = "basic stats | 1.5x experience";
         //}
     }
     public void initializeObstacleOptionDisplay()
@@ -1145,11 +1144,11 @@ public class StartManager : MonoBehaviour
             // battle royal mode, level isnt battle royal level
             || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
             // not battle royal mode, level is battle royal
-            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-            // mode is cage match, level is not cage match
-            || (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
-            //mode is not cage match, level is cage match
-            || (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
+            //// mode is cage match, level is not cage match
+            //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+            ////mode is not cage match, level is cage match
+            //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelUp();
         }
@@ -1181,11 +1180,11 @@ public class StartManager : MonoBehaviour
             // battle royal mode, level isnt battle royal level
             || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
             // not battle royal mode, level is battle royal
-            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
-            // mode is cage match, level is not cage match
-            || (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
-            //mode is not cage match, level is cage match
-            || (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
+            //// mode is cage match, level is not cage match
+            //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+            ////mode is not cage match, level is cage match
+            //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelDown();
         }
