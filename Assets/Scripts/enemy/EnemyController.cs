@@ -124,20 +124,20 @@ public class EnemyController : MonoBehaviour
         if (isMinion)
         {
             attackCooldown = 1.25f;
+            takeDamageTime = 0.4f;
             walkMovementSpeed = 2f;
             runMovementSpeed = 3f;
-            takeDamageTime = 0.4f;
         }
         if (isBoss)
         {
             attackCooldown = 1f;
+            takeDamageTime = 0.3f;
             walkMovementSpeed = 3f;
             runMovementSpeed = 4f;
-            takeDamageTime = 0.3f;
         }
 
         movementSpeed = walkMovementSpeed;
-        if (GameOptions.hardcoreModeEnabled)
+        if (GameOptions.hardcoreModeEnabled || GameOptions.difficultySelected == 2)
         {
             movementSpeed *= 1.25f;
             attackCooldown *= 0.5f;
@@ -149,7 +149,6 @@ public class EnemyController : MonoBehaviour
         }
         if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
         {
-            Debug.Log("enemyHealthBar.gameObject : "+ enemyHealthBar.gameObject );
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             enemyHealthBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
