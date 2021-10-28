@@ -26,6 +26,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     public bool facingRight;
     // how long after attacking the enemy can attack again
+    [SerializeField]
     public float attackCooldown;
     [SerializeField]
     private float relativePositionToPlayer;
@@ -57,7 +58,9 @@ public class EnemyController : MonoBehaviour
     const string lightningAnimName = "lightning";
 
     private AnimatorStateInfo currentStateInfo;
+    [SerializeField]
     static int currentState;
+    [SerializeField]
     static int AnimatorState_Attack = Animator.StringToHash("base.attack");
     static int AnimatorState_Walk = Animator.StringToHash("base.walk");
     static int AnimatorState_Idle = Animator.StringToHash("base.idle");
@@ -75,7 +78,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private float lineOfSight;
     public float lineOfSightVariance;
-
+    [SerializeField]
     public bool canAttack;
     bool inAttackQueue;
 
@@ -114,8 +117,8 @@ public class EnemyController : MonoBehaviour
 
         playerSwapAttack = GetComponent<PlayerSwapAttack>();
 
-        if (attackCooldown == 0) { attackCooldown = 0.75f; }
-        //if (knockDownTime == 0) { knockDownTime = 2f; }
+        //if (attackCooldown == 0) { attackCooldown = 0.75f; }
+        if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
@@ -123,15 +126,15 @@ public class EnemyController : MonoBehaviour
 
         if (isMinion)
         {
-            attackCooldown = 1.25f;
-            takeDamageTime = 0.4f;
+            attackCooldown = 1.5f;
+            takeDamageTime = 0.5f;
             walkMovementSpeed = 2f;
             runMovementSpeed = 3f;
         }
         if (isBoss)
         {
-            attackCooldown = 1f;
-            takeDamageTime = 0.3f;
+            attackCooldown = 1.15f;
+            takeDamageTime = 0.5f;
             walkMovementSpeed = 3f;
             runMovementSpeed = 4f;
         }
@@ -255,8 +258,9 @@ public class EnemyController : MonoBehaviour
         {
             anim.SetBool("walk", false);
         }
-        if (stateAttack)
+        if (stateAttack && canAttack)
         {
+            canAttack = false;
             FreezeEnemyPosition();
             if (playerSwapAttack != null
                 && !longRangeAttack
@@ -272,7 +276,7 @@ public class EnemyController : MonoBehaviour
             {
                 playerSwapAttack.setLongRangeAttack();
             }
-
+            Debug.Log("attack : " + gameObject.name);
             anim.SetTrigger("attack");
             StartCoroutine(AttackCooldown(attackCooldown));
         }
@@ -328,17 +332,16 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator AttackCooldown(float seconds)
     {
-
         canAttack = false;
+        stateAttack = false;
         // wait for animator state to get to attack 
         yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
         // wait for animation to finish
         yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
-        stateAttack = false;
-        // enemy can move again
-        UnFreezeEnemyPosition();
         //wait for cooldown
         yield return new WaitForSecondsRealtime(seconds);
+        // enemy can move again
+        UnFreezeEnemyPosition();
         canAttack = true;
     }
 
@@ -420,7 +423,7 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(knockDownTime);
         anim.SetBool("knockdown", false);
         stateKnockDown = false;
-        //UnFreezeEnemyPosition();
+        UnFreezeEnemyPosition();
 
         stateKnockDown = false;
     }
