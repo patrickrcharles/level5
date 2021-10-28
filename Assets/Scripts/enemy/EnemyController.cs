@@ -55,8 +55,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     bool isBoss;
 
-    const string lightningAnimName = "lightning";
-
     private AnimatorStateInfo currentStateInfo;
     [SerializeField]
     static int currentState;
@@ -74,7 +72,6 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    //bool playerInLineOfSight = false;
     [SerializeField]
     private float lineOfSight;
     public float lineOfSightVariance;
@@ -93,15 +90,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject spriteObject;
 
-    //[SerializeField]
-    //float currentSpeed;
-
     // Use this for initialization
     void Start()
     {
         spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
-
-
         facingRight = true;
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
@@ -181,8 +173,6 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        //currentSpeed = rigidBody.velocity.magnitude;
-
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
@@ -220,7 +210,6 @@ public class EnemyController : MonoBehaviour
             longRangeAttack = true;
             stateAttack = true;
         }
-
         else if (math.abs(relativePositionToPlayer) < minDistanceCloseAttack
             && math.abs(lineOfSight) <= lineOfSightVariance
             && !longRangeAttack
@@ -403,7 +392,6 @@ public class EnemyController : MonoBehaviour
         yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         stateKnockDown = true;
         FreezeEnemyPosition();
-        //UnFreezeEnemyPosition(); 
         anim.SetBool("knockdown", true);
         playAnimation("knockdown");
         // get direction facing
@@ -437,11 +425,9 @@ public class EnemyController : MonoBehaviour
 
         if (enemyDetection.Attacking)
         {
-            //Debug.Log("========================== enemy killed : " + gameObject.name + " :  remove from attack queue");
             int attackPositionId = enemyDetection.AttackPositionId;
             PlayerAttackQueue.instance.removeEnemyFromQueue(gameObject, attackPositionId);
         }
-        //yield return new WaitUntil( ()=> PlayerAttackQueue.instance.AttackSlotOpen);
         Destroy(gameObject);
     }
 
@@ -467,7 +453,6 @@ public class EnemyController : MonoBehaviour
         UnFreezeEnemyPosition();
 
         stateKnockDown = false;
-        //anim.ResetTrigger("exitAnimation");
     }
 
     public IEnumerator disintegrated()
@@ -499,15 +484,12 @@ public class EnemyController : MonoBehaviour
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
         //transform.Translate(movement);
-
         //Debug.Log(gameObject.transform.root.name + " -- currentSpeed : " + currentSpeed);
-
     }
 
     public void moveToTarget(List<GameObject> waypoints)
     {
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
-
         //// if no bodyguards found
         //if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
         //{
@@ -564,12 +546,11 @@ public class EnemyController : MonoBehaviour
         {
             if (IsBoss)
             {
-                GameLevelManager.instance.PlayerHealth.Health += 5;
+                GameLevelManager.instance.PlayerHealth.Health += 7;
             }
             if (IsMinion)
             {
-                GameLevelManager.instance.PlayerHealth.Health += 2;
-                //Debug.Log("ADD HEALTH : 2");
+                GameLevelManager.instance.PlayerHealth.Health += 3;
             }
             if (GameLevelManager.instance.PlayerHealth.Health > GameLevelManager.instance.PlayerHealth.MaxHealth)
             {
