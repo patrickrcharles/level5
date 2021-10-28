@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
@@ -99,13 +98,11 @@ public class EnemyProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // regular enemy projectile
-        // sniper shot hits ground
         if (!sniperProjectile
             && !impactProjectile
             && !thrownProjectile
             && (other.CompareTag("enemyHitbox") || other.CompareTag("playerHitbox")))
         {
-            //Debug.Log("collision between ::" + gameObject.name + ":: and ::" + other.name + "::");
             DestroyProjectile();
         }
 
