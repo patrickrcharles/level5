@@ -25,25 +25,12 @@ public class PlayerProjectile : MonoBehaviour
         {
             applyForceToDirectionFacingProjectile(projectileForceThrown);
             impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_explosion") as GameObject;
-            //Destroy(transform.root.gameObject, lifetime);
         }
         if (!thrownProjectile && impactProjectile)
         {
             Destroy(transform.root.gameObject, lifetime);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("collision between : " + gameObject.name + " and " + other.name);
-    //    if (other.CompareTag("enemyHitbox"))
-    //    {
-    //        Debug.Log("destroy " + transform.root.gameObject.name);
-    //        Destroy(transform.root.gameObject);
-    //        //Debug.Log("destroy " + transform.root.gameObject.name);
-    //    }
-    //}
-
     public void applyForceToDirectionFacingProjectile(float force)
     {
         // get direction facing
@@ -75,7 +62,6 @@ public class PlayerProjectile : MonoBehaviour
         Destroy(transform.root.gameObject);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         // destroy thrown projectile on impact
@@ -83,13 +69,10 @@ public class PlayerProjectile : MonoBehaviour
             && !impactProjectile
             && (other.CompareTag("ground") || other.CompareTag("enemyHitbox")))
         {
-            Debug.Log("collision between : " + gameObject.name + " and " + other.name);
             Vector3 transformAtImpact = gameObject.transform.position;
             //Vector3 transformAtImpact = other.transform.position;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, other.transform.position.y, transformAtImpact.z);
             // explode object
-            //Debug.Log("projectile should explode");
-            //Debug.Log("instantiate fire object");
             Instantiate(impactExplosionPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
