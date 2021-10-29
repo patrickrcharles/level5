@@ -147,19 +147,18 @@ namespace Assets.Scripts.restapi
                     DBHelper.instance.DatabaseLocked = false;
                 }
                 statusCode = httpResponse.StatusCode;
-
+                //// if conflict (scoreid already exists in database)
+                //if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+                //{
+                //    Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                //    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+                //    apiLocked = false;
+                //    DBHelper.instance.DatabaseLocked = false;
+                //}
                 // if successful
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
                     Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
-                    apiLocked = false;
-                    DBHelper.instance.DatabaseLocked = false;
-                }
-                // if conflict (scoreid already exists in database)
-                if (httpResponse.StatusCode == HttpStatusCode.Conflict)
-                {
-                    Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
                     DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
