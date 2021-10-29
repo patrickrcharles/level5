@@ -33,7 +33,6 @@ public class PlayerCollisions : MonoBehaviour
             GameLevelManager.instance.Player.transform.position 
                 = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
         }
-
         if (gameObject.CompareTag("playerHitbox")
             && (!GameOptions.battleRoyalEnabled || !GameOptions.cageMatchEnabled || !GameOptions.EnemiesOnlyEnabled)
             && playerController.InAir
