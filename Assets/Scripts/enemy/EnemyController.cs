@@ -265,7 +265,6 @@ public class EnemyController : MonoBehaviour
             {
                 playerSwapAttack.setLongRangeAttack();
             }
-            Debug.Log("attack : " + gameObject.name);
             anim.SetTrigger("attack");
             StartCoroutine(AttackCooldown(attackCooldown));
         }
