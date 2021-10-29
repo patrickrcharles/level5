@@ -44,9 +44,9 @@ public class Pause : MonoBehaviour
     private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
 
-    GameObject controlsObject;
-    GameObject controlsMobileObject;
-    GameObject controlsDesktopObject;
+    //GameObject controlsObject;
+    //GameObject controlsMobileObject;
+    //GameObject controlsDesktopObject;
 
     private GameObject maxStatsObject;
     private GameObject toggleFpsObject;
@@ -69,10 +69,10 @@ public class Pause : MonoBehaviour
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
-        //controls
-        controlsObject = GameObject.Find("controls").gameObject;
-        controlsMobileObject = GameObject.Find("control_key_mobile").gameObject;
-        controlsDesktopObject = GameObject.Find("control_key_desktop").gameObject;
+        ////controls
+        //controlsObject = GameObject.Find("controls").gameObject;
+        //controlsMobileObject = GameObject.Find("control_key_mobile").gameObject;
+        //controlsDesktopObject = GameObject.Find("control_key_desktop").gameObject;
 
         //toggleCameraText = GameObject.Find(toggleCameraName).GetComponent<Text>();
         toggleUiStatsText = GameObject.Find(toggleUiStatsName).GetComponent<Text>();
@@ -80,9 +80,9 @@ public class Pause : MonoBehaviour
 
         toggleFpsText = GameObject.Find(toggleFpsName).GetComponent<Text>();
 
-        if (controlsObject != null)
-        {
-            controlsObject.SetActive(false);
+        //if (controlsObject != null)
+        //{
+        //    controlsObject.SetActive(false);
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             controlsDesktopObject.SetActive(false);
@@ -90,12 +90,12 @@ public class Pause : MonoBehaviour
 #endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
-            controlsDesktopObject.SetActive(true);
-            controlsMobileObject.SetActive(false);
+            //controlsDesktopObject.SetActive(true);
+            //controlsMobileObject.SetActive(false);
             disableMobileOnlyPauseOptions();
 #endif
 
-        }
+        //}
 
         EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
         // init current button
@@ -148,11 +148,11 @@ public class Pause : MonoBehaviour
         }
         //==========================================================
 
-        //disable cotnrols display if game over
-        if (GameRules.instance.GameOver || GameLevelManager.instance.PlayerHealth.IsDead)
-        {
-            controlsObject.SetActive(false);
-        }
+        ////disable cotnrols display if game over
+        //if (GameRules.instance.GameOver || GameLevelManager.instance.PlayerHealth.IsDead)
+        //{
+        //    controlsObject.SetActive(false);
+        //}
 
         // if paused, show pause menu
         if (paused)
@@ -308,8 +308,7 @@ public class Pause : MonoBehaviour
         loadStartScreenButton.enabled = value;
         cancelMenuButton.enabled = value;
         quitGameButton.enabled = value;
-        controlsObject.SetActive(value);
-
+        //controlsObject.SetActive(value);
         //toggleCameraText.enabled = value;
         toggleFpsText.enabled = value;
         toggleMaxStatsText.enabled = value;
