@@ -294,6 +294,13 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(Constants.SCENE_NAME_level_00_progression);
         }
+        // options menu button | load options menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(optionsMenuButtonName))
+        {
+            loadMenu(Constants.SCENE_NAME_level_00_options);
+        }
         // credits menu button | load credits menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
