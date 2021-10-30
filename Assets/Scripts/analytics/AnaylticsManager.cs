@@ -7,7 +7,7 @@ public static class AnaylticsManager
 
     public static void MenuStartLoaded()
     {
-        string eventName = "Start SCreen Loaded";
+        string eventName = "Start Screen Loaded";
         AnalyticsResult analyticsResult =
             Analytics.CustomEvent(eventName);
     }
