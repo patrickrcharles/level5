@@ -24,6 +24,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField]
     GameObject projectileMolotovPrefab;
     [SerializeField]
+    GameObject projectileRabbitPrefab;
+    [SerializeField]
     GameObject projectileRocketPrefab;
     [SerializeField]
     GameObject projectileCigarettePrefab;
@@ -49,6 +51,7 @@ public class PlayerAnimationEvents : MonoBehaviour
             projectileAutomaticBulletPrefab = Resources.Load("Prefabs/projectile/projectile_automatic_bullet") as GameObject;
             projectileMolotovPrefab = Resources.Load("Prefabs/projectile/projectile_molotov") as GameObject;
             projectileRocketPrefab = Resources.Load("Prefabs/projectile/projectile_rocket") as GameObject;
+            projectileRabbitPrefab = Resources.Load("Prefabs/projectile/projectile_rabbit") as GameObject;
             projectileCigarettePrefab = Resources.Load("Prefabs/projectile/projectile_cigarette") as GameObject;
             projectileSpawn = transform.Find("projectileSpawn").gameObject;
         }
@@ -94,8 +97,7 @@ public class PlayerAnimationEvents : MonoBehaviour
         {
             animOnCamera = null;
         }
-        // check if attack box is active and should not be
-
+        // check if attack box is active and should not be       
         InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
     }
 
@@ -152,6 +154,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void instantiateProjectileMolotov()
     {
         Instantiate(projectileMolotovPrefab, projectileSpawn.transform.position, Quaternion.identity);
+    }
+    public void instantiateProjectileRabbit()
+    {
+        Instantiate(projectileRabbitPrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
     public void instantiateProjectileCigarette()
     {
@@ -237,7 +243,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void enableAttackBox()
     {
-
         attackBox.SetActive(true);
         attackBoxEnabled = true;
     }
