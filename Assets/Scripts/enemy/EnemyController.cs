@@ -20,8 +20,6 @@ public class EnemyController : MonoBehaviour
     Vector3 movement;
     private float movementSpeed;
     public float walkMovementSpeed;
-    public float runMovementSpeed;
-    public float attackMovementSpeed;
 
     [SerializeField]
     public bool facingRight;
@@ -72,7 +70,6 @@ public class EnemyController : MonoBehaviour
     public bool statePatrol = false;
     public bool stateKnockDown = false;
 
-    [SerializeField]
     private float lineOfSight;
     public float lineOfSightVariance;
     [SerializeField]
@@ -93,26 +90,25 @@ public class EnemyController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
         facingRight = true;
+        canAttack = true;
+
+        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
         rigidBody = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
         enemyDetection = gameObject.GetComponent<EnemyDetection>();
         enemyHealthBar = gameObject.GetComponentInChildren<EnemyHealthBar>();
-
         enemyHealth = gameObject.GetComponentInChildren<EnemyHealth>();
         damageDisplayObject = transform.FindDeepChild("enemy_damage_display_text").gameObject;
-
-        originalPosition = transform.position;
-        canAttack = true;
-
         playerSwapAttack = GetComponent<PlayerSwapAttack>();
 
+        originalPosition = transform.position;
         //if (attackCooldown == 0) { attackCooldown = 0.75f; }
         if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
-        //if (takeDamageTime == 0) { takeDamageTime = 0.3f; }
+        if (takeDamageTime == 0) { takeDamageTime = 0.5f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
         if (knockBackForce == 0) { knockBackForce = 3f; }
 
@@ -120,28 +116,29 @@ public class EnemyController : MonoBehaviour
         {
             attackCooldown = 1.5f;
             takeDamageTime = 0.5f;
-            walkMovementSpeed = 2f;
-            runMovementSpeed = 3f;
+            walkMovementSpeed = 1.75f;
         }
         if (isBoss)
         {
             attackCooldown = 1.15f;
             takeDamageTime = 0.5f;
-            walkMovementSpeed = 3f;
-            runMovementSpeed = 4f;
+            walkMovementSpeed = 2.5f;
         }
 
         movementSpeed = walkMovementSpeed;
         if (GameOptions.hardcoreModeEnabled || GameOptions.difficultySelected == 2)
         {
+            // +25% speed
             movementSpeed *= 1.25f;
+            // 50% reduction in attack cooldown 
             attackCooldown *= 0.5f;
         }
-
+        // for enemy damagae display over head
         if (damageDisplayObject.GetComponent<Canvas>() != null)
         {
             damageDisplayObject.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
         }
+        // if level has custom level specific camera
         if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
