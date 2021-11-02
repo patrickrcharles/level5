@@ -106,7 +106,7 @@ public class EnemyController : MonoBehaviour
 
         originalPosition = transform.position;
         //if (attackCooldown == 0) { attackCooldown = 0.75f; }
-        if (knockDownTime == 0) { knockDownTime = 2f; }
+        //if (knockDownTime == 0) { knockDownTime = 2f; }
         if (lineOfSightVariance == 0) { lineOfSightVariance = 0.4f; }
         if (takeDamageTime == 0) { takeDamageTime = 0.5f; }
         if (minDistanceCloseAttack == 0) { minDistanceCloseAttack = 0.6f; }
