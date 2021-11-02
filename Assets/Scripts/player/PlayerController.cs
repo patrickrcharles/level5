@@ -416,7 +416,7 @@ public class PlayerController : MonoBehaviour
             //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
             //&& !hasBasketball
             && canBlock
-            && (GameOptions.enemiesEnabled || GameOptions.enemiesEnabled || GameOptions.battleRoyalEnabled)
+            && (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled || GameOptions.battleRoyalEnabled)
             && PlayerHealth.Block > 0)
         {
             if (playerCanBlock)
