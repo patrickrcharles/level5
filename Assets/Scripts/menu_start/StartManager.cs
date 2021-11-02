@@ -214,13 +214,14 @@ public class StartManager : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
             disableButtonsNotUsedForTouchInput();
 #endif
-
-        StartCoroutine(InitializeDisplay());
+        //StartCoroutine(InitializeDisplay());
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(InitializeDisplay());
+        setVersion();
         AnaylticsManager.MenuStartLoaded();
     }
 
@@ -564,7 +565,10 @@ public class StartManager : MonoBehaviour
         initializeDifficultyOptionDisplay();
         initializeObstacleOptionDisplay();
         setInitialGameOptions();
+    }
 
+    private void setVersion()
+    {
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
@@ -574,10 +578,10 @@ public class StartManager : MonoBehaviour
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
         versionText.text = "current version: " + Application.version;
-        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        //yield return new WaitUntil(() => !APIHelper.ApiLocked);
         latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-
     }
+
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
     {
