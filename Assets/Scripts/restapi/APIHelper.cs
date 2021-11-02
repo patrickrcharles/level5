@@ -1037,13 +1037,11 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                //Debug.Log("----------------- GetHighscoreCountByModeid() successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
             // failed
             else
             {
-                //Debug.Log("----------------- GetHighscoreCountByModeid() : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
             //Debug.Log("api : latest build : " + currentVersion);
