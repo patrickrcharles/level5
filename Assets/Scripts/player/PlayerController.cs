@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
         screenXRange = Screen.width / 10;
         screenYRange = Screen.width / 10;
 
-        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        if (GameOptions.customCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             damageDisplayObject.transform.rotation = Quaternion.Euler(0, 0, 0);
