@@ -13,11 +13,6 @@ public class ServerMessagesManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("serverMessage");
-        foreach (GameObject go in objs)
-        {
-            serverMessagesText.Add(go.GetComponent<Text>());
-        }
         serverMessagesModels = APIHelper.GetServerMessages();
         setUIMessages();
     }
