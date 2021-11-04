@@ -9,7 +9,7 @@ public class BehaviorNpcRob : MonoBehaviour
     private void Start()
     {
         spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
-        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        if (GameOptions.customCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
