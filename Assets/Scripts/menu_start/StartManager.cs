@@ -1,5 +1,6 @@
 ﻿
 using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -579,7 +580,14 @@ public class StartManager : MonoBehaviour
         }
         versionText.text = "current version: " + Application.version;
         //yield return new WaitUntil(() => !APIHelper.ApiLocked);
-        latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        }
+        else
+        {
+            latestVersionText.text = "latest version: " + "No Internet";
+        }
     }
 
     // ============================  get UI buttons / text references ==============================
@@ -1017,6 +1025,8 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.trafficEnabled = false;
         }
+
+        GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
         //    levelSelectedIndex = 15;
@@ -1156,10 +1166,10 @@ public class StartManager : MonoBehaviour
             || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
             // not battle royal mode, level is battle royal
             || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
-            //// mode is cage match, level is not cage match
-            //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
-            ////mode is not cage match, level is cage match
-            //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        //// mode is cage match, level is not cage match
+        //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+        ////mode is not cage match, level is cage match
+        //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelUp();
         }
@@ -1192,10 +1202,10 @@ public class StartManager : MonoBehaviour
             || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
             // not battle royal mode, level is battle royal
             || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
-            //// mode is cage match, level is not cage match
-            //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
-            ////mode is not cage match, level is cage match
-            //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        //// mode is cage match, level is not cage match
+        //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+        ////mode is not cage match, level is cage match
+        //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
         {
             changeSelectedLevelDown();
         }
