@@ -84,10 +84,10 @@ public class Pause : MonoBehaviour
         //{
         //    controlsObject.SetActive(false);
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-            controlsDesktopObject.SetActive(false);
-            controlsMobileObject.SetActive(true);
-#endif
+//#if UNITY_ANDROID && !UNITY_EDITOR
+//            controlsDesktopObject.SetActive(false);
+//            controlsMobileObject.SetActive(true);
+//#endif
 
 #if UNITY_STANDALONE || UNITY_EDITOR
             //controlsDesktopObject.SetActive(true);
