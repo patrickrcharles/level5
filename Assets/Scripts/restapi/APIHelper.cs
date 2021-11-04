@@ -832,8 +832,10 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static IEnumerator PostReport(UserReportModel userReport, InputField inputField)
         {
-            Debug.Log("PostReport");
+            yield return new WaitUntil(() => !apiLocked);
             apiLocked = true;
+
+            //Debug.Log("PostReport");
             if (DBHelper.instance != null)
             {
                 yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
