@@ -101,14 +101,14 @@ public class PlayerProjectile : MonoBehaviour
     }
     void Flip()
     {
-        Debug.Log("flip : " + transform.parent.gameObject.name);
+        //Debug.Log("flip : " + transform.parent.gameObject.name);
         //Vector3 thisScale = transform.root.localScale;
         //Debug.Log("thisScale : " + thisScale);
         //thisScale.x *= -1;
         //Debug.Log("thisScale.x : " + thisScale.x);
         //transform.root.localScale = thisScale;
-        Debug.Log("transform.parent.gameObject.GetComponent<SpriteRenderer>() == null : " 
-            + (transform.parent.gameObject.GetComponent<SpriteRenderer>() == null));
+        //Debug.Log("transform.parent.gameObject.GetComponent<SpriteRenderer>() == null : " 
+            //+ (transform.parent.gameObject.GetComponent<SpriteRenderer>() == null));
 
         transform.parent.gameObject.GetComponent<SpriteRenderer>().flipX = true; 
     }

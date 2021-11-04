@@ -158,11 +158,10 @@ namespace Assets.Scripts.restapi
                 // failed
                 else
                 {
-                    Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
                     // if conflict (scoreid already exists in database)
                     if (httpResponse.StatusCode == HttpStatusCode.Conflict)
                     {
-                        Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                        //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
                         DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                         apiLocked = false;
                         DBHelper.instance.DatabaseLocked = false;
@@ -1007,7 +1006,7 @@ namespace Assets.Scripts.restapi
             //build api request
             string apiRequest = Constants.API_ADDRESS_DEV_publicApplicationVersionCurrent;
 
-            //int numResults = 0;
+
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;

@@ -32,7 +32,6 @@ namespace Assets.Scripts.Utility
         }
         public static bool IsConnectedToInternet()
         {
-            //Debug.Log("IsConnectedToInternet()");
             string host = "www.google.com";
             Ping p = new Ping();
             try
