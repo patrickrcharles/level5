@@ -70,7 +70,6 @@ public class cameraUpdater : MonoBehaviour
     void Start()
     {
         requiresWeatherSystem = GameOptions.levelRequiresWeather;
-        
 
         // get weather system object reference
         foreach (Transform t in gameObject.transform)
