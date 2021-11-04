@@ -222,7 +222,7 @@ public class StartManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(InitializeDisplay());
-        setVersion();
+        StartCoroutine(SetVersion());
         AnaylticsManager.MenuStartLoaded();
     }
 
@@ -568,7 +568,7 @@ public class StartManager : MonoBehaviour
         setInitialGameOptions();
     }
 
-    private void setVersion()
+    private IEnumerator SetVersion()
     {
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
@@ -579,7 +579,7 @@ public class StartManager : MonoBehaviour
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
         versionText.text = "current version: " + Application.version;
-        //yield return new WaitUntil(() => !APIHelper.ApiLocked);
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
         if (UtilityFunctions.IsConnectedToInternet())
         {
             latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
