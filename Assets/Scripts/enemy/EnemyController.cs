@@ -139,7 +139,7 @@ public class EnemyController : MonoBehaviour
             damageDisplayObject.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
         }
         // if level has custom level specific camera
-        if (CameraManager.instance.Cameras[0].GetComponent<cameraUpdater>().customCamera)
+        if (GameOptions.customCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             enemyHealthBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -152,7 +152,9 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (stateWalk && currentState != AnimatorState_Knockdown && currentState != AnimatorState_Disintegrated
+        if (stateWalk 
+            && currentState != AnimatorState_Knockdown 
+            && currentState != AnimatorState_Disintegrated
             && enemyDetection.Attacking)
         {
             pursueTarget();
@@ -319,14 +321,16 @@ public class EnemyController : MonoBehaviour
     {
         canAttack = false;
         stateAttack = false;
+        currentState = AnimatorState_Idle;
         // wait for animator state to get to attack 
         yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
         // wait for animation to finish
         yield return new WaitUntil(() => !anim.GetCurrentAnimatorStateInfo(0).IsTag("attack"));
+        UnFreezeEnemyPosition();
         //wait for cooldown
         yield return new WaitForSecondsRealtime(seconds);
         // enemy can move again
-        UnFreezeEnemyPosition();
+        //UnFreezeEnemyPosition();
         canAttack = true;
     }
 
@@ -387,7 +391,7 @@ public class EnemyController : MonoBehaviour
         //Debug.Log("asdasdasd");
         yield return new WaitUntil(() => currentState != AnimatorState_Lightning);
         stateKnockDown = true;
-        FreezeEnemyPosition();
+        //FreezeEnemyPosition();
         anim.SetBool("knockdown", true);
         playAnimation("knockdown");
         // get direction facing
@@ -407,7 +411,7 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(knockDownTime);
         anim.SetBool("knockdown", false);
         stateKnockDown = false;
-        UnFreezeEnemyPosition();
+        //UnFreezeEnemyPosition();
 
         stateKnockDown = false;
     }
@@ -430,7 +434,7 @@ public class EnemyController : MonoBehaviour
     public IEnumerator takeDamage()
     {
         stateKnockDown = true;
-        FreezeEnemyPosition();
+        //FreezeEnemyPosition();
         anim.SetBool("takeDamage", true);
         playAnimation("takeDamage");
         if (facingRight)
@@ -446,8 +450,7 @@ public class EnemyController : MonoBehaviour
         }
         yield return new WaitForSecondsRealtime(takeDamageTime);
         anim.SetBool("takeDamage", false);
-        UnFreezeEnemyPosition();
-
+        //UnFreezeEnemyPosition();
         stateKnockDown = false;
     }
 
