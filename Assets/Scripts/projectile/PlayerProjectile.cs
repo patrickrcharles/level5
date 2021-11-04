@@ -47,7 +47,7 @@ public class PlayerProjectile : MonoBehaviour
         {
             Flip();
             //Debug.Log(" shoot left");
-            rigidbody.AddForce(force, 0, 0, ForceMode.VelocityChange);
+            rigidbody.AddForce(-force, 0, 0, ForceMode.VelocityChange);
         }
     }
     public void applyForceToDirectionFacingProjectile(Vector3 force)

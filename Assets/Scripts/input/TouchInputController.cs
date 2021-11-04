@@ -133,30 +133,6 @@ public class TouchInputController : MonoBehaviour
                 tap2Detected = false;
             }
 
-            //// ====================== touch 1 : double tap  =====================================
-            //if (touch1.tapCount == 2 && touch1.phase == TouchPhase.Began)
-            //{
-            //    doubleTap1Detected = true;
-            //}
-            //else
-            //{
-            //    doubleTap1Detected = false;
-            //}
-
-            //// ====================== touch 2 : double tap  =====================================
-            //if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Began)
-            //{
-            //    //Debug.Log("double tap 2");
-            //    doubleTap2Detected = true;
-            //    //touchLastTap = Time.time;
-            //    //Debug.Log("double tap time interval : " + (touchLastTap - touchfirstTap));
-            //}
-            //if (touch2.tapCount == 2 && touch2.phase == TouchPhase.Ended)
-            //{
-            //    doubleTap2Detected = false;
-            //}
-            // ====================== touch 2  =====================================
-
             //Touch 2 is tap + hold detected + bottom right screen
             if (hold1Detected
                 && !buttonPressed
