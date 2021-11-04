@@ -22,6 +22,8 @@ public class EnemySpawner : MonoBehaviour
     int maxNumberOfMinions;
     [SerializeField]
     GameObject battleRoyallSpawnPosition;
+    [SerializeField]
+    GameObject steelcage;
 
     private void Awake()
     {
@@ -46,14 +48,12 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
+        steelcage = GameObject.Find("steelCageRootObject");
     }
 
     private void Start()
     {
-        if (!GameOptions.cageMatchEnabled && GameObject.Find("steel_cage") != null)
-        {
-            GameObject.Find("steel_cage").SetActive(false);
-        }
+
         //// this needs to second option or enabling it will spawn enemies
         //if (GameObject.FindGameObjectWithTag("enemy") != null)
         //{
@@ -88,14 +88,26 @@ public class EnemySpawner : MonoBehaviour
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
 
-            if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
-            {
-                // spawn enemies if necessary
-                spawnDefaultMinions();
-                spawnDefaultBoss();
-                // start function to check status of current enemies
-                InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
-            }
+            //if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
+            //{
+            //    // spawn enemies if necessary
+            //    spawnDefaultMinions();
+            //    spawnDefaultBoss();
+            //    // start function to check status of current enemies
+            //    InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
+            //}
+        }
+        if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
+        {
+            // spawn enemies if necessary
+            spawnDefaultMinions();
+            spawnDefaultBoss();
+            // start function to check status of current enemies
+            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
+        }
+        if (!GameOptions.cageMatchEnabled && steelcage != null)
+        {
+            steelcage.SetActive(false);
         }
         if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
         {
@@ -104,6 +116,7 @@ public class EnemySpawner : MonoBehaviour
             InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
             //spawnBattleRoyalContestant();
         }
+        Debug.Log("maxNumberOfEnemies = " + maxNumberOfEnemies);
     }
 
     void spawnDefaultMinions()
@@ -187,7 +200,7 @@ public class EnemySpawner : MonoBehaviour
         // if spawn more enemies than enemy list has, spawn random enemy
         if (randomIndex >= enemyBossPrefabs.Count)
         {
-            Instantiate(enemyBossPrefabs[randomIndex], spawnPositions[randomIndex].transform.position, Quaternion.identity);
+            Instantiate(enemyBossPrefabs[0], spawnPositions[0].transform.position, Quaternion.identity);
             numberOfBoss++;
         }
         else
@@ -207,17 +220,11 @@ public class EnemySpawner : MonoBehaviour
         //Debug.Log("numberOfMinions : " + numberOfMinions);
         if (numberOfMinions < maxNumberOfMinions)
         {
-            Random random = new Random();
-            int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
-
             // update spawner location so spawn locations is near player
             spawnSingleMinion();
         }
         if (numberOfBoss < maxNumberOfBoss)
         {
-            Random random = new Random();
-            int randomIndex = random.Next(0, enemyBossPrefabs.Count);
-
             // update spawner location so spawn locations is near player
             spawnBoss();
         }
@@ -226,10 +233,18 @@ public class EnemySpawner : MonoBehaviour
     int getNumberOfBoss()
     {
         int value = 0;
-        GameObject[] enemyHealthList = GameObject.FindGameObjectsWithTag("enemy");
-        foreach (GameObject go in enemyHealthList)
+        //GameObject[] enemyHealthList = GameObject.FindGameObjectsWithTag("enemy");
+        //foreach (GameObject go in enemyHealthList)
+        //{
+        //    if (go.GetComponentInChildren<EnemyController>().IsBoss)
+        //    {
+        //        value++;
+        //    }
+        //}
+        EnemyController[] enemyHealthList = GameObject.FindObjectsOfType<EnemyController>();
+        foreach (EnemyController ec in enemyHealthList)
         {
-            if (go.GetComponentInChildren<EnemyController>().IsBoss)
+            if (ec.IsBoss)
             {
                 value++;
             }
