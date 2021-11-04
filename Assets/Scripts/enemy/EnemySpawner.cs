@@ -88,39 +88,51 @@ public class EnemySpawner : MonoBehaviour
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
 
-            //if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
-            //{
-            //    // spawn enemies if necessary
-            //    spawnDefaultMinions();
-            //    spawnDefaultBoss();
-            //    // start function to check status of current enemies
-            //    InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
-            //}
+            if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
+            {
+                // spawn enemies if necessary
+                spawnDefaultMinions();
+                spawnDefaultBoss();
+                // start function to check status of current enemies
+                InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
+            }
+            if (!GameOptions.cageMatchEnabled && steelcage != null)
+            {
+                steelcage.SetActive(false);
+            }
+            if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
+            {
+                maxNumberOfEnemies = 20;
+                battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
+                InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
+                //spawnBattleRoyalContestant();
+            }
         }
-        if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
-        {
-            // spawn enemies if necessary
-            spawnDefaultMinions();
-            spawnDefaultBoss();
-            // start function to check status of current enemies
-            InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
-        }
-        if (!GameOptions.cageMatchEnabled && steelcage != null)
-        {
-            steelcage.SetActive(false);
-        }
-        if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
-        {
-            maxNumberOfEnemies = 20;
-            battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
-            InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
-            //spawnBattleRoyalContestant();
-        }
-        Debug.Log("maxNumberOfEnemies = " + maxNumberOfEnemies);
+        //if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
+        //{
+        //    Debug.Log("spawn");
+        //    // spawn enemies if necessary
+        //    spawnDefaultMinions();
+        //    spawnDefaultBoss();
+        //    // start function to check status of current enemies
+        //    InvokeRepeating("getNumberOfCurrentEnemiesInScene", 5, 2f);
+        //}
+        //if (!GameOptions.cageMatchEnabled && steelcage != null)
+        //{
+        //    steelcage.SetActive(false);
+        //}
+        //if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
+        //{
+        //    maxNumberOfEnemies = 20;
+        //    battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
+        //    InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
+        //    //spawnBattleRoyalContestant();
+        //}
     }
 
     void spawnDefaultMinions()
     {
+        Debug.Log("spawn");
         int numberToSpawn = maxNumberOfMinions - numberOfMinions - numberOfBoss;
         Random random = new Random();
         if (numberToSpawn > 0)
@@ -145,6 +157,7 @@ public class EnemySpawner : MonoBehaviour
     void spawnDefaultBoss()
     {
         //Debug.Break();
+        Debug.Log("spawn");
         int numberToSpawn = maxNumberOfBoss - numberOfBoss;
         Random random = new Random();
         int randomIndex = random.Next(0, enemyBossPrefabs.Count);
@@ -169,6 +182,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
+        Debug.Log("spawn");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
 
@@ -194,6 +208,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnBoss()
     {
+        Debug.Log("spawn");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyBossPrefabs.Count);
 
