@@ -36,7 +36,7 @@ namespace Assets.Scripts.Utility
             Ping p = new Ping();
             try
             {
-                PingReply reply = p.Send(host, 2000);
+                PingReply reply = p.Send(host, 500);
 
                 if (reply.Status == IPStatus.Success)
                 {
