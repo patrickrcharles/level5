@@ -27,12 +27,24 @@ public class CreditsManager : MonoBehaviour
     private const string webLinkNftCollection = "https://opensea.io/collection/level5dudes";
     private const string webLinkNftAirdrop = "http://www.skeletondistrict.com/nftairdrop/";
 
+    //footer object names
+    private const string mainMenuButtonName = "press_start";
+    private const string statsMenuButtonName = "stats_menu";
+    private const string optionsButtonName = "options";
+    private const string quitButtonName = "quit_game";
+    private const string optionsMenuButtonName = "options_menu";
+    private const string creditsMenuButtonName = "credits_menu";
+    private const string progressionMenuButtonName = "update_menu";
+    private const string accountMenuButtonName = "account_menu";
+
     [SerializeField]
     private GameObject submitReportButtonObject;
     [SerializeField]
     string reportInput;
     [SerializeField]
     InputField reportInputField;
+
+    bool buttonPressed = false;
 
     public PlayerControls controls;
 
@@ -76,8 +88,7 @@ public class CreditsManager : MonoBehaviour
 
         // ================================== footer buttons =========================
         // start button | start game
-        if ((controls.UINavigation.Submit.triggered
-            || controls.Player.shoot.triggered)
+        if (controls.UINavigation.Submit.triggered
             && currentHighlightedButton.Equals(startButtonName))
         {
             loadStartMenu();
@@ -90,11 +101,12 @@ public class CreditsManager : MonoBehaviour
         {
             EventSystem.current.SetSelectedGameObject(submitReportButtonObject);
         }
-        if ((controls.UINavigation.Submit.triggered
-            || controls.Player.shoot.triggered)
+        if (controls.UINavigation.Submit.triggered
             && currentHighlightedButton.Equals(submitReportButtonName)
-            && !APIHelper.ApiLocked)
+            && !APIHelper.ApiLocked
+            && !buttonPressed)
         {
+            //Debug.Log("buttonPressed : " + buttonPressed);
             SubmitReport();
         }
     }
@@ -155,10 +167,28 @@ public class CreditsManager : MonoBehaviour
     {
         Application.OpenURL(webLinkNftAirdrop);
     }
-    public void SubmitReport()
+    private IEnumerator SubmitReportCoroutine()
     {
         UserReportModel userReportModel = new UserReportModel();
         userReportModel.Report = reportInput;
         StartCoroutine(APIHelper.PostReport(userReportModel, reportInputField));
+
+        yield return new WaitUntil(() => !APIHelper.ApiLocked);
+
+        buttonPressed = false;
     }
+    private void SubmitReport()
+    {
+        buttonPressed = true;
+        StartCoroutine(SubmitReportCoroutine());
+    }
+
+    public static string MainMenuButtonName => mainMenuButtonName;
+    public static string StatsMenuButtonName => statsMenuButtonName;
+    public static string OptionsButtonName => optionsButtonName;
+    public static string QuitButtonName => quitButtonName;
+    public static string OptionsMenuButtonName => optionsMenuButtonName;
+    public static string CreditsMenuButtonName => creditsMenuButtonName;
+    public static string ProgressionMenuButtonName => progressionMenuButtonName;
+    public static string AccountMenuButtonName => accountMenuButtonName;
 }

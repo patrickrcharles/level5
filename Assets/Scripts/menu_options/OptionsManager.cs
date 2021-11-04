@@ -11,13 +11,13 @@ public class OptionsManager : MonoBehaviour
     public string currentHighlightedButton;
 
     //footer object names
-    private const string startButtonName = "press_start";
+    private const string mainMenuButtonName = "press_start";
     private const string statsMenuButtonName = "stats_menu";
     private const string optionsButtonName = "options";
     private const string quitButtonName = "quit_game";
     private const string optionsMenuButtonName = "options_menu";
     private const string creditsMenuButtonName = "credits_menu";
-    private const string updateMenuButtonName = "update_menu";
+    private const string progressionMenuButtonName = "update_menu";
     private const string accountMenuButtonName = "account_menu";
 
     private const string keyboardOnlyMenuButtonName = "controls_keyboard";
@@ -78,7 +78,7 @@ public class OptionsManager : MonoBehaviour
         // ================================== footer buttons ===========================================
         // start button | start game
         if (controls.UINavigation.Submit.triggered
-            && currentHighlightedButton.Equals(startButtonName))
+            && currentHighlightedButton.Equals(mainMenuButtonName))
         {
             loadMenu(Constants.SCENE_NAME_level_00_start);
         }
@@ -97,7 +97,7 @@ public class OptionsManager : MonoBehaviour
 
         // update menu button | load update menu
         if (controls.UINavigation.Submit.triggered
-            && currentHighlightedButton.Equals(updateMenuButtonName))
+            && currentHighlightedButton.Equals(progressionMenuButtonName))
         {
             loadMenu(Constants.SCENE_NAME_level_00_progression);
         }
@@ -179,4 +179,12 @@ public class OptionsManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+    public static string MainMenuButtonName => mainMenuButtonName;
+    public static string StatsMenuButtonName => statsMenuButtonName;
+    public static string OptionsButtonName => optionsButtonName;
+    public static string QuitButtonName => quitButtonName;
+    public static string OptionsMenuButtonName => optionsMenuButtonName;
+    public static string CreditsMenuButtonName => creditsMenuButtonName;
+    public static string ProgressionMenuButtonName => progressionMenuButtonName;
+    public static string AccountMenuButtonName => accountMenuButtonName;
 }
