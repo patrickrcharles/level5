@@ -268,4 +268,50 @@ public class EnemyAnimationEvents : MonoBehaviour
         // apply for in x direction
 
     }
+
+    public void applyForceToDirectionFacing()
+    {
+        // get direction facing
+        if (enemyController.facingRight)
+        {
+            enemyController.RigidBody.AddForce(2.5f, 1.5f, 0, ForceMode.VelocityChange);
+        }
+        if (!enemyController.facingRight)
+        {
+            enemyController.RigidBody.AddForce(-2.5f, 1.5f, 0, ForceMode.VelocityChange);
+        }
+    }
+    public void applyForceToXDirectionFacing(float Xforce)
+    {
+        // get direction facing
+        if (enemyController.facingRight)
+        {
+            //apply to X
+            enemyController.RigidBody.AddForce(Xforce, 0, 0, ForceMode.VelocityChange);
+        }
+        if (!enemyController.facingRight)
+        {
+            enemyController.RigidBody.AddForce(-Xforce, 0, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+    }
+
+    public void applyForceToXDirectionNotFacing(float Xforce)
+    {
+        // get direction facing
+        if (enemyController.facingRight)
+        {
+            Debug.Log("enemy name : " + enemyController.name.ToString() + "  force : " + Xforce);
+            Debug.Log("facing right : " + enemyController.facingRight);
+            //apply to X
+            enemyController.RigidBody.AddForce(-Xforce, 2, 0, ForceMode.VelocityChange);
+        }
+        if (!enemyController.facingRight)
+        {
+            Debug.Log("enemy name : " + enemyController.name.ToString() + "  force : " + Xforce);
+            Debug.Log("facing right : " + enemyController.facingRight);
+            enemyController.RigidBody.AddForce(Xforce, 2, 0, ForceMode.VelocityChange);
+        }
+        // apply for in x direction
+    }
 }

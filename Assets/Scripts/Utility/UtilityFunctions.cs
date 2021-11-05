@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
@@ -9,51 +10,6 @@ namespace Assets.Scripts.Utility
 {
     public static class UtilityFunctions
     {
-        //public static bool IsValidEmail(string email)
-        //{
-        //    if (string.IsNullOrWhiteSpace(email))
-        //    {
-        //        return false;
-        //    }
-        //    try
-        //    {
-        //        // Normalize the domain
-        //        email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
-        //                              RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-        //        // Examines the domain part of the email and normalizes it.
-        //        string DomainMapper(Match match)
-        //        {
-        //            // Use IdnMapping class to convert Unicode domain names.
-        //            var idn = new IdnMapping();
-
-        //            // Pull out and process domain name (throws ArgumentException on invalid)
-        //            string domainName = idn.GetAscii(match.Groups[2].Value);
-
-        //            return match.Groups[1].Value + domainName;
-        //        }
-        //    }
-        //    catch (RegexMatchTimeoutException)
-        //    {
-        //        return false;
-        //    }
-        //    catch (ArgumentException)
-        //    {
-        //        return false;
-        //    }
-
-        //    try
-        //    {
-        //        return Regex.IsMatch(email,
-        //            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-        //            RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-        //    }
-        //    catch (RegexMatchTimeoutException)
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public static bool IsValidEmail(string email)
         {
             try
@@ -66,25 +22,21 @@ namespace Assets.Scripts.Utility
                 return false;
             }
         }
-
         public static string RemoveWhitespace(string str)
         {
             return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
-
         public static bool ContainsWhiteSpace(String s)
         {
             return s.Contains(" ");
         }
-
         public static bool IsConnectedToInternet()
         {
-            //Debug.Log("IsConnectedToInternet()");
             string host = "www.google.com";
             Ping p = new Ping();
             try
             {
-                PingReply reply = p.Send(host, 2000);
+                PingReply reply = p.Send(host, 500);
 
                 if (reply.Status == IPStatus.Success)
                 {
@@ -117,25 +69,21 @@ namespace Assets.Scripts.Utility
 
             return finalString;
         }
-
         public static string GetExternalIpAdress()
         {
             string pubIp = new WebClient().DownloadString("https://api.ipify.org");
             return pubIp;
         }
-
         public static float GetRandomFloat(float min, float max)
         {
             float randNum = Random.Range(min, max);
             return randNum;
         }
-
         public static int GetRandomInteger(int min, int max)
         {
             int randNum = Random.Range(min, max);
             return randNum;
         }
-
         public static float getPercentageFloat(int made, int attempt)
         {
             if (attempt > 0)
@@ -147,6 +95,32 @@ namespace Assets.Scripts.Utility
             {
                 return 0;
             }
+        }
+        public static bool rollForCriticalInt(int max)
+        {
+            int percent = Random.Range(0, 100);
+            //float percent = randNum.Next(1, 100);
+            if (percent <= max)
+            {
+                //Debug.Log("roll for critical : " + percent + "  max chance : " + max);
+                return true;
+            }
+            return false;
+        }
+
+        public static Transform FindDeepChild(this Transform aParent, string aName)
+        {
+            Queue<Transform> queue = new Queue<Transform>();
+            queue.Enqueue(aParent);
+            while (queue.Count > 0)
+            {
+                var c = queue.Dequeue();
+                if (c.name == aName)
+                    return c;
+                foreach (Transform t in c)
+                    queue.Enqueue(t);
+            }
+            return null;
         }
     }
 }

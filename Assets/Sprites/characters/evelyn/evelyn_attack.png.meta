@@ -17,6 +17,9 @@ TextureImporter:
   - first:
       213: 4232774819576981097
     second: evelyn_attack_4
+  - first:
+      213: 994725411536621260
+    second: evelyn_attack_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -242,6 +245,27 @@ TextureImporter:
       bones: []
       spriteID: 966aa1fa546ddba30800000000000000
       internalID: 4232774819576981097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evelyn_attack_5
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccec1b3dd79fdcd00800000000000000
+      internalID: 994725411536621260
       vertices: []
       indices: 
       edges: []

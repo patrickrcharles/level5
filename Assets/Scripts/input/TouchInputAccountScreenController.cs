@@ -67,8 +67,10 @@ public class TouchInputAccountScreenController : MonoBehaviour
             swipeDistance = endTouchPosition.y - startTouchPosition.y;
 
             // on double tap, perform actions
-            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
+            if (touch.tapCount == 2 && touch.phase == TouchPhase.Began 
+                && !buttonPressed)
             {
+                buttonPressed = true;
                 activateDoubleTappedButton();
             }
         }
@@ -101,7 +103,7 @@ public class TouchInputAccountScreenController : MonoBehaviour
 
     private void activateDoubleTappedButton()
     {
-        buttonPressed = true;
+        //buttonPressed = true;
 
         //if (EventSystem.current.currentSelectedGameObject.name.Equals(StatsManager.ModeSelectButtonName))
         //{
@@ -132,7 +134,7 @@ public class TouchInputAccountScreenController : MonoBehaviour
             SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_credits);
         }
         // create new
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.LoginExistingButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(AccountManager.CreateNewButtonName))
         {
             SceneManager.LoadSceneAsync(Constants.SCENE_NAME_level_00_account_createNew);
         }

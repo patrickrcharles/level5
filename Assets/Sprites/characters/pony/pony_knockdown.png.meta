@@ -29,6 +29,18 @@ TextureImporter:
   - first:
       213: 8114925049404582430
     second: pony_knockdown_8
+  - first:
+      213: 8263158187689711839
+    second: pony_knockdown_9
+  - first:
+      213: 7260896393864620262
+    second: pony_knockdown_10
+  - first:
+      213: 714181806182183250
+    second: pony_knockdown_11
+  - first:
+      213: -2182899264817327019
+    second: pony_knockdown_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -338,6 +350,90 @@ TextureImporter:
       bones: []
       spriteID: e1aeda476510e9070800000000000000
       internalID: 8114925049404582430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pony_knockdown_9
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd81b147792aca270800000000000000
+      internalID: 8263158187689711839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pony_knockdown_10
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e82733ecc2e3c460800000000000000
+      internalID: 7260896393864620262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pony_knockdown_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 251398e919849e900800000000000000
+      internalID: 714181806182183250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pony_knockdown_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5541a142fa8c4b1e0800000000000000
+      internalID: -2182899264817327019
       vertices: []
       indices: 
       edges: []

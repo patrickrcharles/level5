@@ -43,7 +43,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private int pointsUsed;
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
-    [SerializeField] private string unlockCharacterText;
+    [SerializeField] private bool isShooter;
 
 
     void Start()
@@ -51,18 +51,16 @@ public class CharacterProfile : MonoBehaviour
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected)
         {
-            //.Log("init shoot profile");
             intializeShooterStatsFromProfile();
         }
-        if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected ==0 )
+        if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected == 0 )
         {
-            //Debug.Log("====================== GameOptions.arcadeModeEnabled : " + GameOptions.arcadeModeEnabled);
             Accuracy2Pt = 100;
             Accuracy3Pt = 100;
             Accuracy4Pt = 100;
             Accuracy7Pt = 100;
             Release = 100;
-            Range = 100;
+            Range = 150;
             Luck = 10;
         }
     }
@@ -71,8 +69,6 @@ public class CharacterProfile : MonoBehaviour
 
     private void intializeShooterStatsFromProfile()
     {
-        //Debug.Log("initializeStats()");
-
         CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
         playerObjectName = temp.playerObjectName;
@@ -93,7 +89,6 @@ public class CharacterProfile : MonoBehaviour
 
         Range = temp.range;
         Release = temp.release;
-        //Debug.Log("range : " + range + " realse : "+ Release);
 
         experience = temp.Experience;
         level = temp.Level;
@@ -111,7 +106,6 @@ public class CharacterProfile : MonoBehaviour
         {
             Luck = temp.Luck;
         }
-
         // destroy loaded data after updating stats 
         if (LoadedData.instance != null)
         {
@@ -129,37 +123,30 @@ public class CharacterProfile : MonoBehaviour
 
     public float calculateJumpValueToPercent()
     {
-
         //modifier
         float modifier = 100 / ((jumpStatCeiling - jumpStatFloor) * 10);
         // percent
         float percent = (JumpForce - jumpStatFloor) * modifier * 10;
-
         return percent;
     }
-
     public float calculateSpeedToPercent()
     {
         //modifier
         float modifier = 100 / ((speedStatCeiling - speedStatFloor) * 10);
         // percent
         float percent = (runSpeed - speedStatFloor) * modifier * 10;
-
         return percent;
     }
-
     public float RunSpeedHasBall
     {
         get => runSpeedHasBall;
         set => runSpeedHasBall = value;
     }
-
     public int PlayerId
     {
         get => playerId;
         set => playerId = value;
     }
-
     public int Level
     {
         get => level;
@@ -170,74 +157,61 @@ public class CharacterProfile : MonoBehaviour
         get => experience;
         set => experience = value;
     }
-
     public string PlayerDisplayName
     {
         get => playerDisplayName;
         set => playerDisplayName = value;
     }
-
     public string PlayerObjectName
     {
         get => playerObjectName;
         set => playerObjectName = value;
     }
-
     public float Accuracy2Pt
     {
         get => accuracy2pt;
         set => accuracy2pt = value;
     }
-
     public float Accuracy3Pt
     {
         get => accuracy3pt;
         set => accuracy3pt = value;
     }
-
     public float Accuracy4Pt
     {
         get => accuracy4pt;
         set => accuracy4pt = value;
     }
-
     public float Accuracy7Pt
     {
         get => accuracy7pt;
         set => accuracy7pt = value;
     }
-
     public float JumpForce
     {
         get => jumpForce;
         set => jumpForce = value;
     }
-
     public float Speed
     {
         get => speed;
         set => speed = value;
     }
-
     public float RunSpeed
     {
         get => runSpeed;
         set => runSpeed = value;
     }
-
-
     public int Luck
     {
         get => luck;
         set => luck = value;
     }
-
     public int ShootAngle
     {
         get => shootAngle;
         set => shootAngle = value;
     }
-    public string UnlockCharacterText { get => unlockCharacterText; set => unlockCharacterText = value; }
     public Sprite PlayerPortrait { get => playerPortrait; set => playerPortrait = value; }
     public int PointsAvailable { get => pointsAvailable; set => pointsAvailable = value; }
     public int PointsUsed { get => pointsUsed; set => pointsUsed = value; }
@@ -245,4 +219,5 @@ public class CharacterProfile : MonoBehaviour
     public int Release { get => release; set => release = value; }
     public bool IsFighter { get => isFighter; set => isFighter = value; }
     public bool IsLocked { get; internal set; }
+    public bool IsShooter { get => isShooter; set => isShooter = value; }
 }

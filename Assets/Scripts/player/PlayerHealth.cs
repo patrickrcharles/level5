@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     float block;
     [SerializeField]
-    int maxBlock = 20;
+    int maxBlock = 30;
     [SerializeField]
     float special;
     [SerializeField]
@@ -31,14 +31,6 @@ public class PlayerHealth : MonoBehaviour
     PlayerController playerController;
     private bool regenerateHealth;
 
-    public float Health { get => health; set => health = value; }
-    public float Block { get => block; set => block = value; }
-    public bool IsDead { get => isDead; set => isDead = value; }
-    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
-    public int MaxBlock { get => maxBlock; set => maxBlock = value; }
-    public float Special { get => special; set => special = value; }
-    public int MaxSpecial { get => maxSpecial; set => maxSpecial = value; }
-
     private void Awake()
     {
         // default
@@ -50,7 +42,6 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         playerController = GameLevelManager.instance.PlayerController;
-
         // regenerate rate is +1 per interval
         // rate of 0.4f is equal to +1 every 0.5 second or +25 in 10 secs
         // rate of 1f is equal to +1 every 1 second or +100 in 100 seconds (1 min 40 secs)
@@ -76,36 +67,16 @@ public class PlayerHealth : MonoBehaviour
             // regenerate
             if (block < MaxBlock
                 && !regenerateBlock)
-                //&& (playerController.currentState == playerController.idleState
-                //|| playerController.currentState == playerController.bIdle
-                //|| playerController.currentState == playerController.walkState
-                //|| playerController.currentState == playerController.run
-                //|| playerController.currentState == playerController.blockState
-                //|| playerController.currentState == playerController.bWalk))
             {
                 StartCoroutine(RegenerateBlock());
             }
             if (health < maxHealth
                 && !regenerateHealth)
-                //&& (playerController.currentState == playerController.idleState
-                //|| playerController.currentState == playerController.bIdle
-                //|| playerController.currentState == playerController.walkState
-                //|| playerController.currentState == playerController.run
-                //|| playerController.currentState == playerController.blockState
-                //|| playerController.currentState == playerController.attackState
-                //|| playerController.currentState == playerController.bWalk))
             {
                 StartCoroutine(RegenerateHealth());
             }
             if (special < maxSpecial
                 && !regenerateSpecial)
-                //&& (playerController.currentState == playerController.idleState
-                //|| playerController.currentState == playerController.bIdle
-                //|| playerController.currentState == playerController.walkState
-                //|| playerController.currentState == playerController.run
-                //|| playerController.currentState == playerController.blockState
-                //|| playerController.currentState == playerController.attackState
-                //|| playerController.currentState == playerController.bWalk))
             {
                 StartCoroutine(RegenerateSpecial());
             }
@@ -118,7 +89,10 @@ public class PlayerHealth : MonoBehaviour
         regenerateSpecial = true;
         yield return new WaitForSeconds(regenerateSpecialRate);
         special += 1f;
-        PlayerHealthBar.instance.setSpecialSliderValue();
+        if (PlayerHealthBar.instance != null)
+        {
+            PlayerHealthBar.instance.setSpecialSliderValue();
+        }
         regenerateSpecial = false;
     }
 
@@ -127,7 +101,10 @@ public class PlayerHealth : MonoBehaviour
         regenerateBlock = true;
         yield return new WaitForSeconds(regenerateBlockRate);
         block += 1f;
-        PlayerHealthBar.instance.setBlockSliderValue();
+        if (PlayerHealthBar.instance != null)
+        {
+            PlayerHealthBar.instance.setBlockSliderValue();
+        }
         regenerateBlock = false;
     }
 
@@ -142,4 +119,11 @@ public class PlayerHealth : MonoBehaviour
         }
         regenerateHealth = false;
     }
+    public float Health { get => health; set => health = value; }
+    public float Block { get => block; set => block = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }
+    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public int MaxBlock { get => maxBlock; set => maxBlock = value; }
+    public float Special { get => special; set => special = value; }
+    public int MaxSpecial { get => maxSpecial; set => maxSpecial = value; }
 }

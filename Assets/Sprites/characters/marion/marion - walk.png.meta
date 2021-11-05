@@ -35,6 +35,51 @@ TextureImporter:
   - first:
       213: 21300020
     second: marion - walk_10
+  - first:
+      213: 1419152922731650293
+    second: marion - walk_0
+  - first:
+      213: -3587127229480217097
+    second: marion - walk_1
+  - first:
+      213: -8044485889519497816
+    second: marion - walk_2
+  - first:
+      213: -7758140070706788082
+    second: marion - walk_3
+  - first:
+      213: 208403173791388290
+    second: marion - walk_4
+  - first:
+      213: 1451262141128618573
+    second: marion - walk_5
+  - first:
+      213: -6926694051583743851
+    second: marion - walk_6
+  - first:
+      213: 4171968496339218256
+    second: marion - walk_7
+  - first:
+      213: -2353897868739981440
+    second: marion - walk_8
+  - first:
+      213: 5714432546257029657
+    second: marion - walk_9
+  - first:
+      213: 2483814073580135230
+    second: marion - walk_10
+  - first:
+      213: -414341710116608685
+    second: marion - walk_11
+  - first:
+      213: -2733963396845518339
+    second: marion - walk_12
+  - first:
+      213: 848811114559270829
+    second: marion - walk_13
+  - first:
+      213: 3652761330668974039
+    second: marion - walk_14
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -174,8 +219,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2bde4e738f9f4494ba134040fbf16531
-      internalID: 21300000
+      spriteID: 5fc90617018d1b310800000000000000
+      internalID: 1419152922731650293
       vertices: []
       indices: 
       edges: []
@@ -195,8 +240,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d27fee06d2e825d4ca8cc4df472b92b9
-      internalID: 21300002
+      spriteID: 7f553ba4ac6f73ec0800000000000000
+      internalID: -3587127229480217097
       vertices: []
       indices: 
       edges: []
@@ -216,8 +261,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27f74765f37baa949b82b9f2f2133b43
-      internalID: 21300004
+      spriteID: 8ad4c8a74be3c5090800000000000000
+      internalID: -8044485889519497816
       vertices: []
       indices: 
       edges: []
@@ -237,8 +282,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c909ad3d92bbe5e45850338cb1f8d29d
-      internalID: 21300006
+      spriteID: e094cc7c5bc855490800000000000000
+      internalID: -7758140070706788082
       vertices: []
       indices: 
       edges: []
@@ -258,8 +303,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d65e114128898a84387ca9c301da19d8
-      internalID: 21300008
+      spriteID: 28256e7159564e200800000000000000
+      internalID: 208403173791388290
       vertices: []
       indices: 
       edges: []
@@ -279,8 +324,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08a2c5fef4775d24588baa9352b8d5ae
-      internalID: 21300010
+      spriteID: d42b1fd6a3be32410800000000000000
+      internalID: 1451262141128618573
       vertices: []
       indices: 
       edges: []
@@ -300,8 +345,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4224e17e951333641ae9c9e9291a8565
-      internalID: 21300012
+      spriteID: 5982a8395707fdf90800000000000000
+      internalID: -6926694051583743851
       vertices: []
       indices: 
       edges: []
@@ -321,8 +366,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2d521bca9ea9ce458800e4187ab9613
-      internalID: 21300014
+      spriteID: 05f6b6e4e3fc5e930800000000000000
+      internalID: 4171968496339218256
       vertices: []
       indices: 
       edges: []
@@ -342,8 +387,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 400b0c286cfc73643a1b4ad90bb856ed
-      internalID: 21300016
+      spriteID: 08f44302c56455fd0800000000000000
+      internalID: -2353897868739981440
       vertices: []
       indices: 
       edges: []
@@ -363,8 +408,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8cf73e711da31e48b3447368ee0476b
-      internalID: 21300018
+      spriteID: 91ac49cdf1ebd4f40800000000000000
+      internalID: 5714432546257029657
       vertices: []
       indices: 
       edges: []
@@ -384,8 +429,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: abd9968ff5a764946aa4050380630990
-      internalID: 21300020
+      spriteID: e332cd77db7487220800000000000000
+      internalID: 2483814073580135230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marion - walk_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 200
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3552fd0f866ff3af0800000000000000
+      internalID: -414341710116608685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marion - walk_12
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 72
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df14a1696c20f0ad0800000000000000
+      internalID: -2733963396845518339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marion - walk_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 72
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daf65b4263597cb00800000000000000
+      internalID: 848811114559270829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marion - walk_14
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 72
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dfaecbb31731b230800000000000000
+      internalID: 3652761330668974039
       vertices: []
       indices: 
       edges: []

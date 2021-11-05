@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Net;
-using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,14 +12,9 @@ public class DBHelper : MonoBehaviour
     private String connection;
     private String databaseNamePath = "/level5.db";
     private String filepath;
-    private const String allTimeStatsTableName = "AllTimeStats";
-    private const String characterProfileTableName = "CharacterProfile";
-    private const String cheerleaderProfileTableName = "CheerleaderProfile";
-    private const String highScoresTableName = "HighScores";
-    private const String userTableName = "User";
 
-    private int currentDatabaseAppVersion = 8;
-    bool databaseSuccessfullyUpgraded = true;
+    //private int currentDatabaseAppVersion = 8;
+    //bool databaseSuccessfullyUpgraded = true;
 
     IDbCommand dbcmd;
     IDataReader reader;
@@ -205,7 +198,7 @@ public class DBHelper : MonoBehaviour
                         {
                             string sqlQuery =
                             "Insert INTO "
-                            + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked) "
+                            + Constants.LOCAL_DATABASE_tableName_cheerleaderProfile + " ( cid, name, objectName, unlockText, isLocked) "
                             + " Values('" + ch.CheerleaderId
                             + "', '" + ch.CheerleaderDisplayName
                             + "', '" + ch.CheerleaderObjectName
@@ -241,19 +234,29 @@ public class DBHelper : MonoBehaviour
             int prevLevel = PlayerData.instance.CurrentExperience / 3000;
             int currentLevel = ((int)((PlayerData.instance.CurrentExperience + expGained) / 3000));
 
-            // gained a level
-            if(currentLevel > prevLevel)
-            {
-                PlayerData.instance.UpdatePointsAvailable++;
-            }
-
             int updatePointsAvailable = PlayerData.instance.UpdatePointsAvailable;
             int updatePointsUsed = PlayerData.instance.UpdatePointsUsed;
 
-            // course correction if points available/used dont line up
-            if (!((updatePointsAvailable + updatePointsUsed) == currentLevel))
+            int counter = currentLevel - prevLevel;
+            // check for levels gained. for loop in case of gaining multiple levels
+            if (currentLevel > prevLevel)
             {
-                updatePointsAvailable = currentLevel - updatePointsUsed;
+                for (int i = 0; i < counter; i++)
+                {
+                    PlayerData.instance.UpdatePointsAvailable++;
+                }
+            }
+
+            // if used points is too much
+            if ((updatePointsUsed + updatePointsAvailable) > currentLevel)
+            {
+                updatePointsUsed = currentLevel;
+                updatePointsAvailable = 0;
+            }
+            // if used points is not enough
+            if ((updatePointsUsed + updatePointsAvailable) < currentLevel)
+            {
+                updatePointsAvailable = currentLevel - (updatePointsUsed + updatePointsAvailable);
             }
 
             IDbConnection dbconn;
@@ -262,10 +265,11 @@ public class DBHelper : MonoBehaviour
             IDbCommand dbcmd = dbconn.CreateCommand();
 
             string sqlQuery1 =
-               "UPDATE " + characterProfileTableName
+               "UPDATE " + Constants.LOCAL_DATABASE_tableName_characterProfile
                + " SET experience = " + (PlayerData.instance.CurrentExperience + expGained)
                + ", level = " + currentLevel
                + ", pointsAvailable = " + updatePointsAvailable
+               + ", pointsUsed = " + updatePointsUsed
                + " WHERE charid = " + GameOptions.characterId;
 
             dbcmd.CommandText = sqlQuery1;
@@ -306,7 +310,7 @@ public class DBHelper : MonoBehaviour
                         {
                             string sqlQuery =
                             "Insert INTO "
-                            + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
+                            + Constants.LOCAL_DATABASE_tableName_characterProfile + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
                             "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked) "
                             + " Values('" + shooter.PlayerId
                             + "', '" + shooter.PlayerDisplayName
@@ -366,7 +370,7 @@ public class DBHelper : MonoBehaviour
 
                         string sqlQuery =
                         "Insert INTO "
-                        + characterProfileTableName + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
+                        + Constants.LOCAL_DATABASE_tableName_characterProfile + " ( charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, " +
                         "speed, runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, islocked) "
                         + " Values('" + character.PlayerId
                         + "', '" + character.PlayerDisplayName
@@ -425,7 +429,7 @@ public class DBHelper : MonoBehaviour
                         cmd.Transaction = tr;
 
                         string sqlQuery =
-                        "Update " + characterProfileTableName
+                        "Update " + Constants.LOCAL_DATABASE_tableName_characterProfile
                         + " SET accuracy2 = " + character.Accuracy2Pt
                         + ", accuracy3 = " + character.Accuracy3Pt
                         + ", accuracy4 = " + character.Accuracy4Pt
@@ -473,7 +477,7 @@ public class DBHelper : MonoBehaviour
 
                         string sqlQuery =
                         "Insert INTO "
-                        + cheerleaderProfileTableName + " ( cid, name, objectName, unlockText, isLocked ) "
+                        + Constants.LOCAL_DATABASE_tableName_cheerleaderProfile + " ( cid, name, objectName, unlockText, isLocked ) "
                         + " Values('" + cheerleader.CheerleaderId
                         + "', '" + cheerleader.CheerleaderDisplayName
                         + "', '" + cheerleader.CheerleaderObjectName
@@ -514,10 +518,10 @@ public class DBHelper : MonoBehaviour
 
             //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
 
-            if (!isTableEmpty(allTimeStatsTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_allTimeStats))
             {
                 //Debug.Log(" table is not empty");
-                sqlQuery = "Select * From " + allTimeStatsTableName;
+                sqlQuery = "Select * From " + Constants.LOCAL_DATABASE_tableName_allTimeStats;
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -578,11 +582,11 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            if (!isTableEmpty(characterProfileTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_characterProfile))
             {
                 sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
                     + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
-                    + " From " + characterProfileTableName;
+                    + " From " + Constants.LOCAL_DATABASE_tableName_characterProfile;
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -613,12 +617,6 @@ public class DBHelper : MonoBehaviour
                     temp.Release = reader.GetInt32(18);
                     temp.IsLocked = Convert.ToBoolean(reader.GetValue(19));
                     characterStats.Add(temp);
-
-                    //Debug.Log("-------------------------------------------------------------------------------");
-                    //Debug.Log(temp.PlayerDisplayName + " PointsAvailable : " + temp.PointsAvailable);
-                    //Debug.Log(temp.PointsUsed + " PointsUsed : " + temp.PointsUsed);
-                    //Debug.Log(temp.Level + " level : " + temp.Level);
-                    //Debug.Log(temp.Experience + " experience : " + temp.Experience);
 
                     Destroy(temp);
                 }
@@ -654,10 +652,10 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            if (!isTableEmpty(cheerleaderProfileTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_cheerleaderProfile))
             {
                 sqlQuery = "Select cid, name, objectName, unlockText, isLocked "
-                    + " From " + cheerleaderProfileTableName;
+                    + " From " + Constants.LOCAL_DATABASE_tableName_cheerleaderProfile;
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -760,11 +758,11 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            if (!isTableEmpty(userTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_user))
             {
                 sqlQuery = "Select userid, username, firstname, lastname, email, ipaddress, signupdate, lastlogin, password,"
                     + "bearerToken"
-                    + " From " + userTableName
+                    + " From " + Constants.LOCAL_DATABASE_tableName_user
                     + " ORDER BY lastlogin ASC";
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -824,9 +822,9 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            if (!isTableEmpty(userTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_user))
             {
-                sqlQuery = "Select * From " + userTableName + " WHERE username = '" + user.UserName + "'";
+                sqlQuery = "Select * From " + Constants.LOCAL_DATABASE_tableName_user + " WHERE username = '" + user.UserName + "'";
                 //Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -875,10 +873,10 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
-            if (isTableEmpty(allTimeStatsTableName))
+            if (isTableEmpty(Constants.LOCAL_DATABASE_tableName_allTimeStats))
             {
                 sqlQuery =
-               "Insert INTO " + allTimeStatsTableName + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
+               "Insert INTO " + Constants.LOCAL_DATABASE_tableName_allTimeStats + " ( twoMade, twoAtt, threeMade, threeAtt, fourMade, FourAtt, sevenMade, " +
                "sevenAtt, totalPoints, moneyBallMade, moneyBallAtt, totalDistance, timePlayed, longestShot, enemiesKilled, sniperHits, sniperShots)  " +
                "Values( '" +
                stats.TwoPointerMade + "', '" +
@@ -902,7 +900,7 @@ public class DBHelper : MonoBehaviour
             else
             {
                 sqlQuery =
-               "Update " + allTimeStatsTableName +
+               "Update " + Constants.LOCAL_DATABASE_tableName_allTimeStats +
                " SET" +
                " twoMade = " + (prevStats.TwoPointerMade += stats.TwoPointerMade) +
                ", twoAtt = " + (prevStats.TwoPointerAttempts += stats.TwoPointerAttempts) +
@@ -1352,7 +1350,7 @@ public class DBHelper : MonoBehaviour
 
             while (reader.Read())
             {
-                value =  reader.GetInt32(0);
+                value = reader.GetInt32(0);
                 //Debug.Log(" value : " + value);
             }
             reader.Close();
@@ -1583,524 +1581,84 @@ public class DBHelper : MonoBehaviour
         }
     }
 
-    public void alterTableAddColumn(string tableName, string columnName, string type)
-    {
-        try
-        {
-            databaseLocked = true;
-            if (!doesColumnExist(tableName, columnName))
-            {
-                IDbConnection dbconn;
-                dbconn = (IDbConnection)new SqliteConnection(connection);
-                dbconn.Open(); //Open connection to the database.
-                IDbCommand dbcmd = dbconn.CreateCommand();
+    //public void alterTableAddColumn(string tableName, string columnName, string type)
+    //{
+    //    try
+    //    {
+    //        databaseLocked = true;
+    //        if (!doesColumnExist(tableName, columnName))
+    //        {
+    //            IDbConnection dbconn;
+    //            dbconn = (IDbConnection)new SqliteConnection(connection);
+    //            dbconn.Open(); //Open connection to the database.
+    //            IDbCommand dbcmd = dbconn.CreateCommand();
 
-                string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT none;";
-                dbcmd.CommandText = sqlQuery;
+    //            string sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " NOT NULL DEFAULT none;";
+    //            dbcmd.CommandText = sqlQuery;
 
-                IDataReader reader = dbcmd.ExecuteReader();
+    //            IDataReader reader = dbcmd.ExecuteReader();
 
-                reader.Close();
-                reader = null;
-                dbcmd.Dispose();
-                dbcmd = null;
-                dbconn.Close();
-                dbconn = null;
-            }
-        }
-        catch (Exception e)
-        {
-            databaseSuccessfullyUpgraded = false;
-            Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
-            Debug.Log("ERROR : " + e);
-            databaseLocked = false;
-            return;
-        }
-    }
+    //            reader.Close();
+    //            reader = null;
+    //            dbcmd.Dispose();
+    //            dbcmd = null;
+    //            dbconn.Close();
+    //            dbconn = null;
+    //        }
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        databaseSuccessfullyUpgraded = false;
+    //        Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
+    //        Debug.Log("ERROR : " + e);
+    //        databaseLocked = false;
+    //        return;
+    //    }
+    //}
 
-    public IEnumerator UpgradeDatabaseToVersion3()
-    {
-        //Debug.Log("UpgradeDatabaseToVersion3() ---start");
-        if (message != null)
-        {
-            message.text = "upgrading database...";
-        }
+    //public bool doesColumnExist(string tableName, string columnName)
+    //{
+    //    try
+    //    {
+    //        databaseLocked = true;
 
-        //string table1 = "HighScores";
-        string table2 = "User";
-        string table3 = "AllTimeStats";
+    //        IDbConnection dbconn;
+    //        dbconn = (IDbConnection)new SqliteConnection(connection);
+    //        dbconn.Open(); //Open connection to the database.
+    //        IDbCommand dbcmd = dbconn.CreateCommand();
 
-        //highscore table
-        //string col1 = "scoreidUnique";
-        //string col2 = "platform";
-        //string col3 = "device";
-        //string col4 = "ipaddress";
-        //string col5 = "twoMade";
-        //string col6 = "twoAtt";
-        //string col7 = "threeMade";
-        //string col8 = "threeAtt";
-        //string col9 = "fourMade";
-        //string col10 = "fourAtt";
-        //string col11 = "sevenMade";
-        //string col12 = "sevenAtt";
-        //string col13 = "submittedToApi";
-        //string col14 = "bonusPoints";
-        //string col15 = "moneyBallMade";
-        //string col16 = "moneyBallAtt";
-        //string col17 = "enemiesEnabled";
-        //string col18 = "userName";
-        ////string col181 = "username";
-        //// add sniper options to highscore
-        //string col19 = "sniperEnabled";
-        //string col20 = "sniperMode";
-        //string col21 = "sniperModeName";
-        //string col22 = "sniperHits";
-        //string col23 = "sniperShots";
-        //user table
-        string col1a = "userid";
-        string col2a = "username";
-        string col3a = "firstname";
-        string col4a = "lastname";
-        string col5a = "email";
-        string col6a = "password";
-        string col7a = "ipaddress";
-        string col8a = "signupdate";
-        string col9a = "lastlogin";
-        string col10a = "bearerToken";
-        // all time stats table
-        string col1b = "sniperHits";
-        string col2b = "sniperShots";
+    //        string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
 
-        string typeText = "text";
-        string typeInteger = "integer";
+    //        dbcmd.CommandText = sqlQueryCheckForColumn;
+    //        IDataReader reader = dbcmd.ExecuteReader();
 
-        // ------------------------- Upgrade HighScores table
-        //// add scoreidunique column
-        //if (!doesColumnExist(table1, col1))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col1, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col1));
-        //    databaseLocked = false;
-        //}
-        //// add platform column
-        //if (!doesColumnExist(table1, col2))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col2, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col2));
-        //    databaseLocked = false;
-        //}
-        //// add device column
-        //if (!doesColumnExist(table1, col3))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col3, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col3));
-        //    databaseLocked = false;
-        //}
-        //// add ipaddress column
-        //if (!doesColumnExist(table1, col4))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col4, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col4));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col5))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col5, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col5));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col6))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col6, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col6));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col7))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col7, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col7));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col8))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col8, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col8));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col9))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col9, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col9));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col10))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col10, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col10));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col11))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col11, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col11));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col12))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col12, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col12));
-        //    databaseLocked = false;
-        //}
+    //        int nameIndex = reader.GetOrdinal("Name");
 
-        //if (!doesColumnExist(table1, col13))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col13, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col13));
-        //    databaseLocked = false;
-        //}
+    //        while (reader.Read())
+    //        {
+    //            if (reader.GetString(nameIndex).Equals(columnName))
+    //            {
+    //                //Debug.Log("column : " + columnName + " found");
+    //                return true;
+    //            }
+    //        }
 
-        //if (!doesColumnExist(table1, col14))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col14, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col14));
-        //    databaseLocked = false;
-        //}
+    //        reader.Close();
+    //        reader = null;
+    //        dbcmd.Dispose();
+    //        dbcmd = null;
+    //        dbconn.Close();
+    //        dbconn = null;
 
-        //if (!doesColumnExist(table1, col15))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col15, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col15));
-        //    databaseLocked = false;
-        //}
-
-        //if (!doesColumnExist(table1, col16))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col16, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col16));
-        //    databaseLocked = false;
-        //}
-
-        //if (!doesColumnExist(table1, col17))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col17, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col17));
-        //    databaseLocked = false;
-        //}
-        ////// if "username" column exists
-        ////if (doesColumnExist(table1, col181))
-        ////{
-        ////    yield return new WaitUntil(() => !databaseLocked);
-        ////    databaseLocked = true;
-        ////    //alterTableAddColumn(table1, col18, typeText);
-        ////    alterTableRenameColumn(table1, col181, col18, typeText);
-        ////    yield return new WaitUntil(() => doesColumnExist(table1, col18));
-        ////    databaseLocked = false;
-        ////}
-        //// if "userName" column DOES NOT exists
-        //if (!doesColumnExist(table1, col18))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col18, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col18));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col19))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col19, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col19));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col20))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col20, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col20));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col21))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col21, typeText);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col21));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col22))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col22, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col22));
-        //    databaseLocked = false;
-        //}
-        //if (!doesColumnExist(table1, col23))
-        //{
-        //    yield return new WaitUntil(() => !databaseLocked);
-        //    databaseLocked = true;
-        //    alterTableAddColumn(table1, col23, typeInteger);
-        //    yield return new WaitUntil(() => doesColumnExist(table1, col23));
-        //    databaseLocked = false;
-        //}
-
-        // ------------------------- Upgrade Users table
-
-        // drop user table
-        //StartCoroutine(DBConnector.instance.dropDatabaseTable("User"));
-        StartCoroutine(DBConnector.instance.createTableUser());
-        yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
-
-        // add scoreidunique column
-        if (!doesColumnExist(table2, col1a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col1a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col1a));
-            databaseLocked = false;
-        }
-
-        // add platform column
-        if (!doesColumnExist(table2, col2a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col2a, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table2, col2a));
-            databaseLocked = false;
-        }
-
-        // add device column
-        if (!doesColumnExist(table2, col3a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col3a, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table2, col3a));
-            databaseLocked = false;
-        }
-
-        // add ipaddress column
-        if (!doesColumnExist(table2, col4a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col4a, typeText);
-            yield return new WaitUntil(() => doesColumnExist(table2, col4a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col5a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col5a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col5a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col6a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col6a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col6a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col7a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col7a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col7a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col8a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col8a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col8a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col9a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col9a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col9a));
-            databaseLocked = false;
-        }
-
-        if (!doesColumnExist(table2, col10a))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table2, col10a, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table2, col10a));
-            databaseLocked = false;
-        }
-        yield return new WaitUntil(() => doesColumnExist(table2, col10a));
-        // verify all time stats table
-        StartCoroutine(DBConnector.instance.dropDatabaseTable(allTimeStatsTableName));
-        StartCoroutine(DBConnector.instance.createTableAllTimeStats());
-        yield return new WaitUntil(() => DBConnector.instance.tableExists(allTimeStatsTableName));
-        //yield return new WaitUntil(() => DBConnector.instance.tableExists(userTableName));
-
-        // verify new columns added
-        if (!doesColumnExist(table3, col1b))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table3, col1b, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table3, col1b));
-            databaseLocked = false;
-        }
-        // sniper shots
-        if (!doesColumnExist(table3, col2b))
-        {
-            yield return new WaitUntil(() => !databaseLocked);
-            databaseLocked = true;
-            alterTableAddColumn(table3, col2b, typeInteger);
-            yield return new WaitUntil(() => doesColumnExist(table3, col2b));
-            databaseLocked = false;
-        }
-
-        if (message != null)
-        {
-            message.text = "";
-        }
-        if (databaseSuccessfullyUpgraded)
-        {
-            //Debug.Log("databaseSuccessfullyUpgraded : " + databaseSuccessfullyUpgraded);
-            yield return new WaitUntil(() => !databaseLocked);
-            StartCoroutine(setDatabaseVersion());
-        }
-        else
-        {
-            databaseLocked = false;
-            Debug.Log("database upgrade to version " + currentDatabaseAppVersion + " failed");
-        }
-    }
-
-    public IEnumerator setDatabaseVersion()
-    {
-        //Debug.Log("setDatabaseVersion -- start");
-        yield return new WaitUntil(() => !DatabaseLocked);
-        DatabaseLocked = true;
-        try
-        {
-            //Debug.Log("try...");
-            //Debug.Log("try...");
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQuery = String.Format("PRAGMA main.user_version = " + currentDatabaseAppVersion);
-            dbcmd.CommandText = sqlQuery;
-            IDataReader reader = dbcmd.ExecuteReader();
-
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-
-            DatabaseLocked = false;
-        }
-        catch (Exception e)
-        {
-            DatabaseLocked = false;
-            Debug.Log("ERROR : " + e);
-            Debug.Log("setDatabaseVersion -- failed");
-        }
-    }
-
-    public bool doesColumnExist(string tableName, string columnName)
-    {
-        try
-        {
-            databaseLocked = true;
-
-            IDbConnection dbconn;
-            dbconn = (IDbConnection)new SqliteConnection(connection);
-            dbconn.Open(); //Open connection to the database.
-            IDbCommand dbcmd = dbconn.CreateCommand();
-
-            string sqlQueryCheckForColumn = "PRAGMA table_info(" + tableName + ")";
-
-            dbcmd.CommandText = sqlQueryCheckForColumn;
-            IDataReader reader = dbcmd.ExecuteReader();
-
-            int nameIndex = reader.GetOrdinal("Name");
-
-            while (reader.Read())
-            {
-                if (reader.GetString(nameIndex).Equals(columnName))
-                {
-                    //Debug.Log("column : " + columnName + " found");
-                    return true;
-                }
-            }
-
-            reader.Close();
-            reader = null;
-            dbcmd.Dispose();
-            dbcmd = null;
-            dbconn.Close();
-            dbconn = null;
-
-            databaseLocked = false;
-        }
-        catch
-        {
-            databaseLocked = false;
-            return false;
-        }
-        return false;
-    }
+    //        databaseLocked = false;
+    //    }
+    //    catch
+    //    {
+    //        databaseLocked = false;
+    //        return false;
+    //    }
+    //    return false;
+    //}
 
     // insert current game's stats and score
     public void setGameScoreSubmitted(string scoreid, bool value)
@@ -2119,7 +1677,7 @@ public class DBHelper : MonoBehaviour
             IDbCommand dbcmd = dbconn.CreateCommand();
 
             // if entry is NOT in list of stats
-            string sqlQuery = "UPDATE " + highScoresTableName + " SET submittedToApi" + " = " + submittedValue
+            string sqlQuery = "UPDATE " + Constants.LOCAL_DATABASE_tableName_highscores + " SET submittedToApi" + " = " + submittedValue
                 + " WHERE scoreidUnique = " + "'" + scoreid + "'";
 
             //Debug.Log(sqlQuery);
@@ -2158,9 +1716,9 @@ public class DBHelper : MonoBehaviour
 
             //Debug.Log("table empty : " + isTableEmpty(allTimeStatsTableName));
 
-            if (!isTableEmpty(highScoresTableName))
+            if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_highscores))
             {
-                sqlQuery = "Select  * From " + highScoresTableName
+                sqlQuery = "Select  * From " + Constants.LOCAL_DATABASE_tableName_highscores
                     + " WHERE submittedToApi = 0 "
                     + " AND modeid != 99"
                     + " AND userName != 0";
@@ -2220,8 +1778,8 @@ public class DBHelper : MonoBehaviour
                     // if username empty on unsubmitted score
                     // but user logged in [gameoptions.username != null/empty
                     // add logged in username to score and submit
-                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName)) 
-                        && (!string.IsNullOrWhiteSpace(GameOptions.userName) || !string.IsNullOrEmpty(GameOptions.userName)) )
+                    if ((string.IsNullOrEmpty(highscore.UserName) || string.IsNullOrWhiteSpace(highscore.UserName))
+                        && (!string.IsNullOrWhiteSpace(GameOptions.userName) || !string.IsNullOrEmpty(GameOptions.userName)))
                     {
                         highscore.UserName = GameOptions.userName;
                         highscores.Add(highscore);
@@ -2247,5 +1805,4 @@ public class DBHelper : MonoBehaviour
     }
 
     public bool DatabaseLocked { get => databaseLocked; set => databaseLocked = value; }
-    public int CurrentDatabaseAppVersion => currentDatabaseAppVersion;
 }

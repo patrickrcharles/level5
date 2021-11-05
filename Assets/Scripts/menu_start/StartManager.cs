@@ -202,7 +202,7 @@ public class StartManager : MonoBehaviour
         cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
-        trafficEnabled = GameOptions.enemiesEnabled;
+        trafficEnabled = GameOptions.trafficEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
         difficultySelected = GameOptions.difficultySelected;
         obstaclesEnabled = GameOptions.obstaclesEnabled;
@@ -215,13 +215,14 @@ public class StartManager : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
             disableButtonsNotUsedForTouchInput();
 #endif
-
-        StartCoroutine(InitializeDisplay());
+        //StartCoroutine(InitializeDisplay());
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(InitializeDisplay());
+        StartCoroutine(SetVersion());
         AnaylticsManager.MenuStartLoaded();
     }
 
@@ -295,6 +296,13 @@ public class StartManager : MonoBehaviour
             GameOptions.playerSelectedIndex = playerSelectedIndex;
             loadMenu(Constants.SCENE_NAME_level_00_progression);
         }
+        // options menu button | load options menu
+        if ((controls.UINavigation.Submit.triggered
+             || controls.Player.shoot.triggered)
+            && currentHighlightedButton.Equals(optionsMenuButtonName))
+        {
+            loadMenu(Constants.SCENE_NAME_level_00_options);
+        }
         // credits menu button | load credits menu
         if ((controls.UINavigation.Submit.triggered
              || controls.Player.shoot.triggered)
@@ -308,24 +316,8 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(accountMenuButtonName))
         {
-            //if ( GameOptions.numOfLocalUsers < 5)
-            //{
-            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_account);
-            //}
-            //else
-            //{
-            //    loadMenu(SceneNameConstants.SCENE_NAME_level_00_login);
-            //}
-
             loadMenu(Constants.SCENE_NAME_level_00_account);
         }
-        //if ((controls.UINavigation.Submit.triggered
-        //    || controls.Player.shoot.triggered)
-        //    && currentHighlightedButton.Equals(optionsMenuButtonName))
-        //{
-        //    loadMenu(Constants.SCENE_NAME_level_00_options);
-        //}
-
 
         // ================================== navigation =====================================================================
         // up, option select
@@ -574,7 +566,10 @@ public class StartManager : MonoBehaviour
         initializeDifficultyOptionDisplay();
         initializeObstacleOptionDisplay();
         setInitialGameOptions();
+    }
 
+    private IEnumerator SetVersion()
+    {
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
@@ -585,16 +580,16 @@ public class StartManager : MonoBehaviour
         }
         versionText.text = "current version: " + Application.version;
         yield return new WaitUntil(() => !APIHelper.ApiLocked);
-        latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        //if (UtilityFunctions.IsConnectedToInternet())
-        //{
-        //    latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        //}
-        //else
-        //{
-        //    latestVersionText.text = "latest version: no internet";
-        //}
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        }
+        else
+        {
+            latestVersionText.text = "latest version: " + "No Internet";
+        }
     }
+
     // ============================  get UI buttons / text references ==============================
     private void getUiObjectReferences()
     {
@@ -653,9 +648,9 @@ public class StartManager : MonoBehaviour
     {
 
         Random random = new Random();
-        int randNum = random.Next(1, 3);
+        int randNum = random.Next(1, 100);
 
-        if (randNum == 1)
+        if (randNum > 50)
         {
             return "wob1";
         }
@@ -712,7 +707,7 @@ public class StartManager : MonoBehaviour
     public void changeSelectedDifficultyOption()
     {
         //Debug.Log("change difficulty");
-        if(difficultySelected == 0)
+        if (difficultySelected == 0)
         {
             difficultySelected = 1;
         }
@@ -756,7 +751,6 @@ public class StartManager : MonoBehaviour
             hardcoreSelectOptionText.text = "OFF";
         }
     }
-
     public void initializeEnemyOptionDisplay()
     {
         if (enemiesEnabled)
@@ -768,7 +762,6 @@ public class StartManager : MonoBehaviour
             enemySelectOptionText.text = "OFF";
         }
     }
-
     public void initializeSniperOptionDisplay()
     {
         if (sniperEnabled)
@@ -780,26 +773,25 @@ public class StartManager : MonoBehaviour
             sniperSelectOptionText.text = "OFF";
         }
     }
-
     public void initializeDifficultyOptionDisplay()
     {
         difficultySelectOptionDescriptionText = GameObject.Find(difficultySelectDescriptionName).GetComponent<Text>();
         if (difficultySelected == 0)
         {
             difficultySelectOptionText.text = "easy";
-            difficultySelectOptionDescriptionText.text = "max stats | half the experience";
+            difficultySelectOptionDescriptionText.text = "max stats | 0.5x experience";
         }
         if (difficultySelected == 1)
         {
             difficultySelectOptionText.text = "normal";
-            difficultySelectOptionDescriptionText.text = "basic stats | full experience";
+            difficultySelectOptionDescriptionText.text = "basic stats | 1x experience";
         }
         //if (difficultySelected == 2)
         //{
-        //    difficultySelectOptionText.text = "hard";
+        //    difficultySelectOptionText.text = "hardcore";
+        //    difficultySelectOptionDescriptionText.text = "basic stats | 1.5x experience";
         //}
     }
-
     public void initializeObstacleOptionDisplay()
     {
         if (obstaclesEnabled)
@@ -1018,8 +1010,13 @@ public class StartManager : MonoBehaviour
         GameOptions.difficultySelected = difficultySelected;
         GameOptions.obstaclesEnabled = obstaclesEnabled;
 
+        GameOptions.battleRoyalEnabled = modeSelectedData[modeSelectedIndex].IsBattleRoyal;
+        GameOptions.cageMatchEnabled = modeSelectedData[modeSelectedIndex].IsCageMatch;
+
+        GameOptions.gameModeRequiresPlayerSurvive = modeSelectedData[modeSelectedIndex].GameModeRequiresPlayerSurvive;
+
         // if enemies only mode, enable enemies whether it was selected or not
-        if (GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled)
         {
             GameOptions.enemiesEnabled = true;
         }
@@ -1028,6 +1025,12 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.trafficEnabled = false;
         }
+
+        GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
+        //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
+        //{
+        //    levelSelectedIndex = 15;
+        //}
 
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
@@ -1052,7 +1055,6 @@ public class StartManager : MonoBehaviour
         if (playerSelectedIndex == 0)
         {
             playerSelectedIndex = playerSelectedData.Count - 1;
-
         }
         else
         {
@@ -1065,6 +1067,15 @@ public class StartManager : MonoBehaviour
             || enemiesEnabled))
         {
             //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerUp();
+        }
+        // check for shooting modes + if player is fighter
+        // check for shooting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsShooter
+            && !modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !enemiesEnabled)
+        {
+            //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerUp();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
@@ -1087,6 +1098,14 @@ public class StartManager : MonoBehaviour
             || enemiesEnabled))
         {
             //Debug.Log("player not fighter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
+            changeSelectedPlayerDown();
+        }
+        // check for shooting modes + if player is fighter
+        if (!playerSelectedData[playerSelectedIndex].IsShooter
+            && !modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled
+            && !enemiesEnabled)
+        {
+            //Debug.Log("player not shooter : " + playerSelectedData[playerSelectedIndex].PlayerObjectName);
             changeSelectedPlayerDown();
         }
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
@@ -1134,7 +1153,30 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             levelSelectedIndex--;
         }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
+        }
+
+        // if mode is shooting, level is not
+        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+            // mode has enemies, level isnt a fighting level
+            || (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+            // battle royal mode, level isnt battle royal level
+            || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // not battle royal mode, level is battle royal
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
+        //// mode is cage match, level is not cage match
+        //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+        ////mode is not cage match, level is cage match
+        //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
+        }
+
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+        initializeLevelDisplay();
+        intializeModeDisplay();
     }
     public void changeSelectedLevelDown()
     {
@@ -1148,7 +1190,30 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             levelSelectedIndex++;
         }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelDown();
+        }
+        // if mode is shooting, level is not
+        if ((!modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsShootingLevel)
+            // mode has enemies, level isnt a fighting level
+            || (modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled && !levelSelectedData[levelSelectedIndex].IsFightingLevel)
+            // battle royal mode, level isnt battle royal level
+            || (modeSelectedData[modeSelectedIndex].IsBattleRoyal && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+            // not battle royal mode, level is battle royal
+            || (!modeSelectedData[modeSelectedIndex].IsBattleRoyal && levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel))
+        //// mode is cage match, level is not cage match
+        //|| (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
+        ////mode is not cage match, level is cage match
+        //|| (!modeSelectedData[modeSelectedIndex].IsCageMatch && levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelDown();
+        }
+
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+        initializeLevelDisplay();
+        intializeModeDisplay();
+
     }
     public void changeSelectedModeUp()
     {
@@ -1162,8 +1227,20 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             modeSelectedIndex--;
         }
+        // mode is not battle royal, level is not
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelUp();
+        }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
+        }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
+        intializeModeDisplay();
+        initializeLevelDisplay();
     }
 
     public void changeSelectedModeDown()
@@ -1178,9 +1255,19 @@ public class StartManager : MonoBehaviour
             //if not first index, increment
             modeSelectedIndex++;
         }
-
+        if (modeSelectedData[modeSelectedIndex].IsBattleRoyal
+            && !levelSelectedData[levelSelectedIndex].IsBattleRoyalLevel)
+        {
+            changeSelectedLevelDown();
+        }
+        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        {
+            changeSelectedLevelUp();
+        }
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
+        intializeModeDisplay();
+        initializeLevelDisplay();
     }
 
     // ============================  public var references  ==============================
@@ -1202,12 +1289,8 @@ public class StartManager : MonoBehaviour
     public static string SniperSelectOptionName => sniperSelectOptionName;
     public int PlayerSelectedIndex => playerSelectedIndex;
     public static string OptionsMenuButtonName => optionsMenuButtonName;
-
     public static string DifficultySelectButtonName => difficultySelectButtonName;
-
     public static string EnemySelectOptionName => enemySelectOptionName;
-
     public static string DifficultySelectOptionName => difficultySelectOptionName;
-
     public static string ObstacleSelectOptionName => obstacleSelectOptionName;
 }

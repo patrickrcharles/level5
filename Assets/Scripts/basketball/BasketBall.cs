@@ -113,10 +113,11 @@ public class BasketBall : MonoBehaviour
         InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
         InvokeRepeating("displayUiStats", 0, 0.5f);
 
-        if (GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled)//|| GameOptions.gameModeHasBeenSelected)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            dropShadow.SetActive(false);
         }
     }
 
@@ -134,6 +135,7 @@ public class BasketBall : MonoBehaviour
                 rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
             }
             // drop shadow lock to bball transform on the ground
+
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
             // change this to reduce opacity

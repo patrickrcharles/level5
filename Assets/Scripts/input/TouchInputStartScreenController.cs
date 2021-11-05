@@ -221,6 +221,13 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
+        // options
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.OptionsMenuButtonName))
+        {
+            //Debug.Log("load prgression screen");
+            StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
+            buttonPressed = true;
+        }
         // credits
         if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CreditsMenuButtonName))
         {

@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyDetection : MonoBehaviour
 {
     EnemyController enemyController;
+    [SerializeField]
     bool playerSighted;
     bool enemyDetectionEnabled = true;
     public float enemySightDistance;
@@ -18,14 +19,14 @@ public class EnemyDetection : MonoBehaviour
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
-        //if (enemySightDistance == 0)
-        //{
-        //    enemySightDistance = 5;
-        //}
         // if only enemies, make increase enemy sight
         if (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled)
         {
             enemySightDistance = 10;
+        }
+        if (GameOptions.battleRoyalEnabled)
+        {
+            enemySightDistance = 30;
         }
         InvokeRepeating("CheckPlayerDistance", 0, 0.5f);
         InvokeRepeating("CheckReturnToPatrolStatus", 0, 3f);

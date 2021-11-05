@@ -147,7 +147,6 @@ namespace Assets.Scripts.restapi
                     DBHelper.instance.DatabaseLocked = false;
                 }
                 statusCode = httpResponse.StatusCode;
-
                 // if successful
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
@@ -156,22 +155,24 @@ namespace Assets.Scripts.restapi
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
-                // if conflict (scoreid already exists in database)
-                if (httpResponse.StatusCode == HttpStatusCode.Conflict)
-                {
-                    Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
-                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
-                    apiLocked = false;
-                    DBHelper.instance.DatabaseLocked = false;
-                }
                 // failed
                 else
                 {
-                    Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
-                    //unlock api + database
-                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
-                    apiLocked = false;
-                    DBHelper.instance.DatabaseLocked = false;
+                    // if conflict (scoreid already exists in database)
+                    if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+                        apiLocked = false;
+                        DBHelper.instance.DatabaseLocked = false;
+                    }
+                    else
+                    {
+                        //unlock api + database
+                        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
+                        apiLocked = false;
+                        DBHelper.instance.DatabaseLocked = false;
+                    }
                 }
             }
         }
@@ -316,6 +317,11 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
             List<StatsTableHighScoreRow> highScoresList = new List<StatsTableHighScoreRow>();
 
+            // fighting modes
+            if (modeid > 19 && modeid < 23)
+            {
+                enemies = 1;
+            }
             // build api request.
             // if no filter selected, get all scores for modeid
             // else, get specific scores
@@ -388,6 +394,12 @@ namespace Assets.Scripts.restapi
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
 
+            //fighting modes
+            if(modeid > 19 && modeid < 23)
+            {
+                enemies = 1;
+            }
+
             //build api request
             string apiRequest = Constants.API_ADDRESS_DEV_publicApiHighScoresCountByModeid + modeid
                 + "?hardcore=" + hardcore
@@ -400,7 +412,7 @@ namespace Assets.Scripts.restapi
             //    + "?hardcore=" + hardcore
             //    + "&traffic=" + traffic
             //    + "&enemies=" + enemies;
-
+            //Debug.Log(apiRequest);
             int numResults = 0;
             try
             {
@@ -414,6 +426,7 @@ namespace Assets.Scripts.restapi
                 {
                     var result = streamReader.ReadToEnd();
                     numResults = Convert.ToInt32(JsonConvert.DeserializeObject(result));
+                    //Debug.Log("numresults : " + numResults);
                 }
             }
             // on web exception
@@ -819,8 +832,10 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static IEnumerator PostReport(UserReportModel userReport, InputField inputField)
         {
-            Debug.Log("PostReport");
+            yield return new WaitUntil(() => !apiLocked);
             apiLocked = true;
+
+            //Debug.Log("PostReport");
             if (DBHelper.instance != null)
             {
                 yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
@@ -993,7 +1008,7 @@ namespace Assets.Scripts.restapi
             //build api request
             string apiRequest = Constants.API_ADDRESS_DEV_publicApplicationVersionCurrent;
 
-            //int numResults = 0;
+
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
@@ -1023,6 +1038,61 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
+                apiLocked = false;
+            }
+            // failed
+            else
+            {
+                apiLocked = false;
+            }
+            //Debug.Log("api : latest build : " + currentVersion);
+            return currentVersion;
+        }
+
+        //------------------------------------- GET Application  ----------------------------------------
+        // GET highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/modeid/{modeid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static List<ServerMessageModel> GetServerMessages()
+        {
+            apiLocked = true;
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+
+            List<ServerMessageModel> messages = new List<ServerMessageModel>();
+            //build api request
+            string apiRequest = Constants.API_ADDRESS_DEV_publicServerMessages;
+
+            //int numResults = 0;
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "GET";
+                //httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    //Debug.Log("result : " + result);
+                    messages = (List<ServerMessageModel>)JsonConvert.DeserializeObject<List<ServerMessageModel>>(result);
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- ERROR : " + e);
+                apiLocked = false;
+            }
+
+            statusCode = httpResponse.StatusCode;
+
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
                 //Debug.Log("----------------- GetHighscoreCountByModeid() successful : " + (int)statusCode + " " + statusCode);
                 apiLocked = false;
             }
@@ -1033,7 +1103,8 @@ namespace Assets.Scripts.restapi
                 apiLocked = false;
             }
             //Debug.Log("api : latest build : " + currentVersion);
-            return currentVersion;
+            //Debug.Log("messages : " + messages);
+            return messages;
         }
 
         public static string BearerToken { get => bearerToken; }

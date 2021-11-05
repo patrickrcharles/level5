@@ -29,7 +29,8 @@ public class PlayerHealthBar : MonoBehaviour
         if (GameOptions.enemiesEnabled 
             || GameOptions.sniperEnabled 
             || GameOptions.EnemiesOnlyEnabled
-            || GameOptions.obstaclesEnabled)
+            || GameOptions.obstaclesEnabled
+            || GameOptions.battleRoyalEnabled)
         {
             instance = this;
             playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();

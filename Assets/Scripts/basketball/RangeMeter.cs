@@ -32,7 +32,8 @@ public class RangeMeter : MonoBehaviour
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
-        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
+            || !GameOptions.gameModeHasBeenSelected)
         {
             gameObject.SetActive(false);
         }
@@ -40,8 +41,11 @@ public class RangeMeter : MonoBehaviour
 
     void setSliderValue()
     {
-        slider.value = (GameLevelManager.instance.CharacterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
-        sliderText.text = slider.value.ToString("0") + "%";
-        //Debug.Log("slider.value : " + slider.value.ToString());
+        if (slider != null && sliderText != null)
+        {
+            slider.value = (GameLevelManager.instance.CharacterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
+            sliderText.text = slider.value.ToString("0") + "%";
+            //Debug.Log("slider.value : " + slider.value.ToString());
+        }
     }
 }

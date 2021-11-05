@@ -53,7 +53,8 @@ public class ShotMeter : MonoBehaviour
         sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
         sliderMessageText.text = "";
 
-        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled)
+        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled
+            || GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
         {
             meterRed.SetActive(false);
             meterYellow.SetActive(false);

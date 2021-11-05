@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyHealthBar : MonoBehaviour
@@ -7,10 +8,14 @@ public class EnemyHealthBar : MonoBehaviour
     EnemyHealth enemyHealth;
     [SerializeField]
     public Slider healthSlider;
+    [SerializeField]
+    Text heathBarMessageDisplayText;
 
     public Slider Slider => healthSlider;
 
-    public static PlayerHealthBar instance;
+    public Text HeathBarMessageDisplayText { get => heathBarMessageDisplayText;  }
+
+    //public static PlayerHealthBar instance;
 
     // Start is called before the first frame update
     void Start()
@@ -28,5 +33,13 @@ public class EnemyHealthBar : MonoBehaviour
         healthSlider.value = enemyHealth.Health;
         //healthSliderValueText.text = healthSlider.value.ToString("0") + "%";
         //Debug.Log(gameObject.transform.root.name +  " slider value : " + healthSlider.value.ToString());
+    }
+
+    public IEnumerator DisplayCustomMessageOnDamageDisplay(string message)
+    {
+
+        heathBarMessageDisplayText.text = message;
+        yield return new WaitForSeconds(0.7f);
+        heathBarMessageDisplayText.text = "";
     }
 }

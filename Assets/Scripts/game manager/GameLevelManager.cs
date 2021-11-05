@@ -96,6 +96,7 @@ public class GameLevelManager : MonoBehaviour
         // get necessary references to objects
         Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
         _basketballRimVector = GameObject.Find("rim").transform.position;
+
     }
 
     private void Start()
@@ -165,6 +166,12 @@ public class GameLevelManager : MonoBehaviour
         if (GameObject.Find("shot_clock") != null)
         {
             GameObject.Find("shot_clock").GetComponent<Canvas>().worldCamera = Camera.main;
+        }
+
+        if (!GameOptions.gameModeHasBeenSelected && GameOptions.battleRoyalEnabled)
+        {
+            GameOptions.enemiesEnabled = true;
+            GameObject.Find("basketball_goal").SetActive(false);
         }
     }
 

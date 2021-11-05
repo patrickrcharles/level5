@@ -34,7 +34,11 @@ public class Timer : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            timerText = GetComponent<Text>();
+            if (GetComponent<Text>() != null)
+            {
+                timerText = GetComponent<Text>();
+                timerText.text = "";
+            }
         }
         else
         {
@@ -44,9 +48,16 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-
-        shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
-        scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+        if (GameObject.Find("shot_clock") != null)
+        {
+            shotClockText = GameObject.Find("shot_clock").GetComponent<Text>();
+            shotClockText.text = "";
+        }
+        if (GameObject.Find("score_clock") != null)
+        {
+            scoreClockText = GameObject.Find("score_clock").GetComponent<Text>();
+            scoreClockText.text = "";
+        }
 
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
@@ -75,10 +86,6 @@ public class Timer : MonoBehaviour
             timerEnabled = false;
             displayTimer = false;
         }
-
-        timerText.text = "";
-        shotClockText.text = "";
-        scoreClockText.text = "";
     }
 
     void Update()
@@ -132,31 +139,62 @@ public class Timer : MonoBehaviour
                 GameRules.instance.GameOver = true;
             }
         }
-
-        if (displayTimer && timerEnabled && modeRequiresCountDown && timeRemaining > 0)
+        // countdown timer
+        if (displayTimer
+            && timerEnabled
+            && modeRequiresCountDown
+            && timeRemaining > 0)
         {
-            if (minutes < 1)
+            if (timerText != null)
             {
-                timerText.text = seconds.ToString("00.000");
-                shotClockText.text = seconds.ToString("00.00");
+                if (minutes < 1)
+                {
+                    timerText.text = seconds.ToString("00.000");
+                }
+                else
+                {
+                    timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                }
             }
-            else
+            if (shotClockText != null)
             {
-                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
-                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+                if (minutes < 1)
+                {
+                    shotClockText.text = seconds.ToString("00.00");
+                }
+                else
+                {
+                    shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+                }
             }
         }
-        if (displayTimer && timerEnabled && modeRequiresCounter && !GameRules.instance.GameOver)
+        // counting timer
+        if (displayTimer
+            && timerEnabled
+            && modeRequiresCounter
+            && !GameRules.instance.GameOver)
         {
-            if (minutes < 1)
+            if (timerText != null)
             {
-                timerText.text = seconds.ToString("00.000");
-                shotClockText.text = seconds.ToString("00.00");
+                if (minutes < 1)
+                {
+                    timerText.text = seconds.ToString("00.000");
+                }
+                else
+                {
+                    timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
+                }
             }
-            else
+            if (shotClockText != null)
             {
-                timerText.text = minutes.ToString("00") + " : " + seconds.ToString("00.000");
-                shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+                if (minutes < 1)
+                {
+                    shotClockText.text = seconds.ToString("00.00");
+                }
+                else
+                {
+                    shotClockText.text = minutes.ToString("0") + ":" + seconds.ToString("00.00");
+                }
             }
         }
     }

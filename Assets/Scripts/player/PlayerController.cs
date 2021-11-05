@@ -88,6 +88,10 @@ public class PlayerController : MonoBehaviour
     GameObject damageDisplayObject;
     const string damageDisplayValueName = "player_damage_display_text";
 
+    //player sprite object
+    [SerializeField]
+    GameObject spriteObject;
+
     // control movement speed based on state
     public int currentState;
     public int idleState = Animator.StringToHash("base.idle");
@@ -106,9 +110,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
+        spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
+        damageDisplayObject = GameObject.Find(damageDisplayValueName);
+        damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
         anim = GetComponentInChildren<Animator>();
-        //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         basketball = GameLevelManager.instance.Basketball;
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
@@ -132,14 +137,22 @@ public class PlayerController : MonoBehaviour
         screenXRange = Screen.width / 10;
         screenYRange = Screen.width / 10;
 
-        damageDisplayObject = GameObject.Find(damageDisplayValueName);
-        damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
-
+        if (GameOptions.customCamera)
+        {
+            spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            damageDisplayObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
         //GameOptions.sniperEnabled = true; // test flag;
         if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         {
-            playerSwapAttack = GetComponent<PlayerSwapAttack>();
-            damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
+            if (GetComponent<PlayerSwapAttack>() != null)
+            {
+                playerSwapAttack = GetComponent<PlayerSwapAttack>();
+            }
+            if (damageDisplayObject.GetComponent<Canvas>() != null)
+            {
+                damageDisplayObject.GetComponent<Canvas>().worldCamera = Camera.main;
+            }
         }
         else
         {
@@ -197,13 +210,7 @@ public class PlayerController : MonoBehaviour
 
             movementHorizontal = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().x;
             movementVertical = GameLevelManager.instance.Controls.Player.movement.ReadValue<Vector2>().y;
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
-
 #endif
-
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.deltaTime);
-            //movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedUnscaledDeltaTime);
             movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
             // check jump trigger and execute jump
             if (jumpTrigger)
@@ -281,12 +288,11 @@ public class PlayerController : MonoBehaviour
             //running = true;
             anim.SetBool("moonwalking", true);
         }
-        else
-        {
-            //running = false;
-            //anim.SetBool("moonwalking", false);
-        }
-
+        //else
+        //{
+        //    //running = false;
+        //    //anim.SetBool("moonwalking", false);
+        //}
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
             Math.Abs(playerRelativePositioning.z) < 2)
@@ -297,7 +303,6 @@ public class PlayerController : MonoBehaviour
         {
             FacingFront = true;
         }
-
         // set player shoot anim based on position
         if (FacingFront) // facing straight toward bball goal
         {
@@ -307,7 +312,6 @@ public class PlayerController : MonoBehaviour
         {
             SetPlayerAnim("basketballFacingFront", false);
         }
-
         // ----- control speed based on commands----------
         // idle, walk, walk with ball state
         if (currentState == idleState || currentState == walkState || currentState == bIdle
@@ -392,11 +396,13 @@ public class PlayerController : MonoBehaviour
         }
         //------------------ attack -----------------------------------
 
-        if (GameLevelManager.instance.Controls.Player.shoot.triggered
-            && GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
+        if (GameLevelManager.instance.Controls.Player.attack.triggered
+            //&& GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
             && !hasBasketball
             && canAttack
-            && GameOptions.enemiesEnabled)
+            && GameOptions.enemiesEnabled
+            && currentState != attackState
+            && currentState != specialState)
         {
             PlayerAttack();
         }
@@ -404,12 +410,13 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("attack", false);
         }
-
-        if (GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
+        //------------------ block -----------------------------------
+        if ((GameLevelManager.instance.Controls.Player.block.ReadValue<float>() == 1
+            || GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1 )
             //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
-            && !hasBasketball
+            //&& !hasBasketball
             && canBlock
-            && GameOptions.enemiesEnabled
+            && (GameOptions.EnemiesOnlyEnabled || GameOptions.enemiesEnabled || GameOptions.battleRoyalEnabled)
             && PlayerHealth.Block > 0)
         {
             if (playerCanBlock)
@@ -549,9 +556,11 @@ public class PlayerController : MonoBehaviour
     {
         rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
-
-        Shotmeter.MeterStarted = true;
-        Shotmeter.MeterStartTime = Time.time;
+        if (!GameOptions.battleRoyalEnabled || !GameOptions.EnemiesOnlyEnabled)
+        {
+            Shotmeter.MeterStarted = true;
+            Shotmeter.MeterStartTime = Time.time;
+        }
         //// if not dunking, start shot meter
         //if (currentState != inAirDunkState)
         //{

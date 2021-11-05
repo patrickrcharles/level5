@@ -22,6 +22,7 @@ namespace Assets.Scripts.database
         public string Version;
         public string Date;
         public float Time;
+        public int Difficulty;
         public int TotalPoints;
         public float LongestShot;
         public float TotalDistance;
@@ -88,6 +89,7 @@ namespace Assets.Scripts.database
             model.Version = Application.version;
             model.Date = DateTime.Now.ToString();
             model.Time = stats.TimePlayed;
+            model.Difficulty = GameOptions.difficultySelected;
             model.TotalPoints = stats.TotalPoints;
             model.LongestShot = stats.LongestShotMade;
             model.TotalDistance = stats.TotalDistance;
@@ -99,14 +101,15 @@ namespace Assets.Scripts.database
             model.EnemiesKilled = stats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
-            if (IsConnectedToInternet())
-            {
-                model.Ipaddress = GetExternalIpAdress();
-            }
-            else
-            {
-                model.Ipaddress = "noConnectivity" + RandomString(8);
-            }
+            //if (IsConnectedToInternet())
+            //{
+            //    model.Ipaddress = GetExternalIpAdress();
+            //}
+            //else
+            //{
+            //    model.Ipaddress = "noConnectivity" + RandomString(8);
+            //}
+            model.Ipaddress = GetExternalIpAdress();
             model.TwoMade = stats.TwoPointerMade;
             model.TwoAtt = stats.TwoPointerAttempts;
             model.ThreeMade = stats.ThreePointerMade;

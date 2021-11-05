@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -59,6 +60,8 @@ public class BodyGuardController : MonoBehaviour
     public bool stateAttack = false;
     public bool statePatrol = false;
     public bool stateKnockDown = false;
+
+    public bool bodyGuardEngaged = false;
 
     //bool playerInLineOfSight = false;
     public float lineOfSight;
@@ -210,7 +213,7 @@ public class BodyGuardController : MonoBehaviour
         {
             anim.SetBool("walk", false);
         }
-        if (stateAttack)
+        if (stateAttack && canAttack)
         {
             FreezeEnemyPosition();
             if (playerSwapAttack != null && !longRangeAttack)
@@ -221,7 +224,7 @@ public class BodyGuardController : MonoBehaviour
             {
                 playerSwapAttack.setLongRangeAttack();
             }
-            Debug.Log("trigger attack");
+            //Debug.Log("trigger attack");
             anim.SetTrigger("attack");
             StartCoroutine(AttackCooldown(attackCooldown));
         }
@@ -243,14 +246,15 @@ public class BodyGuardController : MonoBehaviour
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
-                | RigidbodyConstraints.FreezePositionZ;
+                | RigidbodyConstraints.FreezePositionZ
+                | RigidbodyConstraints.FreezePositionX;
         }
         else
         {
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
-                | RigidbodyConstraints.FreezePositionY
+                //| RigidbodyConstraints.FreezePositionY
                 | RigidbodyConstraints.FreezePositionZ
                 | RigidbodyConstraints.FreezePositionX;
         }
@@ -268,8 +272,8 @@ public class BodyGuardController : MonoBehaviour
         {
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
-                | RigidbodyConstraints.FreezeRotationY
-                | RigidbodyConstraints.FreezePositionY;
+                | RigidbodyConstraints.FreezeRotationY;
+                //| RigidbodyConstraints.FreezePositionY;
         }
     }
 

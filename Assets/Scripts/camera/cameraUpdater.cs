@@ -20,6 +20,9 @@ public class cameraUpdater : MonoBehaviour
     public float ROTSpeed = 0.1f;
 
     [SerializeField]
+    public bool customCamera;
+
+    [SerializeField]
     bool cameraZoomedIn, cameraZoomedOut;
     [SerializeField]
     float startZoomDistance;
@@ -88,7 +91,7 @@ public class cameraUpdater : MonoBehaviour
             }
         }
 
-        if (GameLevelManager.instance != null)
+        if (GameLevelManager.instance != null && basketBallRim!= null)
         {
             basketBallRim = GameLevelManager.instance.BasketballRimVector;
             player = GameLevelManager.instance.Player;
@@ -135,14 +138,16 @@ public class cameraUpdater : MonoBehaviour
         // * note change var to player distance because each camera is in a different spot
         if (Math.Abs(playerDistanceFromRimX) > 8 && !onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed
-            && !GameOptions.EnemiesOnlyEnabled)
+            && !GameOptions.EnemiesOnlyEnabled
+            && !GameOptions.battleRoyalEnabled)
         {
             toggleCameraOnGoal();
         }
 
         if (Math.Abs(playerDistanceFromRimX) < 8 && onGoalCameraEnabled
             && CameraManager.instance.CameraOnGoalAllowed
-            && !GameOptions.EnemiesOnlyEnabled)
+            && !GameOptions.EnemiesOnlyEnabled
+            && !GameOptions.battleRoyalEnabled)
         {
             toggleCameraOnGoal();
         }
@@ -240,7 +245,15 @@ public class cameraUpdater : MonoBehaviour
 
     private void updatePositionOnPlayer()
     {
-        Vector3 targetPosition = new Vector3(player.transform.position.x + cameraOffset, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        Vector3 targetPosition;
+        if (!customCamera)
+        {
+            targetPosition = new Vector3(player.transform.position.x + cameraOffset, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        }
+        else
+        {
+            targetPosition = new Vector3(player.transform.position.x + cameraOffset, gameObject.transform.position.y, cam.transform.position.z);
+        }
         if (smoothCameraMotion)
         {
             Vector3 desiredPosition = targetPosition;
@@ -255,7 +268,15 @@ public class cameraUpdater : MonoBehaviour
 
     private void updatePositionNearGoal()
     {
-        Vector3 targetPosition = new Vector3(cam.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        Vector3 targetPosition;
+        if (!customCamera)
+        {
+            targetPosition = new Vector3(cam.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+        }
+        else
+        {
+            targetPosition = new Vector3(cam.transform.position.x, gameObject.transform.position.y, cam.transform.position.z);
+        }
         Vector3 desiredPosition = targetPosition;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
@@ -297,10 +318,22 @@ public class cameraUpdater : MonoBehaviour
 
     void setCamera()
     {
-
-        // if perspective camera
-        if (!isOrthoGraphic)
+        if (customCamera)
         {
+            mainPerspectiveCamActive = true;
+        }
+        // if perspective camera
+        if (!isOrthoGraphic && !customCamera)
+        {
+            //if (SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_17_steel_cage))
+            //{
+            //    addToCameraPosY = 1;
+            //    gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            //}
+            //else
+            //{
+            //    addToCameraPosY = 1.835f;
+            //}
             addToCameraPosY = 1.835f;
             mainPerspectiveCamActive = true;
             //orthoCam1Active = false;
@@ -308,7 +341,7 @@ public class cameraUpdater : MonoBehaviour
         }
 
         // 2 orthographic cameras
-        if (isOrthoGraphic)
+        if (isOrthoGraphic && !customCamera)
         {
             if (cam.name.Contains("camera_orthographic_1"))
             {
