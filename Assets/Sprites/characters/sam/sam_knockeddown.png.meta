@@ -51,6 +51,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -352,6 +353,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      sam_knockeddown_0: 4318042049746688294
+      sam_knockeddown_3: -5785909804846393683
+      sam_knockeddown_8: -614960512215694582
+      sam_knockeddown_4: -6658299778900455459
+      sam_knockeddown_2: 8641901968378669720
+      sam_knockeddown_7: -4717731001468755797
+      sam_knockeddown_5: 3588926984663496980
+      sam_knockeddown_1: 3730076476631078652
+      sam_knockeddown_6: -1369907791823329646
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

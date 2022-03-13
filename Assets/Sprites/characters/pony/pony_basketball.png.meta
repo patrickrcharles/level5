@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      pony_basketball_3: 2006613980846212131
+      pony_basketball_14: 5911677595914484682
+      pony_basketball_1: 6340711920797828638
+      pony_basketball_11: -4020914587282777310
+      pony_basketball_4: -1636911224158249620
+      pony_basketball_10: 5481250172596763889
+      pony_basketball_9: -4535995690263257218
+      pony_basketball_12: 4568147211203013585
+      pony_basketball_13: -511090766372049961
+      pony_basketball_2: 5426992309339829021
+      pony_basketball_0: -734522759169218838
+      pony_basketball_7: -393855563368577869
+      pony_basketball_5: -1900652625643260147
+      pony_basketball_6: 761213480161661154
+      pony_basketball_8: -1544892415259554796
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

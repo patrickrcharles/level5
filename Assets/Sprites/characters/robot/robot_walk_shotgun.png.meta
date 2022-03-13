@@ -132,6 +132,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -727,6 +728,30 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      robot_walk_shotgun_12: 8770841779815154999
+      robot_walk_shotgun_5: -3080222294696111342
+      robot_walk_shotgun_16: -1421492305556591973
+      robot_walk_shotgun_8: 769472098790397931
+      robot_walk_shotgun_9: -8156620510946986133
+      robot_walk_shotgun_11: 8950430030503864959
+      robot_walk_shotgun_31: -913491550761729890
+      robot_walk_shotgun_0: 9099394098354637172
+      robot_walk_shotgun_14: 2852173187456335444
+      robot_walk_shotgun_1: -6571737343327755647
+      robot_walk_shotgun_4: 2118179950641117935
+      robot_walk_shotgun_10: 2767333901202293788
+      robot_walk_shotgun_2: -3333879818319137698
+      robot_walk_shotgun_15: 4465968926994579398
+      robot_walk_shotgun_34: -291466539217729083
+      robot_walk_shotgun_3: -7547688157105404617
+      robot_walk_shotgun_7: 6553990374173272290
+      robot_walk_shotgun_6: -3056758988681413250
+      robot_walk_shotgun_32: -6936347056634792234
+      robot_walk_shotgun_33: 2062973073669965303
+      robot_walk_shotgun_17: -779363688930568958
+      robot_walk_shotgun_13: -1998258001293328630
+      robot_walk_shotgun_30: 8680466586810344112
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

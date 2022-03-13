@@ -99,6 +99,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -108,8 +109,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -130,6 +131,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -257,7 +260,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b341333190af04460800000000000000
-      internalID: 7224048719186039867
+      internalID: 4210979791296251920
       vertices: []
       indices: 
       edges: []
@@ -341,7 +344,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bdc3ec795e43b0670800000000000000
-      internalID: 8505950481918344411
+      internalID: 1668412695819624642
       vertices: []
       indices: 
       edges: []
@@ -362,7 +365,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 90809ac5e0dd34ea0800000000000000
-      internalID: -5889620833916614647
+      internalID: -5060005929221909538
       vertices: []
       indices: 
       edges: []
@@ -404,7 +407,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6dffbdc1f84c29f10800000000000000
-      internalID: 2275096880719069142
+      internalID: 2990863057175342455
       vertices: []
       indices: 
       edges: []
@@ -419,6 +422,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      death by tree_misc_objects_11: -2986765627300832183
+      death by tree_misc_objects_3: 4210979791296251920
+      death by tree_misc_objects_7: -4874116805511992476
+      death by tree_misc_objects_0: -7408270681998185424
+      death by tree_misc_objects_6: -4027011360862058785
+      death by tree_misc_objects_10: -5060005929221909538
+      death by tree_misc_objects_12: 2990863057175342455
+      death by tree_misc_objects_5: -300056356073217500
+      death by tree_misc_objects_8: 1668412695819624642
+      death by tree_misc_objects_1: -6960176210054832977
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

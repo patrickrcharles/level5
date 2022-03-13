@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -484,6 +485,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      alien_woman_walk_7: -3960122730325772605
+      alien_woman_walk_9: -5182685137994833592
+      alien_woman_walk_8: -3320305576070798979
+      alien_woman_walk_6: 5496350581862241180
+      alien_woman_walk_10: 1271505222359264185
+      alien_woman_walk_14: 5215636034270886029
+      alien_woman_walk_2: -3601707307303298654
+      alien_woman_walk_3: 2762514033295523922
+      alien_woman_walk_1: -5500991696159034253
+      alien_woman_walk_11: 8739834702713495486
+      alien_woman_walk_0: 1023467070544585773
+      alien_woman_walk_13: 6889505925758858945
+      alien_woman_walk_5: -8935945502202691375
+      alien_woman_walk_4: 5167345085971969577
+      alien_woman_walk_12: -8076705216566102400
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

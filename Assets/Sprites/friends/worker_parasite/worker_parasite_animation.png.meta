@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -93,11 +94,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -115,6 +116,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -614,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      worker_parasite_animation_19: -172906055085482666
+      worker_parasite_animation_3: -3199065046981229229
+      worker_parasite_animation_16: -4789488744346006129
+      worker_parasite_animation_11: 3121803424591706672
+      worker_parasite_animation_14: 3147839414615320445
+      worker_parasite_animation_4: 8681966490188303065
+      worker_parasite_animation_5: 8417043214776657131
+      worker_parasite_animation_1: 8424604709846749013
+      worker_parasite_animation_10: 4383526207959739306
+      worker_parasite_animation_8: 8772171729328965192
+      worker_parasite_animation_15: 2507218896346848853
+      worker_parasite_animation_18: 1496814605130245755
+      worker_parasite_animation_6: 2040434301658589240
+      worker_parasite_animation_17: -8444608419513491317
+      worker_parasite_animation_12: 8491874883552354892
+      worker_parasite_animation_7: -5654015153661132700
+      worker_parasite_animation_13: 4596656563545559172
+      worker_parasite_animation_0: -5718606422640373327
+      worker_parasite_animation_9: 5488955831932007454
+      worker_parasite_animation_2: 1022705405832185183
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

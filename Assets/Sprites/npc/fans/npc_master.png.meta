@@ -87,6 +87,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -96,8 +97,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -118,6 +119,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -533,6 +536,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      npc_master_3: -1612474204520657131
+      npc_master_7: -2641272771402750236
+      npc_master_14: -2370379496035940734
+      npc_master_6: -8138667529450643031
+      npc_master_2: 5674696690589994831
+      npc_master_9: 7015665609693220233
+      npc_master_13: 5530059293400668170
+      npc_master_12: 1593704030097579383
+      npc_master_10: 6615690404530298878
+      npc_master_8: -468920603009562273
+      npc_master_11: -7230894703752980237
+      npc_master_0: 2873050550036340464
+      npc_master_5: 1049914619892863756
+      npc_master_4: -2834304151133820637
+      npc_master_15: 241473162766056692
+      npc_master_1: 3212398050943571969
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

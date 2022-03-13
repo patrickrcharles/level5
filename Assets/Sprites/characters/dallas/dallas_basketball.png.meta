@@ -141,6 +141,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -1072,6 +1073,46 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      dallas_basketball_36: 1213420192051576520
+      dallas_basketball_37: -6271476423889867789
+      dallas_basketball_18: -3858696954391204751
+      dallas_basketball_31: 4418265119181214514
+      dallas_basketball_7: -2115439105079720894
+      dallas_basketball_11: -1273654553684930696
+      dallas_basketball_9: 5723366534110186397
+      dallas_basketball_10: -1452193293553830464
+      dallas_basketball_15: 3606018246910502587
+      dallas_basketball_5: -6857468251077061441
+      dallas_basketball_6: -7577911734891769470
+      dallas_basketball_0: 5824626251511285492
+      dallas_basketball_28: -3989985336192409544
+      dallas_basketball_14: -2507457086861770261
+      dallas_basketball_17: -5072921033634402999
+      dallas_basketball_23: -7682140270591848824
+      dallas_basketball_32: -2799903437423539062
+      dallas_basketball_21: 3554047699844277870
+      dallas_basketball_1: -9107770617324762131
+      dallas_basketball_2: 2499756440002540265
+      dallas_basketball_19: 2681351502422095690
+      dallas_basketball_8: -5878518062326804688
+      dallas_basketball_22: 6412392362841853586
+      dallas_basketball_24: 2441678110323065210
+      dallas_basketball_29: -8310712992405368611
+      dallas_basketball_12: -8170852761543790264
+      dallas_basketball_16: -3065775173668732671
+      dallas_basketball_26: -151375777117167544
+      dallas_basketball_13: -772990980635579402
+      dallas_basketball_33: -8981580571625480539
+      dallas_basketball_38: 5717158539999316041
+      dallas_basketball_34: -3064600122419051193
+      dallas_basketball_25: 7051476628851623697
+      dallas_basketball_35: -3780045181371217836
+      dallas_basketball_3: 5306200195926843663
+      dallas_basketball_20: 6910076336141944298
+      dallas_basketball_27: 936305862665130465
+      dallas_basketball_30: 8636560084468153230
+      dallas_basketball_4: 7879262226332116600
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

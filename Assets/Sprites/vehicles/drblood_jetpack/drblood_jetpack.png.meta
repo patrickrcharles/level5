@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -93,8 +94,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -115,6 +116,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -200,7 +203,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 45e811fdac755b700800000000000000
-      internalID: 555446657887604308
+      internalID: 1648758855702086886
       vertices: []
       indices: 
       edges: []
@@ -221,7 +224,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5dc04185bf3d438f0800000000000000
-      internalID: -561590977046508331
+      internalID: -9079193866337866508
       vertices: []
       indices: 
       edges: []
@@ -242,7 +245,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6a40f18fd0c5a68a0800000000000000
-      internalID: -6311130712739216218
+      internalID: 2510691971992448557
       vertices: []
       indices: 
       edges: []
@@ -368,7 +371,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0751f0b2d419f2890800000000000000
-      internalID: -7480600695418186384
+      internalID: 6966744734002246506
       vertices: []
       indices: 
       edges: []
@@ -389,7 +392,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e490f842a845fe170800000000000000
-      internalID: 8209873598015277390
+      internalID: -7357558880955576443
       vertices: []
       indices: 
       edges: []
@@ -404,6 +407,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      drblood_jetpack_3: 8534423965943479148
+      drblood_jetpack_5: 1648758855702086886
+      drblood_jetpack_9: -7357558880955576443
+      drblood_jetpack_7: 2510691971992448557
+      drblood_jetpack_1: 9171893939028288904
+      drblood_jetpack_2: -4799482739645797795
+      drblood_jetpack_8: 6966744734002246506
+      drblood_jetpack_0: 4253178067121285189
+      drblood_jetpack_4: 5652830708648859581
+      drblood_jetpack_6: -9079193866337866508
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

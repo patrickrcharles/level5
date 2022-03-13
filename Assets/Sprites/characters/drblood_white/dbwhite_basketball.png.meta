@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      dbwhite_basketball_5: -4738686647383629881
+      dbwhite_basketball_9: 4233629325791845643
+      dbwhite_basketball_3: -7336750281056095810
+      dbwhite_basketball_6: 2522477080744874582
+      dbwhite_basketball_2: -5359488288624226721
+      dbwhite_basketball_16: 2016525278804528052
+      dbwhite_basketball_11: 581009455795504446
+      dbwhite_basketball_4: -542693786724655832
+      dbwhite_basketball_18: 9054927020130611502
+      dbwhite_basketball_15: 6573779559706999073
+      dbwhite_basketball_8: 8286551858330390269
+      dbwhite_basketball_0: -437271855574301622
+      dbwhite_basketball_12: -6332318859169649265
+      dbwhite_basketball_7: -308921496076496089
+      dbwhite_basketball_13: 4380335348763948324
+      dbwhite_basketball_14: 6886316287111079622
+      dbwhite_basketball_1: 6012309261719055304
+      dbwhite_basketball_10: -2486344268121803099
+      dbwhite_basketball_17: 3802131333875940615
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

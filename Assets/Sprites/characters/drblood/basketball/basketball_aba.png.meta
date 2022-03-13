@@ -78,6 +78,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -568,6 +569,25 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_aba_1: 6372110620589348122
+      basketball_aba_4: -468424280826176542
+      basketball_aba_0: -8427370744147744711
+      basketball_aba_7: 1558888158262848433
+      basketball_aba_11: 7970478071819003319
+      basketball_aba_13: -6262025144463710758
+      basketball_aba_15: -587600934683478
+      basketball_aba_9: 7969417758469032486
+      basketball_aba_8: 4189408243578763938
+      basketball_aba_5: -80905366445781768
+      basketball_aba_12: -8521337709511749885
+      basketball_aba_17: -5193162131662251036
+      basketball_aba_6: 5360139390559610557
+      basketball_aba_3: 7031170733977783180
+      basketball_aba_10: -6630378981977061328
+      basketball_aba_16: -7968749959582179665
+      basketball_aba_14: 6849796647140768422
+      basketball_aba_2: 6436147574438243344
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

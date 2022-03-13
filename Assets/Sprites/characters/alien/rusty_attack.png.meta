@@ -126,6 +126,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -244,7 +245,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 8e48e1bd055013dd0800000000000000
-      internalID: -2508217672636922648
+      internalID: -8361647949205960962
       vertices: []
       indices: 
       edges: []
@@ -265,7 +266,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e552138387f564e90800000000000000
-      internalID: -7041835997403732642
+      internalID: -4691827042956623462
       vertices: []
       indices: 
       edges: []
@@ -286,7 +287,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: aef3583b4b617e590800000000000000
-      internalID: -7645116877076348950
+      internalID: 5963623703125798249
       vertices: []
       indices: 
       edges: []
@@ -307,7 +308,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 772a86df9c31929b0800000000000000
-      internalID: -5104526944386899337
+      internalID: 3494349339173683289
       vertices: []
       indices: 
       edges: []
@@ -328,7 +329,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ac8e2be064e84d4a0800000000000000
-      internalID: -6569469524881250102
+      internalID: 7735554439949607212
       vertices: []
       indices: 
       edges: []
@@ -349,7 +350,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 539c2bc34ca3fcfe0800000000000000
-      internalID: -1166649163959318219
+      internalID: 414234826584358147
       vertices: []
       indices: 
       edges: []
@@ -370,7 +371,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e493d82a0d890e260800000000000000
-      internalID: 7124862632347908430
+      internalID: -5790491478912788034
       vertices: []
       indices: 
       edges: []
@@ -391,7 +392,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 17f95db1c770aae20800000000000000
-      internalID: 3362508301409820529
+      internalID: -7320498673214655141
       vertices: []
       indices: 
       edges: []
@@ -412,7 +413,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4bff541752e8b26a0800000000000000
-      internalID: -6472923747949609036
+      internalID: 5030604507672710191
       vertices: []
       indices: 
       edges: []
@@ -433,7 +434,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 9bb35eac8b8de8df0800000000000000
-      internalID: -175965047231267911
+      internalID: -3824027746137534125
       vertices: []
       indices: 
       edges: []
@@ -454,7 +455,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6a676d0ad34d19c60800000000000000
-      internalID: 7823267388875765414
+      internalID: -4787609701185569422
       vertices: []
       indices: 
       edges: []
@@ -475,7 +476,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c2453e410251d2f40800000000000000
-      internalID: 5705239530481865772
+      internalID: 6749689856718294520
       vertices: []
       indices: 
       edges: []
@@ -496,7 +497,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7a2b5179559367b20800000000000000
-      internalID: 3131753630652543655
+      internalID: 161685228218195443
       vertices: []
       indices: 
       edges: []
@@ -637,6 +638,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      rusty_attack_7: 3494349339173683289
+      rusty_attack_18: 2697853817963252777
+      rusty_attack_1: -4691827042956623462
+      rusty_attack_4: -3824027746137534125
+      rusty_attack_6: 6749689856718294520
+      rusty_attack_8: 7735554439949607212
+      rusty_attack_19: -8535199100339360732
+      rusty_attack_5: -4787609701185569422
+      rusty_attack_14: 4791636845919989359
+      rusty_attack_15: -8694989776705453831
+      rusty_attack_2: 5963623703125798249
+      rusty_attack_12: 5030604507672710191
+      rusty_attack_16: 7282554580019844087
+      rusty_attack_17: -7088690255895880629
+      rusty_attack_0: -8361647949205960962
+      rusty_attack_13: 161685228218195443
+      rusty_attack_10: -5790491478912788034
+      rusty_attack_9: 414234826584358147
+      rusty_attack_11: -7320498673214655141
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

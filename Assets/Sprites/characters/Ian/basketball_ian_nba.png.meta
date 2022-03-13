@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_ian_nba_10: -4582750814585853114
+      basketball_ian_nba_8: 765935544213128062
+      basketball_ian_nba_16: 6026151325025929135
+      basketball_ian_nba_17: 791858354758017538
+      basketball_ian_nba_6: -3373580956522473198
+      basketball_ian_nba_13: -5592081499376023279
+      basketball_ian_nba_9: -3477726236811469979
+      basketball_ian_nba_14: -7315468748664688378
+      basketball_ian_nba_12: -8388297466299397244
+      basketball_ian_nba_2: 6955672610971795193
+      basketball_ian_nba_15: 5630037851324693134
+      basketball_ian_nba_1: 4432398530192331614
+      basketball_ian_nba_4: -7206910638730653056
+      basketball_ian_nba_7: 2145297550394927169
+      basketball_ian_nba_5: -5233281061507745416
+      basketball_ian_nba_0: 3540664651678852200
+      basketball_ian_nba_11: -6032790884884478863
+      basketball_ian_nba_18: 4906272435029391674
+      basketball_ian_nba_3: -5936962430775454349
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

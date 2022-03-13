@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      oldreal_basketball_15: -826423246399832870
+      oldreal_basketball_4: 7027792089609475578
+      oldreal_basketball_12: -2877311439632635378
+      oldreal_basketball_17: -3072309829693390420
+      oldreal_basketball_3: -5544949183490535593
+      oldreal_basketball_6: 7948881860543666539
+      oldreal_basketball_0: 4406619633760611716
+      oldreal_basketball_18: 7088891232479294700
+      oldreal_basketball_19: -880773180795502942
+      oldreal_basketball_10: -8261211146606430576
+      oldreal_basketball_9: -5271105147406554441
+      oldreal_basketball_5: 1285918168519669775
+      oldreal_basketball_16: 4212214627598966630
+      oldreal_basketball_14: 4426868954937912415
+      oldreal_basketball_2: -3141618387972649455
+      oldreal_basketball_1: -9168386183813027580
+      oldreal_basketball_7: 7723076039688288290
+      oldreal_basketball_8: -43577364952553085
+      oldreal_basketball_11: 7250675478510235362
+      oldreal_basketball_13: 7203662487412197698
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

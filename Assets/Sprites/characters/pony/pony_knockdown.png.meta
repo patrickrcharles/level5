@@ -63,6 +63,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -448,6 +449,20 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      pony_knockdown_8: 8114925049404582430
+      pony_knockdown_0: 4165227430794046533
+      pony_knockdown_2: 1691934207753705645
+      pony_knockdown_7: 6962179180177607860
+      pony_knockdown_1: -3774146269137196259
+      pony_knockdown_4: 7565256214184459175
+      pony_knockdown_5: -4142747236026747656
+      pony_knockdown_10: 7260896393864620262
+      pony_knockdown_11: 714181806182183250
+      pony_knockdown_6: 7690523548780569377
+      pony_knockdown_3: 4845756842158010684
+      pony_knockdown_12: -2182899264817327019
+      pony_knockdown_9: 8263158187689711839
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

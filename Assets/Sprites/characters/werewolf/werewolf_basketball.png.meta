@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      werewolf_basketball_1: 1915250844295587324
+      werewolf_basketball_3: 5693549633247107060
+      werewolf_basketball_10: 6820563345886250373
+      werewolf_basketball_14: 804451620987101565
+      werewolf_basketball_13: -2494648999528929365
+      werewolf_basketball_0: 6308375349576987384
+      werewolf_basketball_12: -5343140639456564560
+      werewolf_basketball_8: -702349181908704249
+      werewolf_basketball_6: -5721106267772469686
+      werewolf_basketball_5: 809219553817365154
+      werewolf_basketball_4: 3908026524047211596
+      werewolf_basketball_9: -1555579734548326663
+      werewolf_basketball_2: -3131088230733711574
+      werewolf_basketball_7: -7066625012783925745
+      werewolf_basketball_11: 3673089136297750836
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

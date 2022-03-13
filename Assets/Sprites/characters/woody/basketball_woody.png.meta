@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_woody_0: 8031991983643785545
+      basketball_woody_6: -2723287984539476071
+      basketball_woody_5: 8786261607478112356
+      basketball_woody_9: 1423067540702337195
+      basketball_woody_1: -1737464504032530222
+      basketball_woody_8: -6414457341300306116
+      basketball_woody_2: -7582390501658580196
+      basketball_woody_18: 6738453404670863237
+      basketball_woody_14: 6410136764520788882
+      basketball_woody_3: 7258847223206116923
+      basketball_woody_15: 9009375864751457472
+      basketball_woody_19: 1235616169330482968
+      basketball_woody_12: 4473735206009928098
+      basketball_woody_7: -3013939567005532615
+      basketball_woody_13: -8636637591594959371
+      basketball_woody_4: 979706884839070216
+      basketball_woody_17: -8753543259933436582
+      basketball_woody_16: 7483644396814969190
+      basketball_woody_11: 3035020536931755761
+      basketball_woody_10: 781112852535971622
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -376,6 +377,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom_molotov_0: 261949608998800686
+      thom_molotov_7: 4790756424683462611
+      thom_molotov_4: -4957429630319072681
+      thom_molotov_2: 3279988602935797777
+      thom_molotov_6: -8085335059127934255
+      thom_molotov_8: -8308335509982011279
+      thom_molotov_9: -8710612928926484209
+      thom_molotov_3: -631537380624148643
+      thom_molotov_1: -8934857602036066258
+      thom_molotov_5: -8142664742571681793
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

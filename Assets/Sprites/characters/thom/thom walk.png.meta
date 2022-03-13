@@ -57,6 +57,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -379,6 +380,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom walk_2: 21300004
+      thom walk_4: 21300008
+      thom walk_5: 21300010
+      thom walk_0: 21300000
+      thom walk_7: 21300014
+      thom walk_8: 21300016
+      thom walk_1: 21300002
+      thom walk_6: 21300012
+      thom walk_9: 21300018
+      thom walk_3: 21300006
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

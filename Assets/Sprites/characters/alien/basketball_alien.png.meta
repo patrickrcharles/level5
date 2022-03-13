@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_alien_15: 6811487102407569070
+      basketball_alien_16: 550800070735536502
+      basketball_alien_17: -5720995220063895763
+      basketball_alien_3: 6115113271093994797
+      basketball_alien_12: 6628908396470475738
+      basketball_alien_1: 4197020964197064188
+      basketball_alien_4: -4094213284276739084
+      basketball_alien_6: -3677496822432807295
+      basketball_alien_5: 3192808263440921627
+      basketball_alien_11: -5596998864848789945
+      basketball_alien_13: 131025354264205449
+      basketball_alien_14: -6485850136171565144
+      basketball_alien_8: -2756295455639889100
+      basketball_alien_2: -7476927277294181527
+      basketball_alien_0: -311439608560891009
+      basketball_alien_7: -5958620232936335925
+      basketball_alien_9: -386146114831775113
+      basketball_alien_18: 3739111849465246848
+      basketball_alien_10: -6727699573837952967
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

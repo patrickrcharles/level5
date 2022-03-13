@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      evelyn_attack_5: 994725411536621260
+      evelyn_attack_2: 4910395185473108325
+      evelyn_attack_3: 7742178899596218616
+      evelyn_attack_4: 4232774819576981097
+      evelyn_attack_1: 8544604393496241936
+      evelyn_attack_0: -8145737016152095050
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

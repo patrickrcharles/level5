@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -78,11 +79,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -100,6 +101,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -494,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_objects_1: -4041123265960320154
+      basketball_objects_4: 3772488047435624605
+      basketball_objects_12: 500214214598370434
+      basketball_objects_11: 8902748840364258705
+      basketball_objects_2: 2187131576135412085
+      basketball_objects_3: -7276715055431377446
+      basketball_objects_0: -1887191191932628615
+      basketball_objects_6: -7813812359449675703
+      basketball_objects_7: 7886069455108797465
+      basketball_objects_10: 7236402680745585900
+      basketball_objects_5: -3411992864865000459
+      basketball_objects_14: -2241215853860933528
+      basketball_objects_13: 7977624752746593960
+      basketball_objects_9: -6233645015677314825
+      basketball_objects_8: -3558692029335072041
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

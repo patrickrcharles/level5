@@ -318,6 +318,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -2488,6 +2489,105 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      stonecold-drblood_96: 7565623052696520347
+      stonecold-drblood_5: 21300010
+      stonecold-drblood_60: -4535544610552150634
+      stonecold-drblood_93: -8870999051148947822
+      stonecold-drblood_32: -4394088868478438982
+      stonecold-drblood_68: -2257411523897195639
+      stonecold-drblood_65: 958801217385884651
+      stonecold-drblood_71: -5171711652892175775
+      stonecold-drblood_75: -7580249215770855795
+      stonecold-drblood_88: 1290404259219578745
+      stonecold-drblood_28: -712042981144575212
+      stonecold-drblood_69: -6660153767822544880
+      stonecold-drblood_24: -2090192954281990381
+      stonecold-drblood_29: -1189288929592571061
+      stonecold-drblood_23: -3355943724363391375
+      stonecold-drblood_43: 1390946071690258488
+      stonecold-drblood_53: 5431245723364406054
+      stonecold-drblood_49: -8938900847511133903
+      stonecold-drblood_78: -4628058321825922508
+      stonecold-drblood_80: -457701976718602689
+      stonecold-drblood_84: 6650353166342727506
+      stonecold-drblood_4: 21300008
+      stonecold-drblood_44: -1297544732296765963
+      stonecold-drblood_91: -240553071017626846
+      stonecold-drblood_89: -4593704258676650367
+      stonecold-drblood_6: 21300012
+      stonecold-drblood_47: 514685116434236324
+      stonecold-drblood_40: -6994633396191118604
+      stonecold-drblood_64: -3630942131358604920
+      stonecold-drblood_82: 3662511520916444500
+      stonecold-drblood_18: -1145436142904870317
+      stonecold-drblood_31: 408420324174811669
+      stonecold-drblood_70: 3452954536039410926
+      stonecold-drblood_34: -293931572160676306
+      stonecold-drblood_92: -2900066438329980950
+      stonecold-drblood_8: 21300016
+      stonecold-drblood_13: 6589366072636883606
+      stonecold-drblood_11: -7727265726023835999
+      stonecold-drblood_27: 3348611356280178544
+      stonecold-drblood_55: -1625509107358135759
+      stonecold-drblood_59: 1681598372370592055
+      stonecold-drblood_12: 5448516155559140583
+      stonecold-drblood_50: -3380076123335661870
+      stonecold-drblood_25: 7195669118397080587
+      stonecold-drblood_74: -4106400362917602812
+      stonecold-drblood_73: 7637423000642504591
+      stonecold-drblood_48: 4358082643402581205
+      stonecold-drblood_20: 3866354059227351121
+      stonecold-drblood_95: 2288332022677414202
+      stonecold-drblood_83: -4273823825816833480
+      stonecold-drblood_81: 8294719584064614781
+      stonecold-drblood_3: 21300006
+      stonecold-drblood_15: -6186351751170718111
+      stonecold-drblood_9: 21300018
+      stonecold-drblood_54: -7078754501873168519
+      stonecold-drblood_85: 2444613906780476688
+      stonecold-drblood_58: 3895223099503660000
+      stonecold-drblood_86: 1685089932175435098
+      stonecold-drblood_39: -6063727397307053783
+      stonecold-drblood_56: 8285724060511614125
+      stonecold-drblood_87: 6931938940454756077
+      stonecold-drblood_79: 8280322484505898468
+      stonecold-drblood_30: -6010675299010225026
+      stonecold-drblood_63: 1489932775887409979
+      stonecold-drblood_37: -1549225742332835534
+      stonecold-drblood_0: 21300000
+      stonecold-drblood_94: 3489296209377263030
+      stonecold-drblood_97: -7701275003309183515
+      stonecold-drblood_76: 6730499092999972300
+      stonecold-drblood_17: -1789624411998171813
+      stonecold-drblood_16: 9064308408170498166
+      stonecold-drblood_90: 4958843338754848112
+      stonecold-drblood_2: 21300004
+      stonecold-drblood_33: 4253631225627818729
+      stonecold-drblood_14: 6064161214676890892
+      stonecold-drblood_42: -1379912829418420787
+      stonecold-drblood_22: -9059872196477748375
+      stonecold-drblood_38: -6788205065236103985
+      stonecold-drblood_41: -7642983434567839693
+      stonecold-drblood_62: 5868768980464790764
+      stonecold-drblood_57: -1962078190822350433
+      stonecold-drblood_51: 147410592630438332
+      stonecold-drblood_10: 21300020
+      stonecold-drblood_35: 8394224631286046204
+      stonecold-drblood_72: 5938740426912623393
+      stonecold-drblood_46: -2493541235140741896
+      stonecold-drblood_52: -8592045153886192737
+      stonecold-drblood_21: 101478762238427090
+      stonecold-drblood_66: 4226111425645042596
+      stonecold-drblood_36: -1814802706186174832
+      stonecold-drblood_45: -5181260863353397940
+      stonecold-drblood_26: 3032576698985637619
+      stonecold-drblood_77: 969985228517190895
+      stonecold-drblood_61: -6185447854230561223
+      stonecold-drblood_19: -1414270478189253582
+      stonecold-drblood_1: 21300002
+      stonecold-drblood_7: 21300014
+      stonecold-drblood_67: -5473516326139267664
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

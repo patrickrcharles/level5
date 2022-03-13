@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      james_walk_1: -3357235750843008455
+      james_walk_6: -4976149833393711804
+      james_walk_5: 7424654779589677561
+      james_walk_7: -6673404585013259764
+      james_walk_3: -8853860917323012019
+      james_walk_4: -5815177235792740465
+      james_walk_2: 7123303061917798775
+      james_walk_0: -4297850704368672156
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

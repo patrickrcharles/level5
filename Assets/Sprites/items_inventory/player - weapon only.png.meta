@@ -180,6 +180,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -189,8 +190,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -211,6 +212,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -710,6 +713,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      player - weapon only_12: 21300024
+      player - weapon only_4: 21300008
+      player - weapon only_10: 21300020
+      player - weapon only_16: 21300032
+      player - weapon only_17: 21300034
+      player - weapon only_5: 21300010
+      player - weapon only_18: 21300036
+      player - weapon only_2: 21300004
+      player - weapon only_8: 21300016
+      player - weapon only_1: 21300002
+      player - weapon only_6: 21300012
+      player - weapon only_15: 21300030
+      player - weapon only_14: 21300028
+      player - weapon only_3: 21300006
+      player - weapon only_13: 21300026
+      player - weapon only_11: 21300022
+      player - weapon only_0: 21300000
+      player - weapon only_7: 21300014
+      player - weapon only_19: 21300038
+      player - weapon only_9: 21300018
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

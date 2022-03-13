@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -90,8 +91,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -112,6 +113,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -197,7 +200,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c9912762ae42995e0800000000000000
-      internalID: -1902448779501364836
+      internalID: 4507319714430741960
       vertices: []
       indices: 
       edges: []
@@ -218,7 +221,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 348e4605df5cb8190800000000000000
-      internalID: -7959050224681031613
+      internalID: 4022567815340195555
       vertices: []
       indices: 
       edges: []
@@ -239,7 +242,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: da766bbf74687a5f0800000000000000
-      internalID: -745479569582692435
+      internalID: -1999981787460538330
       vertices: []
       indices: 
       edges: []
@@ -260,7 +263,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bdf16153718936d50800000000000000
-      internalID: 6729389493663965147
+      internalID: -4935584129502817430
       vertices: []
       indices: 
       edges: []
@@ -281,7 +284,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6a2c1bd45dee6a2a0800000000000000
-      internalID: -6726426393532317018
+      internalID: -4632584596601348375
       vertices: []
       indices: 
       edges: []
@@ -380,6 +383,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ninja_attack1_1: 3110369896404579414
+      ninja_attack1_5: 4022567815340195555
+      ninja_attack1_4: 4507319714430741960
+      ninja_attack1_8: -4632584596601348375
+      ninja_attack1_2: -9034280110372808421
+      ninja_attack1_7: -4935584129502817430
+      ninja_attack1_0: -5938054175387627423
+      ninja_attack1_6: -1999981787460538330
+      ninja_attack1_3: 891737675455391658
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

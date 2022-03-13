@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jimmy_ford_knockdown2_5: -8981786265267941590
+      jimmy_ford_knockdown2_4: 4886034482114643824
+      jimmy_ford_knockdown2_0: -6789018317094392104
+      jimmy_ford_knockdown2_7: 4666016644488001406
+      jimmy_ford_knockdown2_6: -931163035511997606
+      jimmy_ford_knockdown2_3: -3391444761314579886
+      jimmy_ford_knockdown2_2: -8713608080431932675
+      jimmy_ford_knockdown2_1: 2627854332455422766
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

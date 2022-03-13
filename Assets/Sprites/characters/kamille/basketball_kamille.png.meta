@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_kamille_11: -2580004831300307994
+      basketball_kamille_10: -8585694389616293194
+      basketball_kamille_1: 6139023120184019719
+      basketball_kamille_4: 2252352354654477621
+      basketball_kamille_0: 1236379832923261433
+      basketball_kamille_5: 8867580539889741077
+      basketball_kamille_7: -1934204444812586255
+      basketball_kamille_12: 7662993000840177551
+      basketball_kamille_14: 3544132693253451301
+      basketball_kamille_9: 7776291505578208731
+      basketball_kamille_13: 6787821984119726166
+      basketball_kamille_2: -5828221757300567729
+      basketball_kamille_6: 3442246502782957697
+      basketball_kamille_8: 4759899553720618133
+      basketball_kamille_3: -2945391665067745679
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

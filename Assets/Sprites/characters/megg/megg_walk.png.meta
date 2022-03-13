@@ -108,6 +108,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -808,6 +809,35 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      megg_walk_22: -8276841374692098268
+      megg_walk_4: 6414017122310876565
+      megg_walk_7: -849880044494873099
+      megg_walk_10: 8963795804425694321
+      megg_walk_3: -7783838909357680840
+      megg_walk_23: -8379125059496684383
+      megg_walk_14: 8299190206677127270
+      megg_walk_15: -6673582539053213977
+      megg_walk_12: -9141846960652118284
+      megg_walk_19: -5229779926828464851
+      megg_walk_11: 7184369738290190682
+      megg_walk_13: -6690410302615544702
+      megg_walk_18: 2192348239161150128
+      megg_walk_26: 5388322384180921097
+      megg_walk_21: 969108784495977223
+      megg_walk_1: 2403847399508639416
+      megg_walk_24: 5817844529757248434
+      megg_walk_5: -1845204215089816829
+      megg_walk_9: -2682901381714028585
+      megg_walk_2: -8223554651841715597
+      megg_walk_6: -404796933260601503
+      megg_walk_17: 1634380940337627376
+      megg_walk_8: 7004524994810127344
+      megg_walk_20: -4468219631982850216
+      megg_walk_25: -991452389270481008
+      megg_walk_27: 2399823570021059202
+      megg_walk_0: -7947089610457759303
+      megg_walk_16: -7710373661505112470
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

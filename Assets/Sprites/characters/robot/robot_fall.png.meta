@@ -132,6 +132,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -1000,6 +1001,43 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      robot_fall_26: 3736775255451150501
+      robot_fall_13: 7920734510796163687
+      robot_fall_17: 1864575267657511732
+      robot_fall_1: -5083099941146634660
+      robot_fall_11: -1197764593895219421
+      robot_fall_32: 854242757558512796
+      robot_fall_20: 4580685247282163233
+      robot_fall_30: -7990982180765550754
+      robot_fall_22: -3936064167934969813
+      robot_fall_28: -4799577303254619848
+      robot_fall_21: -6391584334316702653
+      robot_fall_14: -5185564406340048476
+      robot_fall_34: -3624180760149508854
+      robot_fall_16: -6162053846729631390
+      robot_fall_33: 1934084284450577775
+      robot_fall_9: 5011308523279347500
+      robot_fall_35: -1046571149278290614
+      robot_fall_12: 9061686136495193368
+      robot_fall_10: 7540814590441281185
+      robot_fall_4: 2697812288418561168
+      robot_fall_5: -2188899364580916417
+      robot_fall_3: -1185619152411407324
+      robot_fall_29: -3295822304292122948
+      robot_fall_31: -1400186792403761186
+      robot_fall_6: -59183055256746699
+      robot_fall_7: 8738982020766278255
+      robot_fall_15: -4429933660307370270
+      robot_fall_27: -5136379255994003285
+      robot_fall_8: 2475040103488497714
+      robot_fall_23: 4516020251644347796
+      robot_fall_18: 2359016026043985122
+      robot_fall_24: -6437645327637840140
+      robot_fall_25: -761557375988962084
+      robot_fall_0: -8839311008122806137
+      robot_fall_2: 6484458688367089398
+      robot_fall_19: 8046820161970451027
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

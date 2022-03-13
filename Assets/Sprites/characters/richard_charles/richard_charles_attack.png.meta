@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -412,6 +413,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      richard_charles_attack_11: 8939610370533536461
+      richard_charles_attack_10: 8932276466162064696
+      richard_charles_attack_5: 6575961898990012149
+      richard_charles_attack_9: 4435883942712132921
+      richard_charles_attack_7: -5425161044537545304
+      richard_charles_attack_1: 8658132420073346920
+      richard_charles_attack_4: 3450694391408926183
+      richard_charles_attack_2: 2833993087454130459
+      richard_charles_attack_0: -7324092722435207122
+      richard_charles_attack_3: 2938547702126688682
+      richard_charles_attack_6: 8907415515054273055
+      richard_charles_attack_8: 7329799079065148996
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -75,6 +75,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -544,6 +545,24 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketbal_jimmy_ford_14: 8829514922129405947
+      basketbal_jimmy_ford_15: -7114945685616193590
+      basketbal_jimmy_ford_11: 5388043895797824839
+      basketbal_jimmy_ford_2: -4754144952962910959
+      basketbal_jimmy_ford_7: -8393292979582735045
+      basketbal_jimmy_ford_5: 6873894143626998438
+      basketbal_jimmy_ford_13: -3095253034667875918
+      basketbal_jimmy_ford_8: -1418457383944686915
+      basketbal_jimmy_ford_12: -1932470504346276511
+      basketbal_jimmy_ford_0: -1325514103749179218
+      basketbal_jimmy_ford_6: 5458434405702316717
+      basketbal_jimmy_ford_9: -2898540438253884569
+      basketbal_jimmy_ford_1: -783378034288009126
+      basketbal_jimmy_ford_3: -5862840961730720228
+      basketbal_jimmy_ford_10: -6494120566321020155
+      basketbal_jimmy_ford_16: 9163544607797524252
+      basketbal_jimmy_ford_4: 4392246809864640256
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -66,6 +66,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -460,6 +461,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wob_attack_kick_8: -7260161736296060434
+      wob_attack_kick_3: 9191103773899515985
+      wob_attack_kick_11: 5139160468139413519
+      wob_attack_kick_9: 505150484925938746
+      wob_attack_kick_7: -5134739622835805717
+      wob_attack_kick_13: -1929016175190072156
+      wob_attack_kick_12: -7523522305038416202
+      wob_attack_kick_6: -4666501772177697117
+      wob_attack_kick_0: -4816874621675567497
+      wob_attack_kick_4: -7263045918520058027
+      wob_attack_kick_1: -8154496138047131252
+      wob_attack_kick_2: 7907751937296231470
+      wob_attack_kick_5: -6305353730033392320
+      wob_attack_kick_10: -661003552417533380
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

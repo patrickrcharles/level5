@@ -87,6 +87,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -640,6 +641,28 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_sam_1: -2738294527318438202
+      basketball_sam_11: -356813810253627158
+      basketball_sam_20: -5882053701810210729
+      basketball_sam_0: 7829912405929963212
+      basketball_sam_19: 3070641568781262890
+      basketball_sam_17: -8081599460796376341
+      basketball_sam_6: -8488561625590916120
+      basketball_sam_9: -6105338885157641258
+      basketball_sam_15: -5631191535140895234
+      basketball_sam_8: 1434752183344439969
+      basketball_sam_18: -5293721421920972597
+      basketball_sam_2: -5338613607642021591
+      basketball_sam_7: -412756562308248556
+      basketball_sam_13: -2633665046282742362
+      basketball_sam_3: 4023350529877994568
+      basketball_sam_4: -2806004631523908459
+      basketball_sam_16: 3872124495352090827
+      basketball_sam_10: -3733680522785760767
+      basketball_sam_14: 1727352730141375062
+      basketball_sam_12: 4022176368186287238
+      basketball_sam_5: -3223773122036579616
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

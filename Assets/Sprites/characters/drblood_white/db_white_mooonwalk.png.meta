@@ -102,6 +102,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -760,6 +761,33 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      db_white_mooonwalk_2: -1504575703606028395
+      db_white_mooonwalk_18: -8651390469486430532
+      db_white_mooonwalk_22: 1366434544983929146
+      db_white_mooonwalk_6: -8569669796045573574
+      db_white_mooonwalk_13: -8667691891419035434
+      db_white_mooonwalk_16: -8627227856245401830
+      db_white_mooonwalk_9: 3835684001160938323
+      db_white_mooonwalk_19: 42533596640229688
+      db_white_mooonwalk_17: -3282550224064542341
+      db_white_mooonwalk_25: 5459052443817037560
+      db_white_mooonwalk_5: -4594286718985867244
+      db_white_mooonwalk_14: 8294464785450981148
+      db_white_mooonwalk_0: 4522598372927789766
+      db_white_mooonwalk_1: 2790088805357056491
+      db_white_mooonwalk_23: -3064117338487963350
+      db_white_mooonwalk_20: -1378896103847806694
+      db_white_mooonwalk_10: -3957662254274254029
+      db_white_mooonwalk_12: -4162802494763002310
+      db_white_mooonwalk_8: 7292835863092158551
+      db_white_mooonwalk_11: -8871269895395580925
+      db_white_mooonwalk_21: 2741335765529228750
+      db_white_mooonwalk_24: -8933893980622213772
+      db_white_mooonwalk_4: -3823248465353660505
+      db_white_mooonwalk_3: -5233246144307244517
+      db_white_mooonwalk_7: 4279188230211295008
+      db_white_mooonwalk_15: 362202285866359153
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

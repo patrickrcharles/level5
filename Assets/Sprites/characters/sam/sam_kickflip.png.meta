@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      sam_kickflip_16: -970817421483694933
+      sam_kickflip_18: 6258074355017998351
+      sam_kickflip_7: 2915806929959086420
+      sam_kickflip_13: -574329977756418402
+      sam_kickflip_2: -6827440131628588007
+      sam_kickflip_3: 8528634009929211905
+      sam_kickflip_5: -7613834483663688996
+      sam_kickflip_15: -8720069997032199540
+      sam_kickflip_9: 1965043694242313275
+      sam_kickflip_0: 2071615584862552237
+      sam_kickflip_6: -2825646252208089282
+      sam_kickflip_12: -2229142531505415354
+      sam_kickflip_8: -5346796653423543798
+      sam_kickflip_1: 8957362963507735392
+      sam_kickflip_14: 163069708136432587
+      sam_kickflip_10: 3474022917364316020
+      sam_kickflip_4: 4655132604879826627
+      sam_kickflip_11: 736909090970520421
+      sam_kickflip_19: 6119032836210521213
+      sam_kickflip_17: 8406288800797741988
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

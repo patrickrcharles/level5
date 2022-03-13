@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom_rudeawakening_5: 5371980349808620671
+      thom_rudeawakening_4: 4564426414212540920
+      thom_rudeawakening_3: 4818434707812713418
+      thom_rudeawakening_1: 4783443565536312955
+      thom_rudeawakening_0: 140472136041441105
+      thom_rudeawakening_2: 6184618499387913192
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

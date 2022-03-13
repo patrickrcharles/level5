@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      baby_special_5: 6212152023321175875
+      baby_special_3: 1709337784453884975
+      baby_special_4: -4723955800720061965
+      baby_special_2: -5707140387312458787
+      baby_special_1: -941039473123329497
+      baby_special_0: -8931231129949372696
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

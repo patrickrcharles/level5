@@ -51,6 +51,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -352,6 +353,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      macho man elbow _0: 21300000
+      macho man elbow _4: 21300008
+      macho man elbow _2: 21300004
+      macho man elbow _5: 21300010
+      macho man elbow _6: 21300012
+      macho man elbow _1: 21300002
+      macho man elbow _3: 21300006
+      macho man elbow _8: 21300016
+      macho man elbow _7: 21300014
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

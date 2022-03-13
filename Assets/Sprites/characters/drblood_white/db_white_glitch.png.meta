@@ -51,6 +51,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -352,6 +353,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      db_white_glitch_4: -7025044659074129144
+      db_white_glitch_7: 77717139361452354
+      db_white_glitch_5: -5525226242278035568
+      db_white_glitch_8: -5818551385463535057
+      db_white_glitch_3: -8963022406888101170
+      db_white_glitch_1: 8277618199964136102
+      db_white_glitch_2: 7690179242269442232
+      db_white_glitch_0: 9162312067797711063
+      db_white_glitch_6: -2055331415277474778
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

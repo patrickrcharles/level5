@@ -78,6 +78,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -568,6 +569,25 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_megg_9: -2852013261937591238
+      basketball_megg_8: -3074630926401783509
+      basketball_megg_15: -4419331572607818406
+      basketball_megg_13: -6695025141838013629
+      basketball_megg_4: -4506552059104685269
+      basketball_megg_5: -3598644880469587586
+      basketball_megg_10: -5190020781404713826
+      basketball_megg_11: 7097116344944124184
+      basketball_megg_14: -6902268628526504051
+      basketball_megg_0: -5925978910930150455
+      basketball_megg_1: 24002922093728725
+      basketball_megg_6: -3399428207463279577
+      basketball_megg_3: 3635744533599625668
+      basketball_megg_17: -124494971699678993
+      basketball_megg_7: -2865098371057939441
+      basketball_megg_16: -5145817320228076160
+      basketball_megg_12: 7200724930542682904
+      basketball_megg_2: -7760180006795173318
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

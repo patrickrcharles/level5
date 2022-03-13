@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -592,6 +593,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      richardcharles_basketball_13: -2723003952685557478
+      richardcharles_basketball_0: 4603940948412655914
+      richardcharles_basketball_18: 3154107485218548499
+      richardcharles_basketball_2: 3710740653510995580
+      richardcharles_basketball_3: 4715172673739779303
+      richardcharles_basketball_5: 3012161203477408977
+      richardcharles_basketball_15: -6271376503569766518
+      richardcharles_basketball_17: -5695980265741515006
+      richardcharles_basketball_10: -3030361897937866293
+      richardcharles_basketball_8: 2137424470641018673
+      richardcharles_basketball_9: -4151166947650794668
+      richardcharles_basketball_12: -6237287725517534889
+      richardcharles_basketball_16: 7084342019618880083
+      richardcharles_basketball_4: -5044811265174020708
+      richardcharles_basketball_14: 7938393471235351392
+      richardcharles_basketball_1: 3257125596169345256
+      richardcharles_basketball_7: -2719829642509638479
+      richardcharles_basketball_11: -5996445129684672515
+      richardcharles_basketball_6: -347256421496008694
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

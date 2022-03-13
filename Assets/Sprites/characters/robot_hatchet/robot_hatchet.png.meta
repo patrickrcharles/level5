@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      robot_hatchet_14: 4808595386907457382
+      robot_hatchet_13: -8817516242581008226
+      robot_hatchet_5: 7583464919677320149
+      robot_hatchet_7: 5779926626007879576
+      robot_hatchet_11: 3817232253943915085
+      robot_hatchet_8: -3571267060460518259
+      robot_hatchet_2: -2805506471356216341
+      robot_hatchet_6: 8829265089524826588
+      robot_hatchet_3: -8795480707419783766
+      robot_hatchet_10: 7718820006614228227
+      robot_hatchet_0: 531179328791005995
+      robot_hatchet_4: -3237854596639916943
+      robot_hatchet_9: 5893403731196301137
+      robot_hatchet_12: 5524245004907542325
+      robot_hatchet_1: 2875791846607661914
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

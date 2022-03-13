@@ -375,6 +375,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -384,11 +385,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -406,6 +407,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -1262,6 +1265,44 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      trees_black_25: -6338563412315204841
+      trees_black_1: -6762077813287741713
+      trees_black_5: 4015571005824040689
+      trees_black_6: 7058793997219510662
+      trees_black_17: -483369317143985488
+      trees_black_8: -1869673650387693310
+      trees_black_27: 4115914591263717439
+      trees_black_32: -1791975883480506656
+      trees_black_12: 5464045255787301717
+      trees_black_35: -1191086465837931290
+      trees_black_26: -8113315767880300795
+      trees_black_7: 5452171121829138048
+      trees_black_30: 1019884372351956732
+      trees_black_3: 7574971328061369102
+      trees_black_28: -8401801847550141918
+      trees_black_9: 6163127903278894222
+      trees_black_29: 2725188577373824245
+      trees_black_23: -5662472895026683765
+      trees_black_4: -8721776139061340789
+      trees_black_0: -8476854825952969106
+      trees_black_19: 2664108379083537442
+      trees_black_15: 6721418357550678327
+      trees_black_22: -3190616395062501112
+      trees_black_11: -895806520047189992
+      trees_black_13: -3442627259848225607
+      trees_black_16: 1909667096405286573
+      trees_black_2: 2205435019931981618
+      trees_black_31: 6029681143663332633
+      trees_black_18: 4079600939476914111
+      trees_black_33: -3999770976479868338
+      trees_black_20: 9083864111305863129
+      trees_black_21: 127055832711610164
+      trees_black_24: -8133226781251050230
+      trees_black_36: -1673957935838294307
+      trees_black_10: -2320564972059345107
+      trees_black_34: 3746458304473911832
+      trees_black_14: 8320900813394568725
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -340,6 +341,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wob2_special_whip_5: -4460772544806217274
+      wob2_special_whip_0: -9186432372022879885
+      wob2_special_whip_2: -7030175407609403941
+      wob2_special_whip_7: 151522808435394166
+      wob2_special_whip_3: 3173375910078822858
+      wob2_special_whip_1: 8874213074973557384
+      wob2_special_whip_4: 3502441451808332752
+      wob2_special_whip_6: 6164037247808367756
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

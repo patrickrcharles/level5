@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -69,8 +70,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -91,6 +92,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -422,6 +425,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      mouse_droid_11: 4978751346970177628
+      mouse_droid_4: -3492346851373192612
+      mouse_droid_9: -3345793836026377236
+      mouse_droid_10: -8758748880238120911
+      mouse_droid_5: 9123939979210636043
+      mouse_droid_0: -3184233828179575160
+      mouse_droid_7: 5954902347696929742
+      mouse_droid_6: 3607927037637942737
+      mouse_droid_8: 5725913212346280370
+      mouse_droid_2: -1429095083182286288
+      mouse_droid_1: 5989298065791977168
+      mouse_droid_3: -7567755539119616807
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

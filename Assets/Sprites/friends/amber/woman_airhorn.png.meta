@@ -81,6 +81,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -90,11 +91,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -112,6 +113,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -590,6 +593,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      woman_airhorn_18: 5530837000046228443
+      woman_airhorn_2: -3005779958510753269
+      woman_airhorn_8: 1039904222584074670
+      woman_airhorn_13: 5412935145459716270
+      woman_airhorn_15: 4337863641399108466
+      woman_airhorn_0: -1339479215381994628
+      woman_airhorn_1: -5545448555885951010
+      woman_airhorn_14: 1275714215561001172
+      woman_airhorn_3: 6779324932345491173
+      woman_airhorn_17: 4478092185415469568
+      woman_airhorn_5: -3289312701094921001
+      woman_airhorn_16: -4577012163128202512
+      woman_airhorn_4: 3988116321104043581
+      woman_airhorn_7: -984049510199456052
+      woman_airhorn_11: 1392965723128825445
+      woman_airhorn_10: 8799395364567166432
+      woman_airhorn_12: 5404534948432720653
+      woman_airhorn_6: 2481893884896621256
+      woman_airhorn_9: -7587410899097932663
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -376,6 +377,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      johnny_dracula_knockeddown_8: 8619859408795224763
+      johnny_dracula_knockeddown_6: -8328996222338865551
+      johnny_dracula_knockeddown_3: 6036909002122956091
+      johnny_dracula_knockeddown_2: -1726338315605169223
+      johnny_dracula_knockeddown_4: 263364984735315714
+      johnny_dracula_knockeddown_0: -4137948616811264292
+      johnny_dracula_knockeddown_5: -2101024313465672019
+      johnny_dracula_knockeddown_9: -7916322154518801596
+      johnny_dracula_knockeddown_1: 2581394873633126411
+      johnny_dracula_knockeddown_7: -1507731419699139393
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

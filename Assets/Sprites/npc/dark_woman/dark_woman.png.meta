@@ -63,6 +63,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -72,8 +73,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -94,6 +95,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -179,7 +182,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: dc21f8c7691510970800000000000000
-      internalID: 8719340060342686413
+      internalID: 3239899286697430910
       vertices: []
       indices: 
       edges: []
@@ -200,7 +203,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f71e82e7710a65390800000000000000
-      internalID: -7829894879375728257
+      internalID: -6792106550998771123
       vertices: []
       indices: 
       edges: []
@@ -242,7 +245,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6137d14feed291750800000000000000
-      internalID: 6276098060038533910
+      internalID: 7346904350740385017
       vertices: []
       indices: 
       edges: []
@@ -263,7 +266,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: be22a6b42fb36fb90800000000000000
-      internalID: -7208508241726528789
+      internalID: 8486345843820708111
       vertices: []
       indices: 
       edges: []
@@ -299,6 +302,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      dark_woman_1: -6792106550998771123
+      dark_woman_4: 8486345843820708111
+      dark_woman_2: 4560132368596072916
+      dark_woman_0: 3239899286697430910
+      dark_woman_3: 7346904350740385017
+      dark_woman_5: -5040077294113033617
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

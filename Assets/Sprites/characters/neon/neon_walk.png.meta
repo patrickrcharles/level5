@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      neon_walk_2: -3841967637346972907
+      neon_walk_0: 2524199870137229199
+      neon_walk_1: -2747670722742395008
+      neon_walk_3: 5156386372269939592
+      neon_walk_4: 2206192262167209149
+      neon_walk_5: -1821557888061743569
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

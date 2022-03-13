@@ -66,6 +66,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -472,6 +473,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_flash_2: 2864109319973150376
+      basketball_flash_7: -3239037932912750499
+      basketball_flash_5: 5356445132505579422
+      basketball_flash_13: -243295663059947817
+      basketball_flash_9: -4004115217347279074
+      basketball_flash_4: -8385268919857618142
+      basketball_flash_6: 1889544167140838077
+      basketball_flash_8: 5585010015104388785
+      basketball_flash_12: -4935076570035176550
+      basketball_flash_1: -9217111919130760982
+      basketball_flash_10: 3017329155778129150
+      basketball_flash_11: 6773119644510626418
+      basketball_flash_0: 7608213664640212940
+      basketball_flash_3: -296948442521194810
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

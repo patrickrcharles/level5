@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -298,6 +299,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wob1_special_rocket_3: 430535093657164115
+      wob1_special_rocket_0: 7537672767555217687
+      wob1_special_rocket_2: -8925682312283291790
+      wob1_special_rocket_4: 8170672429760366795
+      wob1_special_rocket_1: 7670187546633272636
+      wob1_special_rocket_5: -5995956481061873924
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

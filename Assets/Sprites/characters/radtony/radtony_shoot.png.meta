@@ -39,6 +39,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -256,6 +257,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      radtony_shoot_0: -5148355380639756215
+      radtony_shoot_2: -2141023492239466248
+      radtony_shoot_1: 6677747866585775691
+      radtony_shoot_3: 2490634603244049659
+      radtony_shoot_4: -5886849279610653560
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

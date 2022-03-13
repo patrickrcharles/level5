@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      harrycharles_basketball_4: 9027566571162036131
+      harrycharles_basketball_8: 2255359410318743304
+      harrycharles_basketball_6: -3930670749658751601
+      harrycharles_basketball_2: 4629448502309910941
+      harrycharles_basketball_9: -8825296868774536871
+      harrycharles_basketball_3: 2742216466099552679
+      harrycharles_basketball_11: 7928089389533255716
+      harrycharles_basketball_5: -2648684091135089596
+      harrycharles_basketball_14: 525880218280535895
+      harrycharles_basketball_7: -79430532170236838
+      harrycharles_basketball_13: -975721454295280307
+      harrycharles_basketball_17: -2377017174001703543
+      harrycharles_basketball_12: -7145691940181149411
+      harrycharles_basketball_15: -389076864342012196
+      harrycharles_basketball_1: 8756395089504478677
+      harrycharles_basketball_10: 1399650061258380026
+      harrycharles_basketball_19: 4627522237002331384
+      harrycharles_basketball_16: -1363341071727681243
+      harrycharles_basketball_18: 6755859874220458117
+      harrycharles_basketball_0: 6528081953267988539
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

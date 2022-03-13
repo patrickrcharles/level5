@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jdrac_basketball_8: -6122883518232630670
+      jdrac_basketball_0: -8370890666623643803
+      jdrac_basketball_12: -8518886823112834503
+      jdrac_basketball_14: 7006251627253204067
+      jdrac_basketball_10: 4047101845138387834
+      jdrac_basketball_7: -6381622635485141407
+      jdrac_basketball_11: 4826888473789549555
+      jdrac_basketball_1: 1667643709048225144
+      jdrac_basketball_5: -56341533631787493
+      jdrac_basketball_6: 1382649726826829305
+      jdrac_basketball_4: 956155945449618685
+      jdrac_basketball_2: -1083412791669710527
+      jdrac_basketball_9: 8215902662321868014
+      jdrac_basketball_13: 2064772211692313619
+      jdrac_basketball_3: -6272208268759821308
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -57,6 +57,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -316,6 +317,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      drblood_white_kicks_5: -5125486653612548062
+      drblood_white_kicks_8: 8148035538866053337
+      drblood_white_kicks_6: -4990396796928562327
+      drblood_white_kicks_0: 3759180035082083082
+      drblood_white_kicks_3: -836171116300309639
+      drblood_white_kicks_9: 2739154188272071102
+      drblood_white_kicks_1: 1114978931995359192
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

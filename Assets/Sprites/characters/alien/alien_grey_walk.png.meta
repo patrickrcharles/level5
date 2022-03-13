@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      alien_grey_walk_13: 1682218022318047421
+      alien_grey_walk_1: 6234976914936314659
+      alien_grey_walk_17: 1944762838415170902
+      alien_grey_walk_16: 6675217307598776597
+      alien_grey_walk_19: 6779866819985947730
+      alien_grey_walk_7: 8585329527305894851
+      alien_grey_walk_15: 3744705817640454773
+      alien_grey_walk_5: 8861895627370583189
+      alien_grey_walk_10: 8194895977098853317
+      alien_grey_walk_18: -2159208264220991062
+      alien_grey_walk_6: 4593580319165695618
+      alien_grey_walk_11: 1669546787042897975
+      alien_grey_walk_8: -3068613549108527697
+      alien_grey_walk_2: -6509319799705323291
+      alien_grey_walk_0: -3014981690333777636
+      alien_grey_walk_9: -1631720168119297200
+      alien_grey_walk_4: 8352183013524356790
+      alien_grey_walk_14: 1141232787181635092
+      alien_grey_walk_12: -4295725333346866196
+      alien_grey_walk_3: 8867820782432523394
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

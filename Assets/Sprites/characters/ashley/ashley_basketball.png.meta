@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ashley_basketball_1: 2105586291789641765
+      ashley_basketball_3: 3684315687175486893
+      ashley_basketball_11: -2793747635148468634
+      ashley_basketball_7: -2220709750312868386
+      ashley_basketball_9: -3467005379220711445
+      ashley_basketball_6: -5193604223340787987
+      ashley_basketball_0: 5560765237371682832
+      ashley_basketball_10: 680506299026695568
+      ashley_basketball_2: -842543609419165487
+      ashley_basketball_14: 3646125634683734801
+      ashley_basketball_5: -5198715201180563995
+      ashley_basketball_4: -8169382993001827612
+      ashley_basketball_13: 7352816803039679670
+      ashley_basketball_8: 6506745512141676666
+      ashley_basketball_12: -9025223520971821934
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

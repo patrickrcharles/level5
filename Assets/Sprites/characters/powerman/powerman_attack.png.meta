@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      powerman_attack_5: 7990381525709140572
+      powerman_attack_6: -7293198237631443708
+      powerman_attack_1: 469737991617262205
+      powerman_attack_3: 5602415638551761046
+      powerman_attack_2: -7388510750717875702
+      powerman_attack_7: -280661655629615163
+      powerman_attack_0: 8839507670106489767
+      powerman_attack_4: -6075823348374027044
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

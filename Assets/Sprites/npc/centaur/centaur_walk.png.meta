@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -364,6 +365,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      centaur_walk_5: 7310756626271413472
+      centaur_walk_8: 1683185729742371457
+      centaur_walk_0: -3202267496111227800
+      centaur_walk_1: -2858288225022914323
+      centaur_walk_6: 8082314922258912192
+      centaur_walk_7: 5973461654267646718
+      centaur_walk_2: 7578788156126096603
+      centaur_walk_4: -1851695669437573701
+      centaur_walk_9: 5171252378018460687
+      centaur_walk_3: -2021570595785585821
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -78,8 +79,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -100,6 +101,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -185,7 +188,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a778d12c67ee9a8d0800000000000000
-      internalID: -2834472296622749830
+      internalID: 1333926425477535874
       vertices: []
       indices: 
       edges: []
@@ -206,7 +209,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ad2f577c95888dc60800000000000000
-      internalID: 7843168670245581530
+      internalID: 3368861499605224725
       vertices: []
       indices: 
       edges: []
@@ -227,7 +230,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a5bff0760973a3c90800000000000000
-      internalID: -7189372761799656614
+      internalID: 7209334306957654800
       vertices: []
       indices: 
       edges: []
@@ -269,7 +272,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 63b1d0115e525bf30800000000000000
-      internalID: 4590617060937898806
+      internalID: 2101599195046126298
       vertices: []
       indices: 
       edges: []
@@ -290,7 +293,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2a21713a94f8da6a0800000000000000
-      internalID: -6436330746010987870
+      internalID: 2029502861963559396
       vertices: []
       indices: 
       edges: []
@@ -311,7 +314,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5204e54b5cf3ca480800000000000000
-      internalID: -8886657846341648347
+      internalID: 186210651522826150
       vertices: []
       indices: 
       edges: []
@@ -332,7 +335,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d624da23e8cc1f880800000000000000
-      internalID: -8578850904056446355
+      internalID: -7556130750210067934
       vertices: []
       indices: 
       edges: []
@@ -347,6 +350,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      evelyn_skeleton_7: -7556130750210067934
+      evelyn_skeleton_5: 2029502861963559396
+      evelyn_skeleton_1: 3368861499605224725
+      evelyn_skeleton_6: 186210651522826150
+      evelyn_skeleton_4: 2101599195046126298
+      evelyn_skeleton_0: 1333926425477535874
+      evelyn_skeleton_3: -4441145230367149779
+      evelyn_skeleton_2: 7209334306957654800
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

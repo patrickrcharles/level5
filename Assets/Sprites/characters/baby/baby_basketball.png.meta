@@ -78,6 +78,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -484,6 +485,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      baby_basketball_7: -8024762844048730638
+      baby_basketball_15: 7009746793837693015
+      baby_basketball_5: 215326733146618850
+      baby_basketball_0: -912018086288714547
+      baby_basketball_3: -4004096548952783694
+      baby_basketball_9: 3240878993331864276
+      baby_basketball_10: -6725563235870273999
+      baby_basketball_12: -8321260205548409917
+      baby_basketball_14: 1123926760571877790
+      baby_basketball_6: 6842933149175519831
+      baby_basketball_13: -2270119940947371077
+      baby_basketball_1: -6947564036977497325
+      baby_basketball_4: 1592962522340146690
+      baby_basketball_2: -3376953686737567374
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

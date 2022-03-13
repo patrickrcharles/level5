@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -700,6 +701,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wob_elbow_6: 5517264631023883603
+      wob_elbow_13: 8911786764686561056
+      wob_elbow_0: 5257554402536094332
+      wob_elbow_12: 5662920353925944962
+      wob_elbow_16: 480011847452862162
+      wob_elbow_18: 7122290658183737238
+      wob_elbow_19: 4600399562206005131
+      wob_elbow_2: -1363024344832949728
+      wob_elbow_4: 7890443159157923566
+      wob_elbow_7: -8481145917671728616
+      wob_elbow_17: 5436565684476812662
+      wob_elbow_21: 8665257866589541613
+      wob_elbow_15: 6074826916763565477
+      wob_elbow_5: -680273479164936305
+      wob_elbow_20: 169276522804770290
+      wob_elbow_10: -6398725750616198598
+      wob_elbow_11: -9102363440414442287
+      wob_elbow_23: -2297454605789530876
+      wob_elbow_8: -1186293150763851547
+      wob_elbow_9: 4557279794450446111
+      wob_elbow_3: -1963103545793735786
+      wob_elbow_22: -216169876801334046
+      wob_elbow_14: -337839598390164481
+      wob_elbow_1: 1302995289502907570
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

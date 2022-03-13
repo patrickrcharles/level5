@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -376,6 +377,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_db_ghost_2_2: -4041327088594326972
+      basketball_db_ghost_2_0: -6723669814895340213
+      basketball_db_ghost_2_8: -7851557796981565596
+      basketball_db_ghost_2_6: -3326738512623000842
+      basketball_db_ghost_2_7: -8182129692190051200
+      basketball_db_ghost_2_5: 1128288710630625292
+      basketball_db_ghost_2_1: -1306269401756046138
+      basketball_db_ghost_2_3: 9195294989656385033
+      basketball_db_ghost_2_4: -3499461393201162233
+      basketball_db_ghost_2_9: 8680455027314233370
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

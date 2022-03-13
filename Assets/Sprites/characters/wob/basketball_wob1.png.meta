@@ -75,6 +75,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -523,6 +524,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_wob1_15: 7906711154318408412
+      basketball_wob1_0: -6452892803399800491
+      basketball_wob1_3: -6314903285891697585
+      basketball_wob1_7: -2101492317528336075
+      basketball_wob1_12: -2382076859631011780
+      basketball_wob1_10: 3954114874032198491
+      basketball_wob1_1: -8627307653714950882
+      basketball_wob1_16: -832782929048329718
+      basketball_wob1_9: 7873841363518081228
+      basketball_wob1_13: -8414294426552267917
+      basketball_wob1_8: -2628967807557327561
+      basketball_wob1_11: 4236154950479948335
+      basketball_wob1_14: -609126112904180867
+      basketball_wob1_4: 2324611376473932437
+      basketball_wob1_2: 2960219720487890812
+      basketball_wob1_5: -8832923100107289698
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -57,6 +57,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -66,8 +67,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -88,6 +89,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -398,6 +401,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      sacrificed_woman_3: 5066313858421338105
+      sacrificed_woman_7: -490877785190987916
+      sacrificed_woman_8: -7766615745340024040
+      sacrificed_woman_9: -6984817799410104413
+      sacrificed_woman_10: 209681063557693335
+      sacrificed_woman_1: 1864738323178857067
+      sacrificed_woman_0: 3030400095870538295
+      sacrificed_woman_4: -6416655444976058632
+      sacrificed_woman_6: -6264843740368769737
+      sacrificed_woman_2: -6864756116243107354
+      sacrificed_woman_5: 7143096473820486609
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

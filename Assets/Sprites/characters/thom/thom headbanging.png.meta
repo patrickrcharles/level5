@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -166,7 +167,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7110fcec3a0925800800000000000000
-      internalID: 599700733617438999
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -187,7 +188,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4084bbb2e71e97620800000000000000
-      internalID: 2772494977639073796
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -208,7 +209,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a1404239d3fa1c940800000000000000
-      internalID: 5314721714270372890
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -229,7 +230,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 1f8379fefb98f88c0800000000000000
-      internalID: -3994822887002916623
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -244,6 +245,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom headbanging_3: 21300006
+      thom headbanging_2: 21300004
+      thom headbanging_0: 21300000
+      thom headbanging_1: 21300002
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

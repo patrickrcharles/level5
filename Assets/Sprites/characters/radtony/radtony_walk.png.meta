@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      radtony_basketball_walk_2: 7809991614131745911
+      radtony_basketball_walk_3: -5828927702864212316
+      radtony_basketball_walk_0: 7916645664014245266
+      radtony_basketball_walk_1: -8443130043144867328
+      radtony_basketball_walk_4: -1183315573851631468
+      radtony_basketball_walk_5: 3279438404179921762
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

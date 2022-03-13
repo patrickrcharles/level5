@@ -66,6 +66,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -184,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: df22b76b28e7a6740800000000000000
-      internalID: 5146064624096584445
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -205,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 43b1b062da9a9fb10800000000000000
-      internalID: 2015828869357706036
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -226,7 +227,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 25c900bcd3ee04f40800000000000000
-      internalID: 5710826276672019538
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -247,7 +248,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ad75accc9b4f76b70800000000000000
-      internalID: 8892345068108273626
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -268,7 +269,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cb36f29ccf757fce0800000000000000
-      internalID: -1371530818292325444
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -289,7 +290,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d2da15f944ad5e250800000000000000
-      internalID: 5973420469042392365
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -346,6 +347,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom punch_2: 21300004
+      thom punch_4: 21300008
+      thom punch_5: 21300010
+      thom punch_1: 21300002
+      thom punch_6: -8845564166005142039
+      thom punch_0: 21300000
+      thom punch_3: 21300006
+      thom punch_7: 8671539818114970885
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

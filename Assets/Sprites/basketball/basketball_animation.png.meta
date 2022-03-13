@@ -63,6 +63,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -72,8 +73,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -94,6 +95,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -179,7 +182,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b81d12066733a6e10800000000000000
-      internalID: 2191620752181154187
+      internalID: -5146843641259800152
       vertices: []
       indices: 
       edges: []
@@ -200,7 +203,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 94395043c387b7b70800000000000000
-      internalID: 8897837688766698313
+      internalID: -1647725010855658843
       vertices: []
       indices: 
       edges: []
@@ -221,7 +224,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c956adea8e9765fb0800000000000000
-      internalID: -4659402724195277412
+      internalID: -8615512970810550522
       vertices: []
       indices: 
       edges: []
@@ -242,7 +245,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 93f9e1f70cd913490800000000000000
-      internalID: -7768254432145400007
+      internalID: 1241316629709343892
       vertices: []
       indices: 
       edges: []
@@ -362,6 +365,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_animation_6: -6558831787721836533
+      basketball_animation_8: 4971871575363308067
+      basketball_animation_1: -1647725010855658843
+      basketball_animation_5: -3780968327742167684
+      basketball_animation_4: 4522093721814353926
+      basketball_animation_0: -5146843641259800152
+      basketball_animation_7: -7036522821108066448
+      basketball_animation_3: 1241316629709343892
+      basketball_animation_2: -8615512970810550522
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      amanda_special_4: -7802606523946454626
+      amanda_special_1: -1760250612344539164
+      amanda_special_5: 5301584281290493460
+      amanda_special_6: 7383833991965035153
+      amanda_special_7: -1657094325490592306
+      amanda_special_0: -267684640841849486
+      amanda_special_2: 5490681466340387312
+      amanda_special_3: -1922086149205329328
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -51,6 +51,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -60,11 +61,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -82,6 +83,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -350,6 +353,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      toups_struck_by_lightning_19: 6515177112446254840
+      toups_struck_by_lightning_18: -4539348086817273580
+      toups_struck_by_lightning_20: -950759517461714733
+      toups_struck_by_lightning_14: -137701752003828734
+      toups_struck_by_lightning_15: 3258316241259447854
+      toups_struck_by_lightning_16: -7182350360539337510
+      toups_struck_by_lightning_10: -8093641680482763307
+      toups_struck_by_lightning_13: 4989737897926054549
+      toups_struck_by_lightning_22: 5946974358319878657
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

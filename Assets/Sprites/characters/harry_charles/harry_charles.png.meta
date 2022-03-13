@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -280,6 +281,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      harry_charles_1: -6286671662025108479
+      harry_charles_2: -3817364331512589901
+      harry_charles_0: -9061598459467025985
+      harry_charles_4: -908062601764742463
+      harry_charles_5: -2832886454003290541
+      harry_charles_3: -1182290805511460132
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

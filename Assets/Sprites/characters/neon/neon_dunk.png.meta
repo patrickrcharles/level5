@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      neon_dunk_7: -4684920084098734832
+      neon_dunk_5: 5325566846374811966
+      neon_dunk_6: 1633530672972754893
+      neon_dunk_2: 264491975201174442
+      neon_dunk_0: 1644218581422595986
+      neon_dunk_1: 252407645544045545
+      neon_dunk_3: 308884010284916715
+      neon_dunk_4: 8835917517375920768
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -412,6 +413,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      christy_special_1: 4260386835562294674
+      christy_special_3: 5662093115937339141
+      christy_special_6: 1864675466646897314
+      christy_special_13: -3961656709498928206
+      christy_special_9: 2269959798911101790
+      christy_special_7: -3543965279614358803
+      christy_special_11: 3664735050989756416
+      christy_special_0: 3978398749524883614
+      christy_special_2: -4487818501415333455
+      christy_special_4: 2983432248628449902
+      christy_special_5: -4294569830055597298
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -604,6 +605,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_ricky_2: 5278533788084420219
+      basketball_ricky_3: 7191720312106844682
+      basketball_ricky_6: 1004996961667428856
+      basketball_ricky_14: 4476524499616102569
+      basketball_ricky_5: 4344809094360897525
+      basketball_ricky_19: -8599676913345947625
+      basketball_ricky_12: 4415276084991600246
+      basketball_ricky_1: -8818847293900640761
+      basketball_ricky_7: 658809169106608684
+      basketball_ricky_9: 8214150330702139582
+      basketball_ricky_4: 8828171011152107968
+      basketball_ricky_10: 8535793591378224665
+      basketball_ricky_13: -6859875419301575434
+      basketball_ricky_18: 5079394087070281140
+      basketball_ricky_0: -1675156414793989052
+      basketball_ricky_11: -1241547149911554742
+      basketball_ricky_15: 1709812616897191614
+      basketball_ricky_8: -3073980635368097808
+      basketball_ricky_17: 160058452747476224
+      basketball_ricky_16: 1161301026668230483
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

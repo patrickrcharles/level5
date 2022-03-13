@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      drblood_attack_2: 2585971074454871034
+      drblood_attack_5: -4776592417894421011
+      drblood_attack_1: -4091528780651694201
+      drblood_attack_6: 1378802156364903081
+      drblood_attack_0: -8850554189785906955
+      drblood_attack_3: 5093826174357528760
+      drblood_attack_4: -571724899377761450
+      drblood_attack_7: -390168484043171979
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

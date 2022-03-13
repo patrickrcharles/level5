@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -457,6 +458,20 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      nza_enemy_sheet_2: -8447422396536584988
+      nza_enemy_sheet_5: 8247142956643979420
+      nza_enemy_sheet_12: -4277153711102513300
+      nza_enemy_sheet_7: 9107646352172209433
+      nza_enemy_sheet_10: -5005871763003116262
+      nza_enemy_sheet_0: -6379375576142774056
+      nza_enemy_sheet_1: -8088243043223697614
+      nza_enemy_sheet_8: 7099120265089938064
+      nza_enemy_sheet_6: 6285240384147719672
+      nza_enemy_sheet_4: -660605979739428704
+      nza_enemy_sheet_9: 2601865191401763654
+      nza_enemy_sheet_11: 3308414667403391230
+      nza_enemy_sheet_3: -3073934195176039911
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

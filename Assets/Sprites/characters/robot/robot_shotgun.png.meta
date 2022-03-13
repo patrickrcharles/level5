@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -187,7 +188,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c0a9b25d445342b90800000000000000
-      internalID: -7267625328918685172
+      internalID: 5233449745508937780
       vertices: []
       indices: 
       edges: []
@@ -208,7 +209,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 25bb6ebb94e1dbb70800000000000000
-      internalID: 8916316139297356626
+      internalID: 3732761398249682225
       vertices: []
       indices: 
       edges: []
@@ -229,7 +230,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4c0a967f21c847c70800000000000000
-      internalID: 8967946771089694916
+      internalID: 7777211063541770139
       vertices: []
       indices: 
       edges: []
@@ -250,7 +251,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: da233d8d3c25e0b50800000000000000
-      internalID: 6561272708235211437
+      internalID: 7863713739542374185
       vertices: []
       indices: 
       edges: []
@@ -271,7 +272,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 92ff270bf256adbf0800000000000000
-      internalID: -298815169768521943
+      internalID: 5574892473865260969
       vertices: []
       indices: 
       edges: []
@@ -292,7 +293,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7bbcb980dba5823a0800000000000000
-      internalID: -6689997478519125065
+      internalID: -6532462230519070462
       vertices: []
       indices: 
       edges: []
@@ -313,7 +314,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 8dfe1e0c23e995380800000000000000
-      internalID: -8981974040992157736
+      internalID: -4045665368878154333
       vertices: []
       indices: 
       edges: []
@@ -349,6 +350,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      robot_shotgun_7: -5577345623471593947
+      robot_shotgun_0: 5233449745508937780
+      robot_shotgun_2: 7777211063541770139
+      robot_shotgun_6: -4045665368878154333
+      robot_shotgun_5: -6532462230519070462
+      robot_shotgun_3: 7863713739542374185
+      robot_shotgun_1: 3732761398249682225
+      robot_shotgun_4: 5574892473865260969
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

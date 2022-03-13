@@ -138,6 +138,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -147,11 +148,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -169,6 +170,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -710,6 +713,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      trees_light_14: 2818008582242324874
+      trees_light_11: 3922677969726731413
+      trees_light_2: -1571755965560574449
+      trees_light_5: -9005711254138847338
+      trees_light_6: 9021086641810639963
+      trees_light_7: 3619766757129150185
+      trees_light_8: 7258030077187257284
+      trees_light_19: 7050535117889419135
+      trees_light_20: 8718355912948159825
+      trees_light_15: 582276153017153362
+      trees_light_16: -1668122511585692595
+      trees_light_21: -6446283926436476007
+      trees_light_9: -7118743615839621104
+      trees_light_13: 7092619244631009475
+      trees_light_0: 8417403379771364952
+      trees_light_10: -3426311956008135124
+      trees_light_3: -3115530636827800777
+      trees_light_18: -3558368120575559180
+      trees_light_12: 7374147544596343338
+      trees_light_17: 5009738417473785597
+      trees_light_1: 1572848945829112045
+      trees_light_4: -4487648851370501992
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -57,6 +57,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -400,6 +401,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      drblood_dragon_punch_3: 2291055135596686962
+      drblood_dragon_punch_10: 4022317101934434066
+      drblood_dragon_punch_9: -4778642924592566122
+      drblood_dragon_punch_1: -774912353632009206
+      drblood_dragon_punch_6: 2682937769891025114
+      drblood_dragon_punch_2: -7919130718505836527
+      drblood_dragon_punch_4: 569357341711213614
+      drblood_dragon_punch_5: -1072978341106982563
+      drblood_dragon_punch_0: 6906492124747868308
+      drblood_dragon_punch_7: 7372691739825132171
+      drblood_dragon_punch_8: 7737608310979734964
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -376,6 +377,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      sweat this_1: 21300002
+      sweat this_4: 21300008
+      sweat this_3: 21300006
+      sweat this_6: 21300012
+      sweat this_5: 21300010
+      sweat this_7: 21300014
+      sweat this_2: 21300004
+      sweat this_8: 21300016
+      sweat this_0: 21300000
+      sweat this_9: 21300018
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

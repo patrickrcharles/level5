@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -172,7 +173,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 67e7360c1d7f8bc40800000000000000
-      internalID: 5528441022845255286
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -193,7 +194,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fa8551ead4d1984d0800000000000000
-      internalID: -3131939846389147473
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -214,7 +215,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0eb38ecd0563c4520800000000000000
-      internalID: 2687582798564834272
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -250,6 +251,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      thom clothesline_4: 21300008
+      thom clothesline_1: 21300002
+      thom clothesline_0: 21300000
+      thom clothesline_2: 21300004
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

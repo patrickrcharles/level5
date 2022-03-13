@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_christy_3: -5085000760834165108
+      basketball_christy_6: 927332077773599136
+      basketball_christy_2: 4554751625208923701
+      basketball_christy_15: -2499281349201638718
+      basketball_christy_9: -3351791871491413301
+      basketball_christy_12: -1799713807862361809
+      basketball_christy_0: -969782395091324969
+      basketball_christy_17: 7777018459634281993
+      basketball_christy_11: 8234158440167392321
+      basketball_christy_19: 462322619371699581
+      basketball_christy_1: 2737053201494092400
+      basketball_christy_8: 5994098004444230703
+      basketball_christy_4: 3637253311121140982
+      basketball_christy_5: 3065759994503959851
+      basketball_christy_7: -1645133766573759213
+      basketball_christy_10: 504364327262886837
+      basketball_christy_13: 8626582897399742955
+      basketball_christy_14: 673687389516680885
+      basketball_christy_18: 2401365851179466632
+      basketball_christy_16: -6899466925653852677
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

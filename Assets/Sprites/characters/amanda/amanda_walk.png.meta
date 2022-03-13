@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      amanda_walk_3: 8004319566710326582
+      amanda_walk_4: -7017069143177737846
+      amanda_walk_0: -302832551335666809
+      amanda_walk_5: -7573958319068098376
+      amanda_walk_2: -290021030685652721
+      amanda_walk_1: 4287387209814080438
+      amanda_walk_7: -1380313259149637732
+      amanda_walk_6: 7252667321767879046
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

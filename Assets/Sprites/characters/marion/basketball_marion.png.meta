@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -520,6 +521,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_marion_11: -8879040983312876822
+      basketball_marion_0: -6770735176656509274
+      basketball_marion_15: 2744223280361109125
+      basketball_marion_7: -1350063447905638095
+      basketball_marion_6: 9058956735229432377
+      basketball_marion_13: 1526779917658297396
+      basketball_marion_12: -2166035223790202488
+      basketball_marion_14: 2740562665812343820
+      basketball_marion_10: 1287766302438060603
+      basketball_marion_4: 301773853415272624
+      basketball_marion_8: -6558368470701561541
+      basketball_marion_2: -3951609445960278878
+      basketball_marion_3: -585067691548114703
+      basketball_marion_9: -2734525184899204790
+      basketball_marion_5: -1362443495293489323
+      basketball_marion_1: 8482617881719316762
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

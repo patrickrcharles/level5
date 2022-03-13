@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -328,6 +329,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wob1_attack_bat_2: -239171298000871753
+      wob1_attack_bat_0: -3020497654375772068
+      wob1_attack_bat_4: -7450987900388637400
+      wob1_attack_bat_3: -4243233101972125198
+      wob1_attack_bat_1: 5733944968414774335
+      wob1_attack_bat_5: -4116334332883396585
+      wob1_attack_bat_7: -1719773667372082197
+      wob1_attack_bat_6: 7552245964859511602
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

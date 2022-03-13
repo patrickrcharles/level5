@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -69,8 +70,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -91,6 +92,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -422,6 +425,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ninja_attack2_6: 7317769590205847552
+      ninja_attack2_4: -7912658195032777641
+      ninja_attack2_7: 1651778569240399393
+      ninja_attack2_0: 3580896172362325257
+      ninja_attack2_11: -2328399346724584173
+      ninja_attack2_9: 105247467061542814
+      ninja_attack2_3: 8871671616857986538
+      ninja_attack2_2: -2479868737895652103
+      ninja_attack2_8: 1017958122756755575
+      ninja_attack2_5: 3813756330658383205
+      ninja_attack2_10: -5887507658843963486
+      ninja_attack2_1: -6552083342210214006
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

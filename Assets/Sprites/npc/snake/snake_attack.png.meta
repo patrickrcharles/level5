@@ -51,6 +51,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -60,8 +61,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -352,6 +353,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      snake_attack_4: -6288007216156488611
+      snake_attack_0: -6544336623426604733
+      snake_attack_8: 6631820945701363099
+      snake_attack_3: -3818572002999397649
+      snake_attack_5: -5004750812027911343
+      snake_attack_7: -1983291686423156572
+      snake_attack_2: 3750855748209834857
+      snake_attack_6: 2235098227962332358
+      snake_attack_1: -1285836423251064518
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

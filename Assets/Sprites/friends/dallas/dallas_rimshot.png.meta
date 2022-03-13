@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -105,11 +106,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -127,6 +128,8 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -710,6 +713,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      dallas_rimshot_0: 9065135050699642230
+      dallas_rimshot_15: -1816381643130446234
+      dallas_rimshot_3: 4202854909278495075
+      dallas_rimshot_2: 8632819530352591313
+      dallas_rimshot_4: -6547349487479784951
+      dallas_rimshot_16: 5529308299729980445
+      dallas_rimshot_21: -7133328111125165418
+      dallas_rimshot_9: 1585276464834366498
+      dallas_rimshot_14: 6146135591604633741
+      dallas_rimshot_6: -29117515135711774
+      dallas_rimshot_10: 4456529405543724997
+      dallas_rimshot_7: -332235778025273056
+      dallas_rimshot_19: 6786239953212424210
+      dallas_rimshot_12: 1777653990880675074
+      dallas_rimshot_17: 6310598376855323815
+      dallas_rimshot_18: -4792391704050270066
+      dallas_rimshot_23: -5014286228617040434
+      dallas_rimshot_5: -1549164079883288842
+      dallas_rimshot_13: 7624588986878155130
+      dallas_rimshot_8: -498607644263549489
+      dallas_rimshot_11: -2200936019395265650
+      dallas_rimshot_20: 8271434717153525888
+      dallas_rimshot_22: 3768860846108320782
+      dallas_rimshot_1: 3814345612238474738
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

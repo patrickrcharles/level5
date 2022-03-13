@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -700,6 +701,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      alien_woman_attacks_13: 1771269887745868288
+      alien_woman_attacks_19: 4417250766184585031
+      alien_woman_attacks_14: -3731682962877349517
+      alien_woman_attacks_18: -4493575095576719080
+      alien_woman_attacks_20: 4645657991603222924
+      alien_woman_attacks_23: 944797495570322722
+      alien_woman_attacks_3: 3870305433528981643
+      alien_woman_attacks_1: -5134038939192119514
+      alien_woman_attacks_5: 133646035528835626
+      alien_woman_attacks_17: -4062872090347167708
+      alien_woman_attacks_6: 4043880249889611321
+      alien_woman_attacks_0: 3176023778608724037
+      alien_woman_attacks_22: 4364986154307261387
+      alien_woman_attacks_4: -1420838853381570257
+      alien_woman_attacks_10: 92230921631862835
+      alien_woman_attacks_7: -3418683656949326242
+      alien_woman_attacks_16: 2921244424672127142
+      alien_woman_attacks_9: -536485801118168296
+      alien_woman_attacks_8: 848171726759397964
+      alien_woman_attacks_12: 3736200102782447206
+      alien_woman_attacks_15: -2895916970741179652
+      alien_woman_attacks_2: -7705320216163804049
+      alien_woman_attacks_11: 8002763446532808944
+      alien_woman_attacks_21: 1630355640907902059
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

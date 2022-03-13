@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,8 +64,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -355,6 +356,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      werewolf_knockeddown_small_3: -8112954982526584230
+      werewolf_knockeddown_small_6: -3577081445845229972
+      werewolf_knockeddown_small_9: 5596832945620654363
+      werewolf_knockeddown_small_7: 1056251215194192557
+      werewolf_knockeddown_small_1: -767235758310026817
+      werewolf_knockeddown_small_2: 7195819908277807747
+      werewolf_knockeddown_small_0: -2822790216030177769
+      werewolf_knockeddown_small_5: 7122973658032778338
+      werewolf_knockeddown_small_8: 5982515793020675919
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

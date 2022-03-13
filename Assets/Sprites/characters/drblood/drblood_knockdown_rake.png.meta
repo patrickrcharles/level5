@@ -54,6 +54,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -376,6 +377,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      drblood_knockdown_rake_0: -4703395187327269397
+      drblood_knockdown_rake_2: -7662062933644841989
+      drblood_knockdown_rake_7: -8065608363686763529
+      drblood_knockdown_rake_4: 686037576514583417
+      drblood_knockdown_rake_6: 6290057076998189186
+      drblood_knockdown_rake_8: 5892907454191980025
+      drblood_knockdown_rake_5: 4812365268775983694
+      drblood_knockdown_rake_9: -170422333621049029
+      drblood_knockdown_rake_3: 5862204485747488643
+      drblood_knockdown_rake_1: 1988172912317225690
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      basketball_amanda_9: 7261854709249113625
+      basketball_amanda_14: 773034392910430927
+      basketball_amanda_5: -1308824734910864611
+      basketball_amanda_6: -4330362613730162934
+      basketball_amanda_1: 5046596060110432458
+      basketball_amanda_3: 7121277061378648897
+      basketball_amanda_4: -8479557705586637124
+      basketball_amanda_10: -1206897287305292271
+      basketball_amanda_12: -5554554337324555475
+      basketball_amanda_11: -2992992104956267051
+      basketball_amanda_8: 5522779816597766361
+      basketball_amanda_7: -4379470602097220182
+      basketball_amanda_13: -6412300628577066168
+      basketball_amanda_2: -7181366530920908596
+      basketball_amanda_0: -1074523709692815139
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

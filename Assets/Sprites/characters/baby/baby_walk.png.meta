@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -595,6 +596,26 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      baby_walk_14: 1762564027485546500
+      baby_walk_17: -554426384363884386
+      baby_walk_18: 6025951137324262527
+      baby_walk_13: -638882213079760141
+      baby_walk_10: -858300570483548110
+      baby_walk_11: -2941538238423580314
+      baby_walk_4: 3159198422327277011
+      baby_walk_2: -2959424255581802170
+      baby_walk_16: 3244129654784837644
+      baby_walk_6: 3716736858491861098
+      baby_walk_12: 4323637932760796725
+      baby_walk_8: 6198606472525544395
+      baby_walk_3: 3013023194249446434
+      baby_walk_9: 8932832266474128296
+      baby_walk_7: -6110409418878279920
+      baby_walk_1: 610466239159547447
+      baby_walk_5: -4828691016218242984
+      baby_walk_15: 2178499828027384321
+      baby_walk_0: 7243661053360022875
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

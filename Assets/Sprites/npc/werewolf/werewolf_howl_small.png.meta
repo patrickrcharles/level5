@@ -48,6 +48,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -316,6 +317,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      werewolf_howl_small_1: -1913079606563509515
+      werewolf_howl_small_4: -1605052333395312428
+      werewolf_howl_small_5: -7041305994836896315
+      werewolf_howl_small_6: 6611085749448218050
+      werewolf_howl_small_0: 6753906030871359605
+      werewolf_howl_small_7: 1327353962182322478
+      werewolf_howl_small_2: 4747638255715705487
+      werewolf_howl_small_3: 231051421542395313
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

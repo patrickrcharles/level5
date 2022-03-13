@@ -93,6 +93,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -688,6 +689,30 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      kamille_attack_0: -8436392345811142019
+      kamille_attack_8: -5713100484069441907
+      kamille_attack_14: 8443386687247359253
+      kamille_attack_4: 6483030382675047861
+      kamille_attack_6: -2855379870864656998
+      kamille_attack_9: -8152031437499373084
+      kamille_attack_18: -6841277584104066316
+      kamille_attack_21: -2833360950641386679
+      kamille_attack_11: 4865919323971143302
+      kamille_attack_5: -1450201487117889349
+      kamille_attack_22: -7329434563095195344
+      kamille_attack_3: -3205239745367506988
+      kamille_attack_17: 4847895425959568413
+      kamille_attack_12: 2845017008254055160
+      kamille_attack_15: -7707224832574043187
+      kamille_attack_13: 2492187622918679822
+      kamille_attack_16: -1426784702984113053
+      kamille_attack_1: -2648694123118445347
+      kamille_attack_2: 210319457496779364
+      kamille_attack_19: 9063522595138126813
+      kamille_attack_10: 8324815904321042064
+      kamille_attack_20: 3046176971897734859
+      kamille_attack_7: -6247752997626094758
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

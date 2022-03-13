@@ -66,6 +66,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -184,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 600621bc474f42860800000000000000
-      internalID: 7504391661566451718
+      internalID: -7077518124656102390
       vertices: []
       indices: 
       edges: []
@@ -205,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 98cd1bfb9c03d9d70800000000000000
-      internalID: 9051444469147229321
+      internalID: 7601789824757889753
       vertices: []
       indices: 
       edges: []
@@ -226,7 +227,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f5eab6a302cdcd150800000000000000
-      internalID: 5898831642925706847
+      internalID: -8073878748546152947
       vertices: []
       indices: 
       edges: []
@@ -247,7 +248,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f59b4523751460100800000000000000
-      internalID: 73818286660565343
+      internalID: -237268568991006125
       vertices: []
       indices: 
       edges: []
@@ -268,7 +269,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 71484002051a73d70800000000000000
-      internalID: 9022857743966700567
+      internalID: 3750708642455214844
       vertices: []
       indices: 
       edges: []
@@ -289,7 +290,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e93b331cc12ee2fc0800000000000000
-      internalID: -3517625645801426018
+      internalID: 1599908645700385192
       vertices: []
       indices: 
       edges: []
@@ -346,6 +347,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      jdrac_walk_7: -6990046610944558127
+      jdrac_walk_4: 3750708642455214844
+      jdrac_walk_6: -6434727743539712456
+      jdrac_walk_3: -237268568991006125
+      jdrac_walk_1: 7601789824757889753
+      jdrac_walk_5: 1599908645700385192
+      jdrac_walk_0: -7077518124656102390
+      jdrac_walk_2: -8073878748546152947
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
