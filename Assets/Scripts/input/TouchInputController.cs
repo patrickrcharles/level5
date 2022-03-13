@@ -52,6 +52,8 @@ public class TouchInputController : MonoBehaviour
     [SerializeField]
     PlayerController playerController;
 
+    GameObject joystickGameObject;
+
     public bool HoldDetected { get => hold1Detected; set => hold1Detected = value; }
 
     void Awake()
@@ -101,14 +103,14 @@ public class TouchInputController : MonoBehaviour
                 //&& (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved)
                 && !buttonPressed
                 && touch1.position.x < (Screen.width / 2)
-                && touch1.position.y > (Screen.height / 3)
+                && touch1.position.y > (Screen.height / 2)
                 && playerController.PlayerCanBlock
-                && playerController.PlayerHealth.Block > 0
+                //&& playerController.PlayerHealth.Block > 0
                 && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) )
             {
                 hold1Detected = true;
                 startTouchPosition1 = touch1.position;
-                if (playerController.CanBlock && !playerController.hasBasketball)
+                if (playerController.CanBlock)
                 {
                     playerController.PlayerBlock();
                 }
@@ -137,8 +139,9 @@ public class TouchInputController : MonoBehaviour
             if (hold1Detected
                 && !buttonPressed
                 && startTouchPosition2.x > (Screen.width / 2)
-                && GameOptions.enemiesEnabled) // if swipe on right 1/2 of screen)) 
-                                               //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
+                && GameOptions.enemiesEnabled)
+            // if swipe on right 1/2 of screen)) 
+            //&& startTouchPosition2.x < (Screen.height / 2)) // if swipe on right 1/2 of screen)) )
             {
                 // ====================== touch 2 + bottom right =====================================
                 if (tap2Detected && startTouchPosition2.y < (Screen.height / 2))
@@ -313,7 +316,14 @@ public class TouchInputController : MonoBehaviour
 
     private void initializeTouchInputController()
     {
-        if (GameObject.FindObjectOfType<GameLevelManager>() != null)
+        // find onscreen stick and disable
+        if (GameObject.Find("floating_joystick") != null)
+        {
+            joystickGameObject = GameObject.Find("floating_joystick");
+            joystickGameObject.SetActive(false);
+        }
+
+        if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
             m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
