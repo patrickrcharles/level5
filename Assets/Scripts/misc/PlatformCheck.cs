@@ -46,9 +46,11 @@ public class PlatformCheck : MonoBehaviour
         // no touch support
         if (!Input.touchSupported || SystemInfo.deviceType != DeviceType.Handheld)
         {
-            standaloneInputModule.enabled = false;
             inputSystemUIInputModule.enabled = true;
+            standaloneInputModule.enabled = false;
         }
+        inputSystemUIInputModule.enabled = true;
+        standaloneInputModule.enabled = false;
         //inputSystemUIInputModule.ActivateModule();
         //Debug.Log("standalone");
 #endif
