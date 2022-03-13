@@ -350,7 +350,14 @@ public class PlayerController : MonoBehaviour
             && currentState != dunkState)
         {
             canAttack = true;
-            canBlock = true;
+            if (playerHealth.Block > 0)
+            {
+                canBlock = true;
+            }
+            else
+            {
+                canBlock = false;
+            }
         }
         else
         {
@@ -431,7 +438,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             // double check touch input not being used
-            if (!TouchInputController.instance.HoldDetected)
+            if (TouchInputController.instance != null &&  !TouchInputController.instance.HoldDetected)
+            {
+                anim.SetBool("block", false);
+            }
+            // double check touch input not being used
+            if (SystemInfo.deviceType != DeviceType.Handheld)
             {
                 anim.SetBool("block", false);
             }
@@ -521,7 +533,10 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerBlock()
     {
-        anim.SetBool("block", true);
+        if (canBlock)
+        {
+            anim.SetBool("block", true);
+        }
     }
 
     public void PlayerShoot()
