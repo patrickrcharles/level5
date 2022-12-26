@@ -262,7 +262,7 @@ public class PlayerController : MonoBehaviour
         // keep drop shadow on ground at all times
         if (Grounded)
         {
-            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.position.y + 0.01f,
+            dropShadow.transform.position = new Vector3(transform.root.position.x, transform.position.y + 0.015f,
                 transform.root.position.z);
         }
         if (!Grounded) // player in air
