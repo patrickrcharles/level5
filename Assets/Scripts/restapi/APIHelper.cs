@@ -690,19 +690,21 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static bool UserNameExists(string username)
         {
-
+            Debug.Log("username exists");
             bool exists = false;
             HttpWebResponse httpResponse = null;
-            HttpStatusCode statusCode;
-
+            //HttpStatusCode statusCode;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username) as HttpWebRequest;
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
-                httpWebRequest.ContentType = "application/json; charset=utf-8";
-                httpWebRequest.Method = "GET";
-                //httpWebRequest.Headers.Add("Authorization", bearerToken);
+                using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
+                {
+                    httpWebRequest.ContentType = "application/json; charset=utf-8";
+                    httpWebRequest.Method = "GET";
+                    //httpWebRequest.Headers.Add("Authorization", bearerToken);
 
-                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                }
             }
             // on web exception
             catch (WebException e)
@@ -711,7 +713,7 @@ namespace Assets.Scripts.restapi
                 Debug.Log("----------------- ERROR : " + e);
             }
 
-            statusCode = httpResponse.StatusCode;
+            //statusCode = httpResponse.StatusCode;
 
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
