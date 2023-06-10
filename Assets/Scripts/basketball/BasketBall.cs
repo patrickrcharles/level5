@@ -55,7 +55,8 @@ public class BasketBall : MonoBehaviour
         if (GameLevelManager.instance.IsAutoPlayer)
         {
             autoPlayer = GameLevelManager.instance.AutoPlayer;
-            autoPlayerState = GameLevelManager.instance.AutoPlayerController;          
+            autoPlayerState = GameLevelManager.instance.AutoPlayerController;
+            basketBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
             //characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
         }
         if (!GameLevelManager.instance.IsAutoPlayer)
@@ -63,6 +64,7 @@ public class BasketBall : MonoBehaviour
             player = GameLevelManager.instance.Player;
             playerState = GameLevelManager.instance.PlayerController;
             characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+            basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         }
 
         rigidbody = GetComponent<Rigidbody>();
@@ -78,7 +80,7 @@ public class BasketBall : MonoBehaviour
 
         //objects
         basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
-        basketBallPosition = player.transform.Find("basketBall_position").gameObject;
+        //basketBallPosition = player.transform.Find("basketBall_position").gameObject;
 
         //bool flags
         basketBallState.Locked = false;
@@ -136,7 +138,8 @@ public class BasketBall : MonoBehaviour
             }
             // drop shadow lock to bball transform on the ground
 
-            dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
+            dropShadow.transform.position = new Vector3(transform.root.position.x, Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f, transform.root.position.z);
+
 
             // change this to reduce opacity
             if (!playerState.hasBasketball)
