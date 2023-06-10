@@ -21,7 +21,14 @@ public class RangeMeter : MonoBehaviour
 
     void Start()
     {
-        characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+        if (GameLevelManager.instance.AutoPlayer)
+        {
+            characterProfile = GameLevelManager.instance.AutoPlayer.GetComponent<CharacterProfile>();
+        }
+        else
+        {
+            characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+        }
         slider = GetComponentInChildren<Slider>();
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
         statText = GameObject.Find(statsTextName).GetComponent<Text>();

@@ -61,6 +61,8 @@ public class BasketBallAuto : MonoBehaviour
 
         rigidbody = GetComponent<Rigidbody>();
         gameStats = GameLevelManager.instance.GameStats;
+        Debug.Log("GameLevelManager.instance.Basketball == null : " + (GameLevelManager.instance.Basketball == null));
+        Debug.Log("GameLevelManager.instance.Basketball.GetComponent<BasketBallState>() == null : " + (GameLevelManager.instance.Basketball.GetComponent<BasketBallState>() == null));
         basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -104,8 +106,8 @@ public class BasketBallAuto : MonoBehaviour
                 uiStatsBackground.SetActive(false);
             }
         }
-        InvokeRepeating("checkIsBallFacingGoal", 0, 0.5f);
-        InvokeRepeating("displayUiStats", 0, 0.5f);
+        InvokeRepeating(nameof(CheckIsBallFacingGoal), 0, 0.5f);
+        InvokeRepeating(nameof(displayUiStats), 0, 0.5f);
 
         if (GameOptions.EnemiesOnlyEnabled)
         {
@@ -158,7 +160,7 @@ public class BasketBallAuto : MonoBehaviour
         }
     }
 
-    public void checkIsBallFacingGoal()
+    public void CheckIsBallFacingGoal()
     {
         anim.SetFloat("speed", rigidbody.velocity.sqrMagnitude);
         //bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - rigidbody.position.x;
