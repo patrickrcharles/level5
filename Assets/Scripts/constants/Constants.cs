@@ -2,6 +2,12 @@ using UnityEngine.SceneManagement;
 
 public static class Constants
 {
+    // distances
+    // constant values that have to be hardcoded
+    public const float DISTANCE_3point = 3.8f;
+    public const float DISTANCE_4point = 6.4f;
+    public const float DISTANCE_7point = 16.7f;
+
     // scene name constants
     public const string SCENE_NAME_level_00_account = "level_00_account";
     public const string SCENE_NAME_level_00_account_createNew = "level_00_account_createNew";
