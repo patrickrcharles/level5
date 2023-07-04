@@ -141,11 +141,11 @@ public class RacingGameManager : MonoBehaviour
         //    Debug.Log("auto player");
         //    _autoPlayer = GameObject.FindWithTag("autoPlayer");
         //    _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
-        //    isAutoPlayer = true;
+        //    isCPUplayer = true;
         //}
         //else
         //{
-        //    isAutoPlayer = false;
+        //    isCPUplayer = false;
         //}
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
@@ -231,11 +231,11 @@ public class RacingGameManager : MonoBehaviour
 
     //private void checkBasketballPrefabExists()
     //{
-    //    if (GameObject.FindWithTag("basketball") == null && !isAutoPlayer)
+    //    if (GameObject.FindWithTag("basketball") == null && !isCPUplayer)
     //    {
     //        _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
     //    }
-    //    if (GameObject.FindWithTag("basketball") == null && isAutoPlayer)
+    //    if (GameObject.FindWithTag("basketball") == null && isCPUplayer)
     //    {
     //        _basketballPrefab = Resources.Load(basketBallPrefabAutoPath) as GameObject;
     //    }
