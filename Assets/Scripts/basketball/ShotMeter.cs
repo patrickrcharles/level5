@@ -60,16 +60,16 @@ public class ShotMeter : MonoBehaviour
         sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
         sliderMessageText.text = "";
 
-        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled
-            || GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
-        {
-            meterRed.SetActive(false);
-            meterYellow.SetActive(false);
-            meterGreen.SetActive(false);
-            meterHandle.SetActive(false);
-            sliderValueOnPress.enabled = false;
-            sliderMessageText.enabled = false;
-        }
+        //if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled
+        //    || GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
+        //{
+        //    meterRed.SetActive(false);
+        //    meterYellow.SetActive(false);
+        //    meterGreen.SetActive(false);
+        //    meterHandle.SetActive(false);
+        //    sliderValueOnPress.enabled = false;
+        //    sliderMessageText.enabled = false;
+        //}
     }
 
     // Update is called once per frame
@@ -117,8 +117,7 @@ public class ShotMeter : MonoBehaviour
             locked = false;
             if (GameLevelManager.instance.IsAutoPlayer)
             {
-                sliderValueOnButtonPress = 100;
-
+                sliderValueOnButtonPress = BasketBallAuto.instance.rollForAutoPlayerSliderValue();
             }
             else
             {
@@ -128,7 +127,6 @@ public class ShotMeter : MonoBehaviour
                     // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
                     // start at 90. 10 point penalty for hitting peak
                     sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
-                    //sliderValueOnButtonPress = 100 - Math.Abs(100 - sliderValueOnButtonPress);
                 }
             }
             // used in launch

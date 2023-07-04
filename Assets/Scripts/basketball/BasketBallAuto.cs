@@ -412,10 +412,7 @@ public class BasketBallAuto : MonoBehaviour
             accuracyModifierX = 0;
             accuracyModifierY = 0;
             shotMeterMessage = "critical";
-            Debug.Log("critical");
         }
-        // determine Auto player shoot percentage
-        autoPlayerState.Shotmeter.SliderValueOnButtonPress = rollForAutoPlayerSliderValue();
         /* - how tough auto player is. Profile stats. accuracy
          * - player could get hot. sort of a luck variable for entire session.
          * - 
@@ -548,7 +545,7 @@ public class BasketBallAuto : MonoBehaviour
         }
         return false;
     }
-    float  rollForAutoPlayerSliderValue()
+    public float  rollForAutoPlayerSliderValue()
     {
         float shootPercent = 0;
         if (basketBallState.TwoPoints) { shootPercent = characterProfile.Accuracy2Pt / 2; }
