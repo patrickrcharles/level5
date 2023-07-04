@@ -41,7 +41,7 @@ public class TrafficManager : MonoBehaviour
     // create custom vehicle list for specific level
     [SerializeField]
     bool customVehicles;
-
+    [SerializeField]
     bool trafficEnabled;
 
     public static TrafficManager instance;
@@ -50,11 +50,12 @@ public class TrafficManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        trafficEnabled = GameOptions.trafficEnabled;
         // NOTE : for testing purposes
         //GameOptions.trafficEnabled = true;
 
         // if traffic enabled
-        if (GameOptions.trafficEnabled)
+        if (trafficEnabled)
         {
             // get spawn points
             _vehicleSpawnLeftPosition = GameObject.FindGameObjectWithTag(spawnLeftTag);
