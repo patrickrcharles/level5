@@ -12,29 +12,43 @@ public class AutoPlayerController : MonoBehaviour
     private Animator anim;
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
-    //private AudioSource audiosource;
-    //private SpriteRenderer spriteRenderer;
     private Rigidbody rigidBody;
     private CharacterProfile characterProfile;
-    private BasketBall basketball;
     private ShotMeter shotmeter;
     private PlayerSwapAttack playerSwapAttack;
     private PlayerHealth playerHealth;
 
+    [SerializeField]
+    bool isCPU;
+    [SerializeField]
+    bool isPlayer1;
+    [SerializeField]
+    bool isPlayer2;
+    [SerializeField]
+    bool isPlayer3;
+    [SerializeField]
+    bool isPlayer4;
+
     // walk speed #review can potentially remove
+    [SerializeField]
     private float movementSpeed;
     [SerializeField]
     private float inAirSpeed; // leave serialized
     [SerializeField]
-    private float blockSpeed; // leave serialized
-    //[SerializeField]
-    //private float attackSpeed; // leave serialized
+    private float blockSpeed; 
+    // leave serialized
+    [SerializeField]
+    private float attackSpeed; // leave serialized
 
     // get/set for following at bottom of class
+    [SerializeField]
     private bool _facingRight;
+    [SerializeField]
     private bool _facingFront;
     private bool _locked;
+    [SerializeField]
     private bool _inAir;
+    [SerializeField]
     private bool _grounded;
     private bool _knockedDown;
     private bool _takeDamage;
@@ -50,8 +64,9 @@ public class AutoPlayerController : MonoBehaviour
     // trigger player jump. bool used because activated in fixed update
     // to ensure animaion is synced with camera. camera is updated in fixed update 
     // as well
+    [SerializeField]
     private bool jumpTrigger = false;
-    private bool dunkTrigger;
+    //private bool dunkTrigger;
 
     //public GameObject playerHitbox;
 
@@ -75,15 +90,12 @@ public class AutoPlayerController : MonoBehaviour
     float _takeDamageTime;
 
     // movement variables
+    [SerializeField]
     Vector3 movement;
     float movementHorizontal;
     float movementVertical;
-
-    // touch vars
-    Touch touch;
-    Vector2 startTouchPosition = new Vector2(0, 0);
-    float screenXRange;
-    float screenYRange;
+    [SerializeField]
+    float distanceToTarget;
 
     // player take damage display
     Text damageDisplayValueText;
@@ -91,6 +103,8 @@ public class AutoPlayerController : MonoBehaviour
     const string damageDisplayValueName = "player_damage_display_text";
 
     // control movement speed based on state
+    // * NOTE these can be put in a constants file probably unless custom animator
+    // need to move these to function to load on start
     public int currentState;
     public int idleState = Animator.StringToHash("base.idle");
     public int walkState = Animator.StringToHash("base.movement.walk");
@@ -103,40 +117,27 @@ public class AutoPlayerController : MonoBehaviour
     public int attackState = Animator.StringToHash("base.attack.attack");
     public int blockState = Animator.StringToHash("base.attack.block");
     public int inAirDunkState = Animator.StringToHash("base.inair.inair_dunk");
-    public int dunkState = Animator.StringToHash("base.inair.dunk");
-
-    //private AnimatorStateInfo currentStateInfo;
-    //static int currentState;
-    //static int AnimatorState_Attack = Animator.StringToHash("base.attack");
-    //static int AnimatorState_Walk = Animator.StringToHash("base.walk");
-    //static int AnimatorState_Idle = Animator.StringToHash("base.idle");
-    static int AnimatorState_Knockdown = Animator.StringToHash("base.knockdown");
-    static int AnimatorState_Lightning = Animator.StringToHash("base.lightning");
-    static int AnimatorState_Disintegrated = Animator.StringToHash("base.disintegrated");
-
-    // constant values that have to be hardcoded
-    private const float threePointDistance = 3.8f;
-    private const float fourPointDistance = 6.4f;
-    private const float sevenPointDistance = 16.7f;
-
+    public int inAirHasBasketballFrontState = Animator.StringToHash("inair.inair_hasBasketball_front");
+    public int inAirHasBasketballSideState = Animator.StringToHash("inair.inair_hasBasketball_side");
+    public int inAirShootState = Animator.StringToHash("base.inair.basketball_shoot");
+    public int inAirShootFrontState = Animator.StringToHash("base.inair.basketball_shoot_front");
+    public int jumpState = Animator.StringToHash("base.inair.jump");
+    public int inAirHasBasketball = Animator.StringToHash("base.inair.inair_hasBasketball");
+    public int disintegratedState = Animator.StringToHash("base.disintegrated");
+    [SerializeField]
+    private bool arrivedAtTarget;
+    [SerializeField]
     public bool stateWalk = false;
+    [SerializeField]
     public bool stateIdle = false;
-    //public bool stateAttack = false;
-    //public bool statePatrol = false;
     public bool stateKnockDown = false;
-    private bool jumptrigger;
 
     Vector3 randomShootingPosition;
 
-    public float jumpForce = 4f;
-
     [SerializeField]
     private Vector3 targetPosition;
-    [SerializeField]
-    public bool targetCreated;
-
-    [SerializeField]
-    GameObject prefabMarkerToInstantiate;
+    //[SerializeField]
+    //GameObject prefabClone;
     [SerializeField]
     GameObject basketballRim;
 
@@ -147,16 +148,21 @@ public class AutoPlayerController : MonoBehaviour
     public float runMovementSpeed;
     public float attackMovementSpeed;
 
+    public bool facingRight;
+    public bool shootTrigger;
 
     [SerializeField]
-    public bool facingRight;
-
+    GameObject[] postionMarkers;
+    [SerializeField]
+    int positionMarkerCounter = 0;
     void Start()
     {
+        inAirHasBasketballFrontState = Animator.StringToHash("base.inair.inair_hasBasketball_front");
+        inAirHasBasketballSideState = Animator.StringToHash("base.inair.inair_hasBasketball_side");
         //audiosource = GameLevelManager.instance.GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        basketball = GameLevelManager.instance.Basketball;
+        //basketball = GameLevelManager.instance.Basketball;
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
@@ -175,9 +181,6 @@ public class AutoPlayerController : MonoBehaviour
         if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
         //if (attackSpeed == 0) { attackSpeed = 0f; }
-
-        screenXRange = Screen.width / 10;
-        screenYRange = Screen.width / 10;
 
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
@@ -207,34 +210,116 @@ public class AutoPlayerController : MonoBehaviour
         basketballRim = GameObject.Find("rim");
         // put enemy on the ground. some are spawning up pretty high
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+
+        postionMarkers = GameObject.FindGameObjectsWithTag("shot_marker");
+        
     }
 
     // not affected by framerate
     void FixedUpdate()
     {
-      
-        if (stateWalk
-            && currentState != knockedDownState)
-        {
-            goToShootingPosition();
-        }
-
-        //if (enemyUsesPhysics)
+        movementHorizontal = movement.x;
+        movementVertical = movement.y;
+        movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+        //if (stateWalk
+        //    && currentState != knockedDownState)
         //{
-        //    dropShadow.transform.position = new Vector3(dropShadow.transform.position.x, 0.01f, dropShadow.transform.position.z);
+        //    StartCoroutine(GoToShootingPosition());
         //}
-        if (jumptrigger)
+        if (stateWalk
+            && !stateIdle
+            && Grounded
+            && !InAir
+            && !(currentState == inAirHasBasketballFrontState || currentState == inAirHasBasketballSideState)
+            //&& distanceToTarget > 0.05f
+            && currentState != knockedDownState
+            && currentState != disintegratedState
+            && !arrivedAtTarget)
         {
-            jumptrigger = false;
+            moveToPosition(postionMarkers[positionMarkerCounter].transform.position);
+        }
+        if (currentState != specialState)
+        {
+            IsWalking(movementHorizontal, movementVertical);
+        }
+        if (jumpTrigger)
+        {
+            jumpTrigger = false;
             AutoPlayerJump();
         }
+        if (positionMarkerCounter < postionMarkers.Length)
+        {
+            targetPosition = postionMarkers[positionMarkerCounter].transform.position;
+        }
+        else
+        {
+            positionMarkerCounter = 0;
+        }
+        //if (!hasBasketball
+        //    && Grounded
+        //    && !InAir
+        //    && currentState != inAirHasBasketball
+        //    && currentState != inAirHasBasketballFrontState
+        //    && currentState != inAirHasBasketballSideState
+        //    && distanceToTarget >= 0.1f
+        //    && BasketBallAuto.instance.BasketBallState.CanPullBall)
+        //{
+        //    CallBallToPlayer.instance.pullBallToPlayer();
+        //}
+        //else
+        //{
+        //    stateWalk = false;
+        //}
+        // call ball
+        // call ball
+        if (!hasBasketball
+            && !InAir
+            && BasketBallAuto.instance.BasketBallState.CanPullBall
+            && !BasketBallAuto.instance.BasketBallState.Locked
+            && !BasketBallAuto.instance.BasketBallState.InAir
+            && !BasketBallAuto.instance.BasketBallState.Thrown
+            && BasketBallAuto.instance.BasketBallState.Grounded
+            && Grounded
+            && !CallBallToPlayer.instance.Locked
+            && (currentState == idleState || currentState == walkState))
+        {
+            CallBallToPlayer.instance.Locked = true;
+            Debug.Log("CallBallToPlayer.instance.Locked : " + CallBallToPlayer.instance.Locked);
+            //CallBallToPlayer.instance.pullBallToPlayer();
+            //CallBallToPlayer.instance.Locked = false;
+            Debug.Log("call ball if");
+            StartCoroutine(CallBall());
+            //CallBallToPlayer.instance.Locked = false;
+        }
+        //if (!hasBasketball
+        //    && !InAir
+        //    && BasketBallAuto.instance.BasketBallState.CanPullBall
+        //    && !BasketBallAuto.instance.BasketBallState.Locked
+        //    && Grounded
+        //    && !CallBallToPlayer.instance.Locked
+        //    && currentState != inAirHasBasketball
+        //    && currentState != inAirHasBasketballFrontState
+        //    && currentState != inAirHasBasketballSideState)
+        //{
+        //    //CallBallToPlayer.instance.Locked = true;
+        //    //CallBallToPlayer.instance.pullBallToPlayer();
+        //    //CallBallToPlayer.instance.Locked = false;
+        //    StartCoroutine(CallBall());
+        //}
+        //if (Grounded
+        //    && currentState != inAirHasBasketball
+        //    && currentState != inAirHasBasketballFrontState
+        //    && currentState != inAirHasBasketballSideState
+        //    && distanceToTarget >= 0.05f)
+        //{
+        //    stateWalk = true;
+        //}
     }
 
 
     // Update :: once once per frame
     void Update()
     {
-
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
@@ -258,7 +343,7 @@ public class AutoPlayerController : MonoBehaviour
         if (Grounded)
         {
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f,
-                transform.root.position.z);
+            transform.root.position.z);
         }
         if (!Grounded) // player in air
         {
@@ -268,25 +353,9 @@ public class AutoPlayerController : MonoBehaviour
 
         bballRelativePositioning = bballRimVector.x - rigidBody.position.x;
         playerRelativePositioning = rigidBody.position - bballRimVector;
-
         playerDistanceFromRim = Vector3.Distance(transform.position, new Vector3(bballRimVector.x, 0, bballRimVector.z));
         playerDistanceFromRimFeet = playerDistanceFromRim * 6;
-
-        //// if run input or run toggle on
-        //if (GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
-        //    && !InAir
-        //    && !KnockedDown
-        //    && rigidBody.velocity.magnitude > 0.1f
-        //    && !Locked)
-        //{
-        //    //running = true;
-        //    anim.SetBool("moonwalking", true);
-        //}
-        //else
-        //{
-        //    //running = false;
-        //    //anim.SetBool("moonwalking", false);
-        //}
+        distanceToTarget = Vector3.Distance(transform.position, new Vector3(targetPosition.x, 0, targetPosition.z));
 
         // determine if player animation is shooting from or facing basket
         if (Math.Abs(playerRelativePositioning.x) > 2 &&
@@ -318,15 +387,16 @@ public class AutoPlayerController : MonoBehaviour
             movementSpeed = characterProfile.Speed;
         }
         // if run state
-        if (currentState == run && !hasBasketball) //|| (runningToggle || running) )
+        if (currentState == run && !hasBasketball) 
         {
             movementSpeed = characterProfile.RunSpeed; ;
         }
-        // if run state
-        if (currentState == bWalk && hasBasketball) //|| (runningToggle || running) )
+        // if run state has ball
+        if (currentState == bWalk && hasBasketball)
         {
             movementSpeed = characterProfile.RunSpeedHasBall; ;
         }
+        // if block state
         if (currentState == attackState || currentState == blockState)
         {
             movementSpeed = blockSpeed;
@@ -340,11 +410,31 @@ public class AutoPlayerController : MonoBehaviour
                 movementSpeed = inAirSpeed;
             }
         }
+        // -------------- states
+        if (stateWalk && distanceToTarget <= 0.05f && !arrivedAtTarget && Grounded)
+        {
+            Debug.Log(" arrived idle : distanceToTarget : "+ distanceToTarget);
+            arrivedAtTarget = true;
+            stateWalk = false;
+            stateIdle = true;
+            positionMarkerCounter++;
+            rigidBody.velocity = Vector3.zero;
+        }
+        if (!stateWalk && distanceToTarget >= 0.05f && !arrivedAtTarget && Grounded)
+        {
+            Debug.Log(" arrived idle : walking to target : " + distanceToTarget);
+            stateWalk = true;
+            stateIdle = false;
+            //positionMarkerCounter++;
+            //rigidBody.velocity = Vector3.zero;
+        }
+        //------------------- attack conditions----------------------
+        // can attack conditions
         if (Grounded
             && !KnockedDown
             && !hasBasketball
             && !InAir
-            && currentState != dunkState)
+            && currentState != inAirDunkState)
         {
             canAttack = true;
             canBlock = true;
@@ -355,177 +445,108 @@ public class AutoPlayerController : MonoBehaviour
             canAttack = false;
         }
 
-#if UNITY_STANDALONE || UNITY_EDITOR
-        //------------------ jump -----------------------------------
-        if (/*GameLevelManager.instance.Controls.Player.jump.triggered*/
-            //&& !GameLevelManager.instance.Controls.Player.shoot.triggered
-            hasBasketball
-            && Grounded
-            && !KnockedDown
-            && !GameOptions.EnemiesOnlyEnabled
+        /* conditions for auto moving to position and shooting
+         * - determine position. this will be affected by game rules
+         * game rules : need to look at game rules file. game rules has a list of basketball markers for game mode
+         * - go to position
+         * - determine if arrived at position.
+         * - call ball
+         * - jump
+         * - shoot
+         */
+        //========== testing controls
+        //testing
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            stateWalk = !stateWalk;
+        }
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8) 
+            && hasBasketball
             && !InAir)
         {
-            if (PlayerDunk.instance != null
-                && PlayerDunk.instance.PlayerCanDunk
-                && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet)
-            {
-                dunkTrigger = true;
-            }
-            else
-            {
-                jumpTrigger = true;
-            }
-        }
-        //------------------ shoot -----------------------------------
-        // if has ball, is in air, and pressed shoot button.
-        if (InAir
-            && hasBasketball
-            //&& GameLevelManager.instance.Controls.Player.shoot.triggered
-            && !GameOptions.EnemiesOnlyEnabled
-            && currentState != inAirDunkState)
-        {
-            //Debug.Log("shoot");
-            CallBallToPlayer.instance.Locked = true;
-            basketball.BasketBallState.Locked = true;
-            CheckIsPlayerFacingGoal(); // turns player facing rim
-            Shotmeter.MeterEnded = true;
-            PlayerShoot();
-        }
-        //------------------ attack -----------------------------------
-
-        if (//GameLevelManager.instance.Controls.Player.shoot.triggered
-            //&& GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
-            !hasBasketball
-            && canAttack
-            && GameOptions.enemiesEnabled)
-        {
-            PlayerAttack();
-        }
-        else
-        {
-            anim.SetBool("attack", false);
+            //PlayerShoot();
+            jumpTrigger = !jumpTrigger;
         }
 
-        if (//GameLevelManager.instance.Controls.Player.jump.ReadValue<float>() == 1
-            //&& GameLevelManager.instance.Controls.Player.run.ReadValue<float>() == 1
-            !hasBasketball
-            && canBlock
-            && GameOptions.enemiesEnabled
-            && PlayerHealth.Block > 0)
-        {
-            if (playerCanBlock)
-            {
-                PlayerBlock();
-            }
-            if (!playerCanBlock)
-            {
-                jumpTrigger = true;
-            }
-        }
-        else
-        {
-            // double check touch input not being used
-            if (!TouchInputController.instance.HoldDetected)
-            {
-                anim.SetBool("block", false);
-            }
-        }
+        //testing
+        //======================================
 
-        //------------------ special -----------------------------------
-        if (//GameLevelManager.instance.Controls.Player.special.triggered
-             !InAir
+        //------------------ jump -----------------------------------
+        if (hasBasketball
+            && stateIdle
+            && arrivedAtTarget
             && Grounded
             && !KnockedDown
-            && GameOptions.enemiesEnabled)
+            && !jumpTrigger
+            && !shootTrigger
+            && !InAir)
         {
-            PlayerSpecial();
-        }
-
-        // if player is falling, nto sure what this is useful for. comment out
-        //if (rigidBody.velocity.y > 0)
-        //{
-        //    //updates "highest point" as long at player still moving upwards ( velcoity > 0)
-        //    finalHeight = transform.position.y;
-        //    //Debug.Log("intialHeight : " + initialHeight);  
-        //    //Debug.Log("finalHeight : " + finalHeight);
-        //}
-#endif 
-    }
-
-    public void TouchControlJumpOrShoot(Vector2 touchPosition)
-    {
-        if (Grounded
-            && !KnockedDown
-            && hasBasketball
-            && playerDistanceFromRimFeet > PlayerDunk.instance.DunkRangeFeet
-            && touchPosition.x > (Screen.width / 2)
-            && !Locked)
-        {
+            arrivedAtTarget = false;
             jumpTrigger = true;
         }
-        if (PlayerDunk.instance != null
-            && PlayerDunk.instance.PlayerCanDunk
-            && playerDistanceFromRimFeet < PlayerDunk.instance.DunkRangeFeet
-            && (currentState != inAirDunkState || currentState != inAirDunkState)
-            && !InAir
-            && Grounded
-            && hasBasketball
-            && touchPosition.x > (Screen.width / 2)
-            && !Locked)
-        {
-            dunkTrigger = true;
-        }
+
+        //------------------ shoot -----------------------------------
         // if has ball, is in air, and pressed shoot button.
-        // shoot ball
+        // note -- At top of the jump
+        //Debug.Log("curren state : " + currentState);
+        //Debug.Log("curren state : " + currentStateInfo.fullPathHash);
         if (InAir
             && hasBasketball
-            && touchPosition.x > (Screen.width / 2)
-            && (currentState != inAirDunkState || currentState != inAirDunkState))
+            && !GameOptions.EnemiesOnlyEnabled
+            && rigidBody.velocity.y <= 0
+            && (currentState == inAirHasBasketballFrontState || currentState == inAirHasBasketballSideState)
+            && !shootTrigger)
         {
+            shootTrigger = true;
             CallBallToPlayer.instance.Locked = true;
-            basketball.BasketBallState.Locked = true;
+            BasketBallState.instance.Locked = true;
             CheckIsPlayerFacingGoal(); // turns player facing rim
-            Shotmeter.MeterEnded = true;
+            Shotmeter.MeterEnded = true; // this determines ball launch. find top of the jump
             PlayerShoot();
-        }
-        // call ball
-        if (!hasBasketball
-            && !InAir
-            && basketball.BasketBallState.CanPullBall
-            && !basketball.BasketBallState.Locked
-            && Grounded
-            && !CallBallToPlayer.instance.Locked
-            && touchPosition.x > (Screen.width / 2))
-        {
-            CallBallToPlayer.instance.Locked = true;
-            CallBallToPlayer.instance.pullBallToPlayer();
-            CallBallToPlayer.instance.Locked = false;
-        }
-    }
-    public void PlayerAttack()
-    {
-        if (playerCanAttack)
-        {
-            // get random close attack if more than one
-            playerSwapAttack.setCloseAttack();
-            anim.Play("attack");
         }
     }
 
-    public void PlayerBlock()
+    IEnumerator CallBall()
     {
-        anim.SetBool("block", true);
+        yield return new WaitForSeconds(0.75f);
+        if (!BasketBallAuto.instance.BasketBallState.InAir)
+        {
+            CallBallToPlayer.instance.pullBallToPlayer();
+        }
+
     }
+    public void moveToPosition(Vector3 target)
+    {
+        targetPosition = (target-transform.position).normalized;
+        movement = targetPosition * (movementSpeed * Time.deltaTime);
+        rigidBody.MovePosition(transform.position +  movement);
+    }
+
+    //public void PlayerAttack()
+    //{
+    //    if (playerCanAttack)
+    //    {
+    //        // get random close attack if more than one
+    //        playerSwapAttack.setCloseAttack();
+    //        anim.Play("attack");
+    //    }
+    //}
+
+    //public void PlayerBlock()
+    //{
+    //    anim.SetBool("block", true);
+    //}
 
     public void PlayerShoot()
     {
-        basketball.shootBasketBall();
+        BasketBallAuto.instance.shootBasketBall();
+        arrivedAtTarget = false;
     }
 
-    public void PlayerSpecial()
-    {
-        PlayAnim("special");
-    }
+    //public void PlayerSpecial()
+    //{
+    //    PlayAnim("special");
+    //}
     public void CheckIsPlayerFacingGoal()
     {
         if (bballRelativePositioning > 0 && !FacingRight
@@ -571,10 +592,10 @@ public class AutoPlayerController : MonoBehaviour
             {
                 anim.SetBool("walking", true);
                 // walking but running toggle is ON
-                if (runningToggle)
-                {
-                    anim.SetBool("moonwalking", true);
-                }
+                //if (runningToggle)
+                //{
+                //    anim.SetBool("moonwalking", true);
+                //}
             }
         }
         // not moving
@@ -582,8 +603,6 @@ public class AutoPlayerController : MonoBehaviour
         {
             anim.SetBool("walking", false);
             anim.SetBool("moonwalking", false);
-            //moonwalkAudio.enabled = false;
-            //running = false;
         }
 
         // player moving right, not facing right
@@ -686,129 +705,139 @@ public class AutoPlayerController : MonoBehaviour
 
     public void AutoPlayerJump()
     {
-        Debug.Log("player jump");
-        rigidBody.velocity = Vector3.up * jumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
 
-        //Shotmeter.MeterStarted = true;
-        //Shotmeter.MeterStartTime = Time.time;
-        //// if not dunking, start shot meter
-        //if (currentState != inAirDunkState)
-        //{
-        //    Shotmeter.MeterStarted = true;
-        //    Shotmeter.MeterStartTime = Time.time;
-        //}
-    }
-    public void goToShootingPosition()
-    {
-        Debug.Log("goToShootingPosition()");
-
-        targetPosition = (randomShootingPosition - transform.position).normalized;
-        movement = targetPosition * (movementSpeed * Time.deltaTime);
-        rigidBody.MovePosition(transform.position + movement);
-    }
-
-    public void AutoPlayerArrivedAtMarker()
-    {
-        Debug.Log("");
-        stateWalk = false;
-        stateIdle = true;
-        jumptrigger = true;
-    }
-
-    private void generateRandomShootingPosition()
-    {
-
-        Debug.Log("-----generateRandomShootingPosition()");
-        randomShootingPosition = GetRandomFourPointPosition(relativePositionToGoal);
-        targetPosition = randomShootingPosition;
-
-        GameObject prefabClone =
-        Instantiate(prefabMarkerToInstantiate, randomShootingPosition, Quaternion.Euler(new Vector3(-90, 0, 0)));
-        // set parent to object with vertical layout
-        //prefabClone.transform.SetParent(basketballRim.transform, false);
-        //Destroy(prefabClone.gameObject, 3);
-        //return 0.0f;
-        targetCreated = true;
-    }
-
-    private Vector3 GetRandomThreePointPosition(float relativePos)
-    {
-        //// get random side of basketball goal (left or right, viewed head on)
-        //List<int> list = new List<int> { 1, -1 };
-        //int finder = Random.Range(0, 2); //Then you just use this; nameDisplayString = names[finder];
-        //int randomXDirection = list[finder];
-
-        // get basketball goal posiiton
-        Vector3 rimVectorOnGround = basketballRim.transform.position;
-        // set to ground (Y vector)
-        rimVectorOnGround.y = 0.0f;
-        // get random radius between 3 and 4 point line
-        float randomRadius = (UnityEngine.Random.Range(threePointDistance + 0.5f, fourPointDistance - 0.8f));
-        // random angle
-        float randomAngle = 0;
-        // get X, Z points for vector
-        float x = 0;
-        // generate position on same side of goal as shooter
-        if (relativePos < 0)
+        Shotmeter.MeterStarted = true;
+        Shotmeter.MeterStartTime = Time.time;
+        // if not dunking, start shot meter
+        if (currentState != inAirDunkState)
         {
-            // between pi - 3pi/2
-            randomAngle = Random.Range(math.PI, 1.5f * math.PI);
-            x = (math.cos(randomAngle) * randomRadius) + rimVectorOnGround.x;
+            Shotmeter.MeterStarted = true;
+            Shotmeter.MeterStartTime = Time.time;
         }
-        if (relativePos > 0)
-        {
-            // between  3pi/2 - 2pi
-            randomAngle = Random.Range(1.5f * math.PI, 2 * math.PI);
-            x = math.cos(randomAngle) * randomRadius + rimVectorOnGround.x;
-        }
-        float z = math.sin(randomAngle) * randomRadius + rimVectorOnGround.z;
-
-        Vector3 randomShootingPosition = new Vector3(x, 0, z);
-        randomShootingPosition.y = 0.01f;
-
-        return randomShootingPosition;
     }
+    //public IEnumerator GoToShootingPosition()
+    //{
+    //    Debug.Log("goToShootingPosition()");
+    //    //generateRandomShootingPosition();
+    //    yield return new WaitUntil(()=> testPosition != null);
+    //    //targetPosition = prefabMarkerToInstantiate.transform.position;
+    //    //yield return new WaitUntil(() => prefabMarkerToInstantiate != null);
+    //    //targetPosition = generateRandomShootingPosition().transform.position;
+    //    targetPosition = testPosition.transform.position;
+    //    stateWalk = true;
+    //    Debug.Log("goToShootingPosition() 2");
+    //    //targetPosition = (randomShootingPosition - transform.position).normalized;
+    //    //Debug.Log("targetPosition : "+ targetPosition);
+    //    //movement = targetPosition * (movementSpeed * Time.deltaTime);
+    //    //Debug.Log("movement : " + movement);
+    //    //rigidBody.MovePosition(transform.position + movement);
+    //}
 
-    private Vector3 GetRandomFourPointPosition(float relativePos)
-    {
-        //// get random side of basketball goal (left or right, viewed head on)
-        //List<int> list = new List<int> { 1, -1 };
-        //int finder = Random.Range(0, 2); //Then you just use this; nameDisplayString = names[finder];
-        //int randomXDirection = list[finder];
+    //public void AutoPlayerArrivedAtMarker()
+    //{
+    //    Debug.Log("AutoPlayerArrivedAtMarker");
+    //    stateWalk = false;
+    //    stateIdle = true;
+    //    jumpTrigger = true;
+    //}
 
-        // get basketball goal posiiton
-        Vector3 rimVectorOnGround = basketballRim.transform.position;
-        // set to ground (Y vector)
-        rimVectorOnGround.y = 0.0f;
-        // get random radius between 3 and 4 point line
-        float randomRadius = (Random.Range(fourPointDistance, fourPointDistance + 1f));
-        //Debug.Log("randomRadius : " + randomRadius);
-        // random angle
-        float randomAngle = 0;
-        // get X, Z points for vector
-        float x = 0;
-        // generate position on same side of goal as shooter
-        if (relativePos < 0)
-        {
-            // between pi - 3pi/2
-            randomAngle = Random.Range(math.PI, 1.5f * math.PI);
-            x = (math.cos(randomAngle) * randomRadius) + rimVectorOnGround.x;
-        }
-        if (relativePos > 0)
-        {
-            // between  3pi/2 - 2pi
-            randomAngle = Random.Range(1.5f * math.PI, 2 * math.PI);
-            x = math.cos(randomAngle) * randomRadius + rimVectorOnGround.x;
-        }
-        float z = math.sin(randomAngle) * randomRadius + rimVectorOnGround.z;
+    //private GameObject generateRandomShootingPosition()
+    //{
 
-        Vector3 randomShootingPosition = new Vector3(x, 0, z);
-        randomShootingPosition.y = 0.01f;
+    //    Debug.Log("-----generateRandomShootingPosition()");
+    //    randomShootingPosition = GetRandomFourPointPosition(relativePositionToGoal);
 
-        return randomShootingPosition;
-    }
+    //    prefabClone =
+    //    Instantiate(testPosition, randomShootingPosition, Quaternion.Euler(new Vector3(-90, 0, 0)));
 
+    //    return prefabClone;
+    //    // set parent to object with vertical layout
+    //    //prefabClone.transform.SetParent(basketballRim.transform, false);
+    //    //Destroy(prefabClone.gameObject, 3);
+    //    //return 0.0f;
+    //    //targetCreated = true;
+    //}
+
+    //private Vector3 GetRandomThreePointPosition(float relativePos)
+    //{
+    //    //// get random side of basketball goal (left or right, viewed head on)
+    //    //List<int> list = new List<int> { 1, -1 };
+    //    //int finder = Random.Range(0, 2); //Then you just use this; nameDisplayString = names[finder];
+    //    //int randomXDirection = list[finder];
+
+    //    // get basketball goal posiiton
+    //    Vector3 rimVectorOnGround = basketballRim.transform.position;
+    //    // set to ground (Y vector)
+    //    rimVectorOnGround.y = 0.0f;
+    //    // get random radius between 3 and 4 point line
+    //    float randomRadius = (UnityEngine.Random.Range(Constants.DISTANCE_3point + 0.5f, Constants.DISTANCE_4point - 0.8f));
+    //    // random angle
+    //    float randomAngle = 0;
+    //    // get X, Z points for vector
+    //    float x = 0;
+    //    // generate position on same side of goal as shooter
+    //    if (relativePos < 0)
+    //    {
+    //        // between pi - 3pi/2
+    //        randomAngle = Random.Range(math.PI, 1.5f * math.PI);
+    //        x = (math.cos(randomAngle) * randomRadius) + rimVectorOnGround.x;
+    //    }
+    //    if (relativePos > 0)
+    //    {
+    //        // between  3pi/2 - 2pi
+    //        randomAngle = Random.Range(1.5f * math.PI, 2 * math.PI);
+    //        x = math.cos(randomAngle) * randomRadius + rimVectorOnGround.x;
+    //    }
+    //    float z = math.sin(randomAngle) * randomRadius + rimVectorOnGround.z;
+
+    //    Vector3 randomShootingPosition = new Vector3(x, 0, z);
+    //    randomShootingPosition.y = 0.01f;
+
+    //    return randomShootingPosition;
+    //}
+
+    //private Vector3 GetRandomFourPointPosition(float relativePos)
+    //{
+    //    //// get random side of basketball goal (left or right, viewed head on)
+    //    //List<int> list = new List<int> { 1, -1 };
+    //    //int finder = Random.Range(0, 2); //Then you just use this; nameDisplayString = names[finder];
+    //    //int randomXDirection = list[finder];
+
+    //    // get basketball goal posiiton
+    //    Vector3 rimVectorOnGround = basketballRim.transform.position;
+    //    // set to ground (Y vector)
+    //    rimVectorOnGround.y = 0.0f;
+    //    // get random radius between 3 and 4 point line
+    //    float randomRadius = (Random.Range(Constants.DISTANCE_4point, Constants.DISTANCE_4point + 1f));
+    //    //Debug.Log("randomRadius : " + randomRadius);
+    //    // random angle
+    //    float randomAngle = 0;
+    //    // get X, Z points for vector
+    //    float x = 0;
+    //    // generate position on same side of goal as shooter
+    //    if (relativePos < 0)
+    //    {
+    //        // between pi - 3pi/2
+    //        randomAngle = Random.Range(math.PI, 1.5f * math.PI);
+    //        x = (math.cos(randomAngle) * randomRadius) + rimVectorOnGround.x;
+    //    }
+    //    if (relativePos > 0)
+    //    {
+    //        // between  3pi/2 - 2pi
+    //        randomAngle = Random.Range(1.5f * math.PI, 2 * math.PI);
+    //        x = math.cos(randomAngle) * randomRadius + rimVectorOnGround.x;
+    //    }
+    //    float z = math.sin(randomAngle) * randomRadius + rimVectorOnGround.z;
+
+    //    Vector3 randomShootingPosition = new Vector3(x, 0, z);
+    //    randomShootingPosition.y = 0.01f;
+
+    //    return randomShootingPosition;
+    //}
+
+    // *NOTE most of these can be in a utility class
     //------------------------- set animator parameters -----------------------
     public void SetPlayerAnim(string animationName, bool isTrue)
     {
@@ -846,22 +875,6 @@ public class AutoPlayerController : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
-    // #todo find all these messageDisplay coroutines and move to seprate generic class MessageLog od something
-    public void ToggleRun()
-    {
-        runningToggle = !runningToggle;
-        Text messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
-        messageText.text = "running toggle = " + runningToggle;
-
-        // turn off text display after 5 seconds
-        StartCoroutine(BasketBall.instance.turnOffMessageLogDisplayAfterSeconds(3));
-    }
-
-    public bool IsSpecialState()
-    {
-        return currentState == specialState;
-    }
-
     public bool Grounded
     {
         get { return _grounded; }
@@ -880,10 +893,6 @@ public class AutoPlayerController : MonoBehaviour
         set { _locked = value; }
     }
 
-    //public float RigidBodyYVelocity
-    //{
-    //    get { return rigidBody.velocity.y; }
-    //}
     public bool FacingFront
     {
         get => _facingFront;
@@ -906,20 +915,8 @@ public class AutoPlayerController : MonoBehaviour
         set => _avoidedKnockDown = value;
     }
 
-    public Rigidbody RigidBody { get => rigidBody; set => rigidBody = value; }
-    //public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
     public bool TakeDamage { get => _takeDamage; set => _takeDamage = value; }
-    public int CurrentState { get => currentState; set => currentState = value; }
-    public int AttackState { get => attackState; set => attackState = value; }
-    public int BlockState { get => blockState; set => blockState = value; }
-    public int SpecialState { get => specialState; set => specialState = value; }
     public bool FacingRight { get => _facingRight; set => _facingRight = value; }
-    public bool CanAttack { get => canAttack; set => canAttack = value; }
-    public bool PlayerCanBlock { get => playerCanBlock; set => playerCanBlock = value; }
-    public bool CanBlock { get => canBlock; set => canBlock = value; }
-    public Animator Anim { get => anim; set => anim = value; }
-    //public AudioSource Audiosource { get => audiosource; set => audiosource = value; }
-    public Text DamageDisplayValueText { get => damageDisplayValueText; set => damageDisplayValueText = value; }
     public float PlayerDistanceFromRim { get => playerDistanceFromRim; set => playerDistanceFromRim = value; }
     public PlayerHealth PlayerHealth { get => playerHealth; set => playerHealth = value; }
 }

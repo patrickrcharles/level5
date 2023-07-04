@@ -34,6 +34,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private int release;
 
     [SerializeField] private int luck;
+    [SerializeField] private int clutch;
 
     [SerializeField] private int shootAngle;
 
@@ -45,7 +46,12 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
 
+    public static CharacterProfile instance;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         // only init if level 1 or 2. other levels still for testing
@@ -220,4 +226,5 @@ public class CharacterProfile : MonoBehaviour
     public bool IsFighter { get => isFighter; set => isFighter = value; }
     public bool IsLocked { get; internal set; }
     public bool IsShooter { get => isShooter; set => isShooter = value; }
+    public int Clutch { get => clutch; set => clutch = value; }
 }

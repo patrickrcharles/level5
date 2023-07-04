@@ -4,6 +4,8 @@ public class GroundCheck : MonoBehaviour
 {
     public float initialHeight, finalHeight;
     private PlayerController playerController;
+    [SerializeField]
+    private AutoPlayerController autoPlayerController;
 
     [SerializeField]
     private BasketBallState basketBallState;
@@ -11,7 +13,8 @@ public class GroundCheck : MonoBehaviour
     private void Start()
     {
         playerController = GameLevelManager.instance.PlayerController;
-        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        autoPlayerController = GameLevelManager.instance.AutoPlayerController;
+        basketBallState = BasketBallState.instance;
         //basketBallState = BasketBall.instance.BasketBallState;
     }
 
@@ -34,6 +37,22 @@ public class GroundCheck : MonoBehaviour
             //reset state flags
             CallBallToPlayer.instance.Locked = false;
         }
+        // later 11 is ground/terrain
+        if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("autoPlayer"))
+        {
+            //initialHeight = _player.transform.position.y;
+            //if (finalHeight - initialHeight > 1)
+            //{
+            //    //Debug.Log("fall distance : " + (finalHeight - initialHeight));
+            //}
+
+            autoPlayerController.Grounded = true;
+            autoPlayerController.InAir = false;
+            autoPlayerController.SetPlayerAnim("jump", false);
+
+            //reset state flags
+            //CallBallToPlayer.instance.Locked = false;
+        }
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))
         {
             //initialHeight = _player.transform.position.y;
@@ -44,6 +63,7 @@ public class GroundCheck : MonoBehaviour
 
             basketBallState.Grounded = true;
             basketBallState.InAir = false;
+            CallBallToPlayer.instance.Locked = false;
         }
     }
 
@@ -54,6 +74,12 @@ public class GroundCheck : MonoBehaviour
             playerController.Grounded = false;
             playerController.InAir = true;
             playerController.SetPlayerAnim("jump", true);
+        }
+        if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("autoPlayer"))
+        {
+            autoPlayerController.Grounded = false;
+            autoPlayerController.InAir = true;
+            autoPlayerController.SetPlayerAnim("jump", true);
         }
 
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("basketball"))

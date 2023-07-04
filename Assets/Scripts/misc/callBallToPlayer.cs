@@ -4,11 +4,15 @@ public class CallBallToPlayer : MonoBehaviour
 {
     [SerializeField]
     internal float pullSpeed;
+    [SerializeField]
     private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;
 
+    private AutoPlayerController autoPlayerState;
     private PlayerController playerState;
+    [SerializeField]
     private BasketBall basketBall;
+    [SerializeField]
     private BasketBallState _basketBallState;
     [SerializeField]
     private bool locked;
@@ -25,9 +29,18 @@ public class CallBallToPlayer : MonoBehaviour
     {
         instance = this;
         playerState = GameLevelManager.instance.PlayerController;
-        basketBall = GameLevelManager.instance.Basketball;
-        _basketBallState = basketBall.GetComponent<BasketBallState>();
-        basketballRigidBody = basketBall.GetComponent<Rigidbody>();
+        autoPlayerState = GameLevelManager.instance.AutoPlayerController;
+        //if (GameLevelManager.instance.IsAutoPlayer)
+        //{
+        //    basketballRigidBody = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>().GetComponent<Rigidbody>();
+        //}
+        //else
+        //{
+        //    basketballRigidBody = GameLevelManager.instance.Basketball.GetComponent<Rigidbody>();
+        //}
+        _basketBallState = BasketBallState.instance;
+        //basketballRigidBody = basketBall.GetComponent<Rigidbody>();
+        basketballRigidBody = GameObject.FindGameObjectWithTag("basketball").GetComponent<Rigidbody>();
         Locked = false;
 
         //canBallToPlayerEnabled = true;
@@ -45,6 +58,7 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
+        Debug.Log("GameLevelManager.instance.Controls.Player.callball.triggered : "+GameLevelManager.instance.Controls.Player.callball.triggered);
         if (GameLevelManager.instance.Controls.Player.callball.triggered
             && GameLevelManager.instance.Controls.Other.change.ReadValue<float>() == 0
             && GameLevelManager.instance.PlayerController.CurrentState != GameLevelManager.instance.PlayerController.BlockState
@@ -59,6 +73,14 @@ public class CallBallToPlayer : MonoBehaviour
             pullBallToPlayer();
             //Locked = false;
         }
+        //if (GameLevelManager.instance.Controls.Other.change.enabled
+        //    && _basketBallState.CanPullBall
+        //    && !_basketBallState.Locked
+        //    && autoPlayerState.Grounded
+        //    && Input.GetKeyDown(KeyCode.Alpha9))
+        //{
+        //    pullBallToPlayer();
+        //}
     }
 
     public void pullBallToPlayer()

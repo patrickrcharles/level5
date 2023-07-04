@@ -18,7 +18,7 @@ public class PlayerAttackPosition : MonoBehaviour
         {
             engaged = false;
         }
-        Vector3 playerTransform = GameLevelManager.instance.Player.transform.position;
+        Vector3 playerTransform = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayer.transform.position : GameLevelManager.instance.Player.transform.position;
         if (attackPositionId == 1)
         {
             transform.position = new Vector3(playerTransform.x - 0.6f, playerTransform.y, playerTransform.z - 0.25f);
