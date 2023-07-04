@@ -42,7 +42,7 @@ public class BasketBallShotMarker : MonoBehaviour
         _shotAttempt = 0;
 
         // get reference for accessing basketball state
-        basketBallState = GameLevelManager.instance.Basketball.BasketBallState;
+        basketBallState =BasketBallState.instance;
         displayCurrentMarkerStats = GameObject.Find(displayStatsTextObject).GetComponent<Text>();
         displayCurrentMarkerStats.text = "";
 
@@ -55,7 +55,8 @@ public class BasketBallShotMarker : MonoBehaviour
         // set what type of shot marker is based on distance from rim
         // using basketball state
         setMarkerShotType();
-
+        //test flag
+        //GameOptions.gameModeRequiresShotMarkers4s = true;
         if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s)
         {
             markerEnabled = true;
@@ -97,7 +98,14 @@ public class BasketBallShotMarker : MonoBehaviour
         // this needs to be turned off if ball hits ground
         if (PlayerOnMarker)
         {
-            BasketBall.instance.BasketBallState.CurrentShotMarkerId = positionMarkerId;
+            if (GameLevelManager.instance.IsAutoPlayer)
+            {
+                BasketBallAuto.instance.BasketBallState.CurrentShotMarkerId = positionMarkerId;
+            }
+            else
+            {
+                BasketBall.instance.BasketBallState.CurrentShotMarkerId = positionMarkerId;
+            }
             // if marker not completed yet
             if (markerEnabled)
             {
@@ -159,8 +167,15 @@ public class BasketBallShotMarker : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("other : " + other.tag);
         // if player enters shot marker area
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker")
+            && detectCollisions)
+        {
+            _playerOnMarker = true;
+        }
+        // if player enters shot marker area
+        if (other.gameObject.CompareTag("autoPlayerHitbox") && gameObject.CompareTag("shot_marker")
             && detectCollisions)
         {
             _playerOnMarker = true;
@@ -171,6 +186,13 @@ public class BasketBallShotMarker : MonoBehaviour
     {
         // if player exits shot marker area
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker")
+                && detectCollisions)
+        {
+            _playerOnMarker = false;
+            setDisplayText(); // update display to empty
+        }
+        // if player exits shot marker area
+        if (other.gameObject.CompareTag("autoPlayerHitbox") && gameObject.CompareTag("shot_marker")
                 && detectCollisions)
         {
             _playerOnMarker = false;
@@ -218,7 +240,7 @@ public class BasketBallShotMarker : MonoBehaviour
     {
         // get distance from rim
         //basketBallTarget = basketBallState.BasketBallTarget;
-        basketBallTarget = GameLevelManager.instance.Basketball.BasketBallState.BasketBallTarget;
+        basketBallTarget = BasketBallState.instance.BasketBallTarget;
         distanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
 
         if (distanceFromRim > basketBallState.ThreePointDistance)

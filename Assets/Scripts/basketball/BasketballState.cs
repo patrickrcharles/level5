@@ -17,10 +17,14 @@ public class BasketBallState : MonoBehaviour
     private bool _fourAttempt;
     private bool _sevenAttempt;
     private bool _dunk;
+    [SerializeField]
     private bool _inAir;
+    [SerializeField]
     private bool _thrown;
+    [SerializeField]
     private bool _locked;
     private bool _canPullBall;
+    [SerializeField]
     private bool _grounded;
 
     private bool _playerOnMarker;
@@ -38,9 +42,16 @@ public class BasketBallState : MonoBehaviour
 
     private int _currentShotType;
     public int CurrentShotType => _currentShotType;
+    public static BasketBallState instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
+
         switch (GameLevelManager.instance.IsAutoPlayer)
         {
             case true:
@@ -62,7 +73,9 @@ public class BasketBallState : MonoBehaviour
     void Update()
     {
 
-        PlayerDistanceFromRim = GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
+        PlayerDistanceFromRim = GameLevelManager.instance.IsAutoPlayer 
+            ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim  
+            : GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
         //PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
         //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 

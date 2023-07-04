@@ -8,9 +8,10 @@ using Random = System.Random;
 public class BasketBallAuto : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    [SerializeField]
     new Rigidbody rigidbody;
     AudioSource audioSource;
-
+    [SerializeField]
     BasketBallState basketBallState;
     GameStats gameStats;
     Animator anim;
@@ -18,11 +19,14 @@ public class BasketBallAuto : MonoBehaviour
     GameObject basketBallSprite;
     GameObject basketBallPosition;
     GameObject basketBallTarget;
-
-    GameObject player;
+    //[SerializeField]
+    //GameObject player;
+    [SerializeField]
     GameObject autoPlayer;
 
-    //PlayerController playerState;
+    [SerializeField]
+    PlayerController playerState;
+    [SerializeField]
     AutoPlayerController autoPlayerState;
     CharacterProfile characterProfile;
     GameObject dropShadow;
@@ -56,17 +60,14 @@ public class BasketBallAuto : MonoBehaviour
         {
             autoPlayer = GameLevelManager.instance.AutoPlayer;
             autoPlayerState = GameLevelManager.instance.AutoPlayerController;          
-            characterProfile = GameLevelManager.instance.AutoPlayer.GetComponent<CharacterProfile>();
+            characterProfile = CharacterProfile.instance;
         }
 
         rigidbody = GetComponent<Rigidbody>();
         gameStats = GameLevelManager.instance.GameStats;
-        Debug.Log("GameLevelManager.instance.Basketball == null : " + (GameLevelManager.instance.Basketball == null));
-        Debug.Log("GameLevelManager.instance.Basketball.GetComponent<BasketBallState>() == null : " + (GameLevelManager.instance.Basketball.GetComponent<BasketBallState>() == null));
-        basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        basketBallState = BasketBallState.instance;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-        //basketBallShotMade = GameObject.Find("basketBallMadeShot").GetComponent<BasketBallShotMade>();
         anim = GetComponentInChildren<Animator>();
 
         //basketball drop shadow
@@ -74,7 +75,7 @@ public class BasketBallAuto : MonoBehaviour
 
         //objects
         basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
-        basketBallPosition = player.transform.Find("basketBall_position").gameObject;
+        basketBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
 
         //bool flags
         basketBallState.Locked = false;
@@ -143,7 +144,7 @@ public class BasketBallAuto : MonoBehaviour
 
             //if player has ball and hasnt shot
             if (autoPlayerState.hasBasketball
-                && autoPlayerState.currentState != autoPlayerState.dunkState)//&& !basketBallState.Thrown)
+                && autoPlayerState.currentState != autoPlayerState.inAirDunkState)//&& !basketBallState.Thrown)
             {
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
@@ -248,7 +249,7 @@ public class BasketBallAuto : MonoBehaviour
     {
         // if basketball enters player hitbox
         if (gameObject.CompareTag("basketball")
-            && other.gameObject.CompareTag("playerHitbox")
+            && other.gameObject.CompareTag("autoPlayerHitbox")
             && !basketBallState.Thrown)
         {
             autoPlayerState.hasBasketball = true;
@@ -270,7 +271,6 @@ public class BasketBallAuto : MonoBehaviour
 
     public void shootBasketBall()
     {
-
         // set side or front shooting animation
         if (autoPlayerState.FacingFront) // facing straight toward bball goal
         {
@@ -412,7 +412,16 @@ public class BasketBallAuto : MonoBehaviour
             accuracyModifierX = 0;
             accuracyModifierY = 0;
             shotMeterMessage = "critical";
+            Debug.Log("critical");
         }
+        // determine Auto player shoot percentage
+        autoPlayerState.Shotmeter.SliderValueOnButtonPress = rollForAutoPlayerSliderValue();
+        /* - how tough auto player is. Profile stats. accuracy
+         * - player could get hot. sort of a luck variable for entire session.
+         * - 
+         */
+
+
         // if >= 95 and NOT critical (release stat factored in)
         if (autoPlayerState.Shotmeter.SliderValueOnButtonPress >= 95
             && !critical)
@@ -477,29 +486,29 @@ public class BasketBallAuto : MonoBehaviour
         float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz - accuracyModifierZ; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
+        Debug.Log("Launch it!");
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
-        //Debug.Log("globalVelocity : " + globalVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
+
         autoPlayerState.hasBasketball = false;
         autoPlayerState.SetPlayerAnim("hasBasketball", false);
-
-        // analytics
-        AnaylticsManager.PlayerShoot(autoPlayerState.Shotmeter.SliderValueOnButtonPress);
+        autoPlayerState.shootTrigger = false;
     }
 
     // ============================ Functions and Properties ==========================================
 
-    // wair for shotmeter value calculation, launch ball
+    // wait for shotmeter value calculation, launch ball
     IEnumerator LaunchBasketBall()
     {
         // get position of ball when shot
-        GameObject currentBallPosition = player.transform.Find("basketBall_position").gameObject;
+        GameObject currentBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
         // wait for shot meter to finish
-        yield return new WaitUntil(() => autoPlayerState.Shotmeter.MeterEnded == false);
+        yield return new WaitUntil(() => autoPlayerState.Shotmeter.MeterEnded == true);
+        //yield return new WaitUntil(() => Time.time >= (autoPlayerState.Shotmeter.MeterStartTime + 0.5f));
         //launch ball to goal      
         Launch(basketBallPosition);
     }
@@ -528,7 +537,6 @@ public class BasketBallAuto : MonoBehaviour
         }
         return false;
     }
-
     bool rollForCriticalReleaseChance(float maxPercent)
     {
         Random random = new Random();
@@ -539,6 +547,59 @@ public class BasketBallAuto : MonoBehaviour
             return true;
         }
         return false;
+    }
+    float  rollForAutoPlayerSliderValue()
+    {
+        float shootPercent = 0;
+        if (basketBallState.TwoPoints) { shootPercent = characterProfile.Accuracy2Pt / 2; }
+        if (basketBallState.ThreePoints) { shootPercent = characterProfile.Accuracy3Pt / 2; }
+        if (basketBallState.FourPoints) { shootPercent = characterProfile.Accuracy4Pt / 2; }
+        if (basketBallState.SevenPoints) { shootPercent = characterProfile.Accuracy7Pt / 2; }
+        //default if none assigned
+        if(shootPercent == 0) { shootPercent = 85; }
+        // get base value
+        Random random = new Random();
+        float percent = random.Next(1, 100);
+        if (percent <= shootPercent)
+        {
+            //Debug.Log("percent : " + percent + " shootPercent : "+ shootPercent);
+            shootPercent = 95;
+        }
+        else
+        {
+            //Debug.Log("percent : " + percent + " shootPercent : " + shootPercent);
+            shootPercent =  90;
+        }
+        // accuracy variation. random -5, 5 range
+        Random accuracyVariation1 = new Random();
+        float accuracyVariationValue = accuracyVariation1.Next(-5, 5);
+        shootPercent += accuracyVariationValue;
+        Debug.Log("++++++++++++++++accuracyVariationValue : " + accuracyVariationValue);
+
+        // percent to calculate clutch bonus
+        Random accuracyVariation2 = new Random();
+        float accuracyVariationPercent = accuracyVariation2.Next(1, 100);
+
+        // clutch bonus
+        Random clutchBonusRandom = new Random();
+        float clutchBonus = clutchBonusRandom.Next(1, 10);
+        // variation % + consecutive shots (increase percent). shot streak ups percent
+        Debug.Log("++++++++++++++++accuracyVariationPercent : " + accuracyVariationPercent);
+        Debug.Log("++++++++++++++++BasketBallShotMade.instance.ConsecutiveShotsMade : " + BasketBallShotMade.instance.ConsecutiveShotsMade);
+        Debug.Log("++++++++++++++++characterProfile.Clutch/2 : " + (characterProfile.Clutch / 2));
+        // consecutive shots bonus capped at 10
+        int consecShotsModifier = BasketBallShotMade.instance.ConsecutiveShotsMade;
+        if (consecShotsModifier > 10)
+        {
+            consecShotsModifier = 10;
+        }
+        if (accuracyVariationPercent <= (characterProfile.Clutch/2) + consecShotsModifier)
+        {
+            shootPercent += clutchBonus;
+            Debug.Log("++++++++++++++++clutchBonus : " + clutchBonus);
+        }
+        Debug.Log("shootPercent : " + shootPercent);
+        return shootPercent;
     }
 
     private float getAccuracyModifier()
@@ -788,6 +849,4 @@ public class BasketBallAuto : MonoBehaviour
     public GameStats GameStats => gameStats;
     public BasketBallState BasketBallState => basketBallState;
     public bool UiStatsEnabled { get; private set; }
-    public GameObject BasketBallPosition { get => basketBallPosition; set => basketBallPosition = value; }
-    public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
 }

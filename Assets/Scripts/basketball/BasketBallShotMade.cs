@@ -16,6 +16,7 @@ public class BasketBallShotMade : MonoBehaviour
     public GameObject rimSprite;
     Animator anim;
     PlayerController playerState;
+    AutoPlayerController autoPlayerState;
     bool isColliding;
 
     const string moneyPrefabPath = "Prefabs/objects/money";
@@ -30,7 +31,6 @@ public class BasketBallShotMade : MonoBehaviour
 
     public static BasketBallShotMade instance;
 
-
     private void Awake()
     {
         instance = this;
@@ -44,11 +44,12 @@ public class BasketBallShotMade : MonoBehaviour
     void Start()
     {
         //_basketBallState = BasketBall.instance.GetComponent<BasketBallState>();
-        _basketBallState = GameLevelManager.instance.Basketball.GetComponent<BasketBallState>();
+        _basketBallState = BasketBallState.instance;
         gameStats = GameLevelManager.instance.GameStats;
         audioSource = GetComponent<AudioSource>();
         anim = rimSprite.GetComponent<Animator>();
         playerState = GameLevelManager.instance.PlayerController;
+        autoPlayerState = GameLevelManager.instance.AutoPlayerController;
 
         // path to money prfab
         moneyClone = Resources.Load(moneyPrefabPath) as GameObject;
@@ -63,39 +64,57 @@ public class BasketBallShotMade : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("basketball") && !playerState.hasBasketball && !isColliding)
+        if (other.gameObject.CompareTag("basketball") /*&& (!playerState.hasBasketball || !autoPlayerState.hasBasketball)*/ && !isColliding)
         {
             if (isColliding) return;
             else { isColliding = true; }
 
             audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
-            // add to total shot distance made total
-            gameStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
-
-            //Debug.Log(" last shot : " + BasketBall.instance.LastShotDistance * 6);
-            //Debug.Log(" long shot : " + _basketBallStats.LongestShotMade);
-            // is this the longest shot made?
-            if ((BasketBall.instance.LastShotDistance * 6) > gameStats.LongestShotMade)
+            if (GameLevelManager.instance.IsAutoPlayer)
             {
-                gameStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
+                // add to total shot distance made total
+                gameStats.TotalDistance += (BasketBallAuto.instance.LastShotDistance * 6);
+
+                //Debug.Log(" last shot : " + BasketBall.instance.LastShotDistance * 6);
+                //Debug.Log(" long shot : " + _basketBallStats.LongestShotMade);
+                // is this the longest shot made?
+                if ((BasketBallAuto.instance.LastShotDistance * 6) > gameStats.LongestShotMade)
+                {
+                    gameStats.LongestShotMade = BasketBallAuto.instance.LastShotDistance * 6;
+                }
+                // play rim animation
+                anim.Play("madeshot");
             }
-            // play rim animation
-            anim.Play("madeshot");
-
-            // updates shots made/shot attempted
-            updateShotMadeBasketBallStats();
-
-            // instantiate money if game requires it
-            if (GameRules.instance.GameModeRequiresMoneyBall
-                && _basketBallState.PlayerOnMarkerOnShoot)
-            //&& _basketBallState.MoneyBallEnabledOnShoot)
-            //&& PlayerStats.instance.Money >= 5
-            //&& GameRules.instance.MoneyBallEnabled)
+            else
             {
-                //Debug.Log(" instantiate moeny : player on marker at shoot");
-                instantiateMoney(1);
+                // add to total shot distance made total
+                gameStats.TotalDistance += (BasketBall.instance.LastShotDistance * 6);
+
+                //Debug.Log(" last shot : " + BasketBall.instance.LastShotDistance * 6);
+                //Debug.Log(" long shot : " + _basketBallStats.LongestShotMade);
+                // is this the longest shot made?
+                if ((BasketBall.instance.LastShotDistance * 6) > gameStats.LongestShotMade)
+                {
+                    gameStats.LongestShotMade = BasketBall.instance.LastShotDistance * 6;
+                }
+                // play rim animation
+                anim.Play("madeshot");
             }
+
+                // updates shots made/shot attempted
+                updateShotMadeBasketBallStats();
+
+                // instantiate money if game requires it
+                if (GameRules.instance.GameModeRequiresMoneyBall
+                    && _basketBallState.PlayerOnMarkerOnShoot)
+                //&& _basketBallState.MoneyBallEnabledOnShoot)
+                //&& PlayerStats.instance.Money >= 5
+                //&& GameRules.instance.MoneyBallEnabled)
+                {
+                    //Debug.Log(" instantiate moeny : player on marker at shoot");
+                    instantiateMoney(1);
+                }
 
             // reset states
             _basketBallState.TwoAttempt = false;
@@ -108,9 +127,13 @@ public class BasketBallShotMade : MonoBehaviour
         }
 
         // update onscreen ui stats
-        if (BasketBall.instance.UiStatsEnabled)
+        if (!GameLevelManager.instance.IsAutoPlayer && BasketBall.instance.UiStatsEnabled)
         {
             BasketBall.instance.updateScoreText();
+        }
+        if (GameLevelManager.instance.IsAutoPlayer && BasketBallAuto.instance.UiStatsEnabled)
+        {
+            BasketBallAuto.instance.updateScoreText();
         }
 
         //// object test shot data in list
