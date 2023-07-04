@@ -8,6 +8,8 @@ public class PlayerCollisions : MonoBehaviour
     [SerializeField]
     PlayerController playerController;
     [SerializeField]
+    AutoPlayerController autoPlayerController;
+    [SerializeField]
     PlayerHealth playerHealth;
     [SerializeField]
     bool playerCanBeKnockedDown;
@@ -22,7 +24,10 @@ public class PlayerCollisions : MonoBehaviour
     {
         yield return new WaitUntil(() => GameLevelManager.instance.PlayerController != null);
         playerController = GameLevelManager.instance.PlayerController;
-        playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
+        autoPlayerController = GameLevelManager.instance.AutoPlayerController;
+        playerHealth = GameLevelManager.instance.IsAutoPlayer 
+            ?  GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>() 
+            : GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,7 +68,6 @@ public class PlayerCollisions : MonoBehaviour
         && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.CharacterProfile.Luck)
         && !locked)
         {
-            //Debug.Log("this : " + gameObject.name + "    other : " + other.name);
             locked = true;
             EnemyAttackBox enemyAttackBox = null;
             PlayerAttackBox playerAttackBox = null;
