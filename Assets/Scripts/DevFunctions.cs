@@ -43,7 +43,7 @@ public class DevFunctions : MonoBehaviour
         {
             ToggleFpsCounter();
         }
-        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8))
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha7))
         {
             InstantiateRob();
         }
