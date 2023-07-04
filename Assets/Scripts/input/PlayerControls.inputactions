@@ -11,7 +11,8 @@
                     "id": "bf35e5c3-88fc-4c25-a7d3-2e486eb588ef",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "jump",
@@ -19,7 +20,8 @@
                     "id": "d2b70c6c-b1e6-4746-90c1-5696be0a4ebd",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "callball",
@@ -27,7 +29,8 @@
                     "id": "2578b0db-9c51-4ae8-9e89-2deeb4408229",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "shoot",
@@ -35,7 +38,8 @@
                     "id": "374df6de-afc2-4a1d-90e1-7e77e00e7305",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "cancel",
@@ -43,7 +47,8 @@
                     "id": "73671514-ceb2-47a8-bba1-c4c5878d368c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "submit",
@@ -51,7 +56,8 @@
                     "id": "421bb05c-eb03-40e0-b1f0-3bd771b3a777",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "attack",
@@ -59,7 +65,8 @@
                     "id": "a11e26b5-34ce-4e0b-a23a-56a35216b149",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "block",
@@ -67,7 +74,8 @@
                     "id": "88245111-0c79-484d-bb02-df755af62c86",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "special",
@@ -75,7 +83,8 @@
                     "id": "6edd3a0b-66b3-488a-bc90-10a6d5ec97a9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "run",
@@ -83,7 +92,8 @@
                     "id": "a66eb25c-8369-4408-a038-ef50b168b899",
                     "expectedControlType": "Digital",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -614,6 +624,17 @@
                     "action": "callball",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2defec88-076a-4981-9496-03cc9290c70b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "callball",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -627,7 +648,8 @@
                     "id": "ccda48b8-0339-4353-9274-71e2168d3320",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "jump",
@@ -635,7 +657,8 @@
                     "id": "2a93dd3e-f07c-40b6-9aaa-35cf711122e7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "shoot",
@@ -643,7 +666,8 @@
                     "id": "21212174-c6b4-4908-9632-0dc57924db6a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "cancel",
@@ -651,7 +675,8 @@
                     "id": "54bcff50-c303-4347-bc34-4ee8669d39ff",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "submit",
@@ -659,7 +684,8 @@
                     "id": "402fd70f-28bc-4069-ad5b-e345af6da2f0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "action",
@@ -667,7 +693,8 @@
                     "id": "caa02ad0-ee3e-4939-851c-f715c3031e04",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "special",
@@ -675,7 +702,8 @@
                     "id": "821ac09f-a455-43ab-a3fb-0e90b843ec1a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "run",
@@ -683,7 +711,8 @@
                     "id": "663e7762-acf5-447e-a5dd-b9845ed6a60d",
                     "expectedControlType": "Digital",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -908,7 +937,8 @@
                     "id": "1821e80e-16a3-4ed7-959f-c10d5f053b76",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Down",
@@ -916,7 +946,8 @@
                     "id": "ba525dcf-7691-4699-8928-f545cdf86204",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Left",
@@ -924,7 +955,8 @@
                     "id": "4c85ec8e-f0da-434a-a613-18223f79511a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Right",
@@ -932,7 +964,8 @@
                     "id": "5210938e-a4d2-496d-b457-f9085e306aca",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Submit",
@@ -940,7 +973,8 @@
                     "id": "7af8cee3-45ef-4337-b8a6-e879fcb336fe",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cancel",
@@ -948,7 +982,8 @@
                     "id": "cca3c20c-43ce-41ec-a741-ea17dbec30ec",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1327,7 +1362,8 @@
                     "id": "af87e66c-aa45-4732-97b7-ff51177d9082",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "toggle_run_keyboard",
@@ -1335,7 +1371,8 @@
                     "id": "e746bb66-629b-4448-8cc6-26db1542228f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "toggle_stats_keyboard",
@@ -1343,7 +1380,8 @@
                     "id": "1e9f2494-091a-484a-9337-0b099be1a935",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "toggle_camera_keyboard",
@@ -1351,7 +1389,8 @@
                     "id": "7007229e-e676-4c68-8ae0-fce1fc835d33",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "toggle_character_max_stats",
@@ -1359,7 +1398,8 @@
                     "id": "3f68784b-e375-47cd-8072-7d0b3a3c0770",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "toggle_fps_counter",
@@ -1367,7 +1407,8 @@
                     "id": "5aa24f3a-13a8-4e6a-8ecd-05f33f2b159d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
