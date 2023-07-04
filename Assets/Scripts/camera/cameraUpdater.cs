@@ -94,12 +94,12 @@ public class cameraUpdater : MonoBehaviour
         if (GameLevelManager.instance != null && basketBallRim!= null)
         {
             basketBallRim = GameLevelManager.instance.BasketballRimVector;
-            player = GameLevelManager.instance.Player;
+            player = GameLevelManager.instance.Player != null ? GameLevelManager.instance.Player : GameLevelManager.instance.AutoPlayer;
             smoothCameraMotion = true;
         }
         else
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player") != null ? GameObject.FindGameObjectWithTag("Player") : GameObject.FindGameObjectWithTag("autoPlayer");
             smoothCameraMotion = false;
         }
 
