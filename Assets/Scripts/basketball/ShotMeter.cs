@@ -13,7 +13,7 @@ public class ShotMeter : MonoBehaviour
     private Text sliderMessageText;
 
     float sliderValueOnButtonPress;
-    public float SliderValueOnButtonPress => sliderValueOnButtonPress;
+    public float SliderValueOnButtonPress{get => sliderValueOnButtonPress; set => sliderValueOnButtonPress = value;}
 
     CharacterProfile shooterProfile;
     Slider slider;
@@ -76,7 +76,12 @@ public class ShotMeter : MonoBehaviour
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.PlayerController.Grounded)
+        if (GameLevelManager.instance.Player && GameLevelManager.instance.PlayerController.Grounded)
+        {
+            slider.value = 0;
+        }
+        // if player grounded reset slider
+        if (GameLevelManager.instance.AutoPlayer && GameLevelManager.instance.AutoPlayerController.Grounded)
         {
             slider.value = 0;
         }
@@ -110,14 +115,21 @@ public class ShotMeter : MonoBehaviour
         if (meterEnded)
         {
             locked = false;
-
-            sliderValueOnButtonPress = Mathf.CeilToInt((((Time.time - meterStartTime) / (meterFillTime) * 100)));
-            if (sliderValueOnButtonPress >= 100)
+            if (GameLevelManager.instance.IsAutoPlayer)
             {
-                // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
-                // start at 90. 10 point penalty for hitting peak
-                sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
-                //sliderValueOnButtonPress = 100 - Math.Abs(100 - sliderValueOnButtonPress);
+                sliderValueOnButtonPress = 100;
+
+            }
+            else
+            {
+                sliderValueOnButtonPress = Mathf.CeilToInt((((Time.time - meterStartTime) / (meterFillTime) * 100)));
+                if (sliderValueOnButtonPress >= 100)
+                {
+                    // example : 90 - ABS( 100 -115 [ 15 ])  --> 100 - 15 = 75
+                    // start at 90. 10 point penalty for hitting peak
+                    sliderValueOnButtonPress = 90 - Math.Abs(100 - sliderValueOnButtonPress);
+                    //sliderValueOnButtonPress = 100 - Math.Abs(100 - sliderValueOnButtonPress);
+                }
             }
             // used in launch
             slider.value = sliderValueOnButtonPress;

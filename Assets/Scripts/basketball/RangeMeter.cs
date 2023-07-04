@@ -35,7 +35,7 @@ public class RangeMeter : MonoBehaviour
 
         //range = characterProfile.Range;
 
-        statText.text = "range : " + GameLevelManager.instance.CharacterProfile.Range + " ft";
+        statText.text = "range : " + CharacterProfile.instance.Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
@@ -50,7 +50,8 @@ public class RangeMeter : MonoBehaviour
     {
         if (slider != null && sliderText != null)
         {
-            slider.value = (GameLevelManager.instance.CharacterProfile.Range / (GameLevelManager.instance.PlayerController.PlayerDistanceFromRim * 6)) * 100;
+            float distance = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim : GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
+            slider.value = (CharacterProfile.instance.Range / (distance * 6)) * 100;
             sliderText.text = slider.value.ToString("0") + "%";
             //Debug.Log("slider.value : " + slider.value.ToString());
         }
