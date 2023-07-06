@@ -50,7 +50,8 @@ public class GameLevelManager : MonoBehaviour
     public static GameLevelManager instance;
     private bool _locked;
 
-    bool isAutoPlayer;
+    [SerializeField]
+    bool isCPUplayer;
 
     private void OnEnable()
     {
@@ -205,6 +206,8 @@ public class GameLevelManager : MonoBehaviour
         {
             _locked = true;
             BasketBall.instance.toggleUiStats();
+            if (GameLevelManager.instance.isCPUplayer) { BasketBallAuto.instance.toggleUiStats(); } 
+            else { BasketBall.instance.toggleUiStats(); }
             _locked = false;
         }
     }
