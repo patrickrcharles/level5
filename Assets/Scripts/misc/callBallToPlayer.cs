@@ -58,7 +58,6 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        Debug.Log("GameLevelManager.instance.Controls.Player.callball.triggered : "+GameLevelManager.instance.Controls.Player.callball.triggered);
         if (GameLevelManager.instance.Controls.Player.callball.triggered
             && GameLevelManager.instance.Controls.Other.change.ReadValue<float>() == 0
             && GameLevelManager.instance.PlayerController.CurrentState != GameLevelManager.instance.PlayerController.BlockState
