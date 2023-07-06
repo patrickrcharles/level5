@@ -350,6 +350,7 @@ public class BasketBallAuto : MonoBehaviour
         {
             basketBallState.TwoAttempt = true;
             gameStats.TwoPointerAttempts++;
+
         }
         if (basketBallState.ThreePoints)
         {
@@ -483,7 +484,6 @@ public class BasketBallAuto : MonoBehaviour
         float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
         float zVector = Vz - accuracyModifierZ; //+ accuracyModifierZ; // + (accuracyModifier * shooterProfile.shootZVariance);
 
-        Debug.Log("Launch it!");
         // create the velocity vector in local space and get it in global space
         Vector3 localVelocity = new Vector3(xVector, yVector, zVector);
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
@@ -571,7 +571,6 @@ public class BasketBallAuto : MonoBehaviour
         Random accuracyVariation1 = new Random();
         float accuracyVariationValue = accuracyVariation1.Next(-5, 5);
         shootPercent += accuracyVariationValue;
-        Debug.Log("++++++++++++++++accuracyVariationValue : " + accuracyVariationValue);
 
         // percent to calculate clutch bonus
         Random accuracyVariation2 = new Random();
@@ -581,9 +580,6 @@ public class BasketBallAuto : MonoBehaviour
         Random clutchBonusRandom = new Random();
         float clutchBonus = clutchBonusRandom.Next(1, 10);
         // variation % + consecutive shots (increase percent). shot streak ups percent
-        Debug.Log("++++++++++++++++accuracyVariationPercent : " + accuracyVariationPercent);
-        Debug.Log("++++++++++++++++BasketBallShotMade.instance.ConsecutiveShotsMade : " + BasketBallShotMade.instance.ConsecutiveShotsMade);
-        Debug.Log("++++++++++++++++characterProfile.Clutch/2 : " + (characterProfile.Clutch / 2));
         // consecutive shots bonus capped at 10
         int consecShotsModifier = BasketBallShotMade.instance.ConsecutiveShotsMade;
         if (consecShotsModifier > 10)
@@ -593,7 +589,6 @@ public class BasketBallAuto : MonoBehaviour
         if (accuracyVariationPercent <= (characterProfile.Clutch/2) + consecShotsModifier)
         {
             shootPercent += clutchBonus;
-            Debug.Log("++++++++++++++++clutchBonus : " + clutchBonus);
         }
         Debug.Log("shootPercent : " + shootPercent);
         return shootPercent;
