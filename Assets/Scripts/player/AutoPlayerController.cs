@@ -212,7 +212,6 @@ public class AutoPlayerController : MonoBehaviour
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
 
         postionMarkers = GameObject.FindGameObjectsWithTag("shot_marker");
-        
     }
 
     // not affected by framerate
@@ -255,22 +254,6 @@ public class AutoPlayerController : MonoBehaviour
         {
             positionMarkerCounter = 0;
         }
-        //if (!hasBasketball
-        //    && Grounded
-        //    && !InAir
-        //    && currentState != inAirHasBasketball
-        //    && currentState != inAirHasBasketballFrontState
-        //    && currentState != inAirHasBasketballSideState
-        //    && distanceToTarget >= 0.1f
-        //    && BasketBallAuto.instance.BasketBallState.CanPullBall)
-        //{
-        //    CallBallToPlayer.instance.pullBallToPlayer();
-        //}
-        //else
-        //{
-        //    stateWalk = false;
-        //}
-        // call ball
         // call ball
         if (!hasBasketball
             && !InAir
@@ -284,36 +267,8 @@ public class AutoPlayerController : MonoBehaviour
             && (currentState == idleState || currentState == walkState))
         {
             CallBallToPlayer.instance.Locked = true;
-            Debug.Log("CallBallToPlayer.instance.Locked : " + CallBallToPlayer.instance.Locked);
-            //CallBallToPlayer.instance.pullBallToPlayer();
-            //CallBallToPlayer.instance.Locked = false;
-            Debug.Log("call ball if");
             StartCoroutine(CallBall());
-            //CallBallToPlayer.instance.Locked = false;
         }
-        //if (!hasBasketball
-        //    && !InAir
-        //    && BasketBallAuto.instance.BasketBallState.CanPullBall
-        //    && !BasketBallAuto.instance.BasketBallState.Locked
-        //    && Grounded
-        //    && !CallBallToPlayer.instance.Locked
-        //    && currentState != inAirHasBasketball
-        //    && currentState != inAirHasBasketballFrontState
-        //    && currentState != inAirHasBasketballSideState)
-        //{
-        //    //CallBallToPlayer.instance.Locked = true;
-        //    //CallBallToPlayer.instance.pullBallToPlayer();
-        //    //CallBallToPlayer.instance.Locked = false;
-        //    StartCoroutine(CallBall());
-        //}
-        //if (Grounded
-        //    && currentState != inAirHasBasketball
-        //    && currentState != inAirHasBasketballFrontState
-        //    && currentState != inAirHasBasketballSideState
-        //    && distanceToTarget >= 0.05f)
-        //{
-        //    stateWalk = true;
-        //}
     }
 
 
@@ -413,7 +368,7 @@ public class AutoPlayerController : MonoBehaviour
         // -------------- states
         if (stateWalk && distanceToTarget <= 0.05f && !arrivedAtTarget && Grounded)
         {
-            Debug.Log(" arrived idle : distanceToTarget : "+ distanceToTarget);
+            //Debug.Log(" arrived idle : distanceToTarget : "+ distanceToTarget);
             arrivedAtTarget = true;
             stateWalk = false;
             stateIdle = true;
@@ -422,7 +377,7 @@ public class AutoPlayerController : MonoBehaviour
         }
         if (!stateWalk && distanceToTarget >= 0.05f && !arrivedAtTarget && Grounded)
         {
-            Debug.Log(" arrived idle : walking to target : " + distanceToTarget);
+            //Debug.Log(" arrived idle : walking to target : " + distanceToTarget);
             stateWalk = true;
             stateIdle = false;
             //positionMarkerCounter++;
@@ -508,7 +463,7 @@ public class AutoPlayerController : MonoBehaviour
 
     IEnumerator CallBall()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
         if (!BasketBallAuto.instance.BasketBallState.InAir)
         {
             CallBallToPlayer.instance.pullBallToPlayer();
