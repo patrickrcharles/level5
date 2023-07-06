@@ -86,7 +86,8 @@ public class BasketBallState : MonoBehaviour
         }
 
 
-        if (PlayerDistanceFromRim < ThreePointDistance)
+        if (PlayerDistanceFromRim < ThreePointDistance
+            && !ThreePoints && !FourPoints && !SevenPoints)
         {
             TwoPoints = true;
             _currentShotType = 2;
@@ -96,7 +97,8 @@ public class BasketBallState : MonoBehaviour
             TwoPoints = false;
         }
 
-        if (PlayerDistanceFromRim > ThreePointDistance && PlayerDistanceFromRim < FourPointDistance)
+        if (PlayerDistanceFromRim > ThreePointDistance && PlayerDistanceFromRim < FourPointDistance
+            && !TwoPoints && !FourPoints && !SevenPoints)
         {
             ThreePoints = true;
             _currentShotType = 3;
@@ -106,7 +108,8 @@ public class BasketBallState : MonoBehaviour
             ThreePoints = false;
         }
 
-        if (PlayerDistanceFromRim > FourPointDistance && PlayerDistanceFromRim < SevenPointDistance)
+        if (PlayerDistanceFromRim > FourPointDistance && PlayerDistanceFromRim < SevenPointDistance
+            && !TwoPoints  && !ThreePoints && !SevenPoints)
         {
             FourPoints = true;
             _currentShotType = 4;
@@ -116,7 +119,8 @@ public class BasketBallState : MonoBehaviour
             FourPoints = false;
         }
 
-        if (PlayerDistanceFromRim > SevenPointDistance)
+        if (PlayerDistanceFromRim > SevenPointDistance
+            && !TwoPoints && !ThreePoints && !FourPoints)
         {
             SevenPoints = true;
             _currentShotType = 7;

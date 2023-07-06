@@ -64,10 +64,16 @@ public class BasketBallShotMade : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("basketball") /*&& (!playerState.hasBasketball || !autoPlayerState.hasBasketball)*/ && !isColliding)
+        if (other.gameObject.CompareTag("basketball") /*&& (!playerState.hasBasketball || !autoPlayerState.hasBasketball) */
+            && !isColliding
+            && gameObject.name.Equals("basketBallMadeShot"))
         {
-            if (isColliding) return;
-            else { isColliding = true; }
+            if (isColliding) { 
+                return; 
+            }
+            else { 
+                isColliding = true; 
+            }
 
             audioSource.PlayOneShot(SFXBB.instance.basketballNetSwish);
 
@@ -340,6 +346,10 @@ public class BasketBallShotMade : MonoBehaviour
                 GameRules.instance.BasketBallShotMarkersList[_basketBallState.OnShootShotMarkerId].ShotMade++;
             }
         }
+        _basketBallState.TwoAttempt = false;
+        _basketBallState.ThreeAttempt = false;
+        _basketBallState.FourAttempt = false;
+        _basketBallState.SevenAttempt = false;
     }
 
     public int ConsecutiveShotsMade { get => _consecutiveShotsMade; }
