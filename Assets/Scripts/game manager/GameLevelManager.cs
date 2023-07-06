@@ -93,14 +93,16 @@ public class GameLevelManager : MonoBehaviour
         checkCheerleaderPrefabExists();
         //// check if player is npc in scene
         checkPlayerIsNpcInScene();
-        // get necessary references to objects
-        Basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
-        _basketballRimVector = GameObject.Find("rim").transform.position;
+        //// get necessary references to objects
+        //_basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
+        //_basketballRimVector = GameObject.Find("rim").transform.position;
 
     }
 
     private void Start()
     {
+        _basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
+        _basketballRimVector = GameObject.Find("rim").transform.position;
         // return to this if n
         GameOptions.previousSceneName = Constants.SCENE_NAME_level_00_loading;
 
@@ -144,6 +146,10 @@ public class GameLevelManager : MonoBehaviour
             {
                 terrainHeight = 145;
             }
+            if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_20_jacksonville)
+            {
+                terrainHeight = 200;
+            }
             else
             {
                 terrainHeight = 0;
@@ -154,11 +160,12 @@ public class GameLevelManager : MonoBehaviour
             Debug.Log("auto player");
             _autoPlayer = GameObject.FindWithTag("autoPlayer");
             _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
-            isAutoPlayer = true;
+            _playerHealth = _autoPlayer.GetComponentInChildren<PlayerHealth>();
+            isCPUplayer = true;
         }
         else
         {
-            isAutoPlayer = false;
+            isCPUplayer = false;
         }
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
@@ -173,6 +180,8 @@ public class GameLevelManager : MonoBehaviour
             GameOptions.enemiesEnabled = true;
             GameObject.Find("basketball_goal").SetActive(false);
         }
+        _basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
+        _basketballRimVector = GameObject.Find("rim").transform.position;
     }
 
     private void Update()
@@ -246,15 +255,16 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkBasketballPrefabExists()
     {
-        if (GameObject.FindWithTag("basketball") == null && !isAutoPlayer)
+        if (GameObject.FindWithTag("basketball") == null && !isCPUplayer)
         {
             _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
+            _basketball = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity).GetComponent<BasketBall>();
         }
-        if (GameObject.FindWithTag("basketball") == null && isAutoPlayer)
+        if (GameObject.FindWithTag("basketball") == null && isCPUplayer)
         {
             _basketballPrefab = Resources.Load(basketBallPrefabAutoPath) as GameObject;
+            _basketball =  Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity).GetComponent<BasketBall>();
         }
-        Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
     }
 
     private void checkPlayerPrefabExists()
@@ -267,7 +277,7 @@ public class GameLevelManager : MonoBehaviour
         }
 
         // if no player, spawn player
-        if (GameObject.FindWithTag("Player") == null )//&& GameObject.FindWithTag("autoPlayer") == null)
+        if (GameObject.FindWithTag("Player") == null  && GameObject.FindWithTag("autoPlayer") == null)
         {
             if (_playerClone != null)
             {
@@ -280,6 +290,18 @@ public class GameLevelManager : MonoBehaviour
                 _playerClone = Resources.Load(playerPrefabPath) as GameObject;
                 Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
             }
+        }
+        if (GameObject.FindWithTag("autoPlayer") != null)
+        {
+            _autoPlayer = GameObject.FindWithTag("autoPlayer");
+            _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
+            isCPUplayer = true;
+        }
+        if (GameObject.FindWithTag("Player") != null)
+        {
+            _player = GameObject.FindWithTag("Player");
+            _playerController = _player.GetComponent<PlayerController>();
+            isCPUplayer = false;
         }
     }
 
@@ -296,7 +318,7 @@ public class GameLevelManager : MonoBehaviour
     public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
     public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
-    public bool IsAutoPlayer { get => isAutoPlayer; set => isAutoPlayer = value; }
+    public bool IsAutoPlayer { get => isCPUplayer; set => isCPUplayer = value; }
     public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
     public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
     public float TerrainHeight { get => terrainHeight;}
