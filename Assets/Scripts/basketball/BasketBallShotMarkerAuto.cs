@@ -232,28 +232,66 @@ public class BasketBallShotMarkerAuto : MonoBehaviour
         basketBallTarget = basketBallState.BasketBallTarget;
         distanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
 
-        if (distanceFromRim > basketBallState.ThreePointDistance)
+        //if (distanceFromRim > Constants.DISTANCE_3point)
+        //{
+        //    shotTypeThree = true;
+        //    shotTypeFour = false;
+        //    shotTypeSeven = false;
+        //}
+
+        //if (distanceFromRim > Constants.DISTANCE_4point)
+        //{
+        //    shotTypeThree = false;
+        //    shotTypeFour = true;
+        //    shotTypeSeven = false;
+        //}
+
+        //if (distanceFromRim > Constants.DISTANCE_7point)
+        //{
+        //    shotTypeThree = false;
+        //    shotTypeFour = false;
+        //    shotTypeSeven = true;
+        //}
+
+        if (distanceFromRim > Constants.DISTANCE_3point && distanceFromRim < Constants.DISTANCE_4point
+            && !shotTypeFour && !shotTypeSeven)
         {
             shotTypeThree = true;
             shotTypeFour = false;
             shotTypeSeven = false;
+            return;
+        }
+        else
+        {
+            shotTypeThree = false;
         }
 
-        if (distanceFromRim > basketBallState.FourPointDistance)
+        if (distanceFromRim > Constants.DISTANCE_4point && distanceFromRim < Constants.DISTANCE_7point
+            && !shotTypeThree && !shotTypeSeven)
         {
             shotTypeThree = false;
             shotTypeFour = true;
             shotTypeSeven = false;
+            return;
+        }
+        else
+        {
+            shotTypeFour = false;
         }
 
-        if (distanceFromRim > basketBallState.SevenPointDistance)
+        if (distanceFromRim > Constants.DISTANCE_7point
+            && !shotTypeThree && !shotTypeFour)
         {
             shotTypeThree = false;
             shotTypeFour = false;
             shotTypeSeven = true;
+            return;
+        }
+        else
+        {
+            shotTypeSeven = false;
         }
     }
-
 
     public int ShotMade
     {
@@ -267,21 +305,7 @@ public class BasketBallShotMarkerAuto : MonoBehaviour
         set => _shotAttempt = value;
     }
 
-    public int PositionMarkerId
-    {
-        get => positionMarkerId;
-        set => positionMarkerId = value;
-    }
-    public int MaxShotMade => maxShotMade;
     public bool PlayerOnMarker => _playerOnMarker;
-
-    public bool ShotTypeThree => shotTypeThree;
-
-    public bool ShotTypeFour => shotTypeFour;
-
-    public bool ShotTypeSeven => shotTypeSeven;
-
-    public bool MarkerEnabled { get => markerEnabled; set => markerEnabled = value; }
 }
 
 

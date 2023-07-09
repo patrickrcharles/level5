@@ -494,7 +494,10 @@ public class AutoPlayerController : MonoBehaviour
 
     public void PlayerShoot()
     {
-        BasketBallAuto.instance.shootBasketBall();
+        BasketBallAuto.instance.shootBasketBall(BasketBallState.instance.TwoPoints, 
+            BasketBallState.instance.ThreePoints, 
+            BasketBallState.instance.FourPoints, 
+            BasketBallState.instance.SevenPoints);
         arrivedAtTarget = false;
     }
 

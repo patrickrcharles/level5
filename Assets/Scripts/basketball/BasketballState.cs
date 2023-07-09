@@ -3,11 +3,6 @@
 
 public class BasketBallState : MonoBehaviour
 {
-    // constant values that have to be hardcoded
-    private const float _threePointDistance = 3.8f;
-    private const float _fourPointDistance = 6.4f;
-    private const float _sevenPointDistance = 16.7f;
-
     private bool _twoPoints;
     private bool _threePoints;
     private bool _fourPoints;
@@ -39,7 +34,6 @@ public class BasketBallState : MonoBehaviour
 
     private GameObject _basketBallPosition;
     private GameObject _basketBallTarget;
-
     private int _currentShotType;
     public int CurrentShotType => _currentShotType;
     public static BasketBallState instance;
@@ -86,44 +80,48 @@ public class BasketBallState : MonoBehaviour
         }
 
 
-        if (PlayerDistanceFromRim < ThreePointDistance
+        if (PlayerDistanceFromRim < Constants.DISTANCE_3point
             && !ThreePoints && !FourPoints && !SevenPoints)
         {
             TwoPoints = true;
             _currentShotType = 2;
+            return;
         }
         else
         {
             TwoPoints = false;
         }
 
-        if (PlayerDistanceFromRim > ThreePointDistance && PlayerDistanceFromRim < FourPointDistance
+        if (PlayerDistanceFromRim > Constants.DISTANCE_3point && PlayerDistanceFromRim < Constants.DISTANCE_4point
             && !TwoPoints && !FourPoints && !SevenPoints)
         {
             ThreePoints = true;
             _currentShotType = 3;
+            return;
         }
         else
         {
             ThreePoints = false;
         }
 
-        if (PlayerDistanceFromRim > FourPointDistance && PlayerDistanceFromRim < SevenPointDistance
+        if (PlayerDistanceFromRim > Constants.DISTANCE_4point && PlayerDistanceFromRim < Constants.DISTANCE_7point
             && !TwoPoints  && !ThreePoints && !SevenPoints)
         {
             FourPoints = true;
             _currentShotType = 4;
+            return;
         }
         else
         {
             FourPoints = false;
         }
 
-        if (PlayerDistanceFromRim > SevenPointDistance
+        if (PlayerDistanceFromRim > Constants.DISTANCE_7point
             && !TwoPoints && !ThreePoints && !FourPoints)
         {
             SevenPoints = true;
             _currentShotType = 7;
+            return;
         }
         else
         {
@@ -150,9 +148,6 @@ public class BasketBallState : MonoBehaviour
     //    return false;
     //}
 
-    public float ThreePointDistance => _threePointDistance;
-    public float FourPointDistance => _fourPointDistance;
-    public float SevenPointDistance => _sevenPointDistance;
 
     public bool MoneyBallEnabledOnShoot
     {

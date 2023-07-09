@@ -541,7 +541,10 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerShoot()
     {
-        basketball.shootBasketBall();
+        BasketBall.instance.shootBasketBall(BasketBallState.instance.TwoPoints,
+            BasketBallState.instance.ThreePoints,
+            BasketBallState.instance.FourPoints,
+            BasketBallState.instance.SevenPoints);
     }
 
     public void PlayerSpecial()

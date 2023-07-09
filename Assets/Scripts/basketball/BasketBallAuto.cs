@@ -269,7 +269,7 @@ public class BasketBallAuto : MonoBehaviour
 
     // =================================== shoot ball function =======================================
 
-    public void shootBasketBall()
+    public void shootBasketBall(bool two, bool three, bool four, bool seven)
     {
         // set side or front shooting animation
         if (autoPlayerState.FacingFront) // facing straight toward bball goal
@@ -305,7 +305,7 @@ public class BasketBallAuto : MonoBehaviour
         //BasketBallShotMade.instance.setCurrentShotsMadeAttempted((int)basketBallStats.ShotMade, (int)basketBallStats.ShotAttempt);
 
         // let basketball state know what type of shot is attempted
-        updateBasketBallStateShotTypeOnShoot();
+        updateBasketBallStateShotTypeOnShoot(two, three, four, seven);
 
         // player on shot marker and game mode requires markers
         if (basketBallState.PlayerOnMarker && GameRules.instance.PositionMarkersRequired)
@@ -343,32 +343,37 @@ public class BasketBallAuto : MonoBehaviour
         CallBallToPlayer.instance.Locked = false;
     }
 
-    public void updateBasketBallStateShotTypeOnShoot()
+    public void updateBasketBallStateShotTypeOnShoot(bool two, bool three, bool four, bool seven)
     {
         // identify is in 2 or 3 point range for stat counters
-        if (basketBallState.TwoPoints)
+        if (two && !three)
         {
             basketBallState.TwoAttempt = true;
             gameStats.TwoPointerAttempts++;
-
+            gameStats.ShotAttempt++;
+            return;
         }
-        if (basketBallState.ThreePoints)
+        if (three && !four)
         {
             basketBallState.ThreeAttempt = true;
             gameStats.ThreePointerAttempts++;
+            gameStats.ShotAttempt++;
+            return;
         }
-        if (basketBallState.FourPoints)
+        if (four && !three)
         {
             basketBallState.FourAttempt = true;
             gameStats.FourPointerAttempts++;
+            gameStats.ShotAttempt++;
+            return;
         }
-        if (basketBallState.SevenPoints)
+        if (seven)
         {
             basketBallState.SevenAttempt = true;
             gameStats.SevenPointerAttempts++;
+            gameStats.ShotAttempt++;
+            return;
         }
-        // update total; shot attempst
-        gameStats.ShotAttempt++;
     }
 
     // =================================== Launch ball function =======================================
@@ -590,7 +595,7 @@ public class BasketBallAuto : MonoBehaviour
         {
             shootPercent += clutchBonus;
         }
-        Debug.Log("shootPercent : " + shootPercent);
+        //Debug.Log("shootPercent : " + shootPercent);
         return shootPercent;
     }
 

@@ -243,21 +243,21 @@ public class BasketBallShotMarker : MonoBehaviour
         basketBallTarget = BasketBallState.instance.BasketBallTarget;
         distanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
 
-        if (distanceFromRim > basketBallState.ThreePointDistance)
+        if (distanceFromRim > Constants.DISTANCE_3point)
         {
             shotTypeThree = true;
             shotTypeFour = false;
             shotTypeSeven = false;
         }
 
-        if (distanceFromRim > basketBallState.FourPointDistance)
+        if (distanceFromRim > Constants.DISTANCE_4point)
         {
             shotTypeThree = false;
             shotTypeFour = true;
             shotTypeSeven = false;
         }
 
-        if (distanceFromRim > basketBallState.SevenPointDistance)
+        if (distanceFromRim > Constants.DISTANCE_7point)
         {
             shotTypeThree = false;
             shotTypeFour = false;

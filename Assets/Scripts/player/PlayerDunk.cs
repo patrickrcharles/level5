@@ -52,7 +52,10 @@ public class PlayerDunk : MonoBehaviour
 
         float bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - transform.position.x;
         // shot type for stats
-        BasketBall.instance.updateBasketBallStateShotTypeOnShoot();
+        BasketBall.instance.updateBasketBallStateShotTypeOnShoot(BasketBallState.instance.TwoPoints,
+            BasketBallState.instance.ThreePoints,
+            BasketBallState.instance.FourPoints,
+            BasketBallState.instance.SevenPoints);
         //calculate shot distance 
         Vector3 target = BasketBall.instance.BasketBallState.BasketBallTarget.transform.position;
         Vector3 tempPos = new Vector3(target.x, 0, target.z);
