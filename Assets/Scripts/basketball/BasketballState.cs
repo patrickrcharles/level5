@@ -3,9 +3,13 @@
 
 public class BasketBallState : MonoBehaviour
 {
+    [SerializeField]
     private bool _twoPoints;
+    [SerializeField]
     private bool _threePoints;
+    [SerializeField]
     private bool _fourPoints;
+    [SerializeField]
     private bool _sevenPoints;
     private bool _twoAttempt;
     private bool _threeAttempt;
@@ -34,6 +38,7 @@ public class BasketBallState : MonoBehaviour
 
     private GameObject _basketBallPosition;
     private GameObject _basketBallTarget;
+       [SerializeField]
     private int _currentShotType;
     public int CurrentShotType => _currentShotType;
     public static BasketBallState instance;
@@ -80,48 +85,40 @@ public class BasketBallState : MonoBehaviour
         }
 
 
-        if (PlayerDistanceFromRim < Constants.DISTANCE_3point
-            && !ThreePoints && !FourPoints && !SevenPoints)
+        if (PlayerDistanceFromRim < Constants.DISTANCE_3point)
         {
             TwoPoints = true;
             _currentShotType = 2;
-            return;
         }
         else
         {
             TwoPoints = false;
         }
 
-        if (PlayerDistanceFromRim > Constants.DISTANCE_3point && PlayerDistanceFromRim < Constants.DISTANCE_4point
-            && !TwoPoints && !FourPoints && !SevenPoints)
+        if (PlayerDistanceFromRim >= Constants.DISTANCE_3point && PlayerDistanceFromRim < Constants.DISTANCE_4point)
         {
             ThreePoints = true;
             _currentShotType = 3;
-            return;
         }
         else
         {
             ThreePoints = false;
         }
 
-        if (PlayerDistanceFromRim > Constants.DISTANCE_4point && PlayerDistanceFromRim < Constants.DISTANCE_7point
-            && !TwoPoints  && !ThreePoints && !SevenPoints)
+        if (PlayerDistanceFromRim >= Constants.DISTANCE_4point && PlayerDistanceFromRim < Constants.DISTANCE_7point)
         {
             FourPoints = true;
             _currentShotType = 4;
-            return;
         }
         else
         {
             FourPoints = false;
         }
 
-        if (PlayerDistanceFromRim > Constants.DISTANCE_7point
-            && !TwoPoints && !ThreePoints && !FourPoints)
+        if (PlayerDistanceFromRim > Constants.DISTANCE_7point)
         {
             SevenPoints = true;
             _currentShotType = 7;
-            return;
         }
         else
         {
