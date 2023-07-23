@@ -60,7 +60,7 @@ public class PlayerAnimationEvents : MonoBehaviour
             capsuleCollider = transform.root.GetComponent<CapsuleCollider>();
         }
 
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
         audioSource = GetComponent<AudioSource>();
 
         if (transform.Find(attackBoxText) != null)
@@ -293,12 +293,12 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void enableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void disableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void playSfxBasketballHitRim()
@@ -450,7 +450,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     void CheckAttackBoxActiveStatus()
     {
-        if (!GameLevelManager.instance.PlayerController.IsSpecialState()
+        if (!GameLevelManager.instance.PlayerController1.IsSpecialState()
             && attackBox.activeSelf)
         {
             attackBox.SetActive(false);

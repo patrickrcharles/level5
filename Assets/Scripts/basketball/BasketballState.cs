@@ -57,7 +57,7 @@ public class BasketBallState : MonoBehaviour
                 _basketBallPosition = GameLevelManager.instance.AutoPlayer.transform.Find("basketBall_position").gameObject;
                 break;
             case false:
-                _basketBallPosition = GameLevelManager.instance.Player.transform.Find("basketBall_position").gameObject;
+                _basketBallPosition = GameLevelManager.instance.Player1.transform.Find("basketBall_position").gameObject;
                 break;
         }
         //// position of basketball infront of player
@@ -74,7 +74,7 @@ public class BasketBallState : MonoBehaviour
 
         PlayerDistanceFromRim = GameLevelManager.instance.IsAutoPlayer 
             ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim  
-            : GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
+            : GameLevelManager.instance.PlayerController1.PlayerDistanceFromRim;
         //PlayerDistanceFromRim = Vector3.Distance(GameLevelManager.instance.Player.transform.position, _basketBallTarget.transform.position);
         //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 
