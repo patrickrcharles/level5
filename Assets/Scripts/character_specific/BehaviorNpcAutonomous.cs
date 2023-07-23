@@ -203,9 +203,9 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         if (gameObject.CompareTag("auto_npc")
             && other.CompareTag("basketball")
             && GameLevelManager.instance.IsAutoPlayer
-            && CallBallToPlayer.instance.Locked)
+            && GameLevelManager.instance.AutoPlayerController.Locked)
         {
-            CallBallToPlayer.instance.Locked = false;
+            GameLevelManager.instance.AutoPlayerController.Locked = false;
         }
     }
 
