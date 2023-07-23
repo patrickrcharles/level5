@@ -27,7 +27,7 @@ public class RangeMeter : MonoBehaviour
         }
         else
         {
-            characterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+            characterProfile = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>();
         }
         slider = GetComponentInChildren<Slider>();
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
@@ -35,12 +35,12 @@ public class RangeMeter : MonoBehaviour
 
         //range = characterProfile.Range;
 
-        statText.text = "range : " + CharacterProfile.instance.Range + " ft";
+        statText.text = "range : " + transform.root.GetComponent<CharacterProfile>().Range + " ft";
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
-        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
-            || !GameOptions.gameModeHasBeenSelected)
+        if (!GameLevelManager.instance.IsAutoPlayer && ( GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
+            || !GameOptions.gameModeHasBeenSelected))
         {
             gameObject.SetActive(false);
         }
@@ -50,8 +50,8 @@ public class RangeMeter : MonoBehaviour
     {
         if (slider != null && sliderText != null)
         {
-            float distance = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim : GameLevelManager.instance.PlayerController.PlayerDistanceFromRim;
-            slider.value = (CharacterProfile.instance.Range / (distance * 6)) * 100;
+            float distance = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim : GameLevelManager.instance.PlayerController1.PlayerDistanceFromRim;
+            slider.value = (characterProfile.Range / (distance * 6)) * 100;
             sliderText.text = slider.value.ToString("0") + "%";
             //Debug.Log("slider.value : " + slider.value.ToString());
         }

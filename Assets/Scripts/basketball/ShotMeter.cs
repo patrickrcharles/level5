@@ -51,7 +51,7 @@ public class ShotMeter : MonoBehaviour
         }
         else
         {
-            shooterProfile = GameLevelManager.instance.Player.GetComponent<CharacterProfile>();
+            shooterProfile = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>();
         }
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
@@ -76,7 +76,7 @@ public class ShotMeter : MonoBehaviour
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.Player && GameLevelManager.instance.PlayerController.Grounded)
+        if (GameLevelManager.instance.Player1 && GameLevelManager.instance.PlayerController1.Grounded)
         {
             slider.value = 0;
         }
