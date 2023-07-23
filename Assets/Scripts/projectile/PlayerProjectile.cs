@@ -18,7 +18,7 @@ public class PlayerProjectile : MonoBehaviour
     void Start()
     {
         rigidbody = transform.root.GetComponent<Rigidbody>();
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
         if (!thrownProjectile)
         {
             applyForceToDirectionFacingProjectile(projectileForce);

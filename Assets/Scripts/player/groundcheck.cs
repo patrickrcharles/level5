@@ -12,7 +12,7 @@ public class GroundCheck : MonoBehaviour
 
     private void Start()
     {
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
         autoPlayerController = GameLevelManager.instance.AutoPlayerController;
         basketBallState = BasketBallState.instance;
         //basketBallState = BasketBall.instance.BasketBallState;
@@ -35,7 +35,7 @@ public class GroundCheck : MonoBehaviour
             playerController.SetPlayerAnim("jump", false);
 
             //reset state flags
-            CallBallToPlayer.instance.Locked = false;
+             playerController.CallBallToPlayer.Locked = false;
         }
         // later 11 is ground/terrain
         if (other.gameObject.layer == 11 && gameObject.transform.parent.CompareTag("autoPlayer"))
@@ -63,7 +63,14 @@ public class GroundCheck : MonoBehaviour
 
             basketBallState.Grounded = true;
             basketBallState.InAir = false;
-            CallBallToPlayer.instance.Locked = false;
+            if (playerController != null)
+            {
+                playerController.CallBallToPlayer.Locked = false;
+            }
+            if (autoPlayerController != null)
+            {
+                autoPlayerController.CallBallToPlayer.Locked = false;
+            }
         }
     }
 

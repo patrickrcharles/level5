@@ -16,18 +16,18 @@ public class PlayerDunk : MonoBehaviour
     [SerializeField]
     private bool playerCanDunk;
 
-    public static PlayerDunk instance;
+    //public static PlayerDunk instance;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(this);
+        //}
     }
     private void Start()
     {
@@ -36,7 +36,7 @@ public class PlayerDunk : MonoBehaviour
             dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
             dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
         }
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
         // default dunk values
         jumpAngle = 45;
         dunkRangeFeet = 15;
@@ -46,7 +46,7 @@ public class PlayerDunk : MonoBehaviour
     // note - dunk range * 6 will give dunk range in "feet". ex. distance = 2 units is equal to ~ distance = 6 feet (onscreen)
     public void playerDunk()
     {
-        CallBallToPlayer.instance.Locked = true;
+        playerController.CallBallToPlayer.Locked = true;
         BasketBall.instance.BasketBallState.Locked = true;
         playerController.CheckIsPlayerFacingGoal(); // turns player facing rim
 

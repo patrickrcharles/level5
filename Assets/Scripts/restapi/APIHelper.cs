@@ -267,7 +267,6 @@ namespace Assets.Scripts.restapi
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
-                //httpWebRequest.Headers.Add("Authorization", bearerToken);
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
 
                 httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -702,7 +701,6 @@ namespace Assets.Scripts.restapi
                     httpWebRequest.ContentType = "application/json; charset=utf-8";
                     httpWebRequest.Method = "GET";
                     //httpWebRequest.Headers.Add("Authorization", bearerToken);
-
                     httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 }
             }

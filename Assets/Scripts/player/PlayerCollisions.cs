@@ -22,12 +22,12 @@ public class PlayerCollisions : MonoBehaviour
 
     IEnumerator GetPlayerObjects()
     {
-        yield return new WaitUntil(() => GameLevelManager.instance.PlayerController != null);
-        playerController = GameLevelManager.instance.PlayerController;
+        yield return new WaitUntil(() => GameLevelManager.instance.PlayerController1 != null);
+        playerController = GameLevelManager.instance.PlayerController1;
         autoPlayerController = GameLevelManager.instance.AutoPlayerController;
         playerHealth = GameLevelManager.instance.IsAutoPlayer 
-            ?  GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>() 
-            : GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
+            ?  GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>() 
+            : GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,7 +35,7 @@ public class PlayerCollisions : MonoBehaviour
         // check for fall respawner
         if (gameObject.CompareTag("playerHitbox") && other.CompareTag("fallRespawner"))
         {
-            GameLevelManager.instance.Player.transform.position 
+            GameLevelManager.instance.Player1.transform.position 
                 = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
         }
         if (gameObject.CompareTag("playerHitbox")
@@ -44,7 +44,7 @@ public class PlayerCollisions : MonoBehaviour
             && playerController.currentState != playerController.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
-            StartCoroutine(PlayerDunk.instance.TriggerDunkSequence());
+            StartCoroutine(GameLevelManager.instance.PlayerController1.PlayerDunk.TriggerDunkSequence());
         }
         // player sometimes gets stuck in inair dunk state
         if (gameObject.CompareTag("playerHitbox")

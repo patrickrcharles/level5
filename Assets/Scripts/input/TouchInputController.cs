@@ -64,7 +64,7 @@ public class TouchInputController : MonoBehaviour
     private void Start()
     {
         instance = this;
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
     }
 
     //#if UNITY_ANDROID && !UNITY_EDITOR
@@ -193,7 +193,7 @@ public class TouchInputController : MonoBehaviour
 
         if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
-            GameLevelManager.instance.PlayerController.TouchControlJumpOrShoot(touch1.position);
+            GameLevelManager.instance.PlayerController1.TouchControlJumpOrShoot(touch1.position);
             tap1Detected = false;
         }
 

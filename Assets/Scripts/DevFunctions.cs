@@ -51,7 +51,7 @@ public class DevFunctions : MonoBehaviour
 
     private void InstantiateRob()
     {
-        Vector3 _playerSpawnLocation = GameLevelManager.instance.Player.transform.position;
+        Vector3 _playerSpawnLocation = GameLevelManager.instance.Player1.transform.position;
         Vector3 spawn = new Vector3(_playerSpawnLocation.x + 1.5f,
             _playerSpawnLocation.y,
             _playerSpawnLocation.z);

@@ -15,7 +15,7 @@ public class CallBallToPlayer : MonoBehaviour
     [SerializeField]
     private bool locked;
     [SerializeField]
-    bool CallEnabled = true;
+    public bool CallEnabled = true;
 
     //public static CallBallToPlayer instance;
 
@@ -37,6 +37,8 @@ public class CallBallToPlayer : MonoBehaviour
             }
         }
     }
+
+
 
     public void pullBallToPlayer()
     {

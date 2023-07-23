@@ -46,11 +46,11 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
 
-    public static CharacterProfile instance;
+    //public static CharacterProfile instance;
 
     private void Awake()
     {
-        instance = this;
+        //instance = this;
     }
     void Start()
     {

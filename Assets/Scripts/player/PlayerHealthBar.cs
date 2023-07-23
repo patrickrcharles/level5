@@ -33,7 +33,7 @@ public class PlayerHealthBar : MonoBehaviour
             || GameOptions.battleRoyalEnabled)
         {
             instance = this;
-            playerHealth = GameLevelManager.instance.Player.GetComponentInChildren<PlayerHealth>();
+            playerHealth = GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>();
             healthSlider = transform.Find("health_bar").GetComponent<Slider>();
             blockSlider = transform.Find("block_bar").GetComponent<Slider>();
             specialSlider = transform.Find("special_bar").GetComponent<Slider>();
@@ -45,7 +45,7 @@ public class PlayerHealthBar : MonoBehaviour
             characterNameText = GameObject.Find(characterNameName).GetComponent<Text>();
             healthSliderValueText = GameObject.Find(healthSliderValueName).GetComponent<Text>();
 
-            characterNameText.text = GameLevelManager.instance.Player.GetComponent<CharacterProfile>().PlayerDisplayName;
+            characterNameText.text = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>().PlayerDisplayName;
             setHealthSliderValue();
             setBlockSliderValue();
             setSpecialSliderValue();
@@ -75,15 +75,15 @@ public class PlayerHealthBar : MonoBehaviour
     public IEnumerator DisplayDamageTakenValue(int damage)
     {
         //transform.localScale = temp;
-        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "-" + damage.ToString();
+        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "-" + damage.ToString();
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "";
+        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "";
     }
     public IEnumerator DisplayCustomMessageOnDamageDisplay(string message)
     {
 
-        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = message;
+        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = message;
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerController.DamageDisplayValueText.text = "";
+        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "";
     }
 }

@@ -46,12 +46,12 @@ public class RacingAnimationEvents : MonoBehaviour
 
     public void enableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = true;
+        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void disableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player.GetComponent<Rigidbody>().isKinematic = false;
+        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void playSfxBasketballHitRim()

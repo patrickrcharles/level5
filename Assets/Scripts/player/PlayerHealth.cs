@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        playerController = GameLevelManager.instance.PlayerController;
+        playerController = GameLevelManager.instance.PlayerController1;
         // regenerate rate is +1 per interval
         // rate of 0.4f is equal to +1 every 0.5 second or +25 in 10 secs
         // rate of 1f is equal to +1 every 1 second or +100 in 100 seconds (1 min 40 secs)

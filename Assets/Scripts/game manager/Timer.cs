@@ -124,7 +124,7 @@ public class Timer : MonoBehaviour
             // not consecutive game mode
             if (!BasketBall.instance.BasketBallState.InAir
                 // player in air, has ball
-                && !(GameLevelManager.instance.PlayerController.hasBasketball && GameLevelManager.instance.PlayerController.InAir)
+                && !(GameLevelManager.instance.PlayerController1.hasBasketball && GameLevelManager.instance.PlayerController1.InAir)
                 // not consecutive shots game mode
                 && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
