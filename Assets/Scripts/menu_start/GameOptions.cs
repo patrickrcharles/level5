@@ -1,38 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public static class GameOptions
 {
     static public string applicationVersion;
     static public string operatingSystemVersion;
 
+    static public int numPlayers;
+    static public int numCpuPlayers;
+    static public List<int> playerIds;
+
     // selected options
-    static public String characterDisplayName;
-    static public String cheerleaderDisplayName;
+    static public string characterDisplayName;
+    static public string cheerleaderDisplayName;
     static public int characterId;
-    static public String levelSelected;
+    static public string levelSelected;
     static public int gameModeSelectedId;
     static public int levelId;
     static public int cheerleaderId;
     // object names
-    static public String characterObjectName;
-    static public String cheerleaderObjectName;
-    static public String levelSelectedName;
-    static public String levelDisplayName;
-    static public String gameModeSelectedName;
-    static public String cheerleaderSelectedName;
-    //player stats
-    static public float accuracy2pt;
-    static public float accuracy3pt;
-    static public float accuracy4pt;
-    static public float accuracy7pt;
-    static public float jumpForce;
-    static public float speed;
-    static public float runSpeed;
-    static public float runSpeedHasBall;
-    // static public float range;
-    // static public float release;
-    static public int luck;
-    static public int shootAngle;
+    static public string characterObjectName;
+    public static List<String> characterObjectNames;
+    static public string cheerleaderObjectName;
+    static public string levelSelectedName;
+    static public string levelDisplayName;
+    static public string gameModeSelectedName;
+    static public string cheerleaderSelectedName;
 
     // game mode flags for game rules
     static public bool gameModeHasBeenSelected;
@@ -73,14 +66,8 @@ public static class GameOptions
     static public string previousSceneName;
     static public bool arcadeModeEnabled;
 
-    static public bool architectureIs64bit;
-    static public bool architectureIs32bit;
-    static public bool architectureIsAndroid;
-
-    static public bool architectureInfoLoaded = false;
     static public bool hardcoreModeEnabled = false;
     static public bool EnemiesOnlyEnabled = false;
-
 
     static public bool levelRequiresTimeOfDay = true;
     static public bool levelRequiresWeather = false;
