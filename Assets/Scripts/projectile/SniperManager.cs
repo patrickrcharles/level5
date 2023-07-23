@@ -41,9 +41,9 @@ public class SniperManager : MonoBehaviour
 
     IEnumerator LoadVariables()
     {
-        yield return new WaitUntil(() => GameLevelManager.instance.Player != null);
-        playerController = GameLevelManager.instance.PlayerController;
-        playerHitbox = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject;
+        yield return new WaitUntil(() => GameLevelManager.instance.Player1 != null);
+        playerController = GameLevelManager.instance.PlayerController1;
+        playerHitbox = GameLevelManager.instance.Player1.transform.Find("hitbox").gameObject;
         audioSource = GetComponent<AudioSource>();
     }
 
