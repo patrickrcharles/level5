@@ -6,9 +6,13 @@ public static class GameOptions
     static public string applicationVersion;
     static public string operatingSystemVersion;
 
+    static public List<int> playerIds;
     static public int numPlayers;
     static public int numCpuPlayers;
-    static public List<int> playerIds;
+    static public bool player1IsCpu;
+    static public bool player2IsCpu;
+    static public bool player3IsCpu;
+    static public bool player4IsCpu;
 
     // selected options
     static public string characterDisplayName;
@@ -20,7 +24,7 @@ public static class GameOptions
     static public int cheerleaderId;
     // object names
     static public string characterObjectName;
-    public static List<String> characterObjectNames;
+    static public List<string> characterObjectNames;
     static public string cheerleaderObjectName;
     static public string levelSelectedName;
     static public string levelDisplayName;
