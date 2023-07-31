@@ -14,7 +14,7 @@ public class BehaviorNpcRob : MonoBehaviour
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         enemies = GameObject.FindGameObjectsWithTag("enemy");
-        if (GameLevelManager.instance.Basketball1 != null)
+        if (GameLevelManager.instance.players != null)
         {
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
         }
