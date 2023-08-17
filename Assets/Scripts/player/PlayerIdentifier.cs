@@ -21,6 +21,8 @@ public class PlayerIdentifier : MonoBehaviour
     public BasketBall basketBallController;
     public BasketBallAuto basketBallAutoController;
     public BasketBallState basketBallState;
+    public CharacterProfile characterProfile;
+    public GameStats gameStats;
 
 
     public void setIds(int pid, int bid, int bsid, bool isCpu)
@@ -34,22 +36,26 @@ public class PlayerIdentifier : MonoBehaviour
     {
         this.player = player;
         playerController = player.GetComponent<PlayerController>();
+        characterProfile = player.GetComponent<CharacterProfile>();
     }
     public void setAutoPlayer(GameObject autoPlayer)
     {
         this.autoPlayer = autoPlayer;
         autoPlayerController = autoPlayer.GetComponent<AutoPlayerController>();
+        characterProfile = autoPlayer.GetComponent<CharacterProfile>();
     }
     public void setBasketball(GameObject basketball)
     {
         this.basketball = basketball;
         basketBallController = basketball.GetComponent<BasketBall>();
         basketBallState = basketball.GetComponent<BasketBallState>();
+        gameStats = basketball.GetComponent<GameStats>();
     }
     public void setAutoBasketball(GameObject autoBasketball)
     {
         this.autoBasketball = autoBasketball;
         basketBallAutoController = autoBasketball.GetComponent<BasketBallAuto>();
         basketBallState = autoBasketball.GetComponent<BasketBallState>();
+        gameStats = autoBasketball.GetComponent<GameStats>();
     }
 }
