@@ -122,9 +122,9 @@ public class Timer : MonoBehaviour
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
             // not consecutive game mode
-            if (!BasketBall.instance.BasketBallState.InAir
+            if (!GameLevelManager.instance.players[0].basketBallState.InAir
                 // player in air, has ball
-                && !(GameLevelManager.instance.PlayerController1.hasBasketball && GameLevelManager.instance.PlayerController1.InAir)
+                && !(GameLevelManager.instance.players[0].playerController.hasBasketball && GameLevelManager.instance.players[0].playerController.InAir)
                 // not consecutive shots game mode
                 && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
@@ -133,7 +133,7 @@ public class Timer : MonoBehaviour
             }
             // if consecutive shots mode and streak is less than 2
             if ((GameRules.instance.GameModeRequiresConsecutiveShots
-                && BasketBallShotMade.instance.ConsecutiveShotsMade < 3))
+                && GameLevelManager.instance.players[0].gameStats.ConsecutiveShotsMade < 3))
             {
                 //Debug.Log("game over");
                 GameRules.instance.GameOver = true;
