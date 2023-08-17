@@ -10,6 +10,7 @@ public class StartScreenLevelSelected : MonoBehaviour
     [SerializeField] private bool levelRequiresTimeOfDay;
     [SerializeField] private bool levelHasTraffic;
     [SerializeField] private bool levelHasWeather;
+    [SerializeField] private bool levelHasSevenPointers;
     [SerializeField] private bool isFightingLevel;
     [SerializeField] private bool isShootingLevel;
     [SerializeField] private bool isBattleRoyalLevel;
@@ -47,4 +48,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     public bool IsBattleRoyalLevel { get => isBattleRoyalLevel; }
     public bool IsCageMatchLevel { get => isCageMatchLevel;  }
     public bool CustomCamera { get => customCamera; set => customCamera = value; }
+    public bool LevelHasSevenPointers { get => levelHasSevenPointers; set => levelHasSevenPointers = value; }
 }
