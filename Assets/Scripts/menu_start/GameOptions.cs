@@ -7,7 +7,7 @@ public static class GameOptions
     static public string operatingSystemVersion;
 
     static public List<int> playerIds;
-    static public int numPlayers;
+    static public int numPlayers = 1;
     static public int numCpuPlayers;
     static public bool player1IsCpu;
     static public bool player2IsCpu;
@@ -75,6 +75,7 @@ public static class GameOptions
 
     static public bool levelRequiresTimeOfDay = true;
     static public bool levelRequiresWeather = false;
+    static public bool levelHasSevenPointers = false;
 
     static public string userName;
     static public int userid;
