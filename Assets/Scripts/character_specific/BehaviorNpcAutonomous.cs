@@ -202,10 +202,10 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         //if ((gameObject.name.Contains("flash") || gameObject.name.Contains("mouse") || gameObject.name.Contains("ghost")) 
         if (gameObject.CompareTag("auto_npc")
             && other.CompareTag("basketball")
-            && GameLevelManager.instance.IsAutoPlayer
-            && GameLevelManager.instance.AutoPlayerController.Locked)
+            && other.GetComponent<PlayerIdentifier>().isCpu
+            && other.GetComponent<PlayerIdentifier>().autoPlayer.GetComponent<AutoPlayerController>().Locked)
         {
-            GameLevelManager.instance.AutoPlayerController.Locked = false;
+            other.GetComponent<PlayerIdentifier>().autoPlayer.GetComponent<AutoPlayerController>().Locked = false;
         }
     }
 
