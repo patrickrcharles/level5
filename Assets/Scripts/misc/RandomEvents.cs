@@ -19,7 +19,7 @@ public class RandomEvents : MonoBehaviour
 
     public static void InstantiateRob()
     {
-        GameObject _playerSpawnLocation = GameLevelManager.instance.Player1;
+        GameObject _playerSpawnLocation = GameLevelManager.instance.players[0].player;
         Vector3 spawn = new Vector3(_playerSpawnLocation.transform.position.x + 1.5f,
             _playerSpawnLocation.transform.position.y,
             _playerSpawnLocation.transform.position.z);
