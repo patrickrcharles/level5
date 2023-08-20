@@ -6,12 +6,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
 public class StartManager : MonoBehaviour
 {
+
     [SerializeField]
     public string currentHighlightedButton;
     //list of all shooter profiles with player data
@@ -33,6 +35,7 @@ public class StartManager : MonoBehaviour
     private Text cheerleaderSelectUnlockText;
 
     // option select buttons, this will be disabled with touch input
+    Button numPlayersSelectButton;
     Button levelSelectButton;
     Button trafficSelectButton;
     Button hardcoreSelectButton;
@@ -53,6 +56,9 @@ public class StartManager : MonoBehaviour
     private Text playerProgressionStatsText;
     [SerializeField]
     private Text playerProgressionUpdatePointsText;
+
+    // num player select display
+    private Text numPlayersSelectOptionText;
 
     // level select display
     private Text levelSelectOptionText;
@@ -120,6 +126,10 @@ public class StartManager : MonoBehaviour
     private const string levelSelectButtonName = "level_select";
     private const string levelSelectOptionButtonName = "level_selected_name";
 
+    //level objects
+    private const string numPlayersSelectButtonName = "num_players_select";
+    private const string numPlayersSelectOptionButtonName = "num_players_selected_name";
+
     //mode objects
     private const string modeSelectButtonName = "mode_select";
     private const string modeSelectOptionButtonName = "mode_selected_name";
@@ -160,10 +170,13 @@ public class StartManager : MonoBehaviour
     private int difficultySelected;
     [SerializeField]
     private bool sniperEnabled;
+    [SerializeField]
     private int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int cheerleaderSelectedIndex;
+
+    //private int numOfPlayers; //testing with 1
 
     [SerializeField]
     public PlayerControls controls;
@@ -191,12 +204,20 @@ public class StartManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        StartCoroutine(getLoadedData());
 
+        var allGamepads = Gamepad.all;
+        foreach (Gamepad g in allGamepads) {
+            Debug.Log("Gamepad" + g.name);
+        }
+        Debug.Log("Gamepad current : "+Gamepad.current);
+
+
+        StartCoroutine(getLoadedData());
         controls = new PlayerControls();
         // find all button / text / etc and assign to variables
         getUiObjectReferences();
 
+        //numOfPlayers = 1;
         //default index for player selected
         playerSelectedIndex = GameOptions.playerSelectedIndex;
         cheerleaderSelectedIndex = GameOptions.cheerleaderSelectedIndex;
@@ -322,6 +343,7 @@ public class StartManager : MonoBehaviour
         // ================================== navigation =====================================================================
         // up, option select
         if (controls.UINavigation.Up.triggered && !buttonPressed
+            && !currentHighlightedButton.Equals(numPlayersSelectOptionButtonName)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
@@ -341,6 +363,7 @@ public class StartManager : MonoBehaviour
 
         // down, option select
         if (controls.UINavigation.Down.triggered && !buttonPressed
+            && !currentHighlightedButton.Equals(numPlayersSelectOptionButtonName)
             && !currentHighlightedButton.Equals(playerSelectOptionButtonName)
             && !currentHighlightedButton.Equals(levelSelectOptionButtonName)
             && !currentHighlightedButton.Equals(modeSelectOptionButtonName)
@@ -385,6 +408,11 @@ public class StartManager : MonoBehaviour
             buttonPressed = true;
             try
             {
+                if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
+                {
+                    changeSelectedNumPlayersUp();
+                    initializeNumPlayersDisplay();
+                }
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -449,6 +477,11 @@ public class StartManager : MonoBehaviour
             buttonPressed = true;
             try
             {
+                if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
+                {
+                    changeSelectedNumPlayersDown();
+                    initializeNumPlayersDisplay();
+                }
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerDown();
@@ -559,6 +592,7 @@ public class StartManager : MonoBehaviour
         initializeCheerleaderDisplay();
         initializePlayerDisplay();
         initializeLevelDisplay();
+        initializeNumPlayersDisplay();
         intializeModeDisplay();
         initializeTrafficOptionDisplay();
         initializeHardcoreOptionDisplay();
@@ -635,6 +669,20 @@ public class StartManager : MonoBehaviour
     private void setInitialGameOptions()
     {
         GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
+        //List<string> names = new List<string>();
+        //List<int> ids = new List<int>();
+        //for (int i = 0; i < GameOptions.numPlayers; i++)
+        //{
+        //    names.Insert(i, playerSelectedData[playerSelectedIndex].PlayerObjectName);
+        //    ids.Insert(i, playerSelectedData[playerSelectedIndex].PlayerId);
+
+        //    Debug.Log(names[i]);
+        //    Debug.Log(ids[i]);
+        //}
+        //GameOptions.characterObjectNames = names;
+        //GameOptions.playerIds = ids;
+
+        //GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
 
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeObjectName;
@@ -809,6 +857,12 @@ public class StartManager : MonoBehaviour
         levelSelectOptionText = GameObject.Find(levelSelectOptionButtonName).GetComponent<Text>();
         levelSelectOptionText.text = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
+    }
+
+    public void initializeNumPlayersDisplay()
+    {
+        numPlayersSelectOptionText = GameObject.Find(numPlayersSelectOptionButtonName).GetComponent<Text>();
+        numPlayersSelectOptionText.text = GameOptions.numPlayers.ToString();
     }
 
     public void initializeCheerleaderDisplay()
@@ -1007,6 +1061,7 @@ public class StartManager : MonoBehaviour
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
 
         GameOptions.levelRequiresWeather = levelSelectedData[levelSelectedIndex].LevelHasWeather;
+        GameOptions.levelHasSevenPointers = levelSelectedData[levelSelectedIndex].LevelHasSevenPointers;
         GameOptions.difficultySelected = difficultySelected;
         GameOptions.obstaclesEnabled = obstaclesEnabled;
 
@@ -1027,6 +1082,14 @@ public class StartManager : MonoBehaviour
         }
 
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
+
+        GameOptions.characterObjectNames = new List<string>
+        {
+            playerSelectedData[playerSelectedIndex].PlayerObjectName,
+            "kamille",
+            "zilla",
+            "johnny_dracula"
+        };
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
         //    levelSelectedIndex = 15;
@@ -1048,6 +1111,34 @@ public class StartManager : MonoBehaviour
     }
 
     // ============================  navigation functions ==============================
+
+    public void changeSelectedNumPlayersUp()
+    {
+        Debug.Log("changeSelectedNumPlayersUp");
+        // if default index (first in list), go to end of list
+        if (GameOptions.numPlayers == 4)
+        {
+            GameOptions.numPlayers = 1;
+        }
+        else
+        {
+            GameOptions.numPlayers++;
+        }
+    }
+    public void changeSelectedNumPlayersDown()
+    {
+        Debug.Log("changeSelectedNumPlayersDown");
+        // if default index (first in list), go to end of list
+        if (GameOptions.numPlayers == 1)
+        {
+            GameOptions.numPlayers = 4;
+        }
+        else
+        {
+            GameOptions.numPlayers--;
+        }
+    }
+
     public void changeSelectedPlayerUp()
     {
 
