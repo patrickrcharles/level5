@@ -6,6 +6,8 @@ using Random = System.Random;
 public class PlayerCollisions : MonoBehaviour
 {
     [SerializeField]
+    PlayerIdentifier playerIdentifier;
+    [SerializeField]
     PlayerController playerController;
     [SerializeField]
     AutoPlayerController autoPlayerController;
@@ -17,17 +19,24 @@ public class PlayerCollisions : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(GetPlayerObjects());
+        GetPlayerObjects();
     }
 
-    IEnumerator GetPlayerObjects()
+    private void GetPlayerObjects()
     {
-        yield return new WaitUntil(() => GameLevelManager.instance.PlayerController1 != null);
-        playerController = GameLevelManager.instance.PlayerController1;
-        autoPlayerController = GameLevelManager.instance.AutoPlayerController;
-        playerHealth = GameLevelManager.instance.IsAutoPlayer 
-            ?  GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>() 
-            : GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>();
+        playerIdentifier = GetComponentInParent<PlayerIdentifier>();
+        if (playerIdentifier.isCpu)
+        {
+            autoPlayerController = playerIdentifier.autoPlayer.GetComponent<AutoPlayerController>();
+        }
+        else
+        {
+            playerController = playerIdentifier.player.GetComponent<PlayerController>();
+        }
+        
+        playerHealth = playerIdentifier.isCpu
+            ? playerIdentifier.autoPlayer.GetComponentInChildren<PlayerHealth>() 
+            : playerIdentifier.player.GetComponentInChildren<PlayerHealth>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,6 +47,7 @@ public class PlayerCollisions : MonoBehaviour
             GameLevelManager.instance.Player1.transform.position 
                 = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
         }
+
         if (gameObject.CompareTag("playerHitbox")
             && (!GameOptions.battleRoyalEnabled || !GameOptions.cageMatchEnabled || !GameOptions.EnemiesOnlyEnabled)
             && playerController.InAir
@@ -65,7 +75,7 @@ public class PlayerCollisions : MonoBehaviour
         || other.transform.root.name.Contains("snake")
         || GameOptions.sniperEnabled)
         // roll for evade attack chance
-        && !rollForPlayerEvadeAttackChance(GameLevelManager.instance.CharacterProfile.Luck)
+        && !rollForPlayerEvadeAttackChance(playerController.CharacterProfile.Luck)
         && !locked)
         {
             locked = true;
