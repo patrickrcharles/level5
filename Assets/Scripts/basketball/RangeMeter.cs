@@ -3,16 +3,14 @@ using UnityEngine.UI;
 
 public class RangeMeter : MonoBehaviour
 {
-
-    [SerializeField]
+    PlayerIdentifier playerIdentifier;
+    PlayerController playerController;
+    AutoPlayerController autoPlayerController;
     CharacterProfile characterProfile;
-    [SerializeField]
     Slider slider;
     public Slider Slider => slider;
 
-    [SerializeField]
     Text sliderText;
-    Text statText;
     const string sliderTextName = "range_slider_value_text";
     const string statsTextName = "range_slider_stats_text";
 
@@ -21,28 +19,28 @@ public class RangeMeter : MonoBehaviour
 
     void Start()
     {
-        if (GameLevelManager.instance.AutoPlayer)
+        playerIdentifier = transform.root.gameObject.GetComponent<PlayerIdentifier>();
+        if (playerIdentifier.isCpu)
         {
-            characterProfile = GameLevelManager.instance.AutoPlayer.GetComponent<CharacterProfile>();
+            characterProfile = playerIdentifier.autoPlayer.GetComponent<CharacterProfile>();
+            autoPlayerController = playerIdentifier.autoPlayer.GetComponent<AutoPlayerController>();
         }
         else
         {
-            characterProfile = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>();
+            characterProfile = playerIdentifier.player.GetComponent<CharacterProfile>();
+            playerController = playerIdentifier.player.GetComponent<PlayerController>();
         }
         slider = GetComponentInChildren<Slider>();
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
-        statText = GameObject.Find(statsTextName).GetComponent<Text>();
 
-        //range = characterProfile.Range;
-
-        statText.text = "range : " + transform.root.GetComponent<CharacterProfile>().Range + " ft";
-
-        InvokeRepeating("setSliderValue", 0, 0.1f);
-
-        if (!GameLevelManager.instance.IsAutoPlayer && ( GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
+        if (!playerIdentifier.isCpu && ( GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
             || !GameOptions.gameModeHasBeenSelected))
         {
             gameObject.SetActive(false);
+        }
+        if(gameObject.activeInHierarchy)
+        {
+            InvokeRepeating("setSliderValue", 0, 0.1f);
         }
     }
 
@@ -50,10 +48,9 @@ public class RangeMeter : MonoBehaviour
     {
         if (slider != null && sliderText != null)
         {
-            float distance = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayerController.PlayerDistanceFromRim : GameLevelManager.instance.PlayerController1.PlayerDistanceFromRim;
+            float distance = playerIdentifier.isCpu ? autoPlayerController.PlayerDistanceFromRim : playerController.PlayerDistanceFromRim;
             slider.value = (characterProfile.Range / (distance * 6)) * 100;
             sliderText.text = slider.value.ToString("0") + "%";
-            //Debug.Log("slider.value : " + slider.value.ToString());
         }
     }
 }
