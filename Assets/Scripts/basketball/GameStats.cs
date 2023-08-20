@@ -49,6 +49,11 @@ public class GameStats : MonoBehaviour
     private int _sniperHits;
 
     private float _timePlayed;
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
 
     ////init from game options
     //void Start()
