@@ -5,7 +5,7 @@ public class CallBallToPlayer : MonoBehaviour
     [SerializeField]
     internal float pullSpeed;
     [SerializeField]
-    private Rigidbody basketballRigidBody;
+    //private Rigidbody basketballRigidBody;
     private Vector3 pullDirection;
 
     //private AutoPlayerController autoPlayerState;
@@ -23,8 +23,8 @@ public class CallBallToPlayer : MonoBehaviour
 
     private void Start()
     {
-        _basketBallState = BasketBallState.instance;
-        basketballRigidBody = GameObject.FindGameObjectWithTag("basketball").GetComponent<Rigidbody>();
+        //_basketBallState = BasketBallState.instance;
+        //basketballRigidBody = GameObject.FindGameObjectWithTag("basketball").GetComponent<Rigidbody>();
         Locked = false;
         pullSpeed = 2.3f;
 
@@ -40,9 +40,19 @@ public class CallBallToPlayer : MonoBehaviour
 
 
 
-    public void pullBallToPlayer()
+    public void pullBallToPlayer(GameObject basketBall)
     {
+        Rigidbody basketballRigidBody = basketBall.GetComponent<Rigidbody>();
+
         Vector3 tempDirection = basketballRigidBody.transform.position;
+        pullDirection = transform.position - tempDirection;
+        basketballRigidBody.velocity = pullDirection * pullSpeed;
+    }
+    public void pullBallToPlayerAuto(GameObject basketBallAuto)
+    {
+        Rigidbody basketballRigidBody = basketBallAuto.GetComponent<Rigidbody>();
+
+        Vector3 tempDirection = basketBallAuto.transform.position;
         pullDirection = transform.position - tempDirection;
         basketballRigidBody.velocity = pullDirection * pullSpeed;
     }
