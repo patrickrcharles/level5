@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class ShotMeter : MonoBehaviour
 {
+    PlayerIdentifier playerIdentifier;
+    PlayerController playerController;
+    AutoPlayerController autoPlayerController;
+
     private const string sliderValueOnPressName = "slider_value_text";
     private const string sliderMessageName = "slider_message_text";
-    [SerializeField]
     private Text sliderValueOnPress;
-    [SerializeField]
     private Text sliderMessageText;
 
     float sliderValueOnButtonPress;
@@ -44,14 +46,16 @@ public class ShotMeter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
-        if (GameLevelManager.instance.IsAutoPlayer)
+        playerIdentifier = GetComponentInParent<PlayerIdentifier>();
+        if (playerIdentifier.isCpu)
         {
-            shooterProfile = GameLevelManager.instance.AutoPlayer.GetComponent<CharacterProfile>();
+            shooterProfile = playerIdentifier.autoPlayer.GetComponent<CharacterProfile>();
+            autoPlayerController = playerIdentifier.autoPlayer.GetComponent<AutoPlayerController>();
         }
         else
         {
-            shooterProfile = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>();
+            shooterProfile = playerIdentifier.player.GetComponent<CharacterProfile>();
+            playerController = playerIdentifier.player.GetComponent<PlayerController>();
         }
         slider = GetComponentInChildren<Slider>();
         meterFillTime = calculateSliderFillTime(); // time for shot meter active, based on player jump/time until jump peak
@@ -60,28 +64,28 @@ public class ShotMeter : MonoBehaviour
         sliderMessageText = transform.Find(sliderMessageName).GetComponent<Text>();
         sliderMessageText.text = "";
 
-        //if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled
-        //    || GameOptions.battleRoyalEnabled || !GameOptions.gameModeHasBeenSelected)
-        //{
-        //    meterRed.SetActive(false);
-        //    meterYellow.SetActive(false);
-        //    meterGreen.SetActive(false);
-        //    meterHandle.SetActive(false);
-        //    sliderValueOnPress.enabled = false;
-        //    sliderMessageText.enabled = false;
-        //}
+        if (GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled
+            || GameOptions.battleRoyalEnabled /*|| !GameOptions.gameModeHasBeenSelected*/ || playerIdentifier.isCpu)
+        {
+            meterRed.SetActive(false);
+            meterYellow.SetActive(false);
+            meterGreen.SetActive(false);
+            meterHandle.SetActive(false);
+            sliderValueOnPress.enabled = false;
+            sliderMessageText.enabled = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         // if player grounded reset slider
-        if (GameLevelManager.instance.Player1 && GameLevelManager.instance.PlayerController1.Grounded)
+        if (playerIdentifier.player && playerController.Grounded)
         {
             slider.value = 0;
         }
         // if player grounded reset slider
-        if (GameLevelManager.instance.AutoPlayer && GameLevelManager.instance.AutoPlayerController.Grounded)
+        if (playerIdentifier.autoPlayer && autoPlayerController.Grounded)
         {
             slider.value = 0;
         }
@@ -115,9 +119,9 @@ public class ShotMeter : MonoBehaviour
         if (meterEnded)
         {
             locked = false;
-            if (GameLevelManager.instance.IsAutoPlayer)
+            if (playerIdentifier.isCpu)
             {
-                sliderValueOnButtonPress = BasketBallAuto.instance.rollForAutoPlayerSliderValue();
+                sliderValueOnButtonPress = playerIdentifier.basketBallAutoController.rollForAutoPlayerSliderValue();
             }
             else
             {
@@ -151,7 +155,6 @@ public class ShotMeter : MonoBehaviour
         get => meterEndTime;
         set => meterEndTime = value;
     }
-
     float calculateSliderFillTime()
     {
         float time = shooterProfile.JumpForce / Physics.gravity.y;
@@ -162,7 +165,6 @@ public class ShotMeter : MonoBehaviour
         get => meterStarted;
         set => meterStarted = value;
     }
-
     public bool MeterEnded
     {
         get => meterEnded;
@@ -178,7 +180,6 @@ public class ShotMeter : MonoBehaviour
     {
         StartCoroutine(toggleSliderMessageText(2, message));
     }
-
     IEnumerator toggleSliderValueOnPressText(float seconds, String message)
     {
         sliderValueOnPress.text = message;
