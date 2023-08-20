@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
@@ -53,8 +54,22 @@ namespace Assets.Scripts.database
         public string SniperModeName;
         public int SniperShots;
         public int Sniperhits;
+        // add versus mode stats to save
+        public int p1TotalPoints;
+        public int p2TotalPoints;
+        public int p3TotalPoints;
+        public int p4TotalPoints;
+        public string firstPlace;
+        public string secondPlace;
+        public string thirdPlace;
+        public string fourthPlace;
+        public int p1IsCpu;
+        public int p2IsCpu;
+        public int p3IsCpu;
+        public int p4IsCpu;
+        public int numPlayers;
 
-        public HighScoreModel convertBasketBallStatsToModel(GameStats stats)
+        public HighScoreModel convertBasketBallStatsToModel(List<PlayerIdentifier> pi)
         {
             int trafficEnabled = 0;
             if (GameOptions.trafficEnabled)
@@ -88,17 +103,17 @@ namespace Assets.Scripts.database
             model.Os = SystemInfo.operatingSystem;
             model.Version = Application.version;
             model.Date = DateTime.Now.ToString();
-            model.Time = stats.TimePlayed;
+            model.Time = pi[0].gameStats.TimePlayed;
             model.Difficulty = GameOptions.difficultySelected;
-            model.TotalPoints = stats.TotalPoints;
-            model.LongestShot = stats.LongestShotMade;
-            model.TotalDistance = stats.TotalDistance;
-            model.MaxShotMade = stats.ShotMade;
-            model.MaxShotAtt = stats.ShotAttempt;
-            model.ConsecutiveShots = stats.MostConsecutiveShots;
+            model.TotalPoints = pi[0].gameStats.TotalPoints;
+            model.LongestShot = pi[0].gameStats.LongestShotMade;
+            model.TotalDistance = pi[0].gameStats.TotalDistance;
+            model.MaxShotMade = pi[0].gameStats.ShotMade;
+            model.MaxShotAtt = pi[0].gameStats.ShotAttempt;
+            model.ConsecutiveShots = pi[0].gameStats.MostConsecutiveShots;
             model.TrafficEnabled = trafficEnabled;
             model.HardcoreEnabled = hardcoreEnabled;
-            model.EnemiesKilled = stats.EnemiesKilled;
+            model.EnemiesKilled = pi[0].gameStats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
             //if (IsConnectedToInternet())
@@ -110,17 +125,17 @@ namespace Assets.Scripts.database
             //    model.Ipaddress = "noConnectivity" + RandomString(8);
             //}
             model.Ipaddress = GetExternalIpAdress();
-            model.TwoMade = stats.TwoPointerMade;
-            model.TwoAtt = stats.TwoPointerAttempts;
-            model.ThreeMade = stats.ThreePointerMade;
-            model.ThreeAtt = stats.ThreePointerAttempts;
-            model.FourMade = stats.FourPointerMade;
-            model.FourAtt = stats.FourPointerAttempts;
-            model.SevenMade = stats.SevenPointerMade;
-            model.SevenAtt = stats.SevenPointerAttempts;
-            model.BonusPoints = stats.BonusPoints;
-            model.MoneyBallMade = stats.MoneyBallMade;
-            model.MoneyBallAtt = stats.MoneyBallAttempts;
+            model.TwoMade = pi[0].gameStats.TwoPointerMade;
+            model.TwoAtt = pi[0].gameStats.TwoPointerAttempts;
+            model.ThreeMade = pi[0].gameStats.ThreePointerMade;
+            model.ThreeAtt = pi[0].gameStats.ThreePointerAttempts;
+            model.FourMade = pi[0].gameStats.FourPointerMade;
+            model.FourAtt = pi[0].gameStats.FourPointerAttempts;
+            model.SevenMade = pi[0].gameStats.SevenPointerMade;
+            model.SevenAtt = pi[0].gameStats.SevenPointerAttempts;
+            model.BonusPoints = pi[0].gameStats.BonusPoints;
+            model.MoneyBallMade = pi[0].gameStats.MoneyBallMade;
+            model.MoneyBallAtt = pi[0].gameStats.MoneyBallAttempts;
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
             model.Userid = GameOptions.userid;
@@ -145,11 +160,73 @@ namespace Assets.Scripts.database
                 model.SniperMode = 3;
                 model.SniperModeName = "disintegration ray";
             }
-            model.SniperShots = stats.SniperShots;
-            model.Sniperhits = stats.SniperHits;
+            model.SniperShots = pi[0].gameStats.SniperShots;
+            model.Sniperhits = pi[0].gameStats.SniperHits;
+            Debug.Log("GameOptions.numPlayers : " + GameOptions.numPlayers);
+            Debug.Log("pi[0].isCpu : " + pi[0].isCpu);
+            Debug.Log("pi[0]. : " + pi[0].characterProfile.PlayerDisplayName);
+            Debug.Log("pi[1]. : " + pi[1].characterProfile.PlayerDisplayName);
+
+            if (GameOptions.numPlayers > 0)
+            {
+                model.p1TotalPoints = pi[0].gameStats.TotalPoints;
+                model.firstPlace = pi[0].characterProfile.PlayerDisplayName;
+                if (pi[0].isCpu) { model.p1IsCpu = 1; }
+                else { model.p1IsCpu = 0; }
+            }
+            else
+            {
+                model.p1TotalPoints = 0;
+                model.firstPlace = "";
+                model.p1IsCpu = 99;
+            }
+            //player2
+            if (GameOptions.numPlayers > 1)
+            {
+                model.p2TotalPoints = pi[1].gameStats.TotalPoints;
+                model.secondPlace = pi[1].characterProfile.PlayerDisplayName;
+                if (pi[1].isCpu) { model.p2IsCpu = 1; }
+                else { model.p2IsCpu = 0; }
+            }
+            else
+            {
+                model.p2TotalPoints = 0;
+                model.secondPlace = "";
+                model.p2IsCpu = 99;
+            }
+            //player 3
+            if (GameOptions.numPlayers > 2)
+            {
+                model.p3TotalPoints = pi[2].gameStats.TotalPoints;
+                model.thirdPlace = pi[0].characterProfile.PlayerDisplayName;
+                if (pi[2].isCpu) { model.p3IsCpu = 1; }
+                else { model.p3IsCpu = 0; }
+            }
+            else
+            {
+                model.p3TotalPoints = 0;
+                model.thirdPlace = "";
+                model.p3IsCpu = 99;
+            }
+            //player 4
+            if (GameOptions.numPlayers > 3)
+            {
+                model.p4TotalPoints = pi[3].gameStats.TotalPoints;
+                model.fourthPlace = pi[3].characterProfile.PlayerDisplayName;
+                if (pi[3].isCpu) { model.p4IsCpu = 1; }
+                else { model.p4IsCpu = 0; }
+            }
+            else
+            {
+                model.p4TotalPoints = 0;
+                model.fourthPlace = "";
+                model.p4IsCpu = 99;
+            }
+            model.numPlayers = GameOptions.numPlayers;
 
             return model;
         }
+       
 
         public string GetExternalIpAdress()
         {
