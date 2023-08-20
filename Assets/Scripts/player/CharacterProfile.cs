@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
-
+    [SerializeField] private bool isCpu;
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
@@ -55,7 +55,7 @@ public class CharacterProfile : MonoBehaviour
     void Start()
     {
         // only init if level 1 or 2. other levels still for testing
-        if (GameOptions.gameModeHasBeenSelected)
+        if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
             intializeShooterStatsFromProfile();
         }
