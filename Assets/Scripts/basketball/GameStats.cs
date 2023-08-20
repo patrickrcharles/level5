@@ -3,14 +3,7 @@ using UnityEngine;
 
 public class GameStats : MonoBehaviour
 {
-    //private int _playerId;
-    //private string _playerName;
-
-    private int _levelId;
-    private string _levelName;
-
     private int _experienceGained;
-
     private int _totalPoints;
     private int _bonusPoints;
     private int _twoPointerMade;
@@ -18,7 +11,6 @@ public class GameStats : MonoBehaviour
     private int _fourPointerMade;
     private int _sevenPointerMade;
     private int _moneyBallMade;
-
     private int _twoPointerAttempts;
     private int _threePointerAttempts;
     private int _fourPointerAttempts;
@@ -50,10 +42,15 @@ public class GameStats : MonoBehaviour
 
     private float _timePlayed;
     [SerializeField]
+    int _consecutiveShotsMade = 0;
     [SerializeField]
+    int _currentShotMade = 0;
     [SerializeField]
+    int _currentShotAttempts = 0;
     [SerializeField]
+    int _expectedShotMade = 1;
     [SerializeField]
+    int _expectedShotAttempts = 1;
 
     ////init from game options
     //void Start()
@@ -64,6 +61,51 @@ public class GameStats : MonoBehaviour
     //    PlayerName = GameOptions.characterObjectName;
     //}
 
+    public void calculateConsecutiveShot(BasketBallState basketBallState)
+    {
+        // get current state of shots made/attempted
+        _currentShotMade = (int)ShotMade;
+        _currentShotAttempts = (int)ShotAttempt;
+
+        // if current is == expected made/attempt, increment consecutive and not a 2 point shot
+        // 
+        if (_currentShotMade == _expectedShotMade
+            && _currentShotAttempts == _expectedShotAttempts
+            && !basketBallState.TwoAttempt)
+        {
+            _consecutiveShotsMade++;
+            // increment expected values for next shot
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;
+        }
+        // else, not consecutive shot. get current, increment for next expected consecutive shot
+        else
+        {
+            _consecutiveShotsMade = 1;
+            // increment expected values for next shot
+            _expectedShotMade = _currentShotMade + 1;
+            _expectedShotAttempts = _currentShotAttempts + 1;
+        }
+        // if current consecutive greater than previous high consecutive
+        if (_consecutiveShotsMade > MostConsecutiveShots)
+        {
+            MostConsecutiveShots = _consecutiveShotsMade;
+        }
+    }
+
+    public float getTotalPointAccuracy()
+    {
+        float accuracy;
+        if (ShotAttempt > 0)
+        {
+            accuracy = (float)ShotMade / ShotAttempt;
+            return (accuracy * 100);
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public int getExperienceGainedFromSession()
     {
         int experience = 0;
@@ -248,7 +290,6 @@ public class GameStats : MonoBehaviour
         set => _sevenPointerAttempts = value;
     }
 
-
     public int MoneyBallMade
     {
         get => _moneyBallMade;
@@ -282,4 +323,5 @@ public class GameStats : MonoBehaviour
     public int BonusPoints { get => _bonusPoints; set => _bonusPoints = value; }
     public int SniperShots { get => _sniperShots; set => _sniperShots = value; }
     public int SniperHits { get => _sniperHits; set => _sniperHits = value; }
+    public int ConsecutiveShotsMade { get => _consecutiveShotsMade; set => _consecutiveShotsMade = value; }
 }
