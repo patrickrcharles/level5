@@ -6,6 +6,11 @@ using Touch = UnityEngine.Touch;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
+    [SerializeField]
     // components 
     private Animator anim;
     private AnimatorStateInfo currentStateInfo;
