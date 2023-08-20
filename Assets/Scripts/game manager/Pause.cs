@@ -283,7 +283,7 @@ public class Pause : MonoBehaviour
         // convert basketball stats to high score model
         HighScoreModel dBHighScoreModel = new HighScoreModel();
         HighScoreModel dBHighScoreModelTemp = new HighScoreModel();
-        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(BasketBall.instance.GameStats);
+        dBHighScoreModelTemp = dBHighScoreModel.convertBasketBallStatsToModel(GameLevelManager.instance.players);
 
         DBConnector.instance.savePlayerGameStats(dBHighScoreModelTemp);
         // update all time stats
