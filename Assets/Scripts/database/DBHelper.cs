@@ -111,12 +111,13 @@ public class DBHelper : MonoBehaviour
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
 
+            // todo : add p1-p4 toal points/1ST-4TH PLACE/winnIsCpu to query and insert, then into create database
             string sqlQuery1 =
                "INSERT INTO HighScores( scoreidUnique, modeid, characterid, character, levelid, level, os, version ,date, time, " +
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName, sniperEnabled, sniperMode, sniperModeName," +
-               "sniperHits, sniperShots)  " +
+               "sniperHits, sniperShots, p1TotalPoints,p2TotalPoints,p3TotalPoints,p4TotalPoints,first,second,third,fourth,p1IsCpu,p2IsCpu,p3IsCpu,p4IsCpu,numPlayers)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
                + "', '" + stats.Characterid
@@ -156,7 +157,20 @@ public class DBHelper : MonoBehaviour
                + stats.SniperMode + "','"
                + stats.SniperModeName + "','"
                + stats.Sniperhits + "','"
-               + stats.SniperShots + "')";
+               + stats.SniperShots + "','"
+               + stats.p1TotalPoints + "','"
+               + stats.p2TotalPoints + "','"
+               + stats.p3TotalPoints + "','"
+               + stats.p4TotalPoints + "','"
+               + stats.firstPlace + "','"
+               + stats.secondPlace + "','"
+               + stats.thirdPlace + "','"
+               + stats.fourthPlace + "','"
+               + stats.p1IsCpu + "','"
+               + stats.p2IsCpu + "','"
+               + stats.p3IsCpu + "','"
+               + stats.p4IsCpu + "','"
+               + GameOptions.numPlayers + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1721,7 +1735,7 @@ public class DBHelper : MonoBehaviour
                 sqlQuery = "Select  * From " + Constants.LOCAL_DATABASE_tableName_highscores
                     + " WHERE submittedToApi = 0 "
                     + " AND modeid != 99"
-                    + " AND userName != 0";
+                    + " AND userName != ''";
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -1774,6 +1788,19 @@ public class DBHelper : MonoBehaviour
                     highscore.SniperModeName = reader.GetString(39);
                     highscore.Sniperhits = reader.GetInt32(40);
                     highscore.SniperShots = reader.GetInt32(41);
+                    highscore.p1TotalPoints = reader.GetInt32(42);
+                    highscore.p2TotalPoints = reader.GetInt32(43);
+                    highscore.p3TotalPoints = reader.GetInt32(44);
+                    highscore.p4TotalPoints = reader.GetInt32(45);
+                    highscore.firstPlace = reader.GetString(46);
+                    highscore.secondPlace = reader.GetString(47);
+                    highscore.thirdPlace = reader.GetString(48);
+                    highscore.fourthPlace = reader.GetString(49);
+                    highscore.p1IsCpu = reader.GetInt32(50);
+                    highscore.p2IsCpu = reader.GetInt32(51);
+                    highscore.p3IsCpu = reader.GetInt32(52);
+                    highscore.p4IsCpu = reader.GetInt32(53);
+                    highscore.numPlayers = reader.GetInt32(54);
 
                     // if username empty on unsubmitted score
                     // but user logged in [gameoptions.username != null/empty

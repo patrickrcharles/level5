@@ -266,7 +266,20 @@ public class DBConnector : MonoBehaviour
                 "sniperMode  INTEGER DEFAULT 0, " +
                 "sniperModeName  TEXT DEFAULT none, " +
                 "sniperHits  INTEGER DEFAULT 0, " +
-                "sniperShots  INTEGER DEFAULT 0); " +
+                "sniperShots  INTEGER DEFAULT 0," +
+                "p1TotalPoints INTEGER DEFAULT 0," +
+                "p2TotalPoints INTEGER DEFAULT 0," +
+                "p3TotalPoints INTEGER DEFAULT 0," +
+                "p4TotalPoints INTEGER DEFAULT 0," +
+                "first  TEXT DEFAULT NULL, " +
+                "second  TEXT DEFAULT NULL, " +
+                "third  TEXT DEFAULT NULL, " +
+                "fourth  TEXT DEFAULT NULL, " +
+                "p1IsCpu  INTEGER DEFAULT 0," +
+                "p2IsCpu  INTEGER DEFAULT 0," +
+                "p3IsCpu  INTEGER DEFAULT 0," +
+                "p4IsCpu  INTEGER DEFAULT 0," +
+                "numPlayers  INTEGER DEFAULT 0);" +
 
                 "DROP TABLE if exists Achievements; " +
 
