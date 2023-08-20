@@ -1,21 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameLevelManager : MonoBehaviour
 {
+    public bool isMultiplePlayersTotalPoints;
+    public int currentHighScoreTotalPoints;
+    public int numPlayers;
     // this is to keep a reference to player in game manager 
     // that can be retrieved across all scripts
     [SerializeField]
-    private GameObject _player;
+    public List<PlayerIdentifier> players;
+    [SerializeField]
+    private PlayerIdentifier _player1;
+    [SerializeField]
+    private PlayerIdentifier _player2;
+    [SerializeField]
+    private PlayerIdentifier _player3;
+    [SerializeField]
+    private PlayerIdentifier _player4;
+    [SerializeField]
+    private PlayerIdentifier _basketball1;
+    [SerializeField]
+    private PlayerIdentifier _basketball2;
+    [SerializeField]
+    private PlayerIdentifier _basketball3;
+    [SerializeField]
+    private PlayerIdentifier _basketball4;
+    [SerializeField]
     private GameObject _autoPlayer;
-    private PlayerController _playerController;
+    [SerializeField]
+    private PlayerController _playerController1;
+    [SerializeField]
+    private PlayerController _playerController2;
+    [SerializeField]
     private AutoPlayerController _autoPlayerController;
     private CharacterProfile _characterProfile;
     private PlayerHealth _playerHealth;
     [SerializeField]
     private PlayerAttackQueue _playerAttackQueue;
     [SerializeField]
+    private List<GameStats> gameStatsList;
     private GameStats _gameStats;
 
     //BasketBall objects
@@ -25,33 +53,35 @@ public class GameLevelManager : MonoBehaviour
 
     //spawn locations
     private GameObject _basketballSpawnLocation;
-    private GameObject _playerSpawnLocation;
+    public GameObject _playerSpawnLocation1;
+    public GameObject _playerSpawnLocation2;
+    public GameObject _playerSpawnLocation3;
+    public GameObject _playerSpawnLocation4;
     private GameObject _cheerleaderSpawnLocation;
 
-    private BasketBall _basketball;
-    //private GameObject _basketballObject;
     private Vector3 _basketballRimVector;
 
-
-    private GameObject _playerClone;
+    private GameObject _playerClone1;
+    private GameObject _playerClone2;
+    private GameObject _playerClone3;
+    private GameObject _playerClone4;
     private GameObject _cheerleaderClone;
 
     GameObject[] _npcObjects;
     GameObject[] _vehicleObjects;
 
-    PlayerControls controls;
+    private PlayerControls controls;
     FloatingJoystick joystick;
 
     float terrainHeight;
 
-    const string basketBallPrefabPath = "Prefabs/basketball/basketball";
-    const string basketBallPrefabAutoPath = "Prefabs/basketball/basketballAuto";
-
     public static GameLevelManager instance;
     private bool _locked;
 
-    [SerializeField]
-    bool isCPUplayer;
+    string playerPrefabPath1;
+    string playerPrefabPath2;
+    string playerPrefabPath3;
+    string playerPrefabPath4;
 
     private void OnEnable()
     {
@@ -71,20 +101,29 @@ public class GameLevelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        // mapped controls
         controls = new PlayerControls();
+
+        //test 
+        //GameOptions.numPlayers = 4;
+        numPlayers = GameOptions.numPlayers;
+        //Debug.Log("numPlayers : " + numPlayers);
+        GameOptions.player2IsCpu = true;
+        GameOptions.player3IsCpu = true;
+        GameOptions.player4IsCpu = true;
+
+        // spawn locations
+        _playerSpawnLocation1 = GameObject.Find("player_spawn_location1");
+        _playerSpawnLocation2 = GameObject.Find("player_spawn_location2");
+        _playerSpawnLocation3 = GameObject.Find("player_spawn_location3");
+        _playerSpawnLocation4 = GameObject.Find("player_spawn_location4");
+        _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
+        _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
 
         //ui touch controls
         if (GameObject.FindGameObjectWithTag("joystick") != null)
         {
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
         }
-        _gameStats = GetComponent<GameStats>();
-
-        // spawn locations
-        _playerSpawnLocation = GameObject.Find("player_spawn_location");
-        _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
-        _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
 
         // if player doesnt exists, spawn default Player
         checkPlayerPrefabExists();
@@ -102,57 +141,48 @@ public class GameLevelManager : MonoBehaviour
 
     private void Start()
     {
-        _basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
-        _basketballRimVector = GameObject.Find("rim").transform.position;
         // return to this if n
         GameOptions.previousSceneName = Constants.SCENE_NAME_level_00_loading;
-
+        if (numPlayers > 1)
+        {
+            isMultiplePlayersTotalPoints = true;
+        }
         // analytic event
         if (!String.IsNullOrEmpty(GameOptions.levelSelectedName))
         {
             AnaylticsManager.LevelLoaded(GameOptions.levelSelectedName);
         }
 
-        //disable lighting if necessary
-        // something like if gameoptions.lightingenabled
-
-        //Light[] lights = GameObject.FindObjectsOfType<Light>();
-        //if(lights.Length > 0)
-        //{
-        //    foreach (Light light in lights)
-        //    {
-        //        //Debug.Log("disable : " + light.name);
-        //        light.enabled = false;
-        //    }
-        //    RenderSettings.ambientLight = Color.white;
-        //}
-
         _locked = false;
         //set up player/basketball read only references for use in other classes
         if (GameObject.FindWithTag("Player") != null)
         {
-            _player = GameObject.FindWithTag("Player");
-            _playerController = _player.GetComponent<PlayerController>();
-            _characterProfile = _player.GetComponent<CharacterProfile>();
-            _playerAttackQueue = _player.GetComponent<PlayerAttackQueue>();
-            _playerHealth = _player.GetComponentInChildren<PlayerHealth>();
-            Anim = Player.GetComponentInChildren<Animator>();
-
+            //_player1 = GameObject.FindWithTag("Player");
+            _playerController1 = _player1.GetComponent<PlayerController>();
+            _characterProfile = _player1.GetComponent<CharacterProfile>();
+            _playerAttackQueue = _player1.GetComponent<PlayerAttackQueue>();
+            _playerHealth = _player1.GetComponentInChildren<PlayerHealth>();
+            //Anim = Player1.GetComponentInChildren<Animator>();
+            _playerController1.isCPU = false;
             //terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
-            terrainHeight = Player.transform.position.y;
+            terrainHeight = Player1.transform.position.y;
+            //players.Add(_player1);
         }
         else
         {
-            if(SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
+            if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
             {
+                Debug.Log("scene");
                 terrainHeight = 145;
             }
             if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_20_jacksonville)
             {
+                Debug.Log("scene");
                 terrainHeight = 200;
             }
             else
             {
+                Debug.Log("scene");
                 terrainHeight = 0;
             }
         }
@@ -162,11 +192,8 @@ public class GameLevelManager : MonoBehaviour
             _autoPlayer = GameObject.FindWithTag("autoPlayer");
             _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
             _playerHealth = _autoPlayer.GetComponentInChildren<PlayerHealth>();
-            isCPUplayer = true;
-        }
-        else
-        {
-            isCPUplayer = false;
+            _autoPlayerController.isCPU = true;
+            //players.Add(_autoPlayer);
         }
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
@@ -181,7 +208,7 @@ public class GameLevelManager : MonoBehaviour
             GameOptions.enemiesEnabled = true;
             GameObject.Find("basketball_goal").SetActive(false);
         }
-        _basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
+        _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
         _basketballRimVector = GameObject.Find("rim").transform.position;
     }
 
@@ -194,7 +221,7 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            PlayerController.ToggleRun();
+            PlayerController1.ToggleRun();
             _locked = false;
         }
 
@@ -205,12 +232,30 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            BasketBall.instance.toggleUiStats();
-            if (GameLevelManager.instance.isCPUplayer) { BasketBallAuto.instance.toggleUiStats(); } 
-            else { BasketBall.instance.toggleUiStats(); }
+            BasketBall.instance.toggleUiStats(); 
             _locked = false;
         }
     }
+
+    public List<PlayerIdentifier> getSortedGameStatsList()
+    {
+        List<PlayerIdentifier> sorted = players.OrderByDescending(x => x.gameStats.TotalPoints).ToList();
+        if (isMultiplePlayersTotalPoints)
+        {
+            currentHighScoreTotalPoints = sorted[0].gameStats.TotalPoints;
+        }
+        return sorted;
+    }
+
+    //public int getLeaderHighScore()
+    //{
+    //    List<PlayerIdentifier> sorted = players.OrderByDescending(x => x.gameStats.TotalPoints).ToList();
+    //    return sorted[0].gameStats.TotalPoints;
+    //}
+    //static int sortByTotalPoints(GameStats g1, GameStats g2)
+    //{
+    //    return g1.TotalPoints.CompareTo(g2.TotalPoints);
+    //}
 
     private void checkPlayerIsNpcInScene()
     {
@@ -258,72 +303,240 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkBasketballPrefabExists()
     {
-        if (GameObject.FindWithTag("basketball") == null && !isCPUplayer)
+        // get number of players. cpu and human
+        // list of players and auto playera
+
+        // spawn for each, basketball/bballauto
+        _basketballPrefabAuto = Resources.Load(Constants.PREFAB_PATH_BASKETBALL_cpu) as GameObject;
+        _basketballPrefab = Resources.Load(Constants.PREFAB_PATH_BASKETBALL_human) as GameObject;
+
+        GameObject go1 = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+        _basketball1 = go1.GetComponent<PlayerIdentifier>();
+        _basketball1.setIds(_player1.pid, _player1.pid, _player1.pid, false);
+        _basketball1.setBasketball(go1);
+        players[0].setBasketball(go1);
+        _basketball1.setPlayer(players[0].player);
+
+        // player needs basketball reference
+        // cpu player needs auto bball ref.
+
+        if (numPlayers > 1)
         {
-            _basketballPrefab = Resources.Load(basketBallPrefabPath) as GameObject;
-            _basketball = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity).GetComponent<BasketBall>();
+            if (GameOptions.player2IsCpu)
+            {
+                GameObject go2 = Instantiate(_basketballPrefabAuto, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                _basketball2 = go2.GetComponent<PlayerIdentifier>();
+                _basketball2.setIds(_player2.pid, _player2.pid, _player2.pid, true);
+                _basketball2.setAutoBasketball(go2);
+                players[1].setAutoBasketball(go2);
+                _basketball2.setAutoPlayer(players[1].autoPlayer);
+
+            }
+            else
+            {
+                GameObject go2 = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                _basketball2 = go2.GetComponent<PlayerIdentifier>();
+                _basketball2.setIds(_player2.pid, _player2.pid, _player2.pid, false);
+                _basketball2.setBasketball(go2);
+                players[1].setBasketball(go2);
+                _basketball2.setPlayer(players[1].player);
+            }
         }
-        if (GameObject.FindWithTag("basketball") == null && isCPUplayer)
+        if (numPlayers > 2)
         {
-            _basketballPrefab = Resources.Load(basketBallPrefabAutoPath) as GameObject;
-            _basketball =  Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity).GetComponent<BasketBall>();
+            if (GameOptions.player3IsCpu)
+            {
+                GameObject go3 = Instantiate(_basketballPrefabAuto, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                _basketball3 = go3.GetComponent<PlayerIdentifier>();
+                _basketball3.setIds(_player3.pid, _player3.pid, _player3.pid, true);
+                _basketball3.setAutoBasketball(go3);
+                players[2].setAutoBasketball(go3);
+                _basketball3.setAutoPlayer(players[2].autoPlayer);
+            }
+            else
+            {
+                GameObject go3 = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                _basketball3 = go3.GetComponent<PlayerIdentifier>();
+                _basketball3.setIds(_player3.pid, _player3.pid, _player3.pid, false);
+                _basketball3.setBasketball(go3);
+                players[2].setBasketball(go3);
+                _basketball3.setPlayer(players[2].player);
+            }
+        }
+        if (numPlayers > 3)
+        {
+            if (GameOptions.player4IsCpu)
+            {
+                GameObject go4 = Instantiate(_basketballPrefabAuto, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                Debug.Log("spawn bball cpu");
+                _basketball4 = go4.GetComponent<PlayerIdentifier>();
+                _basketball4.setIds(_player4.pid, _player4.pid, _player4.pid, true);
+                _basketball4.setAutoBasketball(go4);
+                players[3].setAutoBasketball(go4);
+                _basketball4.setAutoPlayer(players[3].autoPlayer);
+            }
+            else
+            {
+                GameObject go4 = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
+                Debug.Log("spawn bball cpu");
+                _basketball4 = go4.GetComponent<PlayerIdentifier>();
+                _basketball4.setIds(_player4.pid, _player4.pid, _player4.pid, false);
+                _basketball4.setBasketball(go4);
+                players[3].setBasketball(go4);
+                _basketball4.setPlayer(players[3].player);
+            }
         }
     }
 
     private void checkPlayerPrefabExists()
     {
-        // if player selected is not null / player not selected
-        if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
-        {
-            string playerPrefabPath = "Prefabs/characters/players/player_" + GameOptions.characterObjectName;
-            _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-        }
+        int pid = 0;
+        //if player selected is not null / player not selected
+        // * note - need to check if cpu players
+        //if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
+        //{
+        //foreach (string s in GameOptions.characterObjectNames)
+        //{
+        //    Debug.Log("name : " + s);
+        //}
+        //Debug.Log("GameOptions.player2IsCpu : " + GameOptions.player2IsCpu);
+        //Debug.Log("GameOptions.player3IsCpu : " + GameOptions.player3IsCpu);
+        //Debug.Log("GameOptions.player4IsCpu : " + GameOptions.player4IsCpu);
+
+        //GameOptions.characterObjectNames = new List<string>
+        //{
+        //    "drblood",
+        //    "kamille",
+        //    "zilla",
+        //    "ian"
+        //};
 
         // if no player, spawn player
-        if (GameObject.FindWithTag("Player") == null  && GameObject.FindWithTag("autoPlayer") == null)
+        if (GameOptions.characterObjectNames[0] == null)
         {
-            if (_playerClone != null)
-            {
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                // spawn default character
-                string playerPrefabPath = "Prefabs/characters/players/player_drblood";
-                _playerClone = Resources.Load(playerPrefabPath) as GameObject;
-                Instantiate(_playerClone, _playerSpawnLocation.transform.position, Quaternion.identity);
-            }
+            GameOptions.numPlayers = 1;
+            playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + "drblood";
         }
-        if (GameObject.FindWithTag("autoPlayer") != null)
+        else
         {
-            _autoPlayer = GameObject.FindWithTag("autoPlayer");
-            _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
-            isCPUplayer = true;
+            playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[0];
         }
-        if (GameObject.FindWithTag("Player") != null)
+        
+        _playerClone1 = Resources.Load(playerPrefabPath1) as GameObject;
+        GameObject go1 = Instantiate(_playerClone1, _playerSpawnLocation1.transform.position, Quaternion.identity);
+
+        _player1 = go1.GetComponent<PlayerIdentifier>();
+        _player1.setIds(pid, pid, pid, false);
+        _player1.player = go1;
+        _player1.setPlayer(_player1.player);
+
+        players.Add(_player1);
+        pid++;
+
+        //var p1 = PlayerInput.Instantiate(go1, controlScheme: "Gamepad", pairWithDevice: Gamepad.all[0]);
+
+        //playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
+        //_playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+        //GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
+
+        //var p2 = PlayerInput.Instantiate(go2, controlScheme: "Keyboard1", pairWithDevice :Keyboard.current);
+
+
+        if (numPlayers > 1 && GameOptions.player2IsCpu)
         {
-            _player = GameObject.FindWithTag("Player");
-            _playerController = _player.GetComponent<PlayerController>();
-            isCPUplayer = false;
+            playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
+            _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+            GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
+
+            _player2 = go2.GetComponent<PlayerIdentifier>();
+            _player2.setIds(pid, pid, pid, true);
+            _player2.autoPlayer = go2;
+            _player2.setAutoPlayer(_player2.autoPlayer);
+            players.Add(_player2);
+            pid++;
+        }
+        if (numPlayers > 1 && !GameOptions.player2IsCpu)
+        {
+            playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[1];
+            _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+            GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
+
+            _player2 = go2.GetComponent<PlayerIdentifier>();
+            _player2.setIds(pid, pid, pid, false);
+            _player2.player = go2;
+            _player2.setPlayer(_player2.player);
+            players.Add(_player2);
+            pid++;
+        }
+        if (numPlayers > 2 && GameOptions.player3IsCpu)
+        {
+            playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[2];
+            _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
+            GameObject go3 = Instantiate(_playerClone3, _playerSpawnLocation3.transform.position, Quaternion.identity);
+
+            _player3 = go3.GetComponent<PlayerIdentifier>();
+            _player3.setIds(pid, pid, pid, true);
+            _player3.autoPlayer = go3;
+            _player3.setAutoPlayer(_player3.autoPlayer);
+            players.Add(_player3);
+            pid++;
+        }
+        if (numPlayers > 2 && !GameOptions.player3IsCpu)
+        {
+            playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[2];
+            _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
+            GameObject go3 = Instantiate(_playerClone3, _playerSpawnLocation3.transform.position, Quaternion.identity);
+
+            _player3 = go3.GetComponent<PlayerIdentifier>();
+            _player3.setIds(pid, pid, pid, false);
+            _player3.player = go3;
+            _player3.setPlayer(_player3.player);
+            players.Add(_player3);
+            pid++;
+        }
+        if (numPlayers > 3 && GameOptions.player4IsCpu)
+        {
+            playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[3];
+            _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
+            GameObject go4 = Instantiate(_playerClone4, _playerSpawnLocation4.transform.position, Quaternion.identity);
+            _player4 = go4.GetComponent<PlayerIdentifier>();
+
+            _player4.setIds(pid, pid, pid, true);
+            _player4.autoPlayer = go4;
+            _player4.setAutoPlayer(_player4.autoPlayer);
+            players.Add(_player4);
+            pid++;
+        }
+        if (numPlayers > 3 && !GameOptions.player4IsCpu)
+        {
+            playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[3];
+            _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
+            GameObject go4 = Instantiate(_playerClone4, _playerSpawnLocation4.transform.position, Quaternion.identity);
+
+            _player4 = go4.GetComponent<PlayerIdentifier>();
+            _player4.setIds(pid, pid, pid, false);
+            _player4.player = go4;
+            _player4.setPlayer(_player4.player);
+            players.Add(_player4);
+            pid++;
         }
     }
 
-    public GameObject Player => _player;
-
-    public PlayerController PlayerController => _playerController;
-    public AutoPlayerController AutoPlayerController => _autoPlayerController;
+    public PlayerIdentifier Player1 => _player1;
+    public PlayerIdentifier Player2 => _player2;
+    public PlayerController PlayerController1 => _playerController1;
+    public PlayerController PlayerController2 => _playerController2;
     public Animator Anim { get; private set; }
     public bool GameOver { get; set; }
     public PlayerControls Controls { get => controls; set => controls = value; }
     public FloatingJoystick Joystick { get => joystick; }
-    public BasketBall Basketball { get => _basketball; set => _basketball = value; }
     public Vector3 BasketballRimVector { get => _basketballRimVector; set => _basketballRimVector = value; }
-    public CharacterProfile CharacterProfile { get => _characterProfile; set => _characterProfile = value; }
     public PlayerAttackQueue PlayerAttackQueue { get => _playerAttackQueue; set => _playerAttackQueue = value; }
     public PlayerHealth PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
-    public bool IsAutoPlayer { get => isCPUplayer; set => isCPUplayer = value; }
     public GameObject AutoPlayer { get => _autoPlayer; set => _autoPlayer = value; }
     public GameStats GameStats { get => _gameStats; set => _gameStats = value; }
-    public float TerrainHeight { get => terrainHeight;}
-    public GameObject PlayerSpawnLocation { get => _playerSpawnLocation; set => _playerSpawnLocation = value; }
+    public float TerrainHeight { get => terrainHeight; }
+    public GameObject PlayerSpawnLocation { get => _playerSpawnLocation1; set => _playerSpawnLocation1 = value; }
+    public PlayerIdentifier Player3 { get => _player3; set => _player3 = value; }
+    public PlayerIdentifier Player4 { get => _player4; set => _player4 = value; }
 }
