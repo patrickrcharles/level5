@@ -60,7 +60,7 @@ public class PlayerAnimationEvents : MonoBehaviour
             capsuleCollider = transform.root.GetComponent<CapsuleCollider>();
         }
 
-        playerController = GameLevelManager.instance.PlayerController1;
+        playerController = GameLevelManager.instance.players[0].playerController;
         audioSource = GetComponent<AudioSource>();
 
         if (transform.Find(attackBoxText) != null)

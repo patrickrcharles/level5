@@ -6,9 +6,11 @@ public class PlayerAttackPosition : MonoBehaviour
     public GameObject enemyEngaged;
     public int attackPositionId;
     public Vector3 position;
+    PlayerIdentifier playerIdentifier;
 
     private void Start()
     {
+        playerIdentifier = GetComponentInParent<PlayerIdentifier>();
         InvokeRepeating("updateAttackPositionTransform", 0, 1);
     }
 
@@ -18,7 +20,7 @@ public class PlayerAttackPosition : MonoBehaviour
         {
             engaged = false;
         }
-        Vector3 playerTransform = GameLevelManager.instance.IsAutoPlayer ? GameLevelManager.instance.AutoPlayer.transform.position : GameLevelManager.instance.Player1.transform.position;
+        Vector3 playerTransform = playerIdentifier.isCpu ? playerIdentifier.autoPlayer.transform.position : playerIdentifier.player.transform.position;
         if (attackPositionId == 1)
         {
             transform.position = new Vector3(playerTransform.x - 0.6f, playerTransform.y, playerTransform.z - 0.25f);
