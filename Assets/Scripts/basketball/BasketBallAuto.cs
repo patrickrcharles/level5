@@ -7,27 +7,34 @@ using Random = System.Random;
 
 public class BasketBallAuto : MonoBehaviour
 {
+    [SerializeField]
+    public int pid;
+    [SerializeField]
+    public int bid;
+    [SerializeField]
+    public int bsid;
     SpriteRenderer spriteRenderer;
     [SerializeField]
     new Rigidbody rigidbody;
     AudioSource audioSource;
     [SerializeField]
     BasketBallState basketBallState;
+    [SerializeField]
     GameStats gameStats;
+    [SerializeField]
     Animator anim;
-
+    //ShotMeter shotMeter;
+    [SerializeField]
     GameObject basketBallSprite;
+    [SerializeField]
     GameObject basketBallPosition;
     GameObject basketBallTarget;
     //[SerializeField]
     //GameObject player;
     [SerializeField]
     GameObject autoPlayer;
-
     [SerializeField]
-    PlayerController playerState;
-    [SerializeField]
-    AutoPlayerController autoPlayerState;
+    AutoPlayerController autoPlayerController;
     CharacterProfile characterProfile;
     GameObject dropShadow;
 
@@ -50,22 +57,31 @@ public class BasketBallAuto : MonoBehaviour
 
     public static BasketBallAuto instance;
 
+    private void Awake()
+    {
+        //autoPlayer = GameLevelManager.instance.AutoPlayer;
+        //autoPlayerState = GameLevelManager.instance.AutoPlayerController;
+        //basketBallState = GetComponent<BasketBallState>();
+        //pid = autoPlayerState.Pid;
+        //basketBallState.PlayerId = pid;
+        //basketBallState.isCpu = true;
+        //Debug.Log("pid : " + pid + "  bid : " + bid);
+    }
     // =========================================================== Start() ========================================================
     // Use this for initialization
     void Start()
     {
         instance = this;
-
-        if (GameLevelManager.instance.IsAutoPlayer)
-        {
-            autoPlayer = GameLevelManager.instance.AutoPlayer;
-            autoPlayerState = GameLevelManager.instance.AutoPlayerController;          
-            characterProfile = CharacterProfile.instance;
-        }
-
-        rigidbody = GetComponent<Rigidbody>();
-        gameStats = GameLevelManager.instance.GameStats;
-        basketBallState = BasketBallState.instance;
+        autoPlayer = GetComponent<PlayerIdentifier>().autoPlayer;
+        autoPlayerController = autoPlayer.GetComponent<AutoPlayerController>();
+        characterProfile = autoPlayerController.GetComponent<CharacterProfile>();
+        basketBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
+        basketBallState = GetComponent<BasketBallState>();
+        basketBallState.isCpu = true;
+        bsid = pid;
+        //shotMeter = Assets.Scripts.Utility.UtilityFunctions.FindDeepChild(autoPlayer.transform, "shot_meter").GetComponent<ShotMeter>();
+        rigidbody = gameObject.GetComponent<Rigidbody>();
+        gameStats = GetComponent<GameStats>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
@@ -74,7 +90,7 @@ public class BasketBallAuto : MonoBehaviour
         dropShadow = transform.root.Find("drop shadow").gameObject;
 
         //objects
-        basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
+        //basketBallSprite = GameObject.Find("basketball_sprite"); //used to reset drop shadow. on launch, euler position gets changed
         basketBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
 
         //bool flags
@@ -88,27 +104,27 @@ public class BasketBallAuto : MonoBehaviour
         // cap ball speed
         maxBasketballSpeed = 25f;
         // check for ui stats ON/OFF. i know this is sloppy. its just a quick test
-        if (GameObject.Find("ui_stats") != null)
-        {
-            shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
-            scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
-            uiStatsBackground = GameObject.Find("textBackground");
+        //if (GameObject.Find("ui_stats") != null)
+        //{
+        //    shootProfileText = GameObject.Find("shooterProfileTextObject").GetComponent<Text>();
+        //    scoreText = GameObject.Find("shootStatsTextObject").GetComponent<Text>();
+        //    uiStatsBackground = GameObject.Find("textBackground");
 
-            if (UiStatsEnabled)
-            {
-                updateScoreText();
-                updateShooterProfileText();
-                uiStatsBackground.SetActive(true);
-            }
-            else
-            {
-                scoreText.text = "";
-                shootProfileText.text = "";
-                uiStatsBackground.SetActive(false);
-            }
-        }
-        InvokeRepeating(nameof(CheckIsBallFacingGoal), 0, 0.5f);
-        InvokeRepeating(nameof(displayUiStats), 0, 0.5f);
+        //    if (UiStatsEnabled)
+        //    {
+        //        updateScoreText();
+        //        updateShooterProfileText();
+        //        uiStatsBackground.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        scoreText.text = "";
+        //        shootProfileText.text = "";
+        //        uiStatsBackground.SetActive(false);
+        //    }
+        //}
+        //InvokeRepeating("CheckIsBallFacingGoalAuto", 0, 0.5f);
+        //InvokeRepeating("displayUiStats", 0, 0.5f);
 
         if (GameOptions.EnemiesOnlyEnabled)
         {
@@ -123,7 +139,7 @@ public class BasketBallAuto : MonoBehaviour
     private void Update()
     {
         // get speed for basketball animation
-        //checkIsBallFacingGoal();
+        CheckIsBallFacingGoalAuto();
         if (!GameOptions.EnemiesOnlyEnabled)
         {
             if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
@@ -134,7 +150,7 @@ public class BasketBallAuto : MonoBehaviour
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
 
             // change this to reduce opacity
-            if (!autoPlayerState.hasBasketball)
+            if (!autoPlayerController.hasBasketball)
             {
                 spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // is about 100 % transparent
                 dropShadow.SetActive(true);
@@ -143,26 +159,27 @@ public class BasketBallAuto : MonoBehaviour
             }
 
             //if player has ball and hasnt shot
-            if (autoPlayerState.hasBasketball
-                && autoPlayerState.currentState != autoPlayerState.inAirDunkState)//&& !basketBallState.Thrown)
+            if (autoPlayerController.hasBasketball
+                && autoPlayerController.currentState != autoPlayerController.inAirDunkState)//&& !basketBallState.Thrown)
             {
                 basketBallState.CanPullBall = false;
                 spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
                 dropShadow.SetActive(false);
-                autoPlayerState.SetPlayerAnim("hasBasketball", true);
+                autoPlayerController.SetPlayerAnim("hasBasketball", true);
                 //autoPlayerState.setPlayerAnim("walking", false);
-                autoPlayerState.SetPlayerAnim("moonwalking", false);
+                autoPlayerController.SetPlayerAnim("moonwalking", false);
 
                 // move basketball to launch position and disable sprite
-                transform.position = new Vector3(basketBallState.BasketBallPosition.transform.position.x,
-                    basketBallState.BasketBallPosition.transform.position.y,
-                    basketBallState.BasketBallPosition.transform.position.z);
+                transform.position = new Vector3(basketBallPosition.transform.position.x,
+                    basketBallPosition.transform.position.y,
+                    basketBallPosition.transform.position.z);
             }
         }
     }
 
-    public void CheckIsBallFacingGoal()
+    public void CheckIsBallFacingGoalAuto()
     {
+        //Debug.Log("+++++++++++++++++++++speed :"+rigidbody.velocity.sqrMagnitude);
         anim.SetFloat("speed", rigidbody.velocity.sqrMagnitude);
         //bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - rigidbody.position.x;
 
@@ -204,9 +221,9 @@ public class BasketBallAuto : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // collision : basketball + rim
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim")
+        if (gameObject.CompareTag("basketballAuto") && other.gameObject.CompareTag("basketballrim")
             && playHitRimSound
-            && !autoPlayerState.hasBasketball)
+            && !autoPlayerController.hasBasketball)
         {
             playHitRimSound = false;
             audioSource.PlayOneShot(SFXBB.instance.basketballHitRim);
@@ -215,8 +232,8 @@ public class BasketBallAuto : MonoBehaviour
             basketBallState.Locked = false;
         }
         // collision : basketball + ground
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("ground")
-            && !autoPlayerState.hasBasketball)
+        if (gameObject.CompareTag("basketballAuto") && other.gameObject.CompareTag("ground")
+            && !autoPlayerController.hasBasketball)
         {
             basketBallState.CanPullBall = true;
             //reset rotation
@@ -227,8 +244,8 @@ public class BasketBallAuto : MonoBehaviour
             audioSource.PlayOneShot(SFXBB.instance.basketballBounce);
         }
         // collision : basketball + fence
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("fence")
-            && !autoPlayerState.hasBasketball)
+        if (gameObject.CompareTag("basketballAuto") && other.gameObject.CompareTag("fence")
+            && !autoPlayerController.hasBasketball)
         {
             audioSource.PlayOneShot(SFXBB.instance.basketballHitFence);
             basketBallState.CanPullBall = true;
@@ -239,7 +256,7 @@ public class BasketBallAuto : MonoBehaviour
 
     private void OnCollisionExit(Collision other)
     {
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("basketballrim") && !playHitRimSound)
+        if (gameObject.CompareTag("basketballAuto") && other.gameObject.CompareTag("basketballrim") && !playHitRimSound)
         {
             playHitRimSound = true;
         }
@@ -248,11 +265,11 @@ public class BasketBallAuto : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if basketball enters player hitbox
-        if (gameObject.CompareTag("basketball")
+        if (gameObject.CompareTag("basketballAuto")
             && other.gameObject.CompareTag("autoPlayerHitbox")
             && !basketBallState.Thrown)
         {
-            autoPlayerState.hasBasketball = true;
+            autoPlayerController.hasBasketball = true;
             basketBallState.Thrown = false;
         }
     }
@@ -260,7 +277,7 @@ public class BasketBallAuto : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // if basketball exits player hitbox
-        if (gameObject.CompareTag("basketball") && other.gameObject.CompareTag("playerHitbox") &&
+        if (gameObject.CompareTag("basketballAuto") && other.gameObject.CompareTag("playerHitbox") &&
             basketBallState.Thrown)
         {
             basketBallState.Thrown = true;
@@ -271,14 +288,15 @@ public class BasketBallAuto : MonoBehaviour
 
     public void shootBasketBall(bool two, bool three, bool four, bool seven)
     {
+        //Debug.Log("-----shootBasketBall");
         // set side or front shooting animation
-        if (autoPlayerState.FacingFront) // facing straight toward bball goal
+        if (autoPlayerController.FacingFront) // facing straight toward bball goal
         {
-            autoPlayerState.SetPlayerAnimTrigger("basketballShootFront");
+            autoPlayerController.SetPlayerAnimTrigger("basketballShootFront");
         }
         else // side of goal, relative postion
         {
-            autoPlayerState.SetPlayerAnimTrigger("basketballShoot");
+            autoPlayerController.SetPlayerAnimTrigger("basketballShoot");
         }
 
         // reset ball rotation
@@ -308,27 +326,27 @@ public class BasketBallAuto : MonoBehaviour
         updateBasketBallStateShotTypeOnShoot(two, three, four, seven);
 
         // player on shot marker and game mode requires markers
-        if (basketBallState.PlayerOnMarker && GameRules.instance.PositionMarkersRequired)
-        {
-            // on shoot. 
-            basketBallState.PlayerOnMarkerOnShoot = true;
-            basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
-            // update shot attempt stat for marker position shot from
-            GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
+        //if (basketBallState.PlayerOnMarker && GameRules.instance.PositionMarkersRequired)
+        //{
+        //    // on shoot. 
+        //    basketBallState.PlayerOnMarkerOnShoot = true;
+        //    basketBallState.OnShootShotMarkerId = basketBallState.CurrentShotMarkerId;
+        //    // update shot attempt stat for marker position shot from
+        //    GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt++;
 
-            if (basketBallState.PlayerOnMarkerOnShoot
-                && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
-                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
-            {
-                GameStats.MoneyBallAttempts++;
-            }
+        //    if (basketBallState.PlayerOnMarkerOnShoot
+        //        && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
+        //        && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
+        //    {
+        //        GameStats.MoneyBallAttempts++;
+        //    }
 
-            if (GameRules.instance.MoneyBallEnabled)
-            {
-                basketBallState.MoneyBallEnabledOnShoot = true;
-                gameStats.MoneyBallAttempts++;
-            }
-        }
+        //    if (GameRules.instance.MoneyBallEnabled)
+        //    {
+        //        basketBallState.MoneyBallEnabledOnShoot = true;
+        //        gameStats.MoneyBallAttempts++;
+        //    }
+        //}
         //calculate shot distance 
         Vector3 tempPos = new Vector3(basketBallState.BasketBallTarget.transform.position.x,
             0, basketBallState.BasketBallTarget.transform.position.z);
@@ -340,40 +358,42 @@ public class BasketBallAuto : MonoBehaviour
 
         //reset state flags
         basketBallState.Thrown = true;
-        CallBallToPlayer.instance.Locked = false;
+        autoPlayerController.CallBallToPlayer.Locked = false;
     }
 
     public void updateBasketBallStateShotTypeOnShoot(bool two, bool three, bool four, bool seven)
     {
+        //Debug.Log("*********************************************** 2 : " + two);
+        //Debug.Log("*********************************************** 3 : " + three);
+        //Debug.Log("*********************************************** 4 : " + four);
+        //Debug.Log("*********************************************** 7 : " + seven);
+
         // identify is in 2 or 3 point range for stat counters
-        if (two && !three)
+        if (two && !three )
         {
             basketBallState.TwoAttempt = true;
             gameStats.TwoPointerAttempts++;
             gameStats.ShotAttempt++;
-            return;
         }
         if (three && !four)
         {
             basketBallState.ThreeAttempt = true;
             gameStats.ThreePointerAttempts++;
             gameStats.ShotAttempt++;
-            return;
         }
         if (four && !three)
         {
             basketBallState.FourAttempt = true;
             gameStats.FourPointerAttempts++;
             gameStats.ShotAttempt++;
-            return;
         }
         if (seven)
         {
             basketBallState.SevenAttempt = true;
             gameStats.SevenPointerAttempts++;
             gameStats.ShotAttempt++;
-            return;
         }
+        //GameRules.instance.updatePlayerScore();
     }
 
     // =================================== Launch ball function =======================================
@@ -426,7 +446,7 @@ public class BasketBallAuto : MonoBehaviour
 
 
         // if >= 95 and NOT critical (release stat factored in)
-        if (autoPlayerState.Shotmeter.SliderValueOnButtonPress >= 95
+        if (autoPlayerController.Shotmeter.SliderValueOnButtonPress >= 95
             && !critical)
         {
             accuracyModifierX = 0;
@@ -436,7 +456,7 @@ public class BasketBallAuto : MonoBehaviour
             shotMeterMessageY = "+ release modifier";
         }
         // NOT critical and NOT >= 95 (get X, Y modifiers)
-        if (autoPlayerState.Shotmeter.SliderValueOnButtonPress < 95
+        if (autoPlayerController.Shotmeter.SliderValueOnButtonPress < 95
             && !critical)
         {
             accuracyModifierX = getAccuracyModifier();
@@ -483,7 +503,7 @@ public class BasketBallAuto : MonoBehaviour
             }
         }
 
-        ShotMeter.instance.displaySliderMessageText(shotMeterMessage);
+        autoPlayerController.Shotmeter.displaySliderMessageText(shotMeterMessage);
 
         float xVector = 0 + accuracyModifierX;
         float yVector = Vy + accuracyModifierY; // + (accuracyModifier * shooterProfile.shootYVariance);
@@ -496,9 +516,9 @@ public class BasketBallAuto : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         rigidbody.velocity = globalVelocity;
 
-        autoPlayerState.hasBasketball = false;
-        autoPlayerState.SetPlayerAnim("hasBasketball", false);
-        autoPlayerState.shootTrigger = false;
+        autoPlayerController.hasBasketball = false;
+        autoPlayerController.SetPlayerAnim("hasBasketball", false);
+        autoPlayerController.shootTrigger = false;
     }
 
     // ============================ Functions and Properties ==========================================
@@ -509,10 +529,10 @@ public class BasketBallAuto : MonoBehaviour
         // get position of ball when shot
         GameObject currentBallPosition = autoPlayer.transform.Find("basketBall_position").gameObject;
         // wait for shot meter to finish
-        yield return new WaitUntil(() => autoPlayerState.Shotmeter.MeterEnded == true);
+        yield return new WaitUntil(() => autoPlayerController.Shotmeter.MeterEnded == true);
         //yield return new WaitUntil(() => Time.time >= (autoPlayerState.Shotmeter.MeterStartTime + 0.5f));
         //launch ball to goal      
-        Launch(basketBallPosition);
+        Launch(currentBallPosition);
     }
 
     // ========================== shot accuracy functions ==========================================
@@ -586,7 +606,7 @@ public class BasketBallAuto : MonoBehaviour
         float clutchBonus = clutchBonusRandom.Next(1, 10);
         // variation % + consecutive shots (increase percent). shot streak ups percent
         // consecutive shots bonus capped at 10
-        int consecShotsModifier = BasketBallShotMade.instance.ConsecutiveShotsMade;
+        int consecShotsModifier = gameStats.ConsecutiveShotsMade;
         if (consecShotsModifier > 10)
         {
             consecShotsModifier = 10;
@@ -602,7 +622,7 @@ public class BasketBallAuto : MonoBehaviour
     private float getAccuracyModifier()
     {
         int direction = getRandomPositiveOrNegative();
-        int slider = Mathf.CeilToInt(autoPlayerState.Shotmeter.SliderValueOnButtonPress);
+        int slider = Mathf.CeilToInt(autoPlayerController.Shotmeter.SliderValueOnButtonPress);
 
         float sliderModifer = (100 - slider) * 0.025f;
         float accuracyModifier = 0;
@@ -699,7 +719,7 @@ public class BasketBallAuto : MonoBehaviour
         {
             scoreText.text = "";
             shootProfileText.text = "";
-            uiStatsBackground.SetActive(false);
+            //uiStatsBackground.SetActive(false);
             return false;
         }
     }
@@ -740,7 +760,7 @@ public class BasketBallAuto : MonoBehaviour
                          (Math.Round(gameStats.LongestShotMade, 2)).ToString("0.00") + " ft." + "\n" +
                          "criticals rolled : " + gameStats.CriticalRolled + " / " + gameStats.ShotAttempt
                          + "  " + getCriticalPercentage().ToString("0.00") + "%\n"
-                         + "consecutive shots made : " + BasketBallShotMade.instance.ConsecutiveShotsMade + "\n"
+                         + "consecutive shots made : " + gameStats.ConsecutiveShotsMade + "\n"
                          + "current exp : " + gameStats.getExperienceGainedFromSession();
     }
 

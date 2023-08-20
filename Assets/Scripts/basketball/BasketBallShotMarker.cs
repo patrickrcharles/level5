@@ -3,19 +3,17 @@ using UnityEngine.UI;
 
 public class BasketBallShotMarker : MonoBehaviour
 {
-    //* note if var starts with underscore, it will have a publicly accessible property at bottom of file
-    // get/set. sometimes get only
-
-    // main state bool
     [SerializeField]
     private bool _playerOnMarker;
+    [SerializeField]
+    private bool _autoPlayerOnMarker;
     private bool markerEnabled; // flag used to indicate max shots have not been achieved
 
     private GameObject basketBallTarget;
     private SpriteRenderer spriteRenderer;
-    [SerializeField] private BasketBallState basketBallState;
+    private BasketBallState basketBallState;
 
-    [SerializeField] private int positionMarkerId; // identitfy specific marker
+    [SerializeField] public int positionMarkerId; // identitfy specific marker
     // spcific marker's stats
     [SerializeField] private int _shotMade;
     [SerializeField] private int _shotAttempt;
@@ -24,9 +22,9 @@ public class BasketBallShotMarker : MonoBehaviour
 
     // flags used to idenify marker
     // true value determines whether or not marker is active in Gamerules.cs, aprox. line 250
-    [SerializeField] private bool shotTypeThree;
-    [SerializeField] private bool shotTypeFour;
-    [SerializeField] private bool shotTypeSeven;
+    [SerializeField] public bool shotTypeThree;
+    [SerializeField] public bool shotTypeFour;
+    [SerializeField] public bool shotTypeSeven;
 
     private bool detectCollisions;
     private float distanceFromRim;
@@ -35,6 +33,8 @@ public class BasketBallShotMarker : MonoBehaviour
     private Text displayCurrentMarkerStats;
     private const string displayStatsTextObject = "shot_marker_stats";
 
+    public bool locked = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +42,7 @@ public class BasketBallShotMarker : MonoBehaviour
         _shotAttempt = 0;
 
         // get reference for accessing basketball state
-        basketBallState =BasketBallState.instance;
+        basketBallState = GameLevelManager.instance.players[0].basketBallState;
         displayCurrentMarkerStats = GameObject.Find(displayStatsTextObject).GetComponent<Text>();
         displayCurrentMarkerStats.text = "";
 
@@ -88,24 +88,14 @@ public class BasketBallShotMarker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // in theory, disables all update checking unless required by game mode
-
         // if time's up
         if (Time.timeScale <= 0)
         {
             displayCurrentMarkerStats.text = "";
         }
         // this needs to be turned off if ball hits ground
-        if (PlayerOnMarker)
+        if (PlayerOnMarker /*|| _autoPlayerOnMarker && GameOptions.numPlayers >= 1*/)
         {
-            if (GameLevelManager.instance.IsAutoPlayer)
-            {
-                BasketBallAuto.instance.BasketBallState.CurrentShotMarkerId = positionMarkerId;
-            }
-            else
-            {
-                BasketBall.instance.BasketBallState.CurrentShotMarkerId = positionMarkerId;
-            }
             // if marker not completed yet
             if (markerEnabled)
             {
@@ -113,7 +103,7 @@ public class BasketBallShotMarker : MonoBehaviour
             }
         }
 
-        // if game mode IS 3/4/all point contest
+        // if game mode is 3/4/all point contest
         if (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest)
@@ -121,8 +111,8 @@ public class BasketBallShotMarker : MonoBehaviour
             // max shot attempts reached
             // player NOT in air, player does NOT have ball, ball ! in air
             if (ShotAttempt >= maxShotAttempt & markerEnabled
-                && !GameLevelManager.instance.PlayerController.hasBasketball
-                && !GameLevelManager.instance.PlayerController.InAir
+                && !GameLevelManager.instance.players[0].playerController.hasBasketball
+                && !GameLevelManager.instance.players[0].playerController.InAir
                 && !basketBallState.InAir)
             {
                 markerEnabled = false;
@@ -156,7 +146,6 @@ public class BasketBallShotMarker : MonoBehaviour
                 // check if last remaining shot marker
                 if (GameRules.instance.IsGameOver())
                 {
-
                     //GameRules.instance.CounterTime = Timer.instance.CurrentTime;
                     GameRules.instance.GameOver = true;
                 }
@@ -167,18 +156,19 @@ public class BasketBallShotMarker : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("other : " + other.tag);
         // if player enters shot marker area
         if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("shot_marker")
             && detectCollisions)
         {
             _playerOnMarker = true;
+            other.GetComponentInParent<PlayerIdentifier>().basketball.GetComponent<BasketBallState>().CurrentShotMarkerId = positionMarkerId;
         }
         // if player enters shot marker area
         if (other.gameObject.CompareTag("autoPlayerHitbox") && gameObject.CompareTag("shot_marker")
             && detectCollisions)
         {
-            _playerOnMarker = true;
+            _autoPlayerOnMarker = true;
+            other.GetComponentInParent<PlayerIdentifier>().autoBasketball.GetComponent<BasketBallState>().CurrentShotMarkerId = positionMarkerId;
         }
     }
 
@@ -195,7 +185,8 @@ public class BasketBallShotMarker : MonoBehaviour
         if (other.gameObject.CompareTag("autoPlayerHitbox") && gameObject.CompareTag("shot_marker")
                 && detectCollisions)
         {
-            _playerOnMarker = false;
+            _autoPlayerOnMarker = false;
+            locked = false;
             setDisplayText(); // update display to empty
         }
     }
@@ -203,7 +194,7 @@ public class BasketBallShotMarker : MonoBehaviour
     private void setDisplayText()
     {
         // if player on marker and markers necessary for game mode and IS 3,4,All point contest
-        if (PlayerOnMarker && markerEnabled
+        if ((PlayerOnMarker || _autoPlayerOnMarker) && markerEnabled
             && (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))
@@ -214,7 +205,7 @@ public class BasketBallShotMarker : MonoBehaviour
                                              + "remaining : " + (maxShotAttempt - ShotAttempt);
         }
         // if player on marker and markers necessary for game mode and NOT 3,4,All point contest
-        if (PlayerOnMarker && markerEnabled
+        if ((PlayerOnMarker || _autoPlayerOnMarker) && markerEnabled
             && !(GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
             || GameRules.instance.GameModeAllPointContest))
@@ -225,7 +216,7 @@ public class BasketBallShotMarker : MonoBehaviour
                                              + "remaining : " + (maxShotMade - ShotMade);
         }
         // if player not on marker or marker disabled (max shots made)
-        if (!PlayerOnMarker || !markerEnabled)//&& markerEnabled)
+        if (!(PlayerOnMarker || _autoPlayerOnMarker) || !markerEnabled)//&& markerEnabled)
         {
             displayCurrentMarkerStats.text = "markers remaining : " + GameRules.instance.MarkersRemaining + "\n"
                                              //   + "current marker : \n"
@@ -240,7 +231,7 @@ public class BasketBallShotMarker : MonoBehaviour
     {
         // get distance from rim
         //basketBallTarget = basketBallState.BasketBallTarget;
-        basketBallTarget = BasketBallState.instance.BasketBallTarget;
+        basketBallTarget = GameObject.Find("basketBall_target");
         distanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
 
         if (distanceFromRim > Constants.DISTANCE_3point)
@@ -265,7 +256,6 @@ public class BasketBallShotMarker : MonoBehaviour
         }
     }
 
-
     public int ShotMade
     {
         get => _shotMade;
@@ -285,14 +275,11 @@ public class BasketBallShotMarker : MonoBehaviour
     }
     public int MaxShotMade => maxShotMade;
     public bool PlayerOnMarker => _playerOnMarker;
-
     public bool ShotTypeThree => shotTypeThree;
-
     public bool ShotTypeFour => shotTypeFour;
-
     public bool ShotTypeSeven => shotTypeSeven;
-
     public bool MarkerEnabled { get => markerEnabled; set => markerEnabled = value; }
+    public bool AutoPlayerOnMarker { get => _autoPlayerOnMarker; set => _autoPlayerOnMarker = value; }
 }
 
 
