@@ -144,7 +144,7 @@ public class EnemyProjectile : MonoBehaviour
             if (other.gameObject.CompareTag("playerHitbox") && sniperProjectile)
             {
                 // if player hit, increase count
-                BasketBall.instance.GameStats.SniperHits++;
+                GameLevelManager.instance.Player1.gameStats.SniperHits++;
             }
 
             // instantiate at position player was standing when shot occurred
