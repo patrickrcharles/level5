@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SniperManager : MonoBehaviour
 {
+    [SerializeField]
     private GameObject playerHitbox;
     private AudioSource audioSource;
     private Vector3 playerPosAtShoot;
+    [SerializeField]
     private PlayerController playerController;
 
     [SerializeField]
@@ -22,28 +24,30 @@ public class SniperManager : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         StartCoroutine(LoadVariables());
     }
     private void Start()
     {
         //GameOptions.sniperEnabled = true; //test flag
         //// auto start autonomous sniper system
-        if (GameOptions.sniperEnabled)
-        {
-            instance = this;
-            InvokeRepeating("startSniper", 0, 0.5f);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+        //if (GameOptions.sniperEnabled)
+        //{
+        //    instance = this;
+        //    InvokeRepeating("startSniper", 0, 0.5f);
+        //}
+        //else
+        //{
+        //    gameObject.SetActive(false);
+        //}
     }
 
     IEnumerator LoadVariables()
     {
-        yield return new WaitUntil(() => GameLevelManager.instance.Player1 != null);
-        playerController = GameLevelManager.instance.PlayerController1;
-        playerHitbox = GameLevelManager.instance.Player1.transform.Find("hitbox").gameObject;
+        Debug.Log("load vars");
+        yield return new WaitUntil(() => GameLevelManager.instance.players[0] != null);
+        playerController = GameLevelManager.instance.players[0].playerController;
+        playerHitbox = GameLevelManager.instance.players[0].transform.Find("hitbox").gameObject;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -67,14 +71,14 @@ public class SniperManager : MonoBehaviour
         }
     }
 
-    IEnumerator StartSniperBullet(float shootdelay)
+    public IEnumerator StartSniperBullet(float shootdelay)
     {
         // wait until player is not knocked down
         yield return new WaitUntil( ()=> playerController.currentState != playerController.knockedDownState);
         // add shoot delay
         yield return new WaitForSeconds(shootdelay);
         // update stats
-        BasketBall.instance.GameStats.SniperShots++;
+        GameLevelManager.instance.players[0].gameStats.SniperShots++;
 
         // get player position to attack
         PlayerPosAtShoot = playerHitbox.transform.position;
@@ -98,7 +102,7 @@ public class SniperManager : MonoBehaviour
     {
         yield return new WaitForSeconds(shootdelay);
 
-        BasketBall.instance.GameStats.SniperShots++;
+        GameLevelManager.instance.players[0].gameStats.SniperShots++;
 
         // get player position to attack
         PlayerPosAtShoot = playerHitbox.transform.position;
