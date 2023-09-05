@@ -19,7 +19,7 @@ public class RangeMeter : MonoBehaviour
 
     void Start()
     {
-        playerIdentifier = transform.root.gameObject.GetComponent<PlayerIdentifier>();
+        playerIdentifier = GameLevelManager.instance.players[0];
         if (playerIdentifier.isCpu)
         {
             characterProfile = playerIdentifier.autoPlayer.GetComponent<CharacterProfile>();
@@ -32,6 +32,8 @@ public class RangeMeter : MonoBehaviour
         }
         slider = GetComponentInChildren<Slider>();
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
+
+        InvokeRepeating("setSliderValue", 0, 0.1f);
 
         if (!playerIdentifier.isCpu && ( GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
             || !GameOptions.gameModeHasBeenSelected))
