@@ -38,7 +38,7 @@ public class BodyGuardHealth : MonoBehaviour
 
         if (GameOptions.hardcoreModeEnabled)
         {
-            maxBodyGuardHealth += (maxBodyGuardHealth / 4);
+            maxBodyGuardHealth += Mathf.FloorToInt(maxBodyGuardHealth / 4);
         }
         health = maxBodyGuardHealth;
         bodyGuardController = transform.parent.GetComponent<BodyGuardController>();
