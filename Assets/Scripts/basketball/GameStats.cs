@@ -168,6 +168,10 @@ public class GameStats : MonoBehaviour
         {
             ExperienceGained = ExperienceGained /2;
         }
+        if (GameOptions.difficultySelected == 2)
+        {
+            ExperienceGained *= Mathf.FloorToInt(ExperienceGained * 1.5f);
+        }
         return ExperienceGained;
     }
 
