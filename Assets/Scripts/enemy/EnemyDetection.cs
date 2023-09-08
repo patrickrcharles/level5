@@ -38,9 +38,9 @@ public class EnemyDetection : MonoBehaviour
         if (enemyController.DistanceFromPlayer < enemySightDistance
             && enemyDetectionEnabled)
         {
-            if (PlayerAttackQueue.instance.AttackSlotOpen && !attacking)
+            if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.AttackSlotOpen && !attacking)
             {
-                StartCoroutine(PlayerAttackQueue.instance.RequestAddToQueue(gameObject));
+                StartCoroutine(GameLevelManager.instance.PlayerController1.PlayerAttackQueue.RequestAddToQueue(gameObject));
             }
         }
         // if player NOT within enemy sight distance
@@ -52,7 +52,7 @@ public class EnemyDetection : MonoBehaviour
             if (attacking)
             {
                 attacking = false;
-                StartCoroutine(PlayerAttackQueue.instance.removeEnemyFromAttackQueue(gameObject, AttackPositionId));
+                StartCoroutine(GameLevelManager.instance.PlayerController1.PlayerAttackQueue.removeEnemyFromAttackQueue(gameObject, AttackPositionId));
             }
         }
     }

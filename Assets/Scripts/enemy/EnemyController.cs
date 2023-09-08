@@ -176,13 +176,13 @@ public class EnemyController : MonoBehaviour
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
         // ================== enemy facing player ==========================
-        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards.Count == 0 && !GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuardEngaged)
         {
-            relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
+            relativePositionToPlayer = GameLevelManager.instance.Player1.transform.position.x - transform.position.x;
         }
         else
         {
-            relativePositionToPlayer = PlayerAttackQueue.instance.BodyGuards[0].transform.position.x - transform.position.x;
+            relativePositionToPlayer = GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position.x - transform.position.x;
         }
 
         // ================== enemy idle ==========================
@@ -426,7 +426,7 @@ public class EnemyController : MonoBehaviour
         if (enemyDetection.Attacking)
         {
             int attackPositionId = enemyDetection.AttackPositionId;
-            PlayerAttackQueue.instance.removeEnemyFromQueue(gameObject, attackPositionId);
+            GameLevelManager.instance.PlayerController1.PlayerAttackQueue.removeEnemyFromQueue(gameObject, attackPositionId);
         }
         Destroy(gameObject);
     }
@@ -470,14 +470,14 @@ public class EnemyController : MonoBehaviour
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
 
         // if no bodyguards found
-        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards.Count == 0 && !GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuardEngaged)
         {
-            targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
+            targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
         }
         // if bodyguards, attack 1 first bodyguard
         else
         {
-            targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
+            targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position - transform.position).normalized;
         }
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
@@ -490,14 +490,14 @@ public class EnemyController : MonoBehaviour
     {
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
         //// if no bodyguards found
-        //if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        //if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards.Count == 0 && !GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuardEngaged)
         //{
-        //    targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
+        //    targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
         //}
         //// if bodyguards, attack 1 first bodyguard
         //else
         //{
-        //    targetPosition = (PlayerAttackQueue.instance.BodyGuards[0].transform.position - transform.position).normalized;
+        //    targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position - transform.position).normalized;
         //}
         movement = targetPosition * (movementSpeed * Time.deltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
@@ -525,15 +525,15 @@ public class EnemyController : MonoBehaviour
 
     public void UpdateDistanceFromPlayer()
     {
-        if (PlayerAttackQueue.instance.BodyGuards.Count == 0 && !PlayerAttackQueue.instance.BodyGuardEngaged)
+        if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards.Count == 0 && !GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuardEngaged)
         {
-            distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player.transform.position, transform.position);
-            lineOfSight = GameLevelManager.instance.Player.transform.position.z - transform.position.z;
+            distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.Player1.transform.position, transform.position);
+            lineOfSight = GameLevelManager.instance.Player1.transform.position.z - transform.position.z;
         }
         else
         {
-            distanceFromPlayer = Vector3.Distance(PlayerAttackQueue.instance.BodyGuards[0].transform.position, transform.position);
-            lineOfSight = PlayerAttackQueue.instance.BodyGuards[0].transform.position.z - transform.position.z;
+            distanceFromPlayer = Vector3.Distance(GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position, transform.position);
+            lineOfSight = GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position.z - transform.position.z;
         }
     }
 
