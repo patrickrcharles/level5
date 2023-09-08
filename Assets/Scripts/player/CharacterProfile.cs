@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
+    [SerializeField] private int userid;
     [SerializeField] private bool isCpu;
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
@@ -227,4 +228,5 @@ public class CharacterProfile : MonoBehaviour
     public bool IsLocked { get; internal set; }
     public bool IsShooter { get => isShooter; set => isShooter = value; }
     public int Clutch { get => clutch; set => clutch = value; }
+    public int Userid { get => userid; set => userid = value; }
 }
