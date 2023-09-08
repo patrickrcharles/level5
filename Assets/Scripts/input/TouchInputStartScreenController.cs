@@ -314,6 +314,13 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.changeSelectedObstacleOption();
             StartManager.instance.initializeObstacleOptionDisplay();
         }
+        //// num players  select
+        //if (prevSelectedGameObject.name.Equals(StartManager.num))
+        //{
+        //    StartManager.instance.changeSelectedPlayerUp();
+        //    StartManager.instance.initializePlayerDisplay();
+        //    buttonPressed = true;
+        //}
         // player select
         if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
         {

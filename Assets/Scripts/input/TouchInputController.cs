@@ -268,14 +268,14 @@ public class TouchInputController : MonoBehaviour
             DevFunctions.instance.ToggleFpsCounter();
             buttonPressed = true;
         }
-        // set max stats
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleMaxStatsName)
-            && !buttonPressed)
-        {
-            //Debug.Log("set max stats");
-            DevFunctions.instance.setMaxPlayerStats();
-            buttonPressed = true;
-        }
+        //// set max stats
+        //if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleMaxStatsName)
+        //    && !buttonPressed)
+        //{
+        //    //Debug.Log("set max stats");
+        //    DevFunctions.instance.setMaxPlayerStats();
+        //    buttonPressed = true;
+        //}
         // toggle ui stats
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.ToggleUiStatsName)
             && !buttonPressed)
