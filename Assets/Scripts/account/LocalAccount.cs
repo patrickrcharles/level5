@@ -32,21 +32,23 @@ public class LocalAccount : MonoBehaviour
         else
         {
             UserModel user = new UserModel();
-            GameOptions.userName = userNameSelected;
+            GameOptions.userName = "Guest";
 
             user.Userid = UserAccountManager.GuestUserid;
             user.UserName = UserAccountManager.GuestPassword;
             user.Password = "guest";
 
-            // if connected to internet
-            if (UtilityFunctions.IsConnectedToInternet())
-            {
-                StartCoroutine(APIHelper.PostToken(user));
-            }
-            else
-            {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
-            }
+            StartCoroutine(APIHelper.PostToken(user));
+
+            //// if connected to internet
+            //if (UtilityFunctions.IsConnectedToInternet())
+            //{
+            //    StartCoroutine(APIHelper.PostToken(user));
+            //}
+            //else
+            //{
+            //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            //}
         }
     }
     // OnClick UI

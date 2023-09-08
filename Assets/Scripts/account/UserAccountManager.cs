@@ -19,6 +19,7 @@ public class UserAccountManager : MonoBehaviour
     private bool usersLoaded = false;
     const int guestUserid = 74;
     const string guestPassword = "guest";
+    const string guestUsername = "guest";
 
     [SerializeField]
     GameObject localAccountPrefab;
@@ -70,9 +71,11 @@ public class UserAccountManager : MonoBehaviour
         }
         else
         {
+            GameOptions.userid = guestUserid;
+            GameOptions.userName = guestUsername;
             user.Userid = guestUserid;
-            user.UserName = userNameSelected;
-            user.Password = "guest";
+            user.UserName = guestPassword;
+            user.Password = guestPassword;
         }
 
         // if connected to internet
@@ -88,9 +91,27 @@ public class UserAccountManager : MonoBehaviour
 
     public void ContinueButton()
     {
-        GameOptions.userName = "";
-        GameOptions.userid = 0;
-        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        //GameOptions.userName = "";
+        //GameOptions.userid = 0;
+        //SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        UserModel user = new UserModel();
+        GameOptions.userName = userNameSelected;
+
+        GameOptions.userid = guestUserid;
+        GameOptions.userName = guestUsername;
+        user.Userid = guestUserid;
+        user.UserName = guestPassword;
+        user.Password = guestPassword;
+
+        // if connected to internet
+        if (UtilityFunctions.IsConnectedToInternet())
+        {
+            StartCoroutine(APIHelper.PostToken(user));
+        }
+        else
+        {
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        }
     }
 
     public IEnumerator RemoveUserButton(string userName)
