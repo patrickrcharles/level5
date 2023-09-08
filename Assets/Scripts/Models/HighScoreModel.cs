@@ -71,6 +71,14 @@ namespace Assets.Scripts.database
 
         public HighScoreModel convertBasketBallStatsToModel(List<PlayerIdentifier> pi)
         {
+            int index = 0;
+            foreach (PlayerIdentifier p in pi)
+            {
+                if (!p.isCpu)
+                {
+                    index = p.pid;
+                }
+            }
             int trafficEnabled = 0;
             if (GameOptions.trafficEnabled)
             {
@@ -103,17 +111,17 @@ namespace Assets.Scripts.database
             model.Os = SystemInfo.operatingSystem;
             model.Version = Application.version;
             model.Date = DateTime.Now.ToString();
-            model.Time = pi[0].gameStats.TimePlayed;
+            model.Time = pi[index].gameStats.TimePlayed;
             model.Difficulty = GameOptions.difficultySelected;
-            model.TotalPoints = pi[0].gameStats.TotalPoints;
-            model.LongestShot = pi[0].gameStats.LongestShotMade;
-            model.TotalDistance = pi[0].gameStats.TotalDistance;
-            model.MaxShotMade = pi[0].gameStats.ShotMade;
-            model.MaxShotAtt = pi[0].gameStats.ShotAttempt;
-            model.ConsecutiveShots = pi[0].gameStats.MostConsecutiveShots;
+            model.TotalPoints = pi[index].gameStats.TotalPoints;
+            model.LongestShot = pi[index].gameStats.LongestShotMade;
+            model.TotalDistance = pi[index].gameStats.TotalDistance;
+            model.MaxShotMade = pi[index].gameStats.ShotMade;
+            model.MaxShotAtt = pi[index].gameStats.ShotAttempt;
+            model.ConsecutiveShots = pi[index].gameStats.MostConsecutiveShots;
             model.TrafficEnabled = trafficEnabled;
             model.HardcoreEnabled = hardcoreEnabled;
-            model.EnemiesKilled = pi[0].gameStats.EnemiesKilled;
+            model.EnemiesKilled = pi[index].gameStats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
             //if (IsConnectedToInternet())
@@ -125,17 +133,17 @@ namespace Assets.Scripts.database
             //    model.Ipaddress = "noConnectivity" + RandomString(8);
             //}
             model.Ipaddress = GetExternalIpAdress();
-            model.TwoMade = pi[0].gameStats.TwoPointerMade;
-            model.TwoAtt = pi[0].gameStats.TwoPointerAttempts;
-            model.ThreeMade = pi[0].gameStats.ThreePointerMade;
-            model.ThreeAtt = pi[0].gameStats.ThreePointerAttempts;
-            model.FourMade = pi[0].gameStats.FourPointerMade;
-            model.FourAtt = pi[0].gameStats.FourPointerAttempts;
-            model.SevenMade = pi[0].gameStats.SevenPointerMade;
-            model.SevenAtt = pi[0].gameStats.SevenPointerAttempts;
-            model.BonusPoints = pi[0].gameStats.BonusPoints;
-            model.MoneyBallMade = pi[0].gameStats.MoneyBallMade;
-            model.MoneyBallAtt = pi[0].gameStats.MoneyBallAttempts;
+            model.TwoMade = pi[index].gameStats.TwoPointerMade;
+            model.TwoAtt = pi[index].gameStats.TwoPointerAttempts;
+            model.ThreeMade = pi[index].gameStats.ThreePointerMade;
+            model.ThreeAtt = pi[index].gameStats.ThreePointerAttempts;
+            model.FourMade = pi[index].gameStats.FourPointerMade;
+            model.FourAtt = pi[index].gameStats.FourPointerAttempts;
+            model.SevenMade = pi[index].gameStats.SevenPointerMade;
+            model.SevenAtt = pi[index].gameStats.SevenPointerAttempts;
+            model.BonusPoints = pi[index].gameStats.BonusPoints;
+            model.MoneyBallMade = pi[index].gameStats.MoneyBallMade;
+            model.MoneyBallAtt = pi[index].gameStats.MoneyBallAttempts;
             model.EnemiesEnabled = enemiesEnabled;
             model.UserName = GameOptions.userName;
             model.Userid = GameOptions.userid;
@@ -160,18 +168,18 @@ namespace Assets.Scripts.database
                 model.SniperMode = 3;
                 model.SniperModeName = "disintegration ray";
             }
-            model.SniperShots = pi[0].gameStats.SniperShots;
-            model.Sniperhits = pi[0].gameStats.SniperHits;
-            Debug.Log("GameOptions.numPlayers : " + GameOptions.numPlayers);
-            Debug.Log("pi[0].isCpu : " + pi[0].isCpu);
-            Debug.Log("pi[0]. : " + pi[0].characterProfile.PlayerDisplayName);
-            Debug.Log("pi[1]. : " + pi[1].characterProfile.PlayerDisplayName);
+            model.SniperShots = pi[index].gameStats.SniperShots;
+            model.Sniperhits = pi[index].gameStats.SniperHits;
+            //Debug.Log("GameOptions.numPlayers : " + GameOptions.numPlayers);
+            //Debug.Log("pi[index].isCpu : " + pi[index].isCpu);
+            //Debug.Log("pi[index]. : " + pi[index].characterProfile.PlayerDisplayName);
+            //Debug.Log("pi[1]. : " + pi[1].characterProfile.PlayerDisplayName);
 
             if (GameOptions.numPlayers > 0)
             {
-                model.p1TotalPoints = pi[0].gameStats.TotalPoints;
-                model.firstPlace = pi[0].characterProfile.PlayerDisplayName;
-                if (pi[0].isCpu) { model.p1IsCpu = 1; }
+                model.p1TotalPoints = pi[index].gameStats.TotalPoints;
+                model.firstPlace = pi[index].characterProfile.PlayerDisplayName;
+                if (pi[index].isCpu) { model.p1IsCpu = 1; }
                 else { model.p1IsCpu = 0; }
             }
             else
@@ -198,7 +206,7 @@ namespace Assets.Scripts.database
             if (GameOptions.numPlayers > 2)
             {
                 model.p3TotalPoints = pi[2].gameStats.TotalPoints;
-                model.thirdPlace = pi[0].characterProfile.PlayerDisplayName;
+                model.thirdPlace = pi[2].characterProfile.PlayerDisplayName;
                 if (pi[2].isCpu) { model.p3IsCpu = 1; }
                 else { model.p3IsCpu = 0; }
             }
