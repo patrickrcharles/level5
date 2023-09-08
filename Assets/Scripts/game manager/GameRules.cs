@@ -116,7 +116,7 @@ public class GameRules : MonoBehaviour
 
         // components
         // player 1 game stats
-        gameStats1 = GameLevelManager.instance.players[0].gameStats;
+        gameStats1 = GameLevelManager.instance.Player1.gameStats;
 
         displayScoreText = GameObject.Find(displayScoreObjectName).GetComponent<Text>();
         displayCurrentScoreText = GameObject.Find(displayCurrentScoreObjectName).GetComponent<Text>();
@@ -129,7 +129,7 @@ public class GameRules : MonoBehaviour
         player1DisplayName = GameLevelManager.instance.Player1 != null ? GameLevelManager.instance.players[0].characterProfile.PlayerDisplayName : "player1";
         player2DisplayName = GameLevelManager.instance.Player2 != null ? GameLevelManager.instance.players[1].characterProfile.PlayerDisplayName : "player2";
         player3DisplayName = GameLevelManager.instance.Player3 != null ? GameLevelManager.instance.players[2].characterProfile.PlayerDisplayName : "player3";
-        player4DisplayName = GameLevelManager.instance.Player4 != null ? GameLevelManager.instance.players[0].characterProfile.PlayerDisplayName : "player4";
+        player4DisplayName = GameLevelManager.instance.Player4 != null ? GameLevelManager.instance.players[3].characterProfile.PlayerDisplayName : "player4";
 
         //updatePlayerScore();
 
@@ -236,6 +236,7 @@ public class GameRules : MonoBehaviour
             HighScoreModel user = dBHighScoreModel.convertBasketBallStatsToModel(gameStatsList);
             //user = dBHighScoreModel.convertBasketBallStatsToModel(gameStats);
             //save if at leat 1 minte played
+            Debug.Log("if (GameObject.FindGameObjectWithTag(database) != null)");
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
@@ -253,8 +254,8 @@ public class GameRules : MonoBehaviour
                         DBHelper.instance.setGameScoreSubmitted(user.Scoreid, false);
                     }
                 }
-                DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.players[0].gameStats);
-                DBConnector.instance.savePlayerProfileProgression(GameLevelManager.instance.players[0].gameStats.getExperienceGainedFromSession());
+                DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.Player1.gameStats);
+                DBConnector.instance.savePlayerProfileProgression(GameLevelManager.instance.Player1.gameStats.getExperienceGainedFromSession());
 
                 // post to API
             }
@@ -418,7 +419,7 @@ public class GameRules : MonoBehaviour
     // ================================================ set score display ============================================
     public void SetScoreDisplayText()
     {
-        GameStats gameStats = GameLevelManager.instance.players[0].basketball.GetComponent<GameStats>();
+        GameStats gameStats = GameLevelManager.instance.Player1.basketball.GetComponent<GameStats>();
         if (PlayerData.instance != null)
         {
             if (gameModeId == 1)
@@ -514,9 +515,9 @@ public class GameRules : MonoBehaviour
             if (gameModeId == 14)
             {
                 displayCurrentScoreText.text = "Consecutive Shots"
-                    + "\nCurrent : " + GameLevelManager.instance.players[0].gameStats.ConsecutiveShotsMade
+                    + "\nCurrent : " + GameLevelManager.instance.Player1.gameStats.ConsecutiveShotsMade
                     + "\nHigh Shots : " + gameStats.MostConsecutiveShots;
-                Timer.instance.ScoreClockText.text = GameLevelManager.instance.players[0].gameStats.ConsecutiveShotsMade.ToString();
+                Timer.instance.ScoreClockText.text = GameLevelManager.instance.Player1.gameStats.ConsecutiveShotsMade.ToString();
 
                 displayHighScoreText.text = "high score : " + PlayerData.instance.MostConsecutiveShots;
                 //displayMoneyText.text = "$" + PlayerStats.instance.Money;
@@ -529,7 +530,7 @@ public class GameRules : MonoBehaviour
                 Timer.instance.ScoreClockText.text = gameStats.TotalPoints.ToString();
 
                 // in the pocket is active, display text notifier
-                if (GameLevelManager.instance.players[0].gameStats.ConsecutiveShotsMade >= inThePocketActivateValue)
+                if (GameLevelManager.instance.Player1.gameStats.ConsecutiveShotsMade >= inThePocketActivateValue)
                 {
                     displayOtherMessageText.text = "In The Pocket";
                 }
@@ -806,9 +807,9 @@ public class GameRules : MonoBehaviour
             if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
             {
                 //// add remaining counter time FLOOR to total points  as bonus points
-                GameLevelManager.instance.players[0].gameStats.BonusPoints = (int)(Mathf.Floor(bonusTime));
+                GameLevelManager.instance.Player1.gameStats.BonusPoints = (int)(Mathf.Floor(bonusTime));
                 // add bonus points
-                GameLevelManager.instance.players[0].gameStats.TotalPoints += GameLevelManager.instance.players[0].gameStats.BonusPoints;
+                GameLevelManager.instance.Player1.gameStats.TotalPoints += GameLevelManager.instance.players[0].gameStats.BonusPoints;
             }
             // if game has a time counter
             if (modeRequiresCounter)
