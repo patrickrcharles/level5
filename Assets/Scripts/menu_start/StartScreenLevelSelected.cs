@@ -5,6 +5,7 @@ public class StartScreenLevelSelected : MonoBehaviour
 
     [SerializeField] private int levelId;
     [SerializeField] private string levelDisplayName;
+    [SerializeField] private string levelInfo;
     [SerializeField] private string levelObjectName;
     [SerializeField] private string levelDescription;
     [SerializeField] private bool levelRequiresTimeOfDay;
@@ -49,4 +50,5 @@ public class StartScreenLevelSelected : MonoBehaviour
     public bool IsCageMatchLevel { get => isCageMatchLevel;  }
     public bool CustomCamera { get => customCamera; set => customCamera = value; }
     public bool LevelHasSevenPointers { get => levelHasSevenPointers; set => levelHasSevenPointers = value; }
+    public string LevelInfo { get => levelInfo; set => levelInfo = value; }
 }

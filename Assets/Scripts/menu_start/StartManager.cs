@@ -207,9 +207,9 @@ public class StartManager : MonoBehaviour
 
         var allGamepads = Gamepad.all;
         foreach (Gamepad g in allGamepads) {
-            Debug.Log("Gamepad" + g.name);
+            //Debug.Log("Gamepad" + g.name);
         }
-        Debug.Log("Gamepad current : "+Gamepad.current);
+        //Debug.Log("Gamepad current : "+Gamepad.current);
 
 
         StartCoroutine(getLoadedData());
@@ -225,7 +225,7 @@ public class StartManager : MonoBehaviour
         modeSelectedIndex = GameOptions.modeSelectedIndex;
         trafficEnabled = GameOptions.trafficEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
-        difficultySelected = GameOptions.difficultySelected;
+        difficultySelected = 1;
         obstaclesEnabled = GameOptions.obstaclesEnabled;
 
         // update experience and levels
@@ -1127,7 +1127,7 @@ public class StartManager : MonoBehaviour
     }
     public void changeSelectedNumPlayersDown()
     {
-        Debug.Log("changeSelectedNumPlayersDown");
+        //Debug.Log("changeSelectedNumPlayersDown");
         // if default index (first in list), go to end of list
         if (GameOptions.numPlayers == 1)
         {
