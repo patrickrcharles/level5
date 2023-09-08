@@ -305,6 +305,7 @@ public class DBConnector : MonoBehaviour
 
                 "CREATE TABLE if not exists CharacterProfile(" +
                 "id   INTEGER PRIMARY KEY, " +
+                "charid   INTEGER, " +
                 "playerName   TEXT," +
                 "objectName   TEXT," +
                 "charid   INTEGER," +
@@ -324,7 +325,8 @@ public class DBConnector : MonoBehaviour
                 "pointsUsed   INTEGER DEFAULT 0," +
                 "range   INTEGER DEFAULT 0," +
                 "release   INTEGER DEFAULT 0," +
-                "isLocked   INTEGER DEFAULT 0);" +
+                "isLocked   INTEGER DEFAULT 0," +
+                "charid   INTEGER);" +
 
                 "CREATE TABLE if not exists User( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -518,7 +520,8 @@ public class DBConnector : MonoBehaviour
                 "pointsUsed   INTEGER DEFAULT 0," +
                 "range   INTEGER DEFAULT 0," +
                 "release   INTEGER DEFAULT 0," +
-                "isLocked   INTEGER DEFAULT 0);");
+                "isLocked   INTEGER DEFAULT 0," +
+                "charid   INTEGER");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();

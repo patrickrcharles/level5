@@ -454,6 +454,7 @@ public class DBHelper : MonoBehaviour
                         + ", pointsAvailable = " + character.PointsAvailable
                         + ", pointsUsed = " + character.PointsUsed
                         + " WHERE charid = " + character.PlayerId;
+                        //+ " AND userid = "+ GameOptions.userid;
 
                         cmd.CommandText = sqlQuery;
                         cmd.ExecuteNonQuery();
@@ -583,9 +584,13 @@ public class DBHelper : MonoBehaviour
 
 
     // get Character Data from Database
-    public List<CharacterProfile> getCharacterProfileStats()
+    public List<CharacterProfile> getCharacterProfileStats(int userid)
     {
         List<CharacterProfile> characterStats = new List<CharacterProfile>();
+        if(userid == 0)
+        {
+            Debug.Log("userid = 0");
+        }
         try
         {
             DatabaseLocked = true;
@@ -598,9 +603,23 @@ public class DBHelper : MonoBehaviour
 
             if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_characterProfile))
             {
+                Debug.Log(userid);
                 sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
                     + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
                     + " From " + Constants.LOCAL_DATABASE_tableName_characterProfile;
+                //if (userid == 0)
+                //{
+                //    sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
+                //    + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
+                //    + " From " + Constants.LOCAL_DATABASE_tableName_characterProfile;
+                //}
+                //else
+                //{
+                //    sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
+                //        + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
+                //        + " From " + Constants.LOCAL_DATABASE_tableName_characterProfile
+                //        + "WHERE userid = " + userid;
+                //}
 
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
@@ -1677,6 +1696,7 @@ public class DBHelper : MonoBehaviour
     // insert current game's stats and score
     public void setGameScoreSubmitted(string scoreid, bool value)
     {
+        Debug.Log("setGameScoreSubmitted");
         databaseLocked = true;
         int submittedValue = 0;
         if (value)
@@ -1694,7 +1714,7 @@ public class DBHelper : MonoBehaviour
             string sqlQuery = "UPDATE " + Constants.LOCAL_DATABASE_tableName_highscores + " SET submittedToApi" + " = " + submittedValue
                 + " WHERE scoreidUnique = " + "'" + scoreid + "'";
 
-            //Debug.Log(sqlQuery);
+            Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1707,7 +1727,7 @@ public class DBHelper : MonoBehaviour
             dbconn = null;
 
             databaseLocked = false;
-            //Debug.Log("score submitted to api");
+            Debug.Log("score submitted to api");
         }
         catch (Exception e)
         {
@@ -1734,9 +1754,9 @@ public class DBHelper : MonoBehaviour
             {
                 sqlQuery = "Select  * From " + Constants.LOCAL_DATABASE_tableName_highscores
                     + " WHERE submittedToApi = 0 "
-                    + " AND modeid != 99"
-                    + " AND userName != ''";
-
+                    + " AND modeid != 99";
+                    //+ " AND userName = ''";
+                Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
@@ -1782,7 +1802,7 @@ public class DBHelper : MonoBehaviour
                     highscore.MoneyBallAtt = reader.GetInt32(34);
                     //highscore.submittedToApi = reader.GetInt32(36);
                     highscore.UserName = reader.GetString(36).ToString();
-                    highscore.Userid = GameOptions.userid;
+                    //highscore.Userid = GameOptions.userid;
                     highscore.SniperEnabled = reader.GetInt32(37);
                     highscore.SniperMode = reader.GetInt32(38);
                     highscore.SniperModeName = reader.GetString(39);
