@@ -64,11 +64,14 @@ public class cameraUpdater : MonoBehaviour
     bool requiresWeatherSystem;
     [SerializeField]
     private float cameraOffset;
+    [SerializeField]
+    private bool sniperCamera = false;
 
     public bool RequiresWeatherSystem { get => requiresWeatherSystem; set => requiresWeatherSystem = value; }
 
     void Start()
     {
+        sniperCamera = false;
         requiresWeatherSystem = GameOptions.levelRequiresWeather;
 
         // get weather system object reference
@@ -94,7 +97,9 @@ public class cameraUpdater : MonoBehaviour
         if (GameLevelManager.instance != null && basketBallRim!= null)
         {
             basketBallRim = GameLevelManager.instance.BasketballRimVector;
-            player = GameLevelManager.instance.Player1 != null ? GameLevelManager.instance.Player1 : GameLevelManager.instance.AutoPlayer;
+            player = GameLevelManager.instance.players != null
+                ? GameLevelManager.instance.players.Find((x) => x.pid == 0).player
+                : GameLevelManager.instance.players.Find((x) => x.pid == 0).autoPlayer;
             smoothCameraMotion = true;
         }
         else
@@ -196,7 +201,7 @@ public class cameraUpdater : MonoBehaviour
         //{
         //    toggleCameraOnGoal();
         //}
-        if (isLockOnGoalCamera)
+        if (isLockOnGoalCamera && !sniperCamera)
         {
             transform.position = basketBallRim + lockOnGoalCameraOffset;
         }
@@ -217,16 +222,34 @@ public class cameraUpdater : MonoBehaviour
 
         if ((player != null) && isOrthoGraphic && !isFollowBallCamera && !isLockOnGoalCamera)
         {
-            transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
+            if (!sniperCamera)
+            {
+                transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, xMin, xMax),
                 //cam.transform.position.y,
                 addToCameraPosY,
                 cam.transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(BasketBall.instance.transform.position.x,
+                     transform.position.y,
+                     transform.position.z);
+            }
         }
         if ((player != null) && isFollowBallCamera && !isLockOnGoalCamera)
         {
-            transform.position = new Vector3(BasketBall.instance.transform.position.x,
-                 BasketBall.instance.transform.position.y + 0.5f,
-                 BasketBall.instance.transform.position.z - 2);
+            if (!sniperCamera)
+            {
+                transform.position = new Vector3(BasketBall.instance.transform.position.x,
+                     BasketBall.instance.transform.position.y + 0.5f,
+                     BasketBall.instance.transform.position.z - 2);
+            }
+            else
+            {
+                transform.position = new Vector3(BasketBall.instance.transform.position.x,
+                     transform.position.y,
+                     transform.position.z);
+            }
         }
     }
 
@@ -246,13 +269,20 @@ public class cameraUpdater : MonoBehaviour
     private void updatePositionOnPlayer()
     {
         Vector3 targetPosition;
-        if (!customCamera)
+        if (!sniperCamera)
         {
-            targetPosition = new Vector3(player.transform.position.x + cameraOffset, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+            if (!customCamera)
+            {
+                targetPosition = new Vector3(player.transform.position.x + cameraOffset, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
+            }
+            else
+            {
+                targetPosition = new Vector3(player.transform.position.x + cameraOffset, gameObject.transform.position.y, cam.transform.position.z);
+            }
         }
         else
         {
-            targetPosition = new Vector3(player.transform.position.x + cameraOffset, gameObject.transform.position.y, cam.transform.position.z);
+            targetPosition = new Vector3(player.transform.position.x + cameraOffset, cam.transform.position.y, cam.transform.position.z);
         }
         if (smoothCameraMotion)
         {
@@ -323,7 +353,7 @@ public class cameraUpdater : MonoBehaviour
             mainPerspectiveCamActive = true;
         }
         // if perspective camera
-        if (!isOrthoGraphic && !customCamera)
+        if (!isOrthoGraphic && !customCamera && !sniperCamera)
         {
             //if (SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_17_steel_cage))
             //{
@@ -345,12 +375,14 @@ public class cameraUpdater : MonoBehaviour
         {
             if (cam.name.Contains("camera_orthographic_1"))
             {
+                Debug.Log("link");
                 addToCameraPosY = 2.5f;
                 mainPerspectiveCamActive = false;
                 //orthoCam1Active = true;
             }
             if (cam.name.Contains("camera_orthographic_2"))
             {
+                Debug.Log("link");
                 addToCameraPosY = 3.3f;
                 mainPerspectiveCamActive = false;
                 //orthoCam1Active = false;
@@ -368,7 +400,11 @@ public class cameraUpdater : MonoBehaviour
         if (cam.name.Contains("goal"))
         {
             isLockOnGoalCamera = true;
-            transform.position = basketBallRim + lockOnGoalCameraOffset;
+            if (!sniperCamera)
+            {
+                Debug.Log("link");
+                transform.position = basketBallRim + lockOnGoalCameraOffset;
+            }
         }
         else
         {
