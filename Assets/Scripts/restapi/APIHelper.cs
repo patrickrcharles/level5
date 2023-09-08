@@ -49,7 +49,6 @@ namespace Assets.Scripts.restapi
 
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
-
             try
             {
                 //Debug.Log("try...post single score");
@@ -61,6 +60,7 @@ namespace Assets.Scripts.restapi
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string json = toJson;
+                    //Debug.Log("json : " + json);
                     streamWriter.Write(json);
                     streamWriter.Flush();
                 }
@@ -69,13 +69,14 @@ namespace Assets.Scripts.restapi
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    //Debug.Log("result : " + result);
                 }
             }
             // on web exception
             catch (WebException e)
             {
                 httpResponse = (HttpWebResponse)e.Response;
-                //Debug.Log("----------------- ERROR : " + e);
+                Debug.Log("----------------- ERROR : " + e);
                 //unlock api + database
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -85,7 +86,7 @@ namespace Assets.Scripts.restapi
             // if successful
             if (httpResponse.StatusCode == HttpStatusCode.Created)
             {
-                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
@@ -93,12 +94,101 @@ namespace Assets.Scripts.restapi
             // failed
             else
             {
-                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
+                Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode + "  scoreid : " + score.Scoreid);
                 //unlock api + database
                 DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
+        }
+
+        // -------------------------------------- HTTTP POST character profile info -------------------------------------------
+
+        // POST highscore by scoreid by hitting api at
+        // http://13.58.224.237/api/highscores/scoreid/{scoreid}
+        // return true if status code == 200 ok
+        // return false if status code != 200 ok
+        public static IEnumerator PutCharacterProfileStats(List<CharacterProfile> characters)
+        {
+            // note * make this async. sending the request and hitting api should do
+            // this automatically.
+            // put something like if(!201 created, try again) limit to 10 tries
+            // check uniquescoreid not already inserted. hit that api first, then proceed
+
+            // wait for database operations
+            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            //DBHelper.instance.DatabaseLocked = true;
+
+            // wait for api operations
+            yield return new WaitUntil(() => !apiLocked);
+            apiLocked = true;
+
+            //foreach (HighScoreModel score in highscores)
+            //{
+            //    //serialize highscore to json for HTTP POST
+            //    string toJson = JsonUtility.ToJson(score);
+
+            //    HttpWebResponse httpResponse = null;
+            //    HttpStatusCode statusCode;
+
+            //    try
+            //    {
+            //        var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
+            //        httpWebRequest.ContentType = "application/json; charset=utf-8";
+            //        httpWebRequest.Method = "POST";
+            //        httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+            //        //post
+            //        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            //        {
+            //            string json = toJson;
+
+            //            streamWriter.Write(json);
+            //            streamWriter.Flush();
+            //        }
+            //        // response
+            //        httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            //        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //        {
+            //            var result = streamReader.ReadToEnd();
+            //        }
+            //    }
+            //    // on web exception
+            //    catch (WebException e)
+            //    {
+            //        httpResponse = (HttpWebResponse)e.Response;
+            //        //unlock api + database
+            //        apiLocked = false;
+            //        DBHelper.instance.DatabaseLocked = false;
+            //    }
+            //    statusCode = httpResponse.StatusCode;
+            //    // if successful
+            //    if (httpResponse.StatusCode == HttpStatusCode.Created)
+            //    {
+            //        Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+            //        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+            //        apiLocked = false;
+            //        DBHelper.instance.DatabaseLocked = false;
+            //    }
+            //    // failed
+            //    else
+            //    {
+            //        // if conflict (scoreid already exists in database)
+            //        if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+            //        {
+            //            //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+            //            DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+            //            apiLocked = false;
+            //            DBHelper.instance.DatabaseLocked = false;
+            //        }
+            //        else
+            //        {
+            //            //unlock api + database
+            //            DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
+            //            apiLocked = false;
+            //            DBHelper.instance.DatabaseLocked = false;
+            //        }
+            //    }
+            //}
         }
 
         // -------------------------------------- HTTTP POST unsubmitted Highscores -------------------------------------------
@@ -109,8 +199,24 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
+            Debug.Log("PostUnsubmittedHighscores");
+            Debug.Log(DBHelper.instance.DatabaseLocked);
+            Debug.Log(apiLocked);
+            // wait for database operations
+            //yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            //DBHelper.instance.DatabaseLocked = true;
+
+            // wait for api operations
+            //yield return new WaitUntil(() => !apiLocked);
+            Debug.Log("PostUnsubmittedHighscores");
+            //bool locked = false;
             foreach (HighScoreModel score in highscores)
             {
+                Debug.Log(score.Scoreid);
+                score.Userid = GameOptions.userid;
+                score.UserName = GameOptions.userName;
+                //yield return new WaitUntil(() => locked = false);
+                //locked = true;
                 //serialize highscore to json for HTTP POST
                 string toJson = JsonUtility.ToJson(score);
 
@@ -133,9 +239,11 @@ namespace Assets.Scripts.restapi
                     }
                     // response
                     httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    Debug.Log(httpResponse);
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
+                        Debug.Log(result);
                     }
                 }
                 // on web exception
@@ -161,7 +269,7 @@ namespace Assets.Scripts.restapi
                     // if conflict (scoreid already exists in database)
                     if (httpResponse.StatusCode == HttpStatusCode.Conflict)
                     {
-                        //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                        Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
                         DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                         apiLocked = false;
                         DBHelper.instance.DatabaseLocked = false;
@@ -174,6 +282,7 @@ namespace Assets.Scripts.restapi
                         DBHelper.instance.DatabaseLocked = false;
                     }
                 }
+                //locked = false;
             }
         }
 
@@ -927,7 +1036,7 @@ namespace Assets.Scripts.restapi
 
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(user);
-
+            Debug.Log(toJson);
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
             try
