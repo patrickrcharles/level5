@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class PlayerAttackQueue : MonoBehaviour
 {
-    //public List<GameObject> attackPositionGameobjects;
-    //public List<PlayerAttackPosition> playerAttackPositions;
-    //const string attackPositionsTag = "playerAttackQueuePosition";
-
-    //public List<GameObject> AttackPositionGameobjects { get => attackPositionGameobjects; set => attackPositionGameobjects = value; }
-    //public List<PlayerAttackPosition> PlayerAttackPositions { get => playerAttackPositions; set => playerAttackPositions = value; }
     [SerializeField]
     bool attackSlotOpen;
     [SerializeField]
@@ -28,19 +22,19 @@ public class PlayerAttackQueue : MonoBehaviour
     [SerializeField]
     bool bodyGuardEngaged;
 
-    public static PlayerAttackQueue instance;
+    //public static PlayerAttackQueue instance;
 
     // Start is called before the first frame update
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void Start()
@@ -131,7 +125,6 @@ public class PlayerAttackQueue : MonoBehaviour
 
     public void removeEnemyFromQueue(GameObject enemy, int attackPostionId)
     {
-
         //yield return new WaitUntil( () => !LockAttackQueue);
         //yield return new WaitForSeconds(0.1f);
         LockAttackQueue = true;
