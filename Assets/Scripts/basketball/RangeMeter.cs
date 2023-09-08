@@ -11,6 +11,7 @@ public class RangeMeter : MonoBehaviour
     public Slider Slider => slider;
 
     Text sliderText;
+    Text sliderStatsText;
     const string sliderTextName = "range_slider_value_text";
     const string statsTextName = "range_slider_stats_text";
 
@@ -32,6 +33,7 @@ public class RangeMeter : MonoBehaviour
         }
         slider = GetComponentInChildren<Slider>();
         sliderText = GameObject.Find(sliderTextName).GetComponent<Text>();
+        sliderStatsText = GameObject.Find(statsTextName).GetComponent<Text>();
 
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
@@ -53,6 +55,7 @@ public class RangeMeter : MonoBehaviour
             float distance = playerIdentifier.isCpu ? autoPlayerController.PlayerDistanceFromRim : playerController.PlayerDistanceFromRim;
             slider.value = (characterProfile.Range / (distance * 6)) * 100;
             sliderText.text = slider.value.ToString("0") + "%";
+            sliderStatsText.text ="Range : "+ characterProfile.Range + " feet";
         }
     }
 }
