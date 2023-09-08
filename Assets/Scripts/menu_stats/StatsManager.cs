@@ -575,17 +575,21 @@ public class StatsManager : MonoBehaviour
 
     public void submitUnsubmittedScores()
     {
-        if (!String.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
-        {
+        //if (!String.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
+        //{
             try
             {
                 DBHelper.instance.DatabaseLocked = true;
                 // get unsubmitted scores
                 unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
-                numUnsubmittedHighscores = unsubmittedHighScores.Count;
+                Debug.Log(unsubmittedHighScores);
+                Debug.Log(unsubmittedHighScores.Count());
+                numUnsubmittedHighscores = unsubmittedHighScores.Count();
+                Debug.Log(numUnsubmittedHighscores);
                 // if count > 0,  set appropriate text
                 if (numUnsubmittedHighscores > 0)
                 {
+                    Debug.Log("if");
                     submittedHighscoresText.text = "submit scores";
                     numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
                     APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores);
@@ -593,6 +597,7 @@ public class StatsManager : MonoBehaviour
                 // if none, set appropriate text
                 if (numUnsubmittedHighscores == 0)
                 {
+                    Debug.Log("if");
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
@@ -603,8 +608,8 @@ public class StatsManager : MonoBehaviour
                 DBHelper.instance.DatabaseLocked = false;
                 Debug.Log("ERROR : " + e);
             }
-        }
-        getUnsubmittedHighscores();
+        //}
+        //getUnsubmittedHighscores();
         DBHelper.instance.DatabaseLocked = false;
         SceneManager.LoadScene(Constants.SCENE_NAME_level_00_stats);
     }
