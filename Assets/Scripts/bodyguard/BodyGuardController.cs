@@ -143,9 +143,9 @@ public class BodyGuardController : MonoBehaviour
         currentState = currentStateInfo.fullPathHash;
         // ================== enemy facing player ==========================
         //relativePositionToPlayer = GameLevelManager.instance.Player.transform.position.x - transform.position.x;
-        if (PlayerAttackQueue.instance.CurrentEnemiesQueued > 0)
+        if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.CurrentEnemiesQueued > 0)
         {
-            enemyAttacking = PlayerAttackQueue.instance.EnemiesQueued[0];
+            enemyAttacking = GameLevelManager.instance.PlayerController1.PlayerAttackQueue.EnemiesQueued[0];
             //Debug.Log("enemy to attack : " + enemyAttacking);
             relativePositionToEnemy = enemyAttacking.transform.position.x - transform.position.x;
         }
@@ -369,7 +369,7 @@ public class BodyGuardController : MonoBehaviour
         {
             //Debug.Log("========================== enemy killed : " + gameObject.name + " :  remove from attack queue");
             int attackPositionId = bodyGuardDetection.AttackPositionId;
-            PlayerAttackQueue.instance.removeEnemyFromQueue(gameObject, attackPositionId);
+            GameLevelManager.instance.PlayerController1.PlayerAttackQueue.removeEnemyFromQueue(gameObject, attackPositionId);
         }
         removeBodyGuardFromQueueList(transform.root.gameObject);
         //yield return new WaitUntil( ()=> PlayerAttackQueue.instance.AttackSlotOpen);
@@ -419,9 +419,9 @@ public class BodyGuardController : MonoBehaviour
     {
         //targetPosition = (GameLevelManager.instance.Player.transform.position - transform.position).normalized;
         //targetPosition = (PlayerAttackQueue.instance.AttackPositions[enemyDetection.AttackPositionId].transform.position - transform.position).normalized;
-        if (PlayerAttackQueue.instance.CurrentEnemiesQueued > 0)
+        if (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.CurrentEnemiesQueued > 0)
         {
-            GameObject enemyAttackingPlayer = PlayerAttackQueue.instance.EnemiesQueued[0];
+            GameObject enemyAttackingPlayer = GameLevelManager.instance.PlayerController1.PlayerAttackQueue.EnemiesQueued[0];
             targetPosition = (enemyAttackingPlayer.transform.position - transform.position).normalized;
             //Debug.Log("enemyAttackingPlayer : " + enemyAttackingPlayer);
             movement = targetPosition * (movementSpeed * Time.deltaTime);
@@ -448,7 +448,7 @@ public class BodyGuardController : MonoBehaviour
 
     void removeBodyGuardFromQueueList(GameObject bodyguard)
     {
-        PlayerAttackQueue.instance.BodyGuards.Remove(bodyguard);
+        GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards.Remove(bodyguard);
     }
 
     //public void UpdateDistanceFromPlayer()

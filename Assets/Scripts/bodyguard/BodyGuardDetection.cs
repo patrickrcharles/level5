@@ -62,7 +62,7 @@ public class BodyGuardDetection : MonoBehaviour
         //    // move towards player
         //}
 
-        if (PlayerAttackQueue.instance.CurrentEnemiesQueued > 0)
+        if (GameLevelManager.instance.players[0].GetComponent<PlayerAttackQueue>().CurrentEnemiesQueued > 0)
         {
             enemySighted = true;
         }
