@@ -483,8 +483,8 @@ public class AutoPlayerController : MonoBehaviour
             targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
         }
         if (characterProfile.Accuracy7Pt > characterProfile.Accuracy4Pt
-            || ((GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) > 14)
-            && GameOptions.levelHasSevenPointers)
+            || (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) > 14
+            && cpuShootSevenpointers())
         {
             finalDirection = directionOfTravelSeven + directionOfTravelSeven.normalized * distance7;
             targetPosition = transform.position + finalDirection;
@@ -493,6 +493,32 @@ public class AutoPlayerController : MonoBehaviour
         //Debug.Log("directionOfTravel : " + finalDirection);
 
         return targetPosition;
+    }
+    private bool cpuShootSevenpointers(){
+        bool returnValue = false;
+        float rangePercent = ((float)characterProfile.Range / characterProfile.Accuracy7Pt) * 100;
+        //Debug.Log("name : " + characterProfile.PlayerDisplayName);
+        //Debug.Log("rangePercent : " + rangePercent);
+        //Debug.Log("characterProfile.Accuracy7Pt : " + characterProfile.Accuracy7Pt);
+
+        if (GameOptions.levelHasSevenPointers
+            && (rangePercent > 70)) 
+        { 
+            returnValue = true;
+        }
+        else {
+                //Random random = new Random();
+                //float percent = random.Next(1, 100);
+
+                //if (percent <= maxPercent)
+                //{
+                //    return true;
+                //}
+                //return false;
+            returnValue = false; 
+        }
+
+        return returnValue;
     }
 
     private void getAnimatorStateHashes()
