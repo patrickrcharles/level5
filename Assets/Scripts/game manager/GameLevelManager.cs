@@ -412,7 +412,7 @@ public class GameLevelManager : MonoBehaviour
         //};
 
         // if no player, spawn player
-        if (GameOptions.characterObjectNames[0] == null)
+        if (GameOptions.characterObjectNames == null)
         {
             GameOptions.numPlayers = 1;
             playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + "drblood";
