@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class DevFunctions : MonoBehaviour
 {
 
-    [SerializeField] CharacterProfile player;
+    //[SerializeField] CharacterProfile player;
     [SerializeField] GameObject fpsCounter;
     [SerializeField] GameObject[] enemies;
     [SerializeField] Text messageText;
@@ -21,7 +21,7 @@ public class DevFunctions : MonoBehaviour
     }
     private void Start()
     {
-        player = GameLevelManager.instance.CharacterProfile;
+        //player = GameLevelManager.instance.CharacterProfile;
         //debugText = GameObject.Find("debug_text").GetComponent<Text>();
         messageText = GameObject.Find("messageDisplay").GetComponent<Text>();
 
@@ -33,11 +33,11 @@ public class DevFunctions : MonoBehaviour
     }
     private void Update()
     {
-        if (GameLevelManager.instance.Controls.Other.change.enabled
-            && GameLevelManager.instance.Controls.Other.toggle_character_max_stats.triggered)
-        {
-            setMaxPlayerStats();
-        }
+        //if (GameLevelManager.instance.Controls.Other.change.enabled
+        //    && GameLevelManager.instance.Controls.Other.toggle_character_max_stats.triggered)
+        //{
+        //    setMaxPlayerStats();
+        //}
         if (GameLevelManager.instance.Controls.Other.change.enabled
             && GameLevelManager.instance.Controls.Other.toggle_fps_counter.triggered)
         {
@@ -61,19 +61,19 @@ public class DevFunctions : MonoBehaviour
         Instantiate(_playerClone, spawn, Quaternion.identity);
     }
 
-    public void setMaxPlayerStats()
-    {
-        player.Accuracy2Pt = 100;
-        player.Accuracy3Pt = 100;
-        player.Accuracy4Pt = 100;
-        player.Accuracy7Pt = 100;
-        player.Release = 100;
-        player.Range = 100;
-        player.Luck = 10;
+    //public void setMaxPlayerStats()
+    //{
+    //    player.Accuracy2Pt = 100;
+    //    player.Accuracy3Pt = 100;
+    //    player.Accuracy4Pt = 100;
+    //    player.Accuracy7Pt = 100;
+    //    player.Release = 100;
+    //    player.Range = 100;
+    //    player.Luck = 10;
 
-        messageText.text = "max player stats enabled";
-        StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
-    }
+    //    messageText.text = "max player stats enabled";
+    //    StartCoroutine(turnOffMessageLogDisplayAfterSeconds(3));
+    //}
 
     public void ToggleFpsCounter()
     {
