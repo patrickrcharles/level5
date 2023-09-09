@@ -19,6 +19,8 @@ public class StartManager_test : MonoBehaviour
     //list of all shooter profiles with player data
     [SerializeField]
     private List<CharacterProfile> playerSelectedData;
+    [SerializeField]
+    private List<CharacterProfile> cpuPlayerSelectedData;
     // list off friend profile data
     [SerializeField]
     private List<CheerleaderProfile> friendSelectedData;
@@ -650,8 +652,10 @@ public class StartManager_test : MonoBehaviour
         if (LoadedData.instance != null)
         {
             yield return new WaitUntil(() => LoadedData.instance.PlayerSelectedData != null);
-
             playerSelectedData = LoadedData.instance.PlayerSelectedData;
+
+            yield return new WaitUntil(() => LoadedData.instance.CpuPlayerSelectedData != null);
+            cpuPlayerSelectedData = LoadedData.instance.CpuPlayerSelectedData;
 
             yield return new WaitUntil(() => LoadedData.instance.CheerleaderSelectedData != null);
             friendSelectedData = LoadedData.instance.CheerleaderSelectedData;
@@ -693,6 +697,7 @@ public class StartManager_test : MonoBehaviour
         initializeDifficultyOptionDisplay();
         initializeObstacleOptionDisplay();
         initializePlayerDisplay();
+        initializeCpuPlayerDisplay();
         setInitialGameOptions();
     }
 
@@ -701,7 +706,7 @@ public class StartManager_test : MonoBehaviour
         Debug.Log("initializeCpuDisplay");
         disableMenuObjects("cpu_tab");
         enableMenuObjects("cpu_tab");
-        //StartMenuUiObjects.instance.column4.SetActive(true);
+        
     }
 
     private IEnumerator SetVersion()
@@ -1073,6 +1078,8 @@ public class StartManager_test : MonoBehaviour
         {
             Debug.Log("enableMenuObjects : " + activeMenu);
             StartMenuUiObjects.instance.column4.SetActive(true);
+            // cpu player display
+            initializeCpuPlayerDisplay();
         }
 
         //if (activeMenu.ToLower().Equals("friend_tab"))
@@ -1543,7 +1550,40 @@ public class StartManager_test : MonoBehaviour
         initializeModeDisplay();
         initializeLevelDisplay();
     }
+    private void initializeCpuPlayerDisplay()
+    {
+        if (StartMenuUiObjects.instance.column4.activeSelf)
+        {
+            setCpuPlayer1();
+            setCpuPlayer2();
+            setCpuPlayer3();
+        }
+    }
+    public void setCpuPlayer1()
+    {
+        StartMenuUiObjects.instance.column4_cpu1_image.sprite = cpuPlayerSelectedData[0].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu1_name_text.text= cpuPlayerSelectedData[0].PlayerDisplayName;
 
+        StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text =
+                cpuPlayerSelectedData[0].Accuracy3Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].Accuracy4Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].Accuracy7Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].Release.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].Range.ToString("F0") + " ft\n"
+                + cpuPlayerSelectedData[0].calculateSpeedToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].calculateJumpValueToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[0].Luck.ToString("F0");
+    }
+    public void setCpuPlayer2()
+    {
+        StartMenuUiObjects.instance.column4_cpu2_image.sprite = cpuPlayerSelectedData[1].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu2_name_text.text = cpuPlayerSelectedData[1].PlayerDisplayName;
+    }
+    public void setCpuPlayer3()
+    {
+        StartMenuUiObjects.instance.column4_cpu3_image.sprite = cpuPlayerSelectedData[2].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu3_name_text.text = cpuPlayerSelectedData[2].PlayerDisplayName;
+    }
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
     // button names
