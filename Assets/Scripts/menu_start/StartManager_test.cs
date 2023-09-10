@@ -165,6 +165,10 @@ public class StartManager_test : MonoBehaviour
     private const string optionsSelectButtonName = "options_select";
     private const string optionsSelectOptionName = "options_selected_name";
 
+    private const string Cpu1SelectOptionName = "cpu1_button";
+    private const string Cpu2SelectOptionName = "cpu2_button";
+    private const string Cpu3SelectOptionName = "cpu3_button";
+
     [SerializeField]
     private bool trafficEnabled;
     [SerializeField]
@@ -182,6 +186,9 @@ public class StartManager_test : MonoBehaviour
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int friendSelectedIndex;
+    private int cpu1SelectedIndex;
+    private int cpu2SelectedIndex;
+    private int cpu3SelectedIndex;
 
     //private int numOfPlayers; //testing with 1
 
@@ -329,6 +336,10 @@ public class StartManager_test : MonoBehaviour
                 return;
             }
         }
+        if (currentHighlightedButton.Equals(Cpu1SelectOptionName)){ setCpuPlayer1(); }
+        if (currentHighlightedButton.Equals(Cpu2SelectOptionName)){ setCpuPlayer2(); }
+        if (currentHighlightedButton.Equals(Cpu3SelectOptionName)){ setCpuPlayer3(); }
+
         if (currentHighlightedButton.Equals(levelSelectButtonName) || currentHighlightedButton.Equals(levelSelectOptionButtonName))
         {
             try
@@ -551,6 +562,12 @@ public class StartManager_test : MonoBehaviour
                     changeSelectedObstacleOption();
                     initializeObstacleOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(Cpu1SelectOptionName)
+                    || currentHighlightedButton.Equals(Cpu2SelectOptionName)
+                    || currentHighlightedButton.Equals(Cpu3SelectOptionName))
+                {
+                    changeSelectedCpuOptionDown(currentHighlightedButton);
+                }
             }
             catch
             {
@@ -627,6 +644,12 @@ public class StartManager_test : MonoBehaviour
                     changeSelectedObstacleOption();
                     initializeObstacleOptionDisplay();
                 }
+                if (currentHighlightedButton.Equals(Cpu1SelectOptionName)
+                    || currentHighlightedButton.Equals(Cpu2SelectOptionName)
+                    || currentHighlightedButton.Equals(Cpu3SelectOptionName))
+                {
+                    changeSelectedCpuOptionDown(currentHighlightedButton);
+                }
             }
             catch
             {
@@ -635,6 +658,86 @@ public class StartManager_test : MonoBehaviour
             buttonPressed = false;
         }
     }
+
+    private void changeSelectedCpuOptionDown(string currentHighlightedButton)
+    {
+        switch (currentHighlightedButton)
+        {
+            case Cpu1SelectOptionName :
+                if(cpu1SelectedIndex == 0)
+                {
+                    cpu1SelectedIndex = cpuPlayerSelectedData.Count - 1;
+                }
+                else
+                {
+                    cpu1SelectedIndex--;
+                }
+                setCpuPlayer1();
+                break;
+            case Cpu2SelectOptionName:
+                if (cpu2SelectedIndex == 0)
+                {
+                    cpu2SelectedIndex = cpuPlayerSelectedData.Count - 1;
+                }
+                else
+                {
+                    cpu2SelectedIndex--;
+                }
+                setCpuPlayer2();
+                break;
+            case Cpu3SelectOptionName:
+                if (cpu3SelectedIndex == 0)
+                {
+                    cpu3SelectedIndex = cpuPlayerSelectedData.Count - 1;
+                }
+                else
+                {
+                    cpu3SelectedIndex--;
+                }
+                setCpuPlayer3();
+                break;
+        }
+    }
+    private void changeSelectedCpuOptionUp(string currentHighlightedButton)
+    {
+        switch (currentHighlightedButton)
+        {
+            case Cpu1SelectOptionName:
+                if (cpu1SelectedIndex == cpuPlayerSelectedData.Count - 1)
+                {
+                    cpu1SelectedIndex = 0;
+                }
+                else
+                {
+                    cpu1SelectedIndex--;
+                }
+                setCpuPlayer1();
+                break;
+            case Cpu2SelectOptionName:
+                if (cpu2SelectedIndex == cpuPlayerSelectedData.Count - 1)
+                {
+                    cpu2SelectedIndex = 0;
+                }
+                else
+                {
+                    cpu2SelectedIndex--;
+                }
+                setCpuPlayer2();
+                break;
+            case Cpu3SelectOptionName:
+                if (cpu3SelectedIndex == cpuPlayerSelectedData.Count - 1)
+                {
+                    cpu3SelectedIndex = 0;
+                }
+                else
+                {
+                    cpu3SelectedIndex--;
+                }
+                setCpuPlayer3();
+                break;
+        }
+    }
+
 
     IEnumerator UpdateLevelAndExperienceFromDatabase()
     {
@@ -703,7 +806,7 @@ public class StartManager_test : MonoBehaviour
 
     private void initializeCpuDisplay()
     {
-        Debug.Log("initializeCpuDisplay");
+        //Debug.Log("initializeCpuDisplay");
         disableMenuObjects("cpu_tab");
         enableMenuObjects("cpu_tab");
         
@@ -1279,9 +1382,10 @@ public class StartManager_test : MonoBehaviour
         GameOptions.characterObjectNames = new List<string>
         {
             playerSelectedData[playerSelectedIndex].PlayerObjectName,
-            "kamille",
-            "zilla",
-            "johnny_dracula"
+            cpuPlayerSelectedData[cpu1SelectedIndex].PlayerObjectName,
+            cpuPlayerSelectedData[cpu2SelectedIndex].PlayerObjectName,
+            cpuPlayerSelectedData[cpu3SelectedIndex].PlayerObjectName,
+
         };
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
@@ -1561,28 +1665,51 @@ public class StartManager_test : MonoBehaviour
     }
     public void setCpuPlayer1()
     {
-        StartMenuUiObjects.instance.column4_cpu1_image.sprite = cpuPlayerSelectedData[0].PlayerPortrait;
-        StartMenuUiObjects.instance.column4_cpu1_name_text.text= cpuPlayerSelectedData[0].PlayerDisplayName;
+        StartMenuUiObjects.instance.column4_cpu1_image.sprite = cpuPlayerSelectedData[cpu1SelectedIndex].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu1_name_text.text= cpuPlayerSelectedData[cpu1SelectedIndex].PlayerDisplayName;
 
         StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text =
-                cpuPlayerSelectedData[0].Accuracy3Pt.ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].Accuracy4Pt.ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].Accuracy7Pt.ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].Release.ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].Range.ToString("F0") + " ft\n"
-                + cpuPlayerSelectedData[0].calculateSpeedToPercent().ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].calculateJumpValueToPercent().ToString("F0") + "\n"
-                + cpuPlayerSelectedData[0].Luck.ToString("F0");
+                cpuPlayerSelectedData[cpu1SelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Release.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Range.ToString("F0") + " ft\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Luck.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu1SelectedIndex].Clutch.ToString("F0");
     }
     public void setCpuPlayer2()
     {
-        StartMenuUiObjects.instance.column4_cpu2_image.sprite = cpuPlayerSelectedData[1].PlayerPortrait;
-        StartMenuUiObjects.instance.column4_cpu2_name_text.text = cpuPlayerSelectedData[1].PlayerDisplayName;
+        StartMenuUiObjects.instance.column4_cpu2_image.sprite = cpuPlayerSelectedData[cpu2SelectedIndex].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu2_name_text.text = cpuPlayerSelectedData[cpu2SelectedIndex].PlayerDisplayName;
+
+        StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text =
+                cpuPlayerSelectedData[cpu2SelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Release.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Range.ToString("F0") + " ft\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Luck.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu2SelectedIndex].Clutch.ToString("F0");
     }
     public void setCpuPlayer3()
     {
-        StartMenuUiObjects.instance.column4_cpu3_image.sprite = cpuPlayerSelectedData[2].PlayerPortrait;
-        StartMenuUiObjects.instance.column4_cpu3_name_text.text = cpuPlayerSelectedData[2].PlayerDisplayName;
+        StartMenuUiObjects.instance.column4_cpu3_image.sprite = cpuPlayerSelectedData[cpu3SelectedIndex].PlayerPortrait;
+        StartMenuUiObjects.instance.column4_cpu3_name_text.text = cpuPlayerSelectedData[cpu3SelectedIndex].PlayerDisplayName;
+
+        StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text =
+                cpuPlayerSelectedData[cpu3SelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Release.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Range.ToString("F0") + " ft\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Luck.ToString("F0") + "\n"
+                + cpuPlayerSelectedData[cpu3SelectedIndex].Clutch.ToString("F0");
     }
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
