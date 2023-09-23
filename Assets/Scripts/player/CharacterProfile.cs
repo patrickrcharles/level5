@@ -199,42 +199,32 @@ public class CharacterProfile : MonoBehaviour
             release = (int)(level * 0.2f);
             remainder = level - (three + four + seven + release);
         }
-        Debug.Log("remainder1 : " + remainder);
         if (three > 25) { remainder += (three - 25); three = 25; }
         if (four > 25) { remainder += (four - 25); four = 25; }
         if (seven > 25) { remainder += (seven - 25); seven = 25; }
         if (release > 25) { remainder += (release - 25); release = 25; }
-        Debug.Log("3 : " + three);
-        Debug.Log("4 : " + four);
-        Debug.Log("7 : " + seven);
-        Debug.Log("release : " + release);
-        Debug.Log("remainder2 : " + remainder);
-        Debug.Log("level : " + level); 
+
         // redistribute points
         int[] attributes = new int[] { three, four, seven, release };
-        int icount = 0;
-        int jcount = 0;
-        Debug.Log("remainder2 : " + remainder);
+        //int icount = 0;
+        //int jcount = 0;
         for (int i = 0; i < remainder; i++)
         {
-            icount++;
-            Debug.Log("--- for1 : " + i);
+            //icount++;
             for (int j = 0; j < attributes.Length; j++)
             {
-                Debug.Log("------for2 : " + j);
                 if (attributes[j] < 25)
                 {
-                    Debug.Log("attr[" + j + "] : " + attributes[j]);
                     attributes[j]++;
-                    jcount++;
+                    //jcount++;
                     j++;
                 }
             }
         }
 
-        Debug.Log("---icount : "+ icount);
-        Debug.Log("------jcount : "+ jcount);
-        Debug.Log("exit while loop ");
+        //Debug.Log("---icount : "+ icount);
+        //Debug.Log("------jcount : "+ jcount);
+        //Debug.Log("exit while loop ");
         Accuracy3Pt = CpuBaseStats.ACCURACY_3PT + attributes[0];
         Accuracy4Pt = CpuBaseStats.ACCURACY_4PT + attributes[1];
         Accuracy7Pt = CpuBaseStats.ACCURACY_7PT + attributes[2];
