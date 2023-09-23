@@ -269,109 +269,45 @@ public class StartManager_test : MonoBehaviour
         if ((currentHighlightedButton.Equals(numPlayersSelectButtonName) || currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
             && dataLoaded)
         {
-            try
-            {
-                initializeNumPlayersDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeNumPlayersDisplay();
         }
         // if player highlighted, display player
         if ((currentHighlightedButton.Equals(playerSelectButtonName) || currentHighlightedButton.Equals(playerSelectOptionButtonName))
             && dataLoaded)
         {
-            try
-            {
-                initializePlayerDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializePlayerDisplay();
         }
         // friend
         if (currentHighlightedButton.Equals(friendSelectButtonName) || currentHighlightedButton.Equals(FriendSelectOptionButtonName))
         {
-            try
-            {
-                initializefriendDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializefriendDisplay();
         }
         if (currentHighlightedButton.Equals(levelSelectButtonName) || currentHighlightedButton.Equals(levelSelectOptionButtonName))
         {
-            try
-            {
-                initializeLevelDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeLevelDisplay();
         }
         if (currentHighlightedButton.Equals(modeSelectButtonName) || currentHighlightedButton.Equals(modeSelectOptionButtonName))
         {
-            try
-            {
-                initializeModeDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeModeDisplay();
         }
         if (currentHighlightedButton.Equals(cpuSelectButtonName) || currentHighlightedButton.Equals(cpuSelectOptionButtonName))
         {
-            try
-            {
-                initializeCpuDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeCpuDisplay();
         }
-        if (currentHighlightedButton.Equals(Cpu1SelectOptionName)){ setCpuPlayer1(); }
-        if (currentHighlightedButton.Equals(Cpu2SelectOptionName)){ setCpuPlayer2(); }
-        if (currentHighlightedButton.Equals(Cpu3SelectOptionName)){ setCpuPlayer3(); }
-
+        if (currentHighlightedButton.Equals(Cpu1SelectOptionName)) { setCpuPlayer1(); }
+        if (currentHighlightedButton.Equals(Cpu2SelectOptionName)) { setCpuPlayer2(); }
+        if (currentHighlightedButton.Equals(Cpu3SelectOptionName)) { setCpuPlayer3(); }
         if (currentHighlightedButton.Equals(levelSelectButtonName) || currentHighlightedButton.Equals(levelSelectOptionButtonName))
         {
-            try
-            {
-                initializeLevelDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeLevelDisplay();
         }
         if (currentHighlightedButton.Equals(modeSelectButtonName) || currentHighlightedButton.Equals(modeSelectOptionButtonName))
         {
-            try
-            {
-                initializeModeDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeModeDisplay();
         }
         if (currentHighlightedButton.Equals(optionsSelectButtonName) || currentHighlightedButton.Equals(optionsSelectOptionName))
         {
-            try
-            {
-                initializeOptionsDisplay();
-            }
-            catch
-            {
-                return;
-            }
+            initializeOptionsDisplay();
         }
         // ================================== footer buttons =====================================================================
         // start button | start game
@@ -663,8 +599,8 @@ public class StartManager_test : MonoBehaviour
     {
         switch (currentHighlightedButton)
         {
-            case Cpu1SelectOptionName :
-                if(cpu1SelectedIndex == 0)
+            case Cpu1SelectOptionName:
+                if (cpu1SelectedIndex == 0)
                 {
                     cpu1SelectedIndex = cpuPlayerSelectedData.Count - 1;
                 }
@@ -809,7 +745,7 @@ public class StartManager_test : MonoBehaviour
         //Debug.Log("initializeCpuDisplay");
         disableMenuObjects("cpu_tab");
         enableMenuObjects("cpu_tab");
-        
+
     }
 
     private IEnumerator SetVersion()
@@ -840,7 +776,7 @@ public class StartManager_test : MonoBehaviour
     // ============================  get UI buttons / text references ==============================
     private IEnumerator GetUiObjectReferences()
     {
-        yield return new WaitUntil(()=> StartMenuUiObjects.instance != null);
+        yield return new WaitUntil(() => StartMenuUiObjects.instance != null);
 
         // buttons to disable for touch input
         levelSelectButton = StartMenuUiObjects.instance.column1_subgroup_column2_level_selected_name_button;
@@ -969,7 +905,7 @@ public class StartManager_test : MonoBehaviour
     public void changeSelectedDifficultyOption(int currentDifficulty)
     {
         int maxDifficulty = 2;
-        if(currentDifficulty+1 > maxDifficulty)
+        if (currentDifficulty == maxDifficulty)
         {
             currentDifficulty = 0;
         }
@@ -1065,8 +1001,8 @@ public class StartManager_test : MonoBehaviour
 
         // NOTE : add level column 2 refs to change text/descr
         // add descritpion to startmenu levle objects
-        StartMenuUiObjects.instance.column1_subgroup_column2_level_selected_name_text.text 
-            = StartMenuUiObjects.instance.column2_level_tab_level_selected_name.text 
+        StartMenuUiObjects.instance.column1_subgroup_column2_level_selected_name_text.text
+            = StartMenuUiObjects.instance.column2_level_tab_level_selected_name.text
             = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         StartMenuUiObjects.instance.column2_level_tab_level_selected_info.text = levelSelectedData[levelSelectedIndex].LevelInfo;
 
@@ -1083,7 +1019,6 @@ public class StartManager_test : MonoBehaviour
     {
         try
         {
-            Debug.Log("initializePlayerDisplay");
             disableMenuObjects("friend_tab");
             StartMenuUiObjects.instance.column2_friend_tab.SetActive(true);
 
@@ -1130,7 +1065,7 @@ public class StartManager_test : MonoBehaviour
         ModeSelectOptionDescriptionText = StartMenuUiObjects.instance.column2_mode_tab_mode_selected_description;
         ModeSelectOptionDescriptionText.text = modeSelectedData[modeSelectedIndex].ModeDescription;
     }
-     void disableMenuObjects(string activeMenu)
+    void disableMenuObjects(string activeMenu)
     {
         if (!activeMenu.ToLower().Equals("players_tab"))
         {
@@ -1179,7 +1114,6 @@ public class StartManager_test : MonoBehaviour
 
         if (activeMenu.ToLower().Equals("cpu_tab"))
         {
-            Debug.Log("enableMenuObjects : " + activeMenu);
             StartMenuUiObjects.instance.column4.SetActive(true);
             // cpu player display
             initializeCpuPlayerDisplay();
@@ -1199,7 +1133,7 @@ public class StartManager_test : MonoBehaviour
         if (activeMenu.ToLower().Equals("mode_tab"))
         {
             StartMenuUiObjects.instance.column2_mode_tab.SetActive(true);
-           
+
         }
         if (activeMenu.ToLower().Equals("options_tab"))
         {
@@ -1357,7 +1291,7 @@ public class StartManager_test : MonoBehaviour
         GameOptions.levelHasSevenPointers = levelSelectedData[levelSelectedIndex].LevelHasSevenPointers;
 
         GameOptions.difficultySelected = difficultySelected;
-        if(difficultySelected == 2) { hardcoreEnabled = true; }
+        if (difficultySelected == 2) { hardcoreEnabled = true; }
         GameOptions.hardcoreModeEnabled = hardcoreEnabled;
 
         GameOptions.obstaclesEnabled = obstaclesEnabled;
@@ -1685,7 +1619,7 @@ public class StartManager_test : MonoBehaviour
     public void setCpuPlayer1()
     {
         StartMenuUiObjects.instance.column4_cpu1_image.sprite = cpuPlayerSelectedData[cpu1SelectedIndex].PlayerPortrait;
-        StartMenuUiObjects.instance.column4_cpu1_name_text.text= cpuPlayerSelectedData[cpu1SelectedIndex].PlayerDisplayName;
+        StartMenuUiObjects.instance.column4_cpu1_name_text.text = cpuPlayerSelectedData[cpu1SelectedIndex].PlayerDisplayName;
         if (cpuPlayerSelectedData[cpu1SelectedIndex].PlayerId != 0)
         {
             StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text =
