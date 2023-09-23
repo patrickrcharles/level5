@@ -246,6 +246,10 @@ public class LoadManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             CharacterProfile temp = obj.GetComponent<CharacterProfile>();
+            if (temp.isCpu)
+            {
+                temp.intializeCpuShooterStats();
+            }
             shooterList.Add(temp);
         }
         // sort list by  character id
