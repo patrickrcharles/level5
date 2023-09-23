@@ -98,6 +98,7 @@ public class StartMenuUiObjects : MonoBehaviour
     [SerializeField] public Image column4_cpu3_image;
     [SerializeField] public GameObject column4_cpu3_button;
     [SerializeField] public Text column4_cpu_selected_stats_numbers_text;
+    [SerializeField] public Text column4_cpu_selected_stats_category_text;
 
     //footer
     public const string startButtonName = "press_start";
