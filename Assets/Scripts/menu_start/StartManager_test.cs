@@ -435,11 +435,11 @@ public class StartManager_test : MonoBehaviour
             buttonPressed = true;
             try
             {
-                if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
-                {
-                    changeSelectedNumPlayersUp();
-                    initializeNumPlayersDisplay();
-                }
+                //if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
+                //{
+                //    changeSelectedNumPlayersUp();
+                //    initializeNumPlayersDisplay();
+                //}
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerUp();
@@ -517,11 +517,11 @@ public class StartManager_test : MonoBehaviour
             buttonPressed = true;
             try
             {
-                if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
-                {
-                    changeSelectedNumPlayersDown();
-                    initializeNumPlayersDisplay();
-                }
+                //if (currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
+                //{
+                //    changeSelectedNumPlayersDown();
+                //    initializeNumPlayersDisplay();
+                //}
                 if (currentHighlightedButton.Equals(playerSelectOptionButtonName))
                 {
                     changeSelectedPlayerDown();
@@ -752,7 +752,7 @@ public class StartManager_test : MonoBehaviour
     {
         yield return new WaitUntil(() => StartMenuUiObjects.instance != null);
 
-        Debug.Log(GameOptions.userName);
+        //Debug.Log(GameOptions.userName);
         if (APIHelper.BearerToken != null && !string.IsNullOrEmpty(GameOptions.userName))
         {
             userNameText.text = "username : " + GameOptions.userName + " connected";
@@ -1011,6 +1011,7 @@ public class StartManager_test : MonoBehaviour
 
     public void initializeNumPlayersDisplay()
     {
+        GameOptions.numPlayers = 1 + (cpu1SelectedIndex != 0 ? 1 : 0) + (cpu2SelectedIndex != 0 ? 1 : 0) + (cpu3SelectedIndex != 0 ? 1 : 0);
         numPlayersSelectOptionText = StartMenuUiObjects.instance.column1_subgroup_column2_num_players_selected_name_text;
         numPlayersSelectOptionText.text = GameOptions.numPlayers.ToString();
     }
@@ -1040,7 +1041,7 @@ public class StartManager_test : MonoBehaviour
     {
         try
         {
-            Debug.Log("initializeOptionsDisplay");
+            //Debug.Log("initializeOptionsDisplay");
             disableMenuObjects("options_tab");
             enableMenuObjects("options_tab");
         }
@@ -1313,14 +1314,11 @@ public class StartManager_test : MonoBehaviour
 
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
 
-        GameOptions.characterObjectNames = new List<string>
-        {
-            playerSelectedData[playerSelectedIndex].PlayerObjectName,
-            cpuPlayerSelectedData[cpu1SelectedIndex].PlayerObjectName,
-            cpuPlayerSelectedData[cpu2SelectedIndex].PlayerObjectName,
-            cpuPlayerSelectedData[cpu3SelectedIndex].PlayerObjectName,
-
-        };
+        GameOptions.characterObjectNames = new List<string>();
+        GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
+        if (cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[cpu1SelectedIndex].PlayerObjectName); }
+        if (cpu2SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[cpu2SelectedIndex].PlayerObjectName); }
+        if (cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[cpu3SelectedIndex].PlayerObjectName); }
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
         //    levelSelectedIndex = 15;
@@ -1638,6 +1636,7 @@ public class StartManager_test : MonoBehaviour
         {
             StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text = "";
         }
+        initializeNumPlayersDisplay();
     }
     public void setCpuPlayer2()
     {
@@ -1661,6 +1660,7 @@ public class StartManager_test : MonoBehaviour
         {
             StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text = "";
         }
+        initializeNumPlayersDisplay();
     }
     public void setCpuPlayer3()
     {
@@ -1684,6 +1684,7 @@ public class StartManager_test : MonoBehaviour
         {
             StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text = "";
         }
+        initializeNumPlayersDisplay();
     }
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
