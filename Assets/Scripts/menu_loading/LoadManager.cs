@@ -63,12 +63,12 @@ public class LoadManager : MonoBehaviour
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start+"_test");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start + "_test");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
     }
@@ -177,7 +177,6 @@ public class LoadManager : MonoBehaviour
 
     private List<CharacterProfile> loadPlayerSelectDataList()
     {
-        Debug.Log(GameOptions.userid);
         List<CharacterProfile> dbShootStatsList = DBHelper.instance.getCharacterProfileStats(GameOptions.userid);
         List<CharacterProfile> shooterList = new List<CharacterProfile>();
 
@@ -242,7 +241,6 @@ public class LoadManager : MonoBehaviour
 
         string path = "Prefabs/menu_start/cpu_players_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-        Debug.Log("size : " + objects.Count());
         foreach (GameObject obj in objects)
         {
             CharacterProfile temp = obj.GetComponent<CharacterProfile>();
