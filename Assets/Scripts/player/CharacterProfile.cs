@@ -161,7 +161,8 @@ public class CharacterProfile : MonoBehaviour
         }
         else
         {
-            Luck = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+            int luckCalc = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+            Luck = luckCalc <= 10 ? luckCalc : 10;
         }
     }
 
