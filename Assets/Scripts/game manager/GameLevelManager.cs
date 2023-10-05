@@ -210,6 +210,7 @@ public class GameLevelManager : MonoBehaviour
         }
         _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
         _basketballRimVector = GameObject.Find("rim").transform.position;
+        //Debug.Log(GameOptions.difficultySelected);
     }
 
     private void Update()

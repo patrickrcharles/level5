@@ -112,6 +112,7 @@ namespace Assets.Scripts.database
             model.Version = Application.version;
             model.Date = DateTime.Now.ToString();
             model.Time = pi[index].gameStats.TimePlayed;
+            Debug.Log(GameOptions.difficultySelected);
             model.Difficulty = GameOptions.difficultySelected;
             model.TotalPoints = pi[index].gameStats.TotalPoints;
             model.LongestShot = pi[index].gameStats.LongestShotMade;
