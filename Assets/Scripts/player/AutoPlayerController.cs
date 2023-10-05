@@ -243,6 +243,7 @@ public class AutoPlayerController : MonoBehaviour
         //    //targetPosition = positionMarkers[positionMarkerCounter].transform.position;
         //    //targetPosition = postionMarkers[getClosestPositionMarker()].transform.position;
         //}
+
         // call ball
         if (!hasBasketball
             && !InAir
@@ -253,10 +254,11 @@ public class AutoPlayerController : MonoBehaviour
             //&& BasketBallAuto.instance.BasketBallState.Grounded
             && Grounded
             && callBallToPlayer.CallEnabled
+            && !callBallToPlayer.Locked
             //&& !callBallToPlayer.Locked
             && arrivedAtTarget)
         {
-            //callBallToPlayer.Locked = true;
+            callBallToPlayer.Locked = true;
             StartCoroutine(CallBall());
         }
     }
@@ -545,11 +547,10 @@ public class AutoPlayerController : MonoBehaviour
 
     IEnumerator CallBall()
     {
-        yield return new WaitForSeconds(0.5f);
-        if (!basketball.BasketBallState.Thrown)
-        {
-            callBallToPlayer.pullBallToPlayerAuto(basketball.gameObject);
-        }
+        //Debug.Log("call ball auto");
+        callBallToPlayer.pullBallToPlayerAuto(basketball.gameObject);
+        yield return new WaitForSeconds(1.5f);
+        callBallToPlayer.Locked = false;
     }
     public void moveToPosition(Vector3 target)
     {

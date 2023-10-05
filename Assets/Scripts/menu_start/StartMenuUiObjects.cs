@@ -88,16 +88,17 @@ public class StartMenuUiObjects : MonoBehaviour
     [SerializeField] public Text column3_level_selected_description_text;
 
     [SerializeField] public GameObject column4;
-    [SerializeField] public GameObject column4_cpu1_name_text;
-    [SerializeField] public GameObject column4_cpu1_image;
+    [SerializeField] public Text column4_cpu1_name_text;
+    [SerializeField] public Image column4_cpu1_image;
     [SerializeField] public GameObject column4_cpu1_button;
-    [SerializeField] public GameObject column4_cpu2_name_text;
-    [SerializeField] public GameObject column4_cpu2_image;
+    [SerializeField] public Text column4_cpu2_name_text;
+    [SerializeField] public Image column4_cpu2_image;
     [SerializeField] public GameObject column4_cpu2_button;
-    [SerializeField] public GameObject column4_cpu3_name_text;
-    [SerializeField] public GameObject column4_cpu3_image;
+    [SerializeField] public Text column4_cpu3_name_text;
+    [SerializeField] public Image column4_cpu3_image;
     [SerializeField] public GameObject column4_cpu3_button;
-    [SerializeField] public GameObject column4_cpu_selected_stats_numbers_text;
+    [SerializeField] public Text column4_cpu_selected_stats_numbers_text;
+    [SerializeField] public Text column4_cpu_selected_stats_category_text;
 
     //footer
     public const string startButtonName = "press_start";

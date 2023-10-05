@@ -1,6 +1,4 @@
-﻿
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -115,7 +113,7 @@ public class TouchInputStartScreenController : MonoBehaviour
             joystickGameObject.SetActive(false);
         }
 
-        //check if startmanager is empty and find correct GraphicRaycaster and EventSystem
+        //check if StartManager is empty and find correct GraphicRaycaster and EventSystem
         if (GameObject.FindObjectOfType<StartManager>() != null)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
@@ -136,26 +134,26 @@ public class TouchInputStartScreenController : MonoBehaviour
         buttonPressed = true;
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         //level select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.levelSelectButtonName))
         {
             StartManager.instance.changeSelectedLevelDown();
             StartManager.instance.initializeLevelDisplay();
             buttonPressed = true;
         }
         // traffic select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.trafficSelectOptionName))
         {
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
             buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.enemySelectOptionName))
         {
             StartManager.instance.changeSelectedEnemiesOption();
             StartManager.instance.initializeEnemyOptionDisplay();
             buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.hardcoreSelectOptionName))
         {
             StartManager.instance.changeSelectedHardcoreOption();
             StartManager.instance.initializeHardcoreOptionDisplay();
@@ -167,9 +165,9 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.difficultySelectOptionName))
         {
-            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.changeSelectedDifficultyOption(GameOptions.difficultySelected);
             StartManager.instance.initializeDifficultyOptionDisplay();
             buttonPressed = true;
         }
@@ -181,68 +179,68 @@ public class TouchInputStartScreenController : MonoBehaviour
         }
 
         // player select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.playerSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedPlayerDown();
             StartManager.instance.initializePlayerDisplay();
             buttonPressed = true;
         }
         // friend select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.friendSelectOptionButtonName))
         {
-            StartManager.instance.changeSelectedCheerleaderDown();
-            StartManager.instance.initializeCheerleaderDisplay();
+            StartManager.instance.changeSelectedfriendDown();
+            StartManager.instance.initializefriendDisplay();
             buttonPressed = true;
         }
         // mode select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.modeSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedModeDown();
-            StartManager.instance.intializeModeDisplay();
+            StartManager.instance.initializeModeDisplay();
             buttonPressed = true;
         }
         //stats
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StatsMenuButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.statsMenuButtonName))
         {
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         // start
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.StartButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.startButtonName))
         {
             StartManager.instance.loadGame();
             buttonPressed = true;
         }
         // update /progression
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.UpdateMenuButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.updateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
-            GameOptions.playerSelectedIndex = StartManager.instance.PlayerSelectedIndex;
+            GameOptions.playerSelectedIndex = StartManager.instance.playerSelectedIndex;
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_progression);
             buttonPressed = true;
         }
         // options
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.OptionsMenuButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.optionsMenuButtonName))
         {
             //Debug.Log("load prgression screen");
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
             buttonPressed = true;
         }
         // credits
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.CreditsMenuButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.creditsMenuButtonName))
         {
             //Debug.Log("load prgression screen");
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_credits);
             buttonPressed = true;
         }
         // quit
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.QuitButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.quitButtonName))
         {
             Application.Quit();
             buttonPressed = true;
         }
         //account
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.AccountMenuButtonName))
+        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.accountMenuButtonName))
         {
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_account);
             buttonPressed = true;
@@ -274,20 +272,20 @@ public class TouchInputStartScreenController : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         //level select
-        if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.levelSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedLevelUp();
             StartManager.instance.initializeLevelDisplay();
             buttonPressed = true;
         }
         // traffic select
-        if (prevSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.trafficSelectOptionName))
         {
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
             buttonPressed = true;
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.hardcoreSelectOptionName))
         {
             StartManager.instance.changeSelectedHardcoreOption();
             StartManager.instance.initializeHardcoreOptionDisplay();
@@ -299,14 +297,14 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.enemySelectOptionName))
         {
             StartManager.instance.changeSelectedEnemiesOption();
             StartManager.instance.initializeEnemyOptionDisplay();
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.difficultySelectOptionName))
         {
-            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.changeSelectedDifficultyOption(GameOptions.difficultySelected);
             StartManager.instance.initializeDifficultyOptionDisplay();
         }
         if (prevSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
@@ -322,24 +320,24 @@ public class TouchInputStartScreenController : MonoBehaviour
         //    buttonPressed = true;
         //}
         // player select
-        if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.playerSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedPlayerUp();
             StartManager.instance.initializePlayerDisplay();
             buttonPressed = true;
         }
         // friend select
-        if (prevSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.friendSelectOptionButtonName))
         {
-            StartManager.instance.changeSelectedCheerleaderUp();
-            StartManager.instance.initializeCheerleaderDisplay();
+            StartManager.instance.changeSelectedfriendUp();
+            StartManager.instance.initializefriendDisplay();
             buttonPressed = true;
         }
         // mode select
-        if (prevSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.modeSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedModeUp();
-            StartManager.instance.intializeModeDisplay();
+            StartManager.instance.initializeModeDisplay();
             buttonPressed = true;
         }
         buttonPressed = false;
@@ -348,20 +346,20 @@ public class TouchInputStartScreenController : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         //level select
-        if (prevSelectedGameObject.name.Equals(StartManager.LevelSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.levelSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedLevelDown();
             StartManager.instance.initializeLevelDisplay();
             buttonPressed = true;
         }
         // traffic select
-        if (prevSelectedGameObject.name.Equals(StartManager.TrafficSelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.trafficSelectOptionName))
         {
             StartManager.instance.changeSelectedTrafficOption();
             StartManager.instance.initializeTrafficOptionDisplay();
             buttonPressed = true;
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.HardcoreSelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.hardcoreSelectOptionName))
         {
             StartManager.instance.changeSelectedHardcoreOption();
             StartManager.instance.initializeHardcoreOptionDisplay();
@@ -374,14 +372,14 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeSniperOptionDisplay();
             buttonPressed = true;
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.EnemySelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.enemySelectOptionName))
         {
             StartManager.instance.changeSelectedEnemiesOption();
             StartManager.instance.initializeEnemyOptionDisplay();
         }
-        if (prevSelectedGameObject.name.Equals(StartManager.DifficultySelectOptionName))
+        if (prevSelectedGameObject.name.Equals(StartManager.difficultySelectOptionName))
         {
-            StartManager.instance.changeSelectedDifficultyOption();
+            StartManager.instance.changeSelectedDifficultyOption(GameOptions.difficultySelected);
             StartManager.instance.initializeDifficultyOptionDisplay();
         }
         if (prevSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
@@ -390,24 +388,24 @@ public class TouchInputStartScreenController : MonoBehaviour
             StartManager.instance.initializeObstacleOptionDisplay();
         }
         // player select
-        if (prevSelectedGameObject.name.Equals(StartManager.PlayerSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.playerSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedPlayerDown();
             StartManager.instance.initializePlayerDisplay();
             buttonPressed = true;
         }
         // friend select
-        if (prevSelectedGameObject.name.Equals(StartManager.CheerleaderSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.friendSelectOptionButtonName))
         {
-            StartManager.instance.changeSelectedCheerleaderDown();
-            StartManager.instance.initializeCheerleaderDisplay();
+            StartManager.instance.changeSelectedfriendDown();
+            StartManager.instance.initializefriendDisplay();
             buttonPressed = true;
         }
         // mode select
-        if (prevSelectedGameObject.name.Equals(StartManager.ModeSelectOptionButtonName))
+        if (prevSelectedGameObject.name.Equals(StartManager.modeSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedModeDown();
-            StartManager.instance.intializeModeDisplay();
+            StartManager.instance.initializeModeDisplay();
             buttonPressed = true;
         }
         buttonPressed = false;

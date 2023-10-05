@@ -8,7 +8,6 @@ public class CpuPlayer : ScriptableObject
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
-    [SerializeField] private GameObject shooterProfileObject;
 
     private float jumpStatFloor = 3.5f;
     private float jumpStatCeiling = 6;

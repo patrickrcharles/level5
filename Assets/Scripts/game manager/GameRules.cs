@@ -316,19 +316,26 @@ public class GameRules : MonoBehaviour
     {
         List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
         Timer.instance.ScoreClockText.text = players[0].gameStats.TotalPoints.ToString();
+        string playerType;
         if (GameOptions.numPlayers > 0 && players[0] != null)
         {
-            displayP1ScoreText.text = "player "+ (players[0].pid+1) +"\n" + players[0].characterProfile.PlayerDisplayName
-                + ": " + players[0].gameStats.TotalPoints + "\n" + players[0].gameStats.ShotMade
-                + "/" + players[0].gameStats.ShotAttempt
+            playerType = players[0].isCpu ? "CPU" : "Player";
+            if (!players[0].isCpu) { displayP1ScoreText.color = Color.red; } else { displayP1ScoreText.color = Color.white; }
+            displayP1ScoreText.text = playerType + " " + (players[0].pid + 1)
+                + "\n" + players[0].characterProfile.PlayerDisplayName
+                + ":" + players[0].gameStats.TotalPoints
+                + "\n" + players[0].gameStats.ShotMade + "/" + players[0].gameStats.ShotAttempt
                 + " " + players[0].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
         if (GameOptions.numPlayers > 1 && players[1] != null)
         {
-            displayP2ScoreText.text = "player " + (players[1].pid+1) + "\n" + players[1].characterProfile.PlayerDisplayName
-                + ": " + players[1].gameStats.TotalPoints + "\n" + players[1].gameStats.ShotMade
-                + "/" + players[1].gameStats.ShotAttempt
-                + " " + players[1].gameStats.getTotalPointAccuracy().ToString("0.00")+"%"; 
+            playerType = players[1].isCpu ? "CPU" : "Player";
+            if (!players[1].isCpu) { displayP2ScoreText.color = Color.red; } else { displayP2ScoreText.color = Color.white; }
+            displayP2ScoreText.text = playerType + " " + (players[1].pid + 1)
+                + "\n" + players[1].characterProfile.PlayerDisplayName
+                + ":" + players[1].gameStats.TotalPoints
+                + "\n" + players[1].gameStats.ShotMade + "/" + players[1].gameStats.ShotAttempt
+                + " " + players[1].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
         else
         {
@@ -336,9 +343,11 @@ public class GameRules : MonoBehaviour
         }
         if (GameOptions.numPlayers > 2 && players[2] != null)
         {
-            displayP3ScoreText.text = "player " + (players[2].pid+1) + "\n" + players[2].characterProfile.PlayerDisplayName
-                + ": " + players[2].gameStats.TotalPoints + "\n" + players[2].gameStats.ShotMade
-                + "/" + players[2].gameStats.ShotAttempt
+            playerType = players[2].isCpu ? "CPU" : "Player";
+            if (!players[2].isCpu) { displayP3ScoreText.color = Color.red; } else { displayP3ScoreText.color = Color.white; }
+            displayP3ScoreText.text = playerType + " " + (players[2].pid + 1)
+                + "\n" + players[2].characterProfile.PlayerDisplayName + ":" + players[2].gameStats.TotalPoints
+                + "\n" + players[2].gameStats.ShotMade + "/" + players[2].gameStats.ShotAttempt
                 + " " + players[2].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
         else
@@ -347,9 +356,11 @@ public class GameRules : MonoBehaviour
         }
         if (GameOptions.numPlayers > 3 && players[3] != null)
         {
-            displayP4ScoreText.text = "player " + (players[3].pid+1) + "\n" + players[3].characterProfile.PlayerDisplayName
-                + ": " + players[3].gameStats.TotalPoints + "\n" + players[0].gameStats.ShotMade
-                + "/" + players[3].gameStats.ShotAttempt
+            playerType = players[3].isCpu ? "CPU" : "Player";
+            if (!players[3].isCpu) { displayP4ScoreText.color = Color.red; } else { displayP4ScoreText.color = Color.white; }
+            displayP4ScoreText.text = playerType + " " + (players[3].pid + 1)
+                + "\n" + players[3].characterProfile.PlayerDisplayName + ":" + players[3].gameStats.TotalPoints
+                + "\n" + players[3].gameStats.ShotMade + "/" + players[3].gameStats.ShotAttempt
                 + " " + players[3].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
         else

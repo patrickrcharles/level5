@@ -578,7 +578,7 @@ public class BasketBallAuto : MonoBehaviour
         if (basketBallState.FourPoints) { shootPercent = characterProfile.Accuracy4Pt / 2; }
         if (basketBallState.SevenPoints) { shootPercent = characterProfile.Accuracy7Pt / 2; }
         //default if none assigned
-        if(shootPercent == 0) { shootPercent = 85; }
+        if(shootPercent == 0) { shootPercent = 90; }
         // get base value
         Random random = new Random();
         float percent = random.Next(1, 100);

@@ -1,16 +1,16 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
     [SerializeField] private int userid;
-    [SerializeField] private bool isCpu;
+    [SerializeField] public bool isCpu;
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
-    [SerializeField] private GameObject shooterProfileObject;
 
     private float jumpStatFloor = 3.5f;
     private float jumpStatCeiling = 6;
@@ -46,19 +46,21 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
-
-    //public static CharacterProfile instance;
+    //[SerializeField] private int cpuLevel;
+    [SerializeField] private CpuBaseStats.ShooterType cpuType;
 
     private void Awake()
     {
-        //instance = this;
-    }
-    void Start()
-    {
+        GameOptions.gameModeHasBeenSelected = false;
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
             intializeShooterStatsFromProfile();
+        }
+        if (isCpu)
+        {
+            Debug.Log("isCPu : " + isCpu);
+            intializeCpuShooterStats();
         }
         if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected == 0 )
         {
@@ -68,17 +70,25 @@ public class CharacterProfile : MonoBehaviour
             Accuracy7Pt = 100;
             Release = 100;
             Range = 150;
+            Clutch = 100;
             Luck = 10;
         }
     }
 
-    public CharacterProfile() { }
+    public CharacterProfile() 
+    {
+        //Debug.Log("CharacterProfile() ");
+        //if (isCpu)
+        //{
+        //    intializeCpuShooterStats();
+        //}
+    }
 
     private void intializeShooterStatsFromProfile()
     {
         CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
-        playerObjectName = temp.playerObjectName;
+        playerObjectName = temp.playerObjectName != null ? temp.playerObjectName : "";
         playerDisplayName = temp.playerDisplayName;
         playerId = temp.playerId;
 
@@ -108,6 +118,7 @@ public class CharacterProfile : MonoBehaviour
             || GameOptions.gameModeAllPointContest)
         {
             Luck = 0;
+            clutch = 0;
         }
         else
         {
@@ -127,8 +138,6 @@ public class CharacterProfile : MonoBehaviour
             }
         }
     }
-<<<<<<< Updated upstream
-=======
     public void intializeCpuShooterStats()
     {
         int release = level > 25 ? 25 : level;
@@ -242,7 +251,6 @@ public class CharacterProfile : MonoBehaviour
     //{
 
     //}
->>>>>>> Stashed changes
 
     public float calculateJumpValueToPercent()
     {

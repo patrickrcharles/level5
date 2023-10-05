@@ -587,10 +587,6 @@ public class DBHelper : MonoBehaviour
     public List<CharacterProfile> getCharacterProfileStats(int userid)
     {
         List<CharacterProfile> characterStats = new List<CharacterProfile>();
-        if(userid == 0)
-        {
-            Debug.Log("userid = 0");
-        }
         try
         {
             DatabaseLocked = true;
@@ -603,7 +599,6 @@ public class DBHelper : MonoBehaviour
 
             if (!isTableEmpty(Constants.LOCAL_DATABASE_tableName_characterProfile))
             {
-                Debug.Log(userid);
                 sqlQuery = "Select charid, playerName, objectName, accuracy2, accuracy3, accuracy4, accuracy7, jump, speed,"
                     + "runSpeed, runSpeedHasBall, luck, shootAngle, experience, level, pointsAvailable, pointsUsed, range, release, isLocked"
                     + " From " + Constants.LOCAL_DATABASE_tableName_characterProfile;

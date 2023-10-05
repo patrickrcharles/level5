@@ -16,6 +16,9 @@ public class LoadManager : MonoBehaviour
     [SerializeField]
     private List<CharacterProfile> playerSelectedData;
     public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; }
+
+    [SerializeField]
+    private List<CharacterProfile> cpuPlayerSelectedData;
     // list off cheerleader profile data
     [SerializeField]
     private List<CheerleaderProfile> cheerleaderSelectedData;
@@ -29,12 +32,13 @@ public class LoadManager : MonoBehaviour
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
     public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
-
+    public List<CharacterProfile> CpuPlayerSelectedData { get => cpuPlayerSelectedData; set => cpuPlayerSelectedData = value; }
 
     bool CharacterProfileTableExists = false;
     bool CharacterProfileTableCreated = false;
 
     [SerializeField] internal bool playerDataLoaded = false;
+    [SerializeField] internal bool cpuPlayerDataLoaded = false;
     [SerializeField] internal bool cheerleaderDataLoaded = false;
     [SerializeField] internal bool levelDataLoaded = false;
     [SerializeField] internal bool modeDataLoaded = false;
@@ -59,12 +63,12 @@ public class LoadManager : MonoBehaviour
             // this is all confusing
             if (String.IsNullOrEmpty(GameOptions.previousSceneName))
             {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start+"_test");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
             // go back to update manager
             else
             {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start + "_test");
+                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
             }
         }
     }
@@ -152,7 +156,7 @@ public class LoadManager : MonoBehaviour
             cheerleaderSelectedData = loadCheerleaderSelectDataList();
         }
         //cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
-
+        cpuPlayerSelectedData = loadCpuSelectDataList();
         levelSelectedData = loadLevelSelectDataList();
         modeSelectedData = loadModeSelectDataList();
     }
@@ -173,7 +177,6 @@ public class LoadManager : MonoBehaviour
 
     private List<CharacterProfile> loadPlayerSelectDataList()
     {
-        Debug.Log(GameOptions.userid);
         List<CharacterProfile> dbShootStatsList = DBHelper.instance.getCharacterProfileStats(GameOptions.userid);
         List<CharacterProfile> shooterList = new List<CharacterProfile>();
 
@@ -229,6 +232,32 @@ public class LoadManager : MonoBehaviour
         {
             playerDataLoaded = true;
         }
+        return shooterList;
+    }
+
+    private List<CharacterProfile> loadCpuSelectDataList()
+    {
+        List<CharacterProfile> shooterList = new List<CharacterProfile>();
+
+        string path = "Prefabs/menu_start/cpu_players_selected_objects";
+        GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
+        foreach (GameObject obj in objects)
+        {
+            CharacterProfile temp = obj.GetComponent<CharacterProfile>();
+            if (temp.isCpu)
+            {
+                temp.intializeCpuShooterStats();
+            }
+            shooterList.Add(temp);
+        }
+        // sort list by  character id
+        shooterList.Sort(sortByPlayerId);
+
+        if (shooterList.Count == objects.Length)
+        {
+            cpuPlayerDataLoaded = true;
+        }
+
         return shooterList;
     }
 
