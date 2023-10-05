@@ -149,7 +149,7 @@ public class CharacterProfile : MonoBehaviour
 
         Range = CpuBaseStats.RANGE + (level * 5);
         luck = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
-        clutch = level;
+        clutch = level <= 100 ? level : 100;
 
         // if 3/4/All point contest, disable Luck/citical %
         if (GameOptions.gameModeThreePointContest
