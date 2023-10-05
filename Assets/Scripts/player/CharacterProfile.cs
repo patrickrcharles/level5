@@ -127,6 +127,122 @@ public class CharacterProfile : MonoBehaviour
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+    public void intializeCpuShooterStats()
+    {
+        int release = level > 25 ? 25 : level;
+        int three = level > 50 ? 25 : level - release;
+        int four = level > 75 ? 25 : level - (three + release);
+        int seven = level > 100 ? 25 : level - (three + four + release);
+
+        calculateAccuracyAttributeRatings();
+
+        Range = CpuBaseStats.RANGE + (level * 5);
+        luck = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+        clutch = level <= 100 ? level : 100;
+
+        // if 3/4/All point contest, disable Luck/citical %
+        if (GameOptions.gameModeThreePointContest
+            || GameOptions.gameModeFourPointContest
+            || GameOptions.gameModeAllPointContest)
+        {
+            Luck = 0;
+            clutch = 0;
+        }
+        else
+        {
+            Luck = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+        }
+    }
+
+    public void calculateAccuracyAttributeRatings()
+    {
+        int three = 0;
+        int four = 0;
+        int seven = 0;
+        int remainder = 0;
+        int release = 0;
+
+        Accuracy2Pt = 90;
+        if (cpuType == CpuBaseStats.ShooterType.Three)
+        {
+            three = (int)(level * 0.5f);
+            four = (int)(level * 0.15f);
+            seven = (int)(level * 0.15f);
+            release = (int)(level * 0.2f);
+
+            remainder = level - (three + four + seven + release);
+        }
+        if (cpuType == CpuBaseStats.ShooterType.Four)
+        {
+            three = (int)(level * 0.15f);
+            four = (int)(level * 0.5f);
+            seven = (int)(level * 0.15f);
+            release = (int)(level * 0.2f);
+            remainder = level - (three + four + seven + release);
+        }
+        if (cpuType == CpuBaseStats.ShooterType.Seven)
+        {
+            three = (int)(level * 0.15f);
+            four = (int)(level * 0.15f);
+            seven = (int)(level * 0.5f);
+            release = (int)(level * 0.2f);
+            remainder = level - (three + four + seven + release);
+        }
+        if (three > 25) { remainder += (three - 25); three = 25; }
+        if (four > 25) { remainder += (four - 25); four = 25; }
+        if (seven > 25) { remainder += (seven - 25); seven = 25; }
+        if (release > 25) { remainder += (release - 25); release = 25; }
+
+        // redistribute points
+        int[] attributes = new int[] { three, four, seven, release };
+        //int icount = 0;
+        //int jcount = 0;
+        for (int i = 0; i < remainder; i++)
+        {
+            //icount++;
+            for (int j = 0; j < attributes.Length; j++)
+            {
+                if (attributes[j] < 25)
+                {
+                    attributes[j]++;
+                    //jcount++;
+                    j++;
+                }
+            }
+        }
+
+        //Debug.Log("---icount : "+ icount);
+        //Debug.Log("------jcount : "+ jcount);
+        //Debug.Log("exit while loop ");
+        Accuracy3Pt = CpuBaseStats.ACCURACY_3PT + attributes[0];
+        Accuracy4Pt = CpuBaseStats.ACCURACY_4PT + attributes[1];
+        Accuracy7Pt = CpuBaseStats.ACCURACY_7PT + attributes[2];
+        Release = CpuBaseStats.RELEASE + +attributes[3]; ;
+    }
+
+    //private void calculateCpu3ptAccuracy(int accuracy)
+    //{
+    //    int levelpoints = level;
+    //    if (cpuType == CpuBaseStats.ShooterType.Three)
+    //    {
+    //        if(levelpoints > 10) 
+    //        {
+    //            accuracy3pt += 10;
+    //            levelpoints -= 10;
+    //        }
+    //    }
+    //}
+    //private void calculateCpu4ptAccuracy(int accuracy)
+    //{
+
+    //}
+    //private void calculateCpu7ptAccuracy(int accuracy)
+    //{
+
+    //}
+>>>>>>> Stashed changes
 
     public float calculateJumpValueToPercent()
     {
