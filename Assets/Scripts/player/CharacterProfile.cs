@@ -46,12 +46,12 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
-    [SerializeField] private int cpuLevel;
+    //[SerializeField] private int cpuLevel;
     [SerializeField] private CpuBaseStats.ShooterType cpuType;
 
     private void Awake()
     {
-        Debug.Log("isCPu : " + isCpu);
+        GameOptions.gameModeHasBeenSelected = false;
         // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
@@ -59,6 +59,7 @@ public class CharacterProfile : MonoBehaviour
         }
         if (isCpu)
         {
+            Debug.Log("isCPu : " + isCpu);
             intializeCpuShooterStats();
         }
         if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected == 0 )
@@ -69,6 +70,7 @@ public class CharacterProfile : MonoBehaviour
             Accuracy7Pt = 100;
             Release = 100;
             Range = 150;
+            Clutch = 100;
             Luck = 10;
         }
     }
@@ -86,7 +88,7 @@ public class CharacterProfile : MonoBehaviour
     {
         CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
-        playerObjectName = temp.playerObjectName;
+        playerObjectName = temp.playerObjectName != null ? temp.playerObjectName : "";
         playerDisplayName = temp.playerDisplayName;
         playerId = temp.playerId;
 
@@ -138,7 +140,6 @@ public class CharacterProfile : MonoBehaviour
     }
     public void intializeCpuShooterStats()
     {
-        Debug.Log("level : "+ level);
         int release = level > 25 ? 25 : level;
         int three = level > 50 ? 25 : level - release;
         int four = level > 75 ? 25 : level - (three + release);
@@ -172,7 +173,6 @@ public class CharacterProfile : MonoBehaviour
         int remainder = 0;
         int release = 0;
 
-        Debug.Log("-------------------------- : " + playerDisplayName);
         Accuracy2Pt = 90;
         if (cpuType == CpuBaseStats.ShooterType.Three)
         {
