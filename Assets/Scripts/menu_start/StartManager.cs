@@ -1,5 +1,4 @@
-﻿
-using Assets.Scripts.restapi;
+﻿using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
 using System;
 using System.Collections;
@@ -11,7 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class StartManager_test : MonoBehaviour
+public class StartManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -97,77 +96,77 @@ public class StartManager_test : MonoBehaviour
     private Text userNameText;
 
     //const object names
-    private const string startButtonName = "press_start";
-    private const string statsMenuButtonName = "stats_menu";
-    private const string quitButtonName = "quit_game";
-    private const string optionsMenuButtonName = "options_menu";
-    private const string creditsMenuButtonName = "credits_menu";
-    private const string updateMenuButtonName = "update_menu";
-    private const string accountMenuButtonName = "account_menu";
-    private const string updatePointsAvailable = "update_points_available";
+    public const string startButtonName = "press_start";
+    public const string statsMenuButtonName = "stats_menu";
+    public const string quitButtonName = "quit_game";
+    public const string optionsMenuButtonName = "options_menu";
+    public const string creditsMenuButtonName = "credits_menu";
+    public const string updateMenuButtonName = "update_menu";
+    public const string accountMenuButtonName = "account_menu";
+    public const string updatePointsAvailable = "update_points_available";
 
-    private const string playerSelectButtonName = "player_select";
-    private const string playerSelectOptionButtonName = "player_selected_name";
-    private const string playerSelectStatsObjectName = "player_selected_stats_numbers";
-    private const string playerSelectImageObjectName = "player_selected_image";
-    //private const string playerSelectUnlockObjectName = "player_selected_unlock";
-    //private const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
-    private const string playerSelectStatsCategoryName = "player_selected_stats_category";
+    public const string playerSelectButtonName = "player_select";
+    public const string playerSelectOptionButtonName = "player_selected_name";
+    public const string playerSelectStatsObjectName = "player_selected_stats_numbers";
+    public const string playerSelectImageObjectName = "player_selected_image";
+    //public const string playerSelectUnlockObjectName = "player_selected_unlock";
+    //public const string playerSelectIsLockedObjectName = "player_selected_lock_texture";
+    public const string playerSelectStatsCategoryName = "player_selected_stats_category";
 
-    private const string playerProgressionName = "player_progression";
-    private const string playerProgressionStatsName = "player_progression_stats";
+    public const string playerProgressionName = "player_progression";
+    public const string playerProgressionStatsName = "player_progression_stats";
 
-    private const string cpuSelectButtonName = "cpu_select";
-    private const string cpuSelectOptionButtonName = "cpu_selected_name";
+    public const string cpuSelectButtonName = "cpu_select";
+    public const string cpuSelectOptionButtonName = "cpu_selected_name";
     //friend objects
-    private const string friendSelectButtonName = "friend_select";
-    private const string friendSelectOptionButtonName = "friend_selected_name";
-    private const string friendSelectImageObjectName = "friend_selected_image";
-    private const string friendSelectUnlockObjectName = "friend_selected_unlock";
-    private const string friendSelectIsLockedObjectName = "friend_selected_lock_texture";
+    public const string friendSelectButtonName = "friend_select";
+    public const string friendSelectOptionButtonName = "friend_selected_name";
+    public const string friendSelectImageObjectName = "friend_selected_image";
+    public const string friendSelectUnlockObjectName = "friend_selected_unlock";
+    public const string friendSelectIsLockedObjectName = "friend_selected_lock_texture";
 
     //level objects
-    private const string levelSelectButtonName = "level_select";
-    private const string levelSelectOptionButtonName = "level_selected_name";
+    public const string levelSelectButtonName = "level_select";
+    public const string levelSelectOptionButtonName = "level_selected_name";
 
     //level objects
-    private const string numPlayersSelectButtonName = "num_players_select";
-    private const string numPlayersSelectOptionButtonName = "num_players_selected_name";
+    public const string numPlayersSelectButtonName = "num_players_select";
+    public const string numPlayersSelectOptionButtonName = "num_players_selected_name";
 
     //mode objects
-    private const string modeSelectButtonName = "mode_select";
-    private const string modeSelectOptionButtonName = "mode_selected_name";
-    private const string modeSelectDescriptionObjectName = "mode_selected_description";
+    public const string modeSelectButtonName = "mode_select";
+    public const string modeSelectOptionButtonName = "mode_selected_name";
+    public const string modeSelectDescriptionObjectName = "mode_selected_description";
 
     //traffic objects
-    private const string trafficSelectButtonName = "traffic_select";
-    private const string trafficSelectOptionName = "traffic_select_option";
+    public const string trafficSelectButtonName = "traffic_select";
+    public const string trafficSelectOptionName = "traffic_select_option";
 
     //hardcore mode
-    private const string hardcoreSelectButtonName = "hardcore_select";
-    private const string hardcoreSelectOptionName = "hardcore_select_option";
+    public const string hardcoreSelectButtonName = "hardcore_select";
+    public const string hardcoreSelectOptionName = "hardcore_select_option";
 
     //hardcore mode
-    private const string enemySelectButtonName = "enemy_select";
-    private const string enemySelectOptionName = "enemy_select_option";
+    public const string enemySelectButtonName = "enemy_select";
+    public const string enemySelectOptionName = "enemy_select_option";
 
     //sniper
-    private const string sniperSelectButtonName = "sniper_select";
-    private const string sniperSelectOptionName = "sniper_select_option";
+    public const string sniperSelectButtonName = "sniper_select";
+    public const string sniperSelectOptionName = "sniper_select_option";
     //difficulty
-    private const string difficultySelectButtonName = "difficulty_select";
-    private const string difficultySelectOptionName = "difficulty_select_option";
-    private const string difficultySelectDescriptionName = "difficulty_selected_description";
+    public const string difficultySelectButtonName = "difficulty_select";
+    public const string difficultySelectOptionName = "difficulty_select_option";
+    public const string difficultySelectDescriptionName = "difficulty_selected_description";
     //obstacle
-    private const string obstacleSelectButtonName = "obstacle_select";
-    private const string obstacleSelectOptionName = "obstacle_select_option";
+    public const string obstacleSelectButtonName = "obstacle_select";
+    public const string obstacleSelectOptionName = "obstacle_select_option";
     //options
-    private const string optionsSelectButtonName = "options_select";
-    private const string optionsSelectOptionName = "options_selected_name";
+    public const string optionsSelectButtonName = "options_select";
+    public const string optionsSelectOptionName = "options_selected_name";
 
-    private const string Cpu1SelectOptionName = "cpu1_button";
-    private const string Cpu2SelectOptionName = "cpu2_button";
-    private const string Cpu3SelectOptionName = "cpu3_button";
+    public const string Cpu1SelectOptionName = "cpu1_button";
+    public const string Cpu2SelectOptionName = "cpu2_button";
+    public const string Cpu3SelectOptionName = "cpu3_button";
 
     [SerializeField]
     private bool trafficEnabled;
@@ -182,7 +181,7 @@ public class StartManager_test : MonoBehaviour
     [SerializeField]
     private bool sniperEnabled;
     [SerializeField]
-    private int playerSelectedIndex;
+    public int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
     private int friendSelectedIndex;
@@ -196,7 +195,7 @@ public class StartManager_test : MonoBehaviour
     public PlayerControls controls;
 
     [SerializeField]
-    public static StartManager_test instance;
+    public static StartManager instance;
 
     bool buttonPressed = false;
     bool dataLoaded = false;
