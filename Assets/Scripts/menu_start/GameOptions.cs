@@ -57,6 +57,11 @@ public static class GameOptions
     static public int levelSelectedIndex = 0;
     static public int modeSelectedIndex = 0;
     static public int cheerleaderSelectedIndex = 0;
+    static public int friendSelectedIndex = 0;
+    static public int cpu1SelectedIndex = 0;
+    static public int cpu2SelectedIndex = 0;
+    static public int cpu3SelectedIndex = 0;
+
     static public bool trafficEnabled = false;
     static public bool enemiesEnabled = false;
 
