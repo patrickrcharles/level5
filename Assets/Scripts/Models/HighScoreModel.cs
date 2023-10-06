@@ -232,6 +232,7 @@ namespace Assets.Scripts.database
                 model.p4IsCpu = 99;
             }
             model.numPlayers = GameOptions.numPlayers;
+            model.Difficulty = GameOptions.difficultySelected;
 
             return model;
         }
