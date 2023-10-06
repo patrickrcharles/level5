@@ -222,11 +222,14 @@ public class StartManager : MonoBehaviour
         // find all button / text / etc and assign to variables
         StartCoroutine(GetUiObjectReferences());
 
-        //default index for player selected
+        //default index for selected configuration
         playerSelectedIndex = GameOptions.playerSelectedIndex;
-        friendSelectedIndex = GameOptions.cheerleaderSelectedIndex;
+        friendSelectedIndex = GameOptions.friendSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
+        cpu1SelectedIndex = GameOptions.cpu1SelectedIndex;
+        cpu2SelectedIndex = GameOptions.cpu2SelectedIndex;
+        cpu3SelectedIndex = GameOptions.cpu3SelectedIndex;
         trafficEnabled = GameOptions.trafficEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
         difficultySelected = 1;
@@ -760,7 +763,7 @@ public class StartManager : MonoBehaviour
         {
             userNameText.text = "username : " + GameOptions.userName + " disconnected";
         }
-        versionText.text = "current version: " + Application.version;
+        versionText.text = "current version : " + Application.version;
         yield return new WaitUntil(() => !APIHelper.ApiLocked);
         if (UtilityFunctions.IsConnectedToInternet())
         {
@@ -1277,7 +1280,7 @@ public class StartManager : MonoBehaviour
 
         // send current selected options to game options for next load on start manager
         GameOptions.playerSelectedIndex = playerSelectedIndex;
-        GameOptions.cheerleaderSelectedIndex = friendSelectedIndex;
+        GameOptions.friendSelectedIndex = friendSelectedIndex;
         GameOptions.levelSelectedIndex = levelSelectedIndex;
         GameOptions.modeSelectedIndex = modeSelectedIndex;
         GameOptions.trafficEnabled = trafficEnabled;
