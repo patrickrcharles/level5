@@ -117,7 +117,7 @@ public class DBHelper : MonoBehaviour
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName, sniperEnabled, sniperMode, sniperModeName," +
-               "sniperHits, sniperShots, p1TotalPoints,p2TotalPoints,p3TotalPoints,p4TotalPoints,first,second,third,fourth,p1IsCpu,p2IsCpu,p3IsCpu,p4IsCpu,numPlayers)  " +
+               "sniperHits, sniperShots, p1TotalPoints,p2TotalPoints,p3TotalPoints,p4TotalPoints,first,second,third,fourth,p1IsCpu,p2IsCpu,p3IsCpu,p4IsCpu,numPlayers,difficulty)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
                + "', '" + stats.Characterid
@@ -170,7 +170,8 @@ public class DBHelper : MonoBehaviour
                + stats.p2IsCpu + "','"
                + stats.p3IsCpu + "','"
                + stats.p4IsCpu + "','"
-               + GameOptions.numPlayers + "')";
+               + GameOptions.numPlayers + "','"
+               + stats.Difficulty + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1722,7 +1723,7 @@ public class DBHelper : MonoBehaviour
             dbconn = null;
 
             databaseLocked = false;
-            Debug.Log("score submitted to api");
+            Debug.Log("score submitted to database");
         }
         catch (Exception e)
         {
