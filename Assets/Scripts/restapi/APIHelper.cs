@@ -53,6 +53,7 @@ namespace Assets.Scripts.restapi
             {
                 //Debug.Log("try...post single score");
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -226,6 +227,7 @@ namespace Assets.Scripts.restapi
                 try
                 {
                     var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
+                    httpWebRequest.Timeout = 5000;
                     httpWebRequest.ContentType = "application/json; charset=utf-8";
                     httpWebRequest.Method = "POST";
                     httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -313,6 +315,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores + dbHighScoreModel.Scoreid) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "PUT";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -374,6 +377,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -454,6 +458,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -525,6 +530,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -596,6 +602,7 @@ namespace Assets.Scripts.restapi
                 try
                 {
                     var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiUsers) as HttpWebRequest;
+                    httpWebRequest.Timeout = 5000;
                     httpWebRequest.ContentType = "application/json; charset=utf-8";
                     httpWebRequest.Method = "POST";
                     //post
@@ -679,6 +686,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
 
@@ -762,6 +770,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiHighScoresByScoreid + scoreid)) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
 
@@ -803,6 +812,7 @@ namespace Assets.Scripts.restapi
             HttpWebResponse httpResponse = null;
             //HttpStatusCode statusCode;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username) as HttpWebRequest;
+            httpWebRequest.Timeout = 5000;
             try
             {
                 using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
@@ -850,6 +860,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByEmail + email)) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -894,6 +905,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create((Constants.API_ADDRESS_DEV_publicApiUsersByUserName + username)) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", bearerToken);
@@ -973,6 +985,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicUserReport) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
 
@@ -1042,6 +1055,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiToken) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "POST";
 
@@ -1121,6 +1135,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
@@ -1140,6 +1155,7 @@ namespace Assets.Scripts.restapi
                 httpResponse = (HttpWebResponse)e.Response;
                 Debug.Log("----------------- ERROR : " + e);
                 apiLocked = false;
+                return "server down";
             }
 
             statusCode = httpResponse.StatusCode;
@@ -1177,6 +1193,7 @@ namespace Assets.Scripts.restapi
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiRequest) as HttpWebRequest;
+                httpWebRequest.Timeout = 5000;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 httpWebRequest.Method = "GET";
                 //httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
