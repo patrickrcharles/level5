@@ -13,6 +13,7 @@ public class PlayerDunk : MonoBehaviour
     private float dunkRangeFeet;
     [SerializeField]
     private float jumpAngle;
+    [SerializeField]
     private bool playerCanDunk;
 
     private void Start()
