@@ -73,52 +73,55 @@ public class BasketBallState : MonoBehaviour
     }
     void Update()
     {
-        PlayerDistanceFromRim = Vector3.Distance(player.transform.position, _basketBallTarget.transform.position);
-        //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
+        if (GameOptions.gameModeRequiresBasketball)
+        {
+            PlayerDistanceFromRim = Vector3.Distance(player.transform.position, _basketBallTarget.transform.position);
+            //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 
-        // is player on  marker  +  is marker required for game mode
-        if (GameRules.instance.PositionMarkersRequired)
-        {
-            PlayerOnMarker = isCpu ?  GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].AutoPlayerOnMarker 
-                : GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
-        }
+            // is player on  marker  +  is marker required for game mode
+            if (GameRules.instance.PositionMarkersRequired)
+            {
+                PlayerOnMarker = isCpu ? GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].AutoPlayerOnMarker
+                    : GameRules.instance.BasketBallShotMarkersList[CurrentShotMarkerId].PlayerOnMarker;
+            }
 
-        if (PlayerDistanceFromRim < Constants.DISTANCE_3point)
-        {
-            TwoPoints = true;
-            _currentShotType = 2;
-        }
-        else
-        {
-            TwoPoints = false;
-        }
-        if (PlayerDistanceFromRim >= Constants.DISTANCE_3point && PlayerDistanceFromRim < Constants.DISTANCE_4point)
-        {
-            ThreePoints = true;
-            _currentShotType = 3;
-        }
-        else
-        {
-            ThreePoints = false;
-        }
-        if (PlayerDistanceFromRim >= Constants.DISTANCE_4point && PlayerDistanceFromRim < Constants.DISTANCE_7point)
-        {
-            FourPoints = true;
-            _currentShotType = 4;
-        }
-        else
-        {
-            FourPoints = false;
-        }
+            if (PlayerDistanceFromRim < Constants.DISTANCE_3point)
+            {
+                TwoPoints = true;
+                _currentShotType = 2;
+            }
+            else
+            {
+                TwoPoints = false;
+            }
+            if (PlayerDistanceFromRim >= Constants.DISTANCE_3point && PlayerDistanceFromRim < Constants.DISTANCE_4point)
+            {
+                ThreePoints = true;
+                _currentShotType = 3;
+            }
+            else
+            {
+                ThreePoints = false;
+            }
+            if (PlayerDistanceFromRim >= Constants.DISTANCE_4point && PlayerDistanceFromRim < Constants.DISTANCE_7point)
+            {
+                FourPoints = true;
+                _currentShotType = 4;
+            }
+            else
+            {
+                FourPoints = false;
+            }
 
-        if (PlayerDistanceFromRim > Constants.DISTANCE_7point)
-        {
-            SevenPoints = true;
-            _currentShotType = 7;
-        }
-        else
-        {
-            SevenPoints = false;
+            if (PlayerDistanceFromRim > Constants.DISTANCE_7point)
+            {
+                SevenPoints = true;
+                _currentShotType = 7;
+            }
+            else
+            {
+                SevenPoints = false;
+            }
         }
     }
 
