@@ -52,7 +52,6 @@ public class CharacterProfile : MonoBehaviour
     private void Awake()
     {
         GameOptions.gameModeHasBeenSelected = false;
-        // only init if level 1 or 2. other levels still for testing
         if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
             intializeShooterStatsFromProfile();
