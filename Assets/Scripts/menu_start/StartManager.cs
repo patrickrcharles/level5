@@ -463,12 +463,12 @@ public class StartManager : MonoBehaviour
                     changeSelectedfriendUp();
                     initializefriendDisplay();
                 }
-                if (currentHighlightedButton.Equals(optionsSelectOptionName))
-                {
-                    Debug.Log("option up");
-                    //changeSelectedfriendUp();
-                    //initializefriendDisplay();
-                }
+                //if (currentHighlightedButton.Equals(optionsSelectOptionName))
+                //{
+                //    Debug.Log("option up");
+                //    //changeSelectedfriendUp();
+                //    //initializefriendDisplay();
+                //}
                 if (currentHighlightedButton.Equals(trafficSelectOptionName))
                 {
                     // disabled for now. default : OFF
@@ -531,7 +531,6 @@ public class StartManager : MonoBehaviour
                 }
                 if (currentHighlightedButton.Equals(levelSelectOptionButtonName))
                 {
-                    Debug.Log("change level");
                     changeSelectedLevelDown();
                     initializeLevelDisplay();
                 }
@@ -545,12 +544,11 @@ public class StartManager : MonoBehaviour
                     changeSelectedfriendDown();
                     initializefriendDisplay();
                 }
-                if (currentHighlightedButton.Equals(optionsSelectOptionName))
-                {
-                    Debug.Log("option down");
-                    //changeSelectedfriendUp();
-                    //initializefriendDisplay();
-                }
+                //if (currentHighlightedButton.Equals(optionsSelectOptionName))
+                //{
+                //    //changeSelectedfriendUp();
+                //    //initializefriendDisplay();
+                //}
                 if (currentHighlightedButton.Equals(trafficSelectOptionName))
                 {
                     changeSelectedTrafficOption();
@@ -1313,9 +1311,11 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.trafficEnabled = false;
         }
+        GameOptions.gameModeRequiresBasketball = modeSelectedData[modeSelectedIndex].GameModeRequiresBasketball;
 
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
 
+        GameOptions.gameModeRequiresCpuShooters = modeSelectedData[modeSelectedIndex].GameModeRequiresCpuShooters;
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[cpu1SelectedIndex].PlayerObjectName); }
@@ -1462,7 +1462,6 @@ public class StartManager : MonoBehaviour
 
     public void changeSelectedLevelUp()
     {
-        Debug.Log("change level");
         // if default index (first in list), go to end of list
         if (levelSelectedIndex == 0)
         {
@@ -1473,7 +1472,7 @@ public class StartManager : MonoBehaviour
             // if not first index, decrement
             levelSelectedIndex--;
         }
-        if ((modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel))
+        if (modeSelectedData[modeSelectedIndex].IsCageMatch && !levelSelectedData[levelSelectedIndex].IsCageMatchLevel)
         {
             changeSelectedLevelUp();
         }
