@@ -39,6 +39,8 @@ public static class GameOptions
     // 3 / 4 point contest / moneyball / etc
     static public bool gameModeRequiresShotMarkers3s;
     static public bool gameModeRequiresShotMarkers4s;
+    static public bool gameModeRequiresBasketball;
+    static public bool gameModeRequiresCpuShooters;
     // 3 / 4 point contest + trequires timer
     static public bool gameModeThreePointContest;
     static public bool gameModeFourPointContest;

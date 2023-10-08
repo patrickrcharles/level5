@@ -29,6 +29,8 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool isBattleRoyal;
     [SerializeField] private bool isCageMatch;
     [SerializeField] private bool gameModeRequiresPlayerSurvive;
+    [SerializeField] private bool gameModeRequiresBasketball;
+    [SerializeField] private bool gameModeRequiresCpuShooters;
 
     public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
@@ -85,4 +87,6 @@ public class StartScreenModeSelected : MonoBehaviour
     public bool IsBattleRoyal { get => isBattleRoyal; }
     public bool GameModeRequiresPlayerSurvive { get => gameModeRequiresPlayerSurvive;  }
     public bool IsCageMatch { get => isCageMatch;  }
+    public bool GameModeRequiresBasketball { get => gameModeRequiresBasketball; set => gameModeRequiresBasketball = value; }
+    public bool GameModeRequiresCpuShooters { get => gameModeRequiresCpuShooters; set => gameModeRequiresCpuShooters = value; }
 }
