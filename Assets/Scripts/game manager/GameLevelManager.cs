@@ -128,6 +128,9 @@ public class GameLevelManager : MonoBehaviour
         // if player doesnt exists, spawn default Player
         checkPlayerPrefabExists();
         // if basketball doesnt exists
+        //if (!GameOptions.gameModeHasBeenSelected && !GameOptions.EnemiesOnlyEnabled) { GameOptions.gameModeRequiresBasketball = true; }
+        //if (GameOptions.gameModeRequiresBasketball) { checkBasketballPrefabExists(); }
+        if (!GameOptions.gameModeRequiresBasketball && GameOptions.gameModeHasBeenSelected) { GameOptions.enemiesEnabled = true; }
         checkBasketballPrefabExists();
         // cheerleader doesnt exists
         checkCheerleaderPrefabExists();
@@ -208,9 +211,8 @@ public class GameLevelManager : MonoBehaviour
             GameOptions.enemiesEnabled = true;
             GameObject.Find("basketball_goal").SetActive(false);
         }
-        _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
-        _basketballRimVector = GameObject.Find("rim").transform.position;
-        //Debug.Log(GameOptions.difficultySelected);
+        _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>(); 
+        if (GameObject.Find("rim") != null) { _basketballRimVector = GameObject.Find("rim").transform.position; }
     }
 
     private void Update()
@@ -321,7 +323,7 @@ public class GameLevelManager : MonoBehaviour
         // player needs basketball reference
         // cpu player needs auto bball ref.
 
-        if (numPlayers > 1)
+        if (numPlayers > 1 && GameOptions.gameModeRequiresCpuShooters)
         {
             if (GameOptions.player2IsCpu)
             {
@@ -343,7 +345,7 @@ public class GameLevelManager : MonoBehaviour
                 _basketball2.setPlayer(players[1].player);
             }
         }
-        if (numPlayers > 2)
+        if (numPlayers > 2 && GameOptions.gameModeRequiresCpuShooters)
         {
             if (GameOptions.player3IsCpu)
             {
@@ -364,12 +366,11 @@ public class GameLevelManager : MonoBehaviour
                 _basketball3.setPlayer(players[2].player);
             }
         }
-        if (numPlayers > 3)
+        if (numPlayers > 3 && GameOptions.gameModeRequiresCpuShooters)
         {
             if (GameOptions.player4IsCpu)
             {
                 GameObject go4 = Instantiate(_basketballPrefabAuto, _basketballSpawnLocation.transform.position, Quaternion.identity);
-                Debug.Log("spawn bball cpu");
                 _basketball4 = go4.GetComponent<PlayerIdentifier>();
                 _basketball4.setIds(_player4.pid, _player4.pid, _player4.pid, true);
                 _basketball4.setAutoBasketball(go4);
@@ -379,7 +380,6 @@ public class GameLevelManager : MonoBehaviour
             else
             {
                 GameObject go4 = Instantiate(_basketballPrefab, _basketballSpawnLocation.transform.position, Quaternion.identity);
-                Debug.Log("spawn bball cpu");
                 _basketball4 = go4.GetComponent<PlayerIdentifier>();
                 _basketball4.setIds(_player4.pid, _player4.pid, _player4.pid, false);
                 _basketball4.setBasketball(go4);
@@ -392,40 +392,20 @@ public class GameLevelManager : MonoBehaviour
     private void checkPlayerPrefabExists()
     {
         int pid = 0;
-        //if player selected is not null / player not selected
-        // * note - need to check if cpu players
-        //if (!string.IsNullOrEmpty(GameOptions.characterObjectName))
-        //{
-        //foreach (string s in GameOptions.characterObjectNames)
-        //{
-        //    Debug.Log("name : " + s);
-        //}
-        //Debug.Log("GameOptions.player2IsCpu : " + GameOptions.player2IsCpu);
-        //Debug.Log("GameOptions.player3IsCpu : " + GameOptions.player3IsCpu);
-        //Debug.Log("GameOptions.player4IsCpu : " + GameOptions.player4IsCpu);
-
-        //GameOptions.characterObjectNames = new List<string>
-        //{
-        //    "drblood",
-        //    "kamille",
-        //    "zilla",
-        //    "ian"
-        //};
-
-        // if no player, spawn player
         if (GameOptions.characterObjectNames == null)
         {
             GameOptions.numPlayers = 1;
             playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + "drblood";
+            Debug.Log(playerPrefabPath1);
         }
         else
         {
             playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[0];
+            Debug.Log(playerPrefabPath1);
         }
-        
+        Debug.Log(playerPrefabPath1);
         _playerClone1 = Resources.Load(playerPrefabPath1) as GameObject;
         GameObject go1 = Instantiate(_playerClone1, _playerSpawnLocation1.transform.position, Quaternion.identity);
-
         _player1 = go1.GetComponent<PlayerIdentifier>();
         _player1.setIds(pid, pid, pid, false);
         _player1.player = go1;
@@ -434,16 +414,7 @@ public class GameLevelManager : MonoBehaviour
         players.Add(_player1);
         pid++;
 
-        //var p1 = PlayerInput.Instantiate(go1, controlScheme: "Gamepad", pairWithDevice: Gamepad.all[0]);
-
-        //playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
-        //_playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
-        //GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
-
-        //var p2 = PlayerInput.Instantiate(go2, controlScheme: "Keyboard1", pairWithDevice :Keyboard.current);
-
-
-        if (numPlayers > 1 && GameOptions.player2IsCpu)
+        if (numPlayers > 1 && GameOptions.player2IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
             _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
@@ -456,7 +427,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 1 && !GameOptions.player2IsCpu)
+        if (numPlayers > 1 && !GameOptions.player2IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[1];
             _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
@@ -469,7 +440,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 2 && GameOptions.player3IsCpu)
+        if (numPlayers > 2 && GameOptions.player3IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[2];
             _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
@@ -482,7 +453,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player3);
             pid++;
         }
-        if (numPlayers > 2 && !GameOptions.player3IsCpu)
+        if (numPlayers > 2 && !GameOptions.player3IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[2];
             _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
@@ -495,7 +466,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player3);
             pid++;
         }
-        if (numPlayers > 3 && GameOptions.player4IsCpu)
+        if (numPlayers > 3 && GameOptions.player4IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[3];
             _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
@@ -508,7 +479,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player4);
             pid++;
         }
-        if (numPlayers > 3 && !GameOptions.player4IsCpu)
+        if (numPlayers > 3 && !GameOptions.player4IsCpu && GameOptions.gameModeRequiresCpuShooters)
         {
             playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[3];
             _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;

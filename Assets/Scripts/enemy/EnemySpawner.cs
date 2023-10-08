@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     int maxNumberOfMinions;
     [SerializeField]
-    GameObject battleRoyallSpawnPosition;
+    GameObject battleRoyalSpawnPosition;
     [SerializeField]
     GameObject steelcage;
 
@@ -29,9 +29,10 @@ public class EnemySpawner : MonoBehaviour
     {
         //GameOptions.battleRoyalEnabled = true;
         // get number of enemies already in scene
-        if (GameObject.FindGameObjectWithTag("enemy") != null)
+        //if (GameObject.FindGameObjectWithTag("enemy") != null)
+        if (GameOptions.enemiesEnabled)
         {
-            GameOptions.enemiesEnabled = true;
+            //GameOptions.enemiesEnabled = true;
             // this needs to second option or enabling it will spawn enemies
             // ***** DISABLE FOR TESTING
             //GameOptions.enemiesEnabled = true;
@@ -49,6 +50,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         steelcage = GameObject.Find("steelCageRootObject");
+        battleRoyalSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
     }
 
     private void Start()
@@ -60,7 +62,10 @@ public class EnemySpawner : MonoBehaviour
         //    GameOptions.enemiesEnabled = true;
         //}
         // if enemies in scene, spawn max
-        if ((GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled) && GameOptions.gameModeHasBeenSelected)
+        Debug.Log(GameOptions.enemiesEnabled);
+        Debug.Log(GameOptions.EnemiesOnlyEnabled);
+        Debug.Log(GameOptions.gameModeHasBeenSelected);
+        if ((GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled) /* && GameOptions.gameModeHasBeenSelected */)
         {
             if (GameOptions.hardcoreModeEnabled && GameOptions.EnemiesOnlyEnabled)
             {
@@ -87,8 +92,10 @@ public class EnemySpawner : MonoBehaviour
             maxNumberOfEnemies = maxNumberOfEnemies/2;
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
-
-            if (!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled)
+            Debug.Log(GameOptions.battleRoyalEnabled);
+            Debug.Log(GameOptions.cageMatchEnabled);
+            Debug.Log(steelcage != null);
+            if ((!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled))
             {
                 // spawn enemies if necessary
                 spawnDefaultMinions();
@@ -103,7 +110,7 @@ public class EnemySpawner : MonoBehaviour
             if (GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
             {
                 maxNumberOfEnemies = 20;
-                battleRoyallSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
+                //battleRoyalSpawnPosition = GameObject.Find("battleRoyalSpawnPosition");
                 InvokeRepeating("spawnBattleRoyalContestant", 0, 10f);
                 //spawnBattleRoyalContestant();
             }
@@ -277,7 +284,7 @@ public class EnemySpawner : MonoBehaviour
             if(getNumberOfBoss() == 0)
             {
                 randomIndex = random.Next(0, enemyBossPrefabs.Count);
-                Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                Instantiate(enemyBossPrefabs[randomIndex], battleRoyalSpawnPosition.transform.position, Quaternion.identity);
             }
             else
             {
@@ -285,18 +292,18 @@ public class EnemySpawner : MonoBehaviour
                 // if spawn more enemies than enemy list has, spawn random enemy
                 if (randomIndex >= enemyMinionPrefabs.Count)
                 {
-                    Instantiate(enemyMinionPrefabs[0], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                    Instantiate(enemyMinionPrefabs[0], battleRoyalSpawnPosition.transform.position, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(enemyMinionPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+                    Instantiate(enemyMinionPrefabs[randomIndex], battleRoyalSpawnPosition.transform.position, Quaternion.identity);
                 }
             }
         }
         if (GameOptions.battleRoyalEnabled && GameOptions.hardcoreModeEnabled)
         {
             randomIndex = random.Next(0, enemyBossPrefabs.Count);
-            Instantiate(enemyBossPrefabs[randomIndex], battleRoyallSpawnPosition.transform.position, Quaternion.identity);
+            Instantiate(enemyBossPrefabs[randomIndex], battleRoyalSpawnPosition.transform.position, Quaternion.identity);
         }
     }
 }
