@@ -236,7 +236,6 @@ public class GameRules : MonoBehaviour
             HighScoreModel user = dBHighScoreModel.convertBasketBallStatsToModel(gameStatsList);
             //user = dBHighScoreModel.convertBasketBallStatsToModel(gameStats);
             //save if at leat 1 minte played
-            Debug.Log("if (GameObject.FindGameObjectWithTag(database) != null)");
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
@@ -292,7 +291,6 @@ public class GameRules : MonoBehaviour
 
     public void setTimePlayed()
     {   
-        Debug.Log("setTimePlayed");
         // time played end
         timePlayedEnd = Time.time;
         // if player is killed in a game mode that requires a counter
