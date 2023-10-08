@@ -103,15 +103,16 @@ public class UserAccountManager : MonoBehaviour
         user.UserName = guestPassword;
         user.Password = guestPassword;
 
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         // if connected to internet
-        if (UtilityFunctions.IsConnectedToInternet())
-        {
-            StartCoroutine(APIHelper.PostToken(user));
-        }
-        else
-        {
-            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
-        }
+        //if (UtilityFunctions.IsConnectedToInternet())
+        //{
+        //    StartCoroutine(APIHelper.PostToken(user));
+        //}
+        //else
+        //{
+        //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+        //}
     }
 
     public IEnumerator RemoveUserButton(string userName)
