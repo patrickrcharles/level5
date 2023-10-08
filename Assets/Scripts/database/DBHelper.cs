@@ -1692,7 +1692,7 @@ public class DBHelper : MonoBehaviour
     // insert current game's stats and score
     public void setGameScoreSubmitted(string scoreid, bool value)
     {
-        Debug.Log("setGameScoreSubmitted");
+        //Debug.Log("setGameScoreSubmitted");
         databaseLocked = true;
         int submittedValue = 0;
         if (value)
@@ -1710,7 +1710,7 @@ public class DBHelper : MonoBehaviour
             string sqlQuery = "UPDATE " + Constants.LOCAL_DATABASE_tableName_highscores + " SET submittedToApi" + " = " + submittedValue
                 + " WHERE scoreidUnique = " + "'" + scoreid + "'";
 
-            Debug.Log(sqlQuery);
+            //Debug.Log(sqlQuery);
 
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -1723,7 +1723,7 @@ public class DBHelper : MonoBehaviour
             dbconn = null;
 
             databaseLocked = false;
-            Debug.Log("score submitted to database");
+            //Debug.Log("score submitted to database");
         }
         catch (Exception e)
         {
@@ -1752,7 +1752,6 @@ public class DBHelper : MonoBehaviour
                     + " WHERE submittedToApi = 0 "
                     + " AND modeid != 99";
                     //+ " AND userName = ''";
-                Debug.Log(sqlQuery);
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
 
