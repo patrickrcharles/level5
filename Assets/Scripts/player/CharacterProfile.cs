@@ -107,7 +107,9 @@ public class CharacterProfile : MonoBehaviour
         Release = temp.release;
 
         experience = temp.Experience;
-        level = temp.Level;
+        level = temp.Experience/3000;
+        clutch = temp.level;
+
         pointsAvailable = temp.PointsAvailable;
         pointsUsed = temp.PointsUsed;
 
@@ -147,7 +149,8 @@ public class CharacterProfile : MonoBehaviour
         calculateAccuracyAttributeRatings();
 
         Range = CpuBaseStats.RANGE + (level * 5);
-        luck = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+        int luckCalc = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+        Luck = luckCalc <= 10 ? luckCalc : 10;
         clutch = level <= 100 ? level : 100;
 
         // if 3/4/All point contest, disable Luck/citical %
@@ -158,11 +161,11 @@ public class CharacterProfile : MonoBehaviour
             Luck = 0;
             clutch = 0;
         }
-        else
-        {
-            int luckCalc = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
-            Luck = luckCalc <= 10 ? luckCalc : 10;
-        }
+        //else
+        //{
+        //    int luckCalc = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
+        //    Luck = luckCalc <= 10 ? luckCalc : 10;
+        //}
     }
 
     public void calculateAccuracyAttributeRatings()

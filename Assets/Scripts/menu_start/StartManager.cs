@@ -1152,6 +1152,12 @@ public class StartManager : MonoBehaviour
             playerSelectOptionText.text = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
             playerSelectOptionImage.sprite = playerSelectedData[playerSelectedIndex].PlayerPortrait;
 
+            playerSelectedData[playerSelectedIndex].Level =
+                (playerSelectedData[playerSelectedIndex].Experience / 3000);
+            int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
+
+            playerSelectedData[playerSelectedIndex].Clutch = playerSelectedData[playerSelectedIndex].Level > 100 ? 100 : playerSelectedData[playerSelectedIndex].Level;
+
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
@@ -1160,11 +1166,8 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + " ft\n"
                 + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-                + playerSelectedData[playerSelectedIndex].Luck.ToString("F0");
-
-            playerSelectedData[playerSelectedIndex].Level =
-                (playerSelectedData[playerSelectedIndex].Experience / 3000);
-            int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
+                + playerSelectedData[playerSelectedIndex].Luck.ToString("F0")  +"\n"
+                + playerSelectedData[playerSelectedIndex].Clutch.ToString("F0");
 
             playerProgressionStatsText.text = playerSelectedData[playerSelectedIndex].Level.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Experience.ToString("F0") + "\n"
