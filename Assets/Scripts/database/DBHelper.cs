@@ -1816,6 +1816,7 @@ public class DBHelper : MonoBehaviour
                     highscore.p3IsCpu = reader.GetInt32(52);
                     highscore.p4IsCpu = reader.GetInt32(53);
                     highscore.numPlayers = reader.GetInt32(54);
+                    highscore.Difficulty = reader.GetInt32(55);
 
                     // if username empty on unsubmitted score
                     // but user logged in [gameoptions.username != null/empty
