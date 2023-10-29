@@ -51,9 +51,11 @@ public class CharacterProfile : MonoBehaviour
 
     private void Awake()
     {
-        GameOptions.gameModeHasBeenSelected = false;
+        Debug.Log("init char profile : " + GameOptions.gameModeHasBeenSelected);
+        //GameOptions.gameModeHasBeenSelected = false;
         if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
+            GameOptions.gameModeHasBeenSelected = false;
             intializeShooterStatsFromProfile();
         }
         if (isCpu)
