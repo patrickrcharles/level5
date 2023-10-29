@@ -217,6 +217,7 @@ public class StartManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        GameOptions.gameModeHasBeenSelected = false;
         StartCoroutine(getLoadedData());
         controls = new PlayerControls();
         // find all button / text / etc and assign to variables
