@@ -213,6 +213,8 @@ public class GameLevelManager : MonoBehaviour
         }
         _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>(); 
         if (GameObject.Find("rim") != null) { _basketballRimVector = GameObject.Find("rim").transform.position; }
+
+        //_cheerleaderSpawnLocation.transform.position.y = terrainHeight;
     }
 
     private void Update()
@@ -297,6 +299,7 @@ public class GameLevelManager : MonoBehaviour
             string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
 
+            _cheerleaderSpawnLocation.transform.position = new Vector3(_cheerleaderSpawnLocation.transform.position.x, terrainHeight, _cheerleaderSpawnLocation.transform.position.z);
             if (_cheerleaderClone != null)
             {
                 Instantiate(_cheerleaderClone, _cheerleaderSpawnLocation.transform.position, Quaternion.identity);
