@@ -13,7 +13,7 @@ public class BehaviorNpcRob : MonoBehaviour
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        enemies = GameObject.FindGameObjectsWithTag("enemy");
+        //enemies = GameObject.FindGameObjectsWithTag("enemy");
         if (GameLevelManager.instance.players != null)
         {
             audioSource = GameObject.FindWithTag("basketball").GetComponent<AudioSource>();
@@ -22,15 +22,17 @@ public class BehaviorNpcRob : MonoBehaviour
 
     private void LightningStrike()
     {
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
         foreach (GameObject enemy in enemies)
         {
             if (enemy != null)
             {
                 EnemyController enemyController = enemy.GetComponent<EnemyController>();
-                if (enemyController.SpriteRenderer.isVisible)
-                {
-                    StartCoroutine(enemyController.struckByLighning());
-                }
+                StartCoroutine(enemyController.struckByLighning(0));
+                //if (enemyController.SpriteRenderer.isVisible)
+                //{
+                //    StartCoroutine(enemyController.struckByLighning(0));
+                //}
             }
         }
     }

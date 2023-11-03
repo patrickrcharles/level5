@@ -362,13 +362,12 @@ public class EnemyController : MonoBehaviour
         anim.Play(animationName);
     }
 
-    public IEnumerator struckByLighning()
+    public IEnumerator struckByLighning(int damage)
     {
-        // enemy takes 10 damage
-        enemyHealth.Health -= 10;
+        enemyHealth.Health -= damage;
         enemyHealthBar.setHealthSliderValue();
 
-        StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay("-10"));
+        StartCoroutine(enemyHealthBar.DisplayCustomMessageOnDamageDisplay("-"+damage.ToString()));
 
         stateKnockDown = true;
         FreezeEnemyPosition();
