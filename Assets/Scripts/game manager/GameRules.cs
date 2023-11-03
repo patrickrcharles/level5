@@ -602,14 +602,6 @@ public class GameRules : MonoBehaviour
             }
             if (gameModeId == 23)
             {
-                //displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilledCageMatch;
-
-                //displayCurrentScoreText.text =
-                //    "nerds bashed : " + (gameStats.EnemiesKilled);
-                //if (Timer.instance.ScoreClockText != null)
-                //{
-                //    Timer.instance.ScoreClockText.text = (gameStats.EnemiesKilled).ToString();
-                //}
                 Timer.instance.ScoreClockText.text = gameStats.TotalPoints.ToString();
                 updatePlayerScore();
             }
