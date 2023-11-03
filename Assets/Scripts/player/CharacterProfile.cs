@@ -46,13 +46,10 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
-    //[SerializeField] private int cpuLevel;
     [SerializeField] private CpuBaseStats.ShooterType cpuType;
 
     private void Awake()
     {
-        Debug.Log("init char profile : " + GameOptions.gameModeHasBeenSelected);
-        //GameOptions.gameModeHasBeenSelected = false;
         if (GameOptions.gameModeHasBeenSelected && !isCpu)
         {
             GameOptions.gameModeHasBeenSelected = false;
@@ -60,7 +57,6 @@ public class CharacterProfile : MonoBehaviour
         }
         if (isCpu)
         {
-            Debug.Log("isCPu : " + isCpu);
             intializeCpuShooterStats();
         }
         if (GameOptions.arcadeModeEnabled || GameOptions.difficultySelected == 0 )
@@ -163,11 +159,6 @@ public class CharacterProfile : MonoBehaviour
             Luck = 0;
             clutch = 0;
         }
-        //else
-        //{
-        //    int luckCalc = CpuBaseStats.LUCK + (level / CpuBaseStats.LUCK_DIVIDER);
-        //    Luck = luckCalc <= 10 ? luckCalc : 10;
-        //}
     }
 
     public void calculateAccuracyAttributeRatings()
@@ -233,7 +224,7 @@ public class CharacterProfile : MonoBehaviour
         Accuracy3Pt = CpuBaseStats.ACCURACY_3PT + attributes[0];
         Accuracy4Pt = CpuBaseStats.ACCURACY_4PT + attributes[1];
         Accuracy7Pt = CpuBaseStats.ACCURACY_7PT + attributes[2];
-        Release = CpuBaseStats.RELEASE + +attributes[3]; ;
+        Release = CpuBaseStats.RELEASE + +attributes[3];
     }
 
     //private void calculateCpu3ptAccuracy(int accuracy)
