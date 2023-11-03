@@ -321,7 +321,7 @@ public class GameRules : MonoBehaviour
             if (!players[0].isCpu) { displayP1ScoreText.color = Color.red; } else { displayP1ScoreText.color = Color.white; }
             displayP1ScoreText.text = playerType + " " + (players[0].pid + 1)
                 + "\n" + players[0].characterProfile.PlayerDisplayName
-                + ":" + players[0].gameStats.TotalPoints
+                + "\n" + "points : " + players[0].gameStats.TotalPoints
                 + "\n" + players[0].gameStats.ShotMade + "/" + players[0].gameStats.ShotAttempt
                 + " " + players[0].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
@@ -331,7 +331,7 @@ public class GameRules : MonoBehaviour
             if (!players[1].isCpu) { displayP2ScoreText.color = Color.red; } else { displayP2ScoreText.color = Color.white; }
             displayP2ScoreText.text = playerType + " " + (players[1].pid + 1)
                 + "\n" + players[1].characterProfile.PlayerDisplayName
-                + ":" + players[1].gameStats.TotalPoints
+                + "\n" + "points : " + players[1].gameStats.TotalPoints
                 + "\n" + players[1].gameStats.ShotMade + "/" + players[1].gameStats.ShotAttempt
                 + " " + players[1].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
@@ -344,7 +344,8 @@ public class GameRules : MonoBehaviour
             playerType = players[2].isCpu ? "CPU" : "Player";
             if (!players[2].isCpu) { displayP3ScoreText.color = Color.red; } else { displayP3ScoreText.color = Color.white; }
             displayP3ScoreText.text = playerType + " " + (players[2].pid + 1)
-                + "\n" + players[2].characterProfile.PlayerDisplayName + ":" + players[2].gameStats.TotalPoints
+                + "\n" + players[2].characterProfile.PlayerDisplayName
+                + "\n" + "points : " + players[2].gameStats.TotalPoints
                 + "\n" + players[2].gameStats.ShotMade + "/" + players[2].gameStats.ShotAttempt
                 + " " + players[2].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
@@ -357,7 +358,8 @@ public class GameRules : MonoBehaviour
             playerType = players[3].isCpu ? "CPU" : "Player";
             if (!players[3].isCpu) { displayP4ScoreText.color = Color.red; } else { displayP4ScoreText.color = Color.white; }
             displayP4ScoreText.text = playerType + " " + (players[3].pid + 1)
-                + "\n" + players[3].characterProfile.PlayerDisplayName + ":" + players[3].gameStats.TotalPoints
+                + "\n" + players[3].characterProfile.PlayerDisplayName
+                + "\n" + "points : " + players[3].gameStats.TotalPoints
                 + "\n" + players[3].gameStats.ShotMade + "/" + players[3].gameStats.ShotAttempt
                 + " " + players[3].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
         }
@@ -576,17 +578,17 @@ public class GameRules : MonoBehaviour
 
                 Timer.instance.ScoreClockText.text = gameStats.TotalPoints.ToString();
             }
-            //if (gameModeId == 20)
-            //{
-            //    //displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
+            if (gameModeId == 20)
+            {
+                displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilled;
 
-            //    //displayCurrentScoreText.text =
-            //    //    "nerds bashed : " + (gameStats.EnemiesKilled);
-            //    //if (Timer.instance.ScoreClockText != null)
-            //    //{
-            //    //    Timer.instance.ScoreClockText.text = (gameStats.EnemiesKilled).ToString();
-            //    //}
-            //}
+                displayCurrentScoreText.text =
+                    "nerds bashed : " + (gameStats.EnemiesKilled);
+                if (Timer.instance.ScoreClockText != null)
+                {
+                    Timer.instance.ScoreClockText.text = (gameStats.EnemiesKilled).ToString();
+                }
+            }
             if (gameModeId == 21)
             {
                 displayHighScoreText.text = "high score : " + PlayerData.instance.EnemiesKilledBattleRoyal;
