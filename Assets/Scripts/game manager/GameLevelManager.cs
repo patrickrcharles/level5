@@ -191,7 +191,6 @@ public class GameLevelManager : MonoBehaviour
         }
         if (GameObject.FindWithTag("autoPlayer") != null)
         {
-            Debug.Log("auto player");
             _autoPlayer = GameObject.FindWithTag("autoPlayer");
             _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
             _playerHealth = _autoPlayer.GetComponentInChildren<PlayerHealth>();
@@ -326,7 +325,7 @@ public class GameLevelManager : MonoBehaviour
         // player needs basketball reference
         // cpu player needs auto bball ref.
 
-        if (numPlayers > 1 && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 1 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player2IsCpu)
             {
@@ -348,7 +347,7 @@ public class GameLevelManager : MonoBehaviour
                 _basketball2.setPlayer(players[1].player);
             }
         }
-        if (numPlayers > 2 && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 2 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player3IsCpu)
             {
@@ -369,7 +368,7 @@ public class GameLevelManager : MonoBehaviour
                 _basketball3.setPlayer(players[2].player);
             }
         }
-        if (numPlayers > 3 && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 3 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player4IsCpu)
             {
@@ -399,14 +398,11 @@ public class GameLevelManager : MonoBehaviour
         {
             GameOptions.numPlayers = 1;
             playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + "drblood";
-            Debug.Log(playerPrefabPath1);
         }
         else
         {
             playerPrefabPath1 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[0];
-            Debug.Log(playerPrefabPath1);
         }
-        Debug.Log(playerPrefabPath1);
         _playerClone1 = Resources.Load(playerPrefabPath1) as GameObject;
         GameObject go1 = Instantiate(_playerClone1, _playerSpawnLocation1.transform.position, Quaternion.identity);
         _player1 = go1.GetComponent<PlayerIdentifier>();
@@ -417,7 +413,7 @@ public class GameLevelManager : MonoBehaviour
         players.Add(_player1);
         pid++;
 
-        if (numPlayers > 1 && GameOptions.player2IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 1 && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
             _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
@@ -430,7 +426,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 1 && !GameOptions.player2IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 1 && !GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[1];
             _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
@@ -443,7 +439,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 2 && GameOptions.player3IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 2 && GameOptions.player3IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[2];
             _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
@@ -456,7 +452,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player3);
             pid++;
         }
-        if (numPlayers > 2 && !GameOptions.player3IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 2 && !GameOptions.player3IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[2];
             _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
@@ -469,7 +465,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player3);
             pid++;
         }
-        if (numPlayers > 3 && GameOptions.player4IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 3 && GameOptions.player4IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[3];
             _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
@@ -482,7 +478,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player4);
             pid++;
         }
-        if (numPlayers > 3 && !GameOptions.player4IsCpu && GameOptions.gameModeRequiresCpuShooters)
+        if (numPlayers > 3 && !GameOptions.player4IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_human + GameOptions.characterObjectNames[3];
             _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
