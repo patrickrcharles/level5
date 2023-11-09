@@ -28,7 +28,7 @@ public class PlayerProjectile : MonoBehaviour
         {
             applyForceToDirectionFacingProjectile(projectileForceThrown);
             impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_explosion") as GameObject;
-            impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_rabbit") as GameObject;
+            //impactExplosionPrefab = Resources.Load("Prefabs/projectile/projectile_impact_rabbit") as GameObject;
         }
         if (!thrownProjectile && impactProjectile)
         {
