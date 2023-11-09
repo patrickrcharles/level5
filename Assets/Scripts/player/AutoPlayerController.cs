@@ -472,20 +472,22 @@ public class AutoPlayerController : MonoBehaviour
         if(playerRelativePositioning.x > 0) { directionOfTravelSeven = Vector3.right; }
         else { directionOfTravelSeven = Vector3.left; }
         // cnditions for type of shot
+
         if (characterProfile.Accuracy3Pt > characterProfile.Accuracy4Pt
-             && gameStats.TotalPoints >= GameLevelManager.instance.currentHighScoreTotalPoints)
+             && (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) <= 12)
         {
             finalDirection = directionOfTravel + directionOfTravel.normalized * distance3;
             targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
         }
         if (characterProfile.Accuracy3Pt <= characterProfile.Accuracy4Pt
-            || gameStats.TotalPoints < GameLevelManager.instance.currentHighScoreTotalPoints)
+            || (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) >= 16)
         {
             finalDirection = directionOfTravel + directionOfTravel.normalized * distance4;
             targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
         }
-        if (characterProfile.Accuracy7Pt > characterProfile.Accuracy4Pt
-            || (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) > 14
+        if (((characterProfile.Accuracy7Pt > characterProfile.Accuracy4Pt
+            && characterProfile.Accuracy7Pt > characterProfile.Accuracy3Pt)
+            || (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) >= 21)
             && cpuShootSevenpointers())
         {
             finalDirection = directionOfTravelSeven + directionOfTravelSeven.normalized * distance7;
