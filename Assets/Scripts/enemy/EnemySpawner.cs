@@ -62,9 +62,9 @@ public class EnemySpawner : MonoBehaviour
         //    GameOptions.enemiesEnabled = true;
         //}
         // if enemies in scene, spawn max
-        Debug.Log(GameOptions.enemiesEnabled);
-        Debug.Log(GameOptions.EnemiesOnlyEnabled);
-        Debug.Log(GameOptions.gameModeHasBeenSelected);
+        //Debug.Log(GameOptions.enemiesEnabled);
+        //Debug.Log(GameOptions.EnemiesOnlyEnabled);
+        //Debug.Log(GameOptions.gameModeHasBeenSelected);
         if ((GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled) /* && GameOptions.gameModeHasBeenSelected */)
         {
             if (GameOptions.hardcoreModeEnabled && GameOptions.EnemiesOnlyEnabled)
