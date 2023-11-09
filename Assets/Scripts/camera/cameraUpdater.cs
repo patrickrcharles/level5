@@ -298,16 +298,13 @@ public class cameraUpdater : MonoBehaviour
 
     private void updatePositionNearGoal()
     {
-        Debug.Log(SceneManager.GetActiveScene());
         Vector3 targetPosition = new Vector3();
         if (!customCamera || SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_21_shore))
         {
-            Debug.Log("link");
             targetPosition = new Vector3(cam.transform.position.x, player.transform.position.y + addToCameraPosY, cam.transform.position.z);
         }
         if (customCamera &&  !SceneManager.GetActiveScene().name.Equals(Constants.SCENE_NAME_level_21_shore))
         {
-            Debug.Log("link");
             targetPosition = new Vector3(cam.transform.position.x, gameObject.transform.position.y, cam.transform.position.z);
         }
         Vector3 desiredPosition = targetPosition;
@@ -369,7 +366,6 @@ public class cameraUpdater : MonoBehaviour
             //}
             addToCameraPosY = 1.835f;
             mainPerspectiveCamActive = true;
-            Debug.Log("link");
             //orthoCam1Active = false;
             //orthoCam2Active = false;
         }
@@ -406,7 +402,6 @@ public class cameraUpdater : MonoBehaviour
             isLockOnGoalCamera = true;
             if (!sniperCamera)
             {
-                Debug.Log("link");
                 transform.position = basketBallRim + lockOnGoalCameraOffset;
             }
         }
