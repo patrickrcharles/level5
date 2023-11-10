@@ -624,6 +624,17 @@
                     "action": "callball",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9aba926-d524-45dd-b686-ae00d5ea667c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "callball",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
