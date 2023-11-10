@@ -179,7 +179,9 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private int difficultySelected;
     [SerializeField]
-    private bool sniperEnabled;
+    private bool sniperBulletEnabled;
+    [SerializeField]
+    private bool sniperLaserEnabled;
     [SerializeField]
     public int playerSelectedIndex;
     private int levelSelectedIndex;
@@ -265,6 +267,17 @@ public class StartManager : MonoBehaviour
             }
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
+
+        //if (!modeSelectedData[modeSelectedIndex].GameModeRequiresCpuShooters)
+        //{
+        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().interactable = false;
+        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().navigation.selectOnRight.enabled = false;
+        //}
+        //else
+        //{
+        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().interactable = true;
+        //}
+
         // if player highlighted, display player
         if ((currentHighlightedButton.Equals(numPlayersSelectButtonName) || currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
             && dataLoaded)
@@ -891,7 +904,24 @@ public class StartManager : MonoBehaviour
 
     public void changeSelectedSniperOption()
     {
-        sniperEnabled = !sniperEnabled;
+        if (sniperBulletEnabled)
+        {
+            sniperBulletEnabled = false;
+            sniperLaserEnabled = true;
+            return;
+        }
+        if (sniperLaserEnabled)
+        {
+            sniperLaserEnabled = false;
+            sniperBulletEnabled = false;
+            return;
+        }
+        if (!sniperBulletEnabled && !sniperLaserEnabled)
+        {
+            sniperLaserEnabled = false;
+            sniperBulletEnabled = true;
+            return;
+        }
     }
 
     public void changeSelectedObstacleOption()
@@ -951,11 +981,15 @@ public class StartManager : MonoBehaviour
     }
     public void initializeSniperOptionDisplay()
     {
-        if (sniperEnabled)
+        if (sniperBulletEnabled)
         {
-            sniperSelectOptionText.text = "ON";
+            sniperSelectOptionText.text = "Bullet";
         }
-        if (!sniperEnabled)
+        if (sniperLaserEnabled)
+        {
+            sniperSelectOptionText.text = "Laser";
+        }
+        if (!sniperBulletEnabled && !sniperLaserEnabled)
         {
             sniperSelectOptionText.text = "OFF";
         }
@@ -1283,7 +1317,9 @@ public class StartManager : MonoBehaviour
         GameOptions.modeSelectedIndex = modeSelectedIndex;
         GameOptions.trafficEnabled = trafficEnabled;
         GameOptions.enemiesEnabled = enemiesEnabled;
-        GameOptions.sniperEnabled = sniperEnabled;
+        GameOptions.sniperEnabled = sniperBulletEnabled;
+        GameOptions.sniperEnabledBullet = sniperBulletEnabled;
+        GameOptions.sniperEnabledLaser = sniperLaserEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
         GameOptions.EnemiesOnlyEnabled = modeSelectedData[modeSelectedIndex].EnemiesOnlyEnabled;
@@ -1315,7 +1351,7 @@ public class StartManager : MonoBehaviour
 
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
 
-        GameOptions.gameModeRequiresCpuShooters = modeSelectedData[modeSelectedIndex].GameModeRequiresCpuShooters;
+        GameOptions.gameModeAllowsCpuShooters = modeSelectedData[modeSelectedIndex].GameModeAllowsCpuShooters;
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
