@@ -160,32 +160,25 @@ public class GameLevelManager : MonoBehaviour
         //set up player/basketball read only references for use in other classes
         if (GameObject.FindWithTag("Player") != null)
         {
-            //_player1 = GameObject.FindWithTag("Player");
             _playerController1 = _player1.GetComponent<PlayerController>();
             _characterProfile = _player1.GetComponent<CharacterProfile>();
             _playerAttackQueue = _player1.GetComponent<PlayerAttackQueue>();
             _playerHealth = _player1.GetComponentInChildren<PlayerHealth>();
-            //Anim = Player1.GetComponentInChildren<Animator>();
             _playerController1.isCPU = false;
-            //terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
             terrainHeight = Player1.transform.position.y;
-            //players.Add(_player1);
         }
         else
         {
             if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
             {
-                Debug.Log("scene");
                 terrainHeight = 145;
             }
             if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_20_jacksonville)
             {
-                Debug.Log("scene");
                 terrainHeight = 200;
             }
             else
             {
-                Debug.Log("scene");
                 terrainHeight = 0;
             }
         }
@@ -195,7 +188,6 @@ public class GameLevelManager : MonoBehaviour
             _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
             _playerHealth = _autoPlayer.GetComponentInChildren<PlayerHealth>();
             _autoPlayerController.isCPU = true;
-            //players.Add(_autoPlayer);
         }
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
