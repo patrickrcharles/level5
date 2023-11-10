@@ -23,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
     float regenerateSpecialRate;
     [SerializeField]
     float regenerateTimeDelay;
-
+    [SerializeField]
     bool isDead = false;
     bool regenerateBlock = false;
     bool regenerateSpecial = false;
@@ -53,7 +53,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if (GameOptions.enemiesEnabled || GameOptions.sniperEnabled
+        if (GameOptions.enemiesEnabled 
+            || GameOptions.sniperEnabled 
+            || GameOptions.sniperEnabledBullet 
+            || GameOptions.sniperEnabledLaser
             || GameOptions.obstaclesEnabled)
         {
             if (health <= 0 && !IsDead)
