@@ -31,15 +31,15 @@ public class SniperManager : MonoBehaviour
     {
         //GameOptions.sniperEnabled = true; //test flag
         //// auto start autonomous sniper system
-        //if (GameOptions.sniperEnabled)
-        //{
-        //    instance = this;
-        //    InvokeRepeating("startSniper", 0, 0.5f);
-        //}
-        //else
-        //{
-        //    gameObject.SetActive(false);
-        //}
+        if (GameOptions.sniperEnabled || GameOptions.sniperEnabledLaser || GameOptions.sniperEnabledBullet)
+        {
+            instance = this;
+            InvokeRepeating("startSniper", 0, 0.5f);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     IEnumerator LoadVariables()
@@ -59,12 +59,12 @@ public class SniperManager : MonoBehaviour
             float random = UtilityFunctions.GetRandomFloat(0, 4);
 
             //// test flag to enable
-            GameOptions.sniperEnabledBullet = true;
-            if (GameOptions.sniperEnabledBullet && GameOptions.sniperEnabled)
+            //GameOptions.sniperEnabledBullet = true;
+            if (GameOptions.sniperEnabledBullet && !GameLevelManager.instance.Player1.playerController.PlayerHealth.IsDead)
             {
                 StartCoroutine(StartSniperBullet(random));
             }
-            if (GameOptions.sniperEnabledLaser && GameOptions.sniperEnabled)
+            if (GameOptions.sniperEnabledLaser && !GameLevelManager.instance.Player1.playerController.PlayerHealth.IsDead)
             {
                 StartCoroutine(StartSniperLaser(random));
             }
