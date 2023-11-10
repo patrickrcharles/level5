@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Touch = UnityEngine.Touch;
-using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -55,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private bool _knockedDown;
     private bool _takeDamage;
     private bool _avoidedKnockDown;
+    private bool _disintegrated;
     private bool canAttack;
     private bool canBlock;
 
@@ -124,6 +124,8 @@ public class PlayerController : MonoBehaviour
     public int blockState;
     public int inAirDunkState;
     public int dunkState;
+    public int disintegratedState;
+    public int lightningState;
 
     PlayerControls controls;
     private float terrainYHeight;
@@ -301,6 +303,16 @@ public class PlayerController : MonoBehaviour
         {
             Locked = true;
             StartCoroutine(PlayerTakeDamage());
+        }
+        if (!KnockedDown && !TakeDamage && !Locked && Disintegrated)
+        {
+            Locked = true;
+            StartCoroutine(PlayerDisintegrated());
+        }
+
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            StartCoroutine(PlayerStruckByLightning());
         }
 
         // keep drop shadow on ground at all times
@@ -545,6 +557,8 @@ public class PlayerController : MonoBehaviour
         blockState = Animator.StringToHash("base.attack.block");
         inAirDunkState = Animator.StringToHash("base.inair.inair_dunk");
         dunkState = Animator.StringToHash("base.inair.dunk");
+        disintegratedState = Animator.StringToHash("base.disintegrated");
+        lightningState = Animator.StringToHash("base.lightning");
     }
 
     public void TouchControlJumpOrShoot(Vector2 touchPosition)
@@ -782,6 +796,31 @@ public class PlayerController : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
+    public IEnumerator PlayerDisintegrated()
+    {
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        anim.Play("disintegrated");
+        yield return new WaitUntil(() => currentState == disintegratedState);
+        yield return new WaitForSeconds(4);
+        playerHealth.IsDead = true;
+        KnockedDown = false;
+        TakeDamage = false;
+        Locked = false;
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    public IEnumerator PlayerStruckByLightning()
+    {
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        anim.Play("lightning");
+        yield return new WaitUntil(() => currentState == lightningState);
+        yield return new WaitUntil(() => currentState != lightningState);
+        KnockedDown = true;
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     public void PlayerAvoidKnockedDown()
     {
         anim.Play("knockedDown");
@@ -910,4 +949,5 @@ public class PlayerController : MonoBehaviour
     public int Bid { get => bid; set => bid = value; }
     public CharacterProfile CharacterProfile { get => characterProfile; set => characterProfile = value; }
     public BasketBall Basketball { get => basketball; set => basketball = value; }
+    public bool Disintegrated { get => _disintegrated; set => _disintegrated = value; }
 }
