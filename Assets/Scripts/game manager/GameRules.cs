@@ -258,15 +258,6 @@ public class GameRules : MonoBehaviour
 
                 // post to API
             }
-            if (GameOptions.enemiesEnabled)
-            {
-                AnaylticsManager.PointsScoredEnemiesEnabled(gameStats1);
-            }
-            else
-            {
-                AnaylticsManager.PointsScoredEnemiesDisabled(gameStats1);
-            }
-
             // alert game manager. trigger
             GameLevelManager.instance.GameOver = true;
         }
