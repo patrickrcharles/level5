@@ -30,7 +30,7 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool isCageMatch;
     [SerializeField] private bool gameModeRequiresPlayerSurvive;
     [SerializeField] private bool gameModeRequiresBasketball;
-    [SerializeField] private bool gameModeRequiresCpuShooters;
+    [SerializeField] private bool gameModeAllowsCpuShooters;
 
     public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
@@ -88,5 +88,5 @@ public class StartScreenModeSelected : MonoBehaviour
     public bool GameModeRequiresPlayerSurvive { get => gameModeRequiresPlayerSurvive;  }
     public bool IsCageMatch { get => isCageMatch;  }
     public bool GameModeRequiresBasketball { get => gameModeRequiresBasketball; set => gameModeRequiresBasketball = value; }
-    public bool GameModeRequiresCpuShooters { get => gameModeRequiresCpuShooters; set => gameModeRequiresCpuShooters = value; }
+    public bool GameModeAllowsCpuShooters { get => gameModeAllowsCpuShooters; set => gameModeAllowsCpuShooters = value; }
 }
