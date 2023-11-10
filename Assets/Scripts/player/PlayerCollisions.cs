@@ -73,7 +73,9 @@ public class PlayerCollisions : MonoBehaviour
         || GameOptions.trafficEnabled
         || GameOptions.obstaclesEnabled
         || other.transform.root.name.Contains("snake")
-        || GameOptions.sniperEnabled)
+        || GameOptions.sniperEnabled
+        || GameOptions.sniperEnabledBullet
+        || GameOptions.sniperEnabledLaser)
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(playerController.CharacterProfile.Luck)
         && !locked)
@@ -84,6 +86,7 @@ public class PlayerCollisions : MonoBehaviour
             int damage = 0;
             bool isKnockdown = false;
             bool isRake = false;
+            bool isDisintegrate = false;
             // get attack box player/enemy
             if (other.CompareTag("playerAttackBox"))
             {
@@ -99,16 +102,24 @@ public class PlayerCollisions : MonoBehaviour
                 isRake = enemyAttackBox.isRake;
                 damage = enemyAttackBox.attackDamage;
                 isKnockdown = enemyAttackBox.knockDownAttack;
+                isDisintegrate = enemyAttackBox.disintegrateAttack;
             }
             //check if enemy attack
             if (playerAttackBox != null)
             {
                 damage = playerAttackBox.attackDamage;
                 isKnockdown = playerAttackBox.knockDownAttack;
+                isDisintegrate = enemyAttackBox.disintegrateAttack;
+            }
+            if (isDisintegrate)
+            {
+                Debug.Log("disintegrated");
+                locked = true;
+                playerDisintegrated();
             }
 
             // player is not blocking
-            if (playerController.CurrentState != playerController.BlockState)
+            if (playerController.CurrentState != playerController.BlockState && !isDisintegrate)
             {
                 locked = true;
                 // deduct from player health 
@@ -168,6 +179,15 @@ public class PlayerCollisions : MonoBehaviour
         }
 
         return false;
+    }
+
+    void playerDisintegrated()
+    {
+        playerController.TakeDamage = false;
+        playerController.KnockedDown = false;
+        playerController.hasBasketball = false;
+        playerController.Disintegrated = true;
+        playerController.SetPlayerAnim("hasBasketball", false);
     }
 
     void playerTakeDamage()
