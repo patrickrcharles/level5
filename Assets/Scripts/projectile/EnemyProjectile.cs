@@ -138,6 +138,7 @@ public class EnemyProjectile : MonoBehaviour
         // sniper shot hits player or enemy
         if (sniperProjectile
             && impactProjectile
+            && !GameOptions.sniperEnabledLaser
             && (other.gameObject.CompareTag("enemyHitbox")
             || other.gameObject.CompareTag("playerHitbox")))
         {

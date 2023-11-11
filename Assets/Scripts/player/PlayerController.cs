@@ -216,7 +216,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //------MOVEMENT---------------------------
-        if (!KnockedDown && currentState != takeDamageState)
+        if (!KnockedDown && !Locked
+            && currentState != takeDamageState)
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
 
@@ -798,15 +799,16 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerDisintegrated()
     {
+        Locked = true;
         rigidBody.constraints =
-        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ| RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         anim.Play("disintegrated");
         yield return new WaitUntil(() => currentState == disintegratedState);
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         playerHealth.IsDead = true;
-        KnockedDown = false;
-        TakeDamage = false;
-        Locked = false;
+        //KnockedDown = false;
+        //TakeDamage = false;
+        //Locked = false;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 

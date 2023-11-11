@@ -116,7 +116,7 @@ public class SniperManager : MonoBehaviour
         // set vector bullet direction
         enemyProjectile.projectileForceSniper = direction;
         //play sound
-        audioSource.PlayOneShot(SFXBB.instance.shootGun);
+        audioSource.PlayOneShot(SFXBB.instance.deathRay);
         //audioSource.PlayOneShot(SFXBB.instance.deathRay);
         StartCoroutine(InstantiateLaser());
     }
