@@ -806,9 +806,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => currentState == disintegratedState);
         yield return new WaitForSeconds(2);
         playerHealth.IsDead = true;
-        //KnockedDown = false;
-        //TakeDamage = false;
-        //Locked = false;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
