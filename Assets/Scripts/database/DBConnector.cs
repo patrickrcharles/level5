@@ -309,7 +309,6 @@ public class DBConnector : MonoBehaviour
                 "charid   INTEGER, " +
                 "playerName   TEXT," +
                 "objectName   TEXT," +
-                "charid   INTEGER," +
                 "accuracy2   INTEGER," +
                 "accuracy3   INTEGER," +
                 "accuracy4   INTEGER," +
@@ -326,8 +325,7 @@ public class DBConnector : MonoBehaviour
                 "pointsUsed   INTEGER DEFAULT 0," +
                 "range   INTEGER DEFAULT 0," +
                 "release   INTEGER DEFAULT 0," +
-                "isLocked   INTEGER DEFAULT 0," +
-                "charid   INTEGER);" +
+                "isLocked   INTEGER DEFAULT 0);" +
 
                 "CREATE TABLE if not exists User( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
