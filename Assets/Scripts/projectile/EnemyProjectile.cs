@@ -12,6 +12,9 @@ public class EnemyProjectile : MonoBehaviour
     [SerializeField]
     public bool sniperProjectile;
     public bool facingRight;
+    public bool isBullet;
+    public bool isLaser;
+    public bool isBulletAuto;
     [SerializeField]
     GameObject impactExplosionPrefab;
     [SerializeField]
@@ -129,9 +132,22 @@ public class EnemyProjectile : MonoBehaviour
             && (other.gameObject.CompareTag("ground") || other.gameObject.layer == 11))
         {
             // instantiate at position player was standing when shot occurred
-            Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
+            Vector3 transformAtImpact;
+            if (isBulletAuto)
+            {
+                Vector3 target = new Vector3(gameObject.transform.position.x, GameLevelManager.instance.TerrainHeight, SniperManager.instance.PlayerPosAtShoot.z);
+                //Vector3 target = new Vector3(gameObject.transform.position.x, GameLevelManager.instance.TerrainHeight, gameObject.transform.position.z);
+                transformAtImpact = target;
+                //transformAtImpact = gameObject.transform.position;
+                //Debug.Log("target x  : " + target.x);
+            }
+            else
+            {
+                transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
+            }
+            
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, GameLevelManager.instance.TerrainHeight, transformAtImpact.z);
-
+            Debug.Log("sniper miss : "+ transformAtImpact);
             Instantiate(impactSniperGroundPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
@@ -151,7 +167,7 @@ public class EnemyProjectile : MonoBehaviour
             // instantiate at position player was standing when shot occurred
             Vector3 transformAtImpact = SniperManager.instance.PlayerPosAtShoot;
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, GameLevelManager.instance.TerrainHeight, transformAtImpact.z);
-
+            Debug.Log("sniper hit : " + transformAtImpact);
             Instantiate(impactSniperPlayerPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
