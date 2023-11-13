@@ -183,6 +183,8 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private bool sniperLaserEnabled;
     [SerializeField]
+    private bool sniperBulleAutoEnabled;
+    [SerializeField]
     public int playerSelectedIndex;
     private int levelSelectedIndex;
     private int modeSelectedIndex;
@@ -907,19 +909,31 @@ public class StartManager : MonoBehaviour
         if (sniperBulletEnabled)
         {
             sniperBulletEnabled = false;
+            sniperLaserEnabled = false;
+            sniperBulleAutoEnabled = true;
+            return;
+        }
+        if (sniperBulleAutoEnabled)
+        {
             sniperLaserEnabled = true;
+            sniperBulletEnabled = false;
+            sniperBulleAutoEnabled = false;
             return;
         }
         if (sniperLaserEnabled)
         {
             sniperLaserEnabled = false;
             sniperBulletEnabled = false;
+            sniperBulleAutoEnabled = false;
+            sniperBulletEnabled = true;
             return;
         }
-        if (!sniperBulletEnabled && !sniperLaserEnabled)
+
+        if (!sniperBulletEnabled && !sniperLaserEnabled && !sniperBulleAutoEnabled)
         {
             sniperLaserEnabled = false;
             sniperBulletEnabled = true;
+            sniperBulleAutoEnabled = false;
             return;
         }
     }
@@ -985,11 +999,15 @@ public class StartManager : MonoBehaviour
         {
             sniperSelectOptionText.text = "Bullet";
         }
+        if (sniperBulleAutoEnabled)
+        {
+            sniperSelectOptionText.text = "Machine Gun";
+        }
         if (sniperLaserEnabled)
         {
             sniperSelectOptionText.text = "Laser";
         }
-        if (!sniperBulletEnabled && !sniperLaserEnabled)
+        if (!sniperBulletEnabled && !sniperLaserEnabled && !sniperBulleAutoEnabled)
         {
             sniperSelectOptionText.text = "OFF";
         }
@@ -1197,7 +1215,7 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + " ft\n"
                 + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
-                + playerSelectedData[playerSelectedIndex].Luck.ToString("F0")  +"\n"
+                + playerSelectedData[playerSelectedIndex].Luck.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Clutch.ToString("F0");
 
             playerProgressionStatsText.text = playerSelectedData[playerSelectedIndex].Level.ToString("F0") + "\n"
@@ -1317,8 +1335,21 @@ public class StartManager : MonoBehaviour
         GameOptions.modeSelectedIndex = modeSelectedIndex;
         GameOptions.trafficEnabled = trafficEnabled;
         GameOptions.enemiesEnabled = enemiesEnabled;
-        GameOptions.sniperEnabled = sniperBulletEnabled;
+        if (sniperBulleAutoEnabled || sniperBulletEnabled || sniperLaserEnabled)
+        {
+            GameOptions.sniperEnabled = true;
+        }
+        else
+        {
+            GameOptions.sniperEnabled = false;
+        }
         GameOptions.sniperEnabledBullet = sniperBulletEnabled;
+        //if (sniperBulleAutoEnabled)
+        //{
+        //    GameOptions.sniperEnabledBulletAuto = false;
+        //    GameOptions.sniperEnabledBullet = true;
+        //}
+        GameOptions.sniperEnabledBulletAuto = sniperBulleAutoEnabled;
         GameOptions.sniperEnabledLaser = sniperLaserEnabled;
 
         GameOptions.arcadeModeEnabled = modeSelectedData[modeSelectedIndex].ArcadeModeActive;
