@@ -14,7 +14,9 @@ public class SniperManager : MonoBehaviour
     [SerializeField]
     GameObject projectileLaserPrefab;
     [SerializeField]
-    GameObject projectileBulletPrefab;
+    GameObject projectileBulletPrefab;    
+    [SerializeField]
+    GameObject projectileAutomaticBulletPrefab;
     [SerializeField]
     float bulletDelay;
 
@@ -68,6 +70,10 @@ public class SniperManager : MonoBehaviour
             {
                 StartCoroutine(StartSniperLaser(random));
             }
+            if (GameOptions.sniperEnabledBulletAuto && !GameLevelManager.instance.Player1.playerController.PlayerHealth.IsDead)
+            {
+                StartCoroutine(StartSniperBulletAuto(random));
+            }
         }
     }
 
@@ -82,7 +88,6 @@ public class SniperManager : MonoBehaviour
 
         // get player position to attack
         PlayerPosAtShoot = playerHitbox.transform.position;
-        //PlayerPosAtShoot = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject.transform.position;
         // edit prefab
         EnemyProjectile enemyProjectile = projectileBulletPrefab.GetComponentInChildren<EnemyProjectile>();
         enemyProjectile.sniperProjectile = true;
@@ -94,8 +99,30 @@ public class SniperManager : MonoBehaviour
         enemyProjectile.projectileForceSniper = direction;
         //play sound
         audioSource.PlayOneShot(SFXBB.instance.shootGun);
-        //audioSource.PlayOneShot(SFXBB.instance.deathRay);
         StartCoroutine(InstantiateBullet());
+    }
+    public IEnumerator StartSniperBulletAuto(float shootdelay)
+    {
+        // wait until player is not knocked down
+        yield return new WaitUntil(() => playerController.currentState != playerController.knockedDownState);
+        // add shoot delay
+        yield return new WaitForSeconds(shootdelay);
+
+        // get player position to attack
+        PlayerPosAtShoot = playerHitbox.transform.position;
+        //PlayerPosAtShoot = GameLevelManager.instance.Player.transform.Find("hitbox").gameObject.transform.position;
+        // edit prefab
+        EnemyProjectile enemyProjectile = projectileAutomaticBulletPrefab.GetComponentInChildren<EnemyProjectile>();
+        enemyProjectile.sniperProjectile = true;
+        enemyProjectile.impactProjectile = true;
+
+        // get vector to player
+        Vector3 direction = PlayerPosAtShoot - (gameObject.transform.position);
+        // set vector bullet direction
+        enemyProjectile.projectileForceSniper = direction;
+        //play sound
+        audioSource.PlayOneShot(SFXBB.instance.shootAutomaticAK47);
+        StartCoroutine(InstantiateProjectileAutomaticBullet(enemyProjectile, 10));
     }
 
     IEnumerator StartSniperLaser(float shootdelay)
@@ -117,7 +144,6 @@ public class SniperManager : MonoBehaviour
         enemyProjectile.projectileForceSniper = direction;
         //play sound
         audioSource.PlayOneShot(SFXBB.instance.deathRay);
-        //audioSource.PlayOneShot(SFXBB.instance.deathRay);
         StartCoroutine(InstantiateLaser());
     }
 
@@ -127,6 +153,27 @@ public class SniperManager : MonoBehaviour
         // instantiate bullet
         Instantiate(projectileBulletPrefab, gameObject.transform.position, Quaternion.identity);
         locked = false;
+    }
+    IEnumerator InstantiateProjectileAutomaticBullet(EnemyProjectile enemyProjectile,int numBullets)
+    {
+
+        yield return new WaitForSeconds(bulletDelay);
+        for (int i = 0; i < numBullets; i++)
+        {
+            instantiateProjectileBulletAuto(enemyProjectile);
+            yield return new WaitForSeconds(0.2f);
+        }
+        locked = false;
+    }
+
+    public void instantiateProjectileBulletAuto(EnemyProjectile enemyProjectile)
+    {
+        float random = UtilityFunctions.GetRandomFloat(-0.35f, 0.35f);
+        Vector3 target = new Vector3(enemyProjectile.projectileForceSniper.x + random, enemyProjectile.projectileForceSniper.y, enemyProjectile.projectileForceSniper.z);
+        enemyProjectile.projectileForceSniper = target;
+        Instantiate(projectileAutomaticBulletPrefab, gameObject.transform.position, Quaternion.identity);
+        // update stats
+        GameLevelManager.instance.players[0].gameStats.SniperShots++;
     }
 
     IEnumerator InstantiateLaser()
