@@ -109,13 +109,13 @@ public class PlayerCollisions : MonoBehaviour
             {
                 damage = playerAttackBox.attackDamage;
                 isKnockdown = playerAttackBox.knockDownAttack;
-                isDisintegrate = enemyAttackBox.disintegrateAttack;
-            }
-            if (isDisintegrate)
-            {
-                Debug.Log("disintegrated");
-                locked = true;
-                playerDisintegrated();
+                isDisintegrate = playerAttackBox.disintegrateAttack;
+                if (isDisintegrate)
+                {
+                    Debug.Log("disintegrated");
+                    locked = true;
+                    playerDisintegrated();
+                }
             }
 
             // player is not blocking
