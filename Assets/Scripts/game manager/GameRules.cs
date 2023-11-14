@@ -736,7 +736,7 @@ public class GameRules : MonoBehaviour
         {
             scoreText = "shots  : " + gameStats1.ShotMade + " / " + gameStats1.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
                              + "points : " + gameStats1.TotalPoints + "\n"
-                             + "bonus points : " + gameStats1.BonusPoints + "\n"
+                             //+ "bonus points : " + gameStats1.BonusPoints + "\n"
                              + "2 pointers : " + gameStats1.TwoPointerMade + " / " + gameStats1.TwoPointerAttempts + "    "
                              + BasketBall.instance.getTwoPointAccuracy().ToString("00.0") + "%\n"
                              + "3 pointers : " + gameStats1.ThreePointerMade + " / " + gameStats1.ThreePointerAttempts + "    "
@@ -796,21 +796,24 @@ public class GameRules : MonoBehaviour
         // if all shot markers are cleared
         if (MarkersRemaining <= 0)
         {
-            //set counter timer
-            float bonusTime = Timer.instance.Seconds * 0.5f;
-            if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
-            {
-                //// add remaining counter time FLOOR to total points  as bonus points
-                GameLevelManager.instance.Player1.gameStats.BonusPoints = (int)(Mathf.Floor(bonusTime));
-                // add bonus points
-                GameLevelManager.instance.Player1.gameStats.TotalPoints += GameLevelManager.instance.players[0].gameStats.BonusPoints;
-            }
-            // if game has a time counter
-            if (modeRequiresCounter)
-            {
-                // set timer score
-                SetRequiresCounterLowScore();
-            }
+            ////set counter timer
+            //float bonusTime = Timer.instance.Seconds;
+            //Debug.Log("Timer.instance.Seconds : " + Timer.instance.Seconds);
+            //if (gameModeThreePointContest || gameModeFourPointContest || gameModeAllPointContest)
+            //{
+            //    //// add remaining counter time FLOOR to total points  as bonus points
+            //    GameLevelManager.instance.Player1.gameStats.BonusPoints = (int)(Mathf.Floor(bonusTime/2));
+            //    Debug.Log("bonusTime : "+bonusTime);
+            //    Debug.Log("(int)(Mathf.Floor(bonusTime) : " + (int)(Mathf.Floor(bonusTime/2)));
+            //    // add bonus points
+            //    GameLevelManager.instance.Player1.gameStats.TotalPoints += GameLevelManager.instance.players[0].gameStats.BonusPoints;
+            //}
+            //// if game has a time counter
+            //if (modeRequiresCounter)
+            //{
+            //    // set timer score
+            //    SetRequiresCounterLowScore();
+            //}
             return true;
         }
         else
