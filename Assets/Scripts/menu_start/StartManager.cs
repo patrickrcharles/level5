@@ -1070,11 +1070,24 @@ public class StartManager : MonoBehaviour
         try
         {
             disableMenuObjects("friend_tab");
-            StartMenuUiObjects.instance.column2_friend_tab.SetActive(true);
+            enableMenuObjects("friend_tab");
+            Debug.Log(friendSelectedData[friendSelectedIndex].CheerleaderDisplayName);
+            Debug.Log(friendSelectedData[friendSelectedIndex].bonus3Accuracy);
+            Debug.Log(friendSelectedIndex);
 
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
             friendSelectOptionImage.sprite = friendSelectedData[friendSelectedIndex].CheerleaderPortrait;
 
+            StartMenuUiObjects.instance.column3_friend_selected_stats_numbers_text.text = // friendSelectedData[friendSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
+               "->" + friendSelectedData[friendSelectedIndex].bonus3Accuracy.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonus4Accuracy.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonus7Accuracy.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonusRelease.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonusRange.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonusSpeed.ToString("F0") + "\n"
+                + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonusLuck.ToString("F0") + "\n"
+                + "->" + friendSelectedData[friendSelectedIndex].bonusClutch.ToString("F0");
 
             friendSelectOptionText = GameObject.Find(FriendSelectOptionButtonName).GetComponent<Text>();
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
@@ -1132,6 +1145,8 @@ public class StartManager : MonoBehaviour
         if (!activeMenu.ToLower().Equals("friend_tab"))
         {
             StartMenuUiObjects.instance.column2_friend_tab.SetActive(false);
+            StartMenuUiObjects.instance.column3.SetActive(false);
+            StartMenuUiObjects.instance.column3_friend_selected_stats_numbers.SetActive(false);
         }
         if (!activeMenu.ToLower().Equals("level_tab"))
         {
@@ -1169,13 +1184,18 @@ public class StartManager : MonoBehaviour
             initializeCpuPlayerDisplay();
         }
 
-        //if (activeMenu.ToLower().Equals("friend_tab"))
-        //{
-        //    StartMenuUiObjects.instance.column2_friend_tab.SetActive(false);
-        //    StartMenuUiObjects.instance.column4.SetActive(false);
-        //    StartMenuUiObjects.instance.column3.SetActive(false);
+        if (activeMenu.ToLower().Equals("friend_tab"))
+        {
+            //StartMenuUiObjects.instance.column1_subgroup_column2.SetActive(true);
+            //StartMenuUiObjects.instance.column2.SetActive(true);
+            //StartMenuUiObjects.instance.column2_players_tab.SetActive(true);
+            StartMenuUiObjects.instance.column3.SetActive(true);
+            StartMenuUiObjects.instance.column3_player_stats.SetActive(true);
 
-        //}
+            StartMenuUiObjects.instance.column2_friend_tab.SetActive(true);
+            //StartMenuUiObjects.instance.column3.SetActive(true);
+            StartMenuUiObjects.instance.column3_friend_selected_stats_numbers.SetActive(true);
+        }
         if (activeMenu.ToLower().Equals("level_tab"))
         {
             StartMenuUiObjects.instance.column2_level_tab.SetActive(true);
@@ -1212,7 +1232,7 @@ public class StartManager : MonoBehaviour
                 + playerSelectedData[playerSelectedIndex].Accuracy4Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Accuracy7Pt.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Release.ToString("F0") + "\n"
-                + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + " ft\n"
+                + playerSelectedData[playerSelectedIndex].Range.ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateSpeedToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].calculateJumpValueToPercent().ToString("F0") + "\n"
                 + playerSelectedData[playerSelectedIndex].Luck.ToString("F0") + "\n"

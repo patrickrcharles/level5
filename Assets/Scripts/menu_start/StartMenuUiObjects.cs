@@ -72,7 +72,8 @@ public class StartMenuUiObjects : MonoBehaviour
     [SerializeField] public Text column2_options_tab_difficulty_select_description_text;
 
     [SerializeField] public GameObject column3;
-    //[SerializeField] public GameObject column3_friend_selected_stats_category;
+    [SerializeField] public GameObject column3_friend_selected_stats_category;
+    [SerializeField] public GameObject column3_friend_selected_stats_numbers;
     [SerializeField] public GameObject column3_level_selected_info;
     [SerializeField] public GameObject column3_player_stats;
     //[SerializeField] public GameObject column3_player_progression;

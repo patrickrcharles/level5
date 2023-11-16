@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class GameOptions
 {
@@ -30,6 +31,18 @@ public static class GameOptions
     static public string levelDisplayName;
     static public string gameModeSelectedName;
     static public string cheerleaderSelectedName;
+
+    static public int friendBonus3Accuracy;
+    static public int friendBonus4Accuracy;
+    static public int friendBonus7Accuracy;
+    static public int friendBonusLuck;
+    static public int friendBonusRelease;
+    static public int friendBonusRange;
+    static public int friendBonusSpeed;
+    static public int friendBonusClutch;
+    static public int friendBonusAttack;
+    static public int friendBonusHealth;
+    static public int friendBonusDefense;
 
     // game mode flags for game rules
     static public bool gameModeHasBeenSelected;
