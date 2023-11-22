@@ -16,6 +16,7 @@ public static class CpuBaseStats
     public const float JUMP_CEILING = 6;
     public const float SPEED_FLOOR = 2.5f;
     public const float SPEED_CEILING = 6.5f;
+    public const float MAX_SHOOT_DELAY = 2f;
 
     public enum ShooterType
     {
