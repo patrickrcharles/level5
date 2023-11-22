@@ -12,9 +12,11 @@ public class StartScreenModeSelected : MonoBehaviour
 
     [SerializeField] private bool modeRequiresShotMarkers3s;
     [SerializeField] private bool modeRequiresShotMarkers4s;
+    [SerializeField] private bool modeRequiresShotMarkers7s;
 
     [SerializeField] private bool gameModeThreePointContest;
     [SerializeField] private bool gameModeFourPointContest;
+    [SerializeField] private bool gameModeSevenPointContest;
     [SerializeField] private bool gameModeAllPointContest;
     [SerializeField] private float customTimer;
 
@@ -89,4 +91,6 @@ public class StartScreenModeSelected : MonoBehaviour
     public bool IsCageMatch { get => isCageMatch;  }
     public bool GameModeRequiresBasketball { get => gameModeRequiresBasketball; set => gameModeRequiresBasketball = value; }
     public bool GameModeAllowsCpuShooters { get => gameModeAllowsCpuShooters; set => gameModeAllowsCpuShooters = value; }
+    public bool ModeRequiresShotMarkers7s { get => modeRequiresShotMarkers7s; set => modeRequiresShotMarkers7s = value; }
+    public bool GameModeSevenPointContest { get => gameModeSevenPointContest; set => gameModeSevenPointContest = value; }
 }

@@ -19,14 +19,16 @@ public class GameRules : MonoBehaviour
     private bool modeRequiresCounter;
     private bool modeRequiresCountDown;
 
-    bool gameModeRequiresShotMarkers0s;
+    bool gameModeRequiresShotMarkers3s;
     bool gameModeRequiresShotMarkers4s;
+    bool gameModeRequiresShotMarkers7s;
 
     [SerializeField]
     bool gameModeThreePointContest;
     [SerializeField]
     bool gameModeFourPointContest;
     [SerializeField]
+    private bool gameModeSevenPointContest;
     bool gameModeAllPointContest;
     [SerializeField]
     float customTimer;
@@ -137,12 +139,14 @@ public class GameRules : MonoBehaviour
         modeRequiresCounter = GameOptions.gameModeRequiresCounter;
         modeRequiresCountDown = GameOptions.gameModeRequiresCountDown;
 
-        gameModeRequiresShotMarkers0s = GameOptions.gameModeRequiresShotMarkers3s;
+        gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+        gameModeRequiresShotMarkers7s = GameOptions.gameModeRequiresShotMarkers7s;
         gameModeRequiresMoneyBall = GameOptions.gameModeRequiresMoneyBall;
 
         gameModeThreePointContest = GameOptions.gameModeThreePointContest;
         gameModeFourPointContest = GameOptions.gameModeFourPointContest;
+        gameModeSevenPointContest = GameOptions.gameModeSevenPointContest;
         gameModeAllPointContest = GameOptions.gameModeAllPointContest;
 
         if (GameOptions.customTimer > 0)
@@ -172,7 +176,7 @@ public class GameRules : MonoBehaviour
         gameRulesEnabled = true;
 
         // enable/disable necessary shot markers for game mode
-        if (gameModeRequiresShotMarkers0s || gameModeRequiresShotMarkers4s)
+        if (gameModeRequiresShotMarkers3s || gameModeRequiresShotMarkers4s || gameModeRequiresShotMarkers7s)
         {
             positionMarkersRequired = true;
             SetPositionMarkers();
@@ -287,16 +291,16 @@ public class GameRules : MonoBehaviour
         // if player is killed in a game mode that requires a counter
         // if player is killed, high score is being set as time killed
         // must complete game mode to get high score
-
-        if (GameOptions.gameModeRequiresPlayerSurvive
-            && GameLevelManager.instance.PlayerHealth.IsDead)
-        {
-            gameStats1.TimePlayed = 999f;
-        }
-        else
-        {
-            gameStats1.TimePlayed = timePlayedEnd - timePlayedStart;
-        }
+        gameStats1.TimePlayed = timePlayedEnd - timePlayedStart;
+        //if (GameOptions.gameModeRequiresPlayerSurvive
+        //    && GameLevelManager.instance.PlayerHealth.IsDead)
+        //{
+        //    gameStats1.TimePlayed = 0;
+        //}
+        //else
+        //{
+        //    gameStats1.TimePlayed = timePlayedEnd - timePlayedStart;
+        //}
     }
 
     //===================================================== toggle money ball ====================================================
@@ -383,20 +387,26 @@ public class GameRules : MonoBehaviour
         // get all shot position marker objects
         basketBallShotMarkerObjects = GameObject.FindGameObjectsWithTag("shot_marker");
 
-        gameModeRequiresShotMarkers0s = GameOptions.gameModeRequiresShotMarkers3s;
+        gameModeRequiresShotMarkers3s = GameOptions.gameModeRequiresShotMarkers3s;
         gameModeRequiresShotMarkers4s = GameOptions.gameModeRequiresShotMarkers4s;
+        gameModeRequiresShotMarkers7s = GameOptions.gameModeRequiresShotMarkers7s;
 
         //load them into list
         foreach (var marker in basketBallShotMarkerObjects)
         {
             BasketBallShotMarker temp = marker.GetComponent<BasketBallShotMarker>();
             // if 0 markers not required, disable them
-            if (!gameModeRequiresShotMarkers0s && temp.ShotTypeThree && GameOptions.numPlayers >= 1)
+            if (!gameModeRequiresShotMarkers3s && temp.ShotTypeThree && GameOptions.numPlayers >= 1)
             {
                 marker.SetActive(false);
             }
             // if 4 markers not required, disable them
             if (!gameModeRequiresShotMarkers4s && temp.ShotTypeFour && GameOptions.numPlayers >= 1)
+            {
+                marker.SetActive(false);
+            }
+            // if 4 markers not required, disable them
+            if (!gameModeRequiresShotMarkers7s && temp.ShotTypeSeven && GameOptions.numPlayers >= 1)
             {
                 marker.SetActive(false);
             }
@@ -731,7 +741,7 @@ public class GameRules : MonoBehaviour
     string GetStatsTotals()
     {
         string scoreText;
-        if ((gameModeAllPointContest || gameModeFourPointContest || gameModeThreePointContest)
+        if ((gameModeAllPointContest || gameModeFourPointContest || gameModeThreePointContest || gameModeSevenPointContest)
             && !GameOptions.sniperEnabled)
         {
             scoreText = "shots  : " + gameStats1.ShotMade + " / " + gameStats1.ShotAttempt + " " + BasketBall.instance.getTotalPointAccuracy().ToString("0.00") + "%\n"
@@ -828,32 +838,32 @@ public class GameRules : MonoBehaviour
         // so unfortunately this is probably the best way to do it
 
         // mode 7
-        if (gameModeRequiresShotMarkers0s && !gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
+        if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             gameStats1.MakeThreePointersLowTime = counterTime;
         }
         // mode 8
-        if (!gameModeRequiresShotMarkers0s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
+        if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             gameStats1.MakeFourPointersLowTime = counterTime;
         }
         // mode 9
-        if (gameModeRequiresShotMarkers0s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
+        if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && !GameModeRequiresMoneyBall)
         {
             gameStats1.MakeAllPointersLowTime = counterTime;
         }
         // mode 10
-        if (gameModeRequiresShotMarkers0s && !gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        if (gameModeRequiresShotMarkers3s && !gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             gameStats1.MakeThreePointersMoneyBallLowTime = counterTime;
         }
         // mode 11
-        if (!gameModeRequiresShotMarkers0s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        if (!gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             gameStats1.MakeFourPointersMoneyBallLowTime = counterTime;
         }
         // mode 12
-        if (gameModeRequiresShotMarkers0s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
+        if (gameModeRequiresShotMarkers3s && gameModeRequiresShotMarkers4s && GameModeRequiresMoneyBall)
         {
             gameStats1.MakeAllPointersMoneyBallLowTime = counterTime;
         }
@@ -901,7 +911,5 @@ public class GameRules : MonoBehaviour
     public bool GameModeFourPointContest { get => gameModeFourPointContest; }
     public bool GameModeAllPointContest { get => gameModeAllPointContest; }
     public int InThePocketActivateValue { get => inThePocketActivateValue; set => inThePocketActivateValue = value; }
-    //public Text DisplayCurrentScoreText { get => displayCurrentScoreText; set => displayCurrentScoreText = value; }
-    //public Text DisplayHighScoreText { get => displayHighScoreText; set => displayHighScoreText = value; }
-    //public bool GameRulesEnabled { get => gameRulesEnabled; set => gameRulesEnabled = value; }
+    public bool GameModeSevenPointContest { get => gameModeSevenPointContest; set => gameModeSevenPointContest = value; }
 }

@@ -57,7 +57,7 @@ public class BasketBallShotMarker : MonoBehaviour
         setMarkerShotType();
         //test flag
         //GameOptions.gameModeRequiresShotMarkers4s = true;
-        if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s)
+        if (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s || GameOptions.gameModeRequiresShotMarkers7s)
         {
             markerEnabled = true;
             setDisplayText();
@@ -75,6 +75,7 @@ public class BasketBallShotMarker : MonoBehaviour
         // failsafe check. data is serialzed and can be set manually but automatic is better. trust the code
         if (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
+            || GameRules.instance.GameModeSevenPointContest
             || GameRules.instance.GameModeAllPointContest)
         {
             maxShotAttempt = 5;
@@ -102,10 +103,10 @@ public class BasketBallShotMarker : MonoBehaviour
                 setDisplayText();
             }
         }
-
         // if game mode is 3/4/all point contest
         if (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
+            || GameRules.instance.GameModeSevenPointContest
             || GameRules.instance.GameModeAllPointContest)
         {
             // max shot attempts reached
@@ -132,6 +133,7 @@ public class BasketBallShotMarker : MonoBehaviour
         // game mode is NOT 3/4/All point contest
         if (!GameRules.instance.GameModeThreePointContest
             || !GameRules.instance.GameModeFourPointContest
+            || !GameRules.instance.GameModeSevenPointContest
             || !GameRules.instance.GameModeAllPointContest)
         {
             // if made # of shots required at shot marker
@@ -197,6 +199,7 @@ public class BasketBallShotMarker : MonoBehaviour
         if ((PlayerOnMarker || _autoPlayerOnMarker) && markerEnabled
             && (GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
+            || GameRules.instance.GameModeSevenPointContest
             || GameRules.instance.GameModeAllPointContest))
         {
             displayCurrentMarkerStats.text = "total points : " + BasketBall.instance.GameStats.TotalPoints + "\n"
@@ -208,6 +211,7 @@ public class BasketBallShotMarker : MonoBehaviour
         if ((PlayerOnMarker || _autoPlayerOnMarker) && markerEnabled
             && !(GameRules.instance.GameModeThreePointContest
             || GameRules.instance.GameModeFourPointContest
+            || GameRules.instance.GameModeSevenPointContest
             || GameRules.instance.GameModeAllPointContest))
         {
             displayCurrentMarkerStats.text = "markers remaining : " + GameRules.instance.MarkersRemaining + "\n"

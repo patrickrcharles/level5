@@ -114,6 +114,7 @@ public class CharacterProfile : MonoBehaviour
         // if 3/4/All point contest, disable Luck/citical %
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest
+            || GameOptions.gameModeSevenPointContest
             || GameOptions.gameModeAllPointContest)
         {
             Luck = 0;
@@ -154,6 +155,7 @@ public class CharacterProfile : MonoBehaviour
         // if 3/4/All point contest, disable Luck/citical %
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest
+            || GameOptions.gameModeSevenPointContest
             || GameOptions.gameModeAllPointContest)
         {
             Luck = 0;

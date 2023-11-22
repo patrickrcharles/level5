@@ -180,6 +180,7 @@ public class BasketBallShotMade : MonoBehaviour
         // if not 3/4/all point contest
         if (!GameRules.instance.GameModeThreePointContest
             && !GameRules.instance.GameModeFourPointContest
+            && !GameRules.instance.GameModeSevenPointContest
             && !GameRules.instance.GameModeAllPointContest
             && GameOptions.gameModeSelectedId != 19)
         // game mode 19 is 1 pt per 10 feet of last shot made
@@ -265,7 +266,7 @@ public class BasketBallShotMade : MonoBehaviour
                 }
                 // if moneyball / last shot on marker (5/5)
                 if (GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
-                    && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
+                    && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest || GameOptions.gameModeSevenPointContest))
                 {
                     gameStats.TotalPoints += (pointsScored * 2);
                     gameStats.MoneyBallMade++;
@@ -314,7 +315,7 @@ public class BasketBallShotMade : MonoBehaviour
 
         // ==================== requires position markers logic ==============================
         if (basketBallState.PlayerOnMarkerOnShoot 
-            && (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s))
+            && (GameOptions.gameModeRequiresShotMarkers3s || GameOptions.gameModeRequiresShotMarkers4s || GameOptions.gameModeRequiresShotMarkers7s))
         {
             // if money ball enabled
             if (basketBallState.MoneyBallEnabledOnShoot)

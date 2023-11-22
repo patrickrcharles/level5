@@ -6,7 +6,7 @@ public static class Constants
     // constant values that have to be hardcoded
     public const float DISTANCE_3point = 3.8f;
     public const float DISTANCE_4point = 6.4f;
-    public const float DISTANCE_7point = 16.7f;
+    public const float DISTANCE_7point = 11.4f;
 
     // prefab paths. add character object name to load
     public const string PREFAB_PATH_CHARACTER_human = "Prefabs/characters/players/player_";

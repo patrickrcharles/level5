@@ -62,6 +62,7 @@ public class Timer : MonoBehaviour
         // if requires custom timer
         if (GameOptions.gameModeThreePointContest
             || GameOptions.gameModeFourPointContest
+            || GameOptions.gameModeSevenPointContest
             || GameOptions.gameModeAllPointContest)
         {
             timeStart = GameOptions.customTimer;

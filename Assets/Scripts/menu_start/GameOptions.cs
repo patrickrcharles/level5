@@ -109,4 +109,6 @@ public static class GameOptions
     static public bool cageMatchEnabled;
 
     static public bool customCamera;
+    static public bool gameModeRequiresShotMarkers7s;
+    static public bool gameModeSevenPointContest;
 }

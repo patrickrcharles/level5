@@ -299,7 +299,7 @@ public class BasketBall : MonoBehaviour
 
             if (basketBallState.PlayerOnMarkerOnShoot
                 && GameRules.instance.BasketBallShotMarkersList[basketBallState.OnShootShotMarkerId].ShotAttempt == 5
-                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest))
+                && (GameOptions.gameModeThreePointContest || GameOptions.gameModeFourPointContest || GameOptions.gameModeSevenPointContest))
             {
                 GameStats.MoneyBallAttempts++;
             }
