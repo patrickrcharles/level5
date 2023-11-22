@@ -1321,9 +1321,11 @@ public class StartManager : MonoBehaviour
 
         GameOptions.gameModeRequiresShotMarkers3s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers3S;
         GameOptions.gameModeRequiresShotMarkers4s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers4S;
+        GameOptions.gameModeRequiresShotMarkers7s = modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers7s;
 
         GameOptions.gameModeThreePointContest = modeSelectedData[modeSelectedIndex].GameModeThreePointContest;
         GameOptions.gameModeFourPointContest = modeSelectedData[modeSelectedIndex].GameModeFourPointContest;
+        GameOptions.gameModeSevenPointContest = modeSelectedData[modeSelectedIndex].GameModeSevenPointContest;
         GameOptions.gameModeAllPointContest = modeSelectedData[modeSelectedIndex].GameModeAllPointContest;
 
         Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
