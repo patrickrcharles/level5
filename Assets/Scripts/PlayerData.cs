@@ -32,6 +32,7 @@ public class PlayerData : MonoBehaviour
 
     private float _makeThreePointersLowTime = 0;
     private float _makeFourPointersLowTime = 0;
+    private float _makeSevenPointersLowTime = 0;
     private float _makeAllPointersLowTime = 0;
 
     private float _makeThreePointersMoneyBallLowTime = 0;
@@ -42,6 +43,7 @@ public class PlayerData : MonoBehaviour
 
     private float _threePointContestScore = 0;
     private float _fourPointContestScore = 0;
+    private float _sevenPointContestScore = 0;
     private float _allPointContestScore = 0;
 
     private int _enemiesKilled = 0;
@@ -112,6 +114,7 @@ public class PlayerData : MonoBehaviour
             _totalDistance = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "totalDistance", 6, "DESC", hardcoreValue);
             _makeThreePointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 7, "ASC", hardcoreValue);
             _makeFourPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 8, "ASC", hardcoreValue);
+            MakeSevenPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 25, "ASC", hardcoreValue);
             _makeAllPointersLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 9, "ASC", hardcoreValue);
             _makeThreePointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 10, "ASC", hardcoreValue);
             _makeFourPointersMoneyBallLowTime = DBHelper.instance.getFloatValueHighScoreFromTableByFieldAndModeId("HighScores", "time", 11, "ASC", hardcoreValue);
@@ -121,6 +124,7 @@ public class PlayerData : MonoBehaviour
             _totalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC", hardcoreValue);
             _threePointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 16, "DESC", hardcoreValue);
             _fourPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 17, "DESC", hardcoreValue);
+            _sevenPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 24, "DESC", hardcoreValue);
             _allPointContestScore = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 18, "DESC", hardcoreValue);
             TotalPointsByDistance = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 19, "DESC", hardcoreValue);
             _enemiesKilled = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "enemiesKilled", 20, "DESC", hardcoreValue);
@@ -163,6 +167,7 @@ public class PlayerData : MonoBehaviour
     public float TotalPointsBonus { get => _totalPointsBonus; set => _totalPointsBonus = value; }
     public float ThreePointContestScore { get => _threePointContestScore; set => _threePointContestScore = value; }
     public float FourPointContestScore { get => _fourPointContestScore; set => _fourPointContestScore = value; }
+    public float SevenPointContestScore { get => _sevenPointContestScore; set => _sevenPointContestScore = value; }
     public float AllPointContestScore { get => _allPointContestScore; set => _allPointContestScore = value; }
     public int CurrentExperience { get => _currentExperience; set => _currentExperience = value; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
@@ -172,5 +177,6 @@ public class PlayerData : MonoBehaviour
     public int EnemiesKilled { get => _enemiesKilled; set => _enemiesKilled = value; }
     public int EnemiesKilledBattleRoyal { get => _enemiesKilledBattleRoyal; set => _enemiesKilledBattleRoyal = value; }
     public int EnemiesKilledCageMatch { get => _enemiesKilledCageMatch; set => _enemiesKilledCageMatch = value; }
+    public float MakeSevenPointersLowTime { get => _makeSevenPointersLowTime; set => _makeSevenPointersLowTime = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }
