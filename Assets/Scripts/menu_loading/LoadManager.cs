@@ -158,7 +158,8 @@ public class LoadManager : MonoBehaviour
         //cheerleaderSelectedData = loadDefaultCheerleaderProfiles();
         cpuPlayerSelectedData = loadCpuSelectDataList();
         levelSelectedData = loadLevelSelectDataList();
-        modeSelectedData = loadModeSelectDataList();
+        modeDataLoaded = true;
+        //modeSelectedData = loadModeSelectDataList();
     }
 
     IEnumerator InsertNewCharacterToDB(CharacterProfile character)
