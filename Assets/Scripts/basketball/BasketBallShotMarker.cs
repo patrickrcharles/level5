@@ -73,13 +73,13 @@ public class BasketBallShotMarker : MonoBehaviour
         }
 
         // failsafe check. data is serialzed and can be set manually but automatic is better. trust the code
-        if (GameRules.instance.GameModeThreePointContest
-            || GameRules.instance.GameModeFourPointContest
-            || GameRules.instance.GameModeSevenPointContest
-            || GameRules.instance.GameModeAllPointContest)
-        {
-            maxShotAttempt = 5;
-        }
+        //if (GameRules.instance.GameModeThreePointContest
+        //    || GameRules.instance.GameModeFourPointContest
+        //    || GameRules.instance.GameModeSevenPointContest
+        //    || GameRules.instance.GameModeAllPointContest)
+        //{
+        //    maxShotAttempt = 5;
+        //}
 
         // if script disabled, disable collisions flag.
         // collisions/colliders still detected if script disabled
@@ -284,6 +284,7 @@ public class BasketBallShotMarker : MonoBehaviour
     public bool ShotTypeSeven => shotTypeSeven;
     public bool MarkerEnabled { get => markerEnabled; set => markerEnabled = value; }
     public bool AutoPlayerOnMarker { get => _autoPlayerOnMarker; set => _autoPlayerOnMarker = value; }
+    public int MaxShotAttempt { get => maxShotAttempt; set => maxShotAttempt = value; }
 }
 
 
