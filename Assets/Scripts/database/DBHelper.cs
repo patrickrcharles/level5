@@ -1112,7 +1112,7 @@ public class DBHelper : MonoBehaviour
             while (reader.Read())
             {
                 // game modes that require float values
-                if ((modeid > 4 && modeid < 14) || modeid == 99)
+                if ((modeid > 4 && modeid < 14) || modeid==25 || modeid == 99)
                 {
                     score = reader.GetFloat(0).ToString();
                 }
@@ -1218,7 +1218,7 @@ public class DBHelper : MonoBehaviour
         if (!hardcoreValue && !trafficValue && !enemiesValue && !sniperValue)
         {
             // game modes that require float values/ low time as high score
-            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            if (((modeid > 4 && modeid < 14) || modeid == 25) && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, time, userName FROM HighScores  WHERE modeid = " + modeid
                     + " ORDER BY "
@@ -1235,7 +1235,7 @@ public class DBHelper : MonoBehaviour
         else
         {
             // game modes that require float values/ low time as high score
-            if (modeid > 4 && modeid < 14 && modeid != 6 && modeid != 99)
+            if (((modeid > 4 && modeid < 14) || modeid == 25) && modeid != 6 && modeid != 99)
             {
                 sqlQuery = "SELECT  " + field + ", character, level, date, time, hardcoreEnabled, " +
                     "trafficEnabled, enemiesEnabled, sniperEnabled, userName FROM HighScores  WHERE modeid = " + modeid
@@ -1259,7 +1259,6 @@ public class DBHelper : MonoBehaviour
                     + field + " DESC, time ASC LIMIT 10 OFFSET " + pageNumberOffset;
             }
         }
-
         return sqlQuery;
     }
 
