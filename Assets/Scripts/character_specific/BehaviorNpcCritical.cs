@@ -8,9 +8,11 @@ public class BehaviorNpcCritical : MonoBehaviour
     //bool shotMade;
     public float percentChanceOfCritical;
     public Animator animOnCamera;
-    PlayerController playerState;
+    //PlayerController playerState;
 
-    private string npcName;
+    //private string npcName;
+    [SerializeField]
+    GameObject spriteObject;
     public static BehaviorNpcCritical instance;
 
     // Start is called before the first frame update
@@ -20,7 +22,12 @@ public class BehaviorNpcCritical : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         animOnCamera = GameObject.Find("camera_flash").GetComponent<Animator>();
-        npcName = gameObject.transform.root.name;
+        //npcName = gameObject.transform.root.name;
+        spriteObject = transform.gameObject;
+        if (GameOptions.customCamera)
+        {
+            spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
 
