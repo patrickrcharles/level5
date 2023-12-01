@@ -67,7 +67,7 @@ public class BasketBall : MonoBehaviour
         playHitRimSound = true;
 
         //todo: move to game manager
-        UiStatsEnabled = false;
+        UiStatsEnabled = true;
 
         // cap ball speed
         maxBasketballSpeed = 25f;
@@ -652,6 +652,7 @@ public class BasketBall : MonoBehaviour
 
     public void updateScoreText()
     {
+        gameStats = GameLevelManager.instance.players[0].gameStats;
         scoreText.text = "shots  : " + gameStats.ShotMade + " / " + gameStats.ShotAttempt + "  " +
                          getTotalPointAccuracy().ToString("0.00") + "\n"
                          + "points : " + gameStats.TotalPoints + "\n"
