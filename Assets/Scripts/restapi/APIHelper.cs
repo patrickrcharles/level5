@@ -214,7 +214,6 @@ namespace Assets.Scripts.restapi
             //bool locked = false;
             foreach (HighScoreModel score in highscores)
             {
-                Debug.Log(score.Scoreid);
                 score.Userid = GameOptions.userid;
                 score.UserName = GameOptions.userName;
                 //yield return new WaitUntil(() => locked = false);
@@ -242,7 +241,6 @@ namespace Assets.Scripts.restapi
                     }
                     // response
                     httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                    Debug.Log(httpResponse);
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
@@ -1050,7 +1048,6 @@ namespace Assets.Scripts.restapi
 
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(user);
-            Debug.Log(toJson);
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
             try
