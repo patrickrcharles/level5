@@ -7,7 +7,9 @@ public class PlayerDunk : MonoBehaviour
     PlayerController playerController;
     BasketBallState basketBallState;
     BasketBall basketBall;
+    [SerializeField]
     private Vector3 dunkPositionLeft;
+    [SerializeField]
     private Vector3 dunkPositionRight;
     [SerializeField]
     private float dunkRangeFeet;
@@ -18,11 +20,13 @@ public class PlayerDunk : MonoBehaviour
 
     private void Start()
     {
-        if (GameObject.Find("basketball_goal") != null)
-        {
-            dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
-            dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
-        }
+        dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
+        dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        //if (GameObject.Find("basketball_goal") != null)
+        //{
+        //    dunkPositionLeft = GameObject.Find("dunk_position_left").transform.position;
+        //    dunkPositionRight = GameObject.Find("dunk_position_right").transform.position;
+        //}
         PlayerIdentifier pi = GetComponent<PlayerIdentifier>();
         playerController = pi.playerController;
         basketBall = pi.basketBallController;
