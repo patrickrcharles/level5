@@ -3,6 +3,7 @@ using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -25,7 +26,7 @@ public class StartManager : MonoBehaviour
     private List<CheerleaderProfile> friendSelectedData;
     // list off level  data
     [SerializeField]
-    private List<StartScreenLevelSelected> levelSelectedData;
+    private List<LevelSelected> levelSelectedData;
     //mode selected objects
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
@@ -1071,23 +1072,24 @@ public class StartManager : MonoBehaviour
         {
             disableMenuObjects("friend_tab");
             enableMenuObjects("friend_tab");
-            Debug.Log(friendSelectedData[friendSelectedIndex].CheerleaderDisplayName);
-            Debug.Log(friendSelectedData[friendSelectedIndex].bonus3Accuracy);
-            Debug.Log(friendSelectedIndex);
+            //Debug.Log(friendSelectedData[friendSelectedIndex].CheerleaderDisplayName);
+            //Debug.Log(friendSelectedData[friendSelectedIndex].bonus3Accuracy);
+            //Debug.Log(friendSelectedIndex);
 
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
             friendSelectOptionImage.sprite = friendSelectedData[friendSelectedIndex].CheerleaderPortrait;
 
             StartMenuUiObjects.instance.column3_friend_selected_stats_numbers_text.text = // friendSelectedData[friendSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
-               "->" + friendSelectedData[friendSelectedIndex].bonus3Accuracy.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonus4Accuracy.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonus7Accuracy.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonusRelease.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonusRange.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonusSpeed.ToString("F0") + "\n"
+               "->" + (playerSelectedData[playerSelectedIndex].Accuracy3Pt + friendSelectedData[friendSelectedIndex].bonus3Accuracy).ToString("F0") + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Accuracy4Pt + friendSelectedData[friendSelectedIndex].bonus4Accuracy).ToString("F0") + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Accuracy7Pt + friendSelectedData[friendSelectedIndex].bonus7Accuracy).ToString("F0") + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Release + friendSelectedData[friendSelectedIndex].bonusRelease).ToString("F0") + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Range + friendSelectedData[friendSelectedIndex].bonusRange).ToString("F0") + "\n"
                 + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonusLuck.ToString("F0") + "\n"
-                + "->" + friendSelectedData[friendSelectedIndex].bonusClutch.ToString("F0");
+                //+ "->" + (playerSelectedData[playerSelectedIndex].calculateSpeedToPercent() + friendSelectedData[friendSelectedIndex].bonusSpeed).ToString("F0") + "\n"
+                + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Luck + friendSelectedData[friendSelectedIndex].bonusLuck).ToString("F0") + "\n"
+                + "->" + (playerSelectedData[playerSelectedIndex].Clutch + friendSelectedData[friendSelectedIndex].bonusClutch).ToString("F0");
 
             friendSelectOptionText = GameObject.Find(FriendSelectOptionButtonName).GetComponent<Text>();
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
@@ -1226,6 +1228,8 @@ public class StartManager : MonoBehaviour
             int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
 
             playerSelectedData[playerSelectedIndex].Clutch = playerSelectedData[playerSelectedIndex].Level > 100 ? 100 : playerSelectedData[playerSelectedIndex].Level;
+            Debug.Log(playerSelectedData[playerSelectedIndex].Clutch);
+            Debug.Log(playerSelectedData[playerSelectedIndex].Level);
 
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
@@ -1265,13 +1269,24 @@ public class StartManager : MonoBehaviour
     public void loadGame()
     {
         // tells character profile to load profile from LoadedData.instance
-        GameOptions.gameModeHasBeenSelected = true;
+        GameOptions.gameModeHasBeenSelected = true; 
+        
+        string sceneName;
+        if (modeSelectedData[modeSelectedIndex].ModeId == 26)
+        {
+            sceneName = Constants.SCENE_NAME_level_01_scrapyard;
+            Debug.Log(levelSelectedIndex);
+            levelSelectedIndex = levelSelectedData.FindIndex(x => x.LevelId == 1);
+            Debug.Log(levelSelectedIndex);
+        }
+        else
+        {
+            sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
+        }
 
         // update game options for game mode
         setGameOptions();
-
-        // i create the string this way so that i can have a description of the level so i know what im opening
-        string sceneName = GameOptions.levelSelected + "_" + levelSelectedData[levelSelectedIndex].LevelDescription;
+       
 
         // if player not locked, friend not locked, mode contains 'free', mode not aracde mode
         if (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
@@ -1314,6 +1329,10 @@ public class StartManager : MonoBehaviour
         GameOptions.levelRequiresTimeOfDay = levelSelectedData[levelSelectedIndex].LevelRequiresTimeOfDay;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
+        if (GameOptions.gameModeSelectedId == 26)
+        {
+            GameOptions.numPlayers = 2;
+        }
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
 
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
@@ -1413,6 +1432,11 @@ public class StartManager : MonoBehaviour
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
         if (GameOptions.cpu2SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu2SelectedIndex].PlayerObjectName); }
         if (GameOptions.cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
+
+        GameOptions.levelsList = levelSelectedData;
+
+        EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
+        EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
         //    levelSelectedIndex = 15;

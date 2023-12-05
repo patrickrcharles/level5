@@ -27,7 +27,7 @@ namespace Assets.Scripts.menu_start
         private List<CheerleaderProfile> friendSelectedData;
         // list off level  data
         [SerializeField]
-        private List<StartScreenLevelSelected> levelSelectedData;
+        private List<LevelSelected> levelSelectedData;
         //mode selected objects
         [SerializeField]
         private List<StartScreenModeSelected> modeSelectedData;
