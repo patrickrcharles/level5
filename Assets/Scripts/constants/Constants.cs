@@ -25,6 +25,7 @@ public static class Constants
     public const string SCENE_NAME_level_00_progression = "level_00_progression";
     public const string SCENE_NAME_level_00_start = "level_00_start";
     public const string SCENE_NAME_level_00_stats = "level_00_stats";
+    public const string SCENE_NAME_level_00_end_round_screen = "level_00_end_round_screen";
     public const string SCENE_NAME_level_01_scrapyard = "level_01_scrapyard";
     public const string SCENE_NAME_level_02_circlek = "level_02_circlek";
     public const string SCENE_NAME_level_03_snow = "level_03_snow";
