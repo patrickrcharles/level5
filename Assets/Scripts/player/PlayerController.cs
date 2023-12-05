@@ -210,6 +210,10 @@ public class PlayerController : MonoBehaviour
         {
             _knockDownTime = 0.75f;
         }
+        //if (GameOptions.isCampaignMode)
+        //{
+        //    gameObject.SetActive(false);
+        //}
     }
 
     // not affected by framerate
