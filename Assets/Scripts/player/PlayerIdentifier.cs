@@ -37,6 +37,7 @@ public class PlayerIdentifier : MonoBehaviour
         this.player = player;
         playerController = player.GetComponent<PlayerController>();
         characterProfile = player.GetComponent<CharacterProfile>();
+        characterProfile.intializeShooterStatsFromProfile();
     }
     public void setAutoPlayer(GameObject autoPlayer)
     {
