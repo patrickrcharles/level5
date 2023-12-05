@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class StartScreenModeSelected : MonoBehaviour
 {
@@ -7,6 +9,10 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private string modeDisplayName;
     [SerializeField] private string modeObjectName;
     [SerializeField] private string modeDescription;
+
+    [SerializeField] private bool modeIsContinous;
+    [SerializeField] private bool modeRequires;
+
     [SerializeField] private bool modeRequiresCounter;
     [SerializeField] private bool modeRequiresCountDown;
 
@@ -33,6 +39,21 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool gameModeRequiresPlayerSurvive;
     [SerializeField] private bool gameModeRequiresBasketball;
     [SerializeField] private bool gameModeAllowsCpuShooters;
+
+    [SerializeField] private List<string> levels;
+    [SerializeField] private List<string> levelCpuPlayer;
+
+    private void Awake()
+    {
+        setVslevels();
+    }
+
+    private void setVslevels()
+    {
+        levels.Add(Constants.SCENE_NAME_level_01_scrapyard);
+        levels.Add(Constants.SCENE_NAME_level_02_circlek);
+        levels.Add(Constants.SCENE_NAME_level_03_snow);
+    }
 
     public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
