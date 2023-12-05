@@ -582,10 +582,7 @@ public class StatsManager : MonoBehaviour
                 DBHelper.instance.DatabaseLocked = true;
                 // get unsubmitted scores
                 unsubmittedHighScores = DBHelper.instance.getUnsubmittedHighScoreFromDatabase();
-                Debug.Log(unsubmittedHighScores);
-                Debug.Log(unsubmittedHighScores.Count());
                 numUnsubmittedHighscores = unsubmittedHighScores.Count();
-                Debug.Log(numUnsubmittedHighscores);
                 // if count > 0,  set appropriate text
                 if (numUnsubmittedHighscores > 0)
                 {
