@@ -47,7 +47,7 @@ public class BasketBall : MonoBehaviour
         characterProfile = playerController.GetComponent<CharacterProfile>();
         basketBallPosition = player.transform.Find("basketBall_position").gameObject;
         rigidbody = GetComponent<Rigidbody>();
-        gameStats = GetComponent<GameStats>();
+        gameStats =  GetComponent<GameStats>();
 
         basketBallState = GetComponent<BasketBallState>();
 
@@ -67,7 +67,7 @@ public class BasketBall : MonoBehaviour
         playHitRimSound = true;
 
         //todo: move to game manager
-        UiStatsEnabled = true;
+        //UiStatsEnabled = true;
 
         // cap ball speed
         maxBasketballSpeed = 25f;
