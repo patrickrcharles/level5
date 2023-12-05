@@ -25,8 +25,8 @@ public class LoadManager : MonoBehaviour
     public List<CheerleaderProfile> CheerleaderSelectedData { get => cheerleaderSelectedData; }
     // list off level  data
     [SerializeField]
-    private List<StartScreenLevelSelected> levelSelectedData;
-    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData; }
+    private List<LevelSelected> levelSelectedData;
+    public List<LevelSelected> LevelSelectedData { get => levelSelectedData; }
 
     //mode selected objects
     [SerializeField]
@@ -370,16 +370,16 @@ public class LoadManager : MonoBehaviour
         return cheerList;
     }
 
-    private List<StartScreenLevelSelected> loadLevelSelectDataList()
+    private List<LevelSelected> loadLevelSelectDataList()
     {
-        List<StartScreenLevelSelected> levelList = new List<StartScreenLevelSelected>();
+        List<LevelSelected> levelList = new List<LevelSelected>();
 
         string path = "Prefabs/menu_start/level_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
 
         foreach (GameObject obj in objects)
         {
-            StartScreenLevelSelected temp = obj.GetComponent<StartScreenLevelSelected>();
+            LevelSelected temp = obj.GetComponent<LevelSelected>();
             levelList.Add(temp);
         }
 
@@ -427,7 +427,7 @@ public class LoadManager : MonoBehaviour
         return p1.CheerleaderId.CompareTo(p2.CheerleaderId);
     }
 
-    static int sortByLevelId(StartScreenLevelSelected l1, StartScreenLevelSelected l2)
+    static int sortByLevelId(LevelSelected l1, LevelSelected l2)
     {
         return l1.LevelId.CompareTo(l2.LevelId);
     }

@@ -14,7 +14,7 @@ public class LoadedData : MonoBehaviour
     private List<CheerleaderProfile> cheerleaderSelectedData;
     // list off level  data
     [SerializeField]
-    private List<StartScreenLevelSelected> levelSelectedData;
+    private List<LevelSelected> levelSelectedData;
     //mode selected objects
     [SerializeField]
     private List<StartScreenModeSelected> modeSelectedData;
@@ -98,7 +98,7 @@ public class LoadedData : MonoBehaviour
 
     public List<CharacterProfile> PlayerSelectedData { get => playerSelectedData; }
     public List<CheerleaderProfile> CheerleaderSelectedData { get => cheerleaderSelectedData; }
-    public List<StartScreenLevelSelected> LevelSelectedData { get => levelSelectedData; }
+    public List<LevelSelected> LevelSelectedData { get => levelSelectedData; }
     public List<StartScreenModeSelected> ModeSelectedData { get => modeSelectedData; }
     public bool DataLoaded { get => dataLoaded; }
     public List<CharacterProfile> CpuPlayerSelectedData { get => cpuPlayerSelectedData; set => cpuPlayerSelectedData = value; }
