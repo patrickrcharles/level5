@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class EndRoundUIObjects : MonoBehaviour
 {
     [SerializeField]
-    Button nextRoundButton;
+    public Button nextRoundButton;
     [SerializeField]
     public Text nextRoundText;
     [SerializeField]
-    Button continueButton;
+    public Button continueButton;
     [SerializeField]
-    Button startMenuButton;
+    public Button startMenuButton;
     [SerializeField]
     Button QuitButton;
     [SerializeField]
@@ -32,11 +32,21 @@ public class EndRoundUIObjects : MonoBehaviour
     [SerializeField]
     public Text continueNumber;
     [SerializeField]
+    public Text winnerText;
+    [SerializeField]
+    public Text loserText;
+    [SerializeField]
     public Image currentRoundWinnerImage;
     [SerializeField]
     public Image currentRoundLoserImage;
+    //[SerializeField]
+    //public GameObject continueOptionObject;
     [SerializeField]
-    public GameObject continueOptionObject;
+    public GameObject nextInfoObject;
+    [SerializeField]
+    public GameObject endMessageObject;
+    [SerializeField]
+    public Text endMessageText;
 
     public static EndRoundUIObjects instance;
 
