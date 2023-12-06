@@ -92,9 +92,9 @@ public class EnemySpawner : MonoBehaviour
             maxNumberOfEnemies = maxNumberOfEnemies/2;
 #endif
             maxNumberOfMinions = maxNumberOfEnemies - maxNumberOfBoss;
-            Debug.Log(GameOptions.battleRoyalEnabled);
-            Debug.Log(GameOptions.cageMatchEnabled);
-            Debug.Log(steelcage != null);
+            //Debug.Log(GameOptions.battleRoyalEnabled);
+            //Debug.Log(GameOptions.cageMatchEnabled);
+            //Debug.Log(steelcage != null);
             if ((!GameOptions.battleRoyalEnabled || GameOptions.cageMatchEnabled))
             {
                 // spawn enemies if necessary
