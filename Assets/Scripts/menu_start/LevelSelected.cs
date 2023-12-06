@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class LevelSelected : MonoBehaviour
 {
-
     [SerializeField] private int levelId;
     [SerializeField] private string levelDisplayName;
     [SerializeField] private string levelInfo;
@@ -19,8 +18,6 @@ public class LevelSelected : MonoBehaviour
     [SerializeField] private bool isCageMatchLevel;
     [SerializeField] private bool customCamera;
     [SerializeField] private GameObject cpuPlayer;
-    [SerializeField] private Sprite cpuPlayerWinImage;
-    [SerializeField] private Sprite cpuPlayerLoseImage;
 
     public string LevelDescription
     {
