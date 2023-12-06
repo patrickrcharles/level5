@@ -2,8 +2,10 @@
 using Assets.Scripts.restapi;
 using Assets.Scripts.Utility;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameRules : MonoBehaviour
@@ -264,6 +266,10 @@ public class GameRules : MonoBehaviour
             }
             // alert game manager. trigger
             GameLevelManager.instance.GameOver = true;
+            if(gameModeId == 26)
+            {
+                StartCoroutine(LoadNextCampaignLevel(5));
+            }
         }
 
         //// enable moneyball if game requires moneyball
@@ -282,6 +288,36 @@ public class GameRules : MonoBehaviour
         {
             displayMoneyBallText.text = "";
         }
+    }
+
+    private IEnumerator LoadNextCampaignLevel(int seconds)
+    {
+        GameObject.Find("footer").SetActive(false);
+        yield return new WaitForSecondsRealtime(seconds);
+        List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
+        // i create the string this way so that i can have a description of the level so i know what im opening
+
+
+        GameOptions.levelHasSevenPointers = GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers;
+        GameOptions.levelId = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelId;
+
+        EndRoundData.currentLevelIndex = GameOptions.levelSelectedIndex;
+        EndRoundData.nextLevelIndex = GameOptions.levelSelectedIndex++;
+
+        EndRoundData.currentRoundCpuWinnerImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayerWinImage;
+        EndRoundData.currentRoundCpuLoserImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayerLoseImage;
+
+        EndRoundData.currentRoundWinnerScore = players[0].gameStats.TotalPoints;
+        EndRoundData.currentRoundLoserScore = players[1].gameStats.TotalPoints;
+
+        EndRoundData.currentRoundWinnerIsCpu = players[0].isCpu;
+        EndRoundData.currentRoundLoserIsCpu = players[1].isCpu;
+        Debug.Log("level : " + GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelDisplayName + " has 7s : "+ GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers);
+        Debug.Log(EndRoundData.currentRoundWinnerIsCpu);
+        Debug.Log(EndRoundData.currentRoundLoserIsCpu);
+
+        //string sceneName = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelObjectName + "_" + GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelDescription;
+        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_end_round_screen);
     }
 
     public void setTimePlayed()
@@ -611,7 +647,7 @@ public class GameRules : MonoBehaviour
                     Timer.instance.ScoreClockText.text = (gameStats.EnemiesKilled).ToString();
                 }
             }
-            if (gameModeId == 23)
+            if (gameModeId == 23 || gameModeId ==26)
             {
                 Timer.instance.ScoreClockText.text = gameStats.TotalPoints.ToString();
                 updatePlayerScore();
@@ -722,7 +758,7 @@ public class GameRules : MonoBehaviour
                 + "\n\nYou survived for  : " + minutes.ToString("0") + ":" + seconds.ToString("00.000") + "\n\n"
                 + "\n\nexperience gained : " + gameStats1.getExperienceGainedFromSession();
         }
-        if (gameModeId == 23)
+        if (gameModeId == 23 || gameModeId==26)
         {
             List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
             displayText = players[0].characterProfile.PlayerDisplayName + " wins!"
