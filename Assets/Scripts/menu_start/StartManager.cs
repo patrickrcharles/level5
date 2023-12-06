@@ -1228,8 +1228,6 @@ public class StartManager : MonoBehaviour
             int nextlvl = (((playerSelectedData[playerSelectedIndex].Level + 1) * 3000) - playerSelectedData[playerSelectedIndex].Experience);
 
             playerSelectedData[playerSelectedIndex].Clutch = playerSelectedData[playerSelectedIndex].Level > 100 ? 100 : playerSelectedData[playerSelectedIndex].Level;
-            Debug.Log(playerSelectedData[playerSelectedIndex].Clutch);
-            Debug.Log(playerSelectedData[playerSelectedIndex].Level);
 
             playerSelectOptionStatsText.text = // playerSelectedData[playerSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
                 playerSelectedData[playerSelectedIndex].Accuracy3Pt.ToString("F0") + "\n"
