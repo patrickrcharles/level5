@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -231,7 +232,7 @@ public class AutoPlayerController : MonoBehaviour
         {
             IsWalking(movementHorizontal, movementVertical);
         }
-        if (jumpTrigger)
+        if (jumpTrigger) 
         {
             jumpTrigger = false;
             AutoPlayerJump();
@@ -394,31 +395,6 @@ public class AutoPlayerController : MonoBehaviour
             canAttack = false;
         }
 
-        /* conditions for auto moving to position and shooting
-         * - determine position. this will be affected by game rules
-         * game rules : need to look at game rules file. game rules has a list of basketball markers for game mode
-         * - go to position
-         * - determine if arrived at position.
-         * - call ball
-         * - jump
-         * - shoot
-         */
-        //========== testing controls
-        //testing
-        //if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-        //    stateWalk = !stateWalk;
-        //}
-        //if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8) 
-        //    && hasBasketball
-        //    && !InAir)
-        //{
-        //    jumpTrigger = !jumpTrigger;
-        //}
-
-        //testing
-        //======================================
-
         //------------------ jump -----------------------------------
         if (hasBasketball
             //&& stateIdle
@@ -427,11 +403,12 @@ public class AutoPlayerController : MonoBehaviour
             && !KnockedDown
             && !jumpTrigger
             && !shootTrigger
-            && !InAir)
+            && !InAir
+            && !Locked)
         {
-            //arrivedAtTarget = false;
-            jumpTrigger = true;
+            Locked = true;
             arrivedAtTarget = false;
+            StartCoroutine(SetJumptrigger());
         }
 
         //------------------ shoot -----------------------------------
@@ -576,7 +553,7 @@ public class AutoPlayerController : MonoBehaviour
     //    anim.SetBool("block", true);
     //}
 
-    public void PlayerShoot()
+    void PlayerShoot()
     {
         basketball.shootBasketBall(basketball.BasketBallState.TwoPoints,
             basketball.BasketBallState.ThreePoints,
@@ -744,12 +721,16 @@ public class AutoPlayerController : MonoBehaviour
         AvoidedKnockDown = false;
         Locked = false;
     }
-
-    public void AutoPlayerJump()
+    IEnumerator SetJumptrigger()
+    {
+        float delay = (1 - (float)characterProfile.Release / 100) * CpuBaseStats.MAX_SHOOT_DELAY;
+        yield return new WaitForSeconds(delay);
+        jumpTrigger = true;
+    }
+    void AutoPlayerJump()
     {
         rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
-
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;
         // if not dunking, start shot meter
