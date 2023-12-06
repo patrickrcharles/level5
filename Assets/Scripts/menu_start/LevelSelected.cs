@@ -18,6 +18,8 @@ public class LevelSelected : MonoBehaviour
     [SerializeField] private bool isCageMatchLevel;
     [SerializeField] private bool customCamera;
     [SerializeField] private GameObject cpuPlayer;
+    private Sprite cpuPlayerWinImage;
+    private Sprite cpuPlayerLoseImage;
 
     public string LevelDescription
     {
