@@ -11,6 +11,8 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
+    [SerializeField] public Sprite winPortrait;
+    [SerializeField] public Sprite losePortrait;
 
     private float jumpStatFloor = 3.5f;
     private float jumpStatCeiling = 6;
@@ -82,8 +84,11 @@ public class CharacterProfile : MonoBehaviour
     }
 
     private void intializeShooterStatsFromProfile()
+    public void intializeShooterStatsFromProfile()
     {
         CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
+        CharacterProfile temp = new();
+        temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
         playerObjectName = temp.playerObjectName != null ? temp.playerObjectName : "";
         playerDisplayName = temp.playerDisplayName;
