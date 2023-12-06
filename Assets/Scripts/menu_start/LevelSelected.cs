@@ -19,8 +19,8 @@ public class LevelSelected : MonoBehaviour
     [SerializeField] private bool isCageMatchLevel;
     [SerializeField] private bool customCamera;
     [SerializeField] private GameObject cpuPlayer;
-    [SerializeField] public Sprite cpuPlayerWinImage;
-    [SerializeField] public Sprite cpuPlayerLoseImage;
+    [SerializeField] private Sprite cpuPlayerWinImage;
+    [SerializeField] private Sprite cpuPlayerLoseImage;
 
     public string LevelDescription
     {
@@ -56,4 +56,6 @@ public class LevelSelected : MonoBehaviour
     public bool LevelHasSevenPointers { get => levelHasSevenPointers; set => levelHasSevenPointers = value; }
     public string LevelInfo { get => levelInfo; set => levelInfo = value; }
     public GameObject CpuPlayer { get => cpuPlayer; set => cpuPlayer = value; }
+    public Sprite CpuPlayerWinImage { get => cpuPlayer.GetComponent<CharacterProfile>().winPortrait; set => cpuPlayerWinImage = value; }
+    public Sprite CpuPlayerLoseImage { get => cpuPlayer.GetComponent<CharacterProfile>().losePortrait; set => cpuPlayerLoseImage = value; }
 }
