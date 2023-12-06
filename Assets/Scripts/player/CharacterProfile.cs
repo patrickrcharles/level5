@@ -83,10 +83,8 @@ public class CharacterProfile : MonoBehaviour
         //}
     }
 
-    private void intializeShooterStatsFromProfile()
     public void intializeShooterStatsFromProfile()
     {
-        CharacterProfile temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
         CharacterProfile temp = new();
         temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
