@@ -519,6 +519,7 @@ public class BasketBallAuto : MonoBehaviour
         autoPlayerController.hasBasketball = false;
         autoPlayerController.SetPlayerAnim("hasBasketball", false);
         autoPlayerController.shootTrigger = false;
+        autoPlayerController.Locked = false;
     }
 
     // ============================ Functions and Properties ==========================================
