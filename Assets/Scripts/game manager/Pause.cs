@@ -174,25 +174,28 @@ public class Pause : MonoBehaviour
 
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
+                && ( GameOptions.gameModeSelectedId != 26 ))
             {
                 reloadScene();
             }
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
+                && (GameOptions.gameModeSelectedId != 26 ))
             {
                 StartCoroutine(loadstartScreen());
             }
             // quit
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
+                && (GameOptions.gameModeSelectedId != 26 ))
             {
                 TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
+                && (GameOptions.gameModeSelectedId != 26 ))
             {
                 StartCoroutine(Quit());
             }
