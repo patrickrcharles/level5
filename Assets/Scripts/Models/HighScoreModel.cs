@@ -124,15 +124,7 @@ namespace Assets.Scripts.database
             model.EnemiesKilled = pi[index].gameStats.EnemiesKilled;
             model.Device = SystemInfo.deviceModel;
             model.Platform = SystemInfo.deviceType.ToString();
-            //if (IsConnectedToInternet())
-            //{
-            //    model.Ipaddress = GetExternalIpAdress();
-            //}
-            //else
-            //{
-            //    model.Ipaddress = "noConnectivity" + RandomString(8);
-            //}
-            model.Ipaddress = GetExternalIpAdress();
+            //model.Ipaddress = GetExternalIpAdress();
             model.TwoMade = pi[index].gameStats.TwoPointerMade;
             model.TwoAtt = pi[index].gameStats.TwoPointerAttempts;
             model.ThreeMade = pi[index].gameStats.ThreePointerMade;
@@ -153,17 +145,17 @@ namespace Assets.Scripts.database
                 model.SniperMode = 0;
                 model.SniperModeName = "none";
             }
-            if (GameOptions.sniperEnabledBullet && GameOptions.sniperEnabled)
+            if (GameOptions.sniperEnabledBullet)
             {
                 model.SniperMode = 1;
                 model.SniperModeName = "single bullet";
             }
-            if (GameOptions.sniperEnabledBulletAuto && GameOptions.sniperEnabled)
+            if (GameOptions.sniperEnabledBulletAuto)
             {
                 model.SniperMode = 2;
                 model.SniperModeName = "machine gun ";
             }
-            if (GameOptions.sniperEnabledLaser && GameOptions.sniperEnabled)
+            if (GameOptions.sniperEnabledLaser)
             {
                 model.SniperMode = 3;
                 model.SniperModeName = "disintegration ray";
@@ -251,7 +243,7 @@ namespace Assets.Scripts.database
             try
             {
                 string externalIP;
-                externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
+                externalIP = (new WebClient()).DownloadString("https://api.ipify.org/");
                 externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
                              .Matches(externalIP)[0].ToString();
                 return externalIP;
