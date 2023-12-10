@@ -6,6 +6,7 @@ public class SniperManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject playerHitbox;
+    [SerializeField]
     private AudioSource audioSource;
     private Vector3 playerPosAtShoot;
     [SerializeField]
@@ -27,27 +28,29 @@ public class SniperManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        StartCoroutine(LoadVariables());
     }
     private void Start()
     {
-        //GameOptions.sniperEnabled = true; //test flag
-        //// auto start autonomous sniper system
+        StartCoroutine(LoadVariables());
+        //GameOptions.sniperEnabled = true; 
+        //test flag
+        // auto start autonomous sniper system
         if (GameOptions.sniperEnabled || GameOptions.sniperEnabledLaser || GameOptions.sniperEnabledBullet)
         {
             instance = this;
             InvokeRepeating("startSniper", 0, 0.5f);
         }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+        //else
+        //{
+        //    gameObject.SetActive(false);
+        //}
     }
 
     IEnumerator LoadVariables()
     {
-        //Debug.Log("load vars");
+        Debug.Log("load vars");
         yield return new WaitUntil(() => GameLevelManager.instance.players[0] != null);
+        yield return new WaitUntil(() => GameLevelManager.instance.players[0].playerController != null);
         playerController = GameLevelManager.instance.players[0].playerController;
         playerHitbox = GameLevelManager.instance.players[0].transform.Find("hitbox").gameObject;
         audioSource = GetComponent<AudioSource>();
