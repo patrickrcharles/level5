@@ -147,7 +147,7 @@ public class EnemyProjectile : MonoBehaviour
             }
             
             Vector3 spawnPoint = new Vector3(transformAtImpact.x, GameLevelManager.instance.TerrainHeight, transformAtImpact.z);
-            Debug.Log("sniper miss : "+ transformAtImpact);
+            //Debug.Log("sniper miss : "+ transformAtImpact);
             Instantiate(impactSniperGroundPrefab, spawnPoint, Quaternion.identity);
             DestroyProjectile();
         }
