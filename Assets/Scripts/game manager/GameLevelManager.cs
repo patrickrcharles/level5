@@ -70,6 +70,8 @@ public class GameLevelManager : MonoBehaviour
     GameObject[] _npcObjects;
     GameObject[] _vehicleObjects;
 
+    GameObject[] _Levels;
+
     private PlayerControls controls;
     FloatingJoystick joystick;
 
@@ -202,10 +204,9 @@ public class GameLevelManager : MonoBehaviour
             GameOptions.enemiesEnabled = true;
             GameObject.Find("basketball_goal").SetActive(false);
         }
-        _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>(); 
+        _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
         if (GameObject.Find("rim") != null) { _basketballRimVector = GameObject.Find("rim").transform.position; }
 
-        //_cheerleaderSpawnLocation.transform.position.y = terrainHeight;
     }
 
     private void Update()
@@ -405,10 +406,19 @@ public class GameLevelManager : MonoBehaviour
         players.Add(_player1);
         pid++;
 
-        if (numPlayers > 1 && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
+        if (numPlayers > 1  && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
-            playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
-            _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+            
+            if (GameOptions.gameModeSelectedId == 26)
+            {
+                _playerClone2 = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer;
+            }
+            else
+            {
+                playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
+                _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+                
+            }
             GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
 
             _player2 = go2.GetComponent<PlayerIdentifier>();
