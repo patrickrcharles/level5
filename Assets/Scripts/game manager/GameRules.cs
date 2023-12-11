@@ -268,6 +268,7 @@ public class GameRules : MonoBehaviour
             GameLevelManager.instance.GameOver = true;
             if(gameModeId == 26)
             {
+                GameObject.Find("footer").SetActive(false);
                 StartCoroutine(LoadNextCampaignLevel(5));
             }
         }
@@ -292,11 +293,8 @@ public class GameRules : MonoBehaviour
 
     private IEnumerator LoadNextCampaignLevel(int seconds)
     {
-        GameObject.Find("footer").SetActive(false);
         yield return new WaitForSecondsRealtime(seconds);
         List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
-        // i create the string this way so that i can have a description of the level so i know what im opening
-
 
         GameOptions.levelHasSevenPointers = GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers;
         GameOptions.levelId = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelId;
@@ -312,9 +310,9 @@ public class GameRules : MonoBehaviour
 
         EndRoundData.currentRoundWinnerIsCpu = players[0].isCpu;
         EndRoundData.currentRoundLoserIsCpu = players[1].isCpu;
-        Debug.Log("level : " + GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelDisplayName + " has 7s : "+ GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers);
-        Debug.Log(EndRoundData.currentRoundWinnerIsCpu);
-        Debug.Log(EndRoundData.currentRoundLoserIsCpu);
+        //Debug.Log("level : " + GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelDisplayName + " has 7s : "+ GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers);
+        //Debug.Log(EndRoundData.currentRoundWinnerIsCpu);
+        //Debug.Log(EndRoundData.currentRoundLoserIsCpu);
 
         //string sceneName = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelObjectName + "_" + GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelDescription;
         SceneManager.LoadScene(Constants.SCENE_NAME_level_00_end_round_screen);
@@ -486,7 +484,7 @@ public class GameRules : MonoBehaviour
 
                 displayHighScoreText.text = "high score : " + PlayerData.instance.ThreePointerMade;
             }
-            if (gameModeId == 0)
+            if (gameModeId == 3)
             {
                 displayCurrentScoreText.text = "4s made : " + gameStats.FourPointerMade
                     + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
@@ -709,7 +707,7 @@ public class GameRules : MonoBehaviour
         {
             displayText = "You made " + gameStats1.ThreePointerMade + " total 3 pointers\n\n" + GetStatsTotals();
         }
-        if (gameModeId == 0)
+        if (gameModeId == 3)
         {
             displayText = "You made " + gameStats1.FourPointerMade + " total 4 pointers\n\n" + GetStatsTotals();
         }
