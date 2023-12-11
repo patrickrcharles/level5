@@ -99,15 +99,12 @@ public class PlayerCollisions : MonoBehaviour
             // check if player attack
             if (enemyAttackBox != null)
             {
-                Debug.Log("collision : " + gameObject.name + " : " + other.name);
                 isRake = enemyAttackBox.isRake;
                 damage = enemyAttackBox.attackDamage;
                 isKnockdown = enemyAttackBox.knockDownAttack;
                 isDisintegrate = enemyAttackBox.disintegrateAttack;
-                Debug.Log("isDisintegrate : " + isDisintegrate);
                 if (isDisintegrate)
                 {
-                    Debug.Log("disintegrated");
                     locked = true;
                     playerDisintegrated();
                 }
@@ -121,7 +118,6 @@ public class PlayerCollisions : MonoBehaviour
                 isDisintegrate = playerAttackBox.disintegrateAttack;
                 if (isDisintegrate)
                 {
-                    Debug.Log("disintegrated");
                     locked = true;
                     playerDisintegrated();
                 }
