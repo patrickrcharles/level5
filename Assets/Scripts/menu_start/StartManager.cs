@@ -1348,6 +1348,8 @@ public class StartManager : MonoBehaviour
         Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
         Debug.Log(modeSelectedData[modeSelectedIndex].GameModeSevenPointContest);
         Debug.Log(modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers7s);
+        Debug.Log("timer : "+ modeSelectedData[modeSelectedIndex].CustomTimer);
+
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
         {
