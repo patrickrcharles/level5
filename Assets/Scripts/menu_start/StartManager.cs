@@ -1273,9 +1273,7 @@ public class StartManager : MonoBehaviour
         if (modeSelectedData[modeSelectedIndex].ModeId == 26)
         {
             sceneName = Constants.SCENE_NAME_level_01_scrapyard;
-            Debug.Log(levelSelectedIndex);
             levelSelectedIndex = levelSelectedData.FindIndex(x => x.LevelId == 1);
-            Debug.Log(levelSelectedIndex);
         }
         else
         {
@@ -1347,7 +1345,6 @@ public class StartManager : MonoBehaviour
 
         Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
         Debug.Log(modeSelectedData[modeSelectedIndex].GameModeSevenPointContest);
-        Debug.Log(modeSelectedData[modeSelectedIndex].ModeRequiresShotMarkers7s);
         Debug.Log("timer : "+ modeSelectedData[modeSelectedIndex].CustomTimer);
 
         // check if game mode requires timer that is not 120
