@@ -57,6 +57,7 @@ public class GameLevelManager : MonoBehaviour
     public GameObject _playerSpawnLocation2;
     public GameObject _playerSpawnLocation3;
     public GameObject _playerSpawnLocation4;
+    [SerializeField]
     private GameObject _cheerleaderSpawnLocation;
 
     private Vector3 _basketballRimVector;
@@ -120,28 +121,38 @@ public class GameLevelManager : MonoBehaviour
         _playerSpawnLocation4 = GameObject.Find("player_spawn_location4");
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
         _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
+        //set terrain height
+        terrainHeight =  setTerrainHeight();
 
         //ui touch controls
         if (GameObject.FindGameObjectWithTag("joystick") != null)
         {
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
         }
-
+        
+        // if basketball doesnt exists
+        if (!GameOptions.gameModeRequiresBasketball && GameOptions.gameModeHasBeenSelected) { GameOptions.enemiesEnabled = true; }
         // if player doesnt exists, spawn default Player
         checkPlayerPrefabExists();
-        // if basketball doesnt exists
-        //if (!GameOptions.gameModeHasBeenSelected && !GameOptions.EnemiesOnlyEnabled) { GameOptions.gameModeRequiresBasketball = true; }
-        //if (GameOptions.gameModeRequiresBasketball) { checkBasketballPrefabExists(); }
-        if (!GameOptions.gameModeRequiresBasketball && GameOptions.gameModeHasBeenSelected) { GameOptions.enemiesEnabled = true; }
         checkBasketballPrefabExists();
         // cheerleader doesnt exists
         checkCheerleaderPrefabExists();
         //// check if player is npc in scene
         checkPlayerIsNpcInScene();
         //// get necessary references to objects
-        //_basketball = GameObject.FindGameObjectWithTag("basketball").GetComponent<BasketBall>();
-        //_basketballRimVector = GameObject.Find("rim").transform.position;
+    }
 
+    private float setTerrainHeight()
+    {
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case Constants.SCENE_NAME_level_15_cocaine_island:
+                return terrainHeight = 145;
+            case Constants.SCENE_NAME_level_20_jacksonville:
+                return terrainHeight = 200;
+            default:
+                return terrainHeight = 0;
+        }
     }
 
     private void Start()
@@ -169,21 +180,21 @@ public class GameLevelManager : MonoBehaviour
             _playerController1.isCPU = false;
             terrainHeight = Player1.transform.position.y;
         }
-        else
-        {
-            if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
-            {
-                terrainHeight = 145;
-            }
-            if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_20_jacksonville)
-            {
-                terrainHeight = 200;
-            }
-            else
-            {
-                terrainHeight = 0;
-            }
-        }
+        //else
+        //{
+        //    if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_15_cocaine_island)
+        //    {
+        //        terrainHeight = 145;
+        //    }
+        //    if (SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_20_jacksonville)
+        //    {
+        //        terrainHeight = 200;
+        //    }
+        //    else
+        //    {
+        //        terrainHeight = 0;
+        //    }
+        //}
         if (GameObject.FindWithTag("autoPlayer") != null)
         {
             _autoPlayer = GameObject.FindWithTag("autoPlayer");
@@ -290,7 +301,7 @@ public class GameLevelManager : MonoBehaviour
         {
             string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
-
+            Debug.Log(terrainHeight);
             _cheerleaderSpawnLocation.transform.position = new Vector3(_cheerleaderSpawnLocation.transform.position.x, terrainHeight, _cheerleaderSpawnLocation.transform.position.z);
             if (_cheerleaderClone != null)
             {
