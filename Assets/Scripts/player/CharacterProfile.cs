@@ -50,13 +50,13 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private bool isShooter;
     [SerializeField] private CpuBaseStats.ShooterType cpuType;
 
-    private void Awake()
+    void Start()
     {
-        if (GameOptions.gameModeHasBeenSelected && !isCpu)
-        {
-            GameOptions.gameModeHasBeenSelected = false;
-            intializeShooterStatsFromProfile();
-        }
+        //if (GameOptions.gameModeHasBeenSelected && !isCpu)
+        //{
+        //    //GameOptions.gameModeHasBeenSelected = false;
+        //    intializeShooterStatsFromProfile();
+        //}
         if (isCpu)
         {
             intializeCpuShooterStats();
@@ -85,6 +85,7 @@ public class CharacterProfile : MonoBehaviour
 
     public void intializeShooterStatsFromProfile()
     {
+        Debug.Log("intializeShooterStatsFromProfile : " + playerDisplayName);
         CharacterProfile temp = new();
         temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
 
