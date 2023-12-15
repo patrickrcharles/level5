@@ -228,7 +228,11 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = GetDisplayText(GameModeId);
 
             List<PlayerIdentifier> gameStatsList = new();
+            if (GameOptions.gameModeSelectedId == 26)
+            {
                 Debug.Log(GameLevelManager.instance.players[0].gameStats);
+                PlayerData.instance.updateCampaignStats(GameLevelManager.instance.players[0].gameStats);
+            }
             if (GameOptions.gameModeSelectedId == 23)
             {
                 gameStatsList = GameLevelManager.instance.getSortedGameStatsList();
@@ -247,11 +251,11 @@ public class GameRules : MonoBehaviour
             if (GameObject.FindGameObjectWithTag("database") != null)//&& basketBallStats.TimePlayed > 60)
             {
                 // dont save free play game score
-                if (gameModeId != 99)
+                if (gameModeId != 99 && gameModeId != 26)
                 {
                     DBConnector.instance.savePlayerGameStats(user);
                     // if username is logged in
-                    if (!string.IsNullOrEmpty(GameOptions.userName) && GameOptions.userid != 0)
+                    if (!string.IsNullOrEmpty(GameOptions.userName) && (GameOptions.userid != 0 && GameOptions.gameModeSelectedId != 26))
                     {
                         StartCoroutine(APIHelper.PostHighscore(user));
                     }
@@ -261,6 +265,7 @@ public class GameRules : MonoBehaviour
                         DBHelper.instance.setGameScoreSubmitted(user.Scoreid, false);
                     }
                 }
+
                 DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.Player1.gameStats);
                 DBConnector.instance.savePlayerProfileProgression(GameLevelManager.instance.Player1.gameStats.getExperienceGainedFromSession());
 
