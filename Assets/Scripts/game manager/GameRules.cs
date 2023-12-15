@@ -354,7 +354,7 @@ public class GameRules : MonoBehaviour
         if (GameOptions.numPlayers > 0 && players[0] != null)
         {
             playerType = players[0].isCpu ? "CPU" : "Player";
-            if (!players[0].isCpu) { displayP1ScoreText.color = Color.red; } else { displayP1ScoreText.color = Color.white; }
+            if (!players[0].isCpu) { displayP1ScoreText.color = Color.green; } else { displayP1ScoreText.color = Color.white; }
             displayP1ScoreText.text = playerType + " " + (players[0].pid + 1)
                 + "\n" + players[0].characterProfile.PlayerDisplayName
                 + "\n" + "points : " + players[0].gameStats.TotalPoints
@@ -364,7 +364,7 @@ public class GameRules : MonoBehaviour
         if (GameOptions.numPlayers > 1 && players[1] != null)
         {
             playerType = players[1].isCpu ? "CPU" : "Player";
-            if (!players[1].isCpu) { displayP2ScoreText.color = Color.red; } else { displayP2ScoreText.color = Color.white; }
+            if (!players[1].isCpu) { displayP2ScoreText.color = Color.green; } else { displayP2ScoreText.color = Color.white; }
             displayP2ScoreText.text = playerType + " " + (players[1].pid + 1)
                 + "\n" + players[1].characterProfile.PlayerDisplayName
                 + "\n" + "points : " + players[1].gameStats.TotalPoints
@@ -378,7 +378,7 @@ public class GameRules : MonoBehaviour
         if (GameOptions.numPlayers > 2 && players[2] != null)
         {
             playerType = players[2].isCpu ? "CPU" : "Player";
-            if (!players[2].isCpu) { displayP3ScoreText.color = Color.red; } else { displayP3ScoreText.color = Color.white; }
+            if (!players[2].isCpu) { displayP3ScoreText.color = Color.green; } else { displayP3ScoreText.color = Color.white; }
             displayP3ScoreText.text = playerType + " " + (players[2].pid + 1)
                 + "\n" + players[2].characterProfile.PlayerDisplayName
                 + "\n" + "points : " + players[2].gameStats.TotalPoints
@@ -392,7 +392,7 @@ public class GameRules : MonoBehaviour
         if (GameOptions.numPlayers > 3 && players[3] != null)
         {
             playerType = players[3].isCpu ? "CPU" : "Player";
-            if (!players[3].isCpu) { displayP4ScoreText.color = Color.red; } else { displayP4ScoreText.color = Color.white; }
+            if (!players[3].isCpu) { displayP4ScoreText.color = Color.green; } else { displayP4ScoreText.color = Color.white; }
             displayP4ScoreText.text = playerType + " " + (players[3].pid + 1)
                 + "\n" + players[3].characterProfile.PlayerDisplayName
                 + "\n" + "points : " + players[3].gameStats.TotalPoints
