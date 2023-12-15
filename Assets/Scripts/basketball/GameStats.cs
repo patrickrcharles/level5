@@ -3,44 +3,44 @@ using UnityEngine;
 
 public class GameStats : MonoBehaviour
 {
-    private int _experienceGained;
-    private int _totalPoints;
-    private int _bonusPoints;
-    private int _twoPointerMade;
-    private int _threePointerMade;
-    private int _fourPointerMade;
-    private int _sevenPointerMade;
-    private int _moneyBallMade;
-    private int _twoPointerAttempts;
-    private int _threePointerAttempts;
-    private int _fourPointerAttempts;
-    private int _sevenPointerAttempts;
-    private int _moneyBallAttempts;
-    private int _shotAttempt;
-    private int _shotMade;
-    private float _longestShotMade;
-    private float _totalDistance;
+    public int _experienceGained;
+    public int _totalPoints;
+    public int _bonusPoints;
+    public int _twoPointerMade;
+    public int _threePointerMade;
+    public int _fourPointerMade;
+    public int _sevenPointerMade;
+    public int _moneyBallMade;
+    public int _twoPointerAttempts;
+    public int _threePointerAttempts;
+    public int _fourPointerAttempts;
+    public int _sevenPointerAttempts;
+    public int _moneyBallAttempts;
+    public int _shotAttempt;
+    public int _shotMade;
+    public float _longestShotMade;
+    public float _totalDistance;
 
-    private float _makeThreePointersLowTime;
-    private float _makeFourPointersLowTime;
-    private float _makeAllPointersLowTime;
+    public float _makeThreePointersLowTime;
+    public float _makeFourPointersLowTime;
+    public float _makeAllPointersLowTime;
 
-    private float _makeThreePointersMoneyBallLowTime;
-    private float _makeFourPointersMoneyBallLowTime;
-    private float _makeAllPointersMoneyBallLowTime;
+    public float _makeThreePointersMoneyBallLowTime;
+    public float _makeFourPointersMoneyBallLowTime;
+    public float _makeAllPointersMoneyBallLowTime;
 
-    private int _criticalRolled;
-    private int _mostConsecutiveShots;
+    public int _criticalRolled;
+    public int _mostConsecutiveShots;
 
     //enemies
-    private int _enemiesKilled;
-    private int _minionsKilled;
-    private int _bossKilled;
+    public int _enemiesKilled;
+    public int _minionsKilled;
+    public int _bossKilled;
 
-    private int _sniperShots;
-    private int _sniperHits;
+    public int _sniperShots;
+    public int _sniperHits;
 
-    private float _timePlayed;
+    public float _timePlayed;
     [SerializeField]
     int _consecutiveShotsMade = 0;
     [SerializeField]
@@ -51,6 +51,11 @@ public class GameStats : MonoBehaviour
     int _expectedShotMade = 1;
     [SerializeField]
     int _expectedShotAttempts = 1;
+
+    public int campaignWins;
+    public int campaignLosses;
+    public int campaignTies;
+    public int campaignGamesPlayed;
 
     ////init from game options
     //void Start()
