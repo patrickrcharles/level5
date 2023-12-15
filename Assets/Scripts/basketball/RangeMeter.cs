@@ -38,7 +38,7 @@ public class RangeMeter : MonoBehaviour
         InvokeRepeating("setSliderValue", 0, 0.1f);
 
         if (!playerIdentifier.isCpu && ( GameOptions.hardcoreModeEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.battleRoyalEnabled
-            || !GameOptions.gameModeHasBeenSelected))
+            || !GameOptions.gameModeHasBeenSelected || GameOptions.gameModeAllowsCpuShooters))
         {
             gameObject.SetActive(false);
         }
