@@ -144,6 +144,16 @@ public class CharacterProfile : MonoBehaviour
     }
     public void intializeCpuShooterStats()
     {
+        // in hardcore if CPU level less than player level, set equal to player level+10
+        if (GameOptions.hardcoreModeEnabled)
+        {
+            int playerLevel = GameLevelManager.instance.players[0].characterProfile.level;
+            if(playerLevel > level)
+            {
+                level = playerLevel+10;
+            }
+            //Debug.Log(GameLevelManager.instance.players[0].characterProfile.PlayerDisplayName + " lvl : " + GameLevelManager.instance.players[0].characterProfile.level);
+        }
         int release = level > 25 ? 25 : level;
         int three = level > 50 ? 25 : level - release;
         int four = level > 75 ? 25 : level - (three + release);
