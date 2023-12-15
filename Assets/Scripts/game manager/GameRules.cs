@@ -228,6 +228,7 @@ public class GameRules : MonoBehaviour
             displayScoreText.text = GetDisplayText(GameModeId);
 
             List<PlayerIdentifier> gameStatsList = new();
+                Debug.Log(GameLevelManager.instance.players[0].gameStats);
             if (GameOptions.gameModeSelectedId == 23)
             {
                 gameStatsList = GameLevelManager.instance.getSortedGameStatsList();
