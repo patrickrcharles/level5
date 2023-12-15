@@ -68,7 +68,108 @@ namespace Assets.Scripts.database
         public int p3IsCpu;
         public int p4IsCpu;
         public int numPlayers;
+        public int campaignWins;
+        public int campaignLosses;
+        public int campaignTies;
 
+        public HighScoreModel convertCampaignBasketBallStatsToModel(GameStats gameStats)
+        {
+            int trafficEnabled = 0;
+            if (GameOptions.trafficEnabled)
+            {
+                trafficEnabled = 1;
+            }
+            int hardcoreEnabled = 0;
+            if (GameOptions.hardcoreModeEnabled)
+            {
+                hardcoreEnabled = 1;
+            }
+            int enemiesEnabled = 0;
+            if (GameOptions.enemiesEnabled)
+            {
+                enemiesEnabled = 1;
+            }
+            int sniperEnabled = 0;
+            if (GameOptions.sniperEnabled)
+            {
+                sniperEnabled = 1;
+            }
+
+            HighScoreModel model = new HighScoreModel();
+
+            model.Scoreid = generateUniqueScoreID();
+            model.Modeid = GameOptions.gameModeSelectedId;
+            model.Characterid = GameOptions.characterId;
+            model.Character = GameOptions.characterDisplayName;
+            model.Levelid = GameOptions.levelId;
+            model.Level = GameOptions.levelDisplayName;
+            model.Os = SystemInfo.operatingSystem;
+            model.Version = Application.version;
+            model.Date = DateTime.Now.ToString();
+            model.Time = gameStats.TimePlayed;
+            model.Difficulty = GameOptions.difficultySelected;
+            model.TotalPoints = gameStats.TotalPoints;
+            model.LongestShot = gameStats.LongestShotMade;
+            model.TotalDistance = gameStats.TotalDistance;
+            model.MaxShotMade = gameStats.ShotMade;
+            model.MaxShotAtt = gameStats.ShotAttempt;
+            model.ConsecutiveShots = gameStats.MostConsecutiveShots;
+            model.TrafficEnabled = trafficEnabled;
+            model.HardcoreEnabled = hardcoreEnabled;
+            model.EnemiesKilled = gameStats.EnemiesKilled;
+            model.Device = SystemInfo.deviceModel;
+            model.Platform = SystemInfo.deviceType.ToString();
+            //model.Ipaddress = GetExternalIpAdress();
+            model.TwoMade = gameStats.TwoPointerMade;
+            model.TwoAtt = gameStats.TwoPointerAttempts;
+            model.ThreeMade = gameStats.ThreePointerMade;
+            model.ThreeAtt = gameStats.ThreePointerAttempts;
+            model.FourMade = gameStats.FourPointerMade;
+            model.FourAtt = gameStats.FourPointerAttempts;
+            model.SevenMade = gameStats.SevenPointerMade;
+            model.SevenAtt = gameStats.SevenPointerAttempts;
+            model.BonusPoints = gameStats.BonusPoints;
+            model.MoneyBallMade = gameStats.MoneyBallMade;
+            model.MoneyBallAtt = gameStats.MoneyBallAttempts;
+            model.EnemiesEnabled = enemiesEnabled;
+            model.UserName = GameOptions.userName;
+            model.Userid = GameOptions.userid;
+            model.SniperEnabled = sniperEnabled;
+            if (!GameOptions.sniperEnabled)
+            {
+                model.SniperMode = 0;
+                model.SniperModeName = "none";
+            }
+            if (GameOptions.sniperEnabledBullet)
+            {
+                model.SniperMode = 1;
+                model.SniperModeName = "single bullet";
+            }
+            if (GameOptions.sniperEnabledBulletAuto)
+            {
+                model.SniperMode = 2;
+                model.SniperModeName = "machine gun ";
+            }
+            if (GameOptions.sniperEnabledLaser)
+            {
+                model.SniperMode = 3;
+                model.SniperModeName = "disintegration ray";
+            }
+            model.SniperShots = gameStats.SniperShots;
+            model.Sniperhits = gameStats.SniperHits;
+            //Debug.Log("GameOptions.numPlayers : " + GameOptions.numPlayers);
+            //Debug.Log("isCpu : " + isCpu);
+            //Debug.Log(" : " + characterProfile.PlayerDisplayName);
+            //Debug.Log("pi[1]. : " + pi[1].characterProfile.PlayerDisplayName);
+
+            model.numPlayers = GameOptions.numPlayers;
+            model.Difficulty = GameOptions.difficultySelected;
+            model.campaignWins = gameStats.campaignWins;
+            model.campaignLosses = gameStats.campaignLosses;
+            model.campaignTies = gameStats.campaignTies;
+
+            return model;
+        }
         public HighScoreModel convertBasketBallStatsToModel(List<PlayerIdentifier> pi)
         {
             int index = 0;
