@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor.SceneManagement;
+using UnityEngine;
 
 /* This class is used to store Player data from the database such as high scores
  * and data that will be used to update high scores and inserted into database
@@ -58,6 +60,9 @@ public class PlayerData : MonoBehaviour
     [SerializeField]
     private int _updatePointsUsed = 0;
 
+    [SerializeField]
+    GameStats campaignGameStats;
+            
     public static PlayerData instance;
 
     void Awake()
@@ -75,6 +80,7 @@ public class PlayerData : MonoBehaviour
 
     private void Start()
     {
+        campaignGameStats = gameObject.AddComponent<GameStats>();
         //if (GameObject.FindGameObjectsWithTag("database") != null)
         //{
         //    Debug.Log("load player high scores");
@@ -133,6 +139,33 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    public void updateCampaignStats(GameStats gameStats)
+    {
+        campaignGameStats.TotalPoints += gameStats.TotalPoints;
+        campaignGameStats.TotalDistance += gameStats.TotalDistance;
+        campaignGameStats.ThreePointerMade += gameStats.ThreePointerMade;
+        campaignGameStats.FourPointerMade += gameStats.FourPointerMade;
+        campaignGameStats.SevenPointerMade += gameStats.SevenPointerMade;
+        campaignGameStats.ThreePointerAttempts += gameStats.ThreePointerAttempts;
+        campaignGameStats.FourPointerAttempts += gameStats.FourPointerAttempts;
+        campaignGameStats.SevenPointerAttempts += gameStats.SevenPointerAttempts;
+        campaignGameStats.LongestShotMade += gameStats.LongestShotMade;
+        campaignGameStats.TimePlayed += gameStats.TimePlayed;
+        campaignGameStats.CriticalRolled += gameStats.CriticalRolled;
+        campaignGameStats.EnemiesKilled += gameStats.EnemiesKilled;
+        campaignGameStats.BossKilled += gameStats.BossKilled;
+        campaignGameStats.MinionsKilled += gameStats.MinionsKilled;
+        campaignGameStats.MoneyBallMade += gameStats.MoneyBallMade;
+        campaignGameStats.MoneyBallAttempts += gameStats.MoneyBallAttempts;
+        campaignGameStats.ShotMade += gameStats.ShotMade;
+        campaignGameStats.ShotAttempt += gameStats.ShotAttempt;
+        campaignGameStats.SniperHits += gameStats.SniperHits;
+        campaignGameStats.SniperShots += gameStats.SniperShots;
+        campaignGameStats.TwoPointerMade += gameStats.TwoPointerMade;
+        campaignGameStats.TwoPointerAttempts += gameStats.TwoPointerAttempts;
+        campaignGameStats.MostConsecutiveShots += gameStats.MostConsecutiveShots;
+    }
+
     public float TotalPoints => _totalPoints;
 
     //public float TwoPointerMade => _twoPointerMade;
@@ -178,5 +211,6 @@ public class PlayerData : MonoBehaviour
     public int EnemiesKilledBattleRoyal { get => _enemiesKilledBattleRoyal; set => _enemiesKilledBattleRoyal = value; }
     public int EnemiesKilledCageMatch { get => _enemiesKilledCageMatch; set => _enemiesKilledCageMatch = value; }
     public float MakeSevenPointersLowTime { get => _makeSevenPointersLowTime; set => _makeSevenPointersLowTime = value; }
+    public GameStats CampaignGameStats { get => campaignGameStats; set => campaignGameStats = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }
