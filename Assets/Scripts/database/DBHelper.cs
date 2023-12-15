@@ -117,7 +117,8 @@ public class DBHelper : MonoBehaviour
                " totalPoints, longestShot, totalDistance, maxShotMade, maxShotAtt, consecutiveShots, trafficEnabled, " +
                "hardcoreEnabled, enemiesEnabled, enemiesKilled, platform, device, ipaddress, twoMade, twoAtt, threeMade, threeAtt, " +
                "fourMade, fourAtt, sevenMade, sevenAtt, bonusPoints, moneyBallMade, moneyBallAtt, userName, sniperEnabled, sniperMode, sniperModeName," +
-               "sniperHits, sniperShots, p1TotalPoints,p2TotalPoints,p3TotalPoints,p4TotalPoints,first,second,third,fourth,p1IsCpu,p2IsCpu,p3IsCpu,p4IsCpu,numPlayers,difficulty)  " +
+               "sniperHits, sniperShots, p1TotalPoints,p2TotalPoints,p3TotalPoints,p4TotalPoints,first,second,third,fourth,p1IsCpu,p2IsCpu,p3IsCpu,p4IsCpu,numPlayers,difficulty," +
+               "campaignWins, campaignLosses,CampaignTies)  " +
                "Values( '" + stats.Scoreid
                + "', '" + stats.Modeid
                + "', '" + stats.Characterid
@@ -171,7 +172,10 @@ public class DBHelper : MonoBehaviour
                + stats.p3IsCpu + "','"
                + stats.p4IsCpu + "','"
                + GameOptions.numPlayers + "','"
-               + stats.Difficulty + "')";
+               + stats.Difficulty + "','"
+               + stats.campaignWins + "','"
+               + stats.campaignLosses + "','"
+               + stats.campaignTies + "')";
 
             dbcmd.CommandText = sqlQuery1;
             IDataReader reader = dbcmd.ExecuteReader();

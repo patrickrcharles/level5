@@ -280,7 +280,10 @@ public class DBConnector : MonoBehaviour
                 "p3IsCpu  INTEGER DEFAULT 0," +
                 "p4IsCpu  INTEGER DEFAULT 0," +
                 "numPlayers  INTEGER DEFAULT 0," +
-                "difficulty  INTEGER DEFAULT 0);" +
+                "difficulty  INTEGER DEFAULT 0," +
+                "campaignWins  INTEGER DEFAULT 0," +
+                "campaignLosses  INTEGER DEFAULT 0," +
+                "campaignTies  INTEGER DEFAULT 0);" +
 
                 "DROP TABLE if exists Achievements; " +
 
