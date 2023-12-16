@@ -56,7 +56,11 @@ public class Pause : MonoBehaviour
     void Awake()
     {
         instance = this;
-        startOnPause = true;
+        if (!GameOptions.battleRoyalEnabled&& !GameOptions.cageMatchEnabled)
+        {
+            startOnPause = true;
+        }
+        
         paused = startOnPause;
         footer = GameObject.Find("footer");
 
@@ -107,11 +111,11 @@ public class Pause : MonoBehaviour
          */
 
         // if game active, disable pause
-        //if (Time.timeScale == 1f)
-        //{
-        //    setBackgroundFade(false);
-        //    setPauseScreen(false);
-        //}
+        if (Time.timeScale == 1f)
+        {
+            setBackgroundFade(false);
+            setPauseScreen(false);
+        }
         if (startOnPause)
         {
             GameObject.Find("footer").SetActive(false);
@@ -130,7 +134,9 @@ public class Pause : MonoBehaviour
         {
             paused = TogglePause();
         }
-        if(startOnPause && GameLevelManager.instance.Controls.Player.submit.triggered)
+        if(startOnPause && GameLevelManager.instance.Controls.Player.submit.triggered
+            && !GameOptions.battleRoyalEnabled 
+            && !GameOptions.cageMatchEnabled)
         {
             startOnPause = false;
             GameObject.Find("paused_start").SetActive(false);
