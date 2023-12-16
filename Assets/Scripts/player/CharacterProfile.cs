@@ -152,6 +152,10 @@ public class CharacterProfile : MonoBehaviour
             {
                 level = playerLevel+10;
             }
+            else
+            {
+                level += 10;
+            }
             //Debug.Log(GameLevelManager.instance.players[0].characterProfile.PlayerDisplayName + " lvl : " + GameLevelManager.instance.players[0].characterProfile.level);
         }
         int release = level > 25 ? 25 : level;
