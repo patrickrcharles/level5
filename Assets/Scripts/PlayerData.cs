@@ -50,7 +50,7 @@ public class PlayerData : MonoBehaviour
 
     private int _enemiesKilled = 0;
     private int _enemiesKilledBattleRoyal = 0;
-    private int _enemiesKilledCageMatch;
+    private int _enemiesKilledCageMatch = 0;
     [SerializeField]
     private int _currentExperience = 0;
     [SerializeField]
