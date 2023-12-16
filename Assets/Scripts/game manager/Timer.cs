@@ -124,13 +124,14 @@ public class Timer : MonoBehaviour
             // ball is in the air, let the shot go before pausing 
             // or player in air and has basketball
             // not consecutive game mode
-            if (!GameLevelManager.instance.players[0].basketBallState.InAir
+            if (!GameLevelManager.instance.players[0].basketBallState.Thrown
                 // player in air, has ball
                 //&& !(GameLevelManager.instance.players[0].playerController.hasBasketball && GameLevelManager.instance.players[0].playerController.InAir)
                 && GameLevelManager.instance.players[0].playerController.Grounded
                 // not consecutive shots game mode
                 && !GameRules.instance.GameModeRequiresConsecutiveShots)
             {
+          
                 //Debug.Log("game over");
                 GameRules.instance.GameOver = true;
             }
@@ -139,6 +140,7 @@ public class Timer : MonoBehaviour
                 && GameLevelManager.instance.players[0].gameStats.ConsecutiveShotsMade < 3))
             {
                 //Debug.Log("game over");
+                
                 GameRules.instance.GameOver = true;
             }
         }
