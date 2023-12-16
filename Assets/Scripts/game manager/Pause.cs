@@ -12,6 +12,8 @@ public class Pause : MonoBehaviour
     // main flag
     [SerializeField]
     private bool paused;
+    [SerializeField]
+    private bool startOnPause;
 
     //fade texture to obscure background
     [SerializeField]
@@ -44,19 +46,19 @@ public class Pause : MonoBehaviour
     private AudioSource[] allAudioSources;
     private GameObject currentHighlightedButton;
 
-    //GameObject controlsObject;
-    //GameObject controlsMobileObject;
-    //GameObject controlsDesktopObject;
-
     private GameObject maxStatsObject;
     private GameObject toggleFpsObject;
     private GameObject toggleUiStatsObject;
+    private GameObject footer;
 
     public static Pause instance;
 
     void Awake()
     {
         instance = this;
+        startOnPause = true;
+        paused = startOnPause;
+        footer = GameObject.Find("footer");
 
         fadeTexture = GameObject.Find("fade_texture").GetComponent<Image>();
         //text
@@ -69,20 +71,12 @@ public class Pause : MonoBehaviour
         loadStartScreenButton = GameObject.Find("load_start").GetComponent<Button>();
         cancelMenuButton = GameObject.Find("cancel_menu").GetComponent<Button>();
         quitGameButton = GameObject.Find("quit_game").GetComponent<Button>();
-        ////controls
-        //controlsObject = GameObject.Find("controls").gameObject;
-        //controlsMobileObject = GameObject.Find("control_key_mobile").gameObject;
-        //controlsDesktopObject = GameObject.Find("control_key_desktop").gameObject;
 
         //toggleCameraText = GameObject.Find(toggleCameraName).GetComponent<Text>();
         toggleUiStatsText = GameObject.Find(toggleUiStatsName).GetComponent<Text>();
         toggleMaxStatsText = GameObject.Find(toggleMaxStatsName).GetComponent<Text>();
 
         toggleFpsText = GameObject.Find(toggleFpsName).GetComponent<Text>();
-
-        //if (controlsObject != null)
-        //{
-        //    controlsObject.SetActive(false);
 
 //#if UNITY_ANDROID && !UNITY_EDITOR
 //            controlsDesktopObject.SetActive(false);
@@ -113,10 +107,14 @@ public class Pause : MonoBehaviour
          */
 
         // if game active, disable pause
-        if (Time.timeScale == 1f)
+        //if (Time.timeScale == 1f)
+        //{
+        //    setBackgroundFade(false);
+        //    setPauseScreen(false);
+        //}
+        if (startOnPause)
         {
-            setBackgroundFade(false);
-            setPauseScreen(false);
+            GameObject.Find("footer").SetActive(false);
         }
     }
 
@@ -127,8 +125,15 @@ public class Pause : MonoBehaviour
         if (//GameLevelManager.instance.Controls.UINavigation.Submit.triggered||
              GameLevelManager.instance.Controls.Player.cancel.triggered
             //|| GameLevelManager.Instance.Controls.Player.esc.triggered
+            && !startOnPause
             && !GameLevelManager.instance.GameOver)
         {
+            paused = TogglePause();
+        }
+        if(startOnPause && GameLevelManager.instance.Controls.Player.submit.triggered)
+        {
+            startOnPause = false;
+            GameObject.Find("paused_start").SetActive(false);
             paused = TogglePause();
         }
 
@@ -181,21 +186,19 @@ public class Pause : MonoBehaviour
             }
             //load start screen
             if (currentHighlightedButton.name.Equals(loadStartScreenButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
-                && (GameOptions.gameModeSelectedId != 26 ))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
                 StartCoroutine(loadstartScreen());
             }
-            // quit
+            // cancel
             if (currentHighlightedButton.name.Equals(cancelMenuButton.name)
-                && (GameOptions.gameModeSelectedId != 26 ))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
                 TogglePause();
             }
             // quit
             if (currentHighlightedButton.name.Equals(quitGameButton.name)
-                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
-                && (GameOptions.gameModeSelectedId != 26 ))
+                && GameLevelManager.instance.Controls.UINavigation.Submit.triggered)
             {
                 StartCoroutine(Quit());
             }
@@ -323,6 +326,7 @@ public class Pause : MonoBehaviour
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
+            footer.SetActive(true);
             paused = false;
             Time.timeScale = 1f;
             setBackgroundFade(false);
