@@ -1431,7 +1431,14 @@ public class StartManager : MonoBehaviour
         if (GameOptions.cpu2SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu2SelectedIndex].PlayerObjectName); }
         if (GameOptions.cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
 
-        GameOptions.levelsList = levelSelectedData;
+        GameOptions.levelsList = new List<LevelSelected>();
+        for (int i = 0; i < levelSelectedData.Count; i++)
+        {
+            if (!levelSelectedData[i].IsBattleRoyalLevel && !levelSelectedData[i].IsCageMatchLevel)
+            {
+                GameOptions.levelsList.Add(levelSelectedData[i]);
+            }
+        }
 
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
