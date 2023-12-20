@@ -445,11 +445,11 @@ public class AutoPlayerController : MonoBehaviour
         Vector3 directionOfTravelSeven = new();
 
         Vector3 directionOfTravel = transform.position - GameLevelManager.instance.BasketballRimVector;
+
         // set direction of travel to 7pt line based on which side of goal player is on
         if(playerRelativePositioning.x > 0) { directionOfTravelSeven = Vector3.right; }
         else { directionOfTravelSeven = Vector3.left; }
-        // cnditions for type of shot
-
+        // conditions for type of shot
         if (characterProfile.Accuracy3Pt > characterProfile.Accuracy4Pt
              && (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) <= 12)
         {
@@ -470,8 +470,22 @@ public class AutoPlayerController : MonoBehaviour
             finalDirection = directionOfTravelSeven + directionOfTravelSeven.normalized * distance7;
             targetPosition = transform.position + finalDirection;
         }
+        if (targetPosition == Vector3.zero)
+        {
+            finalDirection = directionOfTravel + directionOfTravel.normalized * distance4;
+            targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
+        }
+        if (targetPosition.z < GameLevelManager.instance.BasketballRimVector.z + 1)
+        {
+            targetPosition = new Vector3(targetPosition.x, targetPosition.y, GameLevelManager.instance.BasketballRimVector.z);
+        }
+
         //Debug.Log("finalDirection : " + finalDirection);
         //Debug.Log("directionOfTravel : " + finalDirection);
+        //Debug.Log("GameLevelManager.instance.BasketballRimVector : " + GameLevelManager.instance.BasketballRimVector);
+        //Debug.Log("targetPosition : " + targetPosition);
+        //Debug.Log("behind rim : " + ( targetPosition.z < GameLevelManager.instance.BasketballRimVector.z));
+
 
         return targetPosition;
     }
