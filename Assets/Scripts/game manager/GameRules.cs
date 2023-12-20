@@ -309,8 +309,8 @@ public class GameRules : MonoBehaviour
         EndRoundData.currentLevelIndex = GameOptions.levelSelectedIndex;
         EndRoundData.nextLevelIndex = GameOptions.levelSelectedIndex++;
 
-        EndRoundData.currentRoundCpuWinnerImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayerWinImage;
-        EndRoundData.currentRoundCpuLoserImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayerLoseImage;
+        EndRoundData.currentRoundCpuWinnerImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer.GetComponent<CharacterProfile>().winPortrait;
+        EndRoundData.currentRoundCpuLoserImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer.GetComponent<CharacterProfile>().losePortrait; 
 
         EndRoundData.currentRoundWinnerScore = players[0].gameStats.TotalPoints;
         EndRoundData.currentRoundLoserScore = players[1].gameStats.TotalPoints;
