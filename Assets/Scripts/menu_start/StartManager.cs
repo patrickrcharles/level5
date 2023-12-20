@@ -1424,6 +1424,7 @@ public class StartManager : MonoBehaviour
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
 
         GameOptions.gameModeAllowsCpuShooters = modeSelectedData[modeSelectedIndex].GameModeAllowsCpuShooters;
+
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
@@ -1434,6 +1435,8 @@ public class StartManager : MonoBehaviour
 
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
+        if (hardcoreEnabled) { EndRoundData.numberOfContinues = 0; }
+
         //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
         //{
         //    levelSelectedIndex = 15;
