@@ -8,7 +8,7 @@ public static class EndRoundData
     static public bool currentRoundWinnerIsCpu;
     static public bool currentRoundLoserIsCpu;
 
-    static public int numberOfContinues = 3;
+    static public int numberOfContinues = 2;
     static public int currentRoundWinnerScore;
     static public int currentRoundLoserScore;
 
@@ -25,4 +25,5 @@ public static class EndRoundData
     static public string currentRoundLevelName;
     static public string currentRoundOpponentName;
 
+    //public static bool campaignGameOver { get; internal set; }
 }
