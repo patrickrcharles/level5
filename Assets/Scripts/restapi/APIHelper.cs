@@ -1081,37 +1081,48 @@ namespace Assets.Scripts.restapi
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
-
-            statusCode = httpResponse.StatusCode;
-
-            // if successful
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            if (httpResponse != null)
             {
-                //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                GameOptions.userName = user.UserName;
-                GameOptions.userid = user.Userid;
-                GameOptions.bearerToken = APIHelper.BearerToken;
+                statusCode = httpResponse.StatusCode;
 
-                apiLocked = false;
-                DBHelper.instance.DatabaseLocked = false;
+                // if successful
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    GameOptions.userName = user.UserName;
+                    GameOptions.userid = user.Userid;
+                    GameOptions.bearerToken = APIHelper.BearerToken;
+
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+                // failed
+                else
+                {
+                    //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
+                    //unlock api + database
+                    GameOptions.userName = user.UserName;
+                    GameOptions.userid = user.Userid;
+
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
+                }
+          
+
+                yield return new WaitUntil(() => !apiLocked);
+                yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
             }
-            // failed
             else
             {
-                //Debug.Log("----------------- HTTP POST failed : " + (int)statusCode + " " + statusCode);
-                //unlock api + database
                 apiLocked = false;
                 DBHelper.instance.DatabaseLocked = false;
             }
-
-            yield return new WaitUntil(() => !apiLocked);
-            yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-
             //Debug.Log(APIHelper.bearerToken);
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
-            {
-                SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
-            }
+            //if (httpResponse.StatusCode == HttpStatusCode.OK)
+            //{
+            //    SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
+            //}
+            SceneManager.LoadScene(Constants.SCENE_NAME_level_00_loading);
         }
 
         //------------------------------------- GET Application  ----------------------------------------
@@ -1211,7 +1222,7 @@ namespace Assets.Scripts.restapi
                 Debug.Log("----------------- ERROR : " + e);
                 apiLocked = false;
             }
-
+            Debug.Log(httpResponse.StatusCode);
             statusCode = httpResponse.StatusCode;
 
             // if successful
