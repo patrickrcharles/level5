@@ -302,12 +302,16 @@ public class GameRules : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(seconds);
         List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
+        GameOptions.levelSelectedIndex = 17;
+        // campaign is over
+        if (GameOptions.levelSelectedIndex < GameOptions.levelsList.Count - 1)
+        {
+            GameOptions.levelHasSevenPointers = GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers;
+            GameOptions.levelId = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelId;
 
-        GameOptions.levelHasSevenPointers = GameOptions.levelsList[GameOptions.levelSelectedIndex+1].LevelHasSevenPointers;
-        GameOptions.levelId = GameOptions.levelsList[GameOptions.levelSelectedIndex].LevelId;
-
-        EndRoundData.currentLevelIndex = GameOptions.levelSelectedIndex;
-        EndRoundData.nextLevelIndex = GameOptions.levelSelectedIndex++;
+            EndRoundData.currentLevelIndex = GameOptions.levelSelectedIndex;
+            EndRoundData.nextLevelIndex = GameOptions.levelSelectedIndex++;
+        }
 
         EndRoundData.currentRoundCpuWinnerImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer.GetComponent<CharacterProfile>().winPortrait;
         EndRoundData.currentRoundCpuLoserImage = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer.GetComponent<CharacterProfile>().losePortrait; 
