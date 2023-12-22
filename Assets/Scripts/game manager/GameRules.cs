@@ -302,7 +302,6 @@ public class GameRules : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(seconds);
         List<PlayerIdentifier> players = GameLevelManager.instance.getSortedGameStatsList();
-        GameOptions.levelSelectedIndex = 17;
         // campaign is over
         if (GameOptions.levelSelectedIndex < GameOptions.levelsList.Count - 1)
         {
