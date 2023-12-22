@@ -20,6 +20,8 @@ public class EndRoundMenuManager : MonoBehaviour
     void Start()
     {     
         if (EndRoundData.numberOfContinues <= 0 && !currentWinnerisCpu)
+        Debug.Log("EndRoundData.currentLevelIndex: " + (EndRoundData.currentLevelIndex));
+        Debug.Log("GameOptions.levelsList : " + (GameOptions.levelsList.Count-1));
         {
             //EndRoundUIObjects.instance.continueOptionObject.SetActive(false);
             EventSystem.current.SetSelectedGameObject(EndRoundUIObjects.instance.startMenuButton.gameObject);
