@@ -1,10 +1,8 @@
 using Assets.Scripts.database;
 using Assets.Scripts.restapi;
-using Assets.Scripts.Utility;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LocalAccount : MonoBehaviour
