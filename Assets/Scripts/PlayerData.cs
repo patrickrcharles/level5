@@ -153,7 +153,7 @@ public class PlayerData : MonoBehaviour
         campaignGameStats.ThreePointerAttempts += gameStats.ThreePointerAttempts;
         campaignGameStats.FourPointerAttempts += gameStats.FourPointerAttempts;
         campaignGameStats.SevenPointerAttempts += gameStats.SevenPointerAttempts;
-        campaignGameStats.LongestShotMade += gameStats.LongestShotMade;
+        campaignGameStats.LongestShotMade = gameStats.LongestShotMade > campaignGameStats.LongestShotMade ? gameStats.LongestShotMade : campaignGameStats.LongestShotMade;
         campaignGameStats.TimePlayed += gameStats.TimePlayed;
         campaignGameStats.CriticalRolled += gameStats.CriticalRolled;
         campaignGameStats.EnemiesKilled += gameStats.EnemiesKilled;
@@ -167,7 +167,7 @@ public class PlayerData : MonoBehaviour
         campaignGameStats.SniperShots += gameStats.SniperShots;
         campaignGameStats.TwoPointerMade += gameStats.TwoPointerMade;
         campaignGameStats.TwoPointerAttempts += gameStats.TwoPointerAttempts;
-        campaignGameStats.MostConsecutiveShots += gameStats.MostConsecutiveShots;
+        campaignGameStats.MostConsecutiveShots = gameStats.MostConsecutiveShots > campaignGameStats.MostConsecutiveShots ? gameStats.MostConsecutiveShots : campaignGameStats.MostConsecutiveShots;
     }
 
     public float TotalPoints => _totalPoints;
