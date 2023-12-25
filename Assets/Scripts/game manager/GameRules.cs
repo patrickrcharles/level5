@@ -276,6 +276,8 @@ public class GameRules : MonoBehaviour
             if(gameModeId == 26)
             {
                 GameObject.Find("footer").SetActive(false);
+                DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.Player1.gameStats);
+                DBConnector.instance.savePlayerProfileProgression(GameLevelManager.instance.Player1.gameStats.getExperienceGainedFromSession());
                 StartCoroutine(LoadNextCampaignLevel(5));
             }
         }
