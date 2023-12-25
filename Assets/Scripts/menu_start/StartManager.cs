@@ -1245,9 +1245,16 @@ public class StartManager : MonoBehaviour
                 + nextlvl.ToString("F0") + "\n";
 
             // player points avaiable for upgrade
-            if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
+            if (playerSelectedData[playerSelectedIndex].PointsAvailable != 0)
             {
-                playerProgressionUpdatePointsText.text = "+" + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
+                if (playerSelectedData[playerSelectedIndex].PointsAvailable > 0)
+                {
+                    playerProgressionUpdatePointsText.text = "+" + playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
+                }
+                else
+                {
+                    playerProgressionUpdatePointsText.text = playerSelectedData[playerSelectedIndex].PointsAvailable.ToString();
+                }
             }
             else
             {
