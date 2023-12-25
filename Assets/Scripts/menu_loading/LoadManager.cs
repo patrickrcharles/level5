@@ -216,12 +216,14 @@ public class LoadManager : MonoBehaviour
             temp.Luck = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Luck;
             temp.ShootAngle = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).ShootAngle;
             temp.Experience = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Experience;
-            temp.Level = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Level;
-            temp.PointsAvailable = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsAvailable;
-            temp.PointsUsed = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).PointsUsed;
+            temp.Level = temp.Experience / 3000;
+            //temp.PointsUsed = (int)(temp.Accuracy3Pt - 70) + (int)(temp.Accuracy4Pt - 70) + (int)(temp.Accuracy7Pt - 70);
             temp.Range = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Range;
             temp.Release = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).Release;
             temp.IsLocked = dbShootStatsList.Find(x => x.PlayerId == temp.PlayerId).IsLocked;
+
+            temp.PointsUsed = getPointsUsed(temp);
+            temp.PointsAvailable = getPointsAvailable(temp);
 
             shooterList.Add(temp);
 
@@ -236,7 +238,29 @@ public class LoadManager : MonoBehaviour
         return shooterList;
     }
 
-    private List<CharacterProfile> loadCpuSelectDataList()
+    private int getPointsUsed(CharacterProfile temp)
+    {
+
+       int pointsUsed = ((int)temp.Accuracy3Pt + (int)temp.Accuracy4Pt + (int)temp.Accuracy7Pt) - 210;
+       int pointsUsedRange = (temp.Range - 25) / 5;
+       if (pointsUsed >= 90)
+       {
+            //pointsUsed = (temp.Level - (pointsUsedRange - pointsUsed));
+            pointsUsed = pointsUsedRange;
+            //Debug.Log("pointsUsed : " + pointsUsed);
+            //Debug.Log("----------------range should be : " + (((temp.Level - 90) * 5) +(90 * 5)+25));
+        }
+
+       return pointsUsed;
+    }
+    private int getPointsAvailable(CharacterProfile temp)
+    {
+        int pointsAvailable;
+        pointsAvailable = temp.PointsUsed > 0 ? (temp.Level - temp.PointsUsed) : -(temp.Level - temp.PointsUsed);
+
+        return pointsAvailable;
+    }
+        private List<CharacterProfile> loadCpuSelectDataList()
     {
         List<CharacterProfile> shooterList = new List<CharacterProfile>();
 
