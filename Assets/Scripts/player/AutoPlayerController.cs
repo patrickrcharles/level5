@@ -475,7 +475,7 @@ public class AutoPlayerController : MonoBehaviour
             finalDirection = directionOfTravel + directionOfTravel.normalized * distance4;
             targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
         }
-        if (targetPosition.z < GameLevelManager.instance.BasketballRimVector.z + 1)
+        if (targetPosition.z < GameLevelManager.instance.BasketballRimVector.z + 3)
         {
             targetPosition = new Vector3(targetPosition.x, targetPosition.y, GameLevelManager.instance.BasketballRimVector.z);
         }
