@@ -111,4 +111,17 @@ public static class GameOptions
     static public bool customCamera;
     static public bool gameModeRequiresShotMarkers7s;
     static public bool gameModeSevenPointContest;
+
+    // campaign mode stats
+    //static public bool isCampaignMode = true;
+    static public List<LevelSelected> levelsList;
+    //static public bool currentRoundWinnerIsCpu;
+    //static public bool currentRoundLoserIsCpu;
+    //static public int numberOfContinues = 0;
+    //static public int currentRoundWinnerScore;
+    //static public int currentRoundLoserScore;
+    //static public Sprite currentRoundPlayerWinnerImage;
+    //static public Sprite currentRoundPlayerLoserImage;
+    //static public Sprite currentRoundCpuWinnerImage;
+    //static public Sprite currentRoundCpuLoserImage;
 }
