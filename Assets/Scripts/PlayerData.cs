@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -62,7 +63,10 @@ public class PlayerData : MonoBehaviour
 
     [SerializeField]
     GameStats campaignGameStats;
-            
+
+    [SerializeField]
+    List<LevelSelected> levelsList;
+
     public static PlayerData instance;
 
     void Awake()
@@ -212,5 +216,6 @@ public class PlayerData : MonoBehaviour
     public int EnemiesKilledCageMatch { get => _enemiesKilledCageMatch; set => _enemiesKilledCageMatch = value; }
     public float MakeSevenPointersLowTime { get => _makeSevenPointersLowTime; set => _makeSevenPointersLowTime = value; }
     public GameStats CampaignGameStats { get => campaignGameStats; set => campaignGameStats = value; }
+    public List<LevelSelected> LevelsList { get => levelsList; set => levelsList = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }
