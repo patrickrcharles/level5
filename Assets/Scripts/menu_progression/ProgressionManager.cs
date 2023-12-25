@@ -149,7 +149,7 @@ public class ProgressionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AnaylticsManager.MenuProgressionLoaded();
+        //AnaylticsManager.MenuProgressionLoaded();
 
         EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         // default display
