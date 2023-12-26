@@ -1447,7 +1447,7 @@ public class StartManager : MonoBehaviour
         //        GameOptions.levelsList.Add(levelSelectedData[i]);
         //    }
         //}
-        foreach(LevelSelected l in GameOptions.levelsList) { Debug.Log(l.LevelDisplayName); }
+        //foreach(LevelSelected l in GameOptions.levelsList) { Debug.Log(l.LevelDisplayName); }
 
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
