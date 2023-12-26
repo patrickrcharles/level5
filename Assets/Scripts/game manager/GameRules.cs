@@ -362,7 +362,7 @@ public class GameRules : MonoBehaviour
             if (!players[0].isCpu) { displayP1ScoreText.color = Color.green; } else { displayP1ScoreText.color = Color.white; }
             displayP1ScoreText.text = playerType + " " + (players[0].pid + 1)
                 + "\n" + players[0].characterProfile.PlayerDisplayName
-                + "\n" + "lvl : "+ players[0].characterProfile.Level
+                //+ "\n" + "lvl : "+ players[0].characterProfile.Level
                 + "\n" + "points : " + players[0].gameStats.TotalPoints
                 + "\n" + players[0].gameStats.ShotMade + "/" + players[0].gameStats.ShotAttempt
                 + " " + players[0].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
@@ -373,7 +373,7 @@ public class GameRules : MonoBehaviour
             if (!players[1].isCpu) { displayP2ScoreText.color = Color.green; } else { displayP2ScoreText.color = Color.white; }
             displayP2ScoreText.text = playerType + " " + (players[1].pid + 1)
                 + "\n" + players[1].characterProfile.PlayerDisplayName
-                + "\n" + "lvl : " + players[1].characterProfile.Level
+                //+ "\n" + "lvl : " + players[1].characterProfile.Level
                 + "\n" + "points : " + players[1].gameStats.TotalPoints
                 + "\n" + players[1].gameStats.ShotMade + "/" + players[1].gameStats.ShotAttempt
                 + " " + players[1].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
@@ -388,7 +388,7 @@ public class GameRules : MonoBehaviour
             if (!players[2].isCpu) { displayP3ScoreText.color = Color.green; } else { displayP3ScoreText.color = Color.white; }
             displayP3ScoreText.text = playerType + " " + (players[2].pid + 1)
                 + "\n" + players[2].characterProfile.PlayerDisplayName
-                + "\n" + "lvl : " + players[2].characterProfile.Level
+                //+ "\n" + "lvl : " + players[2].characterProfile.Level
                 + "\n" + "points : " + players[2].gameStats.TotalPoints
                 + "\n" + players[2].gameStats.ShotMade + "/" + players[2].gameStats.ShotAttempt
                 + " " + players[2].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
@@ -403,7 +403,7 @@ public class GameRules : MonoBehaviour
             if (!players[3].isCpu) { displayP4ScoreText.color = Color.green; } else { displayP4ScoreText.color = Color.white; }
             displayP4ScoreText.text = playerType + " " + (players[3].pid + 1)
                 + "\n" + players[3].characterProfile.PlayerDisplayName
-                + "\n" + "lvl : " + players[3].characterProfile.Level
+                //+ "\n" + "lvl : " + players[3].characterProfile.Level
                 + "\n" + "points : " + players[3].gameStats.TotalPoints
                 + "\n" + players[3].gameStats.ShotMade + "/" + players[3].gameStats.ShotAttempt
                 + " " + players[3].gameStats.getTotalPointAccuracy().ToString("0.00") + "%";
