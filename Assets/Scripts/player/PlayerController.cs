@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Utility;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     bool isPlayer3;
     [SerializeField]
     bool isPlayer4;
+    [SerializeField] public bool isShrunk;
     // components 
     private Animator anim;
     private AnimatorStateInfo currentStateInfo;
@@ -822,6 +824,33 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => currentState != lightningState);
         KnockedDown = true;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    public IEnumerator ShrinkPlayer()
+    {
+        isShrunk = true;
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        anim.Play("lightning");
+        yield return new WaitUntil(() => currentState == lightningState);
+        yield return new WaitUntil(() => currentState != lightningState);
+        KnockedDown = true;
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        //Vector3 newScale = new Vector3(transform.localScale.x/2,transform.localScale.y/2,transform.localScale.z/2);
+        Vector3 originalScale = transform.localScale;
+        bool originalFacingRight = FacingRight;
+        Vector3 newScale = transform.localScale/2;
+
+        float camFOV = CameraManager.instance.Cameras[0].GetComponent<Camera>().fieldOfView;
+        gameObject.transform.localScale = newScale;
+        CameraManager.instance.Cameras[0].GetComponent<Camera>().fieldOfView = camFOV/2;
+
+        yield return new WaitForSeconds(10);
+
+        gameObject.transform.localScale = originalScale;
+        FacingRight = transform.localScale.x > 0 ? true : false;
+        CameraManager.instance.Cameras[0].GetComponent<Camera>().fieldOfView = 50;
+        isShrunk = false;
     }
 
     public void PlayerAvoidKnockedDown()

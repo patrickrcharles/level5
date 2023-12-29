@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,20 @@ public class DevFunctions : MonoBehaviour
         if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha7))
         {
             InstantiateRob();
+        }
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            Shrinkplayer();
+        }
+    }
+
+    private void Shrinkplayer()
+    {
+        Debug.Log("player struck by lightning");
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (!player.isShrunk)
+        {
+            StartCoroutine(player.ShrinkPlayer());
         }
     }
 
