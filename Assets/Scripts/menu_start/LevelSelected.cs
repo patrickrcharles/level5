@@ -17,6 +17,7 @@ public class LevelSelected : MonoBehaviour
     [SerializeField] private bool isBattleRoyalLevel;
     [SerializeField] private bool isCageMatchLevel;
     [SerializeField] private bool customCamera;
+    [SerializeField] private bool isLocked;
     [SerializeField] private GameObject cpuPlayer;
     private Sprite cpuPlayerWinImage;
     private Sprite cpuPlayerLoseImage;
