@@ -48,6 +48,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private decimal money;
     [SerializeField] private bool isFighter;
     [SerializeField] private bool isShooter;
+    [SerializeField] private bool isLocked;
     [SerializeField] private CpuBaseStats.ShooterType cpuType;
 
     void Start()
