@@ -48,7 +48,6 @@ public class SniperManager : MonoBehaviour
 
     IEnumerator LoadVariables()
     {
-        Debug.Log("load vars");
         yield return new WaitUntil(() => GameLevelManager.instance.players[0] != null);
         yield return new WaitUntil(() => GameLevelManager.instance.players[0].playerController != null);
         playerController = GameLevelManager.instance.players[0].playerController;
