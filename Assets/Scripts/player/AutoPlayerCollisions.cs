@@ -56,13 +56,14 @@ public class AutoPlayerCollisions : MonoBehaviour
         //{
         //    StartCoroutine(GameLevelManager.instance.autoPlayerController1.PlayerDunk.TriggerDunkSequence());
         //}
+
         // player sometimes gets stuck in inair dunk state
-        if (gameObject.CompareTag("autoPlayerHitbox")
-            && other.CompareTag("ground")
-            && autoPlayerController.currentState == autoPlayerController.inAirDunkState)
-        {
-            autoPlayerController.SetPlayerAnim("jump", false);
-        }
+        //if (gameObject.CompareTag("autoPlayerHitbox")
+        //    && other.CompareTag("ground")
+        //    && autoPlayerController.currentState == autoPlayerController.inAirDunkState)
+        //{
+        //    autoPlayerController.SetPlayerAnim("jump", false);
+        //}
 
         // if collsion between hitbox, vehicle, knocked down
         if (gameObject.CompareTag("autoPlayerHitbox")

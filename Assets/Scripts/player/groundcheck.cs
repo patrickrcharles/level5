@@ -15,7 +15,10 @@ public class GroundCheck : MonoBehaviour
         if (GetComponentInParent<PlayerIdentifier>().isCpu)
         {
             autoPlayerController = GetComponentInParent<PlayerIdentifier>().autoPlayer.GetComponent<AutoPlayerController>();
-            basketBallState = GetComponentInParent<PlayerIdentifier>().autoBasketball.GetComponent<BasketBallState>();
+            if (!autoPlayerController.isDefensivePlayer)
+            {
+                basketBallState = GetComponentInParent<PlayerIdentifier>().autoBasketball.GetComponent<BasketBallState>();
+            }
         }
         else
         {

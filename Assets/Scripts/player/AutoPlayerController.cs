@@ -12,6 +12,7 @@ using Touch = UnityEngine.Touch;
 public class AutoPlayerController : MonoBehaviour
 {
     // components 
+    [SerializeField]
     private Animator anim;
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
@@ -25,7 +26,7 @@ public class AutoPlayerController : MonoBehaviour
     CallBallToPlayer callBallToPlayer;
 
     public bool isCPU;
-
+    public bool isDefensivePlayer;
     // walk speed #review can potentially remove
     [SerializeField]
     private float movementSpeed;
@@ -126,7 +127,7 @@ public class AutoPlayerController : MonoBehaviour
     //player sprite object
     GameObject spriteObject;
 
-    [SerializeField]
+    //[SerializeField]
     //private float relativePositionToGoal;
 
     public float walkMovementSpeed;
@@ -139,12 +140,12 @@ public class AutoPlayerController : MonoBehaviour
     void Start()
     {
         getAnimatorStateHashes();
-        basketball = GetComponent<PlayerIdentifier>().autoBasketball.GetComponent<BasketBallAuto>();
-        gameStats = GetComponent<PlayerIdentifier>().autoBasketball.GetComponent<GameStats>();
+        basketball = isDefensivePlayer? null : GetComponent<PlayerIdentifier>().autoBasketball.GetComponent<BasketBallAuto>();
+        gameStats = isDefensivePlayer ? null : GetComponent<PlayerIdentifier>().autoBasketball.GetComponent<GameStats>();
         inAirHasBasketballFrontState = Animator.StringToHash("base.inair.inair_hasBasketball_front");
         inAirHasBasketballSideState = Animator.StringToHash("base.inair.inair_hasBasketball_side");
         callBallToPlayer = GetComponent<CallBallToPlayer>();
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<PlayerIdentifier>().autoPlayer.GetComponentInChildren<Animator>();
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
@@ -194,8 +195,6 @@ public class AutoPlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
 
         basketballRim = GameObject.Find("rim");
-        // put enemy on the ground. some are spawning up pretty high
-        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
     }
 
     // not affected by framerate
@@ -204,19 +203,13 @@ public class AutoPlayerController : MonoBehaviour
         movementHorizontal = movement.x;
         movementVertical = movement.y;
         movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
-        //if (stateWalk
-        //    && currentState != knockedDownState)
-        //{
-        //    StartCoroutine(GoToShootingPosition());
-        //}
-        if (//stateWalk
-            //&& !stateIdle
-            Grounded
+
+        if (Grounded
             && !InAir
             && !(currentState == inAirHasBasketballFrontState || currentState == inAirHasBasketballSideState)
-            //&& distanceToTarget > 0.05f
             && currentState != knockedDownState
             && currentState != disintegratedState
+            && !isDefensivePlayer
             && !arrivedAtTarget)
         {
             if (distanceToTarget > 0.05f)
@@ -238,25 +231,16 @@ public class AutoPlayerController : MonoBehaviour
             AutoPlayerJump();
         }
 
-        //if (positionMarkerCounter >= positionMarkers.Length )
-        //{
-        //    positionMarkerCounter = 0;
-        //    //targetPosition = positionMarkers[positionMarkerCounter].transform.position;
-        //    //targetPosition = postionMarkers[getClosestPositionMarker()].transform.position;
-        //}
-
         // call ball
         if (!hasBasketball
+            && !isDefensivePlayer
             && !InAir
             && basketball.BasketBallState.CanPullBall
             && !basketball.BasketBallState.Locked
-            //&& !BasketBallAuto.instance.BasketBallState.InAir
             && !basketball.BasketBallState.Thrown
-            //&& BasketBallAuto.instance.BasketBallState.Grounded
             && Grounded
             && callBallToPlayer.CallEnabled
             && !callBallToPlayer.Locked
-            //&& !callBallToPlayer.Locked
             && arrivedAtTarget)
         {
             callBallToPlayer.Locked = true;
@@ -274,7 +258,7 @@ public class AutoPlayerController : MonoBehaviour
 
         // ================== auto player facing goal ==========================
         //relativePositionToGoal = GameLevelManager.instance.BasketballRimVector.x + transform.position.x;
-        if (!arrivedAtTarget)
+        if (!arrivedAtTarget && !isDefensivePlayer)
         {
             targetPosition = getClosestPositionMarker();
             //targetPosition = positionMarkers[closestPositionMarkerIndex].transform.position;

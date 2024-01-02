@@ -8,6 +8,7 @@ public class PlayerIdentifier : MonoBehaviour
     public int bid;
     public int bsid;
     public bool isCpu;
+    public bool isDefensivePlayer;
     [SerializeField]
     public GameObject player;
     [SerializeField]

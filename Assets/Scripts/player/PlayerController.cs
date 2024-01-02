@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private bool _facingRight;
     private bool _facingFront;
     private bool _locked;
+    [SerializeField]
     private bool _inAir;
     private bool _grounded;
     private bool _knockedDown;
@@ -125,8 +126,14 @@ public class PlayerController : MonoBehaviour
     public int attackState;
     public int blockState;
     public int inAirDunkState;
-    public int dunkState;
+    public int inAirHasBasketballFrontState;
+    public int inAirHasBasketballSideState;
+    public int inAirShootState;
+    public int inAirShootFrontState;
+    public int jumpState;
+    public int inAirHasBasketball;
     public int disintegratedState;
+    public int dunkState;
     public int lightningState;
 
     PlayerControls controls;
@@ -551,7 +558,6 @@ public class PlayerController : MonoBehaviour
 
     private void getAnimatorStateHashes()
     {
-        // control movement speed based on state
         idleState = Animator.StringToHash("base.idle");
         walkState = Animator.StringToHash("base.movement.walk");
         run = Animator.StringToHash("base.movement.run");
@@ -563,8 +569,14 @@ public class PlayerController : MonoBehaviour
         attackState = Animator.StringToHash("base.attack.attack");
         blockState = Animator.StringToHash("base.attack.block");
         inAirDunkState = Animator.StringToHash("base.inair.inair_dunk");
-        dunkState = Animator.StringToHash("base.inair.dunk");
+        inAirHasBasketballFrontState = Animator.StringToHash("inair.inair_hasBasketball_front");
+        inAirHasBasketballSideState = Animator.StringToHash("inair.inair_hasBasketball_side");
+        inAirShootState = Animator.StringToHash("base.inair.basketball_shoot");
+        inAirShootFrontState = Animator.StringToHash("base.inair.basketball_shoot_front");
+        jumpState = Animator.StringToHash("base.inair.jump");
+        inAirHasBasketball = Animator.StringToHash("base.inair.inair_hasBasketball");
         disintegratedState = Animator.StringToHash("base.disintegrated");
+        dunkState = dunkState = Animator.StringToHash("base.inair.dunk");
         lightningState = Animator.StringToHash("base.lightning");
     }
 

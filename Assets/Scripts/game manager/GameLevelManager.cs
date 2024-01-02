@@ -198,9 +198,13 @@ public class GameLevelManager : MonoBehaviour
         if (GameObject.FindWithTag("autoPlayer") != null)
         {
             _autoPlayer = GameObject.FindWithTag("autoPlayer");
-            _autoPlayerController = _autoPlayer.GetComponent<AutoPlayerController>();
+
+            _autoPlayerController = _autoPlayer.GetComponent<PlayerIdentifier>().isDefensivePlayer ? null : _autoPlayer.GetComponent<AutoPlayerController>();
             _playerHealth = _autoPlayer.GetComponentInChildren<PlayerHealth>();
-            _autoPlayerController.isCPU = true;
+            if (!_autoPlayer.GetComponent<PlayerIdentifier>().isDefensivePlayer)
+            {
+                _autoPlayerController.isCPU = true;
+            }
         }
 
         // if shot clock is present, set shot clock camera to Camera.Main because it uses worldspace
@@ -416,6 +420,16 @@ public class GameLevelManager : MonoBehaviour
 
         players.Add(_player1);
         pid++;
+        if (GameObject.FindWithTag("autoPlayer"))
+        {
+            GameObject go2 = GameObject.FindWithTag("autoPlayer");
+            _player2 = go2.GetComponent<PlayerIdentifier>();
+            _player2.setIds(pid, pid, pid, true);
+            _player2.autoPlayer = go2;
+            _player2.setAutoPlayer(_player2.autoPlayer);
+            players.Add(_player2);
+            pid++;
+        }
 
         if (numPlayers > 1  && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
