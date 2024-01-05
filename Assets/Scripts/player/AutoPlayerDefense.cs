@@ -8,18 +8,20 @@ using UnityEngine.PlayerLoop;
 
 public class AutoPlayerDefense : MonoBehaviour
 {
-    [SerializeField] PlayerIdentifier playerIdentifier;
-    //[SerializeField] PlayerIdentifier cpuPlayerIdentifier;
+    public PlayerIdentifier playerIdentifier;
+    private CharacterProfile cpuCharacterProfile;
+
     [SerializeField] Vector3 playerPosition;
     [SerializeField] float playerRelativePositioning;
     [SerializeField] private Vector3 targetPosition;
     [SerializeField] private Vector3 movement;
-    [SerializeField]
+    [SerializeField] private float playerGuardingDistance;
     private Animator anim;
     private Rigidbody rigidBody;
-    private float movementSpeed;
-    [SerializeField]
+    public float movementSpeed;
     GameObject dropShadow;
+
+    public int blockedShots;
 
     private AnimatorStateInfo currentStateInfo;
 
@@ -46,6 +48,8 @@ public class AutoPlayerDefense : MonoBehaviour
     private float movementVertical;
     private bool FacingRight;
     public float distanceToTarget;
+    public float playerDistanceToGoal;
+
     public bool arrivedAtTarget;
     public bool jumpTrigger;
     public bool grounded;
@@ -55,17 +59,18 @@ public class AutoPlayerDefense : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerIdentifier = GameLevelManager.instance.players[0];   
+        playerIdentifier = GameLevelManager.instance.players[0];
+        cpuCharacterProfile = gameObject.GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
-        movementSpeed = gameObject.GetComponent<CharacterProfile>().RunSpeed;
+        movementSpeed = cpuCharacterProfile.RunSpeed;
         anim = gameObject.GetComponentInChildren<Animator>();
         FacingRight = true;
         dropShadow = transform.Find("drop_shadow").gameObject;
     }
-    void FixedUpdate()
-    {
+    //void FixedUpdate()
+    //{
   
-    }
+    //}
     // Update is called once per frame
     void Update()
     {
@@ -75,6 +80,8 @@ public class AutoPlayerDefense : MonoBehaviour
         // drop shadow lock to bball transform on the ground
         dropShadow.transform.position = new Vector3(transform.root.position.x, Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f, transform.root.position.z);
         distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+        playerDistanceToGoal = Vector3.Distance(playerPosition, GameLevelManager.instance.BasketballRimVector);
+
         if(distanceToTarget < 0.05)
         {
             arrivedAtTarget = true;
@@ -114,7 +121,6 @@ public class AutoPlayerDefense : MonoBehaviour
         if (jumpTrigger)
         {
             jumpTrigger = false;
-            //StartCoroutine( AutoPlayerJump(playerIdentifier));
             StartCoroutine( AutoPlayerJump(playerIdentifier));
         }
         if(inAir) { SetPlayerAnim("jump",true); }
@@ -122,11 +128,18 @@ public class AutoPlayerDefense : MonoBehaviour
 
         playerRelativePositioning = playerIdentifier.player.transform.position.x - transform.position.x;
         playerPosition = playerIdentifier.player.transform.position;
-        if (grounded)
+
+        if (inAir)
         {
-            moveToPosition(moveCpuPlayer());
+            movementSpeed = cpuCharacterProfile.InAirSpeed;
         }
-        //IsWalking(movementHorizontal, movementVertical);
+        else
+        {
+            movementSpeed = cpuCharacterProfile.RunSpeed;
+        }
+        //if (!arrivedAtTarget) {
+        moveToPosition(moveCpuPlayer());
+        //}
     }
 
 
@@ -137,11 +150,8 @@ public class AutoPlayerDefense : MonoBehaviour
 
     Vector3 moveCpuPlayer()
     {
-        //Vector3 targetPosition = new();
-        Vector3 directionOfTravel = (new Vector3(playerPosition.x, 0, playerPosition.z + 0.25f) - GameLevelManager.instance.BasketballRimVector).normalized;
-        //Debug.Log("direction : " + directionOfTravel);
-        targetPosition = LerpByDistance(new Vector3(playerPosition.x,0,playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z),0.25f);
-        //Debug.Log("targetPosition : " + targetPosition);
+        Vector3 directionOfTravel = (new Vector3(playerPosition.x, 0, playerPosition.z + playerGuardingDistance) - GameLevelManager.instance.BasketballRimVector).normalized;
+        targetPosition = LerpByDistance(new Vector3(playerPosition.x,0,playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
         
         return targetPosition;
     }
@@ -156,10 +166,9 @@ public class AutoPlayerDefense : MonoBehaviour
     public void moveToPosition(Vector3 target)
     {
         Vector3 targetPosition = new();
-        //Debug.Log("moveToPosition");
         targetPosition = (target - transform.position);
         
-        movement = targetPosition * (movementSpeed * Time.fixedDeltaTime * 1.25f);
+        movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
         rigidBody.MovePosition(transform.position + movement);
     }
 
@@ -185,23 +194,23 @@ public class AutoPlayerDefense : MonoBehaviour
         disintegratedState = Animator.StringToHash("base.disintegrated");
     }
 
-    private bool IsPlayerInAirState(PlayerIdentifier player)
-    {
-        if (player.playerController.currentState == player.playerController.inAirDunkState
-            || player.playerController.currentState == player.playerController.inAirHasBasketball
-            || player.playerController.currentState == player.playerController.inAirHasBasketballFrontState
-            || player.playerController.currentState == player.playerController.inAirHasBasketballSideState
-            || player.playerController.currentState == player.playerController.inAirShootFrontState
-            || player.playerController.currentState == player.playerController.inAirShootState)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    //private bool IsPlayerInAirState(PlayerIdentifier player)
+    //{
+    //    if (player.playerController.currentState == player.playerController.inAirDunkState
+    //        || player.playerController.currentState == player.playerController.inAirHasBasketball
+    //        || player.playerController.currentState == player.playerController.inAirHasBasketballFrontState
+    //        || player.playerController.currentState == player.playerController.inAirHasBasketballSideState
+    //        || player.playerController.currentState == player.playerController.inAirShootFrontState
+    //        || player.playerController.currentState == player.playerController.inAirShootState)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
 
-    }
+    //}
 
     //void IsWalking(float horizontal, float vertical)
     //{
@@ -248,20 +257,9 @@ public class AutoPlayerDefense : MonoBehaviour
 
      IEnumerator AutoPlayerJump(PlayerIdentifier player)
     {
-        Debug.Log("AutoPlayerJump");
-        rigidBody.velocity = Vector3.up * 5f; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        //Debug.Log("AutoPlayerJump");
+        rigidBody.velocity = Vector3.up * cpuCharacterProfile.JumpForce; 
         yield return new WaitUntil(() => player.playerController.Grounded);
         isLocked = false;
-        //rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
-        
-        //jumpStartTime = Time.time;
-        //Shotmeter.MeterStarted = true;
-        //Shotmeter.MeterStartTime = Time.time;
-        //// if not dunking, start shot meter
-        //if (currentState != inAirDunkState)
-        //{
-        //    Shotmeter.MeterStarted = true;
-        //    Shotmeter.MeterStartTime = Time.time;
-        //}
     }
 }

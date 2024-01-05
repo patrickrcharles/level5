@@ -7,7 +7,8 @@ public class CharacterProfile : MonoBehaviour
 {
     [SerializeField] private int playerId;
     [SerializeField] private int userid;
-    [SerializeField] public bool isCpu;
+    [SerializeField] public bool isCpu;  
+    [SerializeField] private bool isDefensiveCpuPlayer;
     [SerializeField] private string playerDisplayName;
     [SerializeField] private string playerObjectName;
     [SerializeField] private Sprite playerPortrait;
@@ -24,6 +25,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private float accuracy3pt;
     [SerializeField] private float accuracy4pt;
     [SerializeField] private float accuracy7pt;
+    [SerializeField] private float fadeaway;
 
     [SerializeField] private string shooterProfilePrefabName;
 
@@ -32,6 +34,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private float runSpeedHasBall;
 
     [SerializeField] private float runSpeed;
+    [SerializeField] private float inAirSpeed;
 
     [SerializeField] private int range;
     [SerializeField] private int release;
@@ -50,6 +53,7 @@ public class CharacterProfile : MonoBehaviour
     [SerializeField] private bool isShooter;
     [SerializeField] private bool isLocked;
     [SerializeField] private CpuBaseStats.ShooterType cpuType;
+  
 
     void Start()
     {
@@ -58,6 +62,8 @@ public class CharacterProfile : MonoBehaviour
         //    //GameOptions.gameModeHasBeenSelected = false;
         //    intializeShooterStatsFromProfile();
         //}
+        fadeaway = level;
+        InAirSpeed = (float)fadeaway / 100;
         if (isCpu)
         {
             intializeCpuShooterStats();
@@ -89,7 +95,8 @@ public class CharacterProfile : MonoBehaviour
         Debug.Log("intializeShooterStatsFromProfile : " + playerDisplayName);
         CharacterProfile temp = new();
         temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
-
+        fadeaway = level;
+        InAirSpeed = fadeaway / 10;
         playerObjectName = temp.playerObjectName != null ? temp.playerObjectName : "";
         playerDisplayName = temp.playerDisplayName;
         playerId = temp.playerId;
@@ -179,6 +186,10 @@ public class CharacterProfile : MonoBehaviour
         {
             Luck = 0;
             clutch = 0;
+        }
+        if (isDefensiveCpuPlayer)
+        {
+            inAirSpeed = ((float)level / 100 )* 3;
         }
     }
 
@@ -370,4 +381,5 @@ public class CharacterProfile : MonoBehaviour
     public bool IsShooter { get => isShooter; set => isShooter = value; }
     public int Clutch { get => clutch; set => clutch = value; }
     public int Userid { get => userid; set => userid = value; }
+    public float InAirSpeed { get => inAirSpeed; set => inAirSpeed = value; }
 }
