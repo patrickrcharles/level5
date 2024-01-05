@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private PlayerDunk playerDunk;
 
     // walk speed #review can potentially remove
+    [SerializeField]
     private float movementSpeed;
     [SerializeField]
     private float inAirSpeed; // leave serialized
@@ -188,6 +189,7 @@ public class PlayerController : MonoBehaviour
         if (_takeDamageTime == 0) { _takeDamageTime = 0.5f; }
         if (blockSpeed == 0) { blockSpeed = 0.2f; }
         //if (attackSpeed == 0) { attackSpeed = 0f; }
+        //inAirSpeed = 0;
 
         screenXRange = Screen.width / 10;
         screenYRange = Screen.width / 10;
@@ -398,7 +400,7 @@ public class PlayerController : MonoBehaviour
         // if run state
         if (currentState == bWalk && hasBasketball) //|| (runningToggle || running) )
         {
-            movementSpeed = characterProfile.RunSpeedHasBall; ;
+            movementSpeed = characterProfile.RunSpeedHasBall;
         }
         if (currentState == attackState || currentState == blockState)
         {
@@ -410,7 +412,7 @@ public class PlayerController : MonoBehaviour
             CheckIsPlayerFacingGoal();
             if (currentState != inAirDunkState)
             {
-                movementSpeed = inAirSpeed;
+                movementSpeed = characterProfile.InAirSpeed;
             }
         }
         if (Grounded
