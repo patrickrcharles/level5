@@ -230,9 +230,6 @@ public class StartManager : MonoBehaviour
         friendSelectedIndex = GameOptions.friendSelectedIndex;
         levelSelectedIndex = GameOptions.levelSelectedIndex;
         modeSelectedIndex = GameOptions.modeSelectedIndex;
-        //cpu1SelectedIndex = GameOptions.cpu1SelectedIndex;
-        //GameOptions.cpu2SelectedIndex = GameOptions.GameOptions.cpu2SelectedIndex;
-        //GameOptions.cpu2SelectedIndex = GameOptions.GameOptions.cpu2SelectedIndex;
         trafficEnabled = GameOptions.trafficEnabled;
         hardcoreEnabled = GameOptions.hardcoreModeEnabled;
         difficultySelected = 1;
@@ -243,10 +240,9 @@ public class StartManager : MonoBehaviour
         StartCoroutine(UpdateLevelAndExperienceFromDatabase());
 
         // diable nav buttons if mobile
-#if UNITY_ANDROID && !UNITY_EDITOR
-            disableButtonsNotUsedForTouchInput();
-#endif
-        //StartCoroutine(InitializeDisplay());
+//#if UNITY_ANDROID && !UNITY_EDITOR
+//            disableButtonsNotUsedForTouchInput();
+//#endif
     }
 
     // Start is called before the first frame update
@@ -791,9 +787,10 @@ public class StartManager : MonoBehaviour
     {
         yield return new WaitUntil(() => StartMenuUiObjects.instance != null);
 
-        // buttons to disable for touch input
-        levelSelectButton = StartMenuUiObjects.instance.column1_subgroup_column2_level_selected_name_button;
-        hardcoreSelectButton = StartMenuUiObjects.instance.column2_options_tab_traffic_select_button;
+        //buttons to disable for touch input
+
+       levelSelectButton = StartMenuUiObjects.instance.column1_subgroup_column2_level_selected_name_button;
+       hardcoreSelectButton = StartMenuUiObjects.instance.column2_options_tab_traffic_select_button;
         enemySelectButton = StartMenuUiObjects.instance.column2_options_tab_enemy_select_button;
         sniperSelectButton = StartMenuUiObjects.instance.column2_options_tab_sniper_select_button;
         difficultySelectButton = StartMenuUiObjects.instance.column2_options_tab_difficulty_select_button;
@@ -1177,6 +1174,14 @@ public class StartManager : MonoBehaviour
             StartMenuUiObjects.instance.column2_players_tab.SetActive(true);
             StartMenuUiObjects.instance.column3.SetActive(true);
             StartMenuUiObjects.instance.column3_player_stats.SetActive(true);
+            if (playerSelectedData[playerSelectedIndex].IsLocked)
+            {
+                StartMenuUiObjects.instance.column2_players_tab_lock.SetActive(true);
+            }
+            else
+            {
+                StartMenuUiObjects.instance.column2_players_tab_lock.SetActive(false);
+            }
         }
 
         if (activeMenu.ToLower().Equals("cpu_tab"))
@@ -1332,7 +1337,7 @@ public class StartManager : MonoBehaviour
         GameOptions.levelRequiresTimeOfDay = levelSelectedData[levelSelectedIndex].LevelRequiresTimeOfDay;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
-        if (GameOptions.gameModeSelectedId == 26)
+        if (GameOptions.gameModeSelectedId == 26 || GameOptions.gameModeSelectedId == 27)
         {
             GameOptions.numPlayers = 2;
         }
@@ -1350,9 +1355,9 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeSevenPointContest = modeSelectedData[modeSelectedIndex].GameModeSevenPointContest;
         GameOptions.gameModeAllPointContest = modeSelectedData[modeSelectedIndex].GameModeAllPointContest;
 
-        Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
-        Debug.Log(modeSelectedData[modeSelectedIndex].GameModeSevenPointContest);
-        Debug.Log("timer : "+ modeSelectedData[modeSelectedIndex].CustomTimer);
+        //Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
+        //Debug.Log(modeSelectedData[modeSelectedIndex].GameModeSevenPointContest);
+        //Debug.Log("timer : "+ modeSelectedData[modeSelectedIndex].CustomTimer);
 
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
