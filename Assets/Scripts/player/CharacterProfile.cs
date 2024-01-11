@@ -62,7 +62,7 @@ public class CharacterProfile : MonoBehaviour
         //    //GameOptions.gameModeHasBeenSelected = false;
         //    intializeShooterStatsFromProfile();
         //}
-        fadeaway = level;
+        fadeaway =  level < 50 ? 50 : level;
         InAirSpeed = (float)fadeaway / 100;
         if (isCpu)
         {

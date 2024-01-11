@@ -24,4 +24,12 @@ public static class CpuBaseStats
         Four,
         Seven,
     }
+
+    public enum DefensiveType
+    {
+        easy,
+        normal,
+        hard,
+        nightmare
+    }
 }

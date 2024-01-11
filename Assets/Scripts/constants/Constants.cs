@@ -10,6 +10,7 @@ public static class Constants
 
     // prefab paths. add character object name to load
     public const string PREFAB_PATH_CHARACTER_human = "Prefabs/characters/players/player_";
+    public const string PREFAB_PATH_CHARACTER_DEFENSE_cpu = "Prefabs/characters/cpu_players_defense/cpu_player_defense_";
     public const string PREFAB_PATH_CHARACTER_cpu = "Prefabs/characters/cpu_players/cpu_player_";
     public const string PREFAB_PATH_BASKETBALL_human = "Prefabs/basketball/basketball";
     public const string PREFAB_PATH_BASKETBALL_cpu = "Prefabs/basketball/basketballAuto";

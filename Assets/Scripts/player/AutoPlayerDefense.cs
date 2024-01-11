@@ -1,6 +1,7 @@
+using Assets.Scripts.Utility;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
+using System.Net.Sockets;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -9,17 +10,29 @@ using UnityEngine.PlayerLoop;
 public class AutoPlayerDefense : MonoBehaviour
 {
     public PlayerIdentifier playerIdentifier;
-    private CharacterProfile cpuCharacterProfile;
+    //private CharacterProfile cpuCharacterProfile;
 
     [SerializeField] Vector3 playerPosition;
     [SerializeField] float playerRelativePositioning;
     [SerializeField] private Vector3 targetPosition;
     [SerializeField] private Vector3 movement;
-    [SerializeField] private float playerGuardingDistance;
+    [SerializeField] private float playerGuardingDistance; //hustle
+    [SerializeField] private float speed; // speed
+    [SerializeField] private float inAirSpeed; //acceleration
+    [SerializeField] private float jumpForce; //jump
+
+    [SerializeField] private float jumpDelay; //awareness
+    [SerializeField] private float delayPercent; //awareness
+    [SerializeField] private float crossoverPercent; //agility
+    [SerializeField] private float stamina; //stamina
+    [SerializeField] private float knockDownTime = 1f; //hustle
+
     private Animator anim;
     private Rigidbody rigidBody;
     public float movementSpeed;
     GameObject dropShadow;
+
+    public CpuBaseStats.DefensiveType defensiveType;
 
     public int blockedShots;
 
@@ -55,22 +68,27 @@ public class AutoPlayerDefense : MonoBehaviour
     public bool grounded;
     public bool inAir;
     public bool isLocked;
+    public bool playerCrossover;
 
     // Start is called before the first frame update
     void Start()
     {
         playerIdentifier = GameLevelManager.instance.players[0];
-        cpuCharacterProfile = gameObject.GetComponent<CharacterProfile>();
+        //cpuCharacterProfile = gameObject.GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
-        movementSpeed = cpuCharacterProfile.RunSpeed;
+        movementSpeed = speed;
         anim = gameObject.GetComponentInChildren<Animator>();
         FacingRight = true;
         dropShadow = transform.Find("drop_shadow").gameObject;
+        getAnimatorStateHashes();
     }
-    //void FixedUpdate()
-    //{
-  
-    //}
+    void FixedUpdate()
+    {
+        if (!playerCrossover)
+        {
+            moveToPosition(moveCpuPlayer());
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -131,14 +149,15 @@ public class AutoPlayerDefense : MonoBehaviour
 
         if (inAir)
         {
-            movementSpeed = cpuCharacterProfile.InAirSpeed;
+            movementSpeed = inAirSpeed;
         }
         else
         {
-            movementSpeed = cpuCharacterProfile.RunSpeed;
+            movementSpeed = speed;
         }
-        //if (!arrivedAtTarget) {
-        moveToPosition(moveCpuPlayer());
+        //if (!playerCrossover)
+        //{
+        //    moveToPosition(moveCpuPlayer());
         //}
     }
 
@@ -150,10 +169,23 @@ public class AutoPlayerDefense : MonoBehaviour
 
     Vector3 moveCpuPlayer()
     {
-        Vector3 directionOfTravel = (new Vector3(playerPosition.x, 0, playerPosition.z + playerGuardingDistance) - GameLevelManager.instance.BasketballRimVector).normalized;
-        targetPosition = LerpByDistance(new Vector3(playerPosition.x,0,playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
-        
+        Vector3 directionOfTravel = (new Vector3(playerPosition.x, 0, playerPosition.z + playerGuardingDistance) - new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z).normalized);
+        //if (playerIdentifier.playerController.InAir)
+        //{
+        //    //targetPosition = playerIdentifier.basketBallController.BasketBallPosition.transform.position;
+        //    targetPosition = playerIdentifier.basketball.transform.position;
+        //}
+        //else
+        //{
+        //    targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
+        //}
+        targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
         return targetPosition;
+    }
+    IEnumerator AddDelayToMove(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        playerCrossover = false;
     }
 
     public Vector3 LerpByDistance(Vector3 A, Vector3 B, float x)
@@ -168,8 +200,9 @@ public class AutoPlayerDefense : MonoBehaviour
         Vector3 targetPosition = new();
         targetPosition = (target - transform.position);
         
-        movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
-        rigidBody.MovePosition(transform.position + movement);
+        movement = targetPosition * (movementSpeed * Time.deltaTime);
+        transform.Translate(movement);
+        //rigidBody.MovePosition(transform.position + movement);
     }
 
     private void getAnimatorStateHashes()
@@ -194,52 +227,6 @@ public class AutoPlayerDefense : MonoBehaviour
         disintegratedState = Animator.StringToHash("base.disintegrated");
     }
 
-    //private bool IsPlayerInAirState(PlayerIdentifier player)
-    //{
-    //    if (player.playerController.currentState == player.playerController.inAirDunkState
-    //        || player.playerController.currentState == player.playerController.inAirHasBasketball
-    //        || player.playerController.currentState == player.playerController.inAirHasBasketballFrontState
-    //        || player.playerController.currentState == player.playerController.inAirHasBasketballSideState
-    //        || player.playerController.currentState == player.playerController.inAirShootFrontState
-    //        || player.playerController.currentState == player.playerController.inAirShootState)
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-
-    //}
-
-    //void IsWalking(float horizontal, float vertical)
-    //{
-    //    Debug.Log(horizontal + ", " + vertical);
-    //    // if moving
-    //    //if (horizontal > 0f || horizontal < 0f || vertical > 0f || vertical < 0f)
-    //    if (horizontal != 0 || vertical != 0f)
-    //    {
-    //        anim.SetBool("walking", true);
-    //    }
-    //    // not moving
-    //    else
-    //    {
-    //        anim.SetBool("walking", false);
-    //        anim.SetBool("moonwalking", false);
-    //    }
-
-    //    // player moving right, not facing right
-    //    if (horizontal > 0 && !FacingRight)//&& canMove)
-    //    {
-    //        Flip();
-    //    }
-    //    // player moving left, and facing right
-    //    if (horizontal < 0f && FacingRight)//&& canMove)
-    //    {
-    //        Flip();
-    //    }
-    //}
-
     void Flip()
     {
         FacingRight = !FacingRight;
@@ -247,6 +234,12 @@ public class AutoPlayerDefense : MonoBehaviour
         thisScale.x *= -1;
         transform.localScale = thisScale;
 
+        float randomNum = UtilityFunctions.GetRandomFloat(0, 100);
+        if (randomNum < crossoverPercent && !playerCrossover && !inAir)
+        {
+            playerCrossover = true;
+            StartCoroutine(PlayerKnockedDown());
+        }
         //if (GameOptions.enemiesEnabled || GameOptions.EnemiesOnlyEnabled || GameOptions.sniperEnabled)
         //{
         //    Vector3 damageScale = damageDisplayObject.transform.localScale;
@@ -255,11 +248,50 @@ public class AutoPlayerDefense : MonoBehaviour
         //}
     }
 
-     IEnumerator AutoPlayerJump(PlayerIdentifier player)
+
+    public IEnumerator PlayerKnockedDown()
+    {
+        //Debug.Log("PlayerKnockedDown");
+        rigidBody.constraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        anim.SetBool("knockedDown", true);
+        anim.Play("knockedDown");
+        //yield return new WaitUntil(() => currentState == knockedDownState); // anim started
+
+        float startTime = Time.time;
+        float endTime = startTime + knockDownTime;
+        yield return new WaitUntil(() => Time.time > endTime);
+        anim.SetBool("knockedDown", false);
+        yield return new WaitUntil(() => currentState != knockedDownState);
+
+        rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        playerCrossover = false;
+    }
+    IEnumerator AutoPlayerJump(PlayerIdentifier player)
     {
         //Debug.Log("AutoPlayerJump");
-        rigidBody.velocity = Vector3.up * cpuCharacterProfile.JumpForce; 
-        yield return new WaitUntil(() => player.playerController.Grounded);
-        isLocked = false;
+        float randomNum = UtilityFunctions.GetRandomFloat(0, 100);
+        if (randomNum < delayPercent && !playerCrossover)
+        {
+            playerCrossover = true;
+        }
+        if (playerCrossover)
+        {
+            Debug.Log("jump delay");
+            yield return new WaitForSeconds(jumpDelay);
+            yield return new WaitUntil(() => currentState != knockedDownState);
+            playerCrossover = false;
+
+            rigidBody.velocity = Vector3.up * jumpForce;
+            yield return new WaitUntil(() => player.playerController.Grounded);
+            isLocked = false;
+        }
+        else
+        {
+            rigidBody.velocity = Vector3.up * jumpForce;
+            yield return new WaitUntil(() => player.playerController.Grounded);
+            isLocked = false;
+        }
     }
 }
