@@ -36,6 +36,7 @@ public class StartMenuUiObjects : MonoBehaviour
 
     [SerializeField] public GameObject column2;
     [SerializeField] public GameObject column2_players_tab;
+    [SerializeField] public GameObject column2_players_tab_lock;
     [SerializeField] public GameObject column2_cpu_tab;
     [SerializeField] public GameObject column2_friend_tab;
     [SerializeField] public GameObject column2_level_tab;
