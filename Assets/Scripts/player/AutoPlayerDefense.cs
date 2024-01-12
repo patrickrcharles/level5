@@ -81,6 +81,11 @@ public class AutoPlayerDefense : MonoBehaviour
         FacingRight = true;
         dropShadow = transform.Find("drop_shadow").gameObject;
         getAnimatorStateHashes();
+#if UNITY_ANDROID || UNITY_IOS
+        inAirSpeed = 0;
+        jumpForce *= 0.6f;
+        speed *= 0.5f;
+#endif
     }
     void FixedUpdate()
     {
