@@ -75,7 +75,7 @@ public class BasketBallState : MonoBehaviour
     {
         if (GameOptions.gameModeRequiresBasketball)
         {
-            PlayerDistanceFromRim = Vector3.Distance(player.transform.position, _basketBallTarget.transform.position);
+            PlayerDistanceFromRim = Vector3.Distance(new Vector3(player.transform.position.x,0, player.transform.position.z), new Vector3(_basketBallTarget.transform.position.x,0, _basketBallTarget.transform.position.z));
             //PlayerDistanceFromRim = Mathf.Abs( GameLevelManager.instance.Player.transform.position.z - _basketBallTarget.transform.position.z);
 
             // is player on  marker  +  is marker required for game mode

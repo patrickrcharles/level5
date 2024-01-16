@@ -236,7 +236,7 @@ public class BasketBallShotMarker : MonoBehaviour
         // get distance from rim
         //basketBallTarget = basketBallState.BasketBallTarget;
         basketBallTarget = GameObject.Find("basketBall_target");
-        distanceFromRim = Vector3.Distance(transform.position, basketBallTarget.transform.position);
+        distanceFromRim = Vector3.Distance(transform.position,new Vector3( basketBallTarget.transform.position.x,0, basketBallTarget.transform.position.z));
 
         if (distanceFromRim > Constants.DISTANCE_3point)
         {
