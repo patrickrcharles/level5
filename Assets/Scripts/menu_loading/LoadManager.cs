@@ -256,7 +256,7 @@ public class LoadManager : MonoBehaviour
     private int getPointsAvailable(CharacterProfile temp)
     {
         int pointsAvailable;
-        pointsAvailable = temp.PointsUsed > 0 ? (temp.Level - temp.PointsUsed) : -(temp.Level - temp.PointsUsed);
+        pointsAvailable = temp.PointsUsed >= 0 ? (temp.Level - temp.PointsUsed) : -(temp.Level - temp.PointsUsed);
 
         return pointsAvailable;
     }
