@@ -220,7 +220,10 @@ public class GameLevelManager : MonoBehaviour
             GameObject.Find("basketball_goal").SetActive(false);
         }
         _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
-        if (GameObject.Find("rim") != null) { _basketballRimVector = GameObject.Find("rim").transform.position; }
+        if (GameObject.Find("rim") != null) { 
+            Vector3 rim=  GameObject.Find("rim").transform.position;
+            _basketballRimVector = new Vector3(rim.x, 0, rim.z);
+        }
 
     }
 
@@ -305,7 +308,7 @@ public class GameLevelManager : MonoBehaviour
         {
             string cheerleaderPrefabPath = "Prefabs/characters/cheerleaders/cheerleader_" + GameOptions.cheerleaderObjectName;
             _cheerleaderClone = Resources.Load(cheerleaderPrefabPath) as GameObject;
-            Debug.Log(terrainHeight);
+            //Debug.Log(terrainHeight);
             _cheerleaderSpawnLocation.transform.position = new Vector3(_cheerleaderSpawnLocation.transform.position.x, terrainHeight, _cheerleaderSpawnLocation.transform.position.z);
             if (_cheerleaderClone != null)
             {
@@ -330,9 +333,13 @@ public class GameLevelManager : MonoBehaviour
         players[0].setBasketball(go1);
         _basketball1.setPlayer(players[0].player);
 
+        
+        if(GameOptions.gameModeSelectedId == 27)
+        {
+            numPlayers = 1;
+        }
         // player needs basketball reference
         // cpu player needs auto bball ref.
-
         if (numPlayers > 1 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player2IsCpu)
@@ -437,6 +444,11 @@ public class GameLevelManager : MonoBehaviour
             if (GameOptions.gameModeSelectedId == 26)
             {
                 _playerClone2 = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer;
+            }
+            else if(GameOptions.gameModeSelectedId == 27)
+            {
+                playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_DEFENSE_cpu + "oldreal";
+                _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
             }
             else
             {
