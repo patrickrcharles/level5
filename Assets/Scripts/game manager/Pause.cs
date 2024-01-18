@@ -103,13 +103,6 @@ public class Pause : MonoBehaviour
 
     private void Start()
     {
-        /*pause game
-         *disable fade + footer
-         *display press start message
-         *wait for input 
-         *(on imput) disable message + set time scale = 1
-         */
-
         // if game active, disable pause
         if (Time.timeScale == 1f)
         {
@@ -134,27 +127,16 @@ public class Pause : MonoBehaviour
         {
             paused = TogglePause();
         }
-        if(startOnPause && GameLevelManager.instance.Controls.Player.submit.triggered
-            && !GameOptions.battleRoyalEnabled 
-            && !GameOptions.cageMatchEnabled)
+        if(startOnPause && GameLevelManager.instance.Controls.Player.submit.triggered)
+            //&& !GameOptions.battleRoyalEnabled 
+            //&& !GameOptions.cageMatchEnabled)
         {
-            startOnPause = false;
-            GameObject.Find("paused_start").SetActive(false);
-            paused = TogglePause();
+            StartGame();
         }
 
         // ===================== pause checks =======================
-        // truth table, should be paused but isn't
-        /* 0 0  time 0, !pause
-         * 0 1  time 0, pause  - correct
-         * 1 0  time 1, !pause - correct
-         * 1 1  time 1, pause
-         *
-         * check for  0 0, 1 1
-         */
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
-            //Debug.Log("TogglePause");
             TogglePause();
         }
         //==========================================================
@@ -168,7 +150,6 @@ public class Pause : MonoBehaviour
         // if paused, show pause menu
         if (paused)
         {
-            //EventSystem.current.firstSelectedGameObject = loadSceneButton.gameObject;
 
             // check for some button not selected
             //*this is a hack but it works patch for v3.0.1 : clicking mouse causing game to crash
@@ -179,7 +160,6 @@ public class Pause : MonoBehaviour
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject; // + "_description";
             currentHighlightedButton.GetComponent<Button>().OnSelect(null);
             currentHighlightedButton.GetComponent<Button>().Select();
-            //Debug.Log("currentHighlightedButton : " + currentHighlightedButton);
 
             // ================== pause menu options ==============================================================
 
@@ -211,7 +191,15 @@ public class Pause : MonoBehaviour
         }
     }
 
-    private void disableMobileOnlyPauseOptions()
+    public void StartGame()
+    {
+        startOnPause = false;
+        GameObject go = GameObject.Find("paused_start");
+        go.SetActive(false);
+        paused = TogglePause();
+    }
+
+    public void disableMobileOnlyPauseOptions()
     {
         // mobile buttons
         maxStatsObject = GameObject.Find(toggleMaxStatsName).gameObject;
@@ -329,6 +317,7 @@ public class Pause : MonoBehaviour
 
     public bool TogglePause()
     {
+        Debug.Log("toggle pause");
         if (Time.timeScale == 0f)
         {
             //gameManager.instance.backgroundFade.SetActive(false);
@@ -388,6 +377,8 @@ public class Pause : MonoBehaviour
     public static string ToggleMaxStatsName => toggleMaxStatsName;
 
     public static string ToggleFpsName => toggleFpsName;
+
+    public bool StartOnPause { get => startOnPause; set => startOnPause = value; }
 
     private string getCurrentSceneName()
     {
