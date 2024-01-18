@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TouchInputStartScreenController : MonoBehaviour
 {
-    //#if UNITY_ANDROID && !UNITY_EDITOR
+    //#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
     private Vector2 startTouchPosition, endTouchPosition;
 
     float swipeUpTolerance;
     float swipeDownTolerance;
     float swipeDistance;
 
+    [SerializeField]
     GameObject prevSelectedGameObject;
 
     GraphicRaycaster m_Raycaster;
@@ -21,6 +23,9 @@ public class TouchInputStartScreenController : MonoBehaviour
     bool buttonPressed;
 
     GameObject joystickGameObject;
+
+    [SerializeField]
+    public string currentHighlightedButton;
 
     public static TouchInputStartScreenController instance;
 
@@ -47,11 +52,14 @@ public class TouchInputStartScreenController : MonoBehaviour
 
     void Update()
     {
-        // if no button selected, return to previous
+        //// if no button selected, return to previous
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
         }
+
+        currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name;
+
         // save previous button until a touch is made
         if (!buttonPressed && Input.touchCount == 0)
         {
@@ -133,86 +141,49 @@ public class TouchInputStartScreenController : MonoBehaviour
     {
         buttonPressed = true;
         EventSystem.current.SetSelectedGameObject(prevSelectedGameObject);
+
         //level select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.levelSelectButtonName))
+        if (currentHighlightedButton.Equals(StartManager.levelSelectButtonName))
         {
             StartManager.instance.changeSelectedLevelDown();
             StartManager.instance.initializeLevelDisplay();
             buttonPressed = true;
         }
-        // traffic select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.trafficSelectOptionName))
-        {
-            StartManager.instance.changeSelectedTrafficOption();
-            StartManager.instance.initializeTrafficOptionDisplay();
-            buttonPressed = true;
-        }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.enemySelectOptionName))
-        {
-            StartManager.instance.changeSelectedEnemiesOption();
-            StartManager.instance.initializeEnemyOptionDisplay();
-            buttonPressed = true;
-        }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.hardcoreSelectOptionName))
-        {
-            StartManager.instance.changeSelectedHardcoreOption();
-            StartManager.instance.initializeHardcoreOptionDisplay();
-            buttonPressed = true;
-        }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.SniperSelectOptionName))
-        {
-            StartManager.instance.changeSelectedSniperOption();
-            StartManager.instance.initializeSniperOptionDisplay();
-            buttonPressed = true;
-        }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.difficultySelectOptionName))
-        {
-            StartManager.instance.changeSelectedDifficultyOption(GameOptions.difficultySelected);
-            StartManager.instance.initializeDifficultyOptionDisplay();
-            buttonPressed = true;
-        }
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.ObstacleSelectOptionName))
-        {
-            StartManager.instance.changeSelectedObstacleOption();
-            StartManager.instance.initializeObstacleOptionDisplay();
-            buttonPressed = true;
-        }
-
         // player select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.playerSelectOptionButtonName))
+        if (currentHighlightedButton.Equals(StartManager.playerSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedPlayerDown();
             StartManager.instance.initializePlayerDisplay();
             buttonPressed = true;
         }
         // friend select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.friendSelectOptionButtonName))
+        if (currentHighlightedButton.Equals(StartManager.friendSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedfriendDown();
             StartManager.instance.initializefriendDisplay();
             buttonPressed = true;
         }
         // mode select
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.modeSelectOptionButtonName))
+        if (currentHighlightedButton.Equals(StartManager.modeSelectOptionButtonName))
         {
             StartManager.instance.changeSelectedModeDown();
             StartManager.instance.initializeModeDisplay();
             buttonPressed = true;
         }
         //stats
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.statsMenuButtonName))
+        if (currentHighlightedButton.Equals(StartManager.statsMenuButtonName))
         {
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_stats);
             buttonPressed = true;
         }
         // start
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.startButtonName))
+        if (currentHighlightedButton.Equals(StartManager.startButtonName))
         {
             StartManager.instance.loadGame();
             buttonPressed = true;
         }
         // update /progression
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.updateMenuButtonName))
+        if (currentHighlightedButton.Equals(StartManager.updateMenuButtonName))
         {
             //Debug.Log("load prgression screen");
             GameOptions.playerSelectedIndex = StartManager.instance.playerSelectedIndex;
@@ -220,53 +191,122 @@ public class TouchInputStartScreenController : MonoBehaviour
             buttonPressed = true;
         }
         // options
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.optionsMenuButtonName))
+        if (currentHighlightedButton.Equals(StartManager.optionsMenuButtonName))
         {
             //Debug.Log("load prgression screen");
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
             buttonPressed = true;
         }
         // credits
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.creditsMenuButtonName))
+        if (currentHighlightedButton.Equals(StartManager.creditsMenuButtonName))
         {
             //Debug.Log("load prgression screen");
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_credits);
             buttonPressed = true;
         }
         // quit
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.quitButtonName))
+        if (currentHighlightedButton.Equals(StartManager.quitButtonName))
         {
             Application.Quit();
             buttonPressed = true;
         }
         //account
-        if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.accountMenuButtonName))
+        if (currentHighlightedButton.Equals(StartManager.accountMenuButtonName))
         {
             StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_account);
             buttonPressed = true;
         }
-        //options
-        //if (EventSystem.current.currentSelectedGameObject.name.Equals(StartManager.OptionsMenuButtonName))
-        //{
-        //    StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
-        //    buttonPressed = true;
-        //}
+        //cpu select option
+        if (currentHighlightedButton.Equals(StartManager.cpuSelectButtonName))
+        {
+            StartManager.instance.initializeCpuDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.Cpu1SelectOptionName)) { StartManager.instance.setCpuPlayer1(); buttonPressed = true; }
+        if (currentHighlightedButton.Equals(StartManager.Cpu2SelectOptionName)) { StartManager.instance.setCpuPlayer2(); buttonPressed = true; }
+        if (currentHighlightedButton.Equals(StartManager.Cpu3SelectOptionName)) { StartManager.instance.setCpuPlayer3(); buttonPressed = true; }
+        if (currentHighlightedButton.Equals(StartManager.levelSelectButtonName) || currentHighlightedButton.Equals(StartManager.levelSelectOptionButtonName))
+        {
+            StartManager.instance.initializeLevelDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.modeSelectButtonName) || currentHighlightedButton.Equals(StartManager.modeSelectOptionButtonName))
+        {
+            StartManager.instance.initializeModeDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.optionsSelectButtonName) || currentHighlightedButton.Equals(StartManager.optionsSelectOptionName))
+        {
+            StartManager.instance.initializeOptionsDisplay();
+            buttonPressed = true;
+            //options
+            //if (currentHighlightedButton.Equals(StartManager.OptionsMenuButtonName))
+            //{
+            //    StartManager.instance.loadMenu(Constants.SCENE_NAME_level_00_options);
+            //    buttonPressed = true;
+            //}
+        }
+        if (currentHighlightedButton.Equals(StartManager.trafficSelectOptionName))
+        {
+            // disabled for now. default : OFF
+            StartManager.instance.changeSelectedTrafficOption();
+            StartManager.instance.initializeTrafficOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.hardcoreSelectOptionName))
+        {
+            StartManager.instance.changeSelectedHardcoreOption();
+            StartManager.instance.initializeHardcoreOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.enemySelectOptionName))
+        {
+            StartManager.instance.changeSelectedEnemiesOption();
+            StartManager.instance.initializeEnemyOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.SniperSelectOptionName))
+        {
+            StartManager.instance.changeSelectedSniperOption();
+            StartManager.instance.initializeSniperOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.difficultySelectOptionName))
+        {
+            StartManager.instance.changeSelectedDifficultyOption(StartManager.instance.difficultySelected);
+            StartManager.instance.initializeDifficultyOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.ObstacleSelectOptionName))
+        {
+            Debug.Log("obstacle selected : double tap");
+            StartManager.instance.changeSelectedObstacleOption();
+            StartManager.instance.initializeObstacleOptionDisplay();
+            buttonPressed = true;
+        }
+        if (currentHighlightedButton.Equals(StartManager.Cpu1SelectOptionName)
+            || currentHighlightedButton.Equals(StartManager.Cpu2SelectOptionName)
+            || currentHighlightedButton.Equals(StartManager.Cpu3SelectOptionName))
+        {
+            StartManager.instance.changeSelectedCpuOptionUp(currentHighlightedButton);
+            buttonPressed = true;
+        }
         buttonPressed = false;
     }
 
-    //private void selectPressedButton()
-    //{
-    //    //Set up the new Pointer Event
-    //    m_PointerEventData = new PointerEventData(m_EventSystem);
-    //    //Set the Pointer Event Position to that of the mouse position
-    //    m_PointerEventData.position = Input.mousePosition;
+    private void selectPressedButton()
+    {
+        //Set up the new Pointer Event
+        m_PointerEventData = new PointerEventData(m_EventSystem);
+        //Set the Pointer Event Position to that of the mouse position
+        m_PointerEventData.position = Input.mousePosition;
 
-    //    //Create a list of Raycast Results
-    //    List<RaycastResult> results = new List<RaycastResult>();
+        //Create a list of Raycast Results
+        List<RaycastResult> results = new List<RaycastResult>();
 
-    //    //Raycast using the Graphics Raycaster and mouse click position
-    //    m_Raycaster.Raycast(m_PointerEventData, results);
-    //}
+        //Raycast using the Graphics Raycaster and mouse click position
+        m_Raycaster.Raycast(m_PointerEventData, results);
+    }
 
     private void swipeUpOnOption()
     {
