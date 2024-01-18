@@ -66,7 +66,7 @@ public class UserAccountManager : MonoBehaviour
 
         if (usersLoaded)
         {
-            user = userAccountData.Where(x => x.UserName == userNameSelected).Single();
+            user = userAccountData.Where(x => x.UserName == userNameSelected).SingleOrDefault();
             GameOptions.userid = user.Userid;
         }
         else
