@@ -7,6 +7,11 @@ using UnityEngine.SceneManagement;
 
 public class EndRoundMenuManager : MonoBehaviour
 {
+    [SerializeField]
+    private string currentHighlightedButton;
+    [SerializeField]
+    private string previousHighlightedButton;
+
     int currentWinnerScore;
     int currentLoserScore;
     bool currentWinnerisCpu;
@@ -19,11 +24,35 @@ public class EndRoundMenuManager : MonoBehaviour
     bool isGameSaved = false;
     bool finalLevel = false;
 
+    const string nextButton = "next_button";
+    const string startMenuButton = "start_menu_button";
+    const string quitButton = "quit_button";
+
+    PlayerControls controls;
+
+    public static EndRoundMenuManager instance;
+    private bool buttonPressed;
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.UINavigation.Enable();
+        controls.Other.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Player.Disable();
+        controls.UINavigation.Disable();
+        controls.Other.Disable();
+    }
+
+    private void Awake()
+    {
+        instance = this;
+        controls = new PlayerControls();
+    }
     void Start()
     {
-        Debug.Log("EndRoundData.currentLevelIndex: " + (EndRoundData.currentLevelIndex));
-        Debug.Log("GameOptions.levelsList : " + (GameOptions.levelsList.Count-1));
-
         if (EndRoundData.currentLevelIndex == GameOptions.levelsList.Count-1)
         {
             finalLevel = true;
@@ -37,6 +66,9 @@ public class EndRoundMenuManager : MonoBehaviour
         currentLoserScore = EndRoundData.currentRoundLoserScore;        
         currentWinnerisCpu = EndRoundData.currentRoundWinnerIsCpu;
         currentLoserisCpu = EndRoundData.currentRoundLoserIsCpu;
+
+        // test trip tie
+        //currentWinnerScore = currentLoserScore;
         
         PlayerData.instance.CampaignGameStats.campaignGamesPlayed++;
         if (currentWinnerScore == currentLoserScore)
@@ -64,9 +96,52 @@ public class EndRoundMenuManager : MonoBehaviour
             EndRoundUIObjects.instance.endMessageText.text = "You suck. go sit on the tire.";
             saveGame();
         }
-            LoadData();
+        LoadData();
     }
-    private void saveGame()
+
+#if UNITY_STANDALONE || UNITY_EDITOR
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name;
+        }
+
+        // ================================== navigation =====================================================================
+
+        //#if UNITY_STANDALONE || UNITY_EDITOR
+        // high scores table button selected
+        if (currentHighlightedButton.Equals(nextButton) 
+            && !buttonPressed
+            && controls.UINavigation.Submit.triggered)
+        {
+            buttonPressed = true;
+            pressNext();
+                
+        }
+        if (currentHighlightedButton.Equals(startMenuButton)
+            && !buttonPressed
+            && controls.UINavigation.Submit.triggered)
+        {
+            buttonPressed = true;
+            pressStartMenu();
+
+        }
+        if (currentHighlightedButton.Equals(quitButton)
+            && !buttonPressed
+            && controls.UINavigation.Submit.triggered)
+        {
+            buttonPressed = true;
+            pressQuit();
+
+        }
+        buttonPressed = false;
+        //#endif
+        // save at end of frame
+        previousHighlightedButton = currentHighlightedButton;
+    }
+#endif
+    public void saveGame()
     {
         isGameSaved = true;
         HighScoreModel dBHighScoreModel = new();
@@ -90,10 +165,11 @@ public class EndRoundMenuManager : MonoBehaviour
         PlayerData.instance.CampaignGameStats = PlayerData.instance.gameObject.AddComponent<GameStats>();
     }
 
-    private void LoadData()
+     void LoadData()
     {
         EndRoundData.levelsList = GameOptions.levelsList;
         EndRoundData.currentLevelIndex = GameOptions.levelSelectedIndex;
+        // cpu wins
         if (currentWinnerisCpu)
         {
             EndRoundUIObjects.instance.currentRoundWinnerImage.sprite = EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].CpuPlayerWinImage;
@@ -101,6 +177,7 @@ public class EndRoundMenuManager : MonoBehaviour
             EndRoundUIObjects.instance.currentRoundWinnerIsCpu.text = "CPU";
             EndRoundUIObjects.instance.currentRoundLoserIsCpu.text = "Player 1";
         }
+        // player wins or tie game
         if (!currentWinnerisCpu || tieGame)
         {
             EndRoundUIObjects.instance.currentRoundWinnerImage.sprite = EndRoundData.currentRoundPlayerWinnerImage;
@@ -108,12 +185,19 @@ public class EndRoundMenuManager : MonoBehaviour
             EndRoundUIObjects.instance.currentRoundWinnerIsCpu.text = "Player 1";
             EndRoundUIObjects.instance.currentRoundLoserIsCpu.text = "CPU";
         }
+        // tie | text
         if(tieGame)
         {
+            GameOptions.levelSelectedIndex--;
             EndRoundUIObjects.instance.winnerText.text = "tie";
             EndRoundUIObjects.instance.loserText.text = "tie";
-        }
+            EndRoundUIObjects.instance.nextRoundLevel.text = EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelDisplayName;
+            EndRoundUIObjects.instance.nextRoundOpponent.text = EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].CpuPlayer.GetComponent<CharacterProfile>().PlayerDisplayName;
+            nextLevelName =
+            EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelObjectName + "_" + EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelDescription;
 
+        }
+        // cpu win | no continues | no tie
         if (currentWinnerisCpu && !tieGame && EndRoundData.numberOfContinues > 0)
         {
             GameOptions.levelSelectedIndex--;
@@ -124,6 +208,7 @@ public class EndRoundMenuManager : MonoBehaviour
             nextLevelName =
             EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelObjectName + "_" + EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelDescription;
         }
+        // player win | no tie
         if (!currentWinnerisCpu && !tieGame)
         {
             EndRoundUIObjects.instance.nextRoundText.text = !tieGame ? "Start" : "Tie Game";
@@ -136,8 +221,8 @@ public class EndRoundMenuManager : MonoBehaviour
         EndRoundUIObjects.instance.currentRoundWinnerScore.text = EndRoundData.currentRoundWinnerScore.ToString();
         EndRoundUIObjects.instance.currentRoundLoserScore.text = EndRoundData.currentRoundLoserScore.ToString();
 
-        Debug.Log("games : " + PlayerData.instance.CampaignGameStats.campaignGamesPlayed);
-        Debug.Log("standings : " + PlayerData.instance.CampaignGameStats.campaignWins + " - "+ PlayerData.instance.CampaignGameStats.campaignLosses+ " - "+ PlayerData.instance.CampaignGameStats.campaignTies);
+        //Debug.Log("games : " + PlayerData.instance.CampaignGameStats.campaignGamesPlayed);
+        //Debug.Log("standings : " + PlayerData.instance.CampaignGameStats.campaignWins + " - "+ PlayerData.instance.CampaignGameStats.campaignLosses+ " - "+ PlayerData.instance.CampaignGameStats.campaignTies);
     }
 
     public void pressNext()
@@ -153,7 +238,7 @@ public class EndRoundMenuManager : MonoBehaviour
             string currentlevelName = EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelObjectName + "_" + EndRoundData.levelsList[EndRoundData.currentLevelIndex - 1].LevelDescription;
             SceneManager.LoadScene(currentlevelName);
         }
-        if (EndRoundData.numberOfContinues > 0 && currentWinnerisCpu)
+        if (EndRoundData.numberOfContinues > 0 && currentWinnerisCpu && !tieGame)
         {
             if (!tieGame) { EndRoundData.numberOfContinues--;}
             SceneManager.LoadScene(nextLevelName);
