@@ -92,7 +92,7 @@ public class CharacterProfile : MonoBehaviour
 
     public void intializeShooterStatsFromProfile()
     {
-        Debug.Log("intializeShooterStatsFromProfile : " + playerDisplayName);
+        //Debug.Log("intializeShooterStatsFromProfile : " + playerDisplayName);
         CharacterProfile temp = new();
         temp = LoadedData.instance.getSelectedCharacterProfile(GameOptions.characterId);
         fadeaway = level;
