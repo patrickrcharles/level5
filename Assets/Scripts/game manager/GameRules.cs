@@ -222,7 +222,7 @@ public class GameRules : MonoBehaviour
 
             // set end time for time played, store in basketballstats.timeplayed
             setTimePlayed();
-
+            Pause.instance.disableMobileOnlyPauseOptions();
             //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = GetDisplayText(GameModeId);
@@ -230,7 +230,6 @@ public class GameRules : MonoBehaviour
             List<PlayerIdentifier> gameStatsList = new();
             if (GameOptions.gameModeSelectedId == 26)
             {
-                Debug.Log(GameLevelManager.instance.players[0].gameStats);
                 PlayerData.instance.updateCampaignStats(GameLevelManager.instance.players[0].gameStats);
             }
             if (GameOptions.gameModeSelectedId == 23)
@@ -484,7 +483,7 @@ public class GameRules : MonoBehaviour
         GameStats gameStats = GameLevelManager.instance.Player1.basketball.GetComponent<GameStats>();
         if (PlayerData.instance != null)
         {
-            if (gameModeId == 1)
+            if (gameModeId == 1 || gameModeId == 27)
             {
                 displayCurrentScoreText.text = "total points : " + gameStats.TotalPoints
                     + "\ncurrent shot : " + BasketBall.instance.BasketBallState.CurrentShotType;
@@ -726,7 +725,7 @@ public class GameRules : MonoBehaviour
     {
         string displayText = "";
 
-        if (gameModeId == 1)
+        if (gameModeId == 1 )
         {
             displayText = "You scored " + gameStats1.TotalPoints + " total points\n\n" + GetStatsTotals();
         }
@@ -766,7 +765,7 @@ public class GameRules : MonoBehaviour
         //    displayText = "You scored " + basketBallStats.TotalPoints + " total points\n\n" + getStatsTotals();
         //}
         if (gameModeId == 15 || gameModeId == 16 || gameModeId == 17 || gameModeId == 18 || gameModeId == 19 
-            || gameModeId == 24)
+            || gameModeId == 24 || gameModeId == 27)
         {
             displayText = "You scored " + gameStats1.TotalPoints + " total points\n\n" + GetStatsTotals();
         }
