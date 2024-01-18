@@ -522,8 +522,7 @@ public class DBConnector : MonoBehaviour
                 "pointsUsed   INTEGER DEFAULT 0," +
                 "range   INTEGER DEFAULT 0," +
                 "release   INTEGER DEFAULT 0," +
-                "isLocked   INTEGER DEFAULT 0," +
-                "charid   INTEGER");
+                "isLocked   INTEGER DEFAULT 0);");
 
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
