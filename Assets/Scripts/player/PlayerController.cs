@@ -73,8 +73,6 @@ public class PlayerController : MonoBehaviour
     private bool jumpTrigger = false;
     private bool dunkTrigger;
 
-    //public GameObject playerHitbox;
-
     float bballRelativePositioning; // which side of the player the ball is on
     [SerializeField]
     float playerDistanceFromRim; // player distance from rim
@@ -169,13 +167,11 @@ public class PlayerController : MonoBehaviour
         damageDisplayObject = GameObject.Find(damageDisplayValueName);
         damageDisplayValueText = damageDisplayObject.GetComponent<Text>();
         anim = GetComponentInChildren<Animator>();
-        //basketball = GameLevelManager.instance.basketballsId.Find((x) => x.pid == pid).GetComponent<BasketBall>();
         basketball = GetComponent<PlayerIdentifier>().basketball.GetComponent<BasketBall>();
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
         PlayerHealth = GameLevelManager.instance.PlayerHealth;
-
         // bball rim vector, used for relative positioning
         bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
@@ -221,10 +217,6 @@ public class PlayerController : MonoBehaviour
         {
             _knockDownTime = 0.75f;
         }
-        //if (GameOptions.isCampaignMode)
-        //{
-        //    gameObject.SetActive(false);
-        //}
     }
 
     // not affected by framerate
@@ -234,7 +226,7 @@ public class PlayerController : MonoBehaviour
         if (!KnockedDown && !Locked
             && currentState != takeDamageState)
         {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID || UNITY_IOS
 
             if (Input.touchCount > 0)
             {
