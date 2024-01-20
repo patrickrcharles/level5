@@ -21,7 +21,7 @@ public class PlatformCheck : MonoBehaviour
             inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
         }
 
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
 
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
