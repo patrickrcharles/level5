@@ -222,7 +222,10 @@ public class GameRules : MonoBehaviour
 
             // set end time for time played, store in basketballstats.timeplayed
             setTimePlayed();
-            Pause.instance.disableMobileOnlyPauseOptions();
+            if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld)
+            {
+                Pause.instance.disableMobileOnlyPauseOptions();
+            }
             //pause on game over
             Pause.instance.TogglePause();
             displayScoreText.text = GetDisplayText(GameModeId);
