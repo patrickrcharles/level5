@@ -56,9 +56,11 @@ public class Pause : MonoBehaviour
     void Awake()
     {
         instance = this;
-        if (!GameOptions.battleRoyalEnabled&& !GameOptions.cageMatchEnabled)
+        if (!GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
         {
             startOnPause = true;
+            paused = true;
+            Time.timeScale = 0;
         }
         
         paused = startOnPause;
@@ -133,20 +135,13 @@ public class Pause : MonoBehaviour
         {
             StartGame();
         }
-
         // ===================== pause checks =======================
         if ((Time.timeScale == 0 && !paused) || (Time.timeScale == 1 && paused))
         {
+            
             TogglePause();
         }
         //==========================================================
-
-        ////disable cotnrols display if game over
-        //if (GameRules.instance.GameOver || GameLevelManager.instance.PlayerHealth.IsDead)
-        //{
-        //    controlsObject.SetActive(false);
-        //}
-
         // if paused, show pause menu
         if (paused)
         {
@@ -162,7 +157,6 @@ public class Pause : MonoBehaviour
             currentHighlightedButton.GetComponent<Button>().Select();
 
             // ================== pause menu options ==============================================================
-
             // reload scene
             if (currentHighlightedButton.name.Equals(loadSceneButton.name)
                 && GameLevelManager.instance.Controls.UINavigation.Submit.triggered
