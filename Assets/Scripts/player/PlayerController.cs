@@ -230,6 +230,11 @@ public class PlayerController : MonoBehaviour
 
             if (Input.touchCount > 0)
             {
+                //foreach(Touch t in Input.touches)
+                //{
+                //    Debug.Log(t.phase);
+                //    Debug.Log(t.fingerId);
+                //}
                 Touch touch = Input.touches[0];
                 if (touch.phase == TouchPhase.Began)
                 {
@@ -498,7 +503,7 @@ public class PlayerController : MonoBehaviour
         }
         //------------------ block -----------------------------------
         if ((controls.Player.block.ReadValue<float>() == 1
-            || controls.Player.jump.ReadValue<float>() == 1 )
+            || controls.Player.jump.ReadValue<float>() == 1)
             //&& controls.Player.run.ReadValue<float>() == 1
             //&& !hasBasketball
             && canBlock
@@ -517,7 +522,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // double check touch input not being used
-            if (TouchInputController.instance != null &&  !TouchInputController.instance.HoldDetected)
+            if (TouchInputController.instance != null && !TouchInputController.instance.HoldDetected)
             {
                 anim.SetBool("block", false);
             }
@@ -547,7 +552,7 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
-#endif 
+#endif
     }
 
     private void getAnimatorStateHashes()
