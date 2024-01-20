@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TouchPhase = UnityEngine.TouchPhase;
 
+#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
 public class TouchInputController : MonoBehaviour
 {
 
@@ -30,7 +31,7 @@ public class TouchInputController : MonoBehaviour
 
     bool buttonPressed;
 
-    bool pauseExists;
+    //bool pauseExists;
     [SerializeField]
     private bool tap1Detected;
     [SerializeField]
@@ -55,24 +56,26 @@ public class TouchInputController : MonoBehaviour
     GameObject joystickGameObject;
 
     public bool HoldDetected { get => hold1Detected; set => hold1Detected = value; }
-
-    void Awake()
-    {
-        initializeTouchInputController();
-
-    }
-    private void Start()
+    private void Awake()
     {
         instance = this;
-        playerController = GameLevelManager.instance.PlayerController1;
+        initializeTouchInputController();
     }
 
-    //#if UNITY_ANDROID && !UNITY_EDITOR
+    private void Start()
+    {
+        
+        playerController = GameLevelManager.instance.players[0].playerController;
+    }
+
+
     void Update()
     {
+        //Debug.Log("update");
         // not paused + touch
         if (!Pause.instance.Paused && Input.touchCount > 0)
         {
+            //Debug.Log("paused");
             // ====================== get touches =====================================
             // detect multi touches
             if (Input.touchCount > 1)
@@ -134,6 +137,10 @@ public class TouchInputController : MonoBehaviour
             {
                 tap2Detected = false;
             }
+            if (tap2Detected)
+            {
+               playerController.TouchControlJumpOrShoot(touch2.position);
+            }
 
             //Touch 2 is tap + hold detected + bottom right screen
             if (hold1Detected
@@ -193,7 +200,7 @@ public class TouchInputController : MonoBehaviour
 
         if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
-            GameLevelManager.instance.PlayerController1.TouchControlJumpOrShoot(touch1.position);
+            playerController.TouchControlJumpOrShoot(touch1.position);
             tap1Detected = false;
         }
 
@@ -202,11 +209,20 @@ public class TouchInputController : MonoBehaviour
         // if paused + touch touch
         if (Pause.instance.Paused && Input.touchCount > 0)
         {
+            Debug.Log("paused");
             Touch touch = Input.touches[0];
             //tap
             if (touch.tapCount == 1 && touch.phase == TouchPhase.Began)
             {
-                selectPressedButton();
+
+                if (Pause.instance.StartOnPause)
+                {
+                    Pause.instance.StartGame();
+                }
+                else
+                {
+                    selectPressedButton();
+                }
             }
             // on double tap, perform actions
             if (touch.tapCount == 2 && touch.phase == TouchPhase.Began && !buttonPressed)
@@ -215,11 +231,9 @@ public class TouchInputController : MonoBehaviour
             }
         }
     }
-    //#endif
 
     private void activateDoubleTappedButton()
     {
-        //Debug.Log("double tap");
         // reload
         if (EventSystem.current.currentSelectedGameObject.name.Equals(Pause.instance.LoadSceneButton.name)
             && !buttonPressed)
@@ -296,6 +310,7 @@ public class TouchInputController : MonoBehaviour
 
     private void selectPressedButton()
     {
+        Debug.Log("selectPressedButton");
         //Set up the new Pointer Event
         m_PointerEventData = new PointerEventData(m_EventSystem);
         //Set the Pointer Event Position to that of the mouse position
@@ -319,11 +334,13 @@ public class TouchInputController : MonoBehaviour
         // find onscreen stick and disable
         if (GameObject.Find("floating_joystick") != null)
         {
+            Debug.Log("floating joystick");
             joystickGameObject = GameObject.Find("floating_joystick");
             joystickGameObject.SetActive(false);
         }
 
-        if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld)
+        //bool enableTestTouch = true;
+        if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld) // || enableTestTouch)
         {
             //Fetch the Raycaster from the GameObject (the Canvas)
             m_Raycaster = GameLevelManager.instance.gameObject.GetComponentInChildren<GraphicRaycaster>();
@@ -341,6 +358,5 @@ public class TouchInputController : MonoBehaviour
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
     }
-
 }
-
+#endif
