@@ -178,7 +178,7 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private bool obstaclesEnabled;
     [SerializeField]
-    private int difficultySelected;
+    public int difficultySelected;
     [SerializeField]
     private bool sniperBulletEnabled;
     [SerializeField]
@@ -238,11 +238,6 @@ public class StartManager : MonoBehaviour
         // update experience and levels
         // recommended here because experience will be gained after every game played
         StartCoroutine(UpdateLevelAndExperienceFromDatabase());
-
-        // diable nav buttons if mobile
-//#if UNITY_ANDROID && !UNITY_EDITOR
-//            disableButtonsNotUsedForTouchInput();
-//#endif
     }
 
     // Start is called before the first frame update
@@ -253,7 +248,8 @@ public class StartManager : MonoBehaviour
         AnaylticsManager.MenuStartLoaded();
     }
 
-
+    //#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+#if UNITY_EDITOR
     // Update is called once per frame
     void Update()
     {
@@ -266,17 +262,6 @@ public class StartManager : MonoBehaviour
             }
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
-
-        //if (!modeSelectedData[modeSelectedIndex].GameModeRequiresCpuShooters)
-        //{
-        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().interactable = false;
-        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().navigation.selectOnRight.enabled = false;
-        //}
-        //else
-        //{
-        //    StartMenuUiObjects.instance.column1_subgroup_column1_cpu_select.GetComponent<Button>().interactable = true;
-        //}
-
         // if player highlighted, display player
         if ((currentHighlightedButton.Equals(numPlayersSelectButtonName) || currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
             && dataLoaded)
@@ -397,7 +382,6 @@ public class StartManager : MonoBehaviour
                 .GetComponent<Button>().FindSelectableOnUp().gameObject);
             buttonPressed = false;
         }
-
         // down, option select
         if (controls.UINavigation.Down.triggered && !buttonPressed
             && !currentHighlightedButton.Equals(numPlayersSelectOptionButtonName)
@@ -603,6 +587,7 @@ public class StartManager : MonoBehaviour
             buttonPressed = false;
         }
     }
+#endif
 
     private void changeSelectedCpuOptionDown(string currentHighlightedButton)
     {
@@ -643,7 +628,7 @@ public class StartManager : MonoBehaviour
                 break;
         }
     }
-    private void changeSelectedCpuOptionUp(string currentHighlightedButton)
+    public void changeSelectedCpuOptionUp(string currentHighlightedButton)
     {
         switch (currentHighlightedButton)
         {
@@ -749,7 +734,7 @@ public class StartManager : MonoBehaviour
         setInitialGameOptions();
     }
 
-    private void initializeCpuDisplay()
+    public void initializeCpuDisplay()
     {
         //Debug.Log("initializeCpuDisplay");
         disableMenuObjects("cpu_tab");
@@ -772,14 +757,15 @@ public class StartManager : MonoBehaviour
         }
         versionText.text = "current version : " + Application.version;
         yield return new WaitUntil(() => !APIHelper.ApiLocked);
-        if (UtilityFunctions.IsConnectedToInternet())
-        {
-            latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
-        }
-        else
-        {
-            latestVersionText.text = "latest version: " + "No Internet";
-        }
+        latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        //if (UtilityFunctions.IsConnectedToInternet())
+        //{
+        //    latestVersionText.text = "latest version: " + APIHelper.GetLatestBuildVersion();
+        //}
+        //else
+        //{
+        //    latestVersionText.text = "latest version: " + "No Internet";
+        //}
     }
 
     // ============================  get UI buttons / text references ==============================
@@ -1031,6 +1017,7 @@ public class StartManager : MonoBehaviour
     }
     public void initializeObstacleOptionDisplay()
     {
+        //Debug.Log(obstaclesEnabled + " : " + obstacleSelectOptionText.text);
         if (obstaclesEnabled)
         {
             obstacleSelectOptionText.text = "ON";
@@ -1039,6 +1026,7 @@ public class StartManager : MonoBehaviour
         {
             obstacleSelectOptionText.text = "OFF";
         }
+        //Debug.Log(obstaclesEnabled + " : " + obstacleSelectOptionText.text);
     }
 
     public void initializeLevelDisplay()
