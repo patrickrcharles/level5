@@ -1222,7 +1222,7 @@ namespace Assets.Scripts.restapi
                 Debug.Log("----------------- ERROR : " + e);
                 apiLocked = false;
             }
-            Debug.Log(httpResponse.StatusCode);
+            //Debug.Log(httpResponse.StatusCode);
             statusCode = httpResponse.StatusCode;
 
             // if successful
