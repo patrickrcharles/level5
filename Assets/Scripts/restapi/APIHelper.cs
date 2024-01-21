@@ -201,9 +201,9 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
-            Debug.Log("PostUnsubmittedHighscores");
-            Debug.Log(DBHelper.instance.DatabaseLocked);
-            Debug.Log(apiLocked);
+            //Debug.Log("PostUnsubmittedHighscores");
+            //Debug.Log(DBHelper.instance.DatabaseLocked);
+            //Debug.Log(apiLocked);
             // wait for database operations
             //yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
             //DBHelper.instance.DatabaseLocked = true;
@@ -244,7 +244,7 @@ namespace Assets.Scripts.restapi
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
-                        Debug.Log(result);
+                        //Debug.Log(result);
                     }
                 }
                 // on web exception
@@ -259,7 +259,7 @@ namespace Assets.Scripts.restapi
                 // if successful
                 if (httpResponse.StatusCode == HttpStatusCode.Created)
                 {
-                    Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                    //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
                     DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
@@ -270,7 +270,7 @@ namespace Assets.Scripts.restapi
                     // if conflict (scoreid already exists in database)
                     if (httpResponse.StatusCode == HttpStatusCode.Conflict)
                     {
-                        Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                        //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
                         DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                         apiLocked = false;
                         DBHelper.instance.DatabaseLocked = false;
