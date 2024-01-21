@@ -248,11 +248,12 @@ public class StartManager : MonoBehaviour
         AnaylticsManager.MenuStartLoaded();
     }
 
-    //#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
+    //#if UNITY_EDITOR
     // Update is called once per frame
     void Update()
     {
+
         // check for some button not selected
         if (EventSystem.current != null)
         {
@@ -262,6 +263,7 @@ public class StartManager : MonoBehaviour
             }
             currentHighlightedButton = EventSystem.current.currentSelectedGameObject.name; // + "_description";
         }
+
         // if player highlighted, display player
         if ((currentHighlightedButton.Equals(numPlayersSelectButtonName) || currentHighlightedButton.Equals(numPlayersSelectOptionButtonName))
             && dataLoaded)
@@ -586,6 +588,7 @@ public class StartManager : MonoBehaviour
             }
             buttonPressed = false;
         }
+        
     }
 #endif
 

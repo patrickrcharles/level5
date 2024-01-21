@@ -1595,7 +1595,13 @@
         {
             "name": "keyboard1",
             "bindingGroup": "keyboard1",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": true,
+                    "isOR": false
+                }
+            ]
         },
         {
             "name": "keyboard2",

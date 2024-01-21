@@ -21,7 +21,7 @@ public class PlatformCheck : MonoBehaviour
             inputSystemUIInputModule = EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
         }
 
-#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
+#if UNITY_ANDROID || UNITY_IOS 
 
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
@@ -38,7 +38,7 @@ public class PlatformCheck : MonoBehaviour
 
         //standaloneInputModule.DeactivateModule();
         // if win/osx but has touch support
-        if (Input.touchSupported || SystemInfo.deviceType == DeviceType.Handheld)
+        if (SystemInfo.deviceType == DeviceType.Handheld)
         {
             inputSystemUIInputModule.enabled = false;
             standaloneInputModule.enabled = true;
@@ -52,7 +52,7 @@ public class PlatformCheck : MonoBehaviour
         inputSystemUIInputModule.enabled = true;
         standaloneInputModule.enabled = false;
         //inputSystemUIInputModule.ActivateModule();
-        //Debug.Log("standalone");
+        Debug.Log("standalone");
 #endif
     }
 }
