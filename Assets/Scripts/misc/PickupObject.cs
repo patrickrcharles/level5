@@ -18,15 +18,15 @@ public class PickupObject : MonoBehaviour
         Destroy(gameObject, moneyDestroyTime);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("money"))
-        {
-            // update player money value
-            PlayerStats.instance.Money += moneyValue;
-            Destroy(gameObject);
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("playerHitbox") && gameObject.CompareTag("money"))
+    //    {
+    //        // update player money value
+    //        PlayerStats.instance.Money += moneyValue;
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     public void updateMoneyValue(float value)
     {
