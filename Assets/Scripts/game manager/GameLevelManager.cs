@@ -48,6 +48,7 @@ public class GameLevelManager : MonoBehaviour
 
     //BasketBall objects
     private GameObject _basketballPrefab;
+    private int numBasketballs;
     private GameObject _basketballPrefabAuto;
     //private GameObject _cheerleaderPrefab;
 
@@ -319,6 +320,7 @@ public class GameLevelManager : MonoBehaviour
 
     private void checkBasketballPrefabExists()
     {
+        numBasketballs = GameOptions.numPlayers;
         // get number of players. cpu and human
         // list of players and auto playera
 
@@ -334,13 +336,13 @@ public class GameLevelManager : MonoBehaviour
         _basketball1.setPlayer(players[0].player);
 
         
-        if(GameOptions.gameModeSelectedId == 27)
+        if(GameOptions.gameModeSelectedId == Modes.Lockdown)
         {
-            numPlayers = 1;
+            numBasketballs = 1;
         }
         // player needs basketball reference
         // cpu player needs auto bball ref.
-        if (numPlayers > 1 && GameOptions.gameModeAllowsCpuShooters)
+        if (numBasketballs > 1 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player2IsCpu)
             {
@@ -362,7 +364,7 @@ public class GameLevelManager : MonoBehaviour
                 _basketball2.setPlayer(players[1].player);
             }
         }
-        if (numPlayers > 2 && GameOptions.gameModeAllowsCpuShooters)
+        if (numBasketballs > 2 && GameOptions.gameModeAllowsCpuShooters)
         {
             if (GameOptions.player3IsCpu)
             {
@@ -437,15 +439,14 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-
         if (numPlayers > 1  && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
         {
             
-            if (GameOptions.gameModeSelectedId == 26)
+            if (GameOptions.gameModeSelectedId == Modes.BeatThaComputahs)
             {
                 _playerClone2 = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer;
             }
-            else if(GameOptions.gameModeSelectedId == 27)
+            else if(GameOptions.gameModeSelectedId == Modes.Lockdown)
             {
                 playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_DEFENSE_cpu + "oldreal";
                 _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
