@@ -586,7 +586,7 @@ public class StatsManager : MonoBehaviour
                 // if count > 0,  set appropriate text
                 if (numUnsubmittedHighscores > 0)
                 {
-                    Debug.Log("if");
+                    //Debug.Log("if");
                     submittedHighscoresText.text = "submit scores";
                     numUnsubmittedHighscoresText.text = "+" + numUnsubmittedHighscores.ToString();
                     APIHelper.PostUnsubmittedHighscores(unsubmittedHighScores);
@@ -594,7 +594,7 @@ public class StatsManager : MonoBehaviour
                 // if none, set appropriate text
                 if (numUnsubmittedHighscores == 0)
                 {
-                    Debug.Log("if");
+                    //Debug.Log("if");
                     submittedHighscoresText.text = "no scores to submit";
                     numUnsubmittedHighscoresText.text = "";
                 }
