@@ -52,7 +52,7 @@ public class PlatformCheck : MonoBehaviour
         inputSystemUIInputModule.enabled = true;
         standaloneInputModule.enabled = false;
         //inputSystemUIInputModule.ActivateModule();
-        Debug.Log("standalone");
+        //Debug.Log("standalone");
 #endif
     }
 }
