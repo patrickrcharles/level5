@@ -1,12 +1,9 @@
 ﻿using Assets.Scripts.restapi;
-using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -1273,7 +1270,7 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeHasBeenSelected = true; 
         
         string sceneName;
-        if (modeSelectedData[modeSelectedIndex].ModeId == 26)
+        if (modeSelectedData[modeSelectedIndex].ModeId == Modes.BeatThaComputahs)
         {
             sceneName = Constants.SCENE_NAME_level_01_scrapyard;
             levelSelectedIndex = levelSelectedData.FindIndex(x => x.LevelId == 1);
@@ -1311,7 +1308,6 @@ public class StartManager : MonoBehaviour
     {
         GameOptions.characterId = playerSelectedData[playerSelectedIndex].PlayerId;
         GameOptions.characterDisplayName = playerSelectedData[playerSelectedIndex].PlayerDisplayName;
-
         // if Wizard of Boat selected, randomly choose which one to spawn
         if (playerSelectedData[playerSelectedIndex].PlayerDisplayName.ToLower().Contains("boat"))
         {
@@ -1321,17 +1317,12 @@ public class StartManager : MonoBehaviour
         {
             GameOptions.characterObjectName = playerSelectedData[playerSelectedIndex].PlayerObjectName;
         }
-
         GameOptions.levelSelected = levelSelectedData[levelSelectedIndex].LevelObjectName;
         GameOptions.levelId = levelSelectedData[levelSelectedIndex].LevelId;
         GameOptions.levelDisplayName = levelSelectedData[levelSelectedIndex].LevelDisplayName;
         GameOptions.levelRequiresTimeOfDay = levelSelectedData[levelSelectedIndex].LevelRequiresTimeOfDay;
 
         GameOptions.gameModeSelectedId = modeSelectedData[modeSelectedIndex].ModeId;
-        if (GameOptions.gameModeSelectedId == 26 || GameOptions.gameModeSelectedId == 27)
-        {
-            GameOptions.numPlayers = 2;
-        }
         GameOptions.gameModeSelectedName = modeSelectedData[modeSelectedIndex].ModeDisplayName;
 
         GameOptions.gameModeRequiresCountDown = modeSelectedData[modeSelectedIndex].ModeRequiresCountDown;
@@ -1345,10 +1336,6 @@ public class StartManager : MonoBehaviour
         GameOptions.gameModeFourPointContest = modeSelectedData[modeSelectedIndex].GameModeFourPointContest;
         GameOptions.gameModeSevenPointContest = modeSelectedData[modeSelectedIndex].GameModeSevenPointContest;
         GameOptions.gameModeAllPointContest = modeSelectedData[modeSelectedIndex].GameModeAllPointContest;
-
-        //Debug.Log(modeSelectedData[modeSelectedIndex].ModeDisplayName);
-        //Debug.Log(modeSelectedData[modeSelectedIndex].GameModeSevenPointContest);
-        //Debug.Log("timer : "+ modeSelectedData[modeSelectedIndex].CustomTimer);
 
         // check if game mode requires timer that is not 120
         if (modeSelectedData[modeSelectedIndex].CustomTimer > 0)
@@ -1423,36 +1410,26 @@ public class StartManager : MonoBehaviour
             GameOptions.trafficEnabled = false;
         }
         GameOptions.gameModeRequiresBasketball = modeSelectedData[modeSelectedIndex].GameModeRequiresBasketball;
-
         GameOptions.customCamera = levelSelectedData[levelSelectedIndex].CustomCamera;
-
         GameOptions.gameModeAllowsCpuShooters = modeSelectedData[modeSelectedIndex].GameModeAllowsCpuShooters;
 
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
+        if (GameOptions.cpu1SelectedIndex == 0) 
+        { 
+            GameOptions.cpu1SelectedIndex = 1;
+            GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName);
+        }
         if (GameOptions.cpu2SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu2SelectedIndex].PlayerObjectName); }
         if (GameOptions.cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
 
+        GameOptions.numPlayers = GameOptions.characterObjectNames.Count;
         GameOptions.levelsList = PlayerData.instance.LevelsList;
-        //GameOptions.levelsList = new List<LevelSelected>();
-        //for (int i = 0; i < levelSelectedData.Count; i++)
-        //{
-        //    if (!levelSelectedData[i].IsBattleRoyalLevel && !levelSelectedData[i].IsCageMatchLevel)
-        //    {
-        //        GameOptions.levelsList.Add(levelSelectedData[i]);
-        //    }
-        //}
-        //foreach(LevelSelected l in GameOptions.levelsList) { Debug.Log(l.LevelDisplayName); }
 
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
         if (hardcoreEnabled) { EndRoundData.numberOfContinues = 0; }
-
-        //if (modeSelectedData[modeSelectedIndex].ModeId == 21)
-        //{
-        //    levelSelectedIndex = 15;
-        //}
 
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
