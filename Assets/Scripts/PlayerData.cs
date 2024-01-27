@@ -12,6 +12,7 @@ public class PlayerData : MonoBehaviour
     //private string _playerName = "";
 
     private float _totalPoints = 0;
+    private float _totalPointsLockDown = 0;
     private float _totalPointsByDistance = 0;
     private float _totalPointsBonus = 0;
     //private float _twoPointerMade = 0;
@@ -111,6 +112,7 @@ public class PlayerData : MonoBehaviour
             //Debug.Log("hardcoreValue : "+ hardcoreValue);
 
             _totalPoints = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 1, "DESC", hardcoreValue);
+            TotalPointsLockDown = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 27, "DESC", hardcoreValue);
 
             TotalPointsBonus = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "totalPoints", 15, "DESC", hardcoreValue);
             _threePointerMade = DBHelper.instance.getIntValueHighScoreFromTableByFieldAndModeId("HighScores", "maxShotMade", 2, "DESC", hardcoreValue);
@@ -216,5 +218,6 @@ public class PlayerData : MonoBehaviour
     public float MakeSevenPointersLowTime { get => _makeSevenPointersLowTime; set => _makeSevenPointersLowTime = value; }
     public GameStats CampaignGameStats { get => campaignGameStats; set => campaignGameStats = value; }
     public List<LevelSelected> LevelsList { get => levelsList; set => levelsList = value; }
+    public float TotalPointsLockDown { get => _totalPointsLockDown; set => _totalPointsLockDown = value; }
     //public float LongestShotMadeArcade { get => _longestShotMadeArcade; set => _longestShotMadeArcade = value; }
 }
