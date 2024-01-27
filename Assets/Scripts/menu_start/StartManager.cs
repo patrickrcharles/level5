@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.restapi;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -240,6 +241,8 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UtilityFunctions.GetCurrentDeviceHour();
+
         StartCoroutine(InitializeDisplay());
         StartCoroutine(SetVersion());
         AnaylticsManager.MenuStartLoaded();
@@ -1416,7 +1419,7 @@ public class StartManager : MonoBehaviour
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
-        if (GameOptions.cpu1SelectedIndex == 0) 
+        if (GameOptions.cpu1SelectedIndex == 0 && modeSelectedData[modeSelectedIndex].ModeId == Modes.VersusCpu) 
         { 
             GameOptions.cpu1SelectedIndex = 1;
             GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName);
