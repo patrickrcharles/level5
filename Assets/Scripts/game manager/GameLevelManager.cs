@@ -123,14 +123,14 @@ public class GameLevelManager : MonoBehaviour
         _basketballSpawnLocation = GameObject.Find("ball_spawn_location");
         _cheerleaderSpawnLocation = GameObject.Find("cheerleader_spawn_location");
         //set terrain height
-        terrainHeight =  setTerrainHeight();
+        terrainHeight = setTerrainHeight();
 
         //ui touch controls
         if (GameObject.FindGameObjectWithTag("joystick") != null)
         {
             joystick = GameObject.FindGameObjectWithTag("joystick").GetComponentInChildren<FloatingJoystick>();
         }
-        
+
         // if basketball doesnt exists
         if (!GameOptions.gameModeRequiresBasketball && GameOptions.gameModeHasBeenSelected) { GameOptions.enemiesEnabled = true; }
         // if player doesnt exists, spawn default Player
@@ -221,8 +221,9 @@ public class GameLevelManager : MonoBehaviour
             GameObject.Find("basketball_goal").SetActive(false);
         }
         _basketball1 = GameObject.FindGameObjectWithTag("basketball").GetComponent<PlayerIdentifier>();
-        if (GameObject.Find("rim") != null) { 
-            Vector3 rim=  GameObject.Find("rim").transform.position;
+        if (GameObject.Find("rim") != null)
+        {
+            Vector3 rim = GameObject.Find("rim").transform.position;
             _basketballRimVector = new Vector3(rim.x, 0, rim.z);
         }
 
@@ -248,7 +249,7 @@ public class GameLevelManager : MonoBehaviour
             && !Pause.instance.Paused)
         {
             _locked = true;
-            BasketBall.instance.toggleUiStats(); 
+            BasketBall.instance.toggleUiStats();
             _locked = false;
         }
     }
@@ -335,8 +336,8 @@ public class GameLevelManager : MonoBehaviour
         players[0].setBasketball(go1);
         _basketball1.setPlayer(players[0].player);
 
-        
-        if(GameOptions.gameModeSelectedId == Modes.Lockdown)
+
+        if (GameOptions.gameModeSelectedId == Modes.Lockdown)
         {
             numBasketballs = 1;
         }
@@ -439,23 +440,33 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 1  && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
+        // if lockdown mode
+        if (GameOptions.gameModeSelectedId == Modes.Lockdown)
         {
-            
+            playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_DEFENSE_cpu + "oldreal";
+            _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
+
+            GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
+
+            _player2 = go2.GetComponent<PlayerIdentifier>();
+            _player2.setIds(pid, pid, pid, true);
+            _player2.autoPlayer = go2;
+            _player2.setAutoPlayer(_player2.autoPlayer);
+            players.Add(_player2);
+            pid++;
+        }
+        if (numPlayers > 1 && GameOptions.player2IsCpu && GameOptions.gameModeAllowsCpuShooters)
+        {
+
             if (GameOptions.gameModeSelectedId == Modes.BeatThaComputahs)
             {
                 _playerClone2 = GameOptions.levelsList[GameOptions.levelSelectedIndex].CpuPlayer;
-            }
-            else if(GameOptions.gameModeSelectedId == Modes.Lockdown)
-            {
-                playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_DEFENSE_cpu + "oldreal";
-                _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
             }
             else
             {
                 playerPrefabPath2 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[1];
                 _playerClone2 = Resources.Load(playerPrefabPath2) as GameObject;
-                
+
             }
             GameObject go2 = Instantiate(_playerClone2, _playerSpawnLocation2.transform.position, Quaternion.identity);
 
