@@ -241,14 +241,14 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UtilityFunctions.GetCurrentDeviceHour();
+        //UtilityFunctions.GetCurrentDeviceHour();
 
         StartCoroutine(InitializeDisplay());
         StartCoroutine(SetVersion());
         AnaylticsManager.MenuStartLoaded();
     }
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_EDITOR_OSX
     //#if UNITY_EDITOR
     // Update is called once per frame
     void Update()

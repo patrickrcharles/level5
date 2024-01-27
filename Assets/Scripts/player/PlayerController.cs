@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
             }
 #endif
 
-#if UNITY_STANDALONE || UNITY_EDITOR
+#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
             movementHorizontal = controls.Player.movement.ReadValue<Vector2>().x;
             movementVertical = controls.Player.movement.ReadValue<Vector2>().y;
@@ -443,7 +443,7 @@ public class PlayerController : MonoBehaviour
             canAttack = false;
         }
 
-#if UNITY_STANDALONE || UNITY_EDITOR
+#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_EDITOR_OSX
         //------------------ jump -----------------------------------
         if (controls.Player.jump.triggered
             //&& !controls.Player.shoot.triggered
@@ -528,6 +528,7 @@ public class PlayerController : MonoBehaviour
                 jumpTrigger = true;
             }
         }
+
         else
         {
             // double check touch input not being used
