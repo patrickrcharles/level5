@@ -189,7 +189,6 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnSingleMinion()
     {
-        Debug.Log("spawn");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyMinionPrefabs.Count);
 
