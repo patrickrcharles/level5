@@ -400,17 +400,21 @@ public class LoadManager : MonoBehaviour
 
         string path = "Prefabs/menu_start/level_selected_objects";
         GameObject[] objects = Resources.LoadAll<GameObject>(path) as GameObject[];
-
+        int counter = 0;
         foreach (GameObject obj in objects)
         {
             LevelSelected temp = obj.GetComponent<LevelSelected>();
-            levelList.Add(temp);
+            if(temp.IsSelectable)
+            {
+                levelList.Add((LevelSelected)temp);
+                counter++;
+            }
         }
 
         // sort list by  level id
         levelList.Sort(sortByLevelId);
 
-        if (levelList.Count == objects.Length)
+        if (levelList.Count == counter)
         {
             levelDataLoaded = true;
         }

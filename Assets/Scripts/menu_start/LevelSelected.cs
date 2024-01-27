@@ -17,6 +17,7 @@ public class LevelSelected : MonoBehaviour
     [SerializeField] private bool isBattleRoyalLevel;
     [SerializeField] private bool isCageMatchLevel;
     [SerializeField] private bool customCamera;
+    [SerializeField] private bool isSelectable;
     [SerializeField] private bool isLocked;
     [SerializeField] private GameObject cpuPlayer;
     private Sprite cpuPlayerWinImage;
@@ -58,4 +59,5 @@ public class LevelSelected : MonoBehaviour
     public GameObject CpuPlayer { get => cpuPlayer; set => cpuPlayer = value; }
     public Sprite CpuPlayerWinImage { get => cpuPlayer.GetComponent<CharacterProfile>().winPortrait; set => cpuPlayerWinImage = value; }
     public Sprite CpuPlayerLoseImage { get => cpuPlayer.GetComponent<CharacterProfile>().losePortrait; set => cpuPlayerLoseImage = value; }
+    public bool IsSelectable { get => isSelectable; }
 }
