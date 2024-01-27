@@ -283,7 +283,6 @@ public class AutoPlayerDefense : MonoBehaviour
         }
         if (playerCrossover)
         {
-            Debug.Log("jump delay");
             yield return new WaitForSeconds(jumpDelay);
             yield return new WaitUntil(() => currentState != knockedDownState);
             playerCrossover = false;
