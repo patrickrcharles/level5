@@ -94,7 +94,9 @@ public class PlayerController : MonoBehaviour
 
     // movement variables
     Vector3 movement;
+    [SerializeField]
     float movementHorizontal;
+    [SerializeField]
     float movementVertical;
 
     // touch vars
@@ -137,6 +139,9 @@ public class PlayerController : MonoBehaviour
 
     PlayerControls controls;
     private float terrainYHeight;
+    [SerializeField] private float idleTime;
+    [SerializeField] private float idleStartTime;
+    private bool isLocked;
 
     private void OnEnable()
     {
@@ -271,6 +276,7 @@ public class PlayerController : MonoBehaviour
             movementVertical = controls.Player.movement.ReadValue<Vector2>().y;
 #endif
             movement = new Vector3(movementHorizontal, 0, movementVertical) * (movementSpeed * Time.fixedDeltaTime);
+
             // check jump trigger and execute jump
             if (jumpTrigger)
             {
@@ -305,6 +311,9 @@ public class PlayerController : MonoBehaviour
         // current used to determine movement speed based on animator state. walk, knockedown, moonwalk, idle, attacking, etc
         currentStateInfo = anim.GetCurrentAnimatorStateInfo(0);
         currentState = currentStateInfo.fullPathHash;
+
+        // check if player has been idle long enough to get shot at
+        checkIdleTimeForSniper();
 
         // knocked down
         if (KnockedDown && !Locked)
@@ -553,6 +562,28 @@ public class PlayerController : MonoBehaviour
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
 #endif
+    }
+
+    private void checkIdleTimeForSniper()
+    {
+        if (movementHorizontal == 0 && movementVertical == 0 && Grounded)
+        {
+            idleTime = Time.time - idleStartTime;
+        }
+        else
+        {
+            idleStartTime = Time.time;
+            idleTime = 0;
+        }
+        if (idleTime > 300 && !SniperManager.instance.locked)
+        {
+            SniperManager.instance.locked = true;
+            idleStartTime = Time.time;
+            idleTime = 0;
+            Debug.Log(" kill player");
+            float random = UtilityFunctions.GetRandomFloat(0, 4);
+            StartCoroutine(SniperManager.instance.StartSniperBulletInstantKill(random));
+        }
     }
 
     private void getAnimatorStateHashes()

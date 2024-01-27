@@ -75,7 +75,8 @@ public class PlayerCollisions : MonoBehaviour
         || other.transform.root.name.Contains("snake")
         || GameOptions.sniperEnabled
         || GameOptions.sniperEnabledBullet
-        || GameOptions.sniperEnabledLaser)
+        || GameOptions.sniperEnabledLaser
+        || other.transform.root.name.Contains("projectile_bullet_instantkill_enemy"))
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(playerController.CharacterProfile.Luck)
         && !locked)
