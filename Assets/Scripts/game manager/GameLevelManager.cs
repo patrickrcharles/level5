@@ -92,14 +92,12 @@ public class GameLevelManager : MonoBehaviour
         controls.Player.Enable();
         controls.UINavigation.Enable();
         controls.Other.Enable();
-        //controls.PlayerTouch.Enable();
     }
     private void OnDisable()
     {
         controls.Player.Disable();
         controls.UINavigation.Disable();
         controls.Other.Disable();
-        //controls.PlayerTouch.Disable();
     }
 
     private void Awake()
