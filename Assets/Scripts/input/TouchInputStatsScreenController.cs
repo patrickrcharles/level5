@@ -26,7 +26,7 @@ public class TouchInputStatsScreenController : MonoBehaviour
     [SerializeField]
     GameObject joystickGameObject;
 
-    public static TouchInputController instance;
+    public static TouchInputStatsScreenController instance;
     private GameObject prevSelectedGameObject;
 
     void Awake()
