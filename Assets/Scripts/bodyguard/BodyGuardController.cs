@@ -424,7 +424,7 @@ public class BodyGuardController : MonoBehaviour
             GameObject enemyAttackingPlayer = GameLevelManager.instance.PlayerController1.PlayerAttackQueue.EnemiesQueued[0];
             targetPosition = (enemyAttackingPlayer.transform.position - transform.position).normalized;
             //Debug.Log("enemyAttackingPlayer : " + enemyAttackingPlayer);
-            movement = targetPosition * (movementSpeed * Time.deltaTime);
+            movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
             //movement = targetPosition * (movementSpeed * Time.deltaTime);
             rigidBody.MovePosition(transform.position + movement);
             //transform.Translate(movement);
