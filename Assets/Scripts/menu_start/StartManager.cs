@@ -1419,7 +1419,7 @@ public class StartManager : MonoBehaviour
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
         if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
-        if (GameOptions.cpu1SelectedIndex == 0 && modeSelectedData[modeSelectedIndex].ModeId == Modes.VersusCpu) 
+        if (GameOptions.cpu1SelectedIndex == 0 && (modeSelectedData[modeSelectedIndex].ModeId == Modes.VersusCpu || modeSelectedData[modeSelectedIndex].ModeId == Modes.BeatThaComputahs)); 
         { 
             GameOptions.cpu1SelectedIndex = 1;
             GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName);
