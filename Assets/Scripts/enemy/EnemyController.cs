@@ -478,7 +478,7 @@ public class EnemyController : MonoBehaviour
         {
             targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position - transform.position).normalized;
         }
-        movement = targetPosition * (movementSpeed * Time.deltaTime);
+        movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
         //transform.Translate(movement);
@@ -498,7 +498,7 @@ public class EnemyController : MonoBehaviour
         //{
         //    targetPosition = (GameLevelManager.instance.PlayerController1.PlayerAttackQueue.BodyGuards[0].transform.position - transform.position).normalized;
         //}
-        movement = targetPosition * (movementSpeed * Time.deltaTime);
+        movement = targetPosition * (movementSpeed * Time.fixedDeltaTime);
         //movement = targetPosition * (movementSpeed * Time.deltaTime);
         rigidBody.MovePosition(transform.position + movement);
         //transform.Translate(movement);
