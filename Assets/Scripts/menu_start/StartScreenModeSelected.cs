@@ -10,9 +10,6 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private string modeObjectName;
     [SerializeField] private string modeDescription;
 
-    [SerializeField] private bool modeIsContinous;
-    [SerializeField] private bool modeRequires;
-
     [SerializeField] private bool modeRequiresCounter;
     [SerializeField] private bool modeRequiresCountDown;
 
@@ -27,11 +24,8 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private float customTimer;
 
     [SerializeField] private bool modeRequiresMoneyBall;
-
     [SerializeField] private bool modeRequiresConsecutiveShots;
-
     [SerializeField] private string highScoreField;
-
     [SerializeField] private bool arcadeModeActive;
     [SerializeField] private bool enemiesOnlyEnabled;
     [SerializeField] private bool isBattleRoyal;
@@ -39,21 +33,6 @@ public class StartScreenModeSelected : MonoBehaviour
     [SerializeField] private bool gameModeRequiresPlayerSurvive;
     [SerializeField] private bool gameModeRequiresBasketball;
     [SerializeField] private bool gameModeAllowsCpuShooters;
-
-    [SerializeField] private List<string> levels;
-    [SerializeField] private List<string> levelCpuPlayer;
-
-    private void Awake()
-    {
-        setVslevels();
-    }
-
-    private void setVslevels()
-    {
-        levels.Add(Constants.SCENE_NAME_level_01_scrapyard);
-        levels.Add(Constants.SCENE_NAME_level_02_circlek);
-        levels.Add(Constants.SCENE_NAME_level_03_snow);
-    }
 
     public bool EnemiesOnlyEnabled => enemiesOnlyEnabled;
 
@@ -68,17 +47,13 @@ public class StartScreenModeSelected : MonoBehaviour
     {
         get => modeRequiresShotMarkers4s;
     }
-
-
     public bool ModeRequiresCounter
     {
         get => modeRequiresCounter;
     }
-
     public bool ModeRequiresCountDown
     {
         get => modeRequiresCountDown;
-
     }
 
     public int ModeId
