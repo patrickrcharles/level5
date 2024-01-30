@@ -282,7 +282,7 @@ namespace Assets.Scripts.database
                 model.p1IsCpu = 99;
             }
             //player2
-            if (GameOptions.numPlayers > 1 && GameOptions.gameModeSelectedId != 27)
+            if (GameOptions.numPlayers > 1 && GameOptions.gameModeSelectedId != Modes.Lockdown)
             {
                 model.p2TotalPoints = pi[1].gameStats.TotalPoints;
                 model.secondPlace = pi[1].characterProfile.PlayerDisplayName;
