@@ -1418,9 +1418,14 @@ public class StartManager : MonoBehaviour
 
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
-        if (GameOptions.cpu1SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); }
-        if (GameOptions.cpu1SelectedIndex == 0 && (modeSelectedData[modeSelectedIndex].ModeId == Modes.VersusCpu || modeSelectedData[modeSelectedIndex].ModeId == Modes.BeatThaComputahs)); 
+        if (GameOptions.cpu1SelectedIndex != 0) 
         { 
+            GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); 
+        }
+        if (GameOptions.cpu1SelectedIndex == 0 
+            && GameOptions.characterObjectNames.Count == 1
+            && (modeSelectedData[modeSelectedIndex].ModeId == Modes.VersusCpu || modeSelectedData[modeSelectedIndex].ModeId == Modes.BeatThaComputahs))
+        {
             GameOptions.cpu1SelectedIndex = 1;
             GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName);
         }
@@ -1428,6 +1433,7 @@ public class StartManager : MonoBehaviour
         if (GameOptions.cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
 
         GameOptions.numPlayers = GameOptions.characterObjectNames.Count;
+
         GameOptions.levelsList = PlayerData.instance.LevelsList;
 
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
