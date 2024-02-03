@@ -22,8 +22,12 @@ namespace Assets.Scripts.Utility
                 return false;
             }
         }
+        public static DateTime GetCurrentDeviceHour()
+        {
             Debug.Log(DateTime.Now.Hour.ToString());
             Debug.Log(DateTime.Now.Minute.ToString());
+            return DateTime.Now;
+        }
         public static string RemoveWhitespace(string str)
         {
             return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
