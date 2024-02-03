@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TouchPhase = UnityEngine.TouchPhase;
 
-#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
+
 public class TouchInputController : MonoBehaviour
 {
 
@@ -54,8 +54,9 @@ public class TouchInputController : MonoBehaviour
     PlayerController playerController;
 
     GameObject joystickGameObject;
-
     public bool HoldDetected { get => hold1Detected; set => hold1Detected = value; }
+
+    #if UNITY_ANDROID || UNITY_IOS 
     private void Awake()
     {
         instance = this;
@@ -137,9 +138,10 @@ public class TouchInputController : MonoBehaviour
             {
                 tap2Detected = false;
             }
-            if (tap2Detected)
+            if (tap2Detected && !tap1Detected)
             {
                playerController.TouchControlJumpOrShoot(touch2.position);
+                //tap2Detected = false;
             }
 
             //Touch 2 is tap + hold detected + bottom right screen
@@ -201,7 +203,7 @@ public class TouchInputController : MonoBehaviour
         if (tap1Detected && !GameOptions.EnemiesOnlyEnabled)
         {
             playerController.TouchControlJumpOrShoot(touch1.position);
-            tap1Detected = false;
+            //tap1Detected = false;
         }
 
         // ====================== touch 1 : Paused  =====================================
@@ -358,5 +360,6 @@ public class TouchInputController : MonoBehaviour
         swipeUpTolerance = Screen.height / 7;
         swipeDownTolerance = Screen.height / 5;
     }
+    #endif
 }
-#endif
+
