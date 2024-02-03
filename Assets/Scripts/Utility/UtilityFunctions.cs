@@ -22,6 +22,8 @@ namespace Assets.Scripts.Utility
                 return false;
             }
         }
+            Debug.Log(DateTime.Now.Hour.ToString());
+            Debug.Log(DateTime.Now.Minute.ToString());
         public static string RemoveWhitespace(string str)
         {
             return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
