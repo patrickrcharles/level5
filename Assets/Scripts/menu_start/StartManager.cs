@@ -1067,17 +1067,21 @@ public class StartManager : MonoBehaviour
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
             friendSelectOptionImage.sprite = friendSelectedData[friendSelectedIndex].CheerleaderPortrait;
 
-            StartMenuUiObjects.instance.column3_friend_selected_stats_numbers_text.text = // friendSelectedData[friendSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
-               "->" + (playerSelectedData[playerSelectedIndex].Accuracy3Pt + friendSelectedData[friendSelectedIndex].bonus3Accuracy).ToString("F0") + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Accuracy4Pt + friendSelectedData[friendSelectedIndex].bonus4Accuracy).ToString("F0") + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Accuracy7Pt + friendSelectedData[friendSelectedIndex].bonus7Accuracy).ToString("F0") + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Release + friendSelectedData[friendSelectedIndex].bonusRelease).ToString("F0") + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Range + friendSelectedData[friendSelectedIndex].bonusRange).ToString("F0") + "\n"
-                + "\n"
-                //+ "->" + (playerSelectedData[playerSelectedIndex].calculateSpeedToPercent() + friendSelectedData[friendSelectedIndex].bonusSpeed).ToString("F0") + "\n"
-                + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Luck + friendSelectedData[friendSelectedIndex].bonusLuck).ToString("F0") + "\n"
-                + "->" + (playerSelectedData[playerSelectedIndex].Clutch + friendSelectedData[friendSelectedIndex].bonusClutch).ToString("F0");
+            if (friendSelectedIndex > 0)
+            {
+                StartMenuUiObjects.instance.column3_friend_selected_stats_numbers_text.text = // friendSelectedData[friendSelectedIndex].Accuracy2Pt.ToString("F0") + "\n"
+                   "+" +  friendSelectedData[friendSelectedIndex].bonus3Accuracy.ToString("F0") + "\n"
+                    + "+" +  friendSelectedData[friendSelectedIndex].bonus4Accuracy.ToString("F0") + "\n"
+                    + "+" +  friendSelectedData[friendSelectedIndex].bonus7Accuracy.ToString("F0") + "\n"
+                    + "+" + friendSelectedData[friendSelectedIndex].bonusRelease.ToString("F0") + "\n"
+                    + "+" + friendSelectedData[friendSelectedIndex].bonusRange.ToString("F0") + "\n"
+                    + "\n"
+                    //+ "+" + (playerSelectedData[playerSelectedIndex].calculateSpeedToPercent() + friendSelectedData[friendSelectedIndex].bonusSpeed).ToString("F0") + "\n"
+                    + "\n"
+                    + "+" + friendSelectedData[friendSelectedIndex].bonusLuck.ToString("F0") + "\n"
+                    + "+" +  friendSelectedData[friendSelectedIndex].bonusClutch.ToString("F0");
+            }
+            else { StartMenuUiObjects.instance.column3_friend_selected_stats_numbers_text.text = "";  }
 
             friendSelectOptionText = GameObject.Find(FriendSelectOptionButtonName).GetComponent<Text>();
             friendSelectOptionText.text = friendSelectedData[friendSelectedIndex].CheerleaderDisplayName;
