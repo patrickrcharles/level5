@@ -447,7 +447,7 @@ public class BasketBall : MonoBehaviour
         // if no mods, cheerleader action
         if (accuracyModifierX == 0 && accuracyModifierY == 0 && accuracyModifierZ == 0)
         {
-            if (BehaviorNpcCritical.instance != null)
+            if (BehaviorNpcCritical.instance != null && !playerController.isCPU)
             {
                 BehaviorNpcCritical.instance.playAnimationCriticalSuccesful();
             }
