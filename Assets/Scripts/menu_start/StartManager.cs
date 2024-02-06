@@ -1444,6 +1444,9 @@ public class StartManager : MonoBehaviour
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
         if (hardcoreEnabled) { EndRoundData.numberOfContinues = 0; }
 
+        //set bonus stats for friend
+        setPlayerFriendBonusStats(friendSelectedData[friendSelectedIndex]);
+
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
         PlayerData.instance.loadStatsFromDatabase();
@@ -1804,6 +1807,17 @@ public class StartManager : MonoBehaviour
             StartMenuUiObjects.instance.column4_cpu_selected_stats_numbers_text.text = "";
         }
         initializeNumPlayersDisplay();
+    }
+
+    private void setPlayerFriendBonusStats(CheerleaderProfile friend)
+    {
+        playerSelectedData[playerSelectedIndex].Accuracy3Pt += friend.bonus3Accuracy;
+        playerSelectedData[playerSelectedIndex].Accuracy4Pt += friend.bonus4Accuracy;
+        playerSelectedData[playerSelectedIndex].Accuracy7Pt += friend.bonus7Accuracy;
+        playerSelectedData[playerSelectedIndex].Release += friend.bonusRelease;
+        playerSelectedData[playerSelectedIndex].Range += friend.bonusRange;
+        playerSelectedData[playerSelectedIndex].Luck += friend.bonusLuck;
+        playerSelectedData[playerSelectedIndex].Clutch += friend.bonusClutch;
     }
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
