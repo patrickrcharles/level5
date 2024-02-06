@@ -1444,8 +1444,16 @@ public class StartManager : MonoBehaviour
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
         if (hardcoreEnabled) { EndRoundData.numberOfContinues = 0; }
 
+        GameOptions.friendBonus3Accuracy += friendSelectedData[friendSelectedIndex].bonus3Accuracy;
+        GameOptions.friendBonus4Accuracy += friendSelectedData[friendSelectedIndex].bonus4Accuracy;
+        GameOptions.friendBonus7Accuracy += friendSelectedData[friendSelectedIndex].bonus7Accuracy;
+        GameOptions.friendBonusRelease += friendSelectedData[friendSelectedIndex].bonusRelease;
+        GameOptions.friendBonusRange += friendSelectedData[friendSelectedIndex].bonusRange;
+        GameOptions.friendBonusLuck += friendSelectedData[friendSelectedIndex].bonusLuck;
+        GameOptions.friendBonusClutch += friendSelectedData[friendSelectedIndex].bonusClutch;
+
         //set bonus stats for friend
-        setPlayerFriendBonusStats(friendSelectedData[friendSelectedIndex]);
+        setPlayerFriendBonusStats();
 
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
@@ -1809,15 +1817,15 @@ public class StartManager : MonoBehaviour
         initializeNumPlayersDisplay();
     }
 
-    private void setPlayerFriendBonusStats(CheerleaderProfile friend)
+    private void setPlayerFriendBonusStats()
     {
-        playerSelectedData[playerSelectedIndex].Accuracy3Pt += friend.bonus3Accuracy;
-        playerSelectedData[playerSelectedIndex].Accuracy4Pt += friend.bonus4Accuracy;
-        playerSelectedData[playerSelectedIndex].Accuracy7Pt += friend.bonus7Accuracy;
-        playerSelectedData[playerSelectedIndex].Release += friend.bonusRelease;
-        playerSelectedData[playerSelectedIndex].Range += friend.bonusRange;
-        playerSelectedData[playerSelectedIndex].Luck += friend.bonusLuck;
-        playerSelectedData[playerSelectedIndex].Clutch += friend.bonusClutch;
+        playerSelectedData[playerSelectedIndex].Accuracy3Pt += GameOptions.friendBonus3Accuracy;
+        playerSelectedData[playerSelectedIndex].Accuracy4Pt += GameOptions.friendBonus4Accuracy;
+        playerSelectedData[playerSelectedIndex].Accuracy7Pt += GameOptions.friendBonus7Accuracy;
+        playerSelectedData[playerSelectedIndex].Release += GameOptions.friendBonusRelease;
+        playerSelectedData[playerSelectedIndex].Range += GameOptions.friendBonusRange;
+        playerSelectedData[playerSelectedIndex].Luck += GameOptions.friendBonusLuck;
+        playerSelectedData[playerSelectedIndex].Clutch += GameOptions.friendBonusClutch;
     }
     // ============================  public var references  ==============================
     // dont think some of these are used, keep an eye on this on refactor
