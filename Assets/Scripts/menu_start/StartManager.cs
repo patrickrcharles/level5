@@ -1422,7 +1422,7 @@ public class StartManager : MonoBehaviour
 
         GameOptions.characterObjectNames = new List<string>();
         GameOptions.characterObjectNames.Add(playerSelectedData[playerSelectedIndex].PlayerObjectName);
-        if (GameOptions.cpu1SelectedIndex != 0) 
+        if (GameOptions.cpu1SelectedIndex != 0 && modeSelectedData[modeSelectedIndex].ModeId != Modes.Lockdown) 
         { 
             GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName); 
         }
@@ -1433,8 +1433,10 @@ public class StartManager : MonoBehaviour
             GameOptions.cpu1SelectedIndex = 1;
             GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu1SelectedIndex].PlayerObjectName);
         }
-        if (GameOptions.cpu2SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu2SelectedIndex].PlayerObjectName); }
-        if (GameOptions.cpu3SelectedIndex != 0) { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
+        if (GameOptions.cpu2SelectedIndex != 0 && modeSelectedData[modeSelectedIndex].ModeId != Modes.Lockdown) 
+        { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu2SelectedIndex].PlayerObjectName); }
+        if (GameOptions.cpu3SelectedIndex != 0 && modeSelectedData[modeSelectedIndex].ModeId != Modes.Lockdown)
+        { GameOptions.characterObjectNames.Add(cpuPlayerSelectedData[GameOptions.cpu3SelectedIndex].PlayerObjectName); }
 
         GameOptions.numPlayers = GameOptions.characterObjectNames.Count;
 
