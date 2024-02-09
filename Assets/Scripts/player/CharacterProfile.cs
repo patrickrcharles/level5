@@ -64,7 +64,7 @@ public class CharacterProfile : MonoBehaviour
         //}
         fadeaway =  level < 50 ? 50 : level;
         InAirSpeed = (float)fadeaway / 100;
-        if (isCpu)
+        if (isCpu && !isDefensiveCpuPlayer)
         {
             intializeCpuShooterStats();
         }
