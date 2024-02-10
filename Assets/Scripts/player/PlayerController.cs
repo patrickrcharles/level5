@@ -235,11 +235,6 @@ public class PlayerController : MonoBehaviour
 
             if (Input.touchCount > 0)
             {
-                //foreach(Touch t in Input.touches)
-                //{
-                //    Debug.Log(t.phase);
-                //    Debug.Log(t.fingerId);
-                //}
                 Touch touch = Input.touches[0];
                 if (touch.phase == TouchPhase.Began)
                 {
