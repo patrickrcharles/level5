@@ -86,11 +86,6 @@ public class AutoPlayerDefense : MonoBehaviour
         jumpForce *= 0.6f;
         speed *= 0.5f;
 #endif
-//#if UNITY_ANDROID || UNITY_IOS
-//        inAirSpeed = 0;
-//        jumpForce *= 0.6f;
-//        speed *= 0.5f;
-//#endif
     }
     void FixedUpdate()
     {
@@ -189,7 +184,8 @@ public class AutoPlayerDefense : MonoBehaviour
         //{
         //    targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
         //}
-        targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
+        //targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
+        targetPosition = LerpByDistance(playerPosition,GameLevelManager.instance.BasketballRimVector, playerGuardingDistance);
         return targetPosition;
     }
     IEnumerator AddDelayToMove(float delay)
