@@ -571,7 +571,7 @@ public class PlayerController : MonoBehaviour
             idleStartTime = Time.time;
             idleTime = 0;
         }
-        if (idleTime > 300 && !SniperManager.instance.locked)
+        if (idleTime > 150 && !SniperManager.instance.locked)
         {
             SniperManager.instance.locked = true;
             idleStartTime = Time.time;
@@ -851,6 +851,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(2);
         playerHealth.IsDead = true;
         rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+
     }
 
     public IEnumerator PlayerStruckByLightning()
@@ -1020,4 +1021,5 @@ public class PlayerController : MonoBehaviour
     public CharacterProfile CharacterProfile { get => characterProfile; set => characterProfile = value; }
     public BasketBall Basketball { get => basketball; set => basketball = value; }
     public bool Disintegrated { get => _disintegrated; set => _disintegrated = value; }
+    public bool KilledOnIdle { get; internal set; }
 }
