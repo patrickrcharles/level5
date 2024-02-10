@@ -104,6 +104,10 @@ public class PlayerCollisions : MonoBehaviour
                 damage = enemyAttackBox.attackDamage;
                 isKnockdown = enemyAttackBox.knockDownAttack;
                 isDisintegrate = enemyAttackBox.disintegrateAttack;
+                if (enemyAttackBox.isKilledOnIdle)
+                {
+                    GameRules.instance.killedOnIdle = true;
+                }
                 if (isDisintegrate)
                 {
                     locked = true;

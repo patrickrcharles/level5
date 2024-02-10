@@ -97,6 +97,8 @@ public class GameRules : MonoBehaviour
     [SerializeField]
     private GameObject _rakesClone;
 
+    public bool killedOnIdle;
+
     private void Awake()
     {
         if (instance == null)
@@ -272,7 +274,7 @@ public class GameRules : MonoBehaviour
             }
             // alert game manager. trigger
             GameLevelManager.instance.GameOver = true;
-            if (gameModeId == Modes.BeatThaComputahs)
+            if (gameModeId == Modes.BeatThaComputahs && !killedOnIdle)
             {
                 GameObject.Find("footer").SetActive(false);
                 DBConnector.instance.savePlayerAllTimeStats(GameLevelManager.instance.Player1.gameStats);
@@ -784,6 +786,13 @@ public class GameRules : MonoBehaviour
     private string GetDisplayText(int modeId)
     {
         string displayText = "";
+        if (killedOnIdle)
+        {
+            displayText = "You dead bruh";
+            displayScoreText.alignment = (TextAnchor)TextAlignment.Center;
+            displayScoreText.fontSize = 150;
+            return displayText;
+        }
 
         if (gameModeId == 1)
         {
