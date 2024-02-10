@@ -172,54 +172,6 @@ public class cameraUpdater : MonoBehaviour
         //{
         //    zoomIn();
         //
-
-    }
-
-    void FixedUpdate()
-    {
-        if (GameLevelManager.instance != null)
-        {
-            playerDistanceFromRimX = basketBallRim.x - player.transform.position.x;
-            playerDistanceFromRimZ = Math.Abs(player.transform.position.z);
-        }
-
-        //if (!CameraManager.instance.CameraOnGoalAllowed && onGoalCameraEnabled)
-        //{
-        //    CameraManager.instance.Cameras[CameraManager.instance.CameraOnGoalIndex].SetActive(false);
-        //    onGoalCameraEnabled = false;
-        //}
-
-        //// * note change var to player distance because each camera is in a different spot
-        //if (Math.Abs(playerDistanceFromRimX) > 8.5f && !onGoalCameraEnabled
-        //    && CameraManager.instance.CameraOnGoalAllowed)
-        //{
-        //    toggleCameraOnGoal();
-        //}
-
-        //if (Math.Abs(playerDistanceFromRimX) < 8.5f && onGoalCameraEnabled
-        //    && CameraManager.instance.CameraOnGoalAllowed)
-        //{
-        //    toggleCameraOnGoal();
-        //}
-        if (isLockOnGoalCamera && !sniperCamera)
-        {
-            transform.position = basketBallRim + lockOnGoalCameraOffset;
-        }
-
-        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
-        {
-            // * note change var to player distance because each camera is in a different spot
-            if ((playerDistanceFromRimX < -7 || playerDistanceFromRimX > 7)
-                && !((playerDistanceFromRimX < -8 || playerDistanceFromRimX > 8)))
-            {
-                updatePositionNearGoal();
-            }
-            else
-            {
-                updatePositionOnPlayer();
-            }
-        }
-
         if ((player != null) && isOrthoGraphic && !isFollowBallCamera && !isLockOnGoalCamera)
         {
             if (!sniperCamera)
@@ -251,6 +203,30 @@ public class cameraUpdater : MonoBehaviour
                      transform.position.z);
             }
         }
+
+    }
+
+    void FixedUpdate()
+    {
+        if (isLockOnGoalCamera && !sniperCamera)
+        {
+            transform.position = basketBallRim + lockOnGoalCameraOffset;
+        }
+
+        if ((player != null) && mainPerspectiveCamActive && !isFollowBallCamera && !isLockOnGoalCamera)
+        {
+            // * note change var to player distance because each camera is in a different spot
+            if ((playerDistanceFromRimX < -7 || playerDistanceFromRimX > 7)
+                && !((playerDistanceFromRimX < -8 || playerDistanceFromRimX > 8)))
+            {
+                updatePositionNearGoal();
+            }
+            else
+            {
+                updatePositionOnPlayer();
+            }
+        }
+
     }
 
     public void toggleCameraOnGoal()
@@ -287,7 +263,7 @@ public class cameraUpdater : MonoBehaviour
         if (smoothCameraMotion)
         {
             Vector3 desiredPosition = targetPosition;
-            Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.deltaTime);
+            Vector3 smoothedPosition = Vector3.Lerp(gameObject.transform.position, targetPosition, smoothSpeed * Time.fixedDeltaTime);
             transform.position = smoothedPosition;
         }
         else
