@@ -4,10 +4,12 @@ public class CollisionCheckDefense : MonoBehaviour
 {
     [SerializeField] AutoPlayerDefense autoPlayerDefense;
     [SerializeField] bool isLocked;
+    [SerializeField] GameStats gameStats;
 
     private void Start()
     {
         autoPlayerDefense = GetComponentInParent<AutoPlayerDefense>();
+        gameStats = autoPlayerDefense.playerIdentifier.gameStats;
     }
 
     private void Update()
@@ -27,6 +29,7 @@ public class CollisionCheckDefense : MonoBehaviour
         {
             isLocked = true;
             autoPlayerDefense.blockedShots++;
+            gameStats.blockedShots++;
             Debug.Log("shot blocked");
         }
     }

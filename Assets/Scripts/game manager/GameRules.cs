@@ -838,6 +838,11 @@ public class GameRules : MonoBehaviour
         {
             displayText = "You scored " + gameStats1.TotalPoints + " total points\n\n" + GetStatsTotals();
         }
+        if (gameModeId == 27)
+        {
+            displayText = "You scored " + gameStats1.TotalPoints + " total points\nYou were blocked " 
+                + gameStats1.blockedShots + " times \n\n" + GetStatsTotals();
+        }
         if (gameModeId == 20)
         {
             displayText = "You Bashed up " + gameStats1.EnemiesKilled + " nerds"
