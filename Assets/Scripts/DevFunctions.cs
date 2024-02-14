@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Utility;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +52,10 @@ public class DevFunctions : MonoBehaviour
         if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha8))
         {
             Shrinkplayer();
+        }
+        if (GameLevelManager.instance.Controls.Other.change.enabled && Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartCoroutine( LoadGame.LoadDevLevelVersus(1));
         }
     }
 

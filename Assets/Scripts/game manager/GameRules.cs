@@ -210,6 +210,12 @@ public class GameRules : MonoBehaviour
             displayOtherMessageText.text = "";
         }
 
+        if (killedOnIdle)
+        {
+            //Load dev after 5 seconds
+            StartCoroutine( LoadGame.LoadDevLevelVersus(5));
+        }
+
         // game over. pause / display end game / save
         if ((gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled)
         {
