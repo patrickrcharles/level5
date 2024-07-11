@@ -47,12 +47,12 @@ namespace Assets.Scripts.restapi
             //{
             //serialize highscore to json for HTTP POST
             string toJson = JsonUtility.ToJson(score);
-
+            Debug.Log(toJson);
             HttpWebResponse httpResponse = null;
             HttpStatusCode statusCode;
             try
             {
-                //Debug.Log("try...post single score");
+                Debug.Log("try...post single score");
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
                 httpWebRequest.Timeout = timeout;
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
@@ -62,7 +62,7 @@ namespace Assets.Scripts.restapi
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string json = toJson;
-                    //Debug.Log("json : " + json);
+                    Debug.Log("json : " + json);
                     streamWriter.Write(json);
                     streamWriter.Flush();
                 }
@@ -201,90 +201,213 @@ namespace Assets.Scripts.restapi
         // return false if status code != 200 ok
         public static void PostUnsubmittedHighscores(List<HighScoreModel> highscores)
         {
+
+
             //Debug.Log("PostUnsubmittedHighscores");
             //Debug.Log(DBHelper.instance.DatabaseLocked);
             //Debug.Log(apiLocked);
+            //// wait for database operations
+            ////yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
+            ////DBHelper.instance.DatabaseLocked = true;
+
+            //// wait for api operations
+            ////yield return new WaitUntil(() => !apiLocked);
+            //Debug.Log("PostUnsubmittedHighscores");
+            ////foreach (HighScoreModel score in highscores)
+            ////{
+            ////    Debug.Log("highscores : "+ score);
+            ////}
+            ////bool locked = false;
+            //foreach (HighScoreModel score in highscores)
+            //{
+            //    score.Userid = GameOptions.userid;
+            //    score.UserName = GameOptions.userName;
+            //    //yield return new WaitUntil(() => locked = false);
+            //    //locked = true;
+            //    //serialize highscore to json for HTTP POST
+            //    string toJson = JsonUtility.ToJson(score);
+
+            //    HttpWebResponse httpResponse = null;
+            //    HttpStatusCode statusCode;
+            //    //Debug.Log("highscores : " + score.Date);
+            //    try
+            //    {
+            //        Debug.Log("highscores : " + score.Date);
+            //        var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScoresUnsubmitted) as HttpWebRequest;
+            //        httpWebRequest.Timeout = timeout;
+            //        httpWebRequest.ContentType = "application/json; charset=utf-8";
+            //        httpWebRequest.Method = "POST";
+            //        httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+            //        //post
+            //        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            //        {
+            //            Debug.Log("post");
+            //            string json = toJson;
+            //            Debug.Log("json : " + json);
+            //            streamWriter.Write(json);
+            //            Debug.Log("streamWriter.Write(json);");
+            //            streamWriter.Flush();
+            //            Debug.Log("streamWriter.Flush();");
+            //        }
+            //        // response
+            //        httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            //        Debug.Log("httpResponse : "+ httpResponse);
+            //        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //        {
+            //            var result = streamReader.ReadToEnd();
+            //            Debug.Log(result);
+            //        }
+            //    }
+            //    // on web exception
+            //    catch (WebException e)
+            //    {
+            //        httpResponse = (HttpWebResponse)e.Response;
+            //        Debug.Log("----------------- WEB EXCEPTION : " + e );
+            //        //unlock api + database
+            //        apiLocked = false;
+            //        DBHelper.instance.DatabaseLocked = false;
+            //    }
+            //    statusCode = httpResponse.StatusCode;
+            //    // if successful
+            //    if (httpResponse.StatusCode == HttpStatusCode.Created)
+            //    {
+            //        Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+            //        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+            //        apiLocked = false;
+            //        DBHelper.instance.DatabaseLocked = false;
+            //    }
+            //    // failed
+            //    else
+            //    {
+            //        // if conflict (scoreid already exists in database)
+            //        if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+            //        {
+            //            Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+            //            DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+            //            apiLocked = false;
+            //            DBHelper.instance.DatabaseLocked = false;
+            //        }
+            //        else
+            //        {
+            //            //unlock api + database
+            //            DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
+            //            apiLocked = false;
+            //            DBHelper.instance.DatabaseLocked = false;
+            //        }
+            //    }
+            //    //locked = false;
+            //}
+
+
+            Debug.Log("PostUnsubmittedHighscores");
+            Debug.Log(DBHelper.instance.DatabaseLocked);
+            Debug.Log(apiLocked);
             // wait for database operations
             //yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
-            //DBHelper.instance.DatabaseLocked = true;
+            DBHelper.instance.DatabaseLocked = true;
 
             // wait for api operations
             //yield return new WaitUntil(() => !apiLocked);
             Debug.Log("PostUnsubmittedHighscores");
+            //foreach (HighScoreModel score in highscores)
+            //{
+            //    Debug.Log("highscores : "+ score);
+            //}
             //bool locked = false;
             foreach (HighScoreModel score in highscores)
             {
+                Debug.Log(score.Scoreid);
                 score.Userid = GameOptions.userid;
                 score.UserName = GameOptions.userName;
-                //yield return new WaitUntil(() => locked = false);
-                //locked = true;
-                //serialize highscore to json for HTTP POST
-                string toJson = JsonUtility.ToJson(score);
+            }
+            //yield return new WaitUntil(() => locked = false);
+            //locked = true;
+            //serialize highscore to json for HTTP POST
+            //string toJson = JsonUtility.ToJson(highscores);
+            //string toJson = JsonUtility.ToJson(highscores);
+            string toJson = JsonConvert.SerializeObject(highscores, Formatting.Indented);
 
-                HttpWebResponse httpResponse = null;
-                HttpStatusCode statusCode;
+            HttpWebResponse httpResponse = null;
+            HttpStatusCode statusCode;
+            Debug.Log("highscores : " + toJson);
 
-                try
+
+            try
+            {
+                //HttpClient client = new HttpClient();
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //client.DefaultRequestHeaders.Authorization =
+                //new AuthenticationHeaderValue("Bearer", bearerToken);
+                Debug.Log("highscores : " + toJson);
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScoresUnsubmitted) as HttpWebRequest;
+                httpWebRequest.Timeout = timeout;
+                httpWebRequest.ContentType = "application/json; charset=utf-8";
+                httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
+                httpWebRequest.Accept = "application/json";
+                //post
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.API_ADDRESS_DEV_publicApiHighScores) as HttpWebRequest;
-                    httpWebRequest.Timeout = timeout;
-                    httpWebRequest.ContentType = "application/json; charset=utf-8";
-                    httpWebRequest.Method = "POST";
-                    httpWebRequest.Headers.Add("Authorization", "Bearer " + bearerToken);
-                    //post
-                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                    {
-                        string json = toJson;
 
-                        streamWriter.Write(json);
-                        streamWriter.Flush();
-                    }
-                    // response
-                    httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                    {
-                        var result = streamReader.ReadToEnd();
-                        //Debug.Log(result);
-                    }
+                    streamWriter.Write(toJson);
+                    Debug.Log("streamWriter.Write(toJson);");
+                    streamWriter.Flush();
+                    Debug.Log("streamWriter.Flush();");
                 }
-                // on web exception
-                catch (WebException e)
+                Debug.Log("post");
+                string json = toJson;
+                Debug.Log("json : " + toJson);
+                //var content = new StringContent(toJson, Encoding.UTF8, "application/json");
+                //var result = client.PostAsync(Constants.API_ADDRESS_DEV_publicApiHighScoresUnsubmitted, content).Result;
+                // response
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                //Debug.Log("result : " + result);
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    httpResponse = (HttpWebResponse)e.Response;
-                    //unlock api + database
+                    var result = streamReader.ReadToEnd();
+                    Debug.Log(result);
+                }
+            }
+            // on web exception
+            catch (WebException e)
+            {
+                httpResponse = (HttpWebResponse)e.Response;
+                Debug.Log("----------------- WEB EXCEPTION : " + e);
+                //unlock api + database
+                apiLocked = false;
+                DBHelper.instance.DatabaseLocked = false;
+            }
+            statusCode = httpResponse.StatusCode;
+            // if successful
+            if (httpResponse.StatusCode == HttpStatusCode.Created)
+            {
+                Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
+                //DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
+                apiLocked = false;
+                DBHelper.instance.DatabaseLocked = false;
+            }
+            // failed
+            else
+            {
+                // if conflict (scoreid already exists in database)
+                if (httpResponse.StatusCode == HttpStatusCode.Conflict)
+                {
+                    Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
+                    //DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
-                statusCode = httpResponse.StatusCode;
-                // if successful
-                if (httpResponse.StatusCode == HttpStatusCode.Created)
-                {
-                    //Debug.Log("----------------- HTTP POST successful : " + (int)statusCode + " " + statusCode);
-                    DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
-                    apiLocked = false;
-                    DBHelper.instance.DatabaseLocked = false;
-                }
-                // failed
                 else
                 {
-                    // if conflict (scoreid already exists in database)
-                    if (httpResponse.StatusCode == HttpStatusCode.Conflict)
-                    {
-                        //Debug.Log("----------------- HTTP POST failed : scoreid already exists : " + (int)statusCode + " " + statusCode);
-                        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, true);
-                        apiLocked = false;
-                        DBHelper.instance.DatabaseLocked = false;
-                    }
-                    else
-                    {
-                        //unlock api + database
-                        DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
-                        apiLocked = false;
-                        DBHelper.instance.DatabaseLocked = false;
-                    }
+                    //unlock api + database
+                    //DBHelper.instance.setGameScoreSubmitted(score.Scoreid, false);
+                    apiLocked = false;
+                    DBHelper.instance.DatabaseLocked = false;
                 }
-                //locked = false;
             }
+            //locked = false;
+            //}
+
         }
 
         // -------------------------------------- HTTTP PUT Highscore -------------------------------------------
@@ -507,7 +630,7 @@ namespace Assets.Scripts.restapi
             HttpStatusCode statusCode;
 
             //fighting modes
-            if(modeid > 19 && modeid < 23)
+            if (modeid > 19 && modeid < 23)
             {
                 enemies = 1;
             }
@@ -965,7 +1088,7 @@ namespace Assets.Scripts.restapi
             {
                 userReport.UserId = GameOptions.userid;
                 userReport.UserName = GameOptions.userName;
-   
+
             }
             else
             {
@@ -1107,7 +1230,7 @@ namespace Assets.Scripts.restapi
                     apiLocked = false;
                     DBHelper.instance.DatabaseLocked = false;
                 }
-          
+
 
                 yield return new WaitUntil(() => !apiLocked);
                 yield return new WaitUntil(() => !DBHelper.instance.DatabaseLocked);
