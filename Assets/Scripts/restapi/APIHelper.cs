@@ -308,7 +308,7 @@ namespace Assets.Scripts.restapi
 
             // wait for api operations
             //yield return new WaitUntil(() => !apiLocked);
-            Debug.Log("PostUnsubmittedHighscores");
+            Debug.Log("PostUnsubmittedHighscores" + highscores.ToArray());
             //foreach (HighScoreModel score in highscores)
             //{
             //    Debug.Log("highscores : "+ score);
