@@ -446,8 +446,8 @@ public class AutoPlayerController : MonoBehaviour
             finalDirection = directionOfTravel + directionOfTravel.normalized * distance4;
             targetPosition = GameLevelManager.instance.BasketballRimVector + finalDirection;
         }
-        if (((characterProfile.Accuracy7Pt > characterProfile.Accuracy4Pt
-            && characterProfile.Accuracy7Pt > characterProfile.Accuracy3Pt)
+        if (((characterProfile.Accuracy7Pt >= characterProfile.Accuracy4Pt
+            && characterProfile.Accuracy7Pt >= characterProfile.Accuracy3Pt)
             || (GameLevelManager.instance.currentHighScoreTotalPoints - gameStats.TotalPoints) >= 21)
             && cpuShootSevenpointers())
         {
@@ -469,7 +469,6 @@ public class AutoPlayerController : MonoBehaviour
         //Debug.Log("GameLevelManager.instance.BasketballRimVector : " + GameLevelManager.instance.BasketballRimVector);
         //Debug.Log("targetPosition : " + targetPosition);
         //Debug.Log("behind rim : " + ( targetPosition.z < GameLevelManager.instance.BasketballRimVector.z));
-
 
         return targetPosition;
     }

@@ -29,7 +29,6 @@ public static class CpuBaseStats
     {
         easy,
         normal,
-        hard,
-        nightmare
+        hardcore
     }
 }

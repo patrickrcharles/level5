@@ -333,4 +333,5 @@ public class GameStats : MonoBehaviour
     public int SniperShots { get => _sniperShots; set => _sniperShots = value; }
     public int SniperHits { get => _sniperHits; set => _sniperHits = value; }
     public int ConsecutiveShotsMade { get => _consecutiveShotsMade; set => _consecutiveShotsMade = value; }
+    public int blockedShots { get; internal set; }
 }

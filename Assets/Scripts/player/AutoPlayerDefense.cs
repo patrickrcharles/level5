@@ -83,8 +83,8 @@ public class AutoPlayerDefense : MonoBehaviour
         getAnimatorStateHashes();
 #if UNITY_ANDROID || UNITY_IOS
         inAirSpeed = 0;
-        jumpForce *= 0.6f;
-        speed *= 0.5f;
+        //jumpForce *= 0.8f;
+        //speed *= 0.8f;
 #endif
     }
     void FixedUpdate()

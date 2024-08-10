@@ -210,6 +210,12 @@ public class GameRules : MonoBehaviour
             displayOtherMessageText.text = "";
         }
 
+        if (killedOnIdle)
+        {
+            //Load dev after 5 seconds
+            StartCoroutine( LoadGame.LoadDevLevelVersus(5));
+        }
+
         // game over. pause / display end game / save
         if ((gameOver || GameLevelManager.instance.PlayerHealth.IsDead) && !Pause.instance.Paused && gameRulesEnabled)
         {
@@ -837,6 +843,11 @@ public class GameRules : MonoBehaviour
             || gameModeId == 24 || gameModeId == 27)
         {
             displayText = "You scored " + gameStats1.TotalPoints + " total points\n\n" + GetStatsTotals();
+        }
+        if (gameModeId == 27)
+        {
+            displayText = "You scored " + gameStats1.TotalPoints + " total points\nYou were blocked " 
+                + gameStats1.blockedShots + " times \n\n" + GetStatsTotals();
         }
         if (gameModeId == 20)
         {
