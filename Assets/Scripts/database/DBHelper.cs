@@ -1762,8 +1762,8 @@ public class DBHelper : MonoBehaviour
                 {
                     HighScoreModel highscore = new HighScoreModel();
 
-                    //if (reader.IsDBNull(1)) { highscore.Userid = 0; }
-                    //else { highscore.Userid = reader.GetInt32(1); }
+                    if (reader.IsDBNull(0)) { highscore.Id = 0; }
+                    else { highscore.Id = reader.GetInt32(0); }
                     highscore.Scoreid = reader.GetString(1);
                     highscore.Modeid = reader.GetInt32(2);
                     highscore.Characterid = reader.GetInt32(3);

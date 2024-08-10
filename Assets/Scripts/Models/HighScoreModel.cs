@@ -11,7 +11,7 @@ namespace Assets.Scripts.database
     [Serializable]
     public class HighScoreModel
     {
-        //public int Id;
+        public int Id;
         public int Userid;
         public string UserName;
         public int Modeid;
