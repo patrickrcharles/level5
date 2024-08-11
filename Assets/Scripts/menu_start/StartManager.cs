@@ -199,6 +199,7 @@ public class StartManager : MonoBehaviour
 
     bool buttonPressed = false;
     bool dataLoaded = false;
+    bool gameOptionsSet = false;
 
     private void OnEnable()
     {
@@ -314,7 +315,7 @@ public class StartManager : MonoBehaviour
              || controls.Player.shoot.triggered)
             && currentHighlightedButton.Equals(startButtonName))
         {
-            loadGame();
+            StartCoroutine( loadGame());
         }
         // quit button | quit game
         if ((controls.UINavigation.Submit.triggered
@@ -1271,7 +1272,8 @@ public class StartManager : MonoBehaviour
     }
 
     // ============================  footer options activate - load scene/stats/quit/etc ==============================
-    public void loadGame()
+    //public void loadGame()
+    public IEnumerator loadGame()
     {
         // tells character profile to load profile from LoadedData.instance
         GameOptions.gameModeHasBeenSelected = true; 
@@ -1288,8 +1290,9 @@ public class StartManager : MonoBehaviour
         }
 
         // update game options for game mode
+        gameOptionsSet = false;
         setGameOptions();
-       
+        yield return new WaitUntil(()=>gameOptionsSet);
 
         // if player not locked, friend not locked, mode contains 'free', mode not aracde mode
         if (modeSelectedData[modeSelectedIndex].ModeDisplayName.ToLower().Contains("free")
@@ -1445,6 +1448,9 @@ public class StartManager : MonoBehaviour
         EndRoundData.currentRoundPlayerWinnerImage = playerSelectedData[playerSelectedIndex].winPortrait;
         EndRoundData.currentRoundPlayerLoserImage = playerSelectedData[playerSelectedIndex].losePortrait;
         if (hardcoreEnabled) { EndRoundData.numberOfContinues = 0; }
+        if (GameOptions.modeSelectedIndex == Modes.BeatThaComputahs && GameOptions.numCpuPlayers > 1) {
+            GameOptions.numPlayers = GameOptions.characterObjectNames.Count;
+        }
 
         GameOptions.friendBonus3Accuracy += friendSelectedData[friendSelectedIndex].bonus3Accuracy;
         GameOptions.friendBonus4Accuracy += friendSelectedData[friendSelectedIndex].bonus4Accuracy;
@@ -1460,6 +1466,7 @@ public class StartManager : MonoBehaviour
         // load hardcore mode highscores (for ui display) for game mode if hardcore mode enabled
         //Debug.Log("hardcore enabled : "+ GameOptions.hardcoreModeEnabled);
         PlayerData.instance.loadStatsFromDatabase();
+        gameOptionsSet = true;
     }
 
     // ============================  message display ==============================

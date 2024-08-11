@@ -59,7 +59,7 @@ namespace Assets.Scripts.Utility
             GameOptions.characterObjectNames.Add(pi.characterProfile.PlayerObjectName);
             GameOptions.characterObjectNames.Add("pony");
 
-            GameOptions.numPlayers = GameOptions.characterObjectNames.Count;
+            GameOptions.numPlayers = GameOptions.gameModeSelectedId != Modes.BeatThaComputahs ? 2 :  GameOptions.characterObjectNames.Count;
             GameOptions.levelsList = PlayerData.instance.LevelsList;
 
             yield return new WaitForSeconds(seconds);

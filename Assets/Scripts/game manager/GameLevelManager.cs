@@ -107,8 +107,11 @@ public class GameLevelManager : MonoBehaviour
 
         //test 
         //GameOptions.numPlayers = 4;
-        numPlayers = GameOptions.numPlayers;
-        //Debug.Log("numPlayers : " + numPlayers);
+
+        numPlayers = GameOptions.gameModeSelectedId == Modes.BeatThaComputahs ?  2 : GameOptions.numPlayers;
+        GameOptions.numPlayers = numPlayers;
+
+        Debug.Log("numPlayers : " + numPlayers);
         GameOptions.player2IsCpu = true;
         GameOptions.player3IsCpu = true;
         GameOptions.player4IsCpu = true;
@@ -339,6 +342,10 @@ public class GameLevelManager : MonoBehaviour
         {
             numBasketballs = 1;
         }
+        if (GameOptions.gameModeSelectedId == Modes.BeatThaComputahs)
+        {
+            numBasketballs = 2;
+        }
         // player needs basketball reference
         // cpu player needs auto bball ref.
         if (numBasketballs > 1 && GameOptions.gameModeAllowsCpuShooters)
@@ -488,7 +495,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player2);
             pid++;
         }
-        if (numPlayers > 2 && GameOptions.player3IsCpu && GameOptions.gameModeAllowsCpuShooters)
+        if (numPlayers > 2 && GameOptions.player3IsCpu && GameOptions.gameModeAllowsCpuShooters && GameOptions.gameModeSelectedId != Modes.BeatThaComputahs)
         {
             playerPrefabPath3 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[2];
             _playerClone3 = Resources.Load(playerPrefabPath3) as GameObject;
@@ -514,7 +521,7 @@ public class GameLevelManager : MonoBehaviour
             players.Add(_player3);
             pid++;
         }
-        if (numPlayers > 3 && GameOptions.player4IsCpu && GameOptions.gameModeAllowsCpuShooters)
+        if (numPlayers > 3 && GameOptions.player4IsCpu && GameOptions.gameModeAllowsCpuShooters && GameOptions.gameModeSelectedId != Modes.BeatThaComputahs)
         {
             playerPrefabPath4 = Constants.PREFAB_PATH_CHARACTER_cpu + GameOptions.characterObjectNames[3];
             _playerClone4 = Resources.Load(playerPrefabPath4) as GameObject;
