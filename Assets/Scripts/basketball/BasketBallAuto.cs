@@ -616,7 +616,8 @@ public class BasketBallAuto : MonoBehaviour
         {
             shootPercent += clutchBonus;
         }
-        //Debug.Log("shootPercent : " + shootPercent);
+        if (shootPercent > 100) { return 100; }
+        
         return shootPercent;
     }
 
