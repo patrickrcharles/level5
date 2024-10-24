@@ -13,7 +13,7 @@ public class Pause : MonoBehaviour
     [SerializeField]
     private bool paused;
     [SerializeField]
-    private bool startOnPause;
+    private bool startOnPause = false;
 
     //fade texture to obscure background
     [SerializeField]
