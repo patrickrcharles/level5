@@ -355,7 +355,7 @@ public class AutoPlayerController : MonoBehaviour
             stateWalk = false;
             stateIdle = true;
             //positionMarkerCounter++;
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
         }
         if (!stateWalk && distanceToTarget >= 0.05f && !arrivedAtTarget && Grounded)
         {
@@ -401,7 +401,7 @@ public class AutoPlayerController : MonoBehaviour
         if (InAir
             && hasBasketball
             && !GameOptions.EnemiesOnlyEnabled
-            && rigidBody.velocity.y <= 0
+            && rigidBody.linearVelocity.y <= 0
             && (currentState == inAirHasBasketballFrontState || currentState == inAirHasBasketballSideState)
             && !shootTrigger)
         {
@@ -582,7 +582,7 @@ public class AutoPlayerController : MonoBehaviour
 
     public void PlayerJump()
     {
-        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.linearVelocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
 
         Shotmeter.MeterStarted = true;
@@ -726,7 +726,7 @@ public class AutoPlayerController : MonoBehaviour
     }
     void AutoPlayerJump()
     {
-        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.linearVelocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
         Shotmeter.MeterStarted = true;
         Shotmeter.MeterStartTime = Time.time;

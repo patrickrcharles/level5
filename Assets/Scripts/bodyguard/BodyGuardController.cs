@@ -158,7 +158,7 @@ public class BodyGuardController : MonoBehaviour
         {
             stateIdle = true;
             //if idle stop rigidbody
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
         }
         else
         {
@@ -242,7 +242,7 @@ public class BodyGuardController : MonoBehaviour
     {
         if (enemyUsesPhysics)
         {
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY

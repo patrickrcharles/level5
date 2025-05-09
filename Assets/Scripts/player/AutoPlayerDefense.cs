@@ -288,13 +288,13 @@ public class AutoPlayerDefense : MonoBehaviour
             yield return new WaitUntil(() => currentState != knockedDownState);
             playerCrossover = false;
 
-            rigidBody.velocity = Vector3.up * jumpForce;
+            rigidBody.linearVelocity = Vector3.up * jumpForce;
             yield return new WaitUntil(() => player.playerController.Grounded);
             isLocked = false;
         }
         else
         {
-            rigidBody.velocity = Vector3.up * jumpForce;
+            rigidBody.linearVelocity = Vector3.up * jumpForce;
             yield return new WaitUntil(() => player.playerController.Grounded);
             isLocked = false;
         }

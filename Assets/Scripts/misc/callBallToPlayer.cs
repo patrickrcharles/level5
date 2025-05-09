@@ -39,7 +39,7 @@ public class CallBallToPlayer : MonoBehaviour
 
             Vector3 tempDirection = basketballRigidBody.transform.position;
             pullDirection = transform.position - tempDirection;
-            basketballRigidBody.velocity = pullDirection * pullSpeed;
+            basketballRigidBody.linearVelocity = pullDirection * pullSpeed;
         //}
     }
     public void pullBallToPlayerAuto(GameObject basketBallAuto)
@@ -50,7 +50,7 @@ public class CallBallToPlayer : MonoBehaviour
 
             Vector3 tempDirection = basketBallAuto.transform.position;
             pullDirection = transform.position - tempDirection;
-            basketballRigidBody.velocity = pullDirection * pullSpeed;
+            basketballRigidBody.linearVelocity = pullDirection * pullSpeed;
         //}
     }
 }

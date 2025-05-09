@@ -355,7 +355,7 @@ public class PlayerController : MonoBehaviour
         if (controls.Player.run.ReadValue<float>() == 1 //if button is held
             && !InAir
             && !KnockedDown
-            && rigidBody.velocity.magnitude > 0.1f
+            && rigidBody.linearVelocity.magnitude > 0.1f
             && !Locked)
         {
             //running = true;
@@ -707,7 +707,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerJump()
     {
-        rigidBody.velocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.linearVelocity = Vector3.up * characterProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
         if (!GameOptions.battleRoyalEnabled || !GameOptions.EnemiesOnlyEnabled)
         {
