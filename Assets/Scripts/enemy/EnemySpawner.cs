@@ -214,7 +214,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnBoss()
     {
-        Debug.Log("spawn");
+        //Debug.Log("spawn");
         Random random = new Random();
         int randomIndex = random.Next(0, enemyBossPrefabs.Count);
 
