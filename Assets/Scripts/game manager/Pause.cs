@@ -65,7 +65,7 @@ public class Pause : MonoBehaviour
         }
 
 #endif
-        startOnPause = false;
+        //startOnPause = false;
         paused = startOnPause;
         footer = GameObject.Find("footer");
 
