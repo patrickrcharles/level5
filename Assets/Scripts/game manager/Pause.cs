@@ -56,13 +56,16 @@ public class Pause : MonoBehaviour
     void Awake()
     {
         instance = this;
+#if !UNITY_ANDROID
         if (!GameOptions.battleRoyalEnabled && !GameOptions.cageMatchEnabled)
         {
             startOnPause = true;
             paused = true;
             Time.timeScale = 0;
         }
-        
+
+#endif
+        startOnPause = false;
         paused = startOnPause;
         footer = GameObject.Find("footer");
 
