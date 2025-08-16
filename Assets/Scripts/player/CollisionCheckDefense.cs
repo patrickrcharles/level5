@@ -30,16 +30,17 @@ public class CollisionCheckDefense : MonoBehaviour
             isLocked = true;
             autoPlayerDefense.blockedShots++;
             gameStats.blockedShots++;
+            gameStats.ShotAttempt++;
             Debug.Log("shot blocked");
         }
     }
 
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("basketball") 
-            && gameObject.CompareTag("cpuDefenseBlockBox"))
-        {
-            isLocked = false;
-        }
-    }
+    //public void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("basketball")
+    //        && gameObject.CompareTag("cpuDefenseBlockBox"))
+    //    {
+    //        isLocked = false;
+    //    }
+    //}
 }
