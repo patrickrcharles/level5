@@ -95,7 +95,7 @@ public class BehaviorNpcAutonomous : MonoBehaviour
         navmeshAgent.speed = movementSpeed;
         if (rigidBody != null)
         {
-            anim.SetFloat("speed", rigidBody.velocity.sqrMagnitude);
+            anim.SetFloat("speed", rigidBody.linearVelocity.sqrMagnitude);
         }
         ////check if walking
         ////  function will flip sprite if needed

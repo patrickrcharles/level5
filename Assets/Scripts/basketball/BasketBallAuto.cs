@@ -142,9 +142,9 @@ public class BasketBallAuto : MonoBehaviour
         CheckIsBallFacingGoalAuto();
         if (!GameOptions.EnemiesOnlyEnabled)
         {
-            if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
+            if (rigidbody.linearVelocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
             {
-                rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
+                rigidbody.linearVelocity = rigidbody.linearVelocity.normalized * maxBasketballSpeed;
             }
             // drop shadow lock to bball transform on the ground
             dropShadow.transform.position = new Vector3(transform.root.position.x, 0.01f, transform.root.position.z);
@@ -180,15 +180,15 @@ public class BasketBallAuto : MonoBehaviour
     public void CheckIsBallFacingGoalAuto()
     {
         //Debug.Log("+++++++++++++++++++++speed :"+rigidbody.velocity.sqrMagnitude);
-        anim.SetFloat("speed", rigidbody.velocity.sqrMagnitude);
+        anim.SetFloat("speed", rigidbody.linearVelocity.sqrMagnitude);
         //bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - rigidbody.position.x;
 
-        if (rigidbody.velocity.x > 0 && !facingRight)
+        if (rigidbody.linearVelocity.x > 0 && !facingRight)
         {
             Flip();
         }
 
-        if (rigidbody.velocity.x < 0f && facingRight)
+        if (rigidbody.linearVelocity.x < 0f && facingRight)
         {
             Flip();
         }
@@ -514,7 +514,7 @@ public class BasketBallAuto : MonoBehaviour
         Vector3 globalVelocity = transform.TransformDirection(localVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
-        rigidbody.velocity = globalVelocity;
+        rigidbody.linearVelocity = globalVelocity;
 
         autoPlayerController.hasBasketball = false;
         autoPlayerController.SetPlayerAnim("hasBasketball", false);

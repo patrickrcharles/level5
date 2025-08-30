@@ -196,7 +196,7 @@ public class RacingVehicleController : MonoBehaviour
             }
             if ((RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 0
                 //&& RacingGameManager.instance.Controls.Player.run.ReadValue<float>() > 1
-                && rigidBody.velocity.magnitude > 0
+                && rigidBody.linearVelocity.magnitude > 0
                 && movementSpeed > vehicleProfile.Speed)
                 || KnockedDown)
             {
@@ -300,7 +300,7 @@ public class RacingVehicleController : MonoBehaviour
         if (RacingGameManager.instance.Controls.Player.run.ReadValue<float>() == 1 //if button is held
             && !InAir
             && !KnockedDown
-            && rigidBody.velocity.magnitude > 0.1f
+            && rigidBody.linearVelocity.magnitude > 0.1f
             && !Locked)
         {
             //running = true;
@@ -337,7 +337,7 @@ public class RacingVehicleController : MonoBehaviour
         // ----- control speed based on commands----------
         // idle, walk, walk with ball state
         if (/*currentState == idleState || currentState == walkState || currentState == bIdle*/
-            rigidBody.velocity.magnitude == 0
+            rigidBody.linearVelocity.magnitude == 0
             && !InAir
             && !KnockedDown)
         {
@@ -573,7 +573,7 @@ public class RacingVehicleController : MonoBehaviour
 
     public void PlayerJump()
     {
-        rigidBody.velocity = Vector3.up * vehicleProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
+        rigidBody.linearVelocity = Vector3.up * vehicleProfile.JumpForce; //+ (Vector3.forward * rigidBody.velocity.x)) 
         //jumpStartTime = Time.time;
 
         //Shotmeter.MeterStarted = true;

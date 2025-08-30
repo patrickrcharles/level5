@@ -110,9 +110,9 @@ public class BasketBall : MonoBehaviour
         // get speed for basketball animation
         if (!GameOptions.EnemiesOnlyEnabled)
         {
-            if (rigidbody.velocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
+            if (rigidbody.linearVelocity.magnitude > maxBasketballSpeed && !basketBallState.InAir)
             {
-                rigidbody.velocity = rigidbody.velocity.normalized * maxBasketballSpeed;
+                rigidbody.linearVelocity = rigidbody.linearVelocity.normalized * maxBasketballSpeed;
             }
             // drop shadow lock to bball transform on the ground
             dropShadow.transform.position = new Vector3(transform.root.position.x, Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f, transform.root.position.z);
@@ -146,12 +146,12 @@ public class BasketBall : MonoBehaviour
 
     public void CheckIsBallFacingGoal()
     {
-        anim.SetFloat("speed", rigidbody.velocity.sqrMagnitude);
-        if (rigidbody.velocity.x > 0 && !facingRight)
+        anim.SetFloat("speed", rigidbody.linearVelocity.sqrMagnitude);
+        if (rigidbody.linearVelocity.x > 0 && !facingRight)
         {
             Flip();
         }
-        if (rigidbody.velocity.x < 0f && facingRight)
+        if (rigidbody.linearVelocity.x < 0f && facingRight)
         {
             Flip();
         }
@@ -474,7 +474,7 @@ public class BasketBall : MonoBehaviour
         //Debug.Log("globalVelocity : " + globalVelocity);
 
         // launch the object by setting its initial velocity and flipping its state
-        rigidbody.velocity = globalVelocity;
+        rigidbody.linearVelocity = globalVelocity;
         playerController.hasBasketball = false;
         playerController.SetPlayerAnim("hasBasketball", false);
 

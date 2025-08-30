@@ -82,7 +82,7 @@ public class PlayerDunk : MonoBehaviour
 
         // move ball above rim
         Vector3 temp = basketBallState.BasketBallTarget.transform.position;
-        basketBall.Rigidbody.velocity = Vector3.zero;
+        basketBall.Rigidbody.linearVelocity = Vector3.zero;
         basketBall.transform.position = new Vector3(temp.x, temp.y, temp.z);
         //reset
         playerController.hasBasketball = false;
@@ -93,7 +93,7 @@ public class PlayerDunk : MonoBehaviour
     void Launch(Vector3 Target)
     {
         playerController.Locked = true;
-        playerController.RigidBody.velocity = Vector3.zero;
+        playerController.RigidBody.linearVelocity = Vector3.zero;
 
         Vector3 projectileXZPos = transform.position;
         Vector3 targetXZPos = Target;
@@ -121,7 +121,7 @@ public class PlayerDunk : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         if (Math.Abs(globalVelocity.y) < 7 && Math.Abs(globalVelocity.z) < 7)
         {
-            playerController.RigidBody.velocity = globalVelocity;
+            playerController.RigidBody.linearVelocity = globalVelocity;
             playerController.PlayAnim("inair_dunk");
         }
 

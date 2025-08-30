@@ -193,7 +193,7 @@ public class EnemyController : MonoBehaviour
         {
             stateIdle = true;
             //if idle stop rigidbody
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
         }
         else
         {
@@ -281,7 +281,7 @@ public class EnemyController : MonoBehaviour
     {
         if (enemyUsesPhysics)
         {
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY
@@ -303,7 +303,7 @@ public class EnemyController : MonoBehaviour
     {
         if (enemyUsesPhysics)
         {
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationZ
                 | RigidbodyConstraints.FreezeRotationY;
@@ -397,14 +397,14 @@ public class EnemyController : MonoBehaviour
         if (facingRight)
         {
             UnFreezeEnemyPosition();
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
             //apply to X
             RigidBody.AddForce(-knockBackForce, knockBackForce / 2, 0, ForceMode.VelocityChange);
         }
         if (!facingRight)
         {
             UnFreezeEnemyPosition();
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
             RigidBody.AddForce(knockBackForce, knockBackForce / 2, 0, ForceMode.VelocityChange);
         }
         yield return new WaitForSeconds(knockDownTime);
