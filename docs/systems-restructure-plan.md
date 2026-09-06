@@ -395,16 +395,68 @@ type that remains `Assembly-CSharp` directly — `Level5GameplayPlayModeTests.cs
 moved into `Level5.Basketball`), `BasketballVisibilityTests.cs` and `PlayerMovementPhysicsTests.cs`
 (`PlayerController`) — so the asmdef-free workaround is still needed. See the updated 2c status below.
 
-**Running total after slices 1-12:** `Assets/Scripts/basketball`'s 12 production files (source left in
-place, no `.meta` moved) plus `MatchController.cs` (moved, `.meta` intact) plus the 27 files across 10
-leaf assemblies from slices 1-10 (`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`,
-`Level5.Vehicle`, `Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`,
-`Level5.MenuStart`) plus the 4 pre-existing ones (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`,
-`Level5.Audio`) — 16 production runtime assemblies total, out of roughly 218 `.cs` files in
-`Assets/Scripts` before this phase started. The remainder is either `player`/`game manager` themselves
-(still mutually coupled, and still most of what the asmdef-free gameplay PlayMode workaround needs), or
-reaches into that pair (directly or transitively) and so is blocked the same way
-`versus`/`analytics`/`Models/HighScoreModel` were.
+**Slice 13 — `Level5.Versus` (2026-09-06), two files out of `versus`.** `VersusCatalogs.cs` and
+`DefaultCompetitiveRulesets.cs` (`Assets/Scripts/versus/`) are the versus folder's only
+dependency-closed pair: `VersusCatalogs` loads authored `CompetitiveRulesetDefinition` assets from
+`Resources/Versus/Rulesets` and falls back to `DefaultCompetitiveRulesets.CreateAll()` for any id an
+asset doesn't cover; `DefaultCompetitiveRulesets` is the code-authored ruleset registry itself. Their
+only live identifiers are `System.Collections.Generic`, `UnityEngine`, `Level5.Core.Versus`
+(`CompetitiveRulesetCatalog`, `CompetitiveRuleset`, `CompetitiveRulesetDefinition`,
+`VersusDomainException`, `RulesetId`, `ComparisonKey`, `AttemptMetric`, `VersusCapability`) and
+`Level5.Core.Match` (`GameModeId`) — all already in `Level5.Core` — plus each other
+(`VersusCatalogs.Build()` calls `DefaultCompetitiveRulesets.CreateAll()`). Every other file in the
+folder (`ActiveVersusAttempt`, `FileVersusSeriesRepository`, `VersusRuntime`, `VersusLauncher`,
+`VersusMatchReporter`, `GameStatsAttemptResults`) still reaches `ActiveMatch`, `AtomicFile`, or each
+other and stayed in `Assembly-CSharp`, unchanged from the Phase 2b0 finding — consistent with Slice
+11 and 12 pulling a single dependency-closed leaf out of a still-coupled folder rather than cutting
+the folder itself.
+
+Consumer accessibility checked against the three production call sites: `VersusRuntime.cs` reads
+`VersusCatalogs.Rulesets` (public static property); `Assets/Scripts/Dev/VersusDevConsole.cs` calls
+`VersusCatalogs.Rulesets.Supporting(...)`; `Assets/Tests/PlayModeGameplay/Level5GameplayPlayModeTests.cs`
+(the asmdef-free 2c workaround) calls `VersusCatalogs.Reset()`. All three already used public
+cross-assembly members, so no visibility change was needed. Assembly-sensitive type identity checked
+and clean: no `[SerializeReference]`, `Type.GetType`, `Assembly.Load`/`LoadFrom`, `AssemblyQualifiedName`
+or `TypeNameHandling` touches either type anywhere in the repo, and neither ruleset ids, versions, nor
+any other persisted versus data are keyed on a type's assembly. `VersusCatalogs.cs.meta`'s GUID
+(`f623cb04469457b4c832cbf29a2430d2`) and `DefaultCompetitiveRulesets.cs.meta`'s GUID
+(`10289957d0f3a8143bfc06db00ac7753`) were confirmed before the move and unchanged after it, verified by
+reading both `.meta` files post-move.
+
+Moved both files/`.meta`s together into a new `Assets/Scripts/versus/Level5Versus/` sub-folder (not the
+`versus` root, which is not dependency-closed). `Level5.Versus.asmdef`: `autoReferenced: true`,
+`overrideReferences: false`, references `["Level5.Core"]` only — no reference to any other Phase 2b
+leaf. Headless Unity 6000.5.7f1 batch compile clean (`Level5.Versus.dll`, 144 defines, 296 references,
+zero new `CS` errors; the only warnings in the log are the same pre-existing `CS0618`
+`FindObjectsSortMode`/`FindFirstObjectByType` obsolete-API notices and one pre-existing `CS0414` in
+`GameRules.cs` seen in prior slices' logs). Added `VersusCatalogTypesCompileIntoLevel5Versus` to
+`Level5ProductionAssemblyBoundaryTests.cs` (mirrors `MatchControllerCompilesIntoLevel5Match`); focused
+run of that fixture plus the existing `Level5VersusRulesetTests` fixture (ruleset ids, versions,
+capabilities, comparison ordering, and `DefaultCompetitiveRulesets`/catalog fallback behavior) passed
+with no changes needed to either file — `Level5VersusRulesetTests` already exercised
+`DefaultCompetitiveRulesets.CreateAll()` and the shipped registry directly, so this slice is proof the
+same code now compiles into a different assembly with identical behavior. Per this repository's
+risk-based validation policy, the full EditMode/PlayMode suites were not re-run for an
+assembly-boundary-only change with no behavior modification; PR CI owns that broader regression
+coverage.
+
+This does **not** close `AUD-012`/Phase 2, and does not unblock 2c on its own: `Level5GameplayPlayModeTests.cs`
+now resolves `VersusCatalogs.Reset()` through `Level5.Versus` (`autoReferenced`) instead of
+`Assembly-CSharp`, but the same file still reaches `VersusRuntime`, `VersusMatchReporter` and
+`ActiveVersusAttempt` directly, all three still `Assembly-CSharp` — so it stays on the blocked list.
+See the updated 2c status below.
+
+**Running total after slices 1-13:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`
+(all three moved, `.meta`s intact) plus the 27 files across 10 leaf assemblies from slices 1-10
+(`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`,
+`Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the
+4 pre-existing ones (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production
+runtime assemblies total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started.
+The remainder is either `player`/`game manager` themselves (still mutually coupled, and still most of
+what the asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or
+transitively) and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel`
+were.
 
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
@@ -453,6 +505,20 @@ blocker list, but three files still reach a type that remains `Assembly-CSharp` 
 three files stay blocked until `versus`/`menu_start` (already known blocked via `AtomicFile`, see
 Slices 3-9) and `PlayerController` themselves migrate, which needs the `player`/`game manager` cycle cut
 first, not a continuation of leaf-picking.
+
+**Still blocked after Slice 13 (2026-09-06), re-verified against the current folder.** The same nine
+files as Slice 12's count; no files were added or removed. Slice 13 moved `VersusCatalogs` out of
+`Assembly-CSharp`, and `Level5GameplayPlayModeTests.cs`'s `VersusCatalogs.Reset()` call now resolves
+through `Level5.Versus` (`autoReferenced`) instead — but the same file still calls `VersusRuntime.Reset()`
+and `ActiveVersusAttempt.Clear()` directly (`Assembly-CSharp`, `Assets/Scripts/versus/`) and
+`ActiveMatch.Clear()`/`MatchCatalogs.Reset()` (`Assembly-CSharp`, `Assets/Scripts/menu_start/`), and its
+own body still calls `VersusMatchReporter.TryReport(...)`. `BasketballVisibilityTests.cs` and
+`PlayerMovementPhysicsTests.cs` are unaffected by this slice — neither references anything in `versus`.
+2c's exit condition is unchanged: `VersusRuntime`, `VersusMatchReporter`, `ActiveVersusAttempt`
+(blocked on `ActiveMatch`), `FileVersusSeriesRepository` (blocked on `AtomicFile`), `ActiveMatch`,
+`MatchCatalogs`, and `PlayerController` all still need to migrate, which needs the `player`/`game
+manager` cycle cut first, not a continuation of versus leaf-picking — `VersusCatalogs`/
+`DefaultCompetitiveRulesets` were `versus`'s only dependency-closed pair (see Slice 13 above).
 
 #### 2d — Architecture guards and exit verification
 

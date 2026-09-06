@@ -111,6 +111,20 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Match"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 13: proves the versus catalog types actually compile into the
+    /// <c>Level5.Versus</c> asmdef created for this slice, the same identity check
+    /// <see cref="MatchControllerCompilesIntoLevel5Match"/> does for the match leaf.
+    /// </summary>
+    [Test]
+    public void VersusCatalogTypesCompileIntoLevel5Versus()
+    {
+        const string expected = "Level5.Versus";
+
+        Assert.That(typeof(VersusCatalogs).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(DefaultCompetitiveRulesets).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
