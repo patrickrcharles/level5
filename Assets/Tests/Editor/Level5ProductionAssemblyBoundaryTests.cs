@@ -125,6 +125,20 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(DefaultCompetitiveRulesets).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 14: proves <c>AtomicFile</c> (extracted out of
+    /// <c>CharacterProgressStore.cs</c>) actually compiles into the existing <c>Level5.Utility</c>
+    /// asmdef, the same identity check <see cref="MatchControllerCompilesIntoLevel5Match"/> does for
+    /// the match leaf.
+    /// </summary>
+    [Test]
+    public void AtomicFileCompilesIntoLevel5Utility()
+    {
+        Assert.That(
+            typeof(AtomicFile).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Utility"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

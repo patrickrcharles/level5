@@ -446,10 +446,52 @@ now resolves `VersusCatalogs.Reset()` through `Level5.Versus` (`autoReferenced`)
 `ActiveVersusAttempt` directly, all three still `Assembly-CSharp` — so it stays on the blocked list.
 See the updated 2c status below.
 
-**Running total after slices 1-13:** `Assets/Scripts/basketball`'s 12 production files (source left in
+**Slice 14 — `AtomicFile` into the existing `Level5.Utility` (2026-09-06), one type out of
+`CharacterProgressStore.cs`.** `AtomicFile` was a second, unrelated top-level `public static class`
+declared at the bottom of `Assets/Scripts/player/CharacterProgressStore.cs` — a dependency-closed
+filesystem primitive (temp-file write, `File.Replace`, `.bak` fallback on read) with no player or
+gameplay dependency, used by `CharacterProgressStore` itself and, directly, by
+`PendingMatchPersistenceStore`, `ProgressionResultStore`, `PendingProgressionStore` and
+`FileVersusSeriesRepository`. Its own source used only `System`/`System.IO`. Type-identity checked
+and clean: no `[SerializeReference]`, `Type.GetType`, `Assembly.Load`/`LoadFrom`, or
+`AssemblyQualifiedName` touches it anywhere in the repo, and no persisted data is keyed on its
+assembly.
+
+Moved the class body verbatim into a new `Assets/Scripts/Utility/Level5Utility/AtomicFile.cs` (new
+`.meta`, fresh GUID — there was no prior GUID to preserve since it was never its own asset) and
+deleted it from the bottom of `CharacterProgressStore.cs`, which otherwise keeps its own file, `.meta`,
+and behavior untouched. Global type name and public API (`TryReadAllText` both overloads,
+`WriteAllText`) are unchanged, so every consumer — inside and outside `Assembly-CSharp` — kept
+compiling with no call-site edits; `Level5.Utility` is already `autoReferenced: true`, so this needed
+no manifest change. Headless Unity 6000.5.7f1 batch compile clean (`Level5.Utility.dll`, 144 defines,
+296 references, zero new `CS` errors; same pre-existing `CS0618`/`CS0414` warnings as prior slices'
+logs). Added `AtomicFileCompilesIntoLevel5Utility` to `Level5ProductionAssemblyBoundaryTests.cs`
+(mirrors `MatchControllerCompilesIntoLevel5Match`); focused run of that fixture (6/6) plus the existing
+`Level5CoreTests` `AtomicFile` backup/recovery/malformed-primary coverage (2/2) passed unchanged. Per
+this repository's risk-based validation policy, the full EditMode/PlayMode suites were not re-run for
+an assembly-boundary-only change with no behavior modification; PR CI owns that broader regression
+coverage.
+
+Post-extraction remeasurement of `FileVersusSeriesRepository` and `VersusRuntime` (`Assets/Scripts/versus/`),
+named in Slice 13's finding as blocked on `AtomicFile`: with the `AtomicFile` edge gone,
+`FileVersusSeriesRepository`'s only remaining live identifiers are `System`/`System.IO`, `UnityEngine`,
+and `Level5.Core.Versus`/`Level5.Core.Versus.Persistence` (`IVersusSeriesRepository`,
+`VersusSeriesSerializer`, `VersusSeriesDocument`, `VersusLog`) — all already outside `Assembly-CSharp` —
+making it dependency-closed on its own for the first time. `VersusRuntime` still reaches
+`FileVersusSeriesRepository` itself (`Assembly-CSharp`) plus `VersusCatalogs` (`Level5.Versus`) and
+`VersusMatchCoordinator`/`IVersusSeriesRepository` (`Level5.Core.Versus`, both already migrated), so it
+remains blocked only on `FileVersusSeriesRepository`, not on anything this slice didn't already clear —
+the two are now a closed pair that could migrate together in a future slice. This is recorded as a
+finding only; neither file is moved in this slice.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below.
+
+**Running total after slices 1-14:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`
-(all three moved, `.meta`s intact) plus the 27 files across 10 leaf assemblies from slices 1-10
-(`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`,
+(all three moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`,
+`CharacterProgressStore.cs` itself left in place) plus the 27 files across 10 leaf assemblies from
+slices 1-10 (`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`,
 `Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the
 4 pre-existing ones (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production
 runtime assemblies total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started.
@@ -519,6 +561,14 @@ own body still calls `VersusMatchReporter.TryReport(...)`. `BasketballVisibility
 `MatchCatalogs`, and `PlayerController` all still need to migrate, which needs the `player`/`game
 manager` cycle cut first, not a continuation of versus leaf-picking — `VersusCatalogs`/
 `DefaultCompetitiveRulesets` were `versus`'s only dependency-closed pair (see Slice 13 above).
+
+**Still blocked after Slice 14 (2026-09-06).** Same nine files as Slices 12-13, unchanged, for the
+same reasons Slice 13 gave — `AtomicFile` moving to `Level5.Utility` touches none of the direct
+`VersusRuntime`/`VersusMatchReporter`/`ActiveVersusAttempt`/`ActiveMatch`/`MatchCatalogs` calls in
+`Level5GameplayPlayModeTests.cs` that keep it blocked. What changed is *why* `FileVersusSeriesRepository`
+is blocked: no longer on `AtomicFile` (see Slice 14's remeasurement above — it is now dependency-closed
+on its own), just on still living in `Assembly-CSharp` — a future-candidate leaf, not a cleared one.
+2c's exit condition is unchanged.
 
 #### 2d — Architecture guards and exit verification
 

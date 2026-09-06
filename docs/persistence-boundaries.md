@@ -74,10 +74,11 @@ so a crash between "applied" and "removed" cannot double-grant.
 
 ### File writing
 
-All JSON stores go through `AtomicFile` (defined at the bottom of `CharacterProgressStore.cs`):
-write to a temp file, `File.Replace` onto the target, keep a `.bak`. Reads validate the JSON and
-fall back to the backup when the primary is corrupt. This was reviewed in the first deep-audit pass
-and found sound.
+All JSON stores go through `AtomicFile` (`Assets/Scripts/Utility/Level5Utility/AtomicFile.cs`, moved
+out of `CharacterProgressStore.cs` and into the `Level5.Utility` assembly by AUD-012 Phase 2b Slice
+14 — same global type, same behavior, `CharacterProgressStore` itself unchanged): write to a temp
+file, `File.Replace` onto the target, keep a `.bak`. Reads validate the JSON and fall back to the
+backup when the primary is corrupt. This was reviewed in the first deep-audit pass and found sound.
 
 ### Database locking
 
