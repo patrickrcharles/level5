@@ -347,16 +347,64 @@ now removed from basketball's side only), so the asmdef-free `Level5GameplayPlay
 four files also instantiate `GameStats`/`MatchController`/`PlayerController` directly, not just `BasketBall` —
 remains blocked on migrating `player`/`game manager` themselves, unchanged from the 2026-08-20 finding.
 
-**Running total after slices 1-11:** `Assets/Scripts/basketball`'s 12 production files (source left in place,
-no `.meta` moved) plus the 27 files across 10 leaf assemblies from slices 1-10 (`Level5.Input`,
-`Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
-`Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
-(`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 15 production runtime
-assemblies total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. The
-remainder is either `player`/`game manager` themselves (still mutually coupled, and still what the
-asmdef-free gameplay PlayMode workaround needs), or reaches into that pair
-(directly or
-transitively) and so is blocked the same way `versus`/`analytics`/`Models/HighScoreModel` were.
+**Slice 12 — `Level5.Match` (2026-09-05), one file out of `game manager`.** `MatchController.cs`
+(`Assets/Scripts/game manager/MatchController.cs`) is the scene-facing wrapper around `MatchLifecycle`
+(`Level5.Core.Match`, already in `Level5.Core`): it owns the `MatchController.instance` singleton, the
+`Ending`/`Completed` events, and the first-request-wins `RequestEnd` door, with no lifecycle logic of its
+own. Its only live identifiers are `System`, `UnityEngine` and `Level5.Core.Match` types
+(`MatchLifecycle`, `MatchPhase`, `MatchEndCause`, `MatchEndReason`); every historical mention of
+`GameLevelManager`, `GameRules`, `MatchRuntime`, `LevelRuntimeContext`, a player type or a basketball
+type lives only in this file's own XML-doc comments, not in code. That made it a second dependency-closed
+leaf out of the game-manager folder even though `player`/`game manager` remain a mutually coupled pair
+overall — same shape as Slice 11 pulling `Level5.Basketball` out of the triangle without the triangle
+itself being cut.
+
+Consumer accessibility checked against the two production call sites: `GameRules.cs` only holds a
+private `MatchController matchController` field and calls `FindAnyObjectByType<MatchController>()` /
+`AddComponent<MatchController>()`; `LevelRuntimeContext.cs` only exposes its own field through a public
+`MatchController MatchController` property and calls `GetComponent`/`FindAnyObjectByType`. Both use
+already-public cross-assembly members, so no visibility change was needed. Assembly-sensitive type
+identity checked and clean: no `[SerializeReference]`, `Type.GetType`, `Assembly.Load`/`LoadFrom`,
+`AssemblyQualifiedName` or `TypeNameHandling` touches `MatchController` anywhere in the repo; the
+Editor-test files that mention it (`Level5BasketballShotMarkerSessionTests.cs`,
+`Level5BasketballMoneyBallStateTests.cs`, `Level5BasketballMarkerOwnershipTests.cs`,
+`Level5BasketballShotPipelineTests.cs`) do so only in comments. `MatchController.cs.meta`'s GUID
+(`07d257b14f484874ab1d0e5ff085d777`) was confirmed before the move and is unchanged after it — verified
+by reading the `.meta` post-move rather than assuming `git mv` preserved it.
+
+Moved `MatchController.cs`/`.cs.meta` together into a new `Assets/Scripts/game manager/Level5Match/`
+sub-folder (not the `game manager` root, which would recursively pull in every still-coupled file in that
+folder). `Level5.Match.asmdef`: `autoReferenced: true`, `overrideReferences: false`, references
+`["Level5.Core"]` only. Headless Unity 6000.5.7f1 batch compile clean (`Level5.Match.dll`, 144 defines,
+296 references, zero new `CS` errors). Added `MatchControllerCompilesIntoLevel5Match` to
+`Level5ProductionAssemblyBoundaryTests.cs` (mirrors `BasketballProductionTypesCompileIntoLevel5Basketball`
+for the new leaf); focused run of that fixture: 4/4 passed, including the two pre-existing text-scan
+guards which cover `Level5.Match` automatically since they discover every non-test `.asmdef` at run
+time. Ran the existing PlayMode singleton coverage
+(`Level5GameplayPlayModeTests.ASceneScopedSingletonReleasesItsStaticWhenDestroyed`, which claims and then
+destroys a real `MatchController` and asserts the static claims/clears correctly) as the one real
+lifecycle check: 1/1 passed. Per this repository's risk-based validation policy, the full EditMode/
+PlayMode suites were not re-run for an assembly-boundary-only change with no behavior modification; PR CI
+owns that broader regression coverage.
+
+This does **not** close `AUD-012`/Phase 2, and does not unblock 2c: `player` and `game manager` still
+form a cycle with each other, and three of the workaround folder's files still instantiate or look up a
+type that remains `Assembly-CSharp` directly — `Level5GameplayPlayModeTests.cs` (`VersusRuntime`/
+`VersusMatchReporter`/`VersusCatalogs`/`ActiveVersusAttempt` in `Assets/Scripts/versus`, and
+`ActiveMatch`/`MatchCatalogs` in `Assets/Scripts/menu_start` — not `GameStats`, which Slice 11 already
+moved into `Level5.Basketball`), `BasketballVisibilityTests.cs` and `PlayerMovementPhysicsTests.cs`
+(`PlayerController`) — so the asmdef-free workaround is still needed. See the updated 2c status below.
+
+**Running total after slices 1-12:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs` (moved, `.meta` intact) plus the 27 files across 10
+leaf assemblies from slices 1-10 (`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`,
+`Level5.Vehicle`, `Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`,
+`Level5.MenuStart`) plus the 4 pre-existing ones (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`,
+`Level5.Audio`) — 16 production runtime assemblies total, out of roughly 218 `.cs` files in
+`Assets/Scripts` before this phase started. The remainder is either `player`/`game manager` themselves
+(still mutually coupled, and still most of what the asmdef-free gameplay PlayMode workaround needs), or
+reaches into that pair (directly or transitively) and so is blocked the same way
+`versus`/`analytics`/`Models/HighScoreModel` were.
 
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
@@ -387,6 +435,24 @@ but every file in the workaround folder that references it also references `Game
 `MatchController`, or `PlayerController` - all still `Assembly-CSharp`, since Slice 11 only cut
 basketball's own outbound edges and did not touch `player` or `game manager`. 2c's exit condition is
 unchanged: it needs `player`/`game manager` migrated too, not just basketball.
+
+**Still blocked after Slice 12 (2026-09-05), re-verified against the current folder rather than the
+2026-08-20 four-file count.** `Assets/Tests/PlayModeGameplay` now holds nine files, not four -
+`Level5MenuScreenPlayModeTests.cs`, `Level5MoneyBallStateCompositionPlayModeTests.cs`,
+`Level5BasketBallShotMadeCompositionPlayModeTests.cs`, `Level5ShotMarkerSessionCompositionPlayModeTests.cs`
+and `Level5BasketBallShotTelemetryCompositionPlayModeTests.cs` were added since that count and were never
+part of the blocked set (they exercise `BasketBall`/`GameRules` composition only, no `GameStats`/
+`PlayerController`). `MatchController` moving to `Level5.Match` in this slice removes it from the
+blocker list, but three files still reach a type that remains `Assembly-CSharp` directly:
+`Level5GameplayPlayModeTests.cs` reaches `VersusRuntime`, `VersusMatchReporter` and `VersusCatalogs`
+(`Assets/Scripts/versus/`) plus `ActiveMatch` and `MatchCatalogs` (`Assets/Scripts/menu_start/`) — not
+`GameStats`, which Slice 11 already moved into `Level5.Basketball` and which this file's own
+`host.AddComponent<GameStats>()` calls now resolve through, without issue, since `Level5.Basketball` is
+`autoReferenced`; `BasketballVisibilityTests.cs` and `PlayerMovementPhysicsTests.cs` reach
+`PlayerController` via `FindAnyObjectByType`/`GetComponent`. 2c's exit condition is unchanged: those
+three files stay blocked until `versus`/`menu_start` (already known blocked via `AtomicFile`, see
+Slices 3-9) and `PlayerController` themselves migrate, which needs the `player`/`game manager` cycle cut
+first, not a continuation of leaf-picking.
 
 #### 2d — Architecture guards and exit verification
 

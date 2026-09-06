@@ -13,6 +13,7 @@
   <Project Path="Level5.Constants.csproj" />
   <Project Path="Level5.PlayerRacing.csproj" />
   <Project Path="Level5.Pooling.csproj" />
+  <Project Path="Level5.Match.csproj" />
   <Project Path="MobileDependencyResolverLP.Installer.Editor.csproj" />
   <Project Path="Level5.MenuProgression.csproj" />
   <Project Path="Level5.Utility.csproj" />
