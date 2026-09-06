@@ -98,6 +98,19 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(BasketBallShotMarker).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 12: proves <c>MatchController</c> actually compiles into the
+    /// <c>Level5.Match</c> asmdef created for this slice, the same identity check
+    /// <see cref="BasketballProductionTypesCompileIntoLevel5Basketball"/> does for basketball.
+    /// </summary>
+    [Test]
+    public void MatchControllerCompilesIntoLevel5Match()
+    {
+        Assert.That(
+            typeof(MatchController).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Match"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
