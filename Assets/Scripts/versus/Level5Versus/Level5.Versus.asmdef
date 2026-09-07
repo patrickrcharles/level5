@@ -2,7 +2,8 @@
     "name": "Level5.Versus",
     "rootNamespace": "",
     "references": [
-        "Level5.Core"
+        "Level5.Core",
+        "Level5.Utility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
