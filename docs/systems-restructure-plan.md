@@ -560,13 +560,14 @@ was touched. Added `Level5.Basketball` to `Level5.Versus.asmdef`'s `references` 
 parameter directly. Headless Unity 6000.5.7f1 batch compile clean, zero new `CS` errors. Added
 `GameStatsAttemptResultsCompilesIntoLevel5Versus` to `Level5ProductionAssemblyBoundaryTests.cs` (mirrors
 `VersusRuntimeTypesCompileIntoLevel5Versus`); focused EditMode runs passed unchanged: the boundary
-fixture (8/8, including the new test) and `Level5VersusIntegrationTests` (18/18 across both fixtures in
-one combined run, including `AMatchsStatsBecomeAComparableResult`,
-`AMakeCountModeIsMeasuredOnItsOwnShotRatherThanOnEveryShot`,
+fixture (8/8, including the new test) and `Level5VersusIntegrationTests` (10/10, including
+`AMatchsStatsBecomeAComparableResult`, `AMakeCountModeIsMeasuredOnItsOwnShotRatherThanOnEveryShot`,
 `AMatchWithNoStatsStillProducesAResultSoTheSeriesCanMoveOn`, and
 `TwoRealMatchesResolveAGameThroughTheWholeStack`, which exercises the moved mapper end to end through
-`VersusMatchReporter` across the new assembly boundary). Per this repository's risk-based validation
-policy, the full EditMode/PlayMode suites were not re-run for an assembly-boundary-only change with no
+`VersusMatchReporter` across the new assembly boundary) — 18/18 combined in one filtered run confirming
+both fixtures compile and pass across the new assembly boundary. Per this repository's risk-based
+validation policy, the full EditMode/PlayMode suites were not re-run for an assembly-boundary-only
+change with no
 behavior modification; PR CI owns that broader regression coverage.
 
 This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
