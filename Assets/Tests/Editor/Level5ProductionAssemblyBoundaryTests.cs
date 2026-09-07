@@ -180,6 +180,20 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Match"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 18: proves <c>ActiveMatch</c> (the authoritative current-match
+    /// configuration, moved out of <c>menu_start</c>) actually compiles into <c>Level5.Match</c>,
+    /// the same identity check <see cref="MatchSessionCompilesIntoLevel5Match"/> does for
+    /// <c>MatchSession</c>.
+    /// </summary>
+    [Test]
+    public void ActiveMatchCompilesIntoLevel5Match()
+    {
+        Assert.That(
+            typeof(ActiveMatch).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Match"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
