@@ -534,18 +534,70 @@ behavior modification; PR CI owns that broader regression coverage.
 This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
 below.
 
-**Running total after slices 1-15:** `Assets/Scripts/basketball`'s 12 production files (source left in
+**Slice 16 — `Level5.Versus` (2026-09-06), one more file out of `versus`.** `GameStatsAttemptResults.cs`
+(`Assets/Scripts/versus/`) is the gameplay-to-versus result mapper: the one place that reads a finished
+match's `GameStats` component and turns it into an `AttemptResult`. Re-read it in full before moving it:
+its only live identifiers are `Level5.Core.Match` (`GameModeId`), `Level5.Core.Versus` (`AttemptResult`,
+`AttemptMetric`, `RulesetId`) and `GameStats` itself — the last one still `Level5.Basketball` since Slice
+11, not `Assembly-CSharp`. `Level5.Basketball.asmdef` was re-read and confirmed to hold no reference back
+to `Level5.Versus`, so adding the new edge keeps the custom-assembly graph acyclic (`Level5.Versus ->
+Level5.Basketball`, no reverse edge).
+
+Consumer accessibility checked against the file's one production call site, `VersusMatchReporter.cs`
+(`Assets/Scripts/versus/`, still `Assembly-CSharp`): it calls the public static `GameStatsAttemptResults.Build(...)`,
+already public, so no visibility change was needed — `VersusMatchReporter` keeps compiling against the
+moved mapper through the assembly boundary, `Level5.Versus` being `autoReferenced`. Assembly-sensitive
+type identity checked and clean: no `[SerializeReference]`, `Type.GetType`, `Assembly.Load`/`LoadFrom`,
+`AssemblyQualifiedName`, or `TypeNameHandling` touches the type anywhere in the repo, and no ruleset id,
+ruleset version, or persisted versus data is keyed on its assembly. `GameStatsAttemptResults.cs.meta`'s
+GUID (`7178539eef0d6f748b2d85607518dc34`) was confirmed before the move and unchanged after it, verified
+by reading the `.meta` file post-move.
+
+Moved the file/`.meta` together into the existing `Assets/Scripts/versus/Level5Versus/` sub-folder,
+source body unchanged — no mapping, metric, shot-counter, completion-time-fallback, or null-stats logic
+was touched. Added `Level5.Basketball` to `Level5.Versus.asmdef`'s `references` (now `["Level5.Core",
+"Level5.Utility", "Level5.Basketball"]`) since the mapper's method signature takes a `GameStats`
+parameter directly. Headless Unity 6000.5.7f1 batch compile clean, zero new `CS` errors. Added
+`GameStatsAttemptResultsCompilesIntoLevel5Versus` to `Level5ProductionAssemblyBoundaryTests.cs` (mirrors
+`VersusRuntimeTypesCompileIntoLevel5Versus`); focused EditMode runs passed unchanged: the boundary
+fixture (8/8, including the new test) and `Level5VersusIntegrationTests` (10/10, including
+`AMatchsStatsBecomeAComparableResult`, `AMakeCountModeIsMeasuredOnItsOwnShotRatherThanOnEveryShot`,
+`AMatchWithNoStatsStillProducesAResultSoTheSeriesCanMoveOn`, and
+`TwoRealMatchesResolveAGameThroughTheWholeStack`, which exercises the moved mapper end to end through
+`VersusMatchReporter` across the new assembly boundary) — 18/18 combined in one filtered run confirming
+both fixtures compile and pass across the new assembly boundary. Per this repository's risk-based
+validation policy, the full EditMode/PlayMode suites were not re-run for an assembly-boundary-only
+change with no
+behavior modification; PR CI owns that broader regression coverage.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below. The earlier Phase 2 statement (Slice 13) describing `GameStatsAttemptResults` as staying in
+`Assembly-CSharp` "unchanged from the Phase 2b0 finding" is now superseded by this slice; no other
+current Phase 2 text describes it as structurally blocked.
+
+Post-migration remeasurement of `VersusMatchReporter.cs` (`Assets/Scripts/versus/`), the mapper's one
+consumer: with the `GameStatsAttemptResults` edge now resolving through `Level5.Versus`, its remaining
+live identifiers are `System`, `Level5.Core.Match` (`GameModeId`), `Level5.Core.Versus` (`AttemptResult`,
+`SeriesId`, `AttemptId`, `ParticipantId`, `SubmissionOperation`, `VersusValidationCode`), `UnityEngine`,
+`VersusRuntime`/`GameStatsAttemptResults` (both already `Level5.Versus`), and `GameStats` (already
+`Level5.Basketball`) — all outside `Assembly-CSharp` except one: `ActiveVersusAttempt`
+(`Assets/Scripts/versus/`), read for `IsActive`/`SeriesId`/`AttemptId`/`ParticipantId` and cleared on
+every exit path. `ActiveVersusAttempt` is `VersusMatchReporter`'s only remaining `Assembly-CSharp`
+blocker, confirmed by re-reading the file rather than assumed. This is recorded as a finding only;
+`VersusMatchReporter` and `ActiveVersusAttempt` are not moved in this slice.
+
+**Running total after slices 1-16:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
-`FileVersusSeriesRepository.cs`/`VersusRuntime.cs` (all five moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`,
-`CharacterProgressStore.cs` itself left in place) plus the 27 files across 10 leaf assemblies from
-slices 1-10 (`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`,
-`Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the
-4 pre-existing ones (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production
-runtime assemblies total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started.
-The remainder is either `player`/`game manager` themselves (still mutually coupled, and still most of
-what the asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or
-transitively) and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel`
-were.
+`FileVersusSeriesRepository.cs`/`VersusRuntime.cs`/`GameStatsAttemptResults.cs` (all six moved, `.meta`s
+intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`, `CharacterProgressStore.cs` itself
+left in place) plus the 27 files across 10 leaf assemblies from slices 1-10 (`Level5.Input`,
+`Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
+`Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
+(`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
+total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. The remainder is
+either `player`/`game manager` themselves (still mutually coupled, and still most of what the
+asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
+and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel` were.
 
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
@@ -631,6 +683,21 @@ anything in `versus`. 2c's exit condition is unchanged: `VersusMatchReporter`, `
 `player`/`game manager` cycle cut first, not a continuation of versus leaf-picking —
 `FileVersusSeriesRepository`/`VersusRuntime` were `versus`'s only remaining dependency-closed pair after
 Slice 14's remeasurement (see Slice 15 above).
+
+**Still blocked after Slice 16 (2026-09-06), re-verified against the current folder.** Same nine files
+as Slices 12-15, unchanged. Slice 16 moved `GameStatsAttemptResults` out of `Assembly-CSharp`, but
+`Level5GameplayPlayModeTests.cs` never referenced that type directly — its `VersusMatchReporter.TryReport(...)`
+call already ran on top of the mapper before this slice and still does, unaffected by which assembly the
+mapper lives in. The same file still calls `VersusMatchReporter.TryReport(...)` and
+`ActiveVersusAttempt.Clear()` directly (`Assembly-CSharp`, `Assets/Scripts/versus/`) and
+`ActiveMatch.Clear()`/`MatchCatalogs.Reset()` (`Assembly-CSharp`, `Assets/Scripts/menu_start/`), and
+`BasketballVisibilityTests.cs`/`PlayerMovementPhysicsTests.cs` are unaffected — neither references
+anything in `versus`. 2c's exit condition is unchanged: `VersusMatchReporter`, `ActiveVersusAttempt`,
+`ActiveMatch`, `MatchCatalogs`, and `PlayerController` all still need to migrate, which needs the
+`player`/`game manager` cycle cut first, not a continuation of versus leaf-picking —
+`GameStatsAttemptResults` was `versus`'s only remaining dependency-closed file after Slice 15 (see Slice
+16 above); `VersusMatchReporter`'s one remaining blocker is now `ActiveVersusAttempt` alone (see Slice
+16's remeasurement).
 
 #### 2d — Architecture guards and exit verification
 
