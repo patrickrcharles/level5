@@ -32,7 +32,6 @@ public class Level5MatchArchitectureTests
         "LegacyGameOptionsBridge.cs",
         "MatchRuntime.cs",
         "StartMenuSelectionState.cs",
-        "MatchSession.cs",
 
         // menu, navigation and start-screen widgets, migrating in a later slice
         "StartManager.cs",
@@ -117,7 +116,8 @@ public class Level5MatchArchitectureTests
         // The count is a ratchet: it may go down, never up. It started this migration at 85.
         // Lowered from 65 to 60 when playerSelectedIndex/cpu1SelectedIndex/cpu2SelectedIndex/
         // cpu3SelectedIndex moved to PlayerSelectionSession (player-select architecture overhaul).
-        const int allowedPublicStaticFields = 60;
+        // Lowered from 60 to 59 when matchResultId moved to MatchSession (Phase 2b Slice 17).
+        const int allowedPublicStaticFields = 59;
 
         string text = File.ReadAllText(Path.Combine(ScriptsRoot, "menu_start", "GameOptions.cs"));
         int fields = Regex.Matches(StripComments(text), @"static\s+public|public\s+static").Count

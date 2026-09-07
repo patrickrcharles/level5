@@ -166,6 +166,20 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Versus"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 17: proves <c>MatchSession</c> (the authoritative owner of the current
+    /// match result id, moved out of <c>menu_progression</c>) actually compiles into <c>Level5.Match</c>,
+    /// the same identity check <see cref="MatchControllerCompilesIntoLevel5Match"/> does for the
+    /// match leaf.
+    /// </summary>
+    [Test]
+    public void MatchSessionCompilesIntoLevel5Match()
+    {
+        Assert.That(
+            typeof(MatchSession).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Match"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

@@ -586,8 +586,74 @@ every exit path. `ActiveVersusAttempt` is `VersusMatchReporter`'s only remaining
 blocker, confirmed by re-reading the file rather than assumed. This is recorded as a finding only;
 `VersusMatchReporter` and `ActiveVersusAttempt` are not moved in this slice.
 
-**Running total after slices 1-16:** `Assets/Scripts/basketball`'s 12 production files (source left in
-place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
+**Slice 17 — `Level5.Match` (2026-09-07), `MatchSession` becomes the actual owner of the current match
+result id and moves into `Level5.Match`.** `GameOptions.matchResultId` (`Assets/Scripts/menu_start/GameOptions.cs`)
+was a documented-but-unmigrated ownership entry (`docs/game-options-inventory.md`: `matchResultId ->
+MatchSession`) — `MatchSession` already mediated every read/write of the field, but the field itself
+was still the backing store. Re-checked every production reference to `GameOptions.matchResultId`
+before touching it: only `MatchSession.cs` read or wrote it (`Assets/Scripts/menu_progression/MatchSession.cs`,
+before the move); the one other hit was a test (`Level5CoreTests.cs`) saving/restoring it around
+`MatchSession.BeginNewMatch()` calls. No serialized asset, save payload, reflection path, or
+assembly-qualified type string depends on `MatchSession` living in `Assembly-CSharp`.
+
+`MatchSession` now holds a private `static string currentResultId` and generates ids itself via a new
+`MatchSession.CreateResultId(string prefix)`, moved out of `ProgressionService.CreateResultId` — the
+same `<prefix>-<Guid.NewGuid():N>` construction, same null/empty-prefix-becomes-`"match"` rule, unchanged.
+`ProgressionService.CreateResultId` stays as a one-line compatibility delegate onto
+`MatchSession.CreateResultId` rather than being deleted: it still has a live caller inside
+`ProgressionService.ApplyMatchResult` itself (the null-result fallback path) and a direct test
+(`Level5CoreTests.ResultIdsAreUniqueAndKeepTheirPrefix`). There is exactly one id-generation
+implementation after this slice, on `MatchSession`; `ProgressionService`'s progression-application,
+idempotency, pending-queue, repair, database-access, and JSON-projection behavior were not touched.
+
+`BeginNewMatch()`/`EnsureCurrentMatch()` keep their exact prior contracts (always-fresh id / return-if-present-else-create),
+now reading and writing `currentResultId` directly instead of `GameOptions.matchResultId`. No reset
+method, setter, or other test-only hook was added to `MatchSession` — `Level5CoreTests.MatchSessionRotatesResultIdForEachGameplayLoad`
+was simplified to drop its now-unnecessary save/restore of the deleted field rather than gaining a
+replacement hook; static state persisting across test runs was already true of the pre-migration
+field and no other test depends on a reset value (confirmed by re-checking every `MatchSession`/`EnsureCurrentMatch`/`BeginNewMatch`
+reference under `Assets/Tests`).
+
+`GameOptions.matchResultId` is deleted outright — it had exactly one production consumer and that
+consumer no longer needs it. `MatchSession.cs` came off `Level5MatchArchitectureTests`'s
+`LegacyGameOptionsConsumers` allowlist (it no longer reaches for `GameOptions` at all), and
+`GameOptionsGrowsNoNewMatchFields`'s ratchet was lowered from 60 to 59 — measured directly off the
+current file (71 raw `static public`/`public static` matches, minus 9 that are commented-out fields
+already excluded by `StripComments`, minus 2 methods = 60 before this slice, 59 after removing the
+one field), not assumed.
+
+Moved `MatchSession.cs`/`.cs.meta` (`git mv`, preserving history) from `Assets/Scripts/menu_progression/`
+into `Assets/Scripts/game manager/Level5Match/`, alongside `MatchController.cs`. GUID
+(`3f26ad31a7a14f56a2c5e31f0ee8c5c1`) confirmed unchanged post-move by re-reading the `.meta` file.
+Global namespace, type name, and public API (`BeginNewMatch`, `EnsureCurrentMatch`, the new
+`CreateResultId`) preserved. `MatchSession` no longer references `GameOptions` or `ProgressionService`
+at all — only `System` (`Guid`) — so the existing `Level5.Match.asmdef` (`references: ["Level5.Core"]`)
+needed no change; confirmed by the headless compile showing `Level5.Match.dll` still at 144
+defines/296 references, unchanged from Slice 12's boundary creation. Headless Unity 6000.5.7f1 batch
+compile clean, zero new `CS` errors. Added `MatchSessionCompilesIntoLevel5Match` to
+`Level5ProductionAssemblyBoundaryTests.cs` (mirrors `MatchControllerCompilesIntoLevel5Match`); focused
+EditMode runs passed unchanged: the boundary fixture, `Level5MatchArchitectureTests` (including
+`GameOptionsGrowsNoNewMatchFields`, `TheAllowlistHasNoStaleEntries`, `NoNewFileReachesForGameOptions`),
+and the result-id coverage in `Level5CoreTests` (`ResultIdsAreUniqueAndKeepTheirPrefix`,
+`MatchSessionRotatesResultIdForEachGameplayLoad`) — 37/37 assertions across the three fixtures, zero
+failures. Per this repository's risk-based validation policy, the full EditMode/PlayMode suites were
+not re-run for an ownership-migration-plus-assembly-boundary change with no externally observable
+lifecycle behavior change; PR CI owns that broader regression coverage.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below.
+
+Post-migration remeasurement of `ActiveMatch.cs` (`Assets/Scripts/menu_start/`), `MatchSession`'s
+main production caller: re-read in full, its only live identifiers are `UnityEngine`,
+`Level5.Core.Match` (`MatchConfiguration`, `LevelDefinition`, `MatchConfigurationBuilder`), and
+`MatchSession` — all now outside `Assembly-CSharp`. `ActiveMatch` has zero remaining `Assembly-CSharp`
+dependency after this slice and is eligible for the next Phase 2b slice. This is a diagnostic finding
+only; `ActiveMatch` is not moved in this PR, and neither are `ActiveVersusAttempt`,
+`VersusMatchReporter`, `MatchCatalogs`, or `PlayerController`.
+
+**Running total after slices 1-17:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs` (both `Level5.Match`) plus
+`VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
 `FileVersusSeriesRepository.cs`/`VersusRuntime.cs`/`GameStatsAttemptResults.cs` (all six moved, `.meta`s
 intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`, `CharacterProgressStore.cs` itself
 left in place) plus the 27 files across 10 leaf assemblies from slices 1-10 (`Level5.Input`,
@@ -698,6 +764,19 @@ anything in `versus`. 2c's exit condition is unchanged: `VersusMatchReporter`, `
 `GameStatsAttemptResults` was `versus`'s only remaining dependency-closed file after Slice 15 (see Slice
 16 above); `VersusMatchReporter`'s one remaining blocker is now `ActiveVersusAttempt` alone (see Slice
 16's remeasurement).
+
+**Still blocked after Slice 17 (2026-09-07), re-verified against the current folder.** Same nine files
+as Slices 12-16, unchanged. Slice 17 moved `MatchSession` out of `Assembly-CSharp`, but none of the
+nine blocked files reference `MatchSession` directly — `Level5MenuScreenPlayModeTests.cs` only
+mentions it in a doc comment explaining why its isolated scene load skips `GameLevelManager`/
+`MatchSession` initialization, not in code. `Level5GameplayPlayModeTests.cs` still calls
+`VersusMatchReporter.TryReport(...)`/`ActiveVersusAttempt.Clear()` (`Assembly-CSharp`,
+`Assets/Scripts/versus/`) and `ActiveMatch.Clear()`/`MatchCatalogs.Reset()` (`Assembly-CSharp`,
+`Assets/Scripts/menu_start/`) directly, unaffected by this slice. 2c's exit condition is unchanged:
+`VersusMatchReporter`, `ActiveVersusAttempt`, `ActiveMatch`, `MatchCatalogs`, and `PlayerController`
+all still need to migrate, which needs the `player`/`game manager` cycle cut first — this slice's
+remeasurement found `ActiveMatch` itself now dependency-closed (see Slice 17 above), the first of
+those five with no remaining `Assembly-CSharp` edge, but it is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

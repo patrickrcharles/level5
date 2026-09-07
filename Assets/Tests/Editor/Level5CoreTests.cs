@@ -85,19 +85,11 @@ public class Level5CoreTests
     [Test]
     public void MatchSessionRotatesResultIdForEachGameplayLoad()
     {
-        string previous = GameOptions.matchResultId;
-        try
-        {
-            string first = MatchSession.BeginNewMatch();
-            string second = MatchSession.BeginNewMatch();
+        string first = MatchSession.BeginNewMatch();
+        string second = MatchSession.BeginNewMatch();
 
-            Assert.That(first, Is.Not.EqualTo(second));
-            Assert.That(MatchSession.EnsureCurrentMatch(), Is.EqualTo(second));
-        }
-        finally
-        {
-            GameOptions.matchResultId = previous;
-        }
+        Assert.That(first, Is.Not.EqualTo(second));
+        Assert.That(MatchSession.EnsureCurrentMatch(), Is.EqualTo(second));
     }
 
     [TestCase(false, false, false, 2, CampaignNextAction.Advance)]
