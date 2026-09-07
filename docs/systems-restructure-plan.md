@@ -651,8 +651,62 @@ dependency after this slice and is eligible for the next Phase 2b slice. This is
 only; `ActiveMatch` is not moved in this PR, and neither are `ActiveVersusAttempt`,
 `VersusMatchReporter`, `MatchCatalogs`, or `PlayerController`.
 
-**Running total after slices 1-17:** `Assets/Scripts/basketball`'s 12 production files (source left in
-place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs` (both `Level5.Match`) plus
+**Slice 18 — `Level5.Match` (2026-09-07), `ActiveMatch` moves into the assembly whose eligibility
+Slice 17's remeasurement found.** `ActiveMatch.cs` (`Assets/Scripts/menu_start/`) is the authoritative
+current-match configuration: a launch source calls `Begin` immediately before the scene load, and every
+gameplay/versus/menu consumer downstream reads it. Re-read it in full before moving it: its only live
+identifiers are `UnityEngine`, `Level5.Core.Match` (`MatchConfiguration`, `LevelDefinition`,
+`MatchConfigurationBuilder`), and `MatchSession` — the last one already `Level5.Match` since Slice 17.
+No live dependency on a type remaining in `Assembly-CSharp` was found, confirming Slice 17's
+remeasurement.
+
+Consumer accessibility checked against every production call site (`VersusLauncher.cs`, `EndRoundMenuManager.cs`,
+`StartManager.cs`, `Utility/LoadGame.cs`, `game manager/MatchRuntime.cs`, `versus/ActiveVersusAttempt.cs`):
+all of them call only the existing public members (`Begin`, `Configuration`, `IsActive`, `ContinueInLevel`,
+`Clear`), so no visibility change was needed — every consumer keeps compiling against the moved type
+through the assembly boundary, `Level5.Match` being `autoReferenced`. Assembly-sensitive type identity
+checked and clean: no `[SerializeReference]`, `Type.GetType`, `Assembly.Load`/`LoadFrom`,
+`AssemblyQualifiedName`, or `TypeNameHandling` touches `ActiveMatch` anywhere in the repo, and — since
+`ActiveMatch` is a static non-component type — no scene/prefab component serialization applies either.
+`ActiveMatch.cs.meta`'s GUID (`153b6c6eb3113bf4080936a0c383776a`) was confirmed before the move and
+unchanged after it, verified by reading the `.meta` file post-move.
+
+Moved `ActiveMatch.cs`/`.cs.meta` (`git mv`, preserving history) from `Assets/Scripts/menu_start/` into
+`Assets/Scripts/game manager/Level5Match/`, alongside `MatchController.cs`/`MatchSession.cs` — a pure
+assembly-ownership move, source body byte-identical. `Configuration`'s exact stored-reference return,
+`IsActive`'s `configuration != null` check, `Begin`'s null-logs/assignment-then-`MatchSession.BeginNewMatch()`
+ordering, `ContinueInLevel`'s fresh-`MatchConfigurationBuilder.Resolve` reconstruction (mode/roster/modifiers/
+cheerleader/source carried over, new level substituted in), and `Clear`'s configuration-only reset were all
+left untouched. In particular, the reference-equality contract `ActiveVersusAttempt` depends on
+(`ReferenceEquals(ActiveMatch.Configuration, launchedFor)`, protecting an abandoned competitive attempt from
+capturing the next ordinary match) is unaffected: `Configuration` still returns the exact stored object, no
+clone or rebuild was introduced. `Level5.Match.asmdef`'s `references` needed no change (`ActiveMatch`'s only
+custom-assembly dependency, `Level5.Core.Match`, was already declared) — confirmed by the headless compile
+showing `Level5.Match.dll` still at 144 defines/296 references, unchanged from Slice 17. Headless Unity
+6000.5.7f1 batch compile clean, zero new `CS` errors. Added `ActiveMatchCompilesIntoLevel5Match` to
+`Level5ProductionAssemblyBoundaryTests.cs` (mirrors `MatchSessionCompilesIntoLevel5Match`); focused EditMode
+runs passed unchanged: the boundary fixture (10/10, including the new test) and
+`Level5VersusIntegrationTests` (10/10, including `AnAbandonedTurnDoesNotCaptureTheNextOrdinaryMatch`, which
+exercises the reference-identity protection directly across the new assembly boundary). Per this
+repository's risk-based validation policy, the full EditMode/PlayMode suites were not re-run for an
+assembly-boundary-only change with no behavior modification; PR CI owns that broader regression coverage.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below.
+
+Post-migration remeasurement of `ActiveVersusAttempt.cs` (`Assets/Scripts/versus/`), the counterpart type
+that reads `ActiveMatch.Configuration` for its reference-identity check: re-read in full, its only live
+identifiers are `UnityEngine`, `Level5.Core.Match` (`MatchConfiguration`), `Level5.Core.Versus`
+(`SeriesId`, `AttemptId`, `ParticipantId`, `RulesetId`, `Attempt`), and `ActiveMatch` — now `Level5.Match`
+instead of `Assembly-CSharp` after this slice. `ActiveVersusAttempt` has zero remaining `Assembly-CSharp`
+dependency and is eligible for a future Phase 2b slice into `Level5.Versus`, which would need
+`Level5.Versus.asmdef` to add a `Level5.Match` reference (`Level5.Versus -> Level5.Match`, no reverse edge,
+so the custom-assembly graph would stay acyclic). This is a diagnostic finding only; `ActiveVersusAttempt`
+is not moved in this PR, and neither are `VersusMatchReporter`, `MatchCatalogs`, or `PlayerController`.
+
+**Running total after slices 1-18:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs` (all three
+`Level5.Match`) plus
 `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
 `FileVersusSeriesRepository.cs`/`VersusRuntime.cs`/`GameStatsAttemptResults.cs` (all six moved, `.meta`s
 intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`, `CharacterProgressStore.cs` itself
@@ -660,7 +714,8 @@ left in place) plus the 27 files across 10 leaf assemblies from slices 1-10 (`Le
 `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
 `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
 (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
-total, out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. The remainder is
+total (unchanged from Slice 17's count: this slice added a file to an existing assembly, not a new one),
+out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. The remainder is
 either `player`/`game manager` themselves (still mutually coupled, and still most of what the
 asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
 and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel` were.
@@ -777,6 +832,18 @@ mentions it in a doc comment explaining why its isolated scene load skips `GameL
 all still need to migrate, which needs the `player`/`game manager` cycle cut first — this slice's
 remeasurement found `ActiveMatch` itself now dependency-closed (see Slice 17 above), the first of
 those five with no remaining `Assembly-CSharp` edge, but it is not moved in this PR.
+
+**Still blocked after Slice 18 (2026-09-07), re-verified against the current folder.** Same nine files
+as Slices 12-17, unchanged. Slice 18 moved `ActiveMatch` out of `Assembly-CSharp`, and
+`Level5GameplayPlayModeTests.cs`'s `ActiveMatch.Clear()` call now resolves through `Level5.Match`
+(`autoReferenced`) instead — but the same file still calls `VersusMatchReporter.TryReport(...)`/
+`ActiveVersusAttempt.Clear()` (`Assembly-CSharp`, `Assets/Scripts/versus/`) and `MatchCatalogs.Reset()`
+(`Assembly-CSharp`, `Assets/Scripts/menu_start/`) directly, and `BasketballVisibilityTests.cs`/
+`PlayerMovementPhysicsTests.cs` are unaffected — neither references anything in `menu_start`. 2c's exit
+condition is unchanged: `VersusMatchReporter`, `ActiveVersusAttempt`, `MatchCatalogs`, and
+`PlayerController` all still need to migrate, which needs the `player`/`game manager` cycle cut first.
+This slice's remeasurement found `ActiveVersusAttempt` itself now dependency-closed (see Slice 18 above),
+the next candidate with no remaining `Assembly-CSharp` edge, but it is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
