@@ -194,6 +194,26 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Match"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 19: proves <c>ActiveVersusAttempt</c> and <c>VersusMatchReporter</c>
+    /// (the versus-side counterpart to <c>ActiveMatch</c>, and its only remaining
+    /// <c>Assembly-CSharp</c> consumer) actually compile into <c>Level5.Versus</c>, the same identity
+    /// check <see cref="ActiveMatchCompilesIntoLevel5Match"/> does for <c>ActiveMatch</c>.
+    /// </summary>
+    [Test]
+    public void VersusMatchStateTypesCompileIntoLevel5Versus()
+    {
+        const string expected = "Level5.Versus";
+
+        Assert.That(
+            typeof(ActiveVersusAttempt).Assembly.GetName().Name,
+            Is.EqualTo(expected));
+
+        Assert.That(
+            typeof(VersusMatchReporter).Assembly.GetName().Name,
+            Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

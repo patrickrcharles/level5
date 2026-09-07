@@ -4,7 +4,8 @@
     "references": [
         "Level5.Core",
         "Level5.Utility",
-        "Level5.Basketball"
+        "Level5.Basketball",
+        "Level5.Match"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
