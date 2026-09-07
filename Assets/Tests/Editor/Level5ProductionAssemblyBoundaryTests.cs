@@ -139,6 +139,20 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Utility"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 15: proves the file-backed versus repository and the versus
+    /// composition root actually compile into <c>Level5.Versus</c>, the same identity check
+    /// <see cref="MatchControllerCompilesIntoLevel5Match"/> does for the match leaf.
+    /// </summary>
+    [Test]
+    public void VersusRuntimeTypesCompileIntoLevel5Versus()
+    {
+        const string expected = "Level5.Versus";
+
+        Assert.That(typeof(FileVersusSeriesRepository).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(VersusRuntime).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

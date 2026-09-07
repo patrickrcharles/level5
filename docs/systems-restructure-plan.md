@@ -487,9 +487,56 @@ finding only; neither file is moved in this slice.
 This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
 below.
 
-**Running total after slices 1-14:** `Assets/Scripts/basketball`'s 12 production files (source left in
-place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`
-(all three moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`,
+**Slice 15 — `Level5.Versus` (2026-09-06), two more files out of `versus`.** `FileVersusSeriesRepository.cs`
+and `VersusRuntime.cs` (`Assets/Scripts/versus/`) are the pair Slice 14's remeasurement identified as
+newly dependency-closed once `AtomicFile` moved to `Level5.Utility`. Re-read both in full before moving
+them: `FileVersusSeriesRepository`'s only live identifiers are `System`, `System.Collections.Generic`,
+`System.IO`, `UnityEngine`, `Level5.Core.Versus`/`Level5.Core.Versus.Persistence`
+(`IVersusSeriesRepository`, `VersusSeries`, `SeriesId`, `SeriesSummary`, `VersusSeriesDocument`,
+`VersusSeriesSerializer`, `VersusLog`) and `AtomicFile` — all already outside `Assembly-CSharp`.
+`VersusRuntime` reaches only `Level5.Core.Versus` (`IVersusSeriesRepository`, `VersusMatchCoordinator`,
+`CompetitiveRulesetCatalog`), `FileVersusSeriesRepository` itself, and `VersusCatalogs` — the last two
+already confirmed in `Level5.Versus`/moving into it together. Both closed with no remaining
+`Assembly-CSharp` edge; the expected graph (`Level5.Versus` -> `Level5.Core`, `Level5.Utility` -> `Level5.Core`,
+no reverse edge) held, confirmed by re-reading `Level5.Utility.asmdef` showing only a `Level5.Core`
+reference.
+
+Consumer accessibility checked against every current production and test call site (`Assets/Scripts/versus/VersusLauncher.cs`,
+`Assets/Scripts/versus/VersusMatchReporter.cs`, `Assets/Scripts/Dev/VersusDevConsole.cs`,
+`Level5VersusArchitectureTests.cs`, `Level5VersusPersistenceTests.cs`, `Level5VersusIntegrationTests.cs`,
+`Level5GameplayPlayModeTests.cs`): every reference is `VersusRuntime.Coordinator`/`.Override`/`.Reset`
+or `new FileVersusSeriesRepository(...)`, all already public (`VersusRuntime.Repository` has no current
+call site). No visibility change was needed.
+Assembly-sensitive type identity checked and clean: no `[SerializeReference]`, `Type.GetType`,
+`Assembly.Load`/`LoadFrom`, `AssemblyQualifiedName`, or `TypeNameHandling` touches either type anywhere
+in the repo; stored versus JSON holds `VersusSeriesDocument` domain data only, never a repository or
+runtime type name. `FileVersusSeriesRepository.cs.meta`'s GUID (`bea14fe6bcc6a6348a74a42ab8bffd44`) and
+`VersusRuntime.cs.meta`'s GUID (`be5c8fefbb1960c4c922eae7c2c93a96`) were confirmed before the move and
+unchanged after it, verified by reading both `.meta` files post-move.
+
+Moved both files/`.meta`s together into the existing `Assets/Scripts/versus/Level5Versus/` sub-folder
+(the same one Slice 13 created), source bodies unchanged. Added `Level5.Utility` to
+`Level5.Versus.asmdef`'s `references` (now `["Level5.Core", "Level5.Utility"]`) since
+`FileVersusSeriesRepository` calls `AtomicFile.WriteAllText`; confirmed no reverse reference from
+`Level5.Utility.asmdef` back to `Level5.Versus`. Headless Unity 6000.5.7f1 batch compile clean
+(`Level5.Utility.dll` unchanged at 144 defines/296 references; `Level5.Versus.dll` now 144 defines/297
+references — the one new edge to `Level5.Utility` — zero new `CS` errors, same pre-existing
+`CS0618`/`CS0414` warnings as prior slices' logs). Added `VersusRuntimeTypesCompileIntoLevel5Versus` to
+`Level5ProductionAssemblyBoundaryTests.cs` (mirrors `VersusCatalogTypesCompileIntoLevel5Versus`); focused
+EditMode runs passed unchanged: the boundary fixture (7/7, including the new test), `Level5VersusPersistenceTests`
+(21/21, including `FileRepositoryWritesAndReloadsSerializedSeries` and
+`FileRepositoryPreservesArchiveFlagAcrossLaterSave`), and `Level5VersusIntegrationTests` (8/8, including
+`TwoRealMatchesResolveAGameThroughTheWholeStack`, which exercises `VersusRuntime.Override` with an
+in-memory repository across the new assembly boundary). Per this repository's risk-based validation
+policy, the full EditMode/PlayMode suites were not re-run for an assembly-boundary-only change with no
+behavior modification; PR CI owns that broader regression coverage.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below.
+
+**Running total after slices 1-15:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs` plus `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
+`FileVersusSeriesRepository.cs`/`VersusRuntime.cs` (all five moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under `Level5.Utility`,
 `CharacterProgressStore.cs` itself left in place) plus the 27 files across 10 leaf assemblies from
 slices 1-10 (`Level5.Input`, `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`,
 `Level5.MenuProgression`, `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the
@@ -569,6 +616,21 @@ same reasons Slice 13 gave — `AtomicFile` moving to `Level5.Utility` touches n
 is blocked: no longer on `AtomicFile` (see Slice 14's remeasurement above — it is now dependency-closed
 on its own), just on still living in `Assembly-CSharp` — a future-candidate leaf, not a cleared one.
 2c's exit condition is unchanged.
+
+**Still blocked after Slice 15 (2026-09-06), re-verified against the current folder.** Same nine files
+as Slices 12-14, unchanged. `Level5GameplayPlayModeTests.cs`'s `VersusRuntime.Override(...)`,
+`VersusRuntime.Reset()` and four separate `VersusRuntime.Coordinator` property accesses (`CreateSeries`,
+`Load`, `IssueAttempt`, `StartAttempt`) now resolve through `Level5.Versus` (`autoReferenced`) instead
+of `Assembly-CSharp`, closing the last `versus`-side gap this slice could close — but the same file
+still calls `VersusMatchReporter.TryReport(...)` and
+`ActiveVersusAttempt.Clear()` (`Assembly-CSharp`, `Assets/Scripts/versus/`) and `ActiveMatch.Clear()`/
+`MatchCatalogs.Reset()` (`Assembly-CSharp`, `Assets/Scripts/menu_start/`) directly, and
+`BasketballVisibilityTests.cs`/`PlayerMovementPhysicsTests.cs` are unaffected — neither references
+anything in `versus`. 2c's exit condition is unchanged: `VersusMatchReporter`, `ActiveVersusAttempt`,
+`ActiveMatch`, `MatchCatalogs`, and `PlayerController` all still need to migrate, which needs the
+`player`/`game manager` cycle cut first, not a continuation of versus leaf-picking —
+`FileVersusSeriesRepository`/`VersusRuntime` were `versus`'s only remaining dependency-closed pair after
+Slice 14's remeasurement (see Slice 15 above).
 
 #### 2d — Architecture guards and exit verification
 
