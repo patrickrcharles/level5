@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ProgressionService
 {
+    /// <summary>Compatibility delegate: the algorithm itself lives on <see cref="MatchSession"/> now.</summary>
     public static string CreateResultId(string prefix)
     {
-        string safePrefix = string.IsNullOrEmpty(prefix) ? "match" : prefix;
-        return safePrefix + "-" + Guid.NewGuid().ToString("N");
+        return MatchSession.CreateResultId(prefix);
     }
 
     /// <summary>

@@ -124,7 +124,6 @@ public static class GameOptions
     static public int userid;
     // The session bearer token deliberately does not live here. It is a credential; it belongs to
     // APIHelper for the life of the session. Ask APIHelper.HasSession instead.
-    static public string matchResultId;
     static public int numOfLocalUsers;
 
     static public bool tipDialogueLoadedOnStart;

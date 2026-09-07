@@ -116,9 +116,13 @@ character id (`CharacterProfile.PlayerId`), resolved back into a catalog positio
 | `bearerToken` | API authentication only |
 | `applicationVersion`, `operatingSystemVersion` | application/platform service |
 | `previousSceneName` | navigation / session flow service |
-| `matchResultId` | `MatchSession` |
 | `levelsList` | campaign session owner |
 | `tipDialogueLoadedOnStart` | start menu state |
+
+`matchResultId` is gone (AUD-012 Phase 2b Slice 17). `MatchSession` now owns the current match
+result id as private state instead of mirroring it through `GameOptions`; `ProgressionService.CreateResultId`
+remains as a compatibility delegate onto `MatchSession.CreateResultId`, the id-generation
+algorithm's one remaining implementation.
 
 ## Consumers still reading `GameOptions` directly
 
