@@ -153,6 +153,19 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(VersusRuntime).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 16: proves the gameplay-to-versus result mapper actually compiles into
+    /// <c>Level5.Versus</c>, the same identity check <see cref="MatchControllerCompilesIntoLevel5Match"/>
+    /// does for the match leaf.
+    /// </summary>
+    [Test]
+    public void GameStatsAttemptResultsCompilesIntoLevel5Versus()
+    {
+        Assert.That(
+            typeof(GameStatsAttemptResults).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Versus"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
