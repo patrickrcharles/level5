@@ -228,6 +228,23 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Match"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 22: proves <c>RigidbodyFreezeHelper</c> (a plain static helper over
+    /// <c>Rigidbody</c> constraints, moved out of loose <c>Assets/Scripts/Utility</c>) actually
+    /// compiles into the existing <c>Level5.Utility</c> asmdef, the same identity check
+    /// <see cref="AtomicFileCompilesIntoLevel5Utility"/> does for <c>AtomicFile</c>. Its three
+    /// callers - <c>PlayerController</c>, <c>AutoPlayerController</c> and
+    /// <c>RacingVehicleController</c> - stay in <c>Assembly-CSharp</c> and reach it through
+    /// <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void RigidbodyFreezeHelperCompilesIntoLevel5Utility()
+    {
+        Assert.That(
+            typeof(RigidbodyFreezeHelper).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Utility"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

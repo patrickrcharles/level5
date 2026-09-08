@@ -1000,7 +1000,94 @@ not moved, and Phase 2c's PlayMode test assemblies are not normalized here. `Pla
 remains in `Assembly-CSharp` (`Assets/Scripts/player/`); Slice 21 cut one outbound edge and moved no
 file, so Phase 2c stays blocked on it.
 
-**Running total after slices 1-21:** `Assets/Scripts/basketball`'s 12 production files (source left in
+**Slice 22 — `Level5.Utility` (2026-09-08), `RigidbodyFreezeHelper` moves into the assembly that
+already owns the shared utility leaf.** A source-identical assembly-ownership move: the file and its
+`.meta` were relocated from loose `Assets/Scripts/Utility/` (where they compiled into
+`Assembly-CSharp`) into `Assets/Scripts/Utility/Level5Utility/`, alongside `AtomicFile`,
+`SceneObjects` and `UtilityFunctions`. Nothing else changed: same global namespace, same type name,
+same `public static class RigidbodyFreezeHelper`, same two methods (`FreezePosition`,
+`UnfreezeRotationOnly`), same `RigidbodyConstraints` masks, same null behaviour, and not a single
+caller edited. `git` recorded both files as pure renames and the moved bytes hash identically to the
+originals, so "behaviour-preserving" here is byte-level, not an assessment.
+
+The helper was confirmed dependency-closed against current source before moving: it references only
+`UnityEngine.Rigidbody` and `RigidbodyConstraints`, and no type remaining in `Assembly-CSharp`. It is
+also assembly-identity-safe - a plain static class, not a `MonoBehaviour`, `ScriptableObject`, or
+serialized managed object, so no scene or prefab carries a component entry for it. A focused search
+for assembly-sensitive resolution (`[SerializeReference]`, `Type.GetType`, `AssemblyQualifiedName`,
+`TypeNameHandling`, hard-coded assembly-qualified names) found exactly one hit across project-authored
+code under `Assets/`, in `Assets/Editor/MobileDependencyResolverInstallerLp.cs` for an unrelated
+Google package (the remaining hits repository-wide are all inside `Library/PackageCache`, Unity's own
+untracked package sources) - nothing in this project resolves this helper by assembly-qualified name. Its `.meta` GUID
+`ea19b4ee40100a34b8a4e029df148059` is preserved unchanged (the audited value matched current `dev`),
+so any future serialized reference stays intact. No compatibility wrapper or forwarding type was
+introduced.
+
+**`Level5.Utility.asmdef` was not modified, and that was verified rather than assumed.** The helper
+needs only Unity engine APIs, which need no asmdef reference; the assembly already existed and is
+`autoReferenced`, so its three callers - `PlayerController`, `AutoPlayerController` (both
+`Assets/Scripts/player/`) and `RacingVehicleController` (`Assets/Scripts/player_racing/`, *outside*
+`Level5PlayerRacing/`) - all still in `Assembly-CSharp`, resolve it with no call-site or reference
+change. No reference was added merely because this one file has a narrower dependency set than the
+rest of the assembly. The resulting direction is `Assembly-CSharp callers -> Level5.Utility ->
+UnityEngine`; the forbidden `Level5.Utility -> Assembly-CSharp` edge is not created, and
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` continues to enforce that outbound boundary
+now that this file is inside a scanned production folder.
+
+Headless Unity 6000.5.7f1 batch compile clean, zero `CS` errors, with every existing caller compiling
+unchanged - no visibility change, no new assembly reference, no runtime source change. Extended the
+existing `Level5ProductionAssemblyBoundaryTests` with one focused identity assertion,
+`RigidbodyFreezeHelperCompilesIntoLevel5Utility` (mirroring
+`AtomicFileCompilesIntoLevel5Utility`); no second dependency scanner was added. Focused EditMode run:
+13/13 in that fixture, including both pre-existing boundary guards. Per this repository's risk-based
+validation policy the player-movement, combat and racing suites were not re-run - this slice changes
+assembly ownership, not physics behaviour, and the compile plus identity/boundary guards already
+establish that claim; PR CI owns broader regression coverage.
+
+**`PlayerController` dependency closure scan, freshly remeasured after this slice (2026-09-08).**
+Re-derived from current declarations rather than by subtracting one from Slice 21's count: every
+identifier `PlayerController.cs` actually references (comments and string literals stripped) was
+matched against every type declaration under `Assets/`, and each match resolved to its nearest
+enclosing `.asmdef`, which is authoritative. Group A is unchanged from Slice 21 except that
+`RigidbodyFreezeHelper` has joined it:
+
+**A. Already owned by custom assemblies - legal references, not blockers (11).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, **`RigidbodyFreezeHelper`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (12, down from 13).**
+
+- **input:** `PlayerInputReader` (`Assets/Scripts/input/`, *outside* `Level5Input/`)
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerHealth`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `CallBallToPlayer` (`Assets/Scripts/misc/callBallToPlayer.cs`,
+  *outside* `Level5Misc/`), `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`RigidbodyFreezeHelper` is the only entry that left group B; nothing else moved between groups, and no
+new dependency appeared. `PlayerController` itself remains in `Assembly-CSharp`
+(`Assets/Scripts/player/`) - this slice moved a type it depends on, not the controller.
+
+**`PlayerSwapAttack` eligibility, freshly rechecked (2026-09-08) - diagnostic only.** Re-read in full:
+it references only Unity engine types (`MonoBehaviour`, `Animator`, `AnimatorOverrideController`,
+`AnimationClip`, `Random`, `SerializeField`) and no type declared anywhere else in this repository, so
+it is dependency-closed and is a strong candidate for the slice that establishes or first enters
+`Level5.Player`. Its four live consumers - `PlayerController`, `AutoPlayerController`,
+`BodyGuardController` and `EnemyController` (the latter in `Assets/Scripts/enemy/`, *outside*
+`Level5Enemy/`) - are all in `Assembly-CSharp` today, so no existing custom assembly would need a new
+reference to follow it. Unlike this slice's helper it *is* a `MonoBehaviour` with serialized fields
+placed on player/enemy prefabs, so a future move must preserve its `.meta` GUID
+(`138cd9572af08c54ba58bbfabe64f328`) for those component entries to keep resolving. It is **not**
+created, moved, or otherwise addressed here. When `Level5.Player` is eventually created, group A's
+acyclicity must be freshly rechecked rather than inherited: the structural guarantee recorded for
+Slice 21 (#112) - that those assemblies *cannot* depend back on `PlayerController` because an asmdef
+cannot reference `Assembly-CSharp` - expires the moment a back-reference becomes expressible.
+
+**Running total after slices 1-22:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`/`MatchCatalogs.cs`
 (all four `Level5.Match`) plus
 `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
@@ -1012,7 +1099,9 @@ assemblies from slices 1-10 (`Level5.Input`,
 `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
 (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
 total (unchanged from Slice 18's count: Slice 20 added a file to an existing assembly, not a new one;
-Slice 21 moved no file at all — it narrowed an edge in place), out of roughly 218 `.cs` files in
+Slice 21 moved no file at all — it narrowed an edge in place, and Slice 22 moved
+`RigidbodyFreezeHelper.cs`/`.meta` into the existing `Level5.Utility` rather than creating a new
+assembly), out of roughly 218 `.cs` files in
 `Assets/Scripts` before this phase started. `LegacyMatchCatalogBootstrap.cs`, the composition seam Slice
 20 added, stays in `Assembly-CSharp` (`Assets/Scripts/menu_start/`) and is not counted here. The
 remainder is either `player`/`game manager` themselves (still mutually coupled, and still most of what
@@ -1184,6 +1273,18 @@ sniper/projectile, player-local components, gameplay adapters/helpers — the 13
 slice's remeasured closure scan above) before a move becomes possible. Its `Level5.Input`/`Level5.Core`/
 `Level5.Basketball`/`Level5.Utility` dependencies are legal references and do not block the move — this
 is a diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 22 (2026-09-08), re-verified against the current folder.** Same nine files
+as Slices 12-21, unchanged. Slice 22 moved `RigidbodyFreezeHelper` into `Level5.Utility`, but none of
+the nine workaround files references that helper at all - its only three callers are production
+controllers - so this slice changes nothing for them directly. `PlayerMovementPhysicsTests.cs` and
+`BasketballVisibilityTests.cs` still call `PlayerController` directly (`Assembly-CSharp`,
+`Assets/Scripts/player/`) via `GetComponent`/`FindAnyObjectByType`. 2c's exit condition is unchanged
+in kind and one entry narrower in scope: `PlayerController` is still the only remaining direct
+`Assembly-CSharp` dependency across all nine workaround files, still gated on cutting the `player`/
+`game manager` cycle first and on `PlayerController`'s own remaining `Assembly-CSharp` dependency set,
+now 12 types rather than 13 (group B of this slice's freshly remeasured closure scan above). This is a
+diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
