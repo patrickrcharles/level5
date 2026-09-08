@@ -389,6 +389,7 @@ public sealed class SpawnCoordinator
         InitializeHumanProfile(identifier, slot);
         BindRangeMeters(spawned, identifier.Actor, isCpu: false);
         BindShotMeters(spawned, identifier.Actor, isCpu: false);
+        BindCallBallMatchRules(spawned);
         registry.Add(identifier);
     }
 
@@ -448,7 +449,34 @@ public sealed class SpawnCoordinator
         PrepareCpuMatchContext(identifier);
         BindRangeMeters(spawned, identifier.Actor, isCpu: true);
         BindShotMeters(spawned, identifier.Actor, isCpu: true);
+        BindCallBallMatchRules(spawned);
         registry.Add(identifier);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 24: binds this coordinator's already-resolved <see cref="rules"/> to the
+    /// participant's own <c>CallBallToPlayer</c>, from both <see cref="RegisterHuman"/> and
+    /// <see cref="RegisterCpu"/> - the two composition paths that produce a participant carrying one -
+    /// so that component's existing call-enabled policy no longer reads <c>MatchRuntime.Rules</c>
+    /// itself. Called during <c>GameLevelManager.Awake</c>'s spawn pass, so it always precedes that
+    /// component's own <c>Start()</c>.
+    ///
+    /// <c>GetComponent</c>, not <c>GetComponentsInChildren</c>: this component is authored on the
+    /// participant root, which is where both <c>PlayerController</c> and <c>AutoPlayerController</c>
+    /// resolve it from. A participant without one is not a defect and is silently skipped - Lockdown's
+    /// defender prefab (<c>cpu_player_defense_oldreal</c>) carries no <c>CallBallToPlayer</c> at all.
+    /// Nothing is added here: composition supplies the rules, it does not compose the participant, and
+    /// it does not decide whether calling the ball is enabled.
+    /// </summary>
+    private void BindCallBallMatchRules(GameObject participant)
+    {
+        CallBallToPlayer callBall = participant.GetComponent<CallBallToPlayer>();
+        if (callBall == null)
+        {
+            return;
+        }
+
+        callBall.BindMatchRules(rules);
     }
 
     /// <summary>

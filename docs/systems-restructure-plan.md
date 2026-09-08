@@ -1217,6 +1217,157 @@ remainder is either `player`/`game manager` themselves (still mutually coupled, 
 the asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
 and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel` were.
 
+**Slice 24 — `Level5.Player` (2026-09-08), its second type: `CallBallToPlayer`, after inverting that
+type's `MatchRuntime` dependency.** Unlike Slice 23's dependency-closed move, this slice had to remove
+a dependency before the move became legal. `CallBallToPlayer.Start()` read `MatchRuntime.Rules`
+directly — `MatchRuntime` is `Assets/Scripts/game manager/`, *outside* `Level5Match/`, so it is still
+`Assembly-CSharp` and was the single edge keeping this component out of any custom assembly. The read
+is now an explicitly bound `ResolvedMatchRules` (`Level5.Core`), supplied by the existing participant
+composition, and `Assets/Scripts/misc/callBallToPlayer.cs`/`.meta` moved to
+`Assets/Scripts/player/Level5Player/` alongside `PlayerSwapAttack`.
+
+**The call-enabled policy did not move and did not change.** `CallBallToPlayer` still owns it, still in
+its own `Start()`, still in exactly the same shape: enabled by default; `CallEnabled = false` when
+`Hardcore && EnemiesOnly`; back to `true` inside that branch for a three-, four-, seven-point or
+all-point contest. Only the source of the rules changed. `SpawnCoordinator` supplies facts — the
+already-resolved rules object it has held since AUD-010 Phase 2b0 — and does not decide whether
+calling the ball is enabled; no match-context service, provider interface, registry, global fallback
+or generalized player-binding framework was introduced. Everything else about the component is
+byte-identical: same global namespace, same type name, same `public bool CallEnabled`, same
+`public bool Locked`, same `[SerializeField]` set (`pullSpeed`, `pullDirection`, `_basketBallState`,
+`locked`, `CallEnabled`) in the same order and with the same types, same `pullSpeed = 2.3f` at startup,
+same `pullBallToPlayer`/`pullBallToPlayerAuto` names and Rigidbody math, same commented-out legacy
+blocks. Not one caller was edited: `PlayerController`, `AutoPlayerController`, `groundcheck` and
+`PlayerDunk` all stay in `Assembly-CSharp` and reach the type through `autoReferenced`.
+
+**`BindMatchRules` follows the repository's existing bind-once shape**, the one `BasketBall` and
+`BasketBallState` already use, including its guard ordering: the already-bound branch is checked
+*before* the null-argument branch, so a null second call after a real bind reports "already bound"
+rather than "remaining unbound" and cannot obscure the original valid reference. (`ShotMeter` and
+`GameStats` still carry the older null-first ordering; they were not touched.)
+
+**An unbound `Start()` fails closed rather than reaching back into `MatchRuntime`.** A production
+participant always has rules by then — both binding sites run inside `GameLevelManager.Awake`'s spawn
+pass, and Unity runs every `Awake` before any `Start`, so the ordering is structural rather than a
+script-execution-order assumption. Reaching `Start()` unbound is therefore a composition defect: it
+logs an actionable error and sets `CallEnabled = false` for that one instance. The player object is
+not disabled and the component is not disabled — only calling the ball. Note this fails closed for the
+paths that consult `CallEnabled` (`PlayerController`'s keyboard call-ball and `AutoPlayerController`'s
+CPU pull); `PlayerController`'s touch call-ball branch has never consulted `CallEnabled` and still does
+not. That asymmetry is pre-existing and was deliberately left alone here.
+
+**Composition binds from both registration paths, through one shared helper.**
+`SpawnCoordinator.BindCallBallMatchRules(GameObject)` is called from `RegisterHuman` and from
+`RegisterCpu`, next to the existing `BindRangeMeters`/`BindShotMeters` calls, so every route that
+produces a participant is covered: the primary human, additional roster humans, roster CPUs, a
+scene-supplied `autoPlayer`, and Lockdown's defender. It uses `GetComponent`, not
+`GetComponentsInChildren` — the component is authored on the participant root, which is where both
+`PlayerController` and `AutoPlayerController` resolve it from — and it silently skips a participant
+that has none, because that is authored composition rather than a defect:
+`cpu_player_defense_oldreal.prefab` carries no `CallBallToPlayer` at all (verified: 71 authored
+prefabs reference the script GUID, and the Lockdown defender is not one of them). It never adds a
+missing component and never re-reads `MatchRuntime.Rules`.
+
+**`Level5.Player.asmdef` gains its first two references: `"Level5.Core"` and `"Level5.Basketball"`.**
+`Level5.Core` for `ResolvedMatchRules`, which the bound field and `BindMatchRules` name.
+`Level5.Basketball` for `BasketBallState`: that reference was re-verified rather than assumed from the
+audit, and it is a real compiled dependency — `[SerializeField] private BasketBallState
+_basketBallState` is a field declaration the compiler must resolve, even though no code in the file
+reads it. Removing the field would have been serialized-data cleanup, which this slice does not do, so
+the reference stays. Nothing else was added; no reference was pre-added for player types that may
+migrate later.
+
+**The graph was rechecked from current `.asmdef` files before and after the edit**, as Slice 21's
+warning and Slice 23 both require, because this slice creates the first outbound edges from
+`Level5.Player`. Before: `Level5.Player` declared nothing and nothing named it. After:
+`Level5.Player -> {Level5.Core, Level5.Basketball}`; `Level5.Core` declares no references at all;
+`Level5.Basketball -> {Level5.Core, Level5.Utility, Level5.Audio, Level5.Constants, Level5.Misc}`, of
+which `Level5.Utility -> {Level5.Core}` and the other three declare none. No `.asmdef` in the project
+names `Level5.Player`, so it is still not the target of any edge and cannot be part of a cycle. The
+resulting direction is `Assembly-CSharp composition/controllers -> Level5.Player -> {Level5.Core,
+Level5.Basketball -> Level5.Core}`.
+
+**Serialized identity.** `CallBallToPlayer` is a `MonoBehaviour` carried by 71 authored prefabs (no
+scene stores the script GUID directly), so its `.meta` was moved with `git mv` rather than
+regenerated; the moved `.meta` blob hashes identically to the original
+(`c7688e4cfa11361ef8bd586b1eef1bc655faf301`) and the GUID is unchanged at
+`567ca935929c9cd4ea9d04d51ef75440`. The same two cross-assembly hazards Slice 23 checked were checked
+again and are both clear: no authored asset stores an assembly-qualified `m_TargetAssemblyTypeName`
+naming this type, and no `.anim`/`.controller` names `pullBallToPlayer`/`pullBallToPlayerAuto` as an
+animation event — both are called from C# only. Nothing in this project uses `[SerializeReference]`.
+No prefab, scene, animation asset or animator controller was edited or resaved.
+
+**One visibility consequence, deliberate and behaviour-neutral.** `internal float pullSpeed` is now
+internal to `Level5.Player` rather than to `Assembly-CSharp`. No production caller ever named it (its
+only reads and writes are inside the component itself), so nothing broke; the new EditMode fixture
+reads it by reflection rather than widening the field, since this migration changes no visibility.
+
+Headless Unity `6000.5.7f1` batch compile clean, zero `CS` errors, with every existing caller compiling
+unchanged; Unity rebuilt `Library/ScriptAssemblies/Level5.Player.dll` containing the type. Extended
+`Level5ProductionAssemblyBoundaryTests` with one focused identity assertion,
+`CallBallToPlayerCompilesIntoLevel5Player`, mirroring `PlayerSwapAttackCompilesIntoLevel5Player`; no
+second dependency scanner, source parser, assembly registry or architecture-test framework was added.
+Added `Assets/Tests/Editor/Level5CallBallToPlayerMatchRulesTests.cs`, which asserts the policy as
+behaviour rather than as a bound reference — ordinary rules leave calling the ball enabled, each half
+of the gate alone leaves it enabled, `Hardcore + EnemiesOnly` disables it, and all four point-contest
+shot rules re-enable it (parameterized) — plus the bind-once/null/fail-closed contract, and drives the
+real private `RegisterHuman`/`RegisterCpu` composition path (the same technique
+`Level5ShotMeterOwnershipTests` already uses) to prove both participant routes receive *this* match's
+rules: the coordinator is built with `Hardcore + EnemiesOnly`, so a participant that bound nothing
+would log a composition error and a participant that bound some other default rules object would leave
+`CallEnabled` true — both fail the assertion. Focused EditMode run: 30/30 across both fixtures,
+including `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` and every pre-existing identity
+guard. Serialized-component resolution was verified directly rather than inferred, via a throwaway
+editor pass (created, run, deleted — not committed) that loaded one human prefab
+(`player_ak47.prefab`), one CPU prefab (`cpu_player_ak47.prefab`) and the scene auto-player prefab
+(`auto_player_drblood.prefab`): all three resolve `CallBallToPlayer`, report zero missing-script
+components, and keep their authored serialized values (`pullSpeed` 2, `CallEnabled` true, `locked`
+false); the same pass confirmed `typeof(CallBallToPlayer).Assembly` is `Level5.Player` while
+`AssetDatabase` still maps the script to `567ca935929c9cd4ea9d04d51ef75440`, and confirmed
+`cpu_player_defense_oldreal.prefab` legitimately has no such component. Per this repository's
+risk-based validation policy the combat, player-movement, CPU and basketball suites were not re-run:
+this slice changes where the rules come from, not what the policy decides, and the compile plus
+policy/composition/identity/boundary/prefab-resolution evidence already establishes that claim; PR CI
+owns broader regression coverage.
+
+**`PlayerController` dependency closure scan, freshly remeasured after this slice (2026-09-08).**
+Re-derived from current declarations rather than by subtracting one from Slice 23's count: every
+identifier `PlayerController.cs` actually references (comments and string literals stripped) was
+matched against every type declaration under `Assets/`, and each match resolved to its nearest
+enclosing `.asmdef`, which is authoritative. Group A is unchanged from Slice 23 except that
+`CallBallToPlayer` has joined `PlayerSwapAttack` in `Level5.Player`:
+
+**A. Already owned by custom assemblies — legal references, not blockers (13).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, **`CallBallToPlayer`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` — the actual remaining blockers (10, down from 11).**
+
+- **input:** `PlayerInputReader` (`Assets/Scripts/input/`, *outside* `Level5Input/`)
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerHealth`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`CallBallToPlayer` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared. Note that `PlayerController` still reaches `MatchRuntime` on its own account —
+this slice cut `CallBallToPlayer`'s edge to it, not the controller's — so `MatchRuntime` remains a
+group B blocker. `PlayerController` itself remains in `Assembly-CSharp` (`Assets/Scripts/player/`), and
+moving it into `Level5.Player` stays blocked on all ten group B entries; six of those are its own
+sibling components under `Assets/Scripts/player/`, so that folder still cannot be absorbed wholesale.
+The "gameplay adapters/helpers" line is now down to a single entry, `ShooterAttributesMapper`.
+
+**Running total after slices 1-24:** unchanged in assembly count from Slice 23 — 18 production runtime
+assemblies — since this slice moved one file into the existing `Level5.Player` rather than creating a
+new assembly. `Level5.Player` now holds `PlayerSwapAttack.cs`/`.meta` and
+`callBallToPlayer.cs`/`.meta`, both moved with their GUIDs intact. `Assets/Scripts/misc/` outside
+`Level5Misc/` is one file smaller. Everything else in the Slice 23 running total is unchanged.
+
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
 layers, DI/service locators, shader/material changes, URP configuration changes, and scene or
@@ -1408,6 +1559,20 @@ now 11 types rather than 12 (group B of this slice's freshly remeasured closure 
 assembly those tests will eventually need `PlayerController` to live in now exists, which narrows the
 remaining work to moving the type rather than also choosing its home. This is a diagnostic finding
 only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 24 (2026-09-08), re-verified against the current folder.** Same nine files
+as Slices 12-23, unchanged. Slice 24 inverted `CallBallToPlayer`'s `MatchRuntime` dependency and moved
+it into `Level5.Player`, but no file in the workaround folder mentions `CallBallToPlayer` at all - its
+four callers are production components - so this slice changes nothing for them directly.
+`PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs` still call `PlayerController`
+directly (`Assembly-CSharp`, `Assets/Scripts/player/`) via `GetComponent`/`FindAnyObjectByType`. 2c's
+exit condition is unchanged in kind and one entry narrower in scope: `PlayerController` is still the
+only remaining direct `Assembly-CSharp` dependency across all nine workaround files, still gated on
+cutting the `player`/`game manager` cycle first and on `PlayerController`'s own remaining
+`Assembly-CSharp` dependency set, now 10 types rather than 11 (group B of this slice's freshly
+remeasured closure scan above). `MatchRuntime` is still in that set: this slice cut
+`CallBallToPlayer`'s edge to it, not `PlayerController`'s own. This is a diagnostic finding only,
+`PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
