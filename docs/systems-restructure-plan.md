@@ -858,8 +858,11 @@ arena-state dependency is removed through explicit composition.** Unlike slices 
 no file — `PlayerController` was confirmed still not dependency-closed (it retains direct references to
 `PlayerInputReader`, `MatchRuntime`, `SniperManager`, `PlayerIdentifier`, `CharacterProfile`,
 `PlayerHealth`, `PlayerDunk`, `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions`,
-`CallBallToPlayer`, `BasketBall`/`ShotMeter`/`IShooterActor` and related basketball-adapter types, all
-still `Assembly-CSharp`), so it cannot move yet. This slice narrows one edge in place: the two direct
+`CallBallToPlayer`, `ShooterAttributesMapper` and `RigidbodyFreezeHelper` — all still `Assembly-CSharp`),
+so it cannot move yet. Its `BasketBall`/`ShotMeter`/`IShooterActor`-style dependencies are *not* part of
+that blocker set; they are already owned by custom assemblies and would be legal references from a future
+player asmdef. As first written this sentence listed them as blockers — corrected 2026-09-08, see the
+remeasured closure scan below. This slice narrows one edge in place: the two direct
 `GameLevelManager` reads audited beforehand -
 `bballRimVector = GameLevelManager.instance.BasketballRimVector` (in `Start()`) and
 `GameLevelManager.instance.TerrainHeight` (the no-active-Terrain drop-shadow fallback in `Update()`) -
@@ -945,21 +948,48 @@ composition chain wires correctly end to end in a real scene. Per this repositor
 policy, the full EditMode/PlayMode suites were not re-run for a behavior-preserving, narrowly-scoped edge
 cut with focused parity coverage already in place; PR CI owns that broader regression coverage.
 
-**Fresh `PlayerController` dependency closure scan (2026-09-07), post-slice.** Re-read the file
-completely; `GameLevelManager` no longer appears anywhere in live code (confirmed by the new guard test).
-Every other `Assembly-CSharp` dependency remains, grouped by concern:
+**`PlayerController` dependency closure scan, remeasured from current declarations (2026-09-08).**
+Re-read the file completely; `GameLevelManager` no longer appears in live code anywhere (the five
+remaining occurrences are `///` doc comments, and the new guard strips comments before asserting).
 
-- **input:** `PlayerInputReader`, `PlayerControls`, `PlayerControlsProvider`
-- **match/session runtime:** `MatchRuntime`
-- **sniper/projectile:** `SniperManager`
+The scan first published with this slice (2026-09-07) grouped the closure by *concern* only and labelled
+every entry `Assembly-CSharp`. That was wrong for eight of them. Ownership was re-derived here by locating
+each type's current declaration and walking up to its nearest enclosing `.asmdef`, which is authoritative
+— not by folder name, subsystem name, or historical location. That distinction matters because four of
+these subsystem folders carry a *nested* asmdef covering only part of the folder
+(`Assets/Scripts/input/Level5Input/`, `Assets/Scripts/misc/Level5Misc/`,
+`Assets/Scripts/Utility/Level5Utility/`, `Assets/Scripts/game manager/Level5Match/`), so inferring
+ownership from the top-level folder gets it wrong in both directions.
+
+**A. Already owned by custom assemblies — legal references, not blockers.** A future `Level5.Player`
+asmdef could reference these directly:
+
+- **`Level5.Input`** (`Assets/Scripts/input/Level5Input/`): `PlayerControls`, `PlayerControlsProvider`
+- **`Level5.Core`** (`Assets/Level5/Core/`): `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`** (`Assets/Scripts/basketball/`): `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`** (`Assets/Scripts/Utility/Level5Utility/`): `SceneObjects`, `UtilityFunctions`
+
+**B. Still compiled into `Assembly-CSharp` — the actual remaining blockers (13).** Only these prevent
+`PlayerController` from moving into a production asmdef:
+
+- **input:** `PlayerInputReader` (`Assets/Scripts/input/`, *outside* `Level5Input/`)
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
 - **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerHealth`, `PlayerDunk`,
-  `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions`
-- **basketball/shot-pipeline adapters:** `BasketBall`, `ShotMeter`, `CallBallToPlayer`, `IShooterActor`,
-  `ShooterAttributes`, `ShooterAttributesMapper`
-- **misc gameplay utility:** `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+  `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `CallBallToPlayer` (`Assets/Scripts/misc/callBallToPlayer.cs`, *outside*
+  `Level5Misc/`), `ShooterAttributesMapper` (`Assets/Scripts/player/`), `RigidbodyFreezeHelper`
+  (`Assets/Scripts/Utility/`, *outside* `Level5Utility/`)
+
+Three corrections to closure *membership*, beyond ownership: `BasketBallState` and
+`IGroundHeightProvider` are live dependencies the first scan omitted (both legal — `Level5.Basketball`
+and `Level5.Core`), and `AutoPlayerController` is **not** a dependency at all — its only two appearances
+in the file are a `Debug.LogError` string literal and a comment, so it never belonged in the graph.
 
 This remeasurement is diagnostic only — none of these are addressed in this PR, `PlayerController` is
-not moved, and Phase 2c's PlayMode test assemblies are not normalized here.
+not moved, and Phase 2c's PlayMode test assemblies are not normalized here. `PlayerController` itself
+remains in `Assembly-CSharp` (`Assets/Scripts/player/`); Slice 21 cut one outbound edge and moved no
+file, so Phase 2c stays blocked on it.
 
 **Running total after slices 1-21:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`/`MatchCatalogs.cs`
@@ -1140,10 +1170,11 @@ one of `PlayerController`'s own outbound edges does not change that these test f
 itself, which remains `Assembly-CSharp` since it did not move. 2c's exit condition is unchanged in kind:
 `PlayerController` is still the only remaining direct `Assembly-CSharp` dependency across all nine
 workaround files, still gated on cutting the `player`/`game manager` cycle first, and now additionally
-on `PlayerController`'s own remaining dependency set (input, match/session runtime, sniper/projectile,
-player-local components, basketball/shot-pipeline adapters, misc gameplay utility — see this slice's
-fresh closure scan above) before a move becomes possible — this is a diagnostic finding only,
-`PlayerController` is not moved in this PR.
+on `PlayerController`'s own remaining `Assembly-CSharp` dependency set (input, match/session runtime,
+sniper/projectile, player-local components, gameplay adapters/helpers — the 13 types in group B of this
+slice's remeasured closure scan above) before a move becomes possible. Its `Level5.Input`/`Level5.Core`/
+`Level5.Basketball`/`Level5.Utility` dependencies are legal references and do not block the move — this
+is a diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
