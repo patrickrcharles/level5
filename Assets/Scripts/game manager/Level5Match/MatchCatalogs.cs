@@ -7,8 +7,11 @@ using UnityEngine;
 ///
 /// Authored <see cref="GameModeDefinition"/> / <see cref="LevelDefinition"/> assets under
 /// <c>Resources/Match</c> win when they exist. Until the editor migration has written them, the
-/// catalogs are built from the legacy start-menu prefab components instead, so the new code path is
-/// live from the first commit and cannot drift from the shipping data while it waits for assets.
+/// catalogs are built from fallback definitions instead, so the new code path is live from the first
+/// commit and cannot drift from the shipping data while it waits for assets. Converting the legacy
+/// start-menu prefab components into those fallback definitions is <c>LegacyMatchCatalogBootstrap</c>'s
+/// job (<c>Assembly-CSharp</c>, <c>Assets/Scripts/menu_start/</c>) - this type only decides authored
+/// vs. fallback and owns the resulting catalogs, so it can compile without any legacy menu/loading type.
 ///
 /// Everything is cached per source so a menu that asks on every highlighted button does not rebuild
 /// definitions each frame.
@@ -46,29 +49,18 @@ public static class MatchCatalogs
         cachedBuilder ??= new MatchConfigurationBuilder(Modes, Levels, Compatibility);
 
     /// <summary>
-    /// Builds the catalogs from whatever the loading scene produced. Safe to call repeatedly: it
-    /// rebuilds only when the source lists change identity.
+    /// Builds the catalogs from authored Resources, falling back to <paramref name="fallbackModes"/>/
+    /// <paramref name="fallbackLevels"/> when no authored asset exists yet. Safe to call repeatedly: it
+    /// rebuilds only when the fallback lists change identity, so a caller that keeps handing back the
+    /// same converted definitions (see <c>LegacyMatchCatalogBootstrap</c>) does not force a rebuild.
     /// </summary>
     public static void EnsureBuilt(
-        IReadOnlyList<StartScreenModeSelected> modeSources,
-        IReadOnlyList<LevelSelected> levelSources)
+        IReadOnlyList<GameModeDefinition> fallbackModes,
+        IReadOnlyList<LevelDefinition> fallbackLevels,
+        IReadOnlyList<string> fallbackModeAnomalies = null)
     {
-        EnsureModes(modeSources);
-        EnsureLevels(levelSources);
-    }
-
-    /// <summary>Builds from <see cref="LoadedData"/> when it is available. Returns whether it could.</summary>
-    public static bool EnsureBuiltFromLoadedData()
-    {
-        if (LoadedData.instance == null
-            || LoadedData.instance.ModeSelectedData == null
-            || LoadedData.instance.LevelSelectedData == null)
-        {
-            return false;
-        }
-
-        EnsureBuilt(LoadedData.instance.ModeSelectedData, LoadedData.instance.LevelSelectedData);
-        return IsReady;
+        EnsureModes(fallbackModes, fallbackModeAnomalies);
+        EnsureLevels(fallbackLevels);
     }
 
     /// <summary>Replaces the catalogs outright. For the editor migration and for tests.</summary>
@@ -88,9 +80,9 @@ public static class MatchCatalogs
         conversionAnomalies.Clear();
     }
 
-    private static void EnsureModes(IReadOnlyList<StartScreenModeSelected> modeSources)
+    private static void EnsureModes(IReadOnlyList<GameModeDefinition> fallbackModes, IReadOnlyList<string> fallbackModeAnomalies)
     {
-        if (cachedModes != null && ReferenceEquals(modeSourceKey, modeSources))
+        if (cachedModes != null && ReferenceEquals(modeSourceKey, fallbackModes))
         {
             return;
         }
@@ -99,22 +91,25 @@ public static class MatchCatalogs
         if (definitions.Count == 0)
         {
             conversionAnomalies.Clear();
-            List<string> anomalies = new List<string>();
-            definitions = GameModeDefinitionFactory.CreateAll(modeSources, anomalies);
-            conversionAnomalies.AddRange(anomalies);
+            if (fallbackModeAnomalies != null)
+            {
+                conversionAnomalies.AddRange(fallbackModeAnomalies);
+            }
+
+            definitions = fallbackModes != null ? new List<GameModeDefinition>(fallbackModes) : new List<GameModeDefinition>();
         }
 
         cachedModes = new GameModeCatalog(definitions);
-        modeSourceKey = modeSources;
+        modeSourceKey = fallbackModes;
         cachedCompatibility = null;
         cachedBuilder = null;
         ReportProblems("game mode", cachedModes.Problems);
         ReportProblems("game mode", conversionAnomalies);
     }
 
-    private static void EnsureLevels(IReadOnlyList<LevelSelected> levelSources)
+    private static void EnsureLevels(IReadOnlyList<LevelDefinition> fallbackLevels)
     {
-        if (cachedLevels != null && ReferenceEquals(levelSourceKey, levelSources))
+        if (cachedLevels != null && ReferenceEquals(levelSourceKey, fallbackLevels))
         {
             return;
         }
@@ -122,11 +117,11 @@ public static class MatchCatalogs
         List<LevelDefinition> definitions = LoadAuthoredLevels();
         if (definitions.Count == 0)
         {
-            definitions = LevelDefinitionFactory.CreateAll(levelSources);
+            definitions = fallbackLevels != null ? new List<LevelDefinition>(fallbackLevels) : new List<LevelDefinition>();
         }
 
         cachedLevels = new LevelDefinitionCatalog(definitions);
-        levelSourceKey = levelSources;
+        levelSourceKey = fallbackLevels;
         cachedCompatibility = null;
         cachedBuilder = null;
         ReportProblems("level", cachedLevels.Problems);

@@ -214,6 +214,20 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 20: proves <c>MatchCatalogs</c> (split from its legacy-menu-prefab
+    /// composition, which stays behind <c>LegacyMatchCatalogBootstrap</c> in <c>Assembly-CSharp</c>)
+    /// actually compiles into <c>Level5.Match</c>, the same identity check
+    /// <see cref="ActiveMatchCompilesIntoLevel5Match"/> does for <c>ActiveMatch</c>.
+    /// </summary>
+    [Test]
+    public void MatchCatalogsCompilesIntoLevel5Match()
+    {
+        Assert.That(
+            typeof(MatchCatalogs).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Match"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

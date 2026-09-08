@@ -1035,7 +1035,7 @@ public class StartManager : MonoBehaviour
                 // The mode/level catalogs the compatibility service and the launch builder work
                 // from. Built here, from the same authored prefabs the menu lists, so the menu can
                 // never offer a combination the launch validation would then refuse.
-                MatchCatalogs.EnsureBuilt(modeSelectedData, levelSelectedData);
+                LegacyMatchCatalogBootstrap.EnsureBuilt(modeSelectedData, levelSelectedData);
                 dataLoaded = true;
             }
         }

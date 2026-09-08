@@ -757,9 +757,105 @@ coverage.
 This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
 below.
 
-**Running total after slices 1-19:** `Assets/Scripts/basketball`'s 12 production files (source left in
-place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs` (all three
-`Level5.Match`) plus
+**Slice 20 — `Level5.Match` (2026-09-07), `MatchCatalogs` splits into a clean runtime owner and a
+legacy composition seam, and the runtime owner moves.** Unlike slices 12-19, `MatchCatalogs.cs`
+(`Assets/Scripts/menu_start/`) was not dependency-closed as it stood: its public `EnsureBuilt`
+accepted `IReadOnlyList<StartScreenModeSelected>`/`IReadOnlyList<LevelSelected>` directly and called
+`GameModeDefinitionFactory`/`LevelDefinitionFactory` itself, and an unused `EnsureBuiltFromLoadedData()`
+depended on `LoadedData` — three `Assembly-CSharp` types a `Level5.Match` asmdef cannot legally
+reference. Freshly searched every caller of `EnsureBuilt`, `EnsureBuiltFromLoadedData`, `Override`,
+`Reset`, `Builder`, `Compatibility`, `IsReady`, `Modes`, and `Levels` repository-wide before touching
+anything: `StartManager.cs`'s `getLoadedData()` was confirmed the only production caller of
+`EnsureBuilt(modeSources, levelSources)`; `EnsureBuiltFromLoadedData()` had zero callers anywhere in
+the repository (dead since it was written); `Override`/`Reset` are called only by
+`Level5VersusIntegrationTests.cs` and `Level5GameplayPlayModeTests.cs`; `Builder`/`Compatibility`/
+`IsReady` are called only by `StartManager.cs` and `VersusLauncher.cs`, all through types already in
+`Level5.Core.Match`.
+
+The split: `MatchCatalogs` keeps every runtime concern (authored-Resources precedence, the mode/level
+catalogs, `GameModeCompatibility`, `MatchConfigurationBuilder`, the independent per-catalog reference
+cache, `ConversionAnomalies`, problem reporting, `IsReady`/`Modes`/`Levels`/`Compatibility`/`Builder`/
+`Override`/`Reset`) but its `EnsureBuilt` signature changes to
+`EnsureBuilt(IReadOnlyList<GameModeDefinition> fallbackModes, IReadOnlyList<LevelDefinition>
+fallbackLevels, IReadOnlyList<string> fallbackModeAnomalies = null)` — every parameter a
+`Level5.Core.Match` type. `EnsureBuiltFromLoadedData()` was deleted rather than carried forward: no
+repository evidence of a caller, so retaining an `Assembly-CSharp` `LoadedData` dependency for it would
+have been dead weight, not a preserved contract. A new type, `LegacyMatchCatalogBootstrap`
+(`Assembly-CSharp`, `Assets/Scripts/menu_start/`), is the only thing that still converts
+`StartScreenModeSelected`/`LevelSelected` through the existing `GameModeDefinitionFactory`/
+`LevelDefinitionFactory` — it duplicates none of that conversion logic, it just calls it — and hands
+`MatchCatalogs` the resulting typed definitions. `StartManager.cs`'s single call site now reads
+`LegacyMatchCatalogBootstrap.EnsureBuilt(modeSelectedData, levelSelectedData)`; every other
+`MatchCatalogs` call site (`StartManager.cs`'s `Compatibility`/`IsReady`/`Builder`,
+`VersusLauncher.cs`'s `Builder`, both test files' `Override`/`Reset`) was left untouched since none of
+those members' signatures changed.
+
+The source-reference cache that used to live inside `MatchCatalogs.EnsureModes`/`EnsureLevels` (skip
+rebuilding when the exact same source-list object comes back) had to move with the conversion it was
+guarding: `LegacyMatchCatalogBootstrap` now holds `lastModeSources`/`cachedFallbackModes`/
+`cachedModeAnomalies` and `lastLevelSources`/`cachedFallbackLevels`, keyed by `ReferenceEquals` against
+the legacy source lists exactly as `MatchCatalogs` used to key them — same identity semantics, in-place
+mutation of the same list still does not force a reconversion, mode and level caches still invalidate
+independently. `MatchCatalogs.EnsureModes`/`EnsureLevels` keep their own independent reference cache
+underneath, now keyed by the fallback definition lists `LegacyMatchCatalogBootstrap` hands them; because
+that bootstrap hands back the same cached list objects when its own legacy sources have not changed,
+`MatchCatalogs`'s cache still sees "unchanged" the same way it used to. Critically, the bootstrap calls
+`MatchCatalogs.EnsureBuilt` on every request regardless of its own cache hit/miss, so
+`MatchCatalogs.Reset()` followed by the same legacy sources still rebuilds — `MatchCatalogs`'s own
+`modeSourceKey`/`levelSourceKey` are cleared by `Reset()`/`Override()`, independent of whatever the
+bootstrap cached. Anomaly clearing/reporting behavior is unchanged: `MatchCatalogs` only clears and
+repopulates `conversionAnomalies` when the authored-Resources catalog is empty and the fallback path is
+actually taken, exactly as before the split, and still reports it through `Debug.LogError` via
+`ReportProblems`.
+
+Authored-Resources precedence, the legacy prefab fallback, and every conversion rule in
+`GameModeDefinitionFactory`/`LevelDefinitionFactory` are untouched — `MatchCatalogs` still decides
+authored vs. fallback, `LegacyMatchCatalogBootstrap` still just converts, and `Assets/Resources/Match/
+Modes`/`Levels` still do not exist on `dev`, so the fallback path remains the one actually live in
+production. `MatchCatalogs.cs.meta`'s GUID (`d9db91f6a5878674f9d6d1d008150297`) was confirmed before the
+move and unchanged after it (`git mv`, preserving history), verified by reading the `.meta` file
+post-move. Moved `MatchCatalogs.cs`/`.cs.meta` from `Assets/Scripts/menu_start/` into `Assets/Scripts/
+game manager/Level5Match/`, alongside `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`.
+`Level5.Match.asmdef` needed no new reference — `MatchCatalogs`'s only custom-assembly dependency,
+`Level5.Core.Match`, was already declared, and it references no menu/loading/player/versus type.
+Assembly-sensitive type identity checked and clean: no `[SerializeReference]`, `Type.GetType`,
+`Assembly.Load`/`LoadFrom`, `AssemblyQualifiedName`, or `TypeNameHandling` touches `MatchCatalogs`
+anywhere in the repo, and — since it is a static non-component type — no scene/prefab component
+serialization applies either.
+
+A post-implementation review flagged one consistency gap: unlike every other static owner introduced
+across this migration (`MatchCatalogs`, `ActiveMatch`, `MatchSession`, `VersusRuntime`, `VersusCatalogs`,
+`ActiveVersusAttempt`), `LegacyMatchCatalogBootstrap` initially exposed no way to clear its own
+conversion cache. Not a live bug — every production and test path that needed a hard reset already went
+through fresh source-list references or `MatchCatalogs.Reset()` — but a testability/consistency gap
+against the established pattern. Fixed by adding `LegacyMatchCatalogBootstrap.Reset()`, which clears its
+five cache fields and leaves `MatchCatalogs` untouched (callers that also want the runtime catalogs
+cleared still call `MatchCatalogs.Reset()` separately, as they already did).
+
+Headless Unity 6000.5.7f1 batch compile clean, zero `CS` errors. Added
+`MatchCatalogsCompilesIntoLevel5Match` to `Level5ProductionAssemblyBoundaryTests.cs` (mirrors
+`ActiveMatchCompilesIntoLevel5Match`), and a new focused fixture,
+`LegacyMatchCatalogBootstrapTests.cs`, proving the four behaviors this split most risked changing:
+repeated bootstrap calls with the same legacy source-list reference reuse the built catalog rather than
+rebuilding it, `MatchCatalogs.Reset()` followed by the same legacy input still repopulates the catalogs,
+`LegacyMatchCatalogBootstrap.Reset()` clears its own conversion cache independently of `MatchCatalogs`,
+and a fallback conversion anomaly is still visible through `MatchCatalogs.ConversionAnomalies`. Focused
+EditMode runs passed unchanged: `Level5ProductionAssemblyBoundaryTests` (12/12, including the new test),
+`Level5AuthoredMatchDataTests` (7/7 — the conversion-parity/anomaly/id/compatibility suite that
+exercises `GameModeDefinitionFactory`/`LevelDefinitionFactory` directly and is therefore unaffected by
+where `MatchCatalogs` itself lives), `Level5VersusIntegrationTests` (10/10, including
+`TheLauncherBuildsAnOrdinaryMatchForTheSeriesFrozenMode`, which calls `MatchCatalogs.Override`/`Reset`
+directly), and the new `LegacyMatchCatalogBootstrapTests` (4/4). Per this repository's risk-based
+validation policy, the full EditMode/PlayMode suites were not re-run for a behavior-preserving
+ownership/boundary split with focused parity coverage already in place; PR CI owns that broader
+regression coverage.
+
+This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
+below.
+
+**Running total after slices 1-20:** `Assets/Scripts/basketball`'s 12 production files (source left in
+place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`/`MatchCatalogs.cs`
+(all four `Level5.Match`) plus
 `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
 `FileVersusSeriesRepository.cs`/`VersusRuntime.cs`/`GameStatsAttemptResults.cs`/`ActiveVersusAttempt.cs`/
 `VersusMatchReporter.cs` (all seven moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under
@@ -768,8 +864,10 @@ assemblies from slices 1-10 (`Level5.Input`,
 `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
 `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
 (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
-total (unchanged from Slice 18's count: this slice added files to existing assemblies, not a new one),
-out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. The remainder is
+total (unchanged from Slice 18's count: this slice added a file to an existing assembly, not a new one),
+out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. `LegacyMatchCatalogBootstrap.cs`,
+the composition seam this slice added, stays in `Assembly-CSharp` (`Assets/Scripts/menu_start/`) and is
+not counted here. The remainder is
 either `player`/`game manager` themselves (still mutually coupled, and still most of what the
 asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
 and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel` were.
@@ -909,6 +1007,21 @@ directly, and `BasketballVisibilityTests.cs`/`PlayerMovementPhysicsTests.cs` eac
 2c's exit condition is unchanged: `MatchCatalogs` and `PlayerController` are now the only two remaining
 direct `Assembly-CSharp` dependencies the workaround needs migrated, which needs the `player`/
 `game manager` cycle cut first — this is a diagnostic finding only, neither is moved in this PR.
+
+**Still blocked after Slice 20 (2026-09-07), re-verified against the current folder.** Same nine files
+as Slices 12-19, unchanged. Slice 20 moved `MatchCatalogs` out of `Assembly-CSharp`, and
+`Level5GameplayPlayModeTests.cs`'s `MatchCatalogs.Reset()` call now resolves through `Level5.Match`
+(`autoReferenced`) instead — closing the last direct `Assembly-CSharp` dependency that file had.
+`Level5GameplayPlayModeTests.cs` itself now references no type remaining in `Assembly-CSharp` directly.
+`PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs` each still call
+`PlayerController` directly (`Assembly-CSharp`, `Assets/Scripts/player/`) via `GetComponent`/
+`FindAnyObjectByType`, unaffected by this slice, and the remaining six files
+(`GameplayLevelUnpauseTests.cs`, `Level5MenuScreenPlayModeTests.cs`, and the four `*Composition
+PlayModeTests.cs` files) are unaffected as in every prior remeasurement — none references anything in
+`menu_start`, `versus`, or `player`. 2c's exit condition is unchanged in kind but narrower in scope:
+`PlayerController` is now the *only* remaining direct `Assembly-CSharp` dependency across all nine
+files in the workaround folder, still gated on cutting the `player`/`game manager` cycle first — this
+is a diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
