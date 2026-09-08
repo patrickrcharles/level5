@@ -281,6 +281,45 @@ public sealed class SpawnCoordinator
     /// </summary>
     public void BindHumanArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
     {
+        BindEveryHumanController(
+            "arena context",
+            controller => controller.BindArenaContext(basketballRimVector, groundHeightProvider));
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 26: forwards the scene's legacy mobile joystick axes to every registered
+    /// human participant's <see cref="PlayerController"/>, replacing <c>PlayerInputReader</c>'s former
+    /// direct <c>GameLevelManager.instance.Joystick</c> read - that class's last edge into
+    /// <c>Assembly-CSharp</c>. <paramref name="legacyTouchMovementReader"/> is a
+    /// <see cref="Func{TResult}"/> so the axes stay synchronous: the reader asks for them when it runs,
+    /// as the old singleton read did, rather than consuming a value cached a frame earlier. The
+    /// <c>FloatingJoystick</c> itself is never handed across - only its current values - so
+    /// <c>Level5.Input</c> gains no dependency on it.
+    ///
+    /// Called from <c>GameLevelManager.Awake</c>'s spawn pass rather than <c>Start()</c>, unlike
+    /// <see cref="BindHumanArenaContext"/>: the joystick is resolved before the coordinator is even
+    /// constructed, so there is nothing to wait for, and binding inside <c>Awake</c> guarantees the
+    /// source is present before any spawned <c>PlayerController.Start()</c> builds its first reader.
+    /// Ordering is not load-bearing regardless - <c>PlayerController</c> stores this independently of
+    /// its current reader and hands every reader an indirection that resolves it at call time.
+    ///
+    /// CPU participants are deliberately skipped: <c>AutoPlayerController</c> reads no player input.
+    /// </summary>
+    public void BindHumanLegacyTouchMovement(Func<Vector2> legacyTouchMovementReader)
+    {
+        BindEveryHumanController(
+            "legacy touch movement",
+            controller => controller.BindLegacyTouchMovementReader(legacyTouchMovementReader));
+    }
+
+    /// <summary>
+    /// The one human-participant iteration both <c>BindHuman*</c> passes share: registered, non-CPU,
+    /// with a <see cref="PlayerController"/> to bind to. A human whose prefab has no controller fails
+    /// closed on that participant with a named error and the pass continues, rather than throwing and
+    /// aborting binding for everyone after it.
+    /// </summary>
+    private void BindEveryHumanController(string context, Action<PlayerController> bind)
+    {
         foreach (PlayerIdentifier participant in registry.Participants)
         {
             if (participant == null || participant.isCpu)
@@ -291,11 +330,11 @@ public sealed class SpawnCoordinator
             PlayerController controller = participant.playerController;
             if (controller == null)
             {
-                Debug.LogError($"Registered human participant '{participant.name}' has no PlayerController to bind arena context to.", participant);
+                Debug.LogError($"Registered human participant '{participant.name}' has no PlayerController to bind {context} to.", participant);
                 continue;
             }
 
-            controller.BindArenaContext(basketballRimVector, groundHeightProvider);
+            bind(controller);
         }
     }
 

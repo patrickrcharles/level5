@@ -300,6 +300,27 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 26: proves <c>PlayerInputReader</c> - the human gameplay input-intent
+    /// layer - actually compiles into the existing <c>Level5.Input</c> asmdef, the same identity check
+    /// <see cref="PlayerHealthCompilesIntoLevel5Player"/> does for <c>PlayerHealth</c>. It joins
+    /// <c>PlayerControls</c>, <c>PlayerControlsProvider</c> and <c>PlayerTouchInputState</c> there once
+    /// its two <c>Assembly-CSharp</c> edges were cut: the <c>GameLevelManager.instance.Joystick</c> read
+    /// became an explicitly composed <c>Func&lt;Vector2&gt;</c>, and the
+    /// <c>TouchInputController.instance.HoldDetected</c> read was dropped as a duplicate of
+    /// <c>PlayerTouchInputState.BlockHeld</c>. The asmdef needed no new reference - the final source
+    /// names only <c>System</c>, <c>UnityEngine</c>, <c>PlayerControls</c> and
+    /// <c>PlayerTouchInputState</c>. Its one consumer, <c>PlayerController</c>, stays in
+    /// <c>Assembly-CSharp</c> and reaches it through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerInputReaderCompilesIntoLevel5Input()
+    {
+        Assert.That(
+            typeof(PlayerInputReader).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Input"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
