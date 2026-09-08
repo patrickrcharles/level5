@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -19,6 +20,117 @@ internal static class Level5TestSourceText
     {
         text = Regex.Replace(text, @"/\*.*?\*/", string.Empty, RegexOptions.Singleline);
         return Regex.Replace(text, @"//.*?$", string.Empty, RegexOptions.Multiline);
+    }
+
+    /// <summary>
+    /// Removes comments *and* string/char literals in one left-to-right pass, so a scanner sees only
+    /// real code identifiers.
+    ///
+    /// Regexes cannot do this correctly in either order, which is why this is a scanner. Stripping
+    /// comments first truncates a URL string like <c>"https://..."</c> at its <c>//</c> (found live
+    /// against <c>Constants.cs</c>'s API-address constants). Stripping literals first fixes that but
+    /// creates a worse failure in the other direction: the char-literal rule then runs over comment
+    /// text, so an apostrophe in a <c>///</c> comment ("controller's") pairs with the next apostrophe
+    /// anywhere in the file and silently deletes everything between - which measured at 111 lost
+    /// identifiers in <c>BasketBallAuto.cs</c> alone, across 29 production files (code review,
+    /// 2026-09-08). Both hazards vanish once a single pass decides what each quote means from
+    /// left to right.
+    ///
+    /// Each removed literal or block comment leaves one space so neighbouring tokens cannot fuse.
+    /// Interpolated strings are treated as plain strings - identifiers inside <c>{...}</c> holes are
+    /// dropped rather than parsed, matching the previous behaviour and the same-spirit
+    /// simplifications in the callers.
+    /// </summary>
+    internal static string StripCommentsAndLiterals(string text)
+    {
+        StringBuilder stripped = new StringBuilder(text.Length);
+        int i = 0;
+
+        while (i < text.Length)
+        {
+            char c = text[i];
+            char next = i + 1 < text.Length ? text[i + 1] : '\0';
+
+            if (c == '/' && next == '/')
+            {
+                while (i < text.Length && text[i] != '\n')
+                {
+                    i++;
+                }
+            }
+            else if (c == '/' && next == '*')
+            {
+                i += 2;
+                while (i < text.Length && !(text[i] == '*' && i + 1 < text.Length && text[i + 1] == '/'))
+                {
+                    i++;
+                }
+
+                i += 2;
+                stripped.Append(' ');
+            }
+            else if (c == '@' && next == '"')
+            {
+                // Verbatim string: no escapes, and "" is a literal quote rather than a terminator.
+                i += 2;
+                while (i < text.Length)
+                {
+                    if (text[i] == '"')
+                    {
+                        if (i + 1 < text.Length && text[i + 1] == '"')
+                        {
+                            i += 2;
+                            continue;
+                        }
+
+                        i++;
+                        break;
+                    }
+
+                    i++;
+                }
+
+                stripped.Append(' ');
+            }
+            else if (c == '"' || c == '\'')
+            {
+                char quote = c;
+                i++;
+                while (i < text.Length)
+                {
+                    if (text[i] == '\\')
+                    {
+                        i += 2;
+                        continue;
+                    }
+
+                    if (text[i] == quote)
+                    {
+                        i++;
+                        break;
+                    }
+
+                    // A regular literal cannot span lines. Stopping at the newline keeps a single
+                    // stray quote from swallowing the rest of the file, the failure mode this
+                    // scanner exists to prevent.
+                    if (text[i] == '\n')
+                    {
+                        break;
+                    }
+
+                    i++;
+                }
+
+                stripped.Append(' ');
+            }
+            else
+            {
+                stripped.Append(c);
+                i++;
+            }
+        }
+
+        return stripped.ToString();
     }
 
     internal static string Relative(string path)
