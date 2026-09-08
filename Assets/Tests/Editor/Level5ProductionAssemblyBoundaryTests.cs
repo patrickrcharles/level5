@@ -245,6 +245,25 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Utility"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 23: proves <c>PlayerSwapAttack</c> - the dependency-closed
+    /// <c>MonoBehaviour</c> that establishes <c>Level5.Player</c> - actually compiles into the new
+    /// asmdef, the same identity check <see cref="MatchControllerCompilesIntoLevel5Match"/> does for
+    /// the match leaf. The asmdef deliberately sits in the <c>Level5Player/</c> subfolder rather than
+    /// <c>Assets/Scripts/player/</c>, because asmdef ownership is recursive and the player root still
+    /// holds <c>PlayerController</c> and other types that are not dependency-closed yet. Its four live
+    /// consumers - <c>PlayerController</c>, <c>AutoPlayerController</c>, <c>BodyGuardController</c> and
+    /// <c>EnemyController</c> - stay in <c>Assembly-CSharp</c> and reach it through
+    /// <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerSwapAttackCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerSwapAttack).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

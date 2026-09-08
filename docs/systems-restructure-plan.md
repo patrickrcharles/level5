@@ -1087,21 +1087,130 @@ acyclicity must be freshly rechecked rather than inherited: the structural guara
 Slice 21 (#112) - that those assemblies *cannot* depend back on `PlayerController` because an asmdef
 cannot reference `Assembly-CSharp` - expires the moment a back-reference becomes expressible.
 
-**Running total after slices 1-22:** `Assets/Scripts/basketball`'s 12 production files (source left in
+**Slice 23 — `Level5.Player` (2026-09-08), the assembly's first type: `PlayerSwapAttack`.** This slice
+creates the `Level5.Player` production runtime assembly and moves exactly one type into it, the
+dependency-closed component Slice 22's diagnostic recheck had already nominated. `PlayerSwapAttack.cs`
+and its `.meta` were relocated from `Assets/Scripts/player/` (where they compiled into
+`Assembly-CSharp`) into a new `Assets/Scripts/player/Level5Player/` leaf folder. Nothing else changed:
+same global namespace, same type name, same `public class PlayerSwapAttack : MonoBehaviour`, same
+`public AnimationClip[] closeAttacks`, same `[SerializeField] protected Animator anim` and
+`[SerializeField] AnimatorOverrideController animatorOverrideController`, same
+`public AnimationClip longRangeAttack`, same `AnimatorOverrideController` getter, same `Start()`, same
+`setCloseAttack()`/`setLongRangeAttack()` names, bodies, random close-attack selection and null-guard
+behaviour, and not a single caller edited. `git` recorded both files as pure renames and the moved
+`.cs` hashes identically to the original blob (`5f15c30588d8...`), so "behaviour-preserving" here is
+byte-level, not an assessment.
+
+**The asmdef deliberately does *not* live at `Assets/Scripts/player/`.** Asmdef ownership is recursive,
+so a player-root asmdef would have swallowed `PlayerController`, `AutoPlayerController`,
+`PlayerHealth`, `CharacterProfile` and the roughly 30 other files in that folder — none of which are
+dependency-closed yet. `Assets/Scripts/player/Level5Player/` is the same leaf-subfolder shape
+`Level5Enemy/`, `Level5Combat/`, `Level5Input/` and `Level5Utility/` already use, and it keeps the new
+assembly's contents to exactly what this slice migrated.
+
+The component was confirmed dependency-closed against current source before moving: it references only
+Unity engine types (`MonoBehaviour`, `Animator`, `AnimatorOverrideController`, `AnimationClip`,
+`Random`, `SerializeField`) and no type declared anywhere else in this repository. Unlike Slice 22's
+static helper it *is* a serialized `MonoBehaviour`: 80 authored assets (79 prefabs and one scene)
+carry a component entry for it, so its `.meta` GUID `138cd9572af08c54ba58bbfabe64f328` was moved with
+the file rather than regenerated, and was verified unchanged after the move. No compatibility
+wrapper or forwarding type was introduced, and no prefab, scene, animation asset or animator
+controller was edited or resaved. The two ways a cross-assembly move can break a serialized
+reference *despite* a preserved GUID were both checked and are both clear: no authored asset stores
+an assembly-qualified `m_TargetAssemblyTypeName` naming this type (a `UnityEvent` persistent call
+would record `PlayerSwapAttack, Assembly-CSharp` and silently break), and no `.anim`/`.controller`
+names `setCloseAttack`/`setLongRangeAttack` as an animation event - both methods are called from
+C# only. The single `Type.GetType` anywhere in project-authored code is in
+`Assets/Editor/MobileDependencyResolverInstallerLp.cs` for an unrelated Google package, and nothing
+in this project uses `[SerializeReference]`.
+
+**`Level5.Player.asmdef` declares `"references": []`, and that emptiness is the point.** The type needs
+only Unity engine APIs, which need no asmdef reference, and the assembly is `autoReferenced`, so its
+four live consumers — `PlayerController`, `AutoPlayerController` (both `Assets/Scripts/player/`),
+`BodyGuardController` (`Assets/Scripts/bodyguard/`) and `EnemyController` (`Assets/Scripts/enemy/`,
+*outside* `Level5Enemy/`) — all still in `Assembly-CSharp`, resolve it with no call-site or reference
+change. `RacingVehicleController`'s two mentions are commented out and were left alone. No reference
+was pre-added for player types that may migrate later. The resulting direction is
+`Assembly-CSharp callers -> Level5.Player -> UnityEngine`; the forbidden
+`Level5.Player -> Assembly-CSharp` edge is not created, and
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` now enforces that outbound boundary
+automatically, the new folder being a discovered production asmdef folder.
+
+**Slice 21's acyclicity warning was honoured, not inherited.** That warning — that group A's
+cycle-freedom rested on `Assembly-CSharp` being unreferenceable by any asmdef, and expires once
+`Level5.Player` exists and a back-reference becomes expressible — was rechecked against current
+`.asmdef` files rather than assumed. `Level5.Player` declares no outbound reference at all, so it
+cannot be the source of a cycle; and no other `.asmdef` in the project names `Level5.Player`, so it is
+not yet the target of one either. The first assembly reference either into or out of `Level5.Player`
+is the point at which this recheck has to happen again.
+
+Headless Unity 6000.5.7f1 batch compile clean, zero `CS` errors, with every existing caller compiling
+unchanged — no visibility change, no new assembly reference, no runtime source change; Unity built
+`Library/ScriptAssemblies/Level5.Player.dll`. Extended the existing
+`Level5ProductionAssemblyBoundaryTests` with one focused identity assertion,
+`PlayerSwapAttackCompilesIntoLevel5Player` (mirroring `MatchControllerCompilesIntoLevel5Match`); no
+second dependency scanner was added. Focused EditMode run: 14/14 in that fixture, including both
+pre-existing boundary guards. Serialized-component resolution was verified directly rather than
+inferred, via a throwaway editor pass (created, run, deleted — not committed) that loaded one
+representative player prefab and one representative enemy prefab: `player_ak47.prefab` and
+`enemy_drblood.prefab` both resolve `PlayerSwapAttack`, report zero missing-script components, and the
+enemy's authored clips survive intact (`closeAttacks` = `enemy_attack_drblood1..3`, `longRangeAttack` =
+`enemy_attack_drblood4`); the same pass confirmed `typeof(PlayerSwapAttack).Assembly` is
+`Level5.Player` while `AssetDatabase` still maps the script to `138cd9572af08c54ba58bbfabe64f328`.
+`player_ak47`'s empty `closeAttacks` is authored state, not migration loss — the unmodified prefab YAML
+records `closeAttacks: []`. Per this repository's risk-based validation policy the combat,
+player-movement and CPU suites were not re-run: this slice changes assembly ownership, not attack
+behaviour, and the compile plus identity/boundary/prefab-resolution evidence already establishes that
+claim; PR CI owns broader regression coverage.
+
+**`PlayerController` dependency closure scan, freshly remeasured after this slice (2026-09-08).**
+Re-derived from current declarations rather than by subtracting one from Slice 22's count: every
+identifier `PlayerController.cs` actually references (comments and string literals stripped) was
+matched against every type declaration under `Assets/`, and each match resolved to its nearest
+enclosing `.asmdef`, which is authoritative. Group A is unchanged from Slice 22 except that
+`PlayerSwapAttack` has joined it:
+
+**A. Already owned by custom assemblies — legal references, not blockers (12).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: **`PlayerSwapAttack`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` — the actual remaining blockers (11, down from 12).**
+
+- **input:** `PlayerInputReader` (`Assets/Scripts/input/`, *outside* `Level5Input/`)
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerHealth`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `CallBallToPlayer` (`Assets/Scripts/misc/callBallToPlayer.cs`,
+  *outside* `Level5Misc/`), `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`PlayerSwapAttack` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared. `PlayerController` itself remains in `Assembly-CSharp` (`Assets/Scripts/player/`)
+— this slice moved a type it depends on, not the controller, and moving the controller into
+`Level5.Player` stays blocked on all eleven group B entries. Six of those eleven are its own sibling
+components under `Assets/Scripts/player/`, so that folder cannot simply be absorbed wholesale; each
+still needs its own dependency-closure check before it can follow `PlayerSwapAttack` into the new leaf.
+
+**Running total after slices 1-23:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`/`MatchCatalogs.cs`
 (all four `Level5.Match`) plus
 `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
 `FileVersusSeriesRepository.cs`/`VersusRuntime.cs`/`GameStatsAttemptResults.cs`/`ActiveVersusAttempt.cs`/
 `VersusMatchReporter.cs` (all seven moved, `.meta`s intact) plus `AtomicFile` (new file/`.meta` under
-`Level5.Utility`, `CharacterProgressStore.cs` itself left in place) plus the 27 files across 10 leaf
+`Level5.Utility`, `CharacterProgressStore.cs` itself left in place) plus `PlayerSwapAttack.cs`/`.meta`
+(moved into the new `Level5.Player`, GUID intact) plus the 27 files across 10 leaf
 assemblies from slices 1-10 (`Level5.Input`,
 `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
 `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
-(`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
-total (unchanged from Slice 18's count: Slice 20 added a file to an existing assembly, not a new one;
-Slice 21 moved no file at all — it narrowed an edge in place, and Slice 22 moved
-`RigidbodyFreezeHelper.cs`/`.meta` into the existing `Level5.Utility` rather than creating a new
-assembly), out of roughly 218 `.cs` files in
+(`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) plus `Level5.Player` — 18
+production runtime assemblies total (Slice 23 is the first new assembly since Slice 18: Slice 20 added
+a file to an existing assembly, not a new one; Slice 21 moved no file at all — it narrowed an edge in
+place; and Slice 22 moved `RigidbodyFreezeHelper.cs`/`.meta` into the existing `Level5.Utility`), out
+of roughly 218 `.cs` files in
 `Assets/Scripts` before this phase started. `LegacyMatchCatalogBootstrap.cs`, the composition seam Slice
 20 added, stays in `Assembly-CSharp` (`Assets/Scripts/menu_start/`) and is not counted here. The
 remainder is either `player`/`game manager` themselves (still mutually coupled, and still most of what
@@ -1285,6 +1394,20 @@ in kind and one entry narrower in scope: `PlayerController` is still the only re
 `game manager` cycle first and on `PlayerController`'s own remaining `Assembly-CSharp` dependency set,
 now 12 types rather than 13 (group B of this slice's freshly remeasured closure scan above). This is a
 diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 23 (2026-09-08), re-verified against the current folder.** Same nine files
+as Slices 12-22, unchanged. Slice 23 created `Level5.Player` and moved `PlayerSwapAttack` into it, but
+no file in the workaround folder mentions `PlayerSwapAttack` at all - its only four callers are
+production controllers - so this slice changes nothing for them directly. `PlayerMovementPhysicsTests.cs`
+and `BasketballVisibilityTests.cs` still call `PlayerController` directly (`Assembly-CSharp`,
+`Assets/Scripts/player/`) via `GetComponent`/`FindAnyObjectByType`. 2c's exit condition is unchanged in
+kind and one entry narrower in scope: `PlayerController` is still the only remaining direct
+`Assembly-CSharp` dependency across all nine workaround files, still gated on cutting the `player`/
+`game manager` cycle first and on `PlayerController`'s own remaining `Assembly-CSharp` dependency set,
+now 11 types rather than 12 (group B of this slice's freshly remeasured closure scan above). The
+assembly those tests will eventually need `PlayerController` to live in now exists, which narrows the
+remaining work to moving the type rather than also choosing its home. This is a diagnostic finding
+only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
