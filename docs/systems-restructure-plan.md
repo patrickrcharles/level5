@@ -969,6 +969,15 @@ asmdef could reference these directly:
 - **`Level5.Basketball`** (`Assets/Scripts/basketball/`): `BasketBall`, `ShotMeter`, `BasketBallState`
 - **`Level5.Utility`** (`Assets/Scripts/Utility/Level5Utility/`): `SceneObjects`, `UtilityFunctions`
 
+Referencing these creates no cycle *today*, and the reason is structural rather than incidental: an
+asmdef cannot reference `Assembly-CSharp`, so none of these four assemblies is able to depend back on
+`PlayerController` while it still lives there. Verified rather than assumed — the only mentions of
+`PlayerController` anywhere in those four assemblies are comments, in `Assets/Level5/Core/IShooterActor.cs`
+and `Assets/Scripts/basketball/BasketBall.cs` (a third hit, `Assets/Scripts/basketball/Legacy~/`, is
+excluded from compilation entirely by Unity's trailing-`~` convention). That guarantee expires the moment
+`PlayerController` moves: once `Level5.Player` exists, a back-reference becomes expressible, so acyclicity
+must be re-checked at that point rather than inherited from this scan.
+
 **B. Still compiled into `Assembly-CSharp` — the actual remaining blockers (13).** Only these prevent
 `PlayerController` from moving into a production asmdef:
 
