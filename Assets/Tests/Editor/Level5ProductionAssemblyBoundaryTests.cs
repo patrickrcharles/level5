@@ -264,6 +264,22 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 24: proves <c>CallBallToPlayer</c> - the second type to enter
+    /// <c>Level5.Player</c>, once its <c>MatchRuntime.Rules</c> read was inverted into an explicitly
+    /// bound <c>ResolvedMatchRules</c> - actually compiles into that asmdef, the same identity check
+    /// <see cref="PlayerSwapAttackCompilesIntoLevel5Player"/> does for the assembly's first type. Its
+    /// callers - <c>PlayerController</c>, <c>AutoPlayerController</c>, <c>groundcheck</c> and
+    /// <c>PlayerDunk</c> - stay in <c>Assembly-CSharp</c> and reach it through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void CallBallToPlayerCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(CallBallToPlayer).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

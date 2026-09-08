@@ -1,7 +1,9 @@
 {
     "name": "Level5.Player",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "Level5.Core"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
