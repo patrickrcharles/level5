@@ -1234,11 +1234,23 @@ already-resolved rules object it has held since AUD-010 Phase 2b0 — and does n
 calling the ball is enabled; no match-context service, provider interface, registry, global fallback
 or generalized player-binding framework was introduced. Everything else about the component is
 byte-identical: same global namespace, same type name, same `public bool CallEnabled`, same
-`public bool Locked`, same `[SerializeField]` set (`pullSpeed`, `pullDirection`, `_basketBallState`,
-`locked`, `CallEnabled`) in the same order and with the same types, same `pullSpeed = 2.3f` at startup,
-same `pullBallToPlayer`/`pullBallToPlayerAuto` names and Rigidbody math, same commented-out legacy
-blocks. Not one caller was edited: `PlayerController`, `AutoPlayerController`, `groundcheck` and
-`PlayerDunk` all stay in `Assembly-CSharp` and reach the type through `autoReferenced`.
+`public bool Locked`, same live `[SerializeField]` set (`pullSpeed`, `pullDirection`, `locked`,
+`CallEnabled`) in the same order and with the same types, same `pullSpeed = 2.3f` at startup, same
+`pullBallToPlayer`/`pullBallToPlayerAuto` names and Rigidbody math, same commented-out legacy blocks.
+Not one caller was edited: `PlayerController`, `AutoPlayerController`, `groundcheck` and `PlayerDunk`
+all stay in `Assembly-CSharp` and reach the type through `autoReferenced`.
+
+**One dead serialized field was removed, and it is the reason this assembly needs no basketball
+reference.** `[SerializeField] private BasketBallState _basketBallState` was declared and never used:
+the identifier appears exactly once in the whole repository - its own declaration - and all 71 authored
+prefabs serialize it as `{fileID: 0}`, so it held no authored data anywhere. It was nonetheless a real
+compiled dependency, because a field declaration must resolve, and it alone would have forced
+`Level5.Player` to reference `Level5.Basketball`. Removing an unused, universally-null field is not the
+"remove serialized fields as cleanup" this phase prohibits: keeping it would have recorded an assembly
+edge that no behaviour justifies. Unity ignores the now-unknown `_basketBallState` key when
+deserializing the existing prefabs, and no prefab was resaved to strip it - the key simply disappears
+the next time each asset is written by the editor for unrelated reasons. Prefab resolution was
+re-verified after the removal (below).
 
 **`BindMatchRules` follows the repository's existing bind-once shape**, the one `BasketBall` and
 `BasketBallState` already use, including its guard ordering: the already-bound branch is checked
@@ -1268,24 +1280,26 @@ that has none, because that is authored composition rather than a defect:
 prefabs reference the script GUID, and the Lockdown defender is not one of them). It never adds a
 missing component and never re-reads `MatchRuntime.Rules`.
 
-**`Level5.Player.asmdef` gains its first two references: `"Level5.Core"` and `"Level5.Basketball"`.**
-`Level5.Core` for `ResolvedMatchRules`, which the bound field and `BindMatchRules` name.
-`Level5.Basketball` for `BasketBallState`: that reference was re-verified rather than assumed from the
-audit, and it is a real compiled dependency — `[SerializeField] private BasketBallState
-_basketBallState` is a field declaration the compiler must resolve, even though no code in the file
-reads it. Removing the field would have been serialized-data cleanup, which this slice does not do, so
-the reference stays. Nothing else was added; no reference was pre-added for player types that may
-migrate later.
+**`Level5.Player.asmdef` gains exactly one reference: `"Level5.Core"`.** That is for
+`ResolvedMatchRules`, which the bound field and `BindMatchRules` name. The audit expected
+`"Level5.Basketball"` as well, and the instruction to verify rather than assume that expectation is
+what caught it: the only thing that would have required it was the dead `_basketBallState` field
+described above, so removing the field removed the reference with it. An assembly reference that
+exists only to compile a field nothing reads is not a dependency worth recording. Nothing else was
+added; no reference was pre-added for player types that may migrate later — `PlayerController` will
+need `Level5.Basketball` when it eventually moves, and that is when the edge should appear.
 
 **The graph was rechecked from current `.asmdef` files before and after the edit**, as Slice 21's
 warning and Slice 23 both require, because this slice creates the first outbound edges from
 `Level5.Player`. Before: `Level5.Player` declared nothing and nothing named it. After:
-`Level5.Player -> {Level5.Core, Level5.Basketball}`; `Level5.Core` declares no references at all;
-`Level5.Basketball -> {Level5.Core, Level5.Utility, Level5.Audio, Level5.Constants, Level5.Misc}`, of
-which `Level5.Utility -> {Level5.Core}` and the other three declare none. No `.asmdef` in the project
-names `Level5.Player`, so it is still not the target of any edge and cannot be part of a cycle. The
-resulting direction is `Assembly-CSharp composition/controllers -> Level5.Player -> {Level5.Core,
-Level5.Basketball -> Level5.Core}`.
+`Level5.Player -> {Level5.Core}`, and `Level5.Core` declares no references at all, so the outbound
+side is one edge deep and terminal. No `.asmdef` in the project names `Level5.Player`, so it is still
+not the target of any edge and cannot be part of a cycle. The resulting direction is
+`Assembly-CSharp composition/controllers -> Level5.Player -> Level5.Core`. Worth recording for the
+next remeasurement: the reverse edge is not merely absent but structurally unavailable — basketball
+reaches back to the player only through `IShooterActor.LockCallBallToPlayer`, which lives in
+`Level5.Core` (`BasketBall.cs`, `BasketBallAuto.cs`), so `Level5.Basketball` has no reason to name
+`Level5.Player` even once more player types migrate.
 
 **Serialized identity.** `CallBallToPlayer` is a `MonoBehaviour` carried by 71 authored prefabs (no
 scene stores the script GUID directly), so its `.meta` was moved with `git mv` rather than
@@ -1324,7 +1338,9 @@ editor pass (created, run, deleted — not committed) that loaded one human pref
 components, and keep their authored serialized values (`pullSpeed` 2, `CallEnabled` true, `locked`
 false); the same pass confirmed `typeof(CallBallToPlayer).Assembly` is `Level5.Player` while
 `AssetDatabase` still maps the script to `567ca935929c9cd4ea9d04d51ef75440`, and confirmed
-`cpu_player_defense_oldreal.prefab` legitimately has no such component. Per this repository's
+`cpu_player_defense_oldreal.prefab` legitimately has no such component. That pass was re-run after
+`_basketBallState` was removed, with identical results — the surviving serialized values are
+unaffected by dropping a field that was null in every prefab. Per this repository's
 risk-based validation policy the combat, player-movement, CPU and basketball suites were not re-run:
 this slice changes where the rules come from, not what the policy decides, and the compile plus
 policy/composition/identity/boundary/prefab-resolution evidence already establishes that claim; PR CI

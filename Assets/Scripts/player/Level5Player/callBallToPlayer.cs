@@ -10,6 +10,12 @@ using Level5.Core.Match;
 /// human and CPU participants) instead of a direct <c>MatchRuntime.Rules</c> read in
 /// <see cref="Start"/>. The policy itself is unchanged and still lives here - composition supplies
 /// the rules, it does not decide whether calling the ball is enabled.
+///
+/// The same slice dropped a dead <c>[SerializeField] private BasketBallState _basketBallState</c>:
+/// no code in this repository ever read or wrote it and all 71 authored prefabs serialized it as
+/// <c>{fileID: 0}</c>, so it carried no data - but as a field declaration it forced
+/// <c>Level5.Player</c> to reference <c>Level5.Basketball</c>. Removing it leaves this component
+/// depending on <c>Level5.Core</c> alone.
 /// </summary>
 public class CallBallToPlayer : MonoBehaviour
 {
@@ -17,8 +23,6 @@ public class CallBallToPlayer : MonoBehaviour
     internal float pullSpeed;
     [SerializeField]
     private Vector3 pullDirection;
-    [SerializeField]
-    private BasketBallState _basketBallState;
     [SerializeField]
     private bool locked;
     [SerializeField]

@@ -2,8 +2,7 @@
     "name": "Level5.Player",
     "rootNamespace": "",
     "references": [
-        "Level5.Core",
-        "Level5.Basketball"
+        "Level5.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
