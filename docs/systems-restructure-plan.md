@@ -853,7 +853,115 @@ regression coverage.
 This does not close `AUD-012`/Phase 2, and does not unblock 2c on its own — see the updated 2c status
 below.
 
-**Running total after slices 1-20:** `Assets/Scripts/basketball`'s 12 production files (source left in
+**Slice 21 — dependency cut only, no move (2026-09-07): `PlayerController`'s direct `GameLevelManager`
+arena-state dependency is removed through explicit composition.** Unlike slices 1-20, this slice moves
+no file — `PlayerController` was confirmed still not dependency-closed (it retains direct references to
+`PlayerInputReader`, `MatchRuntime`, `SniperManager`, `PlayerIdentifier`, `CharacterProfile`,
+`PlayerHealth`, `PlayerDunk`, `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions`,
+`CallBallToPlayer`, `BasketBall`/`ShotMeter`/`IShooterActor` and related basketball-adapter types, all
+still `Assembly-CSharp`), so it cannot move yet. This slice narrows one edge in place: the two direct
+`GameLevelManager` reads audited beforehand -
+`bballRimVector = GameLevelManager.instance.BasketballRimVector` (in `Start()`) and
+`GameLevelManager.instance.TerrainHeight` (the no-active-Terrain drop-shadow fallback in `Update()`) -
+were the only live references found, matching the expected set exactly.
+
+The replacement mirrors the shape `AUD-010` Phase 1c already established for `BasketBall`'s identical
+no-Terrain fallback (`IGroundHeightProvider`, bound by composition instead of read from
+`GameLevelManager.instance` directly). `PlayerController` gained `BindArenaContext(Vector3
+basketballRimVector, IGroundHeightProvider groundHeightProvider)`, a narrow method that only retains
+both references (the rim as a value snapshot, matching how this controller already treated it; the
+ground-height provider as a live reference, since `GameLevelManager` keeps updating its own value after
+spawning). The no-Terrain fallback was extracted into a private `ResolveDropShadowHeight()` — a pure,
+behavior-preserving extraction mirroring `BasketBall.ResolveDropShadowHeight()` in shape — so it could
+be driven directly in focused tests the same way. Unlike `BasketBall` (bound synchronously
+before its own `Start()` ever runs, letting it dereference the provider unconditionally),
+`PlayerController`'s context cannot be bound before its own `Start()` — see the timing constraint below
+— so `ResolveDropShadowHeight()` guards the unbound case explicitly: `Debug.LogError` and return the
+last-known `terrainYHeight` rather than throwing or inventing a fallback global. This narrow guard
+exists only because the timing genuinely differs from `BasketBall`'s; it is not a general pattern this
+slice introduces elsewhere. A same-day code review flagged that an unbound provider is re-entered every
+`Update()` frame for an entire airborne arc, so an unbound-provider window would otherwise flood the
+console once per frame rather than once; fixed with a single `groundHeightProviderMissingLogged` bool so
+the error logs exactly once per controller, covered by
+`ResolveDropShadowHeight_NoBoundProvider_LogsOnlyOnceAcrossRepeatedCalls`. The same review also noted
+that `BindArenaContext` binds the rim vector with no equivalent unbound-state diagnostic — an
+intentional asymmetry: the task's own composition contract for this method is "retain the supplied
+dependencies" only, and the failure shape it flagged (silently defaulting to `Vector3.zero` if a
+composition path never calls `BindArenaContext` at all) already existed identically before this slice
+(the direct `GameLevelManager.instance.BasketballRimVector` read it replaced was never diagnosed either)
+— left as a pre-existing, unchanged failure mode rather than expanded scope.
+
+A second review round found two more, both fixed. First, the new `Start()` call was the only statement
+in that method that could not survive the duplicate-manager path (`Awake`'s `instance != this` guard
+returns before `_spawnCoordinator` is assigned): every other statement already tolerates it, since
+`ArenaBootstrap.Apply` early-returns on the null `_rules` such an instance carries and `FindRimVector` is
+a null-safe scene search. Made null-conditional to restore that parity; on the normal path the
+coordinator is always assigned in `Awake` before spawning, so it can only skip where no level was built.
+Second, the new guard test is scoped to `PlayerController.cs` alone, but sibling components on the same
+player hierarchy still read the same singleton for the same arena values (`PlayerDunk` for the rim
+vector; `AutoPlayerDefense`/`AutoPlayerController` for the rim vector and `TerrainHeight`) — all out of
+scope here. The guard's own doc comment now says so explicitly, so a pass is not misread as "the player
+prefab no longer depends on `GameLevelManager`", mirroring the caveat
+`Level5BasketballGameManagerEdgeTests` already records for the unresolved basketball -> `GameRules` edge.
+
+`SpawnCoordinator` gained `BindHumanArenaContext(Vector3 basketballRimVector, IGroundHeightProvider
+groundHeightProvider)`, which forwards both already-resolved values to every registered non-CPU
+participant's already-wired `PlayerController` (`PlayerIdentifier.playerController`, populated by the
+existing `setPlayer()` — no new `GetComponent`/scene search). A registered human unexpectedly missing a
+`PlayerController` logs and continues, the same composition-error shape `GiveBall` already uses for a
+missing `BasketBallState`/`GameStats`, rather than throwing and aborting every other participant's
+binding. CPU participants are skipped entirely — `AutoPlayerController` takes no arena context.
+
+Timing was the hard constraint driving where the call lives: `GameLevelManager.Awake()` spawns players
+(via `SpawnCoordinator.SpawnPlayers()`) before the rim is resolved — `ArenaBootstrap.Apply` and
+`_basketballRimVector = ArenaBootstrap.FindRimVector()` only run in `GameLevelManager.Start()`. Binding
+during `RegisterHuman()` (Awake-time) would therefore hand every human a stale/default rim, so
+`GameLevelManager.Start()` calls `_spawnCoordinator.BindHumanArenaContext(_basketballRimVector, this)`
+as the last step, immediately after `_basketballRimVector` is assigned. This is a direct method call, not
+reliant on `PlayerController.Start()`/`GameLevelManager.Start()` running in a particular order relative
+to each other (unlike the value this replaces, which depended on that ordering implicitly) — it sets
+`PlayerController`'s fields synchronously regardless of whether that controller's own `Start()` has run
+yet this frame, and it always runs before the first `Update()` of any object in the scene.
+
+No serialized field, prefab contract, public player API, movement/jump/dunk/shoot/input/combat/health/
+damage algorithm, or CPU behavior changed. `AutoPlayerController` is untouched.
+
+Headless Unity 6000.5.7f1 batch compile clean, zero `CS` errors. Added
+`Level5PlayerControllerDependencyGuardTests.PlayerControllerHasNoGameLevelManagerReference` (mirrors
+`Level5BasketBallDependencyGuardTests`), and a new focused fixture,
+`Level5PlayerControllerArenaContextTests.cs` (8 tests): `BindArenaContext` stores both values;
+`ResolveDropShadowHeight` reads the bound provider live, not a value snapshotted at bind time (mirrors
+`Level5BasketballGroundHeightProviderTests`'s identical proof for `BasketBall`); an unbound provider
+logs and returns the last-known height without throwing, and logs only once across repeated calls;
+`SpawnCoordinator.BindHumanArenaContext` binds a single human, binds multiple humans identically, leaves
+a CPU participant untouched, and logs (without throwing) for a human missing `PlayerController`. Focused
+EditMode run: 47/47, including the two new
+fixtures and the existing `Level5BasketBallDependencyGuardTests`/`Level5BasketballGameManagerEdgeTests`/
+`Level5RangeMeterOwnershipTests`/`Level5BasketballGroundHeightProviderTests` fixtures this slice's shape
+borrows from. `PlayerMovementPhysicsTests.JumpingDoesNotCompoundHorizontalVelocity` (the menu -> gameplay
+-> player bootstrap real-scene smoke test) passed unchanged, confirming the new
+`GameLevelManager.Start()` -> `SpawnCoordinator.BindHumanArenaContext()` -> `PlayerController.BindArenaContext()`
+composition chain wires correctly end to end in a real scene. Per this repository's risk-based validation
+policy, the full EditMode/PlayMode suites were not re-run for a behavior-preserving, narrowly-scoped edge
+cut with focused parity coverage already in place; PR CI owns that broader regression coverage.
+
+**Fresh `PlayerController` dependency closure scan (2026-09-07), post-slice.** Re-read the file
+completely; `GameLevelManager` no longer appears anywhere in live code (confirmed by the new guard test).
+Every other `Assembly-CSharp` dependency remains, grouped by concern:
+
+- **input:** `PlayerInputReader`, `PlayerControls`, `PlayerControlsProvider`
+- **match/session runtime:** `MatchRuntime`
+- **sniper/projectile:** `SniperManager`
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerHealth`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerSwapAttack`, `PlayerDamageReactions`
+- **basketball/shot-pipeline adapters:** `BasketBall`, `ShotMeter`, `CallBallToPlayer`, `IShooterActor`,
+  `ShooterAttributes`, `ShooterAttributesMapper`
+- **misc gameplay utility:** `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+
+This remeasurement is diagnostic only — none of these are addressed in this PR, `PlayerController` is
+not moved, and Phase 2c's PlayMode test assemblies are not normalized here.
+
+**Running total after slices 1-21:** `Assets/Scripts/basketball`'s 12 production files (source left in
 place, no `.meta` moved) plus `MatchController.cs`/`MatchSession.cs`/`ActiveMatch.cs`/`MatchCatalogs.cs`
 (all four `Level5.Match`) plus
 `VersusCatalogs.cs`/`DefaultCompetitiveRulesets.cs`/
@@ -864,12 +972,12 @@ assemblies from slices 1-10 (`Level5.Input`,
 `Level5.Combat`, `Level5.Enemy`, `Level5.PlayerRacing`, `Level5.Vehicle`, `Level5.MenuProgression`,
 `Level5.Utility`, `Level5.Misc`, `Level5.Models`, `Level5.MenuStart`) plus the 4 pre-existing ones
 (`Level5.Core`, `Level5.Constants`, `Level5.Pooling`, `Level5.Audio`) — 17 production runtime assemblies
-total (unchanged from Slice 18's count: this slice added a file to an existing assembly, not a new one),
-out of roughly 218 `.cs` files in `Assets/Scripts` before this phase started. `LegacyMatchCatalogBootstrap.cs`,
-the composition seam this slice added, stays in `Assembly-CSharp` (`Assets/Scripts/menu_start/`) and is
-not counted here. The remainder is
-either `player`/`game manager` themselves (still mutually coupled, and still most of what the
-asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
+total (unchanged from Slice 18's count: Slice 20 added a file to an existing assembly, not a new one;
+Slice 21 moved no file at all — it narrowed an edge in place), out of roughly 218 `.cs` files in
+`Assets/Scripts` before this phase started. `LegacyMatchCatalogBootstrap.cs`, the composition seam Slice
+20 added, stays in `Assembly-CSharp` (`Assets/Scripts/menu_start/`) and is not counted here. The
+remainder is either `player`/`game manager` themselves (still mutually coupled, and still most of what
+the asmdef-free gameplay PlayMode workaround needs), or reaches into that pair (directly or transitively)
 and so is blocked the same way the rest of `versus`/`analytics`/`Models/HighScoreModel` were.
 
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
@@ -1022,6 +1130,20 @@ PlayModeTests.cs` files) are unaffected as in every prior remeasurement — none
 `PlayerController` is now the *only* remaining direct `Assembly-CSharp` dependency across all nine
 files in the workaround folder, still gated on cutting the `player`/`game manager` cycle first — this
 is a diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 21 (2026-09-07), re-verified against the current folder.** Same nine files
+as Slices 12-20, unchanged. Slice 21 removed `PlayerController`'s direct `GameLevelManager` dependency
+through explicit composition, but moved no file — `PlayerMovementPhysicsTests.cs`/
+`BasketballVisibilityTests.cs` still call `PlayerController` directly (`Assembly-CSharp`,
+`Assets/Scripts/player/`) via `GetComponent`/`FindAnyObjectByType`, unaffected by this slice: removing
+one of `PlayerController`'s own outbound edges does not change that these test files reach the type
+itself, which remains `Assembly-CSharp` since it did not move. 2c's exit condition is unchanged in kind:
+`PlayerController` is still the only remaining direct `Assembly-CSharp` dependency across all nine
+workaround files, still gated on cutting the `player`/`game manager` cycle first, and now additionally
+on `PlayerController`'s own remaining dependency set (input, match/session runtime, sniper/projectile,
+player-local components, basketball/shot-pipeline adapters, misc gameplay utility — see this slice's
+fresh closure scan above) before a move becomes possible — this is a diagnostic finding only,
+`PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

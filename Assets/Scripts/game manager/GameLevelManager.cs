@@ -203,6 +203,19 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
 
         ArenaBootstrap.Apply(_rules, MatchRuntime.HasConfiguration);
         _basketballRimVector = ArenaBootstrap.FindRimVector();
+
+        // AUD-012 Phase 2b Slice 21: forwards the now-final rim vector and this manager's own live
+        // IGroundHeightProvider to every registered human's PlayerController, replacing that
+        // controller's former direct GameLevelManager.instance reads. Must run after both lines above:
+        // the rim is not resolved until FindRimVector() returns.
+        //
+        // Null-conditional to match the null-safety the rest of Start() already has: the duplicate-
+        // manager path (Awake's `instance != this` guard) returns before _spawnCoordinator is assigned,
+        // and every other statement here survives that - ArenaBootstrap.Apply early-returns on the null
+        // _rules it would see, and FindRimVector is a null-safe scene search. On the normal path the
+        // coordinator is always assigned in Awake before spawning, so this can only skip where no level
+        // was built at all.
+        _spawnCoordinator?.BindHumanArenaContext(_basketballRimVector, this);
     }
 
     private void Update()
