@@ -16,6 +16,11 @@ using Level5.Core.Match;
 ///
 /// This stays deliberately separate from <c>ActorHealth</c>: it also owns player-only block,
 /// special and regeneration state while sharing the <see cref="IDamageable"/> contract.
+///
+/// Follow-up to that slice: the four serialized fields that could never take effect
+/// (<c>regenerateTimeDelay</c>, read nowhere, and the three regeneration rates, overwritten in
+/// <see cref="Start"/> on every instance) are gone, and the redundant sniper terms in the
+/// regeneration gate with them. Runtime behaviour is unchanged in all three cases.
 /// </summary>
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
@@ -32,15 +37,23 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField]
     int maxSpecial = 100;
     [SerializeField]
-    float regenerateBlockRate;
-    [SerializeField]
-    float regenerateHealthRate;
-    [SerializeField]
-    float regenerateSpecialRate;
-    [SerializeField]
-    float regenerateTimeDelay;
-    [SerializeField]
     bool isDead = false;
+
+    // How long each regeneration tick waits, in seconds; the tick itself is always +1.
+    // A rate of 0.5 is +1 every half second, or +20 in 10 seconds.
+    // A rate of 2 is +1 every two seconds, or +50 in 100 seconds (1 min 40 secs).
+    // A rate of 0.04 is +1 every 0.04 seconds, or +100 in 4 seconds.
+    //
+    // Constants rather than [SerializeField]s: Start() used to overwrite the authored values with
+    // exactly these numbers on every instance, so what the prefabs stored was dead data that could
+    // never take effect. Honouring the authored values instead was not an option: across the 71
+    // authored components, regenerateHealthRate and regenerateSpecialRate are 0 in all 71, and
+    // regenerateBlockRate is 0 in 27 of them (0.5 in the other 44). A rate of 0 makes WaitForSeconds
+    // return immediately, so that would turn regeneration into an instant refill on every prefab.
+    // These are the numbers the game has always run on.
+    private const float RegenerateBlockRate = 0.5f;
+    private const float RegenerateHealthRate = 2f;
+    private const float RegenerateSpecialRate = 0.04f;
 
     bool regenerateBlock = false;
     bool regenerateSpecial = false;
@@ -91,14 +104,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        // regenerate rate is +1 per interval
-        // rate of 0.4f is equal to +1 every 0.5 second or +25 in 10 secs
-        // rate of 1f is equal to +1 every 1 second or +100 in 100 seconds (1 min 40 secs)
-        // rate of 0.04f is equal to +1 every 0.04 second or +100 in 4 seconds
-        regenerateBlockRate = 0.5f;
-        regenerateHealthRate = 2f;
-        regenerateSpecialRate = 0.04f;
-
         // A participant composed through SpawnCoordinator always has rules by now - both registration
         // paths bind during GameLevelManager.Awake, before any Start runs. Reaching here unbound is a
         // composition defect, reported once here rather than every frame from Update(). Damage, death,
@@ -127,10 +132,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             return;
         }
 
+        // SniperEnabled is `Sniper != SniperMode.None`, so it already covers every sniper variant.
+        // This used to spell out `|| Sniper == Bullet || Sniper == Laser` alongside it, which could
+        // not change the result and left MachineGun looking deliberately excluded when it never was.
         if (matchRules.EnemiesEnabled
             || matchRules.SniperEnabled
-            || matchRules.Sniper == SniperMode.Bullet
-            || matchRules.Sniper == SniperMode.Laser
             || matchRules.ObstaclesEnabled)
         {
             if (block < MaxBlock && !regenerateBlock)
@@ -153,7 +159,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     IEnumerator RegenerateSpecial()
     {
         regenerateSpecial = true;
-        yield return new WaitForSeconds(regenerateSpecialRate);
+        yield return new WaitForSeconds(RegenerateSpecialRate);
         Special += 1f;
         regenerateSpecial = false;
     }
@@ -161,7 +167,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     IEnumerator RegenerateBlock()
     {
         regenerateBlock = true;
-        yield return new WaitForSeconds(regenerateBlockRate);
+        yield return new WaitForSeconds(RegenerateBlockRate);
         Block += 1f;
         regenerateBlock = false;
     }
@@ -169,7 +175,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     IEnumerator RegenerateHealth()
     {
         regenerateHealth = true;
-        yield return new WaitForSeconds(regenerateHealthRate);
+        yield return new WaitForSeconds(RegenerateHealthRate);
         Health += 1f;
         regenerateHealth = false;
     }
