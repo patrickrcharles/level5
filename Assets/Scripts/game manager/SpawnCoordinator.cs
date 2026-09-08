@@ -271,6 +271,35 @@ public sealed class SpawnCoordinator
     }
 
     /// <summary>
+    /// AUD-012 Phase 2b Slice 21: forwards already-resolved arena context - the basketball rim vector
+    /// and the live ground-height provider - to every registered human participant's already-wired
+    /// <see cref="PlayerController"/>, replacing that controller's former direct
+    /// <c>GameLevelManager.instance.BasketballRimVector</c>/<c>TerrainHeight</c> reads. Called once
+    /// from <c>GameLevelManager.Start()</c>, after <c>ArenaBootstrap.Apply</c> has resolved the final
+    /// rim - never from <see cref="SpawnPlayers"/>/<see cref="RegisterHuman"/>, when the rim is not yet
+    /// ready. CPU participants are unaffected: <c>AutoPlayerController</c> does not take this context.
+    /// </summary>
+    public void BindHumanArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
+    {
+        foreach (PlayerIdentifier participant in registry.Participants)
+        {
+            if (participant == null || participant.isCpu)
+            {
+                continue;
+            }
+
+            PlayerController controller = participant.playerController;
+            if (controller == null)
+            {
+                Debug.LogError($"Registered human participant '{participant.name}' has no PlayerController to bind arena context to.", participant);
+                continue;
+            }
+
+            controller.BindArenaContext(basketballRimVector, groundHeightProvider);
+        }
+    }
+
+    /// <summary>
     /// Spawns the chosen cheerleader when the scene has somewhere to put one.
     ///
     /// CHR-5: the cheerleader's stat bonuses and the cheerleader you can see reach the match by

@@ -90,6 +90,11 @@ public class PlayerController : MonoBehaviour, IShooterActor
     Vector3 playerRelativePositioning;
     Vector3 bballRimVector;
 
+    // AUD-012 Phase 2b Slice 21: live ground-height context for the no-Terrain drop-shadow fallback
+    // below, bound explicitly through BindArenaContext - see that method's remarks.
+    private IGroundHeightProvider groundHeightProvider;
+    private bool groundHeightProviderMissingLogged;
+
     // customizable options
     [SerializeField]
     private bool playerCanBlock;
@@ -247,8 +252,6 @@ public class PlayerController : MonoBehaviour, IShooterActor
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();
         PlayerHealth = GetComponentInChildren<PlayerHealth>();
-        // bball rim vector, used for relative positioning
-        bballRimVector = GameLevelManager.instance.BasketballRimVector;
 
         // AUD-081: same unguarded-lookup shape AUD-079 fixed in RacingVehicleController - this
         // used to dereference Find's result directly, so a player root without a "drop_shadow"
@@ -307,6 +310,28 @@ public class PlayerController : MonoBehaviour, IShooterActor
         {
             _knockDownTime = 0.75f;
         }
+    }
+
+    // ==================== Arena context composition (AUD-012 Phase 2b Slice 21) ====================
+
+    /// <summary>
+    /// Explicit arena-context binding from <see cref="SpawnCoordinator.BindHumanArenaContext"/>,
+    /// called once from <c>GameLevelManager.Start()</c> after arena bootstrap has resolved the final
+    /// basketball rim and updated the live ground-height state - never during spawn/registration
+    /// (<c>SpawnCoordinator.RegisterHuman</c>), when the rim is not yet ready. Replaces this
+    /// controller's former direct <c>GameLevelManager.instance.BasketballRimVector</c>/
+    /// <c>TerrainHeight</c> reads.
+    ///
+    /// <paramref name="basketballRimVector"/> is stored as a value, matching how this controller
+    /// already treated it as a cached snapshot rather than a live read. <paramref
+    /// name="groundHeightProvider"/> is stored, not read here - it must stay live, since
+    /// <c>GameLevelManager</c> keeps updating its ground height after this call - see
+    /// <see cref="ResolveDropShadowHeight"/>.
+    /// </summary>
+    public void BindArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
+    {
+        bballRimVector = basketballRimVector;
+        this.groundHeightProvider = groundHeightProvider;
     }
 
     // not affected by framerate
@@ -398,9 +423,7 @@ public class PlayerController : MonoBehaviour, IShooterActor
         }
         if (dropShadow != null && !Grounded) // player in air
         {
-            terrainYHeight = Terrain.activeTerrain != null
-                ? Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f
-                : GameLevelManager.instance.TerrainHeight + 0.02f;
+            terrainYHeight = ResolveDropShadowHeight();
             dropShadow.transform.position = new Vector3(transform.root.position.x, terrainYHeight,
             transform.root.position.z);
         }
@@ -618,6 +641,41 @@ public class PlayerController : MonoBehaviour, IShooterActor
         //    //Debug.Log("intialHeight : " + initialHeight);  
         //    //Debug.Log("finalHeight : " + finalHeight);
         //}
+    }
+
+    /// <summary>
+    /// The drop shadow's Y position while airborne: an active Terrain's own sampled height where one
+    /// exists, else the bound <see cref="groundHeightProvider"/>'s current value.
+    ///
+    /// AUD-012 Phase 2b Slice 21: mirrors <c>BasketBall.ResolveDropShadowHeight</c>'s identical
+    /// no-Terrain fallback. Unlike <c>BasketBall</c> (bound synchronously before its own <c>Start()</c>
+    /// ever runs), this controller's arena context is bound later, from <c>GameLevelManager.Start()</c>
+    /// - so an unbound provider here is a real, if narrow, composition-timing possibility rather than
+    /// an unreachable branch, and is reported rather than dereferenced. Logged once per controller
+    /// (<see cref="groundHeightProviderMissingLogged"/>), not on every call, since an airborne player
+    /// with no active Terrain re-enters this branch every Update() frame for the whole arc. <see
+    /// cref="IGroundHeightProvider.GroundHeight"/> is read here, at the point of use, every call -
+    /// never cached - since the bound <c>GameLevelManager</c> updates its own value after spawning.
+    /// </summary>
+    private float ResolveDropShadowHeight()
+    {
+        if (Terrain.activeTerrain != null)
+        {
+            return Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
+        }
+
+        if (groundHeightProvider != null)
+        {
+            return groundHeightProvider.GroundHeight + 0.02f;
+        }
+
+        if (!groundHeightProviderMissingLogged)
+        {
+            groundHeightProviderMissingLogged = true;
+            Debug.LogError($"PlayerController on {name} has no bound ground-height provider for its no-Terrain drop-shadow fallback.", this);
+        }
+
+        return terrainYHeight;
     }
 
     private void checkIdleTimeForSniper()
