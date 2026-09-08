@@ -1,6 +1,6 @@
 # Player Input Architecture
 
-Last updated: 2026-08-02
+Last updated: 2026-09-08
 
 This document tracks the player input modernization plan. The project already uses Unity's Input System through `PlayerControls.inputactions` and `PlayerControlsProvider`, but mobile/touch gameplay and menu input still contain legacy `Input.touchCount`, `Input.touches`, direct `Input.GetKeyDown`, third-party joystick reads, and per-screen touch controllers.
 
@@ -10,8 +10,8 @@ This document tracks the player input modernization plan. The project already us
 | --- | --- | --- |
 | Input actions | `PlayerControls.inputactions`, generated `PlayerControls.cs` | Source for keyboard/gamepad gameplay, UI navigation, debug actions, and a partially-defined touch action map. |
 | Action lifecycle | `PlayerControlsProvider` | Reference-counted static provider for gameplay, menu, debug, and touch maps. Kept as the compatibility bridge. |
-| Player gameplay input | `PlayerInputReader`, `PlayerTouchInputState`, `PlayerController` | `PlayerInputReader` owns the player's movement/action reads. `TouchInputController` queues touch gameplay intents through `PlayerTouchInputState`, and `PlayerController` consumes them in the normal gameplay path. |
-| Mobile movement | `PlayerInputReader` with Input System movement first and legacy `FloatingJoystick` fallback | Ready for Unity Input System `OnScreenStick` mapped to `Player/movement`; the old joystick remains as fallback until scenes/prefabs are migrated and playtested. |
+| Player gameplay input | `PlayerInputReader`, `PlayerTouchInputState`, `PlayerController` | `PlayerInputReader` owns the player's movement/action reads and lives in the `Level5.Input` assembly (AUD-012 Phase 2b Slice 26). `TouchInputController` queues touch gameplay intents through `PlayerTouchInputState`, and `PlayerController` consumes them in the normal gameplay path. `TouchBlockHeld` reads `PlayerTouchInputState.BlockHeld` alone; it no longer also consults `TouchInputController.instance.HoldDetected`, which was written in lockstep with it. |
+| Mobile movement | `PlayerInputReader` with Input System movement first and legacy `FloatingJoystick` fallback | Unchanged in behaviour, but the fallback's axes now arrive by composition rather than by the reader reaching for `GameLevelManager.instance.Joystick` - see "Legacy Joystick Composition" below. Ready for Unity Input System `OnScreenStick` mapped to `Player/movement`; the old joystick remains as fallback until scenes/prefabs are migrated and playtested. |
 | Mobile gestures/actions | `TouchInputController`, `PlayerTouchInputState` | Gameplay gestures now queue input intents instead of directly calling player combat/basketball methods. Target is still `OnScreenButton` bindings where the UI/UX allows it. |
 | Racing input | `RacingInputReader`, `RacingVehicleController` | Racing movement, run, and jump reads are routed through a reader with Input System movement first and legacy touch joystick fallback. |
 | Menu touch input | `TouchInput*Controller` scripts, `UiSelectionAdapter` | Duplicated per-screen touch scripts still exist. `UiSelectionAdapter` is the shared bridge for screens as they move to standard Unity UI events. |
@@ -28,6 +28,47 @@ This document tracks the player input modernization plan. The project already us
 - Kept `PlayerControlsProvider` and `PlayerControls.inputactions` intact.
 - Kept legacy touch movement behavior intact as a fallback, but prefer `Player/movement` first so `OnScreenStick` can drive movement once added to scenes.
 - Updated UI module setup to add/configure `InputSystemUIInputModule` at runtime with fallback to `StandaloneInputModule`.
+
+## Legacy Joystick Composition (AUD-012 Phase 2b Slice 26)
+
+`PlayerInputReader` moved into the `Level5.Input` runtime assembly. That required removing its only two
+references to types still compiled into `Assembly-CSharp`, without changing what the reader does:
+
+- `TouchInputController` - `TouchBlockHeld` dropped its second read of
+  `TouchInputController.instance.HoldDetected`. That flag was never independent of
+  `PlayerTouchInputState.BlockHeld`: every write to `hold1Detected` (hold begin, hold end, special
+  release, and the disable-time `PlayerTouchInputState.Clear()`) sets the same value on `BlockHeld`, and
+  nothing else in production reads or writes it. `HoldDetected` still exists and `TouchInputController`
+  still uses it as its own gesture-state flag.
+- `GameLevelManager` - the reader no longer calls `GameLevelManager.instance.Joystick`. It takes an
+  optional `Func<Vector2>` and asks it for the current axes inside the existing mobile fallback, so the
+  value stays synchronous rather than becoming a frame-delayed cache.
+
+The fallback is still *invoked* only under `(UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR`, but
+`ReadLegacyTouchMove` is now compiled on every target rather than being preprocessed away, and its
+touch-distance scaling lives in a pure static `ScaleByTouchDistance`. Both changes exist so the mobile
+fallback's arithmetic is type-checked and unit-tested on machines with no mobile module installed;
+neither changes what runs on device.
+
+That callback reaches the reader through the composition path that already spawns humans:
+
+```text
+GameLevelManager.ReadLegacyTouchMovement()          // joystick.Horizontal / joystick.Vertical, or zero
+  -> SpawnCoordinator.BindHumanLegacyTouchMovement  // human participants only; CPUs are skipped
+    -> PlayerController.BindLegacyTouchMovementReader
+      -> new PlayerInputReader(controls, ReadLegacyTouchMovement)
+```
+
+`PlayerController` stores the callback independently of its current `PlayerInputReader`, because that
+reader is dropped and rebuilt whenever gameplay controls are released and reacquired (`OnDisable` /
+`OnEnable`, `TryEnsureInputReader`, the `Controls` setter). All three construction sites hand the reader
+a controller-owned indirection, so a reader built before or after binding resolves the same live source.
+The `FloatingJoystick` component itself is never handed across an assembly boundary - only its current
+values - so `Level5.Input` gains no dependency on it or on the Joystick Pack.
+
+This is a dependency inversion, not an input redesign. The legacy mobile joystick fallback, the touch
+distance scaling, the Input System-first movement priority and every action name are unchanged, and the
+`OnScreenStick` migration in step 3 below is still outstanding.
 
 ## Target Direction
 

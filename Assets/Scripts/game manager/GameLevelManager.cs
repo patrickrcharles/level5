@@ -128,9 +128,27 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
             return;
         }
 
+        _spawnCoordinator.BindHumanLegacyTouchMovement(ReadLegacyTouchMovement);
+
         _spawnCoordinator.SpawnCheerleader(MatchRuntime.Cheerleader.ObjectName, terrainHeight);
 
         ArenaBootstrap.HideDuplicateCharacterActors(MatchRuntime.PrimaryCharacterObjectName, _rules.TrafficEnabled);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 26: the legacy mobile joystick's current axes, as a value rather than as
+    /// the component. <c>PlayerInputReader</c> used to read <c>GameLevelManager.instance.Joystick</c>
+    /// itself; it now receives this method (via <see cref="SpawnCoordinator.BindHumanLegacyTouchMovement"/>
+    /// -&gt; <c>PlayerController.BindLegacyTouchMovementReader</c>) so <c>Level5.Input</c> never names
+    /// this class or <c>FloatingJoystick</c>. Reads <see cref="joystick"/> on each call, so it stays as
+    /// synchronous as the singleton read it replaces and copes with the field being resolved (or not
+    /// found at all, on a scene with no touch controls) independently of when this was bound.
+    /// </summary>
+    private Vector2 ReadLegacyTouchMovement()
+    {
+        return joystick != null
+            ? new Vector2(joystick.Horizontal, joystick.Vertical)
+            : Vector2.zero;
     }
 
     /// <summary>

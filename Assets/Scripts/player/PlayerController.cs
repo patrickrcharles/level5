@@ -149,6 +149,17 @@ public class PlayerController : MonoBehaviour, IShooterActor
 
     PlayerControls controls;
     private PlayerInputReader inputReader;
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 26: the legacy mobile joystick axes source composed for this human
+    /// participant, held here rather than only on <see cref="inputReader"/> because that reader is
+    /// destroyed and rebuilt several times over a controller's life - <see cref="OnDisable"/> clears
+    /// it, <see cref="OnEnable"/>/<see cref="TryEnsureInputReader"/> rebuild it after gameplay
+    /// controls are released and reacquired, and the <see cref="Controls"/> setter replaces it
+    /// outright. Every one of those paths reconstructs the reader from this field, so a
+    /// disable/re-enable cycle cannot silently lose mobile movement.
+    /// </summary>
+    private Func<Vector2> legacyTouchMovementReader;
     private float terrainYHeight;
     private int inputPlayerId = -1;
     private bool hasStarted;
@@ -200,7 +211,7 @@ public class PlayerController : MonoBehaviour, IShooterActor
         }
 
         controls = PlayerControlsProvider.AcquireGameplayControls(inputPlayerId);
-        inputReader = new PlayerInputReader(controls);
+        inputReader = new PlayerInputReader(controls, ReadLegacyTouchMovement);
     }
 
     private bool TryEnsureInputReader(out PlayerInputReader reader)
@@ -229,7 +240,7 @@ public class PlayerController : MonoBehaviour, IShooterActor
             return false;
         }
 
-        inputReader = new PlayerInputReader(controls);
+        inputReader = new PlayerInputReader(controls, ReadLegacyTouchMovement);
         reader = inputReader;
         return true;
     }
@@ -332,6 +343,36 @@ public class PlayerController : MonoBehaviour, IShooterActor
     {
         bballRimVector = basketballRimVector;
         this.groundHeightProvider = groundHeightProvider;
+    }
+
+    // ============ Legacy mobile movement composition (AUD-012 Phase 2b Slice 26) ============
+
+    /// <summary>
+    /// Explicit binding of the scene's legacy mobile joystick axes, from
+    /// <see cref="SpawnCoordinator.BindHumanLegacyTouchMovement"/> during
+    /// <c>GameLevelManager.Awake</c>'s spawn pass - human participants only; CPUs never read player
+    /// input. Replaces <c>PlayerInputReader</c>'s former direct
+    /// <c>GameLevelManager.instance.Joystick</c> read, which was that class's last edge into
+    /// <c>Assembly-CSharp</c>. This controller does not discover <c>GameLevelManager</c> or
+    /// <c>FloatingJoystick</c> itself; it only forwards whatever composition supplied.
+    ///
+    /// Safe to call before or after an input reader exists: readers are handed
+    /// <see cref="ReadLegacyTouchMovement"/>, which resolves this field at call time.
+    /// </summary>
+    public void BindLegacyTouchMovementReader(Func<Vector2> reader)
+    {
+        legacyTouchMovementReader = reader;
+    }
+
+    /// <summary>
+    /// The indirection every <see cref="PlayerInputReader"/> this controller builds is given, so the
+    /// reader reads the bound source live rather than capturing whatever was bound at its own
+    /// construction time. Zero when nothing was composed - which is every non-mobile run, since the
+    /// reader only invokes the legacy fallback under the mobile preprocessor conditions.
+    /// </summary>
+    private Vector2 ReadLegacyTouchMovement()
+    {
+        return legacyTouchMovementReader != null ? legacyTouchMovementReader.Invoke() : Vector2.zero;
     }
 
     // not affected by framerate
@@ -1118,7 +1159,7 @@ public class PlayerController : MonoBehaviour, IShooterActor
         set
         {
             controls = value;
-            inputReader = controls != null ? new PlayerInputReader(controls) : null;
+            inputReader = controls != null ? new PlayerInputReader(controls, ReadLegacyTouchMovement) : null;
         }
     }
     public PlayerAttackQueue PlayerAttackQueue { get => playerAttackQueue; set => playerAttackQueue = value; }

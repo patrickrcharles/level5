@@ -1545,6 +1545,177 @@ assembly. `Level5.Player` now holds `PlayerSwapAttack.cs`/`.meta`, `callBallToPl
 `Level5.Combat`. `Assets/Scripts/player/` outside `Level5Player/` is one file smaller. Everything else in
 the Slice 24 running total is unchanged.
 
+**Slice 26 - `Level5.Input` (2026-09-08), its fourth type: `PlayerInputReader`, after cutting that
+type's `GameLevelManager` and `TouchInputController` reads.** The same shape as Slices 24 and 25:
+dependencies had to be removed before the move became legal. `PlayerInputReader` named exactly two types
+still compiled into `Assembly-CSharp` - `GameLevelManager` (`Assets/Scripts/game manager/`) inside its
+mobile movement fallback, and `TouchInputController` (`Assets/Scripts/input/`, *outside*
+`Level5Input/`) inside `TouchBlockHeld`. Everything else it names was already owned: `PlayerControls` and
+`PlayerTouchInputState` by `Level5.Input` itself, the rest by `System`/`UnityEngine`.
+`Assets/Scripts/input/PlayerInputReader.cs`/`.meta` moved to `Assets/Scripts/input/Level5Input/`
+alongside them.
+
+**The `TouchInputController` read was removed as a duplicate, not replaced.** `TouchBlockHeld` returned
+`PlayerTouchInputState.BlockHeld || TouchInputController.instance.HoldDetected`. Those were never
+semantically independent states: every write to `TouchInputController.hold1Detected` sets the identical
+value on `PlayerTouchInputState.BlockHeld` in the same statement pair - hold begin, hold end, the special
+release, and the disable-time `PlayerTouchInputState.Clear()` that covers `BlockHeld` too - and the
+`HoldDetected` property has no other production reader or writer anywhere in the repository (the only
+other mention is a commented-out line in `RacingVehicleController`). Dropping the second read therefore
+cannot change what the property returns. `HoldDetected` was left in place, `TouchInputController` was not
+migrated or redesigned, and the touch gesture/queueing model is untouched.
+
+**The `GameLevelManager` read was inverted, and deliberately kept synchronous.** The reader took
+`GameLevelManager.instance.Joystick.Horizontal`/`.Vertical` inside `ReadLegacyTouchMove`, on the frame it
+ran. It now takes an optional trailing `Func<Vector2>` constructor parameter and invokes it at that same
+point, so the axes are still read at the moment of use rather than becoming a value cached a frame
+earlier - the same distinction Slice 21 drew for `IGroundHeightProvider`. A null source reads as
+`Vector2.zero`, which is exactly what the old `GameLevelManager.instance == null ||
+...Joystick == null` guard produced. Nothing else in `ReadLegacyTouchMove` changed: the Input System
+`Player/movement` read still wins whenever it has any magnitude, the touch-start position tracking and
+the `screenXRange`/`screenYRange` distance scaling are arithmetically identical, and the fallback is
+still *invoked* only under `(UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR`. **This is a dependency
+inversion, not an input redesign: the legacy `FloatingJoystick` fallback stays, `OnScreenStick` was not
+added, no `.inputactions` asset or action name was touched, and no `PlayerInput`/`PlayerInputManager`
+was introduced.** See `docs/player-input-architecture.md`.
+
+**The callback reaches the reader through the existing human-participant composition path.**
+
+```text
+GameLevelManager.ReadLegacyTouchMovement()          // joystick.Horizontal / joystick.Vertical, or zero
+  -> SpawnCoordinator.BindHumanLegacyTouchMovement  // human participants only; CPUs are skipped
+    -> PlayerController.BindLegacyTouchMovementReader
+      -> new PlayerInputReader(controls, ReadLegacyTouchMovement)
+```
+
+`SpawnCoordinator`'s constructor was not widened: the new bind is a sibling method of Slice 21's
+`BindHumanArenaContext`, and the human-participant iteration both need is now one shared private
+`BindEveryHumanController` helper rather than two copies of the same loop (the existing fail-closed
+"has no PlayerController to bind ... to" error text and behaviour are preserved, which is what
+`Level5PlayerControllerArenaContextTests` already asserts). `GameLevelManager` hands over a private
+method returning the joystick's current axes, never the `FloatingJoystick` object, so `Level5.Input`
+gains no dependency on it or on the vendored Joystick Pack. The bind runs inside
+`GameLevelManager.Awake`'s spawn pass, where the joystick has already been resolved (it is resolved
+before the coordinator is even constructed) and before any spawned `PlayerController.Start()` runs -
+unlike `BindHumanArenaContext`, which has to wait for `Start()` because the rim is not final until
+`ArenaBootstrap` has run. No new service, locator, provider registry, static analog state or generic
+joystick abstraction was introduced, and CPU participants are not bound.
+
+**Reader lifetime was the real risk in the inversion, and is where the coverage went.** A
+`PlayerController` does not own one `PlayerInputReader` for its lifetime: `OnDisable` drops it along with
+the acquired gameplay controls, `OnEnable`/`TryEnsureInputReader` rebuild it after reacquiring them, and
+the `Controls` setter replaces it outright. A source captured only on the reader would therefore be lost
+on the first disable/re-enable cycle. `PlayerController` stores the callback in its own field and hands
+every one of those three construction sites the same controller-owned indirection, so binding order does
+not matter and every rebuilt reader resolves the same live source.
+
+**`Level5.Input.asmdef` gained no reference, verified from the final source.** The migrated file names
+only `System` (`Func<Vector2>`), `UnityEngine`, `PlayerControls` and `PlayerTouchInputState`; the last two
+already live in this assembly and the assembly already declares `Unity.InputSystem` for them. Its one
+consumer, `PlayerController`, stays in `Assembly-CSharp` and reaches it through `autoReferenced`. Nothing
+was pre-added for `TouchInputController`, `RacingInputReader` or any other input type that may migrate
+later. The graph is unchanged in direction and depth: `Level5.Input -> Unity.InputSystem` only, and no
+`.asmdef` in the project names `Level5.Input`, so it remains the target of no edge and cannot be part of
+a cycle.
+
+**Serialized identity.** `PlayerInputReader` is a plain C# class - not a `MonoBehaviour` or
+`ScriptableObject` - so no prefab, scene or animation asset references it and none was edited. Its
+`.meta` was moved with `git mv` rather than regenerated and the GUID is unchanged at
+`85712732dbcee3f4f810900730093386`.
+
+Headless Unity `6000.5.7f1` batch compile clean, zero `CS` errors and no new warnings in any touched
+file. Extended `Level5ProductionAssemblyBoundaryTests` with one focused identity assertion,
+`PlayerInputReaderCompilesIntoLevel5Input`, mirroring `PlayerHealthCompilesIntoLevel5Player`; no second
+dependency scanner, source parser, assembly registry or architecture-test framework was added. Added
+`Assets/Tests/Editor/Level5PlayerInputReaderCompositionTests.cs`, which covers only the two behaviours
+this slice made load-bearing: `TouchBlockHeld` following `PlayerTouchInputState.BlockHeld` in both
+directions and through `Clear()`, and the composition/lifetime contract - a human participant's reader
+resolving the bound source, multiple humans sharing it, CPUs skipped, a controller-less human logging and
+continuing, an unbound controller reading `Vector2.zero` rather than throwing, the source being read live
+rather than snapshotted at reader construction, and the source surviving a reader rebuilt through each of
+the three construction sites, including the real `OnDisable`/`OnEnable` release-and-reacquire pair. The
+bound source is asserted through the reader's stored delegate because `ReadLegacyTouchMove` itself is
+compiled out of an Editor run; that limitation is recorded in the fixture. Focused EditMode run: 38/38
+across the four fixtures, including `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` (which is what
+would catch a surviving `GameLevelManager`/`TouchInputController` reference), every pre-existing identity
+guard, `Level5PlayerControllerArenaContextTests` for the refactored bind loop, and
+`Level5PlayerControllerDependencyGuardTests`. Per this repository's risk-based validation policy the
+broader input, player-movement and PlayMode suites were not re-run: this slice changes where the legacy
+axes come from, not what any input read decides, and no `.inputactions`, prefab or scene asset was
+touched. `validate-repository.ps1` passed.
+
+**Mobile-only compilation: not run - target support unavailable. The gap it left was closed a
+different way instead.** This machine's `6000.5.7f1` install has only `windowsstandalonesupport` in
+`PlaybackEngines`; no Android or iOS module is present, and none was installed for this slice. As
+originally written that left this slice's only behavioural edit - the three lines that turn the composed
+`Func<Vector2>` into `movementHorizontal`/`movementVertical` - checked by nothing at all: excluded from
+every Editor compile by `!UNITY_EDITOR`, unreachable from any test, and unbuildable on a runner without a
+mobile module. A transposition of the two axes would have shipped silently. Code review caught that, and
+two changes fix it without installing a platform module:
+
+- **The `#if` moved off the method and stayed on the call.** `ReadLegacyTouchMove` is now compiled on
+  every target while `ReadMove` still only calls it under the mobile conditions, so the platform
+  behaviour is unchanged and the body is type-checked by every compile this project runs. This is safe
+  because the project sets `activeInputHandler: 2` (Both), so legacy `UnityEngine.Input` -
+  `Input.touchCount`, `Input.touches`, `Touch`, `TouchPhase` - resolves on every target, which the same
+  file already depends on for `Input.GetKeyDown` in `DebugLightningPressed`. Verified by a full headless
+  compile: zero errors, zero new warnings, and the cost is one unreachable private method in a non-mobile
+  player.
+- **The scaling arithmetic was split into a pure static, `ScaleByTouchDistance`.**
+  `ReadLegacyTouchMove` returns early whenever `Input.touchCount` is zero, which it always is on a CI
+  runner, so the method as a whole still cannot be driven from a test. The part worth protecting - the
+  axis mapping and the per-axis attenuation - now can be, and is: four focused tests cover pass-through
+  with no range, each axis scaling by its own displacement (the transposition guard), full magnitude at
+  or past the range, and `Mathf.Abs` on a backwards drag. No behaviour changed; the statements moved
+  verbatim.
+
+A mobile build is still the only thing that proves `Input.touches` behaves as expected on device, and the
+`OnScreenStick` migration remains the real fix - but the slice's own edit is no longer unverifiable.
+
+**`PlayerController` dependency closure scan, freshly remeasured after this slice (2026-09-08).**
+Re-derived from current declarations rather than by subtracting one from Slice 25's count, using the same
+method: every identifier `PlayerController.cs` actually references (comments and string literals
+stripped) matched against every top-level type declaration under `Assets/`, each match resolved to its
+nearest enclosing `.asmdef`. Group A is unchanged from Slice 25 except that `PlayerInputReader` has
+joined `PlayerControls` and `PlayerControlsProvider` in `Level5.Input`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (15).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, **`PlayerInputReader`** (this slice)
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`
+
+(Scan notes for whoever remeasures next, both affecting group A's count only, never the blocker set:
+`PlayerControls` is declared as the verbatim identifier `public partial class @PlayerControls`, so a scan
+that does not strip the `@` misses it; `ShooterAttributes` is a `public readonly struct`, so a scan whose
+declaration pattern lacks `readonly` misses that one. Both are custom-assembly-owned either way.)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (8, down from 9).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`PlayerInputReader` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared - `PlayerController` names no new type, since the callback it now stores is a
+`System.Func<UnityEngine.Vector2>`. `PlayerController` itself remains in `Assembly-CSharp`
+(`Assets/Scripts/player/`), and moving it into `Level5.Player` stays blocked on all eight group B
+entries; five of those are still its own sibling components under `Assets/Scripts/player/`, so that
+folder still cannot be absorbed wholesale. `Assets/Scripts/input/` outside `Level5Input/` still holds
+`TouchInputController`, `RacingInputReader`, `UiSelectionAdapter`, the six menu `TouchInput*Controller`
+scripts and `PlayerControls.inputactions`, none of which this slice touched.
+
+**Running total after slices 1-26:** unchanged in assembly count from Slice 25 - 18 production runtime
+assemblies - since this slice moved one file into the existing `Level5.Input` rather than creating a new
+assembly. `Level5.Input` now holds `PlayerControls.cs`/`.meta`, `PlayerControlsProvider.cs`/`.meta`,
+`PlayerTouchInputState.cs`/`.meta` and `PlayerInputReader.cs`/`.meta`, the last moved with its GUID
+intact, and still declares only `Unity.InputSystem`. `Assets/Scripts/input/` outside `Level5Input/` is one
+file smaller. Everything else in the Slice 25 running total is unchanged.
+
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
 layers, DI/service locators, shader/material changes, URP configuration changes, and scene or
@@ -1762,6 +1933,16 @@ manager` cycle first and on `PlayerController`'s own remaining `Assembly-CSharp`
 types rather than 10 (group B of this slice's freshly remeasured closure scan above). `MatchRuntime` is
 still in that set: this slice cut `PlayerHealth`'s edge to it, not `PlayerController`'s. This is a
 diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 26 (2026-09-08), re-verified against the current folder.** Same nine files,
+unchanged. No file in the workaround folder mentions `PlayerInputReader`, so this slice changes nothing
+for them directly either. `PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs` still reach
+`PlayerController` via `GetComponent`/`FindAnyObjectByType`, and `Level5GameplayPlayModeTests.cs` still
+reaches `VersusRuntime`, `VersusMatchReporter`, `ActiveVersusAttempt` and `ActiveMatch`'s remaining
+`Assembly-CSharp` neighbours. 2c's exit condition is unchanged in kind and one entry narrower in scope
+again: `PlayerController`'s own remaining `Assembly-CSharp` dependency set is now 8 types rather than 9
+(group B of this slice's freshly remeasured closure scan above). This is a diagnostic finding only,
+`PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
