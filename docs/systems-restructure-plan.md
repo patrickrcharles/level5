@@ -1407,6 +1407,10 @@ and with the same types, the four public events, every public property including
 `Start`, and all three regeneration coroutines with their intervals. The `regenerateTimeDelay` field is
 authored-but-unread and was deliberately left in place: unlike Slice 24's `_basketBallState` it forces
 no assembly reference, so removing it would be exactly the unrelated cleanup this phase prohibits.
+(Removed afterwards in its own follow-up change, together with the three regeneration-rate
+`[SerializeField]`s that `Start()` overwrote on every instance and the two subsumed sniper terms in the
+gate - all three are dead serialized state or dead logic, none of them behaviour, and none of them part
+of this slice.)
 
 **The regeneration predicate was preserved as-is, including its redundancy.** It still reads
 `EnemiesEnabled || SniperEnabled || Sniper == Bullet || Sniper == Laser || ObstaclesEnabled`. The

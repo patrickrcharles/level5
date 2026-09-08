@@ -152,6 +152,26 @@ public class Level5PlayerHealthMatchRulesTests
         Assert.IsTrue(StartedRegeneratingBlock(health));
     }
 
+    // ==================== regeneration rates ====================
+
+    /// <summary>
+    /// The three regeneration intervals used to be `[SerializeField]`s that `Start()` overwrote with
+    /// these exact numbers on every instance, so the authored prefab values were dead data. Removing
+    /// the serialized fields had to leave the numbers the game actually runs on untouched - honouring
+    /// the authored values instead would have been a regression, since the health and special rates
+    /// are 0 in all 71 authored components and the block rate is 0 in 27 of them, and a rate of 0
+    /// makes every `WaitForSeconds` return immediately. This pins them.
+    /// </summary>
+    [TestCase("RegenerateBlockRate", 0.5f)]
+    [TestCase("RegenerateHealthRate", 2f)]
+    [TestCase("RegenerateSpecialRate", 0.04f)]
+    public void RegenerationRates_AreTheValuesStartUsedToAssign(string name, float expected)
+    {
+        FieldInfo field = typeof(PlayerHealth).GetField(name, BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.IsNotNull(field, $"PlayerHealth must declare {name}");
+        Assert.That((float)field.GetValue(null), Is.EqualTo(expected).Within(0.0001f));
+    }
+
     // ==================== binding contract ====================
 
     [Test]
