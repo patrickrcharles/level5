@@ -390,6 +390,7 @@ public sealed class SpawnCoordinator
         BindRangeMeters(spawned, identifier.Actor, isCpu: false);
         BindShotMeters(spawned, identifier.Actor, isCpu: false);
         BindCallBallMatchRules(spawned);
+        BindPlayerHealthMatchRules(spawned);
         registry.Add(identifier);
     }
 
@@ -450,6 +451,7 @@ public sealed class SpawnCoordinator
         BindRangeMeters(spawned, identifier.Actor, isCpu: true);
         BindShotMeters(spawned, identifier.Actor, isCpu: true);
         BindCallBallMatchRules(spawned);
+        BindPlayerHealthMatchRules(spawned);
         registry.Add(identifier);
     }
 
@@ -477,6 +479,34 @@ public sealed class SpawnCoordinator
         }
 
         callBall.BindMatchRules(rules);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 25: binds this coordinator's already-resolved <see cref="rules"/> to the
+    /// participant's own <c>PlayerHealth</c>, from both <see cref="RegisterHuman"/> and
+    /// <see cref="RegisterCpu"/> - mirroring <see cref="BindCallBallMatchRules"/> above - so that
+    /// component's existing regeneration gate no longer reads <c>MatchRuntime.Rules</c> itself. Called
+    /// during <c>GameLevelManager.Awake</c>'s spawn pass, so it always precedes that component's own
+    /// <c>Start()</c>.
+    ///
+    /// <c>GetComponentInChildren</c>, not <c>GetComponent</c>: unlike <c>CallBallToPlayer</c>, every
+    /// live consumer resolves this component that way (<c>PlayerController</c>,
+    /// <c>AutoPlayerController</c>, <c>PlayerCollisions</c>, <c>AutoPlayerCollisions</c> and
+    /// <c>GameLevelManager</c> all use <c>GetComponentInChildren&lt;PlayerHealth&gt;()</c>), so
+    /// composition must not assume it is authored on the participant root. <c>(true)</c> so an
+    /// inactive authored copy is reached as well; binding has no side effects. A participant without
+    /// one is not a defect and is silently skipped. Nothing is added here: composition supplies the
+    /// rules, it does not compose the participant, and it does not decide when regeneration runs.
+    /// </summary>
+    private void BindPlayerHealthMatchRules(GameObject participant)
+    {
+        PlayerHealth health = participant.GetComponentInChildren<PlayerHealth>(true);
+        if (health == null)
+        {
+            return;
+        }
+
+        health.BindMatchRules(rules);
     }
 
     /// <summary>

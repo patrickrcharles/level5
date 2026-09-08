@@ -1384,6 +1384,167 @@ new assembly. `Level5.Player` now holds `PlayerSwapAttack.cs`/`.meta` and
 `callBallToPlayer.cs`/`.meta`, both moved with their GUIDs intact. `Assets/Scripts/misc/` outside
 `Level5Misc/` is one file smaller. Everything else in the Slice 23 running total is unchanged.
 
+**Slice 25 - `Level5.Player` (2026-09-08), its third type: `PlayerHealth`, after inverting that
+type's `MatchRuntime` dependency.** The same shape as Slice 24: a dependency had to be removed before
+the move became legal. `PlayerHealth.Update()` read `MatchRuntime.Rules` five times to decide whether
+regeneration runs, and `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`) is
+still `Assembly-CSharp`, so it was the single edge keeping this component out of any custom assembly.
+Everything else it names was already owned: `IDamageable`/`DamageInfo` by `Level5.Combat`,
+`ResolvedMatchRules`/`SniperMode` by `Level5.Core`. The read is now an explicitly bound
+`ResolvedMatchRules` supplied by the existing participant composition, and
+`Assets/Scripts/player/PlayerHealth.cs`/`.meta` moved to `Assets/Scripts/player/Level5Player/`
+alongside `PlayerSwapAttack` and `CallBallToPlayer`.
+
+**`PlayerHealth` was not merged into `ActorHealth` and its contract did not change.** The two stay
+separate deliberately - `ActorHealth.cs`'s own summary already records why - because `PlayerHealth`
+owns player-only block, special and regeneration state while sharing the `IDamageable` contract.
+Preserved unchanged: the global namespace, the type name, all eleven `[SerializeField]`s (`health`,
+`maxHealth`, `block`, `maxBlock`, `special`, `maxSpecial`, `regenerateBlockRate`,
+`regenerateHealthRate`, `regenerateSpecialRate`, `regenerateTimeDelay`, `isDead`) in the same order
+and with the same types, the four public events, every public property including the
+`Health`/`Block`/`Special` clamping setters and the `IsDead` death latch, `TakeDamage`, `ApplyDamage`,
+`Heal`, `SpendBlock`, `SpendSpecial`, the `Awake` maxima, the three startup regeneration rates set in
+`Start`, and all three regeneration coroutines with their intervals. The `regenerateTimeDelay` field is
+authored-but-unread and was deliberately left in place: unlike Slice 24's `_basketBallState` it forces
+no assembly reference, so removing it would be exactly the unrelated cleanup this phase prohibits.
+
+**The regeneration predicate was preserved as-is, including its redundancy.** It still reads
+`EnemiesEnabled || SniperEnabled || Sniper == Bullet || Sniper == Laser || ObstaclesEnabled`. The
+middle three terms are reducible - `SniperEnabled` is `Sniper != None`, so it already subsumes both
+explicit comparisons - but simplifying a live gameplay gate is not this slice's business and nothing in
+the repository establishes that the redundancy is unintentional. Only the source of the rules changed.
+`SpawnCoordinator` supplies facts and does not decide when regeneration runs; no match-context service,
+provider interface, registry, global fallback or generalized player-binding framework was introduced.
+
+**`BindMatchRules` follows the repository's bind-once shape**, copied from `CallBallToPlayer` (and
+`BasketBall`/`BasketBallState` before it) including the guard ordering: the already-bound branch is
+checked *before* the null-argument branch, so a null second call after a real bind reports "already
+bound" rather than "remaining unbound" and cannot obscure the original valid reference.
+
+**An unbound component keeps every non-regeneration behaviour.** Missing composition is reported once
+from `Start()` - not per frame from `Update()`, which is what a naive null check would have produced -
+and `Update()` then returns before the gate. Damage, healing, block/special spending, clamping, the
+death latch and all four events keep working; the component is not disabled, the player object is not
+disabled, no default `ResolvedMatchRules` is invented, and nothing reaches back into `MatchRuntime`.
+Only regeneration is skipped. This differs from `CallBallToPlayer`'s fail-closed handling because the
+two failures are not alike: there, an unbound instance had a policy flag to fall back to; here, health
+processing is the component's primary job and has to survive a composition defect.
+
+**Composition binds from both registration paths, through one shared helper.**
+`SpawnCoordinator.BindPlayerHealthMatchRules(GameObject)` is called from `RegisterHuman` and from
+`RegisterCpu`, next to the existing `BindRangeMeters`/`BindShotMeters`/`BindCallBallMatchRules` calls,
+so every route that produces a participant is covered: the primary human, additional roster humans,
+roster CPUs, a scene-supplied `autoPlayer`, and Lockdown's defender. It runs inside
+`GameLevelManager.Awake`'s spawn pass, so it always precedes the component's own `Start()`.
+
+Unlike `BindCallBallMatchRules`, it uses `GetComponentInChildren<PlayerHealth>(true)`, not
+`GetComponent`, and the prefab probe below is what settled that rather than an assumption: in all four
+representative prefabs the component is authored on a child named `hitbox`, never on the participant
+root. Every live consumer already resolves it that way (`PlayerController`, `AutoPlayerController`,
+`PlayerCollisions`, `AutoPlayerCollisions`, `GameLevelManager`), so a root-only lookup would have bound
+nothing at all and left every participant logging a composition error. `(true)` so an inactive authored
+copy is reached as well; binding has no side effects. A participant without one is silently skipped, and
+nothing is ever added. Also unlike Slice 24: Lockdown's defender prefab (`cpu_player_defense_oldreal`)
+*does* carry `PlayerHealth`, so it is bound through its existing `RegisterCpu` route rather than being a
+legitimate skip.
+
+**`Level5.Player.asmdef` gains exactly one reference: `"Level5.Combat"`,** joining the `"Level5.Core"`
+Slice 24 added. `Level5.Core` covers `ResolvedMatchRules` and `SniperMode`; `Level5.Combat` covers the
+`IDamageable` interface this component implements and the `DamageInfo` its `TakeDamage`/`ApplyDamage`
+name. Both were verified against the final compiled source rather than copied from the audit's
+expectation. Nothing was pre-added for player types that may migrate later.
+
+**The graph was rechecked from current `.asmdef` files after the edit.** `Level5.Player ->
+{Level5.Core, Level5.Combat}`; `Level5.Core` declares no references at all and `Level5.Combat` declares
+an empty list, so both outbound edges are one deep and terminal. No `.asmdef` in the project names
+`Level5.Player`, so it is still the target of no edge and cannot be part of a cycle. The direction is
+unchanged: `Assembly-CSharp composition/controllers -> Level5.Player -> {Level5.Core, Level5.Combat}`.
+
+**Serialized identity.** `PlayerHealth` is a `MonoBehaviour` carried by 72 authored assets (71 prefabs
+plus `Assets/Scenes/level_01_scrapyard_cpu_defense_test.unity`, which stores the script GUID directly),
+so its `.meta` was moved with `git mv` rather than regenerated and the GUID is unchanged at
+`773787b24fb812a4b818381a01e71101`. The same two cross-assembly hazards Slices 23 and 24 checked were
+checked again and are both clear: no authored asset stores an assembly-qualified
+`m_TargetAssemblyTypeName` naming this type, and no `.anim`/`.controller` names any of its methods as an
+animation event - the regeneration coroutines and the spend/heal methods are called from C# only.
+Nothing in this project uses `[SerializeReference]`. No prefab, scene, animation asset or animator
+controller was edited or resaved.
+
+Headless Unity `6000.5.7f1` batch compile clean, zero `CS` errors, with every consumer compiling
+unchanged. Extended `Level5ProductionAssemblyBoundaryTests` with one focused identity assertion,
+`PlayerHealthCompilesIntoLevel5Player`, mirroring `CallBallToPlayerCompilesIntoLevel5Player`; no second
+dependency scanner, source parser, assembly registry or architecture-test framework was added. Added
+`Assets/Tests/Editor/Level5PlayerHealthMatchRulesTests.cs`, which asserts the gate as behaviour rather
+than as a bound reference - no enabling rule leaves regeneration shut, and enemies, obstacles and each
+of the three sniper modes each open it (parameterized) - plus the bind-once/null contract, the
+report-once-in-`Start()` behaviour, and a test that an unbound component still takes damage, clamps a
+heal past max, latches death and raises `OnDied`. The composition tests drive the real private
+`RegisterHuman`/`RegisterCpu` path (the technique `Level5ShotMeterOwnershipTests` and Slice 24's fixture
+already use) with the component on a *child*, as the prefabs author it, and with coordinator rules that
+enable enemies: a participant that bound nothing would log a composition error and one that bound some
+default rules object would leave the gate shut, so both failure modes fail the assertion. The gate is
+observed through the coroutine's own `regenerateBlock` flag, whose first segment runs synchronously
+inside `StartCoroutine` - deterministic, no timing, and no widening of the component's contract;
+existing coroutine intervals were not retested. Focused EditMode run: 45/45 across the three fixtures,
+including `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` and every pre-existing identity guard.
+Serialized-component resolution was verified directly rather than inferred, via a throwaway editor pass
+(created, run, deleted - not committed) over one human prefab (`player_ak47.prefab`), one regular CPU
+prefab (`cpu_player_ak47.prefab`), the Lockdown defender (`cpu_player_defense_oldreal.prefab`) and the
+scene auto-player (`auto_player_drblood.prefab`): all four resolve `PlayerHealth` on their `hitbox`
+child, report zero missing-script components, and keep their authored serialized values (`maxHealth`
+100, `maxSpecial` 100, `isDead` false throughout; `maxBlock` 20 on the human and 25 on the three CPU
+variants; `regenerateBlockRate` 0 on the human and 0.5 on the three CPU variants - all authored values,
+and all overwritten at runtime by `Start()` exactly as before). The same pass confirmed
+`typeof(PlayerHealth).Assembly` is `Level5.Player` while `AssetDatabase` still maps GUID
+`773787b24fb812a4b818381a01e71101` to the new path. Per this repository's risk-based validation policy
+the combat, player-movement and CPU suites were not re-run: this slice changes where the rules come
+from, not what the gate decides, and the compile plus gate/composition/identity/boundary/prefab-
+resolution evidence already establishes that claim; PR CI owns broader regression coverage.
+`validate-repository.ps1` passed.
+
+**`PlayerController` dependency closure scan, freshly remeasured after this slice (2026-09-08).**
+Re-derived from current declarations rather than by subtracting one from Slice 24's count: every
+identifier `PlayerController.cs` actually references (comments and string literals stripped) was matched
+against every top-level type declaration under `Assets/`, and each match resolved to its nearest
+enclosing `.asmdef`, which is authoritative. Group A is unchanged from Slice 24 except that
+`PlayerHealth` has joined `PlayerSwapAttack` and `CallBallToPlayer` in `Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (14).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, **`PlayerHealth`** (this slice)
+
+(Scan note for whoever remeasures next: `PlayerControls` is declared as the verbatim identifier
+`public partial class @PlayerControls` in the Input System's generated file, so an identifier-based scan
+that does not account for the `@` prefix reports 13 here instead of 14. It is `Level5.Input`-owned
+either way and is not a blocker.)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (9, down from 10).**
+
+- **input:** `PlayerInputReader` (`Assets/Scripts/input/`, *outside* `Level5Input/`)
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`, *outside* `Level5Match/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`, no asmdef)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`PlayerHealth` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared. `PlayerController` still reaches `MatchRuntime` on its own account - this slice cut
+`PlayerHealth`'s edge to it, not the controller's - so `MatchRuntime` remains a group B blocker.
+`PlayerController` itself remains in `Assembly-CSharp` (`Assets/Scripts/player/`), and moving it into
+`Level5.Player` stays blocked on all nine group B entries; five of those are its own sibling components
+under `Assets/Scripts/player/`, down from six, so that folder still cannot be absorbed wholesale.
+
+**Running total after slices 1-25:** unchanged in assembly count from Slice 24 - 18 production runtime
+assemblies - since this slice moved one file into the existing `Level5.Player` rather than creating a new
+assembly. `Level5.Player` now holds `PlayerSwapAttack.cs`/`.meta`, `callBallToPlayer.cs`/`.meta` and
+`PlayerHealth.cs`/`.meta`, all moved with their GUIDs intact, and is the first player assembly to declare
+`Level5.Combat`. `Assets/Scripts/player/` outside `Level5Player/` is one file smaller. Everything else in
+the Slice 24 running total is unchanged.
+
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
 layers, DI/service locators, shader/material changes, URP configuration changes, and scene or
@@ -1589,6 +1750,18 @@ cutting the `player`/`game manager` cycle first and on `PlayerController`'s own 
 remeasured closure scan above). `MatchRuntime` is still in that set: this slice cut
 `CallBallToPlayer`'s edge to it, not `PlayerController`'s own. This is a diagnostic finding only,
 `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 25 (2026-09-08), re-verified against the current folder.** Same nine files
+as Slices 12-24, unchanged. No file in the workaround folder mentions `PlayerHealth` at all, so this
+slice changes nothing for them directly. `PlayerMovementPhysicsTests.cs` and
+`BasketballVisibilityTests.cs` still call `PlayerController` directly (`Assembly-CSharp`,
+`Assets/Scripts/player/`) via `GetComponent`/`FindAnyObjectByType`. 2c's exit condition is unchanged in
+kind and one entry narrower in scope: `PlayerController` is still the only remaining direct
+`Assembly-CSharp` dependency across all nine workaround files, still gated on cutting the `player`/`game
+manager` cycle first and on `PlayerController`'s own remaining `Assembly-CSharp` dependency set, now 9
+types rather than 10 (group B of this slice's freshly remeasured closure scan above). `MatchRuntime` is
+still in that set: this slice cut `PlayerHealth`'s edge to it, not `PlayerController`'s. This is a
+diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

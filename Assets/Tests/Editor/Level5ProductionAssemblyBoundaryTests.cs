@@ -280,6 +280,26 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 25: proves <c>PlayerHealth</c> - the third type to enter
+    /// <c>Level5.Player</c>, once its <c>MatchRuntime.Rules</c> read was inverted into an explicitly
+    /// bound <c>ResolvedMatchRules</c> - actually compiles into that asmdef, the same identity check
+    /// <see cref="CallBallToPlayerCompilesIntoLevel5Player"/> does for the assembly's second type. It
+    /// is also the first type in this assembly to need <c>Level5.Combat</c>, for the
+    /// <c>IDamageable</c>/<c>DamageInfo</c> contract it shares with other actors. Its consumers -
+    /// <c>PlayerController</c>, <c>AutoPlayerController</c>, <c>PlayerCollisions</c>,
+    /// <c>AutoPlayerCollisions</c>, <c>GameLevelManager</c>, <c>GameRules</c> and
+    /// <c>EnemyController</c> - stay in <c>Assembly-CSharp</c> and reach it through
+    /// <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerHealthCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerHealth).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

@@ -3,6 +3,20 @@ using System.Collections;
 using UnityEngine;
 using Level5.Core.Match;
 
+/// <summary>
+/// The player's health, block and special, and the regeneration that tops them back up.
+///
+/// AUD-012 Phase 2b Slice 25: the regeneration gate now reads an explicitly bound
+/// <see cref="ResolvedMatchRules"/> (<see cref="BindMatchRules"/>, called by <c>SpawnCoordinator</c>
+/// for both human and CPU participants) instead of reading <c>MatchRuntime.Rules</c> in
+/// <see cref="Update"/>. <c>MatchRuntime</c> lives in <c>Assets/Scripts/game manager/</c>, outside
+/// <c>Level5Match/</c>, so it is still <c>Assembly-CSharp</c> and was the single edge keeping this
+/// component out of a production assembly. The gate itself is unchanged and still lives here -
+/// composition supplies the rules, it does not decide when regeneration runs.
+///
+/// This stays deliberately separate from <c>ActorHealth</c>: it also owns player-only block,
+/// special and regeneration state while sharing the <see cref="IDamageable"/> contract.
+/// </summary>
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField]
@@ -32,10 +46,41 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     bool regenerateSpecial = false;
     bool regenerateHealth = false;
 
+    /// <summary>
+    /// The rules this match is being played under, bound once by composition. Not serialized: it is
+    /// runtime-only, set after the component already exists, and <see cref="ResolvedMatchRules"/> is
+    /// not itself <c>[Serializable]</c>.
+    /// </summary>
+    private ResolvedMatchRules matchRules;
+
     public event Action OnHealthChanged;
     public event Action OnBlockChanged;
     public event Action OnSpecialChanged;
     public event Action OnDied;
+
+    /// <summary>
+    /// Binds the rules this match is being played under. Bind-once, in the shape
+    /// <c>CallBallToPlayer</c>, <c>BasketBall</c> and <c>BasketBallState</c> already use, including
+    /// its guard ordering: the already-bound branch is checked before the null-argument branch, so a
+    /// null second call after a real bind reports "already bound" rather than "remaining unbound"
+    /// and cannot obscure the original valid reference.
+    /// </summary>
+    public void BindMatchRules(ResolvedMatchRules rules)
+    {
+        if (matchRules != null)
+        {
+            Debug.LogError($"PlayerHealth on '{gameObject.name}' already has bound match rules; ignoring a second BindMatchRules call.", this);
+            return;
+        }
+
+        if (rules == null)
+        {
+            Debug.LogError($"PlayerHealth on '{gameObject.name}' was bound with null match rules; remaining unbound.", this);
+            return;
+        }
+
+        matchRules = rules;
+    }
 
     private void Awake()
     {
@@ -53,6 +98,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         regenerateBlockRate = 0.5f;
         regenerateHealthRate = 2f;
         regenerateSpecialRate = 0.04f;
+
+        // A participant composed through SpawnCoordinator always has rules by now - both registration
+        // paths bind during GameLevelManager.Awake, before any Start runs. Reaching here unbound is a
+        // composition defect, reported once here rather than every frame from Update(). Damage, death,
+        // clamping and the events all keep working; only regeneration is skipped, and this neither
+        // reaches back into MatchRuntime nor invents default rules to stand in for the real ones.
+        if (matchRules == null)
+        {
+            Debug.LogError($"PlayerHealth on '{gameObject.name}' reached Start() with no bound match rules; regeneration is disabled for this participant.", this);
+        }
     }
 
     private void Update()
@@ -67,11 +122,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             Health = maxHealth;
         }
 
-        if (MatchRuntime.Rules.EnemiesEnabled
-            || MatchRuntime.Rules.SniperEnabled
-            || MatchRuntime.Rules.Sniper == SniperMode.Bullet
-            || MatchRuntime.Rules.Sniper == SniperMode.Laser
-            || MatchRuntime.Rules.ObstaclesEnabled)
+        if (matchRules == null)
+        {
+            return;
+        }
+
+        if (matchRules.EnemiesEnabled
+            || matchRules.SniperEnabled
+            || matchRules.Sniper == SniperMode.Bullet
+            || matchRules.Sniper == SniperMode.Laser
+            || matchRules.ObstaclesEnabled)
         {
             if (block < MaxBlock && !regenerateBlock)
             {
