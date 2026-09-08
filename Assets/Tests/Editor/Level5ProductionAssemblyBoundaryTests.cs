@@ -449,27 +449,19 @@ public class Level5ProductionAssemblyBoundaryTests
     }
 
     /// <summary>
-    /// Strips string/char literals, then comments. Order matters: a URL string like
-    /// <c>"https://..."</c> contains <c>//</c>, and stripping comments first misreads it as a
-    /// comment start, truncating the string literal and desyncing every quote-pairing after it in
-    /// the file (found live against <c>Constants.cs</c>'s API-address constants). Stripping strings
-    /// first neutralizes the <c>//</c> before the comment stripper ever sees it.
+    /// Removes comments and string/char literals, so a table-name constant or a
+    /// <c>[Tooltip("...")]</c> string that happens to spell a foreign type's name is not mistaken
+    /// for a real reference to it, and a type named only in a doc comment is not either.
+    ///
+    /// This used to be two regex passes (literals, then comments). That ordering was chosen to keep
+    /// a URL string's <c>//</c> from being read as a comment, but it made the char-literal rule run
+    /// over not-yet-removed comment text, where an apostrophe in prose paired with the next
+    /// apostrophe in the file and deleted everything between - blinding this guard to whole regions
+    /// of 29 production files. <see cref="Level5TestSourceText.StripCommentsAndLiterals"/> replaces
+    /// both passes with one left-to-right scan that has neither failure mode.
     /// </summary>
     private static string NormalizeSource(string text)
     {
-        return Level5TestSourceText.StripComments(StripStringLiterals(text));
-    }
-
-    /// <summary>
-    /// Strips string/char literal contents so a table-name constant or a <c>[Tooltip("...")]</c>
-    /// string that happens to spell a foreign type's name is not mistaken for a real reference to it.
-    /// Deliberately simple - does not special-case interpolated string expressions - matching the
-    /// same-spirit simplifications elsewhere in this file.
-    /// </summary>
-    private static string StripStringLiterals(string text)
-    {
-        text = Regex.Replace(text, "@\"(?:[^\"]|\"\")*\"", "\"\"", RegexOptions.Singleline);
-        text = Regex.Replace(text, "\"(?:\\\\.|[^\"\\\\])*\"", "\"\"");
-        return Regex.Replace(text, "'(?:\\\\.|[^'\\\\])*'", "''");
+        return Level5TestSourceText.StripCommentsAndLiterals(text);
     }
 }
