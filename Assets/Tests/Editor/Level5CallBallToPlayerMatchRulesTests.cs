@@ -257,11 +257,13 @@ public class Level5CallBallToPlayerMatchRulesTests
     [Test]
     public void SpawnCoordinator_ParticipantWithoutCallBallToPlayer_IsSkippedSilently()
     {
-        // Lockdown's defender prefab carries no CallBallToPlayer at all; that is authored
-        // composition, not a defect, and must not log or throw.
+        // Modelled on Lockdown's defender prefab (cpu_player_defense_oldreal), which carries
+        // AutoPlayerDefense rather than AutoPlayerController and no CallBallToPlayer at all: that is
+        // authored composition, not a defect, and must not log or throw. PlayerIdentifier.Actor is
+        // null for such a participant, which the existing bind helpers already tolerate.
         GameObject defender = Spawn("cpu-defender");
         defender.AddComponent<CharacterProfile>();
-        defender.AddComponent<AutoPlayerController>();
+        defender.AddComponent<AutoPlayerDefense>();
         defender.AddComponent<PlayerIdentifier>();
 
         Assert.DoesNotThrow(() => registerCpu.Invoke(coordinator, new object[] { defender, 1 }));
