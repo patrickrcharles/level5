@@ -1716,6 +1716,162 @@ assembly. `Level5.Input` now holds `PlayerControls.cs`/`.meta`, `PlayerControlsP
 intact, and still declares only `Unity.InputSystem`. `Assets/Scripts/input/` outside `Level5Input/` is one
 file smaller. Everything else in the Slice 25 running total is unchanged.
 
+**Slice 27 - `CharacterProfile` (2026-09-08): dependency cut only - no ownership move.**
+`CharacterProfile.cs` stays exactly where it is, at `Assets/Scripts/player/CharacterProfile.cs`, in
+`Assembly-CSharp`. Its `.meta` is untouched, no `.asmdef` changed, and no prefab or scene asset was
+edited. The point of the slice is to make the type dependency-closed *first*, so the later serialized
+ownership move is a file move and nothing else - the two risks (inverting live gameplay state
+discovery, and changing which assembly a `MonoBehaviour` serializes from) are deliberately not taken in
+the same PR.
+
+**The two cuts.** `CharacterProfile` named exactly two types still compiled into `Assembly-CSharp`:
+
+- **`LoadedData`** - `intializeShooterStatsFromProfile(int)` opened with
+  `LoadedData.instance.getSelectedCharacterProfile(characterId)`, i.e. the profile reached into the
+  menu-boot persistence singleton for the saved data it rebuilds a human from.
+- **`MatchRuntime`** - `MatchRuntime.Cheerleader`'s seven bonus properties inside the same rebuild,
+  `MatchRuntime.Rules`'s four point-contest flags for the Luck/Clutch suppression, and
+  `MatchRuntime.Rules.ArcadeMode`/`.Difficulty` in `Start()`.
+
+Both now arrive through one runtime-only preparation method,
+`PrepareHumanMatchContext(Func<int, CharacterProfile>, CheerleaderSelection, ResolvedMatchRules)`,
+mirroring the `PrepareCpuMatchContext(int, ResolvedMatchRules)` #71 already added. Nothing is
+serialized: no resolver, cheerleader or rules field is `[SerializeField]`, so no prefab or scene
+carries any of it. **No service, repository interface, service locator, DI container or participant-
+context object was introduced** - the resolver is a plain `System.Func<int, CharacterProfile>` and the
+other two are the value objects composition already holds. `CharacterProfile` still owns every stat and
+bonus policy; composition only supplies the inputs.
+
+**One prepared-rules field, written by both paths.** `Start()` needs resolved rules for a human *and*
+for a CPU, so the human and CPU preparation methods write the same `preparedRules` field rather than two
+that could disagree about the same match - and that reference is itself the record that rules arrived,
+rather than a parallel bool a later edit could forget to keep in step. The CPU-specific context
+(`preparedBaseCpuLevel`, `preparedPrimaryHumanLevel`, `hasPreparedMatchContext`) is untouched, and
+`ApplyPreparedCpuMatchInitialization`'s Hardcore bump, contest suppression and no-context safe baseline
+are unchanged - `Level5CpuBaselineInitializationTests` still passes on them. `hasPreparedMatchContext`
+survives because it records that the CPU path specifically ran, which the rules reference alone cannot
+say (a human is prepared with rules and no CPU context), and it is derived from the same `rules != null`
+condition: a prepare with no rules now takes the documented safe-baseline path rather than claiming a
+context whose rules `ApplyPreparedCpuMatchInitialization` would dereference. Production never passes null
+there, so this only decides how an already-broken caller fails.
+
+**Composition prepares every human, before the configured-match gate.** This ordering is the slice's
+one genuinely load-bearing decision. `SpawnCoordinator.InitializeHumanProfile` used to return
+immediately when `MatchRuntime.HasConfiguration` was false; it now resolves the profile, prepares its
+context, and only then decides whether to run the saved-profile rebuild:
+
+```text
+RegisterHuman -> InitializeHumanProfile
+    -> PrepareHumanMatchContext(ResolveLoadedCharacterProfile, MatchRuntime.Cheerleader, rules)
+    -> MatchRuntime.HasConfiguration ?
+         yes -> intializeShooterStatsFromProfile(ResolveHumanCharacterId(slot))
+         no  -> (direct scene) no saved-profile rebuild, rules context still held
+```
+
+Preparing inside the gate would have silently dropped the Arcade/easy maximum-stat override for a
+directly entered gameplay scene, which previously got it from `MatchRuntime.Rules`'s legacy-globals
+fallback. The distinction the direct-scene path has always drawn - legacy-derived match rules yes,
+configured-match saved profile no - is therefore preserved exactly. `InitializeHumanProfile` became an
+instance method to reach the coordinator's already-resolved `rules`; the constructor was not widened. The
+gate itself now reads the coordinator's captured `hasActiveMatchConfiguration` instead of re-reading
+`MatchRuntime.HasConfiguration` - that live read existed only because the method used to be `static`, and
+this class already captures configuration presence once on purpose (AUD-010 Phase 2b0). Both are sampled
+inside `GameLevelManager.Awake`, after `ActiveMatch` is established for the scene load and before any
+participant spawns, so the value is the same one; it is now read from the field the class owns.
+The `identifier.characterProfile == null` error now precedes the configuration gate rather than
+following it, so a human prefab missing that component is reported in a directly entered scene too -
+the only behavioural difference outside the dependency cut, and it reports a real defect.
+
+**The composition side keeps the global knowledge.** A four-line private static adapter,
+`SpawnCoordinator.ResolveLoadedCharacterProfile(int)`, wraps `LoadedData.instance` (carrying over the
+profile's own null guard) into the `Func`; the cheerleader is still read from `MatchRuntime.Cheerleader`
+here, which is fine - the requirement was to remove that dependency from `CharacterProfile`, not to
+finish removing `MatchRuntime` from `SpawnCoordinator`. `LoadedData` and persistence architecture are
+otherwise untouched. `SpawnCoordinator.cs` is already on both allowlists in
+`Level5GameManagerEdgeTests` (spelled types, and `.characterProfile.` reach-through), and `LoadedData`
+is not a restricted name, so no allowlist grew.
+
+**Missing context fails loudly and never falls back.** No hidden `LoadedData`/`MatchRuntime` path was
+kept. An `intializeShooterStatsFromProfile` call with no prepared resolver, cheerleader or rules logs an
+actionable composition error naming the method that should have run, and returns before mutating
+anything. An instance reaching `Start()` with no prepared rules keeps its context-free initialization
+(`fadeaway`/`InAirSpeed`, and for a CPU the safe baseline), skips only the match-derived Arcade/easy
+override, disables nothing, invents no rules, and emits at most one Editor/Development warning - the CPU
+branch's existing "no match context prepared" warning suppresses the second one, so an unprepared shooting
+CPU still reports once, not twice, while a defensive CPU (which never runs that method) is still reported
+by `Start` itself. That skip is written as an `else if` around the override rather than an early `return`,
+so "continue context-free initialization" stays true for whatever `Start` grows later instead of holding
+only because the override happens to be its last statement today.
+
+**`CharacterProfile` is now fully dependency-closed, measured from the final source.** Same method as
+the `PlayerController` scans: identifiers with comments and string/char literals stripped, matched
+against every top-level declaration under `Assets/`, each resolved to its nearest enclosing `.asmdef`.
+Every type it names is now custom-assembly-owned - `Level5.Constants` (`CpuBaseStats`, and the nested
+`ShooterType`) and `Level5.Core` (`CharacterLevel`, `CheerleaderSelection`, `CpuDifficultyLevelPolicy`,
+`MatchDifficulties`, `ResolvedMatchRules`) - with **zero `Assembly-CSharp` blockers**. The physical move
+into `Level5.Player` is therefore nominated as a later ownership slice. It will need
+`Level5.Player -> Level5.Constants` added to `Level5.Player.asmdef`, which currently declares only
+`Level5.Core` and `Level5.Combat`; **that reference was deliberately not added in this slice**, since
+nothing in `Level5.Player` needs it yet. That move is also the slice that carries the serialized risk
+this one avoids: `CharacterProfile` is a `MonoBehaviour` on every character prefab, so it needs the
+prefab/scene and Missing Script verification explicitly excluded here. `ShooterAttributesMapper` was
+not moved and is not touched: it remains blocked on `CharacterProfile`'s ownership and becomes a
+simpler follow-on once that changes.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-08).** Re-derived
+from current declarations by the same scan rather than carried over: group A is **15**, unchanged from
+Slice 26 (`Level5.Input`: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`;
+`Level5.Core`: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`; `Level5.Basketball`:
+`BasketBall`, `ShotMeter`, `BasketBallState`; `Level5.Utility`: `SceneObjects`, `UtilityFunctions`,
+`RigidbodyFreezeHelper`; `Level5.Player`: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`), and
+group B is **8, unchanged from Slice 26**:
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `CharacterProfile`, `PlayerDunk`,
+  `PlayerAttackQueue`, `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+An unchanged count is the expected result and was not forced: no type changed assembly ownership in
+this slice, `CharacterProfile` still compiles into `Assembly-CSharp`, and `PlayerController.cs` itself
+was not edited. What changed is that one of those eight is now ready to move.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile clean - zero `CS` errors, and zero new
+warnings in either touched file. Focused EditMode run: **158/158 passed** across eleven fixtures -
+the two new ones, `Level5CharacterProfileDependencyGuardTests` (the source-level guard: with comments
+*and* string literals stripped via the existing `Level5TestSourceText.StripCommentsAndLiterals`,
+`CharacterProfile.cs` names neither `MatchRuntime` nor `LoadedData`) and
+`Level5CharacterProfileMatchContextTests` (21 tests: resolver receives the requested id, the saved-data
+copy contract, all seven cheerleader bonus categories, each of the four point contests suppressing
+Luck/Clutch with ordinary rules keeping both, Arcade and easy applying the maximum-stat values with
+ordinary rules not, both missing-context error paths mutating nothing, the one-diagnostic-per-participant
+contract for an unprepared human and for both kinds of unprepared CPU, and four composition tests: a
+configured human prepared *before* the rebuild - proven by which error a resolverless configured run
+produces - two humans each rebuilding from their own roster slot's character id *and* from the match's
+own cheerleader, a direct-scene human holding rules but loading no saved profile, and a human without a
+`CharacterProfile` reported rather than crashing) - plus
+`Level5CpuBaselineInitializationTests`, `Level5RangeMeterOwnershipTests`,
+`Level5ShotMeterOwnershipTests`, `Level5CallBallToPlayerMatchRulesTests`,
+`Level5PlayerHealthMatchRulesTests` (the four other fixtures that drive
+`SpawnCoordinator.RegisterHuman`), `Level5GameManagerEdgeTests`,
+`Level5ProductionAssemblyBoundaryTests`, `Level5PlayerControllerDependencyGuardTests` and
+`Level5TestSourceTextTests`. The three "exactly one diagnostic" assertions count messages through a scoped
+`Application.logMessageReceived` handler rather than `LogAssert`: Unity fails a test on unexpected
+*errors*, not on unexpected *warnings*, so `LogAssert.Expect` can prove a warning happened but not that
+it was the only one - and "one report per participant" is the contract. The configured-match fixture also
+carries a cheerleader with real bonuses rather than `CheerleaderSelection.None`, because with a zero-bonus
+cheerleader every assertion would still pass if composition handed the profile the wrong one. No second
+source parser, scanner framework or architecture-test system was added - the guard reuses the existing
+utility, in the same shape as `Level5BasketBallStateDependencyGuardTests`. One existing test was adjusted rather than deleted:
+`Level5CpuBaselineInitializationTests.ArcadeEasyOverrideStillWinsAfterCpuMatchInitialization` set easy
+difficulty through `GameOptions.difficultySelected`, which reached `Start()` via
+`MatchRuntime.Rules`'s legacy fallback; it now carries `MatchDifficulty.Easy` on the prepared rules,
+which is where production's value comes from too (`GameLevelManager.Awake` reads `MatchRuntime.Rules`
+once and hands that exact instance to the coordinator). Per the risk-based policy, full EditMode/
+PlayMode, player builds, prefab Missing Script probes and serialized-migration certification were **not**
+run: no asset, `.meta` or `.asmdef` changed here, and those belong to the ownership move.
+`validate-repository.ps1` passed.
+
 Prohibited in Phase 2: controller convergence, player/CPU behaviour cleanup, locomotion changes,
 input ownership changes, scene-search removal, namespace restructuring, API redesign, new service
 layers, DI/service locators, shader/material changes, URP configuration changes, and scene or
@@ -1943,6 +2099,15 @@ reaches `VersusRuntime`, `VersusMatchReporter`, `ActiveVersusAttempt` and `Activ
 again: `PlayerController`'s own remaining `Assembly-CSharp` dependency set is now 8 types rather than 9
 (group B of this slice's freshly remeasured closure scan above). This is a diagnostic finding only,
 `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 27 (2026-09-08), re-verified against the current folder.** Same nine files,
+unchanged. Slice 27 moved no type at all - it cut `CharacterProfile`'s `MatchRuntime` and `LoadedData`
+dependencies and left the file in `Assembly-CSharp` - so 2c's exit condition is unchanged in both kind
+and scope: `PlayerController`'s own remaining `Assembly-CSharp` dependency set is still 8 types (group B
+of this slice's freshly remeasured closure scan above), and `PlayerMovementPhysicsTests.cs` and
+`BasketballVisibilityTests.cs` still reach `PlayerController` via `GetComponent`/`FindAnyObjectByType`.
+What did change is that `CharacterProfile`, one of those eight, is now dependency-closed and ready to
+move. This is a diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

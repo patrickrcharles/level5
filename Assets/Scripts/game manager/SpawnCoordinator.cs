@@ -443,21 +443,53 @@ public sealed class SpawnCoordinator
     ///
     /// A slot with no character of its own still falls back to the primary id, which is what a
     /// single-human match has always resolved to.
+    ///
+    /// AUD-012 Phase 2b Slice 27: the context the profile used to discover for itself - the saved
+    /// profile lookup (<c>LoadedData</c>), the cheerleader and the resolved rules - is now handed to it
+    /// from here. That preparation deliberately happens <i>before</i> the configured-match gate below:
+    /// a directly entered gameplay scene still skips the saved-profile rebuild, exactly as it always
+    /// has, but its humans must still reach <c>CharacterProfile.Start</c> holding this match's rules,
+    /// which is what the Arcade/easy maximum-stat override reads. Only the rebuild is configured-match
+    /// work; the rules are not.
+    ///
+    /// The gate reads this coordinator's captured <see cref="hasActiveMatchConfiguration"/> rather than
+    /// <c>MatchRuntime.HasConfiguration</c>. The live re-read existed only because this method used to
+    /// be <c>static</c>; now that it is an instance method it uses the value this class already owns,
+    /// which is the point of capturing it once (see the constructor).
     /// </summary>
-    private static void InitializeHumanProfile(PlayerIdentifier identifier, PlayerSlot slot)
+    private void InitializeHumanProfile(PlayerIdentifier identifier, PlayerSlot slot)
     {
-        if (!MatchRuntime.HasConfiguration)
-        {
-            return;
-        }
-
         if (identifier.characterProfile == null)
         {
             Debug.LogError($"Spawned human '{identifier.name}' has no CharacterProfile to initialize.", identifier);
             return;
         }
 
+        identifier.characterProfile.PrepareHumanMatchContext(
+            ResolveLoadedCharacterProfile,
+            MatchRuntime.Cheerleader,
+            rules);
+
+        if (!hasActiveMatchConfiguration)
+        {
+            return;
+        }
+
         identifier.characterProfile.intializeShooterStatsFromProfile(ResolveHumanCharacterId(slot));
+    }
+
+    /// <summary>
+    /// The saved-profile lookup <see cref="InitializeHumanProfile"/> hands to a human's
+    /// <c>CharacterProfile</c>, so that type asks for a saved profile without knowing that
+    /// <c>LoadedData</c> is what answers (AUD-012 Phase 2b Slice 27). Deliberately a narrow adapter
+    /// over the existing accessor - the null guard is the one the profile itself used to carry, moved
+    /// to the side that owns the singleton - and not a persistence redesign.
+    /// </summary>
+    private static CharacterProfile ResolveLoadedCharacterProfile(int characterId)
+    {
+        return LoadedData.instance != null
+            ? LoadedData.instance.getSelectedCharacterProfile(characterId)
+            : null;
     }
 
     /// <summary>
