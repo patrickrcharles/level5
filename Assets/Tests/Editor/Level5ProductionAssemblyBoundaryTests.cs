@@ -321,6 +321,24 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Input"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 28: proves <c>CharacterProfile</c>, <c>CharacterProfileStatMapper</c>,
+    /// <c>RuntimeCharacterStats</c> and <c>CharacterStats</c> - moved together because the mapper's
+    /// write to <c>CharacterProfile.IsLocked</c> (<c>internal set</c>) only compiles from the same
+    /// assembly - actually compile into <c>Level5.Player</c>, the same identity check
+    /// <see cref="PlayerInputReaderCompilesIntoLevel5Input"/> does for <c>PlayerInputReader</c>.
+    /// </summary>
+    [Test]
+    public void CharacterProfileOwnershipTypesCompileIntoLevel5Player()
+    {
+        const string expected = "Level5.Player";
+
+        Assert.That(typeof(CharacterProfile).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterProfileStatMapper).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(RuntimeCharacterStats).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterStats).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

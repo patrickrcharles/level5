@@ -1879,6 +1879,123 @@ environment polishing. If a dependency must be inverted solely to make an intend
 make the smallest possible behaviour-preserving change and protect it with a dependency regression
 test.
 
+**Slice 28 - `CharacterProfile` (2026-09-09): the ownership move Slice 27 set up, plus a
+same-assembly closure Slice 27's audit did not anticipate.** `CharacterProfile.cs` moves from
+`Assets/Scripts/player/` into `Assets/Scripts/player/Level5Player/`, compiling into `Level5.Player`
+for the first time. Three more files move with it in the same PR, not left behind:
+`CharacterProfileStatMapper.cs`, `RuntimeCharacterStats.cs`, `CharacterStats.cs`. All four `.meta`
+files moved with their source (`git mv`), preserving every GUID:
+
+- `CharacterProfile` - `11a4e02d59c2d6841b3084444663e0f6`
+- `CharacterProfileStatMapper` - `8fe900f6fc824be7bc6f9c7697a5eb11`
+- `RuntimeCharacterStats` - `0ba110d6dc674971be77ec42413463c8`
+- `CharacterStats` - `55a696f94614408cbaa18c08bc9c037b`
+
+**Why four files, not one.** `CharacterProfile.IsLocked` is `public bool IsLocked { get; internal
+set; }` - internal because it was never meant to be set from just anywhere. Once `CharacterProfile`
+enters `Level5.Player`, only same-assembly code can use that setter. `CharacterProfileStatMapper.Apply`
+writes it (`profile.IsLocked = !runtimeStats.unlocked`), so the mapper has to move too; the mapper
+takes a `RuntimeCharacterStats`, whose `stats` field is a `CharacterStats`, so both value types come
+with it. None of the three needed a source change - `CharacterProfileStatMapper`/`RuntimeCharacterStats`/
+`CharacterStats` named nothing outside this closure or `Level5.Constants`/`Level5.Core` (already
+verified dependency-closed for `CharacterProfile` itself, see Slice 27 above).
+
+`Level5.Player.asmdef` gains exactly one new reference, `Level5.Constants`, for `CharacterProfile`'s
+`CpuBaseStats` use (`CpuBaseStats.RANGE`, `.LUCK`, `.ShooterType`, etc.) - the reference Slice 27
+deliberately did not add. Final references: `Level5.Core`, `Level5.Combat`, `Level5.Constants`. No
+reverse edge: `Level5.Constants.asmdef` declares `"references": []`, so the new direction
+(`Level5.Player -> Level5.Constants`) cannot cycle back.
+
+**Deviation: `[assembly: InternalsVisibleTo("Assembly-CSharp")]`, added to a new
+`Assets/Scripts/player/Level5Player/AssemblyInfo.cs`.** The Slice 27 audit's premise - that
+`CharacterProfileStatMapper` is the only live writer of `IsLocked` - was wrong. Headless compilation
+after the move failed with `CS0200` at `Assets/Scripts/menu_loading/LoadManager.cs:380`:
+`temp.IsLocked = dbStats.IsLocked;`, inside `loadPlayerSelectDataList()` - the live, documented
+primary-roster SQLite unlock path (`docs/persistence-boundaries.md`, "Unlock authority": `SQLite is
+the unlock authority`, and `UnlockSnapshotBuilder` reads `profile.IsLocked` straight off the profiles
+this method populates). This line existed unchanged at the audited baseline
+(`f451df735db630dd87ec859bf8390b033a553ffb`) - the audit missed a real caller, this was not a race
+with concurrent work. `CharacterProfileStatMapper.Apply` itself, by contrast, currently has no live
+caller at all: its only caller, `CharacterRuntimeProvider.TryApplyRuntimeStats`, is not attached to
+any prefab or scene and is not invoked from any other script.
+
+`LoadManager` is not dependency-closed (tightly coupled to `DBHelper`/`DBConnector`/`LoadedData`) and
+is far outside this slice's scope to move. Every technique this slice's instructions called out as
+forbidden - a public setter, `InternalsVisibleTo`, reflection, a wrapper API - was ruled out for the
+*known* mapper write; discovering a *second*, unaccounted-for live writer in an out-of-scope legacy
+file was outside that list's premise. Presented to the user as a blocking choice between halting the
+slice, a public setter, or `InternalsVisibleTo`; `InternalsVisibleTo` was chosen and approved because
+it keeps `IsLocked`'s public contract exactly as documented for every consumer except the one
+assembly that already has unrestricted access to everything else on `CharacterProfile`, and is a
+one-line, trivially reversible attribute once `LoadManager`'s write is eventually migrated onto the
+mapper flow - unlike a public setter, which would be a permanent, harder-to-undo widening of the
+public API. `IsLocked` itself is untouched: still `public bool IsLocked { get; internal set; }`.
+
+**Representative serialized validation.** GUID `11a4e02d59c2d6841b3084444663e0f6` is authored onto
+185 prefabs (183 at the Slice 27 audit, two added since - not investigated, out of scope). Five
+representative prefabs were loaded and checked for a Missing Script, that `CharacterProfile` resolves,
+that `typeof(CharacterProfile).Assembly.GetName().Name` reports `Level5.Player`, and that authored
+values survive: `Assets/Resources/Prefabs/characters/players/player_ak47.prefab` (gameplay human),
+`Assets/Resources/Prefabs/characters/cpu_players/cpu_player_ak47.prefab` (gameplay CPU),
+`Assets/Resources/Prefabs/menu_start/default_shooter_profiles/player_selected_ak47.prefab` (menu
+default human profile), `Assets/Resources/Prefabs/menu_start/cpu_players_selected_objects/cpu_player_ak47.prefab`
+(menu CPU-selected profile), and `Assets/Resources/Prefabs/basketball.prefab`. All five passed; none
+were resaved. `AssetDatabase.GUIDToAssetPath` for that GUID resolves to the new
+`Assets/Scripts/player/Level5Player/CharacterProfile.cs` path. No authored `CharacterPreset` asset
+exists in the repository (`AssetDatabase.FindAssets("t:CharacterPreset")` returned zero) - `CharacterStats`'
+serialization inside `CharacterPreset` is therefore unverified against real authored data; no synthetic
+asset was created to force the check.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero `CS` errors (after the
+`InternalsVisibleTo` deviation above; the pre-deviation attempt reproduced the `CS0200` finding).
+Focused EditMode run: **44/44 passed** across four fixtures -
+`Level5CharacterProfileDependencyGuardTests` (2, retargeted at the new path, still zero live
+`MatchRuntime`/`LoadedData` references), `Level5CharacterProfileMatchContextTests` (21, unchanged,
+rerun because its target type changed assembly), `Level5ProductionAssemblyBoundaryTests` (18,
+including the new `CharacterProfileOwnershipTypesCompileIntoLevel5Player` identity assertion and the
+still-green `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`), and the new
+`Level5CharacterProfileStatMapperTests` (3: `unlocked` inverts into `IsLocked` in both directions, and
+a representative set of ordinary numeric fields - `Accuracy2Pt`, `Range`, `Level`, `PlayerId` - copy
+in the same `Apply` call). Per the risk-based validation policy, full EditMode/PlayMode were not
+re-run; PR CI owns that broader regression coverage. `validate-repository.ps1` not re-run for this
+source/meta/asmdef-only change (no repository invariant it checks was touched).
+
+Not moved in this slice: `ShooterAttributesMapper`, `PlayerController`, or any other Group B blocker.
+`ShooterAttributesMapper` remains the strongest next pure-move candidate now that `CharacterProfile`
+has left `Assembly-CSharp`.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+Re-derived from current declarations, same method as every prior scan: identifiers with comments and
+string/char literals stripped, matched against every top-level declaration under `Assets/`, each
+resolved to its nearest enclosing `.asmdef`. Group A is **16, up from 15** - `CharacterProfile` joins
+`Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (16).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, **`CharacterProfile`**
+  (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (7, down from 8).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk`, `PlayerAttackQueue`,
+  `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+- **gameplay adapters/helpers:** `ShooterAttributesMapper` (`Assets/Scripts/player/`)
+
+`CharacterProfile` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared - `PlayerController.cs` itself was not edited. `PlayerController` remains in
+`Assembly-CSharp` and stays blocked on all seven group B entries; four of those are still its own
+sibling components under `Assets/Scripts/player/`. `ShooterAttributesMapper` was not moved here, but
+this slice makes it dependency-closed for the first time: it names only `CharacterProfile` (now
+`Level5.Player`) and `Level5.Core`'s `ShooterAttributes` - both already legal references. It stays in
+group B only because it is itself still physically in `Assembly-CSharp`, not because anything it needs
+is still blocked; it is the strongest next pure-move candidate.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
@@ -2108,6 +2225,15 @@ of this slice's freshly remeasured closure scan above), and `PlayerMovementPhysi
 `BasketballVisibilityTests.cs` still reach `PlayerController` via `GetComponent`/`FindAnyObjectByType`.
 What did change is that `CharacterProfile`, one of those eight, is now dependency-closed and ready to
 move. This is a diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 28 (2026-09-09), re-verified against the current folder.** Same nine
+files, unchanged - Slice 28 moved `CharacterProfile` (and its stat-mapping closure) into
+`Level5.Player`, but `PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs` still reach
+`PlayerController` via `GetComponent`/`FindAnyObjectByType`, and `PlayerController` itself was not
+edited or moved. 2c's exit condition is unchanged in kind and one entry narrower in scope:
+`PlayerController`'s own remaining `Assembly-CSharp` dependency set is now 7 types, down from 8 (group
+B of this slice's freshly remeasured closure scan above). This is a diagnostic finding only,
+`PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

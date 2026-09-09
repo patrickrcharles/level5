@@ -6,6 +6,7 @@
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Level5.Misc.csproj" />
   <Project Path="Level5.Combat.csproj" />
+  <Project Path="Level5.Player.csproj" />
   <Project Path="Level5.MenuStart.csproj" />
   <Project Path="Level5.PlayModeTests.csproj" />
   <Project Path="Level5.Match.csproj" />
@@ -15,7 +16,6 @@
   <Project Path="Level5.Constants.csproj" />
   <Project Path="Level5.PlayerRacing.csproj" />
   <Project Path="Level5.Utility.csproj" />
-  <Project Path="Level5.Player.csproj" />
   <Project Path="Level5.Pooling.csproj" />
   <Project Path="MobileDependencyResolverLP.Installer.Editor.csproj" />
   <Project Path="Level5.MenuProgression.csproj" />
