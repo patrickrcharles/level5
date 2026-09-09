@@ -10,10 +10,11 @@ using NUnit.Framework;
 /// rebuilt from. All four now arrive through <c>PrepareHumanMatchContext</c> /
 /// <c>PrepareCpuMatchContext</c>, composed by <c>SpawnCoordinator</c>.
 ///
-/// This type still compiles into <c>Assembly-CSharp</c>, so
-/// <see cref="Level5ProductionAssemblyBoundaryTests"/>'s migrated-assembly scan cannot enforce this
-/// boundary yet - which is exactly why the source-level guard exists now, in the same shape as
-/// <see cref="Level5BasketBallStateDependencyGuardTests"/> and
+/// AUD-012 Phase 2b Slice 28 moved <c>CharacterProfile</c> into the <c>Level5.Player</c> assembly, so
+/// <see cref="Level5ProductionAssemblyBoundaryTests"/>'s migrated-assembly scan now enforces the
+/// general Assembly-CSharp boundary for this file too. This source-level guard remains as the
+/// permanent, more specific check that these two named types in particular never come back - the
+/// same shape as <see cref="Level5BasketBallStateDependencyGuardTests"/> and
 /// <see cref="Level5PlayerControllerDependencyGuardTests"/>. Comments and string literals are
 /// stripped first, so the doc comments that still explain what was removed do not pass as live
 /// references.
@@ -21,7 +22,7 @@ using NUnit.Framework;
 public class Level5CharacterProfileDependencyGuardTests
 {
     private static readonly string CharacterProfilePath = Path.Combine(
-        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "CharacterProfile.cs");
+        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "Level5Player", "CharacterProfile.cs");
 
     [TestCase("MatchRuntime")]
     [TestCase("LoadedData")]

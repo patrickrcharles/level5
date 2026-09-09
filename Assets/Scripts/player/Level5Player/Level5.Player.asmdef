@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Level5.Core",
-        "Level5.Combat"
+        "Level5.Combat",
+        "Level5.Constants"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
