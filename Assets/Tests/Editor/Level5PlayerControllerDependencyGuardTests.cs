@@ -20,6 +20,15 @@ using NUnit.Framework;
 /// <c>TerrainHeight</c>), and are out of scope for this slice. Same caveat shape
 /// <see cref="Level5BasketballGameManagerEdgeTests"/> already records for the unresolved
 /// basketball -&gt; <c>GameRules</c> edge.
+///
+/// AUD-012 Phase 2b Slice 32 adds a second, narrower guard: <c>PlayerController</c> must also carry no
+/// live <c>CameraManager</c> reference. Migrating <c>PlayerDamageReactions</c> into <c>Level5.Player</c>
+/// removed that helper's direct <c>CameraManager.instance.Cameras[0]</c> read; the fix would be
+/// undone in spirit (a blocker swapped for a blocker) if <c>PlayerController</c> picked up the same
+/// read as a replacement instead of keeping it on the <c>Assembly-CSharp</c> composition side
+/// (<c>GameLevelManager.ReadPlayerDamageReactionCamera</c> -&gt;
+/// <c>SpawnCoordinator.BindHumanDamageReactionCamera</c> -&gt;
+/// <c>PlayerController.BindDamageReactionCameraReader</c>).
 /// </summary>
 public class Level5PlayerControllerDependencyGuardTests
 {
@@ -29,7 +38,7 @@ public class Level5PlayerControllerDependencyGuardTests
     [Test]
     public void PlayerControllerHasNoGameLevelManagerReference()
     {
-        string text = Level5TestSourceText.StripComments(File.ReadAllText(PlayerControllerPath));
+        string text = Level5TestSourceText.StripCommentsAndLiterals(File.ReadAllText(PlayerControllerPath));
 
         Assert.That(
             text,
@@ -39,5 +48,19 @@ public class Level5PlayerControllerDependencyGuardTests
             + "BindArenaContext(Vector3, IGroundHeightProvider), bound once by "
             + "SpawnCoordinator.BindHumanArenaContext after GameLevelManager.Start() resolves the "
             + "final rim, not by reading GameLevelManager.instance directly.");
+    }
+
+    [Test]
+    public void PlayerControllerHasNoCameraManagerReference()
+    {
+        string text = Level5TestSourceText.StripCommentsAndLiterals(File.ReadAllText(PlayerControllerPath));
+
+        Assert.That(
+            text,
+            Does.Not.Match(@"\bCameraManager\b"),
+            "PlayerController must have zero CameraManager references - the shrink reaction's camera "
+            + "must arrive through BindDamageReactionCameraReader(Func<Camera>), bound once by "
+            + "SpawnCoordinator.BindHumanDamageReactionCamera from GameLevelManager.Awake, not by "
+            + "reading CameraManager.instance directly on this controller.");
     }
 }

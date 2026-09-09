@@ -2277,6 +2277,103 @@ from 17** - `PlayerAttackQueue` joins `Level5.Player` (`PlayerAttackPosition` is
 new dependency appeared - `PlayerController.cs` itself was not edited. `PlayerController` remains in
 `Assembly-CSharp` and stays blocked on all five group B entries.
 
+**Slice 32 - `PlayerDamageReactions`'s remaining `Assembly-CSharp` dependencies removed; moved into
+`Level5.Player`** (2026-09-09): the human damage/knockdown/lightning/shrink reaction helper,
+dependency-closed by inverting both of its last two edges. `PlayerDamageReactions` used to hold a
+`PlayerController controller` field and reach `CameraManager.instance.Cameras[0]` directly for the
+shrink reaction's camera. Both are now indirections:
+
+- a new narrow contract, `IPlayerDamageReactionHost`
+  (`Assets/Scripts/player/Level5Player/IPlayerDamageReactionHost.cs`), replaces the concrete
+  `PlayerController` field. `PlayerController` implements it - eight members (`Anim`, `RigidBody`,
+  `CurrentState`, `TakeDamage`, `KnockedDown`, `Locked`, `AvoidedKnockDown`, `FacingRight`) map onto
+  its existing public properties implicitly, with no new code; the other eight
+  (`ActorTransform`; the four state hashes `TakeDamageStateHash`/`KnockedDownStateHash`/
+  `DisintegratedStateHash`/`LightningStateHash`; `IsShrunk`; `MarkDead()`; `GetShrinkCamera()`) have
+  no ordinary public equivalent and are implemented explicitly, off `PlayerController`'s ordinary
+  public surface.
+- the shrink camera lookup moves the other direction: `CameraManager` stays on the
+  `Assembly-CSharp` side. `GameLevelManager.ReadPlayerDamageReactionCamera()` is the exact former
+  null-safe `Cameras[0]` lookup, composed as a live `Func<Camera>` through
+  `SpawnCoordinator.BindHumanDamageReactionCamera` -> `PlayerController.BindDamageReactionCameraReader`
+  -> `IPlayerDamageReactionHost.GetShrinkCamera()`. Deliberately not folded into `PlayerController`
+  itself - that would only swap one `Assembly-CSharp` blocker (`PlayerDamageReactions`) for another
+  (`CameraManager`), leaving the net blocker count unchanged; `Level5PlayerControllerDependencyGuardTests.PlayerControllerHasNoCameraManagerReference`
+  (new this slice) guards against that swap happening silently in the future.
+
+`PlayerDamageReactions.cs`/`.meta` move from `Assets/Scripts/player/` into
+`Assets/Scripts/player/Level5Player/`, compiling into `Level5.Player` for the first time. The `.meta`
+moved with the file (not regenerated), preserving GUID `15316dc803bcd77458d8cedae6d682ad`. Unlike
+Slice 31's byte-identical move, this file's body changed - every `controller.X` read/write becomes
+`host.X` and the constructor parameter is now `IPlayerDamageReactionHost` rather than the concrete
+class - so git recorded the move as a delete-plus-add rather than a detected rename; the GUID is what
+Unity actually resolves the script by, and it is unchanged. No reaction *logic* changed - the
+freeze/animate/wait/restore shape of every coroutine, the shrink scale/FOV math, and the AUD-054
+exact-FOV-restore fix are all preserved, only how each line reaches its state.
+
+`Level5.Player.asmdef` is unchanged - still `Level5.Core`, `Level5.Combat`, `Level5.Constants`;
+neither new type needs any of them (both compile against only `System`/`System.Collections`/
+`UnityEngine`).
+
+**Preflight re-verification.** Baseline SHA (`3137c93d7`) matched current `dev` exactly.
+`PlayerDamageReactions` still held exactly the two documented edges (`PlayerController`,
+`CameraManager`) plus ordinary `System`/`UnityEngine` types; `PlayerController`'s constructor
+(`damageReactions = new PlayerDamageReactions(this);`) remained its only production construction
+site; the shrink reaction still resolved `CameraManager.instance.Cameras[0]`; and the helper's GUID
+and its lack of any authored/reflection/assembly-qualified dependency were unchanged from the audited
+baseline.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors (only pre-existing,
+unrelated obsolete-API warnings). Full EditMode run (broader than the routine focused subset, run here
+because this slice adds three new fixtures whose Animator/coroutine-stepping assumptions were worth
+confirming against the whole suite rather than in isolation): **1145/1145 passed**, including
+`Level5ProductionAssemblyBoundaryTests.PlayerDamageReactionTypesCompileIntoLevel5Player` (new) and the
+still-green `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`;
+`Level5PlayerControllerDependencyGuardTests.PlayerControllerHasNoCameraManagerReference` (new,
+alongside the still-green `PlayerControllerHasNoGameLevelManagerReference`); and three new fixtures -
+`Level5PlayerDamageReactionHostTests` (7: interface implementation, representative read/write
+round-trips, `MarkDead` updating the existing `PlayerHealth.IsDead` rather than duplicate death state,
+and the shrink-camera resolver's null-safe/live-not-snapshotted behavior),
+`Level5PlayerDamageReactionCameraCompositionTests` (5: human participants receive the resolver, CPU
+participants are skipped, the resolver stays live rather than snapshotted, an unbound/null-returning
+resolver is safe, and the existing missing-`PlayerController` fail-closed-and-continue convention
+holds), and `Level5PlayerDamageReactionsTests` (3: `PlayerDamageReactions` driven directly against a
+fake host by manually stepping its coroutines via `IEnumerator.MoveNext()` - no `PlayerController`,
+scene, or Play Mode required - covering one representative ordinary reaction, `PlayerKnockedDown`, and
+the changed camera seam, `ShrinkPlayer`, including its null-camera path). `validate-repository.ps1`
+**was** run and passed - the same `.meta`-pairing rationale as Slices 29/31, since this slice's own
+move is exactly that change class, now also covering the two new production `.meta` files and the
+three new test-file `.meta`s.
+
+Not moved in this slice: `PlayerController` itself, `CameraManager`, or any other Group B blocker.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+`PlayerController.cs` stripped of comments and string/char literals, its remaining identifiers matched
+against every top-level `public` type declared under `Assets/`, each hit resolved to its nearest
+enclosing `.asmdef`. Group A is **20, up from 18** - `PlayerDamageReactions` and its new
+`IPlayerDamageReactionHost` contract both join `Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (20).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, `PlayerAttackQueue`, **`PlayerDamageReactions`, `IPlayerDamageReactionHost`**
+  (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (4, down from 5).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk` (`Assets/Scripts/player/`)
+
+`PlayerDamageReactions` is the only entry that left group B; `CameraManager` never entered group B at
+all - the blocker-swap this slice's plan explicitly warned against did not happen, confirmed by
+`PlayerControllerHasNoCameraManagerReference`. `PlayerController` remains in `Assembly-CSharp` and
+stays blocked on all four remaining group B entries.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
@@ -2547,6 +2644,16 @@ condition is unchanged in both kind and scope: `PlayerMovementPhysicsTests.cs` a
 `FindAnyObjectByType`, and `PlayerController`'s own remaining `Assembly-CSharp` dependency set is
 now 5 types, down from 6 (group B of this slice's freshly remeasured closure scan above). This is a
 diagnostic finding only, `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 32 (2026-09-09), re-verified against the current folder.** Same nine
+files, unchanged - Slice 32 moved `PlayerDamageReactions` and added `IPlayerDamageReactionHost` into
+`Level5.Player`, but neither file in the workaround folder names either type directly (they reach
+`PlayerController` itself), and `PlayerController` itself was not edited or moved. 2c's exit condition
+is unchanged in both kind and scope: `PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs`
+still reach `PlayerController` via `GetComponent`/`FindAnyObjectByType`, and `PlayerController`'s own
+remaining `Assembly-CSharp` dependency set is now 4 types, down from 5 (group B of this slice's freshly
+remeasured closure scan above). This is a diagnostic finding only, `PlayerController` is not moved in
+this PR.
 
 #### 2d — Architecture guards and exit verification
 

@@ -313,7 +313,30 @@ public sealed class SpawnCoordinator
     }
 
     /// <summary>
-    /// The one human-participant iteration both <c>BindHuman*</c> passes share: registered, non-CPU,
+    /// AUD-012 Phase 2b Slice 32: forwards the scene's live shrink-camera resolver to every registered
+    /// human participant's <see cref="PlayerController"/>, replacing <c>PlayerDamageReactions</c>'
+    /// former direct <c>CameraManager.instance.Cameras[0]</c> read. <paramref
+    /// name="damageReactionCameraReader"/> is a <see cref="Func{TResult}"/>, not a captured
+    /// <c>Camera</c>, so the shrink reaction resolves it live when shrink begins - the same timing the
+    /// old direct read had - rather than a snapshot taken at composition time.
+    ///
+    /// Called from <c>GameLevelManager.Awake</c>'s spawn pass, adjacent to
+    /// <see cref="BindHumanLegacyTouchMovement"/>: ordering is not load-bearing regardless, since
+    /// <c>PlayerController</c> stores this independently of <c>PlayerDamageReactions</c> and only
+    /// invokes it when the helper actually asks for a shrink camera.
+    ///
+    /// CPU participants are deliberately skipped: <c>AutoPlayerController</c>'s reactions have no
+    /// shrink behavior to bind a camera for.
+    /// </summary>
+    public void BindHumanDamageReactionCamera(Func<Camera> damageReactionCameraReader)
+    {
+        BindEveryHumanController(
+            "damage reaction camera",
+            controller => controller.BindDamageReactionCameraReader(damageReactionCameraReader));
+    }
+
+    /// <summary>
+    /// The one human-participant iteration every <c>BindHuman*</c> pass shares: registered, non-CPU,
     /// with a <see cref="PlayerController"/> to bind to. A human whose prefab has no controller fails
     /// closed on that participant with a named error and the pass continues, rather than throwing and
     /// aborting binding for everyone after it.

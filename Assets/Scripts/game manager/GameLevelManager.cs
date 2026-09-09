@@ -129,6 +129,7 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
         }
 
         _spawnCoordinator.BindHumanLegacyTouchMovement(ReadLegacyTouchMovement);
+        _spawnCoordinator.BindHumanDamageReactionCamera(ReadPlayerDamageReactionCamera);
 
         _spawnCoordinator.SpawnCheerleader(MatchRuntime.Cheerleader.ObjectName, terrainHeight);
 
@@ -149,6 +150,34 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
         return joystick != null
             ? new Vector2(joystick.Horizontal, joystick.Vertical)
             : Vector2.zero;
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 32: the shrink reaction's camera, as a value rather than as
+    /// <c>CameraManager</c> itself. <c>PlayerDamageReactions</c> used to read
+    /// <c>CameraManager.instance.Cameras[0]</c> directly; it now receives this method (via
+    /// <see cref="SpawnCoordinator.BindHumanDamageReactionCamera"/> -&gt;
+    /// <c>PlayerController.BindDamageReactionCameraReader</c>) so <c>Level5.Player</c> never names
+    /// <c>CameraManager</c>. Reads <see cref="CameraManager.instance"/> on each call, so it stays as
+    /// live as the direct read it replaces - not moved into <c>PlayerController</c>, which would only
+    /// trade one <c>Assembly-CSharp</c> dependency for another.
+    ///
+    /// Preserves the exact former camera-selection rule: <c>Cameras[0]</c>. Null-safe at every step,
+    /// same as the read this replaces - an absent camera manager, an empty camera array, or a missing
+    /// index-0 camera component all resolve to <c>null</c> rather than throwing, and the shrink
+    /// reaction already treats a null camera as "skip the FOV change, reaction still proceeds."
+    /// </summary>
+    private Camera ReadPlayerDamageReactionCamera()
+    {
+        if (CameraManager.instance == null
+            || CameraManager.instance.Cameras == null
+            || CameraManager.instance.Cameras.Length == 0
+            || CameraManager.instance.Cameras[0] == null)
+        {
+            return null;
+        }
+
+        return CameraManager.instance.Cameras[0].GetComponent<Camera>();
     }
 
     /// <summary>

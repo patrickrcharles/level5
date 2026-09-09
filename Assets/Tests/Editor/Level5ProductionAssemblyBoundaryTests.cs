@@ -390,6 +390,23 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(PlayerAttackPosition).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 32: proves <c>PlayerDamageReactions</c> and its new
+    /// <c>IPlayerDamageReactionHost</c> contract - the human damage/knockdown/lightning/shrink
+    /// reaction helper, dependency-closed by inverting its <c>PlayerController</c> and
+    /// <c>CameraManager</c> reads into the host contract and a composed <c>Func&lt;Camera&gt;</c> -
+    /// actually compile into <c>Level5.Player</c>, the same identity check
+    /// <see cref="PlayerAttackQueueTypesCompileIntoLevel5Player"/> does for <c>PlayerAttackQueue</c>.
+    /// </summary>
+    [Test]
+    public void PlayerDamageReactionTypesCompileIntoLevel5Player()
+    {
+        const string expected = "Level5.Player";
+
+        Assert.That(typeof(PlayerDamageReactions).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(IPlayerDamageReactionHost).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
