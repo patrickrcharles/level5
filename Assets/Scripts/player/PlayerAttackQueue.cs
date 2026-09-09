@@ -25,7 +25,14 @@ public class PlayerAttackQueue : MonoBehaviour
 
     readonly Dictionary<GameObject, QueueEntry> entriesByAttacker = new Dictionary<GameObject, QueueEntry>();
     readonly List<QueueEntry> entries = new List<QueueEntry>();
-    PlayerIdentifier playerIdentifier;
+
+    /// <summary>
+    /// The rules this match is being played under and the participant anchor queue slots are
+    /// positioned around, both bound once by composition. Not serialized: runtime-only, set after
+    /// the component already exists.
+    /// </summary>
+    private ResolvedMatchRules matchRules;
+    private Transform participantAnchor;
 
     class QueueEntry
     {
@@ -34,13 +41,42 @@ public class PlayerAttackQueue : MonoBehaviour
         public PlayerAttackPosition slot;
     }
 
-    private void Awake()
+    /// <summary>
+    /// Explicit match-rules and participant-anchor binding from <c>SpawnCoordinator</c>, called once
+    /// during participant composition - from both the human and the CPU registration path - and
+    /// therefore before Unity calls <see cref="Start"/>. Same bind-once shape
+    /// <c>CallBallToPlayer</c>/<c>PlayerHealth</c> already use, including the guard ordering: the
+    /// already-bound branch is checked before the null-argument branch.
+    /// </summary>
+    public void BindMatchContext(ResolvedMatchRules rules, Transform anchor)
     {
-        playerIdentifier = GetComponent<PlayerIdentifier>();
+        if (matchRules != null)
+        {
+            Debug.LogError($"PlayerAttackQueue on '{gameObject.name}' already has bound match context; ignoring a second BindMatchContext call.", this);
+            return;
+        }
+
+        if (rules == null)
+        {
+            Debug.LogError($"PlayerAttackQueue on '{gameObject.name}' was bound with null match rules; remaining unbound.", this);
+            return;
+        }
+
+        matchRules = rules;
+        participantAnchor = anchor;
     }
 
     private void Start()
     {
+        // A participant composed through SpawnCoordinator always has context by now - both
+        // registration paths bind during GameLevelManager.Awake, before any Start runs. Reaching
+        // here unbound is a composition defect, reported once here rather than every frame; the
+        // queue still runs, on standard capacity with this transform as its anchor.
+        if (matchRules == null)
+        {
+            Debug.LogError($"PlayerAttackQueue on '{gameObject.name}' reached Start() with no bound match context; using standard queue capacity and this transform as the anchor.", this);
+        }
+
         maxEnemiesQueued = GetMaxEnemiesQueued();
         CacheAttackPositions();
         RefreshBodyGuards();
@@ -59,7 +95,7 @@ public class PlayerAttackQueue : MonoBehaviour
     // EnemyPopulationRules, alongside the spawner's. Same numbers, one place.
     private int GetMaxEnemiesQueued()
     {
-        return EnemyPopulationRules.MaxQueued(MatchRuntime.Rules);
+        return EnemyPopulationRules.MaxQueued(matchRules);
     }
 
     private void CacheAttackPositions()
@@ -258,7 +294,7 @@ public class PlayerAttackQueue : MonoBehaviour
         PlayerAttackPosition bestSlot = null;
         int bestOccupancy = int.MaxValue;
         float bestDistance = float.MaxValue;
-        bool allowSharedSlots = maxEnemiesQueued > attackPositions.Length || MatchRuntime.Rules.IsBattleRoyal;
+        bool allowSharedSlots = maxEnemiesQueued > attackPositions.Length || (matchRules != null && matchRules.IsBattleRoyal);
 
         foreach (GameObject attackPositionObject in attackPositions)
         {
@@ -419,20 +455,7 @@ public class PlayerAttackQueue : MonoBehaviour
 
     private Vector3 GetQueueAnchorPosition()
     {
-        if (playerIdentifier != null)
-        {
-            if (playerIdentifier.isCpu && playerIdentifier.autoPlayer != null)
-            {
-                return playerIdentifier.autoPlayer.transform.position;
-            }
-
-            if (!playerIdentifier.isCpu && playerIdentifier.player != null)
-            {
-                return playerIdentifier.player.transform.position;
-            }
-        }
-
-        return transform.position;
+        return participantAnchor != null ? participantAnchor.position : transform.position;
     }
 
     private void UpdateSlotEngagements()

@@ -4,7 +4,7 @@ using Level5.Core.Match;
 /// How many enemies a match may have alive, and how many of them may hold an attack reservation
 /// at once.
 ///
-/// ENM-2: these two numbers were derived independently - once in <see cref="EnemySpawner"/> and
+/// ENM-2: these two numbers were derived independently - once in <c>EnemySpawner</c> and
 /// once in <c>PlayerAttackQueue.GetMaxEnemiesQueued</c> - from the same rule inputs, by two
 /// separate branch chains that do not agree. A non-hardcore battle-royal cage match spawns at most
 /// four enemies while the queue admits twenty. That divergence is invisible today only because the
@@ -27,7 +27,7 @@ public static class EnemyPopulationRules
     private const int BattleRoyalStagedCap = 2;
 
     /// <summary>
-    /// The most enemies <see cref="EnemySpawner"/> will keep alive.
+    /// The most enemies <c>EnemySpawner</c> will keep alive.
     ///
     /// <paramref name="hasConfiguration"/> is <c>MatchRuntime.HasConfiguration</c>. The branch
     /// order is load-bearing and documented in EnemySpawner (AUD-056): the hardcore cases win
