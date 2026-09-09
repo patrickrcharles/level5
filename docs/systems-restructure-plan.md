@@ -1957,8 +1957,16 @@ still-green `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`), and the ne
 `Level5CharacterProfileStatMapperTests` (3: `unlocked` inverts into `IsLocked` in both directions, and
 a representative set of ordinary numeric fields - `Accuracy2Pt`, `Range`, `Level`, `PlayerId` - copy
 in the same `Apply` call). Per the risk-based validation policy, full EditMode/PlayMode were not
-re-run; PR CI owns that broader regression coverage. `validate-repository.ps1` not re-run for this
-source/meta/asmdef-only change (no repository invariant it checks was touched).
+re-run; PR CI owns that broader regression coverage.
+
+*(Corrected during Slice 29.)* This slice recorded `validate-repository.ps1` as "not re-run for this
+source/meta/asmdef-only change (no repository invariant it checks was touched)". That justification
+was wrong: the script's `.meta`-pairing check walks every file under `Assets/` and fails any asset
+lacking a sibling `.meta`, so moving four `.cs` files plus their four `.meta` files sits squarely
+inside the one invariant it enforces. The script was not run at the time. It was run during Slice 29
+against a tree that already contains all four of this slice's moved files, and passed - so the
+invariant is confirmed green for this slice's result, just not by this slice's own reporting. See
+Slice 29's validation notes below for the corrected standard: a source-plus-`.meta` move runs it.
 
 Not moved in this slice: `ShooterAttributesMapper`, `PlayerController`, or any other Group B blocker.
 `ShooterAttributesMapper` remains the strongest next pure-move candidate now that `CharacterProfile`
@@ -1995,6 +2003,80 @@ this slice makes it dependency-closed for the first time: it names only `Charact
 `Level5.Player`) and `Level5.Core`'s `ShooterAttributes` - both already legal references. It stays in
 group B only because it is itself still physically in `Assembly-CSharp`, not because anything it needs
 is still blocked; it is the strongest next pure-move candidate.
+
+**Slice 29 - `ShooterAttributesMapper` (2026-09-09): a pure assembly-ownership move, dependency-closed
+since Slice 28.** `ShooterAttributesMapper.cs` moves from `Assets/Scripts/player/` into
+`Assets/Scripts/player/Level5Player/`, compiling into `Level5.Player` for the first time. `.meta` moved
+with it (`git mv`), preserving GUID `779f424a2b464bbcbb9a1f0baaf40bdd`. Production source is
+byte-identical - path only, confirmed by `git diff -M --summary` reporting both as `rename ... (100%)`
+with zero insertions or deletions. No dependency inversion was needed: the mapper's only project-type
+references, `CharacterProfile` and `ShooterAttributes`, were already legal (`Level5.Player` and
+`Level5.Core` respectively) once Slice 28 moved `CharacterProfile`.
+
+**No serialized Unity asset surface**, unlike Slice 28's `CharacterProfile`: `ShooterAttributesMapper`
+is a plain static class, never a `MonoBehaviour`/`ScriptableObject`, so no prefab, scene or asset
+carries a `MonoScript` reference to it. Verified rather than assumed - a repository-wide search for
+GUID `779f424a2b464bbcbb9a1f0baaf40bdd` returns only the script's own `.meta` and this document. No
+prefab/scene Missing Script sweep was needed or run, and no authored asset was opened or resaved.
+
+`Level5.Player.asmdef` is unchanged - still `Level5.Core`, `Level5.Combat`, `Level5.Constants`. The
+mapper needs only `Level5.Core`, already present. Callers `PlayerController` and `AutoPlayerController`
+are unchanged; both stay in `Assembly-CSharp` and reach the mapper through `autoReferenced`, same
+pattern as every prior 2b leaf. Slice 28's `[assembly: InternalsVisibleTo("Assembly-CSharp")]`
+(`Assets/Scripts/player/Level5Player/AssemblyInfo.cs`) is untouched - it exists for the unrelated
+`CharacterProfile.IsLocked`/`LoadManager` boundary.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors. Focused EditMode run:
+**38/38 passed** across two fixtures - `Level5ProductionAssemblyBoundaryTests` (19, including the new
+`ShooterAttributesMapperCompilesIntoLevel5Player` identity assertion and the still-green
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`) and `Level5BasketballShotPipelineTests` (19,
+unchanged - it already exercises `ShooterAttributesMapper.From` directly for both a populated profile,
+through `ComputeLaunch`, and a null profile via `MissingCharacterProfileLogsAndFallsBackToAnInertShooter`,
+which asserts the warning log and the zeroed fallback). No new mapper-behavior test was needed; existing
+coverage already proved both paths. Per the risk-based validation policy, full EditMode/PlayMode were
+not re-run; PR CI owns that broader regression coverage.
+
+`validate-repository.ps1` **was** run for this slice and passed - a departure from Slice 28's
+"source/meta-only, no invariant touched" reasoning, which was wrong on its own terms. The script's
+`.meta`-pairing check walks every file under `Assets/` and fails any asset lacking a sibling `.meta`,
+so a source-plus-`.meta` move is precisely the change class that invariant guards: moving a `.cs`
+without its `.meta` (or the reverse) is the exact failure it exists to catch. Cheap to run, and it is
+the one repository invariant this slice could plausibly have broken.
+
+Not moved in this slice: `PlayerController` or any other Group B blocker.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+Re-derived from current declarations by an actual scan, not by subtracting this slice's type from the
+Slice 28 list: `PlayerController.cs` stripped of comments and string/char literals, its remaining
+identifiers matched against every top-level `public` type declared under `Assets/`, each hit resolved
+to its nearest enclosing `.asmdef`. The scan is also a second, independent confirmation of the move
+itself - it resolves `ShooterAttributesMapper` to `Level5.Player` by folder ownership, which is a
+different mechanism from the runtime `typeof(...).Assembly` assertion added to
+`Level5ProductionAssemblyBoundaryTests`. Group A is **17, up from 16** - `ShooterAttributesMapper`
+joins `Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (17).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  **`ShooterAttributesMapper`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (6, down from 7).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk`, `PlayerAttackQueue`,
+  `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+
+`ShooterAttributesMapper` is the only entry that left group B; nothing else moved between groups, and
+no new dependency appeared - `PlayerController.cs` itself was not edited. The "gameplay
+adapters/helpers" line that tracked `ShooterAttributesMapper` since Slice 24 is now empty; all six
+remaining blockers are `PlayerController`'s own sibling components or cross-folder runtime/sniper
+dependencies. `PlayerController` remains in `Assembly-CSharp` and stays blocked on all six group B
+entries.
 
 #### 2c — Normalize gameplay PlayMode tests
 
@@ -2234,6 +2316,15 @@ edited or moved. 2c's exit condition is unchanged in kind and one entry narrower
 `PlayerController`'s own remaining `Assembly-CSharp` dependency set is now 7 types, down from 8 (group
 B of this slice's freshly remeasured closure scan above). This is a diagnostic finding only,
 `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 29 (2026-09-09), re-verified against the current folder.** Same nine
+files, unchanged - Slice 29 moved `ShooterAttributesMapper` into `Level5.Player`, but
+`PlayerMovementPhysicsTests.cs` and `BasketballVisibilityTests.cs` still reach `PlayerController` via
+`GetComponent`/`FindAnyObjectByType`, and `PlayerController` itself was not edited or moved. 2c's exit
+condition is unchanged in kind and one entry narrower in scope: `PlayerController`'s own remaining
+`Assembly-CSharp` dependency set is now 6 types, down from 7 (group B of this slice's freshly
+remeasured closure scan above). This is a diagnostic finding only, `PlayerController` is not moved in
+this PR.
 
 #### 2d — Architecture guards and exit verification
 

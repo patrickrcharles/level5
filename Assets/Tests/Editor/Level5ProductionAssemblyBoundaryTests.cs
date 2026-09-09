@@ -339,6 +339,22 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(CharacterStats).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 29: proves <c>ShooterAttributesMapper</c> - a pure assembly-ownership
+    /// move, dependency-closed since Slice 28 moved <c>CharacterProfile</c> into <c>Level5.Player</c> -
+    /// actually compiles into that asmdef, the same identity check
+    /// <see cref="CharacterProfileOwnershipTypesCompileIntoLevel5Player"/> does for
+    /// <c>CharacterProfile</c>. Its callers - <c>PlayerController</c> and <c>AutoPlayerController</c> -
+    /// stay in <c>Assembly-CSharp</c> and reach it through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void ShooterAttributesMapperCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(ShooterAttributesMapper).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
