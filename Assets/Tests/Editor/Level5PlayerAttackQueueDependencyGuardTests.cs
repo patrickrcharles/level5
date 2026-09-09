@@ -8,10 +8,11 @@ using NUnit.Framework;
 /// <c>GetComponent&lt;PlayerIdentifier&gt;()</c> for the participant anchor position. Both now
 /// arrive through <c>BindMatchContext</c>, composed by <c>SpawnCoordinator</c>.
 ///
-/// <c>PlayerAttackQueue</c> itself still compiles into <c>Assembly-CSharp</c> (it also depends on
-/// its same-assembly sibling <c>PlayerAttackPosition</c>), so it is not yet reached by
-/// <see cref="Level5ProductionAssemblyBoundaryTests"/>'s migrated-assembly scan. This source-level
-/// guard is the same shape as <see cref="Level5CharacterProfileDependencyGuardTests"/> and
+/// <c>PlayerAttackQueue</c> now compiles into <c>Level5.Player</c> (AUD-012 Phase 2b Slice 31,
+/// moved together with its same-assembly sibling <c>PlayerAttackPosition</c>), and is also covered
+/// by <see cref="Level5ProductionAssemblyBoundaryTests"/>'s migrated-assembly scan. This
+/// source-level guard remains as a focused, permanent invariant check - the same shape as
+/// <see cref="Level5CharacterProfileDependencyGuardTests"/> and
 /// <see cref="Level5PlayerControllerDependencyGuardTests"/>. Comments and string literals are
 /// stripped first, so the doc comments that still explain what was removed do not pass as live
 /// references.
@@ -19,7 +20,7 @@ using NUnit.Framework;
 public class Level5PlayerAttackQueueDependencyGuardTests
 {
     private static readonly string PlayerAttackQueuePath = Path.Combine(
-        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "PlayerAttackQueue.cs");
+        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "Level5Player", "PlayerAttackQueue.cs");
 
     [TestCase("MatchRuntime")]
     [TestCase("PlayerIdentifier")]

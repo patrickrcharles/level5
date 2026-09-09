@@ -2192,6 +2192,91 @@ PlayerAttackPosition
 Level5.Player
 ```
 
+**Slice 31 - `PlayerAttackQueue` and `PlayerAttackPosition` (2026-09-09): a pure assembly-ownership
+move, dependency-closed since Slice 30.** Both files move from `Assets/Scripts/player/` into
+`Assets/Scripts/player/Level5Player/`, compiling into `Level5.Player` for the first time. `.meta`
+moved with each (`git mv`), preserving GUID `7121a35c5d4fa6e409483d2bb06cedd6`
+(`PlayerAttackQueue`) and `ef24fa3df874e374fadd7438f107da25` (`PlayerAttackPosition`). Production
+source is byte-identical - path only, confirmed by `git diff -M --summary` reporting both pairs as
+`rename ... (100%)` with zero insertions or deletions. The two move together, not separately:
+`PlayerAttackPosition.Initialize(PlayerAttackQueue owner, int slotId)` only compiles from the same
+assembly as the queue, the same same-assembly-sibling shape Slice 28 hit with `CharacterProfile`'s
+stat mapper. No dependency inversion was needed - Slice 30 already cut the queue's last two
+`Assembly-CSharp` edges (`MatchRuntime`, `PlayerIdentifier`), and its remaining project-type
+references (`ResolvedMatchRules`/`EnemyPopulationRules` → `Level5.Core`;
+`ICombatAgent`/`ICombatReservationState`/`IDamageable`/`CombatReservation` → `Level5.Combat`) were
+already legal. `Level5.Player.asmdef` is unchanged - still `Level5.Core`, `Level5.Combat`,
+`Level5.Constants`; the pair needs only the two already present. `PlayerAttackPosition`'s unused
+`owner` parameter on `Initialize` was left in place, as directed - not this slice's concern.
+
+**Preflight re-verification, not re-audit.** The baseline SHA (`b4859fcb6`) matched current `dev`
+exactly, so Slice 30's facts were spot-checked rather than re-derived: `PlayerAttackQueue.cs` still
+has zero live `MatchRuntime`/`PlayerIdentifier` references; `PlayerAttackPosition` remains the
+queue's only `Assembly-CSharp` project dependency and has none beyond the queue itself; both GUIDs
+matched the audit exactly. One discrepancy did surface: the audit's "no direct `.unity` scene
+serialization for either GUID" claim does not hold for `PlayerAttackPosition` -
+`minigame_racing.unity` and `level_01_scrapyard_cpu_defense_test.unity` each carry several direct
+`m_Script: {fileID: 11500000, guid: ef24fa3df874e374fadd7438f107da25, type: 3}` MonoBehaviour
+components, not merely prefab instances. This does not block or complicate the move - Unity resolves
+a `MonoScript` reference by GUID via the `.meta` file, independent of the script's assembly or
+folder - and both scenes still resolve their `PlayerAttackPosition` components correctly after the
+move (see validation below). Recorded here so the discrepancy isn't silently absorbed into "no scene
+surface" for a future slice.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors (only pre-existing,
+unrelated obsolete-API warnings). Focused EditMode run: **33/33 passed** across three fixtures -
+`Level5ProductionAssemblyBoundaryTests` (21, including the new
+`PlayerAttackQueueTypesCompileIntoLevel5Player` identity assertion and the still-green
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`), the relocated
+`Level5PlayerAttackQueueDependencyGuardTests` (2 - now reading
+`Assets/Scripts/player/Level5Player/PlayerAttackQueue.cs`; both permanent
+no-`MatchRuntime`/no-`PlayerIdentifier` invariants still hold), and the unmodified
+`Level5PlayerAttackQueueMatchContextTests` (10 - bind-once contract, queue capacity/battle-royal
+sharing, participant-anchor positioning, human/CPU composition, and the unbound-safe-default path all
+still green under the new assembly). Per the risk-based validation policy, full EditMode/PlayMode
+were not re-run; PR CI owns that broader regression coverage.
+
+**Representative serialized-asset validation, run rather than inferred.** A scratch
+`-executeMethod` pass (not committed) confirmed, for one ordinary human participant
+(`player_ashley.prefab`), one ordinary CPU participant with queue-plus-position children
+(`cpu_player_ak47.prefab`), the required `Assets/Resources/Prefabs/critical/attackPositions.prefab`,
+and the Slice-30-flagged legacy carrier `auto_player_drblood.prefab`: no Missing Script component on
+any GameObject; `PlayerAttackQueue`/`PlayerAttackPosition` components resolve and report runtime
+assembly identity `Level5.Player`; and `AssetDatabase.GUIDToAssetPath` maps both preserved GUIDs to
+their moved script paths. No prefab or scene was opened or resaved.
+
+`validate-repository.ps1` **was** run for this slice and passed - the same `.meta`-pairing rationale
+as Slice 29: a source-plus-`.meta` move is exactly the change class that invariant guards.
+
+Not moved in this slice: `PlayerController` or any other Group B blocker.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+`PlayerController.cs` stripped of comments and string/char literals, its remaining identifiers
+matched against every top-level `public` type declared under `Assets/`, each hit resolved to its
+nearest enclosing `.asmdef` - not subtracted mechanically from Slice 30's list. Group A is **18, up
+from 17** - `PlayerAttackQueue` joins `Level5.Player` (`PlayerAttackPosition` is not itself a
+`PlayerController` dependency):
+
+**A. Already owned by custom assemblies - legal references, not blockers (18).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, **`PlayerAttackQueue`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (5, down from 6).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk`, `PlayerDamageReactions` (all
+  `Assets/Scripts/player/`)
+
+`PlayerAttackQueue` is the only entry that left group B; nothing else moved between groups, and no
+new dependency appeared - `PlayerController.cs` itself was not edited. `PlayerController` remains in
+`Assembly-CSharp` and stays blocked on all five group B entries.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
@@ -2452,6 +2537,16 @@ this slice deliberately did not move `PlayerAttackQueue` itself. What did change
 `PlayerAttackQueue`, one of those six, is now dependency-closed (aside from its same-assembly sibling
 `PlayerAttackPosition`) and ready to move alongside it. This is a diagnostic finding only,
 `PlayerController` is not moved in this PR.
+
+**Still blocked after Slice 31 (2026-09-09), re-verified against the current folder.** Same nine
+files, unchanged - Slice 31 moved `PlayerAttackQueue` and `PlayerAttackPosition` into
+`Level5.Player`, but neither file in the workaround folder names either type directly (they reach
+`PlayerController` itself), and `PlayerController` itself was not edited or moved. 2c's exit
+condition is unchanged in both kind and scope: `PlayerMovementPhysicsTests.cs` and
+`BasketballVisibilityTests.cs` still reach `PlayerController` via `GetComponent`/
+`FindAnyObjectByType`, and `PlayerController`'s own remaining `Assembly-CSharp` dependency set is
+now 5 types, down from 6 (group B of this slice's freshly remeasured closure scan above). This is a
+diagnostic finding only, `PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 
