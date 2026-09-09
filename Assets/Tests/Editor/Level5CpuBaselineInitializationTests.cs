@@ -193,13 +193,17 @@ public class Level5CpuBaselineInitializationTests
         try
         {
             ActiveMatch.Clear();
-            GameOptions.difficultySelected = 0; // Easy - triggers CharacterProfile.Start's override branch
             GameOptions.hardcoreModeEnabled = false;
 
             CharacterProfile cpu = MakeCpuProfile(40);
             // A contest rule that would otherwise zero Luck/Clutch, to prove the later Arcade
-            // override still wins over it (precedence pinned, not changed, by #71).
-            ResolvedMatchRules rules = new ResolvedMatchRules(shotRule: ShotRule.ThreePoint);
+            // override still wins over it (precedence pinned, not changed, by #71). Easy difficulty
+            // is carried by the prepared rules rather than GameOptions.difficultySelected: Slice 27
+            // moved CharacterProfile.Start's override off MatchRuntime.Rules and onto the rules the
+            // coordinator prepares, which in production is that same captured MatchRuntime.Rules.
+            ResolvedMatchRules rules = new ResolvedMatchRules(
+                shotRule: ShotRule.ThreePoint,
+                difficulty: MatchDifficulty.Easy);
             cpu.PrepareCpuMatchContext(primaryHumanLevel: 10, rules);
 
             InvokeStart(cpu);
