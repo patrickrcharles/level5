@@ -2082,9 +2082,15 @@ entries.
 (2026-09-09): dependency-preparation, not an ownership migration.** Two changes, not one move:
 `EnemyPopulationRules.cs`/`.meta` moves unchanged from `Assets/Scripts/enemy/` into
 `Assets/Level5/Core/Match/`, preserving GUID `bc63e88e998c49c9b04cf8a32daf111b` and compiling into
-`Level5.Core` for the first time (confirmed by `git diff -M --summary` reporting `rename ... (100%)`
-with zero insertions/deletions, and by the new `EnemyPopulationRulesCompilesIntoLevel5Core` identity
-assertion). Separately, `PlayerAttackQueue` itself stays in `Assembly-CSharp` - it is not moved this
+`Level5.Core` for the first time (`git diff -M --summary` reports `rename ... (97%)`, and the new
+`EnemyPopulationRulesCompilesIntoLevel5Core` identity assertion confirms the assembly). Every
+executable line is byte-identical; the only edit is two XML doc comments. `<see cref="EnemySpawner"/>`
+became unresolvable once the file left `Assembly-CSharp` - `Level5.Core` cannot reference that
+assembly - so both were rewritten as `<c>EnemySpawner</c>`, the form this same file already uses for
+`<c>PlayerAttackQueue.GetMaxEnemiesQueued</c>` and `<c>MatchRuntime.HasConfiguration</c>`. Caught in
+review, not by the compiler: Unity does not pass `/doc`, so no `CS1574` is emitted, and the
+architecture guard strips comments before scanning, so a stale cross-assembly cref is invisible to
+both. Separately, `PlayerAttackQueue` itself stays in `Assembly-CSharp` - it is not moved this
 slice - but its last two `Assembly-CSharp` edges are cut: the direct `MatchRuntime.Rules` read (queue
 capacity and the battle-royal shared-slot decision) and its own `GetComponent<PlayerIdentifier>()`
 lookup (the participant anchor position) are both replaced by one explicit composition seam,
