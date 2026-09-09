@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Level5.Core;
 using Level5.Core.Match;
 
-public class PlayerController : MonoBehaviour, IShooterActor
+public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReactionHost
 {
     [SerializeField]
     bool isPlayer1;
@@ -18,9 +18,12 @@ public class PlayerController : MonoBehaviour, IShooterActor
     bool isPlayer4;
     [SerializeField] public bool isShrunk;
     // components
-    // AUD-002: internal rather than private so PlayerDamageReactions - a same-assembly, same-file-
-    // group helper the coroutines below were extracted into - can reach them without a wider public
-    // surface. Nothing outside Assets/Scripts can see these either way.
+    // AUD-002: internal rather than private for other same-assembly helpers extracted alongside this
+    // controller. Nothing outside Assets/Scripts can see these either way.
+    //
+    // AUD-012 Phase 2b Slice 32: PlayerDamageReactions no longer needs this internal access - it moved
+    // into Level5.Player and now reaches controller state through IPlayerDamageReactionHost's public
+    // members instead.
     internal Animator anim;
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
@@ -38,11 +41,39 @@ public class PlayerController : MonoBehaviour, IShooterActor
     // AUD-002: the damage/knockdown/lightning/shrink reaction coroutines live here now - see
     // PlayerDamageReactions. A plain object, not a component: it runs under this MonoBehaviour's
     // own StartCoroutine exactly as before, so no prefab, lifecycle, or GetComponent wiring changes.
+    //
+    // AUD-012 Phase 2b Slice 32: PlayerDamageReactions now lives in Level5.Player and reaches this
+    // controller only through the IPlayerDamageReactionHost contract this class implements below -
+    // it is no longer a same-assembly helper.
     private readonly PlayerDamageReactions damageReactions;
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 32: the shrink reaction's camera lookup, composed live from
+    /// <c>GameLevelManager.Awake</c> (via <c>SpawnCoordinator.BindHumanDamageReactionCamera</c> -&gt;
+    /// <see cref="BindDamageReactionCameraReader"/>) rather than this controller or
+    /// <c>PlayerDamageReactions</c> reading <c>CameraManager</c> directly. A <c>Func&lt;Camera&gt;</c>
+    /// rather than a captured <c>Camera</c>, so the reaction resolves whatever camera composition
+    /// currently answers at the moment shrink begins, matching the old direct-read's timing. Stored
+    /// independently of <see cref="damageReactions"/>, which may be constructed before this is ever
+    /// bound - an unbound reader is safe, not an error; see <see cref="IPlayerDamageReactionHost.GetShrinkCamera"/>.
+    /// </summary>
+    private Func<Camera> damageReactionCameraReader;
 
     public PlayerController()
     {
         damageReactions = new PlayerDamageReactions(this);
+    }
+
+    /// <summary>
+    /// Explicit binding of the live shrink-camera resolver, from
+    /// <c>SpawnCoordinator.BindHumanDamageReactionCamera</c> during <c>GameLevelManager.Awake</c>'s
+    /// spawn pass - human participants only; CPU shrink (if any) does not take this. Safe to call
+    /// before or after <see cref="damageReactions"/> already exists: the resolver is only invoked when
+    /// the shrink reaction actually asks for a camera, through <see cref="IPlayerDamageReactionHost.GetShrinkCamera"/>.
+    /// </summary>
+    public void BindDamageReactionCameraReader(Func<Camera> reader)
+    {
+        damageReactionCameraReader = reader;
     }
 
 
@@ -1209,4 +1240,24 @@ public class PlayerController : MonoBehaviour, IShooterActor
     // unconditionally, symmetric with BasketBallAuto.Launch's call to the real CPU implementation.
     void IShooterActor.EndShootCycle() { }
     public bool KilledOnIdle { get; internal set; }
+
+    // ==================== IPlayerDamageReactionHost (AUD-012 Phase 2b Slice 32) ====================
+    // Anim, RigidBody, CurrentState, TakeDamage, KnockedDown, Locked, AvoidedKnockDown and FacingRight
+    // are satisfied implicitly by the ordinary public properties above - they already expose exactly
+    // this state. Only the members below have no existing public equivalent; explicit implementation
+    // keeps them off PlayerController's ordinary public surface rather than adding new general-purpose
+    // public members for a single helper's use.
+
+    Transform IPlayerDamageReactionHost.ActorTransform => transform;
+
+    int IPlayerDamageReactionHost.TakeDamageStateHash => takeDamageState;
+    int IPlayerDamageReactionHost.KnockedDownStateHash => knockedDownState;
+    int IPlayerDamageReactionHost.DisintegratedStateHash => disintegratedState;
+    int IPlayerDamageReactionHost.LightningStateHash => lightningState;
+
+    bool IPlayerDamageReactionHost.IsShrunk { get => isShrunk; set => isShrunk = value; }
+
+    void IPlayerDamageReactionHost.MarkDead() => playerHealth.IsDead = true;
+
+    Camera IPlayerDamageReactionHost.GetShrinkCamera() => damageReactionCameraReader != null ? damageReactionCameraReader.Invoke() : null;
 }
