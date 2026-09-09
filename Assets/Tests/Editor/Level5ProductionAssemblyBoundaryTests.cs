@@ -371,6 +371,25 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Core"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 31: proves <c>PlayerAttackQueue</c> and <c>PlayerAttackPosition</c> -
+    /// moved together because the position slot's <c>Initialize(PlayerAttackQueue owner, int slotId)</c>
+    /// parameter only compiles from the same assembly as the queue - actually compile into
+    /// <c>Level5.Player</c>, the same identity check <see cref="CharacterProfileOwnershipTypesCompileIntoLevel5Player"/>
+    /// does for <c>CharacterProfile</c>. Slice 30 already cut the queue's <c>MatchRuntime</c> and
+    /// <c>PlayerIdentifier</c> dependencies (still enforced by
+    /// <see cref="Level5PlayerAttackQueueDependencyGuardTests"/>); this is the pure ownership move
+    /// that follows.
+    /// </summary>
+    [Test]
+    public void PlayerAttackQueueTypesCompileIntoLevel5Player()
+    {
+        const string expected = "Level5.Player";
+
+        Assert.That(typeof(PlayerAttackQueue).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerAttackPosition).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

@@ -240,7 +240,7 @@ Recommended next move: create a reusable `HealthComponent` behavior or base serv
 Evidence:
 
 - `PlayerAttackQueue` stores attackers and bodyguards as `GameObject` lists.
-- It discovers slots and bodyguards through tags at `Assets/Scripts/player/PlayerAttackQueue.cs:81` and `Assets/Scripts/player/PlayerAttackQueue.cs:97`.
+- It discovers slots and bodyguards through tags at `Assets/Scripts/player/Level5Player/PlayerAttackQueue.cs:106` and `Assets/Scripts/player/Level5Player/PlayerAttackQueue.cs:122`.
 - It writes directly into `EnemyDetection` and `BodyGuardDetection` state when assigning or clearing reservations.
 - `EnemyDetection` gets the queue through `GameLevelManager.instance.PlayerController1.PlayerAttackQueue`.
 - `EnemyController` and `BodyGuardController` read queue internals like `BodyGuards`, `EnemiesQueued`, and attack positions directly.
