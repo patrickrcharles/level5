@@ -355,6 +355,22 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 30: proves <c>EnemyPopulationRules</c> - the shared pure spawn/queue
+    /// capacity policy moved out of <c>Assets/Scripts/enemy/</c>, unchanged, into
+    /// <c>Assets/Level5/Core/Match/</c> - actually compiles into <c>Level5.Core</c>, the same identity
+    /// check <see cref="MatchControllerCompilesIntoLevel5Match"/> does for the match leaf. Its
+    /// consumers - <c>EnemySpawner</c> and <c>PlayerAttackQueue</c> - stay in <c>Assembly-CSharp</c> and
+    /// reach it through <c>autoReferenced</c>, exactly as they already did before the move.
+    /// </summary>
+    [Test]
+    public void EnemyPopulationRulesCompilesIntoLevel5Core()
+    {
+        Assert.That(
+            typeof(EnemyPopulationRules).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Core"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

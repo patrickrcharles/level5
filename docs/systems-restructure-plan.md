@@ -2078,6 +2078,114 @@ remaining blockers are `PlayerController`'s own sibling components or cross-fold
 dependencies. `PlayerController` remains in `Assembly-CSharp` and stays blocked on all six group B
 entries.
 
+**Slice 30 - `PlayerAttackQueue`'s external dependencies removed; `EnemyPopulationRules` moved
+(2026-09-09): dependency-preparation, not an ownership migration.** Two changes, not one move:
+`EnemyPopulationRules.cs`/`.meta` moves unchanged from `Assets/Scripts/enemy/` into
+`Assets/Level5/Core/Match/`, preserving GUID `bc63e88e998c49c9b04cf8a32daf111b` and compiling into
+`Level5.Core` for the first time (confirmed by `git diff -M --summary` reporting `rename ... (100%)`
+with zero insertions/deletions, and by the new `EnemyPopulationRulesCompilesIntoLevel5Core` identity
+assertion). Separately, `PlayerAttackQueue` itself stays in `Assembly-CSharp` - it is not moved this
+slice - but its last two `Assembly-CSharp` edges are cut: the direct `MatchRuntime.Rules` read (queue
+capacity and the battle-royal shared-slot decision) and its own `GetComponent<PlayerIdentifier>()`
+lookup (the participant anchor position) are both replaced by one explicit composition seam,
+`PlayerAttackQueue.BindMatchContext(ResolvedMatchRules rules, Transform anchor)`, bound once by
+`SpawnCoordinator` from both `RegisterHuman` and `RegisterCpu` (mirroring
+`BindCallBallMatchRules`/`BindPlayerHealthMatchRules`). Queue policy is unchanged and still lives in
+`PlayerAttackQueue` - composition supplies the rules and the anchor, it does not decide capacity,
+sharing, or slot selection. An unbound queue (a composition defect, not a normal path) logs one
+`Debug.LogError` in `Start()` and runs on `EnemyPopulationRules.MaxQueued(null)`'s standard capacity
+with its own transform as the anchor, rather than reaching back into `MatchRuntime` or disabling
+anything - the same fail-safe shape `CallBallToPlayer`/`PlayerHealth` already use.
+
+**No serialized field changed.** `PlayerAttackQueue`'s `[SerializeField]` list, its public API,
+reservation lifecycle, stale-entry cleanup, bodyguard registration, slot occupancy/sharing rules, slot
+selection ordering, queue capacity policy, battle-royal behavior and attack-position offsets are all
+unchanged; only the removed `playerIdentifier` field (and the now-empty `Awake()` that resolved it)
+and the two new runtime-only fields (`matchRules`, `participantAnchor`) touch the class.
+`PlayerAttackPosition` is untouched, and no queue/slot prefab or scene asset was opened or resaved.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors. Focused EditMode run:
+**44/44 passed** across four fixtures - the existing `Level5AutonomousActorTests`
+(`EnemyPopulationRules`' own capacity matrix, unchanged and still green after the move),
+`Level5ProductionAssemblyBoundaryTests` (now including `EnemyPopulationRulesCompilesIntoLevel5Core`),
+the new `Level5PlayerAttackQueueDependencyGuardTests` (source-guard: zero live
+`MatchRuntime`/`PlayerIdentifier` references after comments/literals are stripped, the same shape as
+`Level5CharacterProfileDependencyGuardTests`), and the new
+`Level5PlayerAttackQueueMatchContextTests` (bind-once contract; queue capacity and the battle-royal
+shared-slot decision both follow the bound rules over the unbound default; attack-slot positioning
+follows the bound anchor rather than the queue's own transform; `SpawnCoordinator.RegisterHuman`/
+`RegisterCpu` bind this match's rules and the participant root as anchor; a participant without a
+`PlayerAttackQueue` is left untouched; an unbound queue reports the composition error exactly once and
+runs on safe defaults). Per the risk-based validation policy, full EditMode/PlayMode were not re-run;
+PR CI owns that broader regression coverage.
+
+`validate-repository.ps1` **was** run for this slice and passed - `EnemyPopulationRules.cs`/`.meta`
+moving together is exactly the class of change the script's `.meta`-pairing invariant guards.
+
+Not moved in this slice: `PlayerAttackQueue` itself, `PlayerAttackPosition`, or any other Group B
+blocker.
+
+**Two pre-existing findings surfaced by this slice's review, deliberately not actioned here.** Both
+predate the change and both would breach this slice's non-goals (no queue-policy change, no unrelated
+cleanup); recorded for whoever moves the queue into `Level5.Player`:
+
+1. *The `IsBattleRoyal` arm of `SelectAttackSlot`'s `allowSharedSlots` is unreachable in production.*
+   `TryReserve` gates on `attackSlotOpen` (`currentEnemiesQueued < maxEnemiesQueued &&
+   attackPositions.Length > 0`), so reaching `SelectAttackSlot` with every slot occupied requires
+   `entries.Count >= attackPositions.Length` while `entries.Count < maxEnemiesQueued` - which already
+   implies `maxEnemiesQueued > attackPositions.Length`, the first arm of the same `||`. The
+   battle-royal term can therefore never be the deciding factor; the slice preserved it verbatim
+   rather than "simplifying" a branch whose original intent is not recorded. The focused tests reach
+   it only by forcing `maxEnemiesQueued` down through reflection, which is called out in the fixture.
+2. *`Assets/Resources/Prefabs/auto_players/auto_player_drblood.prefab` is orphaned.* It is the only
+   one of the 70 queue-carrying prefabs that has no `PlayerIdentifier`, and the only one whose
+   behaviour this slice would change (its queue previously read live `MatchRuntime.Rules`; unbound, it
+   would now log the composition error and use standard capacity). It is unreachable: its GUID
+   `c0d61ad742506be41bd9ed1cbdc24788` is referenced by no scene, prefab or asset, no code loads
+   `Prefabs/auto_players/`, and its root is `Untagged` so the scene auto-player lookup cannot find it.
+   A content-cleanup question, not a code defect.
+
+**Composition coverage, verified against the prefabs rather than inferred.** All 70 prefabs carrying
+`PlayerAttackQueue` live in `Prefabs/characters/players` (47), `Prefabs/characters/cpu_players` (22)
+and the orphan above; in every live one the queue sits on the same GameObject as `PlayerIdentifier`,
+which is the participant root `SpawnCoordinator` instantiates and resolves the identifier from. Those
+two folders are loaded only by `SpawnCoordinator` (`Constants.PREFAB_PATH_CHARACTER_*` has no other
+consumer), and `SpawnPlayers()` runs inside `GameLevelManager.Awake()`, so every live participant is
+bound before its `Start()`. The Lockdown defender prefab carries no queue and is silently skipped. A
+consequence worth stating: because the queue is authored on the root, the bound anchor is always the
+same `Transform` as the queue's own, so the anchor is a structural seam - it removes the queue's
+dependency on `PlayerIdentifier` and on being authored at the root - not a change in where slots sit.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+`PlayerController.cs` was not edited, and `EnemyPopulationRules` was never one of its dependencies, so
+its blocker set is unchanged by construction; re-derived anyway by the same scan as prior slices for
+confirmation. Group A is unchanged at 17; Group B is **unchanged at 6** - `PlayerAttackQueue` stays in
+group B because it stays in `Assembly-CSharp` itself, exactly as this slice's plan expected:
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (6, unchanged).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **sniper/projectile:** `SniperManager` (`Assets/Scripts/projectile/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk`, `PlayerAttackQueue`,
+  `PlayerDamageReactions` (all `Assets/Scripts/player/`)
+
+**`PlayerAttackQueue`'s own dependency closure, freshly measured (2026-09-09).**
+`PlayerAttackQueue.cs` stripped of comments and string/char literals, its remaining project-type
+identifiers resolved to their nearest enclosing `.asmdef`: `ResolvedMatchRules` and
+`EnemyPopulationRules` resolve to `Level5.Core` (the latter for the first time, this slice);
+`ICombatAgent`, `ICombatReservationState`, `IDamageable` and `CombatReservation` resolve to
+`Level5.Combat` (all already legal, unchanged by this slice); `PlayerAttackPosition` is the only
+remaining project dependency still compiled into `Assembly-CSharp` - its same-assembly sibling,
+explicitly out of scope for this slice. That makes `PlayerAttackQueue` the strongest next pure-move
+candidate:
+
+```text
+PlayerAttackQueue
+PlayerAttackPosition
+        ↓
+Level5.Player
+```
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
@@ -2325,6 +2433,19 @@ condition is unchanged in kind and one entry narrower in scope: `PlayerControlle
 `Assembly-CSharp` dependency set is now 6 types, down from 7 (group B of this slice's freshly
 remeasured closure scan above). This is a diagnostic finding only, `PlayerController` is not moved in
 this PR.
+
+**Still blocked after Slice 30 (2026-09-09), re-verified against the current folder.** Same nine
+files, unchanged - Slice 30 moved `EnemyPopulationRules` into `Level5.Core` and cut
+`PlayerAttackQueue`'s `MatchRuntime`/`PlayerIdentifier` dependencies, but left `PlayerAttackQueue`
+itself in `Assembly-CSharp`, and `PlayerController` itself was not edited or moved. 2c's exit
+condition is unchanged in both kind and scope: `PlayerMovementPhysicsTests.cs` and
+`BasketballVisibilityTests.cs` still reach `PlayerController` via `GetComponent`/
+`FindAnyObjectByType`, and `PlayerController`'s own remaining `Assembly-CSharp` dependency set is
+still 6 types (group B of this slice's freshly remeasured closure scan above) - unchanged, because
+this slice deliberately did not move `PlayerAttackQueue` itself. What did change is that
+`PlayerAttackQueue`, one of those six, is now dependency-closed (aside from its same-assembly sibling
+`PlayerAttackPosition`) and ready to move alongside it. This is a diagnostic finding only,
+`PlayerController` is not moved in this PR.
 
 #### 2d — Architecture guards and exit verification
 

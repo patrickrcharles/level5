@@ -430,6 +430,7 @@ public sealed class SpawnCoordinator
         BindShotMeters(spawned, identifier.Actor, isCpu: false);
         BindCallBallMatchRules(spawned);
         BindPlayerHealthMatchRules(spawned);
+        BindPlayerAttackQueueContext(spawned);
         registry.Add(identifier);
     }
 
@@ -523,6 +524,7 @@ public sealed class SpawnCoordinator
         BindShotMeters(spawned, identifier.Actor, isCpu: true);
         BindCallBallMatchRules(spawned);
         BindPlayerHealthMatchRules(spawned);
+        BindPlayerAttackQueueContext(spawned);
         registry.Add(identifier);
     }
 
@@ -578,6 +580,33 @@ public sealed class SpawnCoordinator
         }
 
         health.BindMatchRules(rules);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 30: binds this coordinator's already-resolved <see cref="rules"/> and the
+    /// spawned participant root itself, as the queue's anchor <c>Transform</c>, to the participant's own
+    /// <c>PlayerAttackQueue</c>, from both <see cref="RegisterHuman"/> and <see cref="RegisterCpu"/> -
+    /// mirroring <see cref="BindPlayerHealthMatchRules"/> above - so that component's former
+    /// <c>MatchRuntime.Rules</c> read and its own <c>PlayerIdentifier</c> lookup are both replaced by
+    /// composition. Called during <c>GameLevelManager.Awake</c>'s spawn pass, so it always precedes that
+    /// component's own <c>Start()</c>.
+    ///
+    /// <c>GetComponent</c>, not <c>GetComponentsInChildren</c>: like <c>CallBallToPlayer</c>, this
+    /// component is authored on the participant root, which is where its own former
+    /// <c>GetComponent&lt;PlayerIdentifier&gt;()</c> resolved from. A participant without one is not a
+    /// defect and is silently skipped. Nothing is added here: composition supplies the rules and the
+    /// anchor, it does not compose the participant, and it does not decide queue capacity or slot
+    /// selection.
+    /// </summary>
+    private void BindPlayerAttackQueueContext(GameObject participant)
+    {
+        PlayerAttackQueue queue = participant.GetComponent<PlayerAttackQueue>();
+        if (queue == null)
+        {
+            return;
+        }
+
+        queue.BindMatchContext(rules, participant.transform);
     }
 
     /// <summary>
