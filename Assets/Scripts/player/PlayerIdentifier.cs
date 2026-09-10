@@ -4,7 +4,7 @@ using UnityEngine;
 using Level5.Core;
 using Level5.Core.Match;
 
-public class PlayerIdentifier : MonoBehaviour, IBasketballParticipantStateProvider
+public class PlayerIdentifier : MonoBehaviour, IBasketballParticipantStateProvider, IPlayerControllerParticipantState
 {
     public int pid;
     public bool isCpu;
@@ -101,4 +101,16 @@ public class PlayerIdentifier : MonoBehaviour, IBasketballParticipantStateProvid
         state = ball != null ? ball.GetComponent<BasketBallState>() : null;
         return state != null;
     }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 34: the narrow contract <c>PlayerController</c> resolves instead of this
+    /// concrete type. Explicit implementation, off the ordinary public surface - <see cref="pid"/>,
+    /// <see cref="isCpu"/> and <see cref="basketball"/> below remain the authoritative fields; these
+    /// members are a live read-only view over them, not a duplicate.
+    /// </summary>
+    int IPlayerControllerParticipantState.PlayerId => pid;
+
+    bool IPlayerControllerParticipantState.IsCpu => isCpu;
+
+    GameObject IPlayerControllerParticipantState.BasketballObject => basketball;
 }

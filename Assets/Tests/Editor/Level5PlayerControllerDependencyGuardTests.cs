@@ -38,6 +38,16 @@ using NUnit.Framework;
 /// <c>PlayerController.BindIdleSniperRuntimeReader</c> -&gt; <c>IPlayerIdleSniperRuntime</c>). Scoped
 /// to this one file, same caveat as the other two guards above - <c>SniperManager</c> itself is
 /// untouched and stays in <c>Assembly-CSharp</c>.
+///
+/// AUD-012 Phase 2b Slice 34 adds a fourth guard: <c>PlayerController</c> must also carry no live
+/// <c>PlayerIdentifier</c> reference. Its two former direct reads -
+/// <c>GetComponent&lt;PlayerIdentifier&gt;().pid</c>/<c>.isCpu</c> in <c>InitializeInput()</c> and
+/// <c>GetComponent&lt;PlayerIdentifier&gt;().basketball</c> in <c>Start()</c> - are now supplied by
+/// <c>GetComponent&lt;IPlayerControllerParticipantState&gt;()</c>, which <c>PlayerIdentifier</c>
+/// implements explicitly. Same caveat as the other guards above, sharpened for this one:
+/// <c>PlayerIdentifier</c> itself is untouched, stays in <c>Assembly-CSharp</c>, and remains the
+/// authoritative owner of participant id, CPU status, and human basketball association - this guard
+/// only proves <c>PlayerController</c> no longer names the concrete type.
 /// </summary>
 public class Level5PlayerControllerDependencyGuardTests
 {
@@ -85,5 +95,19 @@ public class Level5PlayerControllerDependencyGuardTests
             + "arrive through BindIdleSniperRuntimeReader(Func<IPlayerIdleSniperRuntime>), bound once "
             + "by SpawnCoordinator.BindHumanIdleSniperRuntime from GameLevelManager.Awake, not by "
             + "reading SniperManager.instance directly on this controller.");
+    }
+
+    [Test]
+    public void PlayerControllerHasNoPlayerIdentifierReference()
+    {
+        string text = Level5TestSourceText.StripCommentsAndLiterals(File.ReadAllText(PlayerControllerPath));
+
+        Assert.That(
+            text,
+            Does.Not.Match(@"\bPlayerIdentifier\b"),
+            "PlayerController must have zero PlayerIdentifier references - participant id, CPU status "
+            + "and the human basketball association must arrive through "
+            + "GetComponent<IPlayerControllerParticipantState>(), which PlayerIdentifier implements "
+            + "explicitly, not by reading PlayerIdentifier directly on this controller.");
     }
 }
