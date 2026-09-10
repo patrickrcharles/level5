@@ -29,6 +29,15 @@ using NUnit.Framework;
 /// (<c>GameLevelManager.ReadPlayerDamageReactionCamera</c> -&gt;
 /// <c>SpawnCoordinator.BindHumanDamageReactionCamera</c> -&gt;
 /// <c>PlayerController.BindDamageReactionCameraReader</c>).
+///
+/// AUD-012 Phase 2b Slice 33 adds a third guard: <c>PlayerController</c> must also carry no live
+/// <c>SniperManager</c> reference. The idle-sniper check's former direct
+/// <c>SniperManager.instance</c> read is now supplied by explicit composition
+/// (<c>GameLevelManager.ReadPlayerIdleSniperRuntime</c> -&gt;
+/// <c>SpawnCoordinator.BindHumanIdleSniperRuntime</c> -&gt;
+/// <c>PlayerController.BindIdleSniperRuntimeReader</c> -&gt; <c>IPlayerIdleSniperRuntime</c>). Scoped
+/// to this one file, same caveat as the other two guards above - <c>SniperManager</c> itself is
+/// untouched and stays in <c>Assembly-CSharp</c>.
 /// </summary>
 public class Level5PlayerControllerDependencyGuardTests
 {
@@ -62,5 +71,19 @@ public class Level5PlayerControllerDependencyGuardTests
             + "must arrive through BindDamageReactionCameraReader(Func<Camera>), bound once by "
             + "SpawnCoordinator.BindHumanDamageReactionCamera from GameLevelManager.Awake, not by "
             + "reading CameraManager.instance directly on this controller.");
+    }
+
+    [Test]
+    public void PlayerControllerHasNoSniperManagerReference()
+    {
+        string text = Level5TestSourceText.StripCommentsAndLiterals(File.ReadAllText(PlayerControllerPath));
+
+        Assert.That(
+            text,
+            Does.Not.Match(@"\bSniperManager\b"),
+            "PlayerController must have zero SniperManager references - the idle-sniper runtime must "
+            + "arrive through BindIdleSniperRuntimeReader(Func<IPlayerIdleSniperRuntime>), bound once "
+            + "by SpawnCoordinator.BindHumanIdleSniperRuntime from GameLevelManager.Awake, not by "
+            + "reading SniperManager.instance directly on this controller.");
     }
 }

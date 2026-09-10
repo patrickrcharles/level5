@@ -407,6 +407,21 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(IPlayerDamageReactionHost).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 33: proves <c>IPlayerIdleSniperRuntime</c> - the narrow contract
+    /// <c>PlayerController</c>'s idle-sniper check uses instead of the concrete <c>SniperManager</c>
+    /// (still <c>Assembly-CSharp</c>) - actually compiles into <c>Level5.Player</c>, the same identity
+    /// check <see cref="PlayerDamageReactionTypesCompileIntoLevel5Player"/> does for
+    /// <c>IPlayerDamageReactionHost</c>.
+    /// </summary>
+    [Test]
+    public void PlayerIdleSniperRuntimeCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(IPlayerIdleSniperRuntime).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

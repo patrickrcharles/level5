@@ -59,9 +59,31 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     /// </summary>
     private Func<Camera> damageReactionCameraReader;
 
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 33: the idle-sniper runtime's live resolver, composed from
+    /// <c>GameLevelManager.ReadPlayerIdleSniperRuntime</c> (via
+    /// <c>SpawnCoordinator.BindHumanIdleSniperRuntime</c> -&gt; <see cref="BindIdleSniperRuntimeReader"/>)
+    /// rather than this controller reading <c>SniperManager.instance</c> directly. Resolved at the
+    /// point of use in <see cref="checkIdleTimeForSniper"/>, never cached - matching the old direct
+    /// read's timing, since an unbound resolver (or one currently answering null) is equivalent to no
+    /// sniper runtime existing.
+    /// </summary>
+    private Func<IPlayerIdleSniperRuntime> idleSniperRuntimeReader;
+
     public PlayerController()
     {
         damageReactions = new PlayerDamageReactions(this);
+    }
+
+    /// <summary>
+    /// Explicit binding of the live idle-sniper runtime resolver, from
+    /// <c>SpawnCoordinator.BindHumanIdleSniperRuntime</c> during <c>GameLevelManager.Awake</c>'s spawn
+    /// pass - human participants only. No sniper runtime needs to exist yet when this is called; see
+    /// <see cref="idleSniperRuntimeReader"/>.
+    /// </summary>
+    public void BindIdleSniperRuntimeReader(Func<IPlayerIdleSniperRuntime> reader)
+    {
+        idleSniperRuntimeReader = reader;
     }
 
     /// <summary>
@@ -752,7 +774,11 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
 
     private void checkIdleTimeForSniper()
     {
-        if (!MatchRuntime.Rules.SniperEnabled || SniperManager.instance == null)
+        IPlayerIdleSniperRuntime sniper = idleSniperRuntimeReader != null
+            ? idleSniperRuntimeReader.Invoke()
+            : null;
+
+        if (!MatchRuntime.Rules.SniperEnabled || sniper == null)
         {
             idleStartTime = Time.time;
             idleTime = 0;
@@ -768,14 +794,14 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             idleStartTime = Time.time;
             idleTime = 0;
         }
-        if (idleTime > 150 && !SniperManager.instance.locked)
+        if (idleTime > 150 && !sniper.Locked)
         {
-            SniperManager.instance.locked = true;
+            sniper.Locked = true;
             idleStartTime = Time.time;
             idleTime = 0;
             Debug.Log(" kill player");
             float random = UtilityFunctions.GetRandomFloat(0, 4);
-            StartCoroutine(SniperManager.instance.StartSniperBulletInstantKill(random));
+            StartCoroutine(sniper.GetInstantKillRoutine(random));
         }
     }
 

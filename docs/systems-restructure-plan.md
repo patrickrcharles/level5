@@ -2374,6 +2374,109 @@ all - the blocker-swap this slice's plan explicitly warned against did not happe
 `PlayerControllerHasNoCameraManagerReference`. `PlayerController` remains in `Assembly-CSharp` and
 stays blocked on all four remaining group B entries.
 
+**Slice 33 - `PlayerController`'s `SniperManager` dependency removed; dependency-cut only, no move**
+(2026-09-09): the idle-sniper check's last direct edge into `SniperManager` (still `Assembly-CSharp`)
+is cut, mirroring Slice 21/26/32's dependency-cut shape - `SniperManager` itself is untouched and
+stays exactly where it is.
+
+- A new narrow contract, `IPlayerIdleSniperRuntime`
+  (`Assets/Scripts/player/Level5Player/IPlayerIdleSniperRuntime.cs`), names only the two things
+  `checkIdleTimeForSniper()` reads/writes on the runtime: `Locked` and
+  `GetInstantKillRoutine(float)`. `SniperManager` implements it explicitly (`locked`/
+  `StartSniperBulletInstantKill` are unchanged and still the ordinary public surface every other
+  caller - `startSniper`, `InstantiateConfiguredProjectile` - uses).
+- `PlayerController` no longer reads `SniperManager.instance`. It stores a
+  `Func<IPlayerIdleSniperRuntime>` (`BindIdleSniperRuntimeReader`) and resolves it live, at the point
+  of use inside `checkIdleTimeForSniper()`, exactly where the old static read was - not cached at
+  bind time, not resolved anywhere else.
+- The concrete lookup moves to the composition side:
+  `GameLevelManager.ReadPlayerIdleSniperRuntime()` (re-read on every call, deliberately not captured;
+  null-checked against the concrete `SniperManager` type before the implicit conversion to
+  `IPlayerIdleSniperRuntime` - code review, 2026-09-10: a bare `return SniperManager.instance;` would
+  let a destroyed-but-not-yet-nulled manager cross the interface boundary as non-null, since
+  `UnityEngine.Object`'s overloaded `==` is not selected once the static type is the interface, mirroring
+  the explicit `CameraManager.instance == null` guard `ReadPlayerDamageReactionCamera` already uses two
+  methods above) -> `SpawnCoordinator.BindHumanIdleSniperRuntime` (new, reusing the
+  existing `BindEveryHumanController` human-only iteration, mirroring
+  `BindHumanDamageReactionCamera`) -> `PlayerController.BindIdleSniperRuntimeReader`. Bound from
+  `GameLevelManager.Awake`'s spawn pass, adjacent to `BindHumanLegacyTouchMovement`/
+  `BindHumanDamageReactionCamera`. No sniper runtime needs to exist at binding time.
+
+**Ownership unchanged.** `PlayerController` still owns: the `MatchRuntime.Rules.SniperEnabled` check,
+idle timing (including the actual idle condition this codebase uses -
+`movementHorizontal == 0 && movementVertical == 0 && Grounded`, not an animator-state check), the
+150-second threshold, random-delay generation via `UtilityFunctions.GetRandomFloat`, the lock
+transition (`sniper.Locked = true` before the routine is requested), and `StartCoroutine` - it remains
+the coroutine host. `checkIdleTimeForSniper()`'s branch structure and ordering are byte-for-byte the
+same as before, with `SniperManager.instance`/`.locked`/`.StartSniperBulletInstantKill(...)` replaced
+by `sniper`/`sniper.Locked`/`sniper.GetInstantKillRoutine(...)`. Missing-vs-locked semantics are
+preserved exactly: no bound reader, or a reader answering `null`, resets idle timing precisely like
+the old missing-`SniperManager.instance` path; a locked runtime is read (idle time still accumulates
+from `Time.time - idleStartTime`) but never triggers a reset or a routine request merely for being
+locked.
+
+**Preflight re-verification.** Baseline SHA (`282c01ff2`) matched current `dev` exactly.
+`PlayerController`'s only `SniperManager` reference was still the single `checkIdleTimeForSniper()`
+site; `StartSniperBulletInstantKill(float)` had no production caller besides it; `SniperManager` still
+exposed public `locked` and `StartSniperBulletInstantKill(float)` unchanged; `SpawnCoordinator` still
+had the shared `BindEveryHumanController` human-binding path; `GameLevelManager.Awake` still performed
+human runtime bindings (`BindHumanLegacyTouchMovement`, `BindHumanDamageReactionCamera`) after
+participant spawning; and `Level5.Player.asmdef` still referenced only `Level5.Core`, `Level5.Combat`,
+`Level5.Constants` - a neutral `bool`/`float`/`IEnumerator` interface needed none of them.
+
+**No serialized field changed.** `SniperManager`'s serialized fields, singleton lifecycle, projectile
+prefabs/configuration and every coroutine's body are unchanged; only the new explicit interface
+implementation was added. No prefab or scene asset was opened or resaved.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors. Focused EditMode run
+covering this slice's own new/changed surface: `Level5ProductionAssemblyBoundaryTests`
+(`PlayerIdleSniperRuntimeCompilesIntoLevel5Player`, new) and the still-green
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`; the extended
+`Level5PlayerControllerDependencyGuardTests` (`PlayerControllerHasNoSniperManagerReference`, new,
+alongside the still-green `PlayerControllerHasNoGameLevelManagerReference`/
+`PlayerControllerHasNoCameraManagerReference`); the new `Level5PlayerIdleSniperRuntimeTests` (interface
+implementation, `Locked` read/write round-tripping the existing public `locked` field,
+`GetInstantKillRoutine` delegating to `StartSniperBulletInstantKill` by iterator-type identity rather
+than executing the projectile flow); the new `Level5PlayerIdleSniperRuntimeCompositionTests` (human
+participants receive the resolver, CPU participants are skipped, the resolver stays live rather than
+snapshotted, an unbound resolver leaves the reader `null`, and the existing missing-`PlayerController`
+fail-closed-and-continue convention holds); and the new `Level5PlayerControllerIdleSniperTests`
+(missing/null-reader and sniper-disabled paths all reset idle timing and request no routine; a locked
+runtime neither resets accumulated idle time nor requests a routine; an eligible unlocked runtime locks
+before requesting the routine, resets idle timing, and requests exactly one routine) - driven against a
+fake `IPlayerIdleSniperRuntime` with `idleStartTime` moved into the past rather than 150 real seconds
+of elapsed test time, and an `ActiveMatch`-backed `ResolvedMatchRules(sniper: SniperMode.Bullet)` to
+control `MatchRuntime.Rules.SniperEnabled` without touching legacy `GameOptions` globals. Per the
+risk-based validation policy, full EditMode/PlayMode were not re-run; PR CI owns that broader
+regression coverage. `validate-repository.ps1` was run and passed.
+
+Not moved in this slice: `SniperManager` itself, `PlayerController`, or any other Group B blocker.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-09).**
+`PlayerController.cs` stripped of comments and string/char literals, its remaining identifiers matched
+against every top-level `public` type declared under `Assets/`, each hit resolved to its nearest
+enclosing `.asmdef`. Group A is **21, up from 20** - `IPlayerIdleSniperRuntime` joins `Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (21).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, `PlayerAttackQueue`, `PlayerDamageReactions`,
+  `IPlayerDamageReactionHost`, **`IPlayerIdleSniperRuntime`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (3, down from 4).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **player-local components:** `PlayerIdentifier`, `PlayerDunk` (`Assets/Scripts/player/`)
+
+`SniperManager` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared - the composition-side lookup lives in `GameLevelManager`/`SpawnCoordinator`, not
+on `PlayerController`. `PlayerController` remains in `Assembly-CSharp` and stays blocked on all three
+remaining group B entries.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is

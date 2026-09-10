@@ -336,6 +336,29 @@ public sealed class SpawnCoordinator
     }
 
     /// <summary>
+    /// AUD-012 Phase 2b Slice 33: forwards the scene's live idle-sniper runtime resolver to every
+    /// registered human participant's <see cref="PlayerController"/>, replacing that controller's
+    /// former direct <c>SniperManager.instance</c> read. <paramref name="reader"/> is a
+    /// <see cref="Func{TResult}"/>, not a captured <c>IPlayerIdleSniperRuntime</c>, so the idle-sniper
+    /// check resolves it live at the point of use - the same timing the old direct static read had -
+    /// rather than a snapshot taken at composition time. No sniper runtime needs to exist yet when
+    /// this is called.
+    ///
+    /// Called from <c>GameLevelManager.Awake</c>'s spawn pass, adjacent to
+    /// <see cref="BindHumanLegacyTouchMovement"/>/<see cref="BindHumanDamageReactionCamera"/>: ordering
+    /// is not load-bearing regardless, since <c>PlayerController</c> stores this independently and only
+    /// invokes it from its own idle-sniper check.
+    ///
+    /// CPU participants are deliberately skipped: <c>AutoPlayerController</c> has no idle-sniper check.
+    /// </summary>
+    public void BindHumanIdleSniperRuntime(Func<IPlayerIdleSniperRuntime> reader)
+    {
+        BindEveryHumanController(
+            "idle sniper runtime",
+            controller => controller.BindIdleSniperRuntimeReader(reader));
+    }
+
+    /// <summary>
     /// The one human-participant iteration every <c>BindHuman*</c> pass shares: registered, non-CPU,
     /// with a <see cref="PlayerController"/> to bind to. A human whose prefab has no controller fails
     /// closed on that participant with a named error and the pass continues, rather than throwing and
