@@ -11,8 +11,9 @@ using NUnit.Framework;
 /// <see cref="IPlayerControllerParticipantState"/>, resolved from the same participant GameObject in
 /// <c>Start()</c>.
 ///
-/// <c>PlayerDunk</c> stays in <c>Assembly-CSharp</c> this slice (dependency-preparation only, no
-/// ownership move) - this source-level guard is the permanent invariant check, the same shape as
+/// AUD-012 Phase 2b Slice 36 moved <c>PlayerDunk</c> itself into <c>Level5.Player</c> (a pure
+/// ownership move, once this dependency cut made it possible) - this source-level guard remains the
+/// permanent invariant check, the same shape as
 /// <see cref="Level5PlayerAttackQueueDependencyGuardTests"/> and
 /// <see cref="Level5PlayerControllerDependencyGuardTests"/>. Comments and string literals are stripped
 /// first, so the doc comments that still explain what was removed do not pass as live references.
@@ -20,7 +21,7 @@ using NUnit.Framework;
 public class Level5PlayerDunkDependencyGuardTests
 {
     private static readonly string PlayerDunkPath = Path.Combine(
-        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "PlayerDunk.cs");
+        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "Level5Player", "PlayerDunk.cs");
 
     [TestCase("PlayerController")]
     [TestCase("PlayerIdentifier")]

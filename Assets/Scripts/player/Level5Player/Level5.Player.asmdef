@@ -4,7 +4,9 @@
     "references": [
         "Level5.Core",
         "Level5.Combat",
-        "Level5.Constants"
+        "Level5.Constants",
+        "Level5.Basketball",
+        "Level5.Utility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
