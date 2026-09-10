@@ -422,6 +422,21 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 34: proves <c>IPlayerControllerParticipantState</c> - the narrow
+    /// contract <c>PlayerController</c> resolves instead of the concrete <c>PlayerIdentifier</c> (still
+    /// <c>Assembly-CSharp</c>) - actually compiles into <c>Level5.Player</c>, the same identity check
+    /// <see cref="PlayerIdleSniperRuntimeCompilesIntoLevel5Player"/> does for
+    /// <c>IPlayerIdleSniperRuntime</c>.
+    /// </summary>
+    [Test]
+    public void PlayerControllerParticipantStateCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(IPlayerControllerParticipantState).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

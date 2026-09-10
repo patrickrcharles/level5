@@ -245,10 +245,10 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
 
     private void InitializeInput()
     {
-        PlayerIdentifier identifier = GetComponent<PlayerIdentifier>();
-        int playerId = identifier != null ? identifier.pid : 0;
+        IPlayerControllerParticipantState participant = GetComponent<IPlayerControllerParticipantState>();
+        int playerId = participant != null ? participant.PlayerId : 0;
 
-        if (identifier != null && identifier.isCpu)
+        if (participant != null && participant.IsCpu)
         {
             Debug.LogError("PlayerController cannot own input for a CPU player. Use AutoPlayerController.", this);
             enabled = false;
@@ -311,7 +311,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             ? damageDisplayObject.GetComponent<Text>()
             : null;
         anim = GetComponentInChildren<Animator>();
-        basketball = GetComponent<PlayerIdentifier>().basketball.GetComponent<BasketBall>();
+        basketball = GetComponent<IPlayerControllerParticipantState>().BasketballObject.GetComponent<BasketBall>();
         characterProfile = GetComponent<CharacterProfile>();
         rigidBody = GetComponent<Rigidbody>();
         Shotmeter = GetComponentInChildren<ShotMeter>();

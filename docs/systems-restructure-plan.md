@@ -2477,6 +2477,93 @@ dependency appeared - the composition-side lookup lives in `GameLevelManager`/`S
 on `PlayerController`. `PlayerController` remains in `Assembly-CSharp` and stays blocked on all three
 remaining group B entries.
 
+**Slice 34 - `PlayerController`'s `PlayerIdentifier` dependency removed; dependency-cut only, no move**
+(2026-09-10): `PlayerController`'s last two direct `PlayerIdentifier` reads - `InitializeInput()`'s
+`pid`/`isCpu`, and `Start()`'s human `basketball` resolution - are cut, mirroring Slices 21/26/32/33's
+dependency-cut shape. `PlayerIdentifier` itself is untouched, stays in `Assembly-CSharp`, and remains
+the authoritative owner of participant id, CPU status, and the human basketball association.
+
+- A new narrow contract, `IPlayerControllerParticipantState`
+  (`Assets/Scripts/player/Level5Player/IPlayerControllerParticipantState.cs`), names only the three
+  things `PlayerController` reads off the identifier: `PlayerId`, `IsCpu`, and `BasketballObject`.
+  `PlayerIdentifier` implements it explicitly, mapping straight onto its existing `pid`/`isCpu`/
+  `basketball` fields - `BasketballObject` returns `basketball`, never `autoBasketball`, matching what
+  `PlayerController.Start()` always consumed.
+- `PlayerController` no longer calls `GetComponent<PlayerIdentifier>()`. Both call sites now resolve
+  `GetComponent<IPlayerControllerParticipantState>()` at the same points, live, with no caching -
+  `InitializeInput()`'s missing-provider (`playerId` defaults to 0), CPU-guard (log, disable, return),
+  and human (`MatchRuntime.LocalInputSlotFor(playerId)`) branches are otherwise byte-for-byte unchanged,
+  and `Start()`'s basketball resolution keeps the same timing and the same requirement that a normal
+  composed human already has a `PlayerIdentifier` with `basketball` set before `PlayerController.Start()`
+  runs.
+- No composition change: `SpawnCoordinator` already populates `PlayerIdentifier` before this point in
+  the spawn sequence, so the interface reads that existing state directly - no new binding pass, no
+  copied `pid`/`isCpu`/basketball field on `PlayerController`, no `SpawnCoordinator` edit.
+
+**Ownership unchanged.** `PlayerIdentifier` remains the sole owner of `pid`, `isCpu`, and the human
+`basketball` reference. `IPlayerControllerParticipantState` is a read-only live view over that state,
+not a second owner - the interface's three members simply return the identifier's existing fields on
+every call.
+
+**Preflight re-verification.** Baseline SHA (`e32c05f0f`) matched current `dev` exactly. `PlayerController`
+still had exactly the two documented `PlayerIdentifier` reads; `PlayerIdentifier` still owned `pid`,
+`isCpu`, and human `basketball` with no existing neutral interface already exposing them; normal
+production human controllers still receive their identifier and basketball association through
+`SpawnCoordinator` before `PlayerController.Start()` runs; `PlayerController` remains prefab-authored,
+not scene-serialized; and a contract of only `int`/`bool`/`GameObject` needed no new
+`Level5.Player.asmdef` reference.
+
+**No serialized field changed.** `PlayerIdentifier`'s serialized fields, public methods, `Actor`, and
+`IBasketballParticipantStateProvider` implementation are unchanged; only the new explicit interface
+implementation was added. No prefab or scene asset was opened or resaved; `SpawnCoordinator` and
+`PlayerRegistry` were not touched.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: zero new `CS` errors. Focused EditMode run
+covering this slice's own new/changed surface: `Level5ProductionAssemblyBoundaryTests`
+(`PlayerControllerParticipantStateCompilesIntoLevel5Player`, new) and the still-green
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`; the extended
+`Level5PlayerControllerDependencyGuardTests` (`PlayerControllerHasNoPlayerIdentifierReference`, new,
+alongside the still-green `PlayerControllerHasNoGameLevelManagerReference`/
+`PlayerControllerHasNoCameraManagerReference`/`PlayerControllerHasNoSniperManagerReference`); the new
+`Level5PlayerControllerParticipantStateTests` (interface implementation; `PlayerId`/`IsCpu`/
+`BasketballObject` round-tripping the existing public `pid`/`isCpu`/`basketball` fields;
+`BasketballObject` proven distinct from `autoBasketball`; a live-read check proving the interface is not
+snapshotted; and a real `InitializeInput()` invocation proving the CPU guard still fires through the
+interface path); and the existing `Level5PlayerInputReaderCompositionTests`, rerun unchanged and still
+green, since they already drive `InitializeInput()`/`TryEnsureInputReader()` through real
+`PlayerIdentifier`-backed participants. Per the risk-based validation policy, full EditMode/PlayMode
+were not re-run; PR CI owns that broader regression coverage. `validate-repository.ps1` was run and
+passed.
+
+Not moved in this slice: `PlayerIdentifier` itself, `MatchRuntime`, `PlayerDunk`, or any other Group B
+blocker.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-10).**
+`PlayerController.cs` stripped of comments and string/char literals, its remaining identifiers matched
+against every top-level `public` type declared under `Assets/`, each hit resolved to its nearest
+enclosing `.asmdef`. Group A is **22, up from 21** - `IPlayerControllerParticipantState` joins
+`Level5.Player`:
+
+**A. Already owned by custom assemblies - legal references, not blockers (22).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, `PlayerAttackQueue`, `PlayerDamageReactions`,
+  `IPlayerDamageReactionHost`, `IPlayerIdleSniperRuntime`, **`IPlayerControllerParticipantState`** (this
+  slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (2, down from 3).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **player-local components:** `PlayerDunk` (`Assets/Scripts/player/`)
+
+`PlayerIdentifier` is the only entry that left group B; nothing else moved between groups, and no new
+dependency appeared. `PlayerController` remains in `Assembly-CSharp` and stays blocked on the two
+remaining group B entries, `MatchRuntime` and `PlayerDunk`.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
