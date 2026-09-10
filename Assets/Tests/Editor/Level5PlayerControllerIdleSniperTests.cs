@@ -17,6 +17,11 @@ using UnityEngine;
 /// <see cref="IPlayerIdleSniperRuntime"/>, without depending on 150 seconds of real elapsed test time
 /// (<see cref="SetIdleEligible"/> moves <c>idleStartTime</c> into the past instead) and without
 /// exercising the real projectile flow.
+///
+/// AUD-012 Phase 2b Slice 37: <c>checkIdleTimeForSniper</c>'s own sniper-enabled read moved from the
+/// static <c>MatchRuntime.Rules</c> to a bound <c>IPlayerMatchRuntime</c>, so every controller here is
+/// given a <see cref="LiveMatchRuntimeAdapter"/> - forwarding live to <c>MatchRuntime</c>, exactly what
+/// this fixture's direct calls into <c>checkIdleTimeForSniper()</c> relied on before that seam existed.
 /// </summary>
 public class Level5PlayerControllerIdleSniperTests
 {
@@ -113,6 +118,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         SetIdleEligible(controller);
 
         InvokeCheckIdleTimeForSniper(controller);
@@ -126,6 +132,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         controller.BindIdleSniperRuntimeReader(() => null);
         SetIdleEligible(controller);
 
@@ -140,6 +147,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         // ActiveMatch.Clear() in SetUp means MatchRuntime.Rules.SniperEnabled is false here.
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         FakeIdleSniperRuntime runtime = new FakeIdleSniperRuntime();
         controller.BindIdleSniperRuntimeReader(() => runtime);
         SetIdleEligible(controller);
@@ -157,6 +165,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         FakeIdleSniperRuntime runtime = new FakeIdleSniperRuntime { Locked = true };
         controller.BindIdleSniperRuntimeReader(() => runtime);
         SetIdleEligible(controller);
@@ -172,6 +181,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         FakeIdleSniperRuntime runtime = new FakeIdleSniperRuntime { Locked = true };
         controller.BindIdleSniperRuntimeReader(() => runtime);
         SetIdleEligible(controller);
@@ -191,6 +201,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         FakeIdleSniperRuntime runtime = new FakeIdleSniperRuntime();
         runtime.OnRoutineRequested = () => Assert.IsTrue(
             runtime.Locked,
@@ -209,6 +220,7 @@ public class Level5PlayerControllerIdleSniperTests
     {
         EnableSniperViaActiveMatch();
         PlayerController controller = Spawn("player").AddComponent<PlayerController>();
+        controller.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         FakeIdleSniperRuntime runtime = new FakeIdleSniperRuntime();
         controller.BindIdleSniperRuntimeReader(() => runtime);
         SetIdleEligible(controller);

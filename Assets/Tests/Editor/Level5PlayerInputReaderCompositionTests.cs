@@ -356,6 +356,10 @@ public class Level5PlayerInputReaderCompositionTests
         // TryEnsureInputReader below builds a reader without this fixture owning provider state. The
         // one test that does need the real acquire/release path calls InitializeInput itself.
         SetPrivateField(identifier.playerController, "controls", controls);
+
+        // AUD-012 Phase 2b Slice 37: InitializeInput() now requires a bound IPlayerMatchRuntime before
+        // it will resolve a local input slot - see that test's own call further down this file.
+        identifier.playerController.BindMatchRuntime(new LiveMatchRuntimeAdapter());
         return identifier;
     }
 

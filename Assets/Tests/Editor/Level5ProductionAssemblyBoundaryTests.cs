@@ -470,6 +470,21 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 37: proves <c>IPlayerMatchRuntime</c> - the narrow contract
+    /// <c>PlayerController</c> resolves instead of the static <c>MatchRuntime</c> (still
+    /// <c>Assembly-CSharp</c>), its last direct dependency on that assembly - actually compiles into
+    /// <c>Level5.Player</c>, the same identity check <see cref="PlayerDunkHostCompilesIntoLevel5Player"/>
+    /// does for <c>IPlayerDunkHost</c>.
+    /// </summary>
+    [Test]
+    public void PlayerMatchRuntimeCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(IPlayerMatchRuntime).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

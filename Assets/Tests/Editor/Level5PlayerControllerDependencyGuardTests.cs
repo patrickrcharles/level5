@@ -15,9 +15,10 @@ using NUnit.Framework;
 ///
 /// Scoped to this one file, deliberately - do not read a pass here as evidence that the player
 /// <i>prefab</i> no longer depends on <c>GameLevelManager</c>. Sibling components on the same player
-/// hierarchy still read that singleton for the same arena values (<c>PlayerDunk</c> for the rim
-/// vector; <c>AutoPlayerDefense</c> and <c>AutoPlayerController</c> for both the rim vector and
-/// <c>TerrainHeight</c>), and are out of scope for this slice. Same caveat shape
+/// hierarchy still read that singleton for the same arena values (<c>AutoPlayerDefense</c> and
+/// <c>AutoPlayerController</c> for both the rim vector and <c>TerrainHeight</c>), and are out of scope
+/// for this slice - <c>PlayerDunk</c> itself was dependency-closed of this edge by Slice 35's
+/// <c>IPlayerDunkHost</c> contract and no longer reads <c>GameLevelManager</c>. Same caveat shape
 /// <see cref="Level5BasketballGameManagerEdgeTests"/> already records for the unresolved
 /// basketball -&gt; <c>GameRules</c> edge.
 ///
@@ -48,6 +49,17 @@ using NUnit.Framework;
 /// <c>PlayerIdentifier</c> itself is untouched, stays in <c>Assembly-CSharp</c>, and remains the
 /// authoritative owner of participant id, CPU status, and human basketball association - this guard
 /// only proves <c>PlayerController</c> no longer names the concrete type.
+///
+/// AUD-012 Phase 2b Slice 37 adds a fifth, final guard: <c>PlayerController</c> must also carry no live
+/// <c>MatchRuntime</c> reference - its last direct <c>Assembly-CSharp</c> dependency. Its three former
+/// direct reads - <c>MatchRuntime.Rules</c>, <c>MatchRuntime.CustomCamera</c> and
+/// <c>MatchRuntime.LocalInputSlotFor(playerId)</c> - are now supplied by the explicitly bound
+/// <c>IPlayerMatchRuntime</c> (<c>SpawnCoordinator.BindHumanMatchRuntime</c> -&gt;
+/// <c>PlayerController.BindMatchRuntime</c>), which <c>GameLevelManager</c> implements as a live
+/// forwarding boundary over <c>MatchRuntime</c>. Same caveat as the other guards above:
+/// <c>MatchRuntime</c> itself is untouched and stays in <c>Assembly-CSharp</c>; this guard only proves
+/// <c>PlayerController</c> no longer names it directly. With this guard passing, a fresh dependency
+/// closure scan finds zero live <c>Assembly-CSharp</c> types on <c>PlayerController</c>.
 /// </summary>
 public class Level5PlayerControllerDependencyGuardTests
 {
@@ -109,5 +121,19 @@ public class Level5PlayerControllerDependencyGuardTests
             + "and the human basketball association must arrive through "
             + "GetComponent<IPlayerControllerParticipantState>(), which PlayerIdentifier implements "
             + "explicitly, not by reading PlayerIdentifier directly on this controller.");
+    }
+
+    [Test]
+    public void PlayerControllerHasNoMatchRuntimeReference()
+    {
+        string text = Level5TestSourceText.StripCommentsAndLiterals(File.ReadAllText(PlayerControllerPath));
+
+        Assert.That(
+            text,
+            Does.Not.Match(@"\bMatchRuntime\b"),
+            "PlayerController must have zero MatchRuntime references - rules, custom-camera and local "
+            + "input-slot resolution must arrive through the bound IPlayerMatchRuntime "
+            + "(BindMatchRuntime), supplied by SpawnCoordinator.BindHumanMatchRuntime from "
+            + "GameLevelManager.Awake, not by reading MatchRuntime directly on this controller.");
     }
 }
