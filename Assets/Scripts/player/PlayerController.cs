@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Level5.Core;
 using Level5.Core.Match;
 
-public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReactionHost
+public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReactionHost, IPlayerDunkHost
 {
     [SerializeField]
     bool isPlayer1;
@@ -1286,4 +1286,28 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     void IPlayerDamageReactionHost.MarkDead() => playerHealth.IsDead = true;
 
     Camera IPlayerDamageReactionHost.GetShrinkCamera() => damageReactionCameraReader != null ? damageReactionCameraReader.Invoke() : null;
+
+    // ==================== IPlayerDunkHost (AUD-012 Phase 2b Slice 35) ====================
+    // RigidBody, CurrentState and Locked are satisfied implicitly by the ordinary public properties
+    // above - they already expose exactly this state. Only the members below have no existing public
+    // equivalent; explicit implementation keeps them off PlayerController's ordinary public surface
+    // rather than adding new general-purpose public members for a single helper's use.
+
+    Vector3 IPlayerDunkHost.BasketballRimVector => bballRimVector;
+
+    int IPlayerDunkHost.DunkStateHash => dunkState;
+
+    bool IPlayerDunkHost.HasBasketball { get => hasBasketball; set => hasBasketball = value; }
+
+    void IPlayerDunkHost.SetCallBallLocked(bool locked) => callBallToPlayer.Locked = locked;
+
+    void IPlayerDunkHost.FaceBasketballGoal() => CheckIsPlayerFacingGoal();
+
+    void IPlayerDunkHost.PlayAnimation(string animationName) => PlayAnim(animationName);
+
+    void IPlayerDunkHost.SetAnimationBool(string parameterName, bool value) => SetPlayerAnim(parameterName, value);
+
+    void IPlayerDunkHost.FreezePosition() => FreezePlayerPosition();
+
+    void IPlayerDunkHost.UnfreezePosition() => UnFreezePlayerPosition();
 }
