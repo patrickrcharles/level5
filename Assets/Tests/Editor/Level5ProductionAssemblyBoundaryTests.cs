@@ -453,6 +453,21 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 36: proves <c>PlayerDunk</c> itself - dependency-closed by Slice 35,
+    /// then moved source-identically - actually compiles into <c>Level5.Player</c>, the same identity
+    /// check <see cref="PlayerDunkHostCompilesIntoLevel5Player"/> does for <c>IPlayerDunkHost</c>. Its
+    /// one live consumer, <c>PlayerController</c>, stays in <c>Assembly-CSharp</c> and reaches it
+    /// through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerDunkCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerDunk).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

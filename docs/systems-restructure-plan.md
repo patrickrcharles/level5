@@ -2698,6 +2698,80 @@ expected - becoming dependency-closed does not change which assembly it currentl
 `PlayerController` remains in `Assembly-CSharp` and stays blocked on the same two group B entries,
 `MatchRuntime` and `PlayerDunk`.
 
+**Slice 36 - `PlayerDunk` moved into `Level5.Player`; pure ownership move, no behavior change**
+(2026-09-10): Slice 35 already cut `PlayerDunk`'s three `Assembly-CSharp` edges and left it
+dependency-closed; this slice is the ownership move that follows, the same shape Slice 31 was for
+`PlayerAttackQueue` after Slice 30.
+
+**Baseline certification (hard gate, run before moving anything).** Untouched current `dev` at
+`7cbad9bdb` (Slice 35, PR #128) - the first opportunity to run this Slice's Unity compile and focused
+tests against a licensed Editor, since Slice 35 itself could not - was exercised with a headless
+Unity `6000.5.7f1` EditMode batch run filtered to `Level5PlayerDunkDependencyGuardTests` (3),
+`Level5PlayerDunkHostTests` (9), `Level5PlayerDunkSeamTests` (5), and
+`Level5ProductionAssemblyBoundaryTests` (25): 42/42 passed, compilation succeeded. The migration
+proceeded only after this passed.
+
+- `Assets/Scripts/player/PlayerDunk.cs`/`.cs.meta` moved to
+  `Assets/Scripts/player/Level5Player/PlayerDunk.cs`/`.cs.meta` via `git mv` - path only, content
+  byte-identical (confirmed by an empty `git diff` across the rename), GUID
+  (`f30bfacdf55aac546906c63b39b58411`) preserved unchanged.
+- `Level5.Player.asmdef` gained exactly two direct references, `Level5.Basketball` and
+  `Level5.Utility` - the two project assemblies `PlayerDunk` itself needs
+  (`BasketBall`/`BasketBallState` and `SceneObjects`). Final reference list: `Level5.Core`,
+  `Level5.Combat`, `Level5.Constants`, `Level5.Basketball`, `Level5.Utility`. Freshly re-checked
+  before and after: neither `Level5.Basketball` nor `Level5.Utility` references `Level5.Player` -
+  acyclic.
+- `Level5PlayerDunkDependencyGuardTests`'s source path updated to the new location; its permanent
+  invariant (zero live `PlayerController`/`PlayerIdentifier`/`GameLevelManager` references) is
+  unchanged and still enforced against the moved file.
+- `Level5ProductionAssemblyBoundaryTests` gained `PlayerDunkCompilesIntoLevel5Player`, the same
+  identity-check shape as `PlayerDunkHostCompilesIntoLevel5Player`, proving the moved type actually
+  compiles into `Level5.Player` rather than falling back to `Assembly-CSharp`.
+- `PlayerController.PlayerDunk`, its `GetComponent<PlayerDunk>()`/`PlayerCanDunk`/`DunkRangeFeet`/
+  `playerDunk()` usages, and `PlayerCollisions`' `PlayerController1.PlayerDunk.TriggerDunkSequence()`
+  call are untouched source - all reach the moved type through the auto-referenced `Level5.Player`
+  assembly exactly as before.
+
+**Serialized identity.** No prefab or scene asset was opened or resaved. 71 prefabs and one direct
+scene reference (`Assets/Scenes/level_01_scrapyard_cpu_defense_test.unity`, a disabled legacy
+`cpu_player_defense_oldreal.1` GameObject, tag `autoPlayer` - one more than Slice 35's "0 direct
+`.unity` references" audit line counted, evidently missed by that earlier pass rather than new drift)
+carry the `PlayerDunk` GUID; since the GUID and every serialized field are unchanged, Unity's
+GUID-keyed script resolution is unaffected by the file's new path regardless of which carrier is
+checked. Representative carriers spot-checked by direct YAML inspection (`m_Enabled`, then
+`dunkPositionLeft`/`dunkPositionRight`/`dunkRangeFeet`/`jumpAngle`/`playerCanDunk`, all default
+`{0,0,0}`/`{0,0,0}`/`15`/`45` since these repopulate from scene markers in `Start()`):
+`player_ak47.prefab` (ordinary human carrier, `m_Enabled: 1`, `playerCanDunk: 0`),
+`cpu_player_ak47.prefab` (ordinary CPU carrier, `m_Enabled: 0`, `playerCanDunk: 0`),
+`auto_player_drblood.prefab` (legacy auto-player, `m_Enabled: 0`, `playerCanDunk: 1`), and the scene's
+`cpu_player_defense_oldreal.1` (legacy, `m_Enabled: 0`) - all four match the previously-authored
+enabled/disabled pattern exactly, none show `Missing Script`.
+
+**Validation.** Headless Unity `6000.5.7f1` EditMode batch run, post-move, filtered to the same four
+fixtures plus the new identity test: 43/43 passed (the 42 baseline cases plus
+`PlayerDunkCompilesIntoLevel5Player`), compilation succeeded with the new asmdef references in place -
+this doubles as the acyclicity proof, since a reference cycle would have failed compilation outright.
+Per the risk-based validation policy, full EditMode/PlayMode were not re-run; PR CI owns that broader
+regression coverage. Two incidental `Level5.slnx` project-order reorderings written by the Unity runs
+were reverted before commit as unrelated churn.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-10).** Same scan
+as prior slices; `PlayerDunk` moves from group B to group A:
+
+```text
+PlayerController blockers: 2 -> 1
+```
+
+**A. Already owned by custom assemblies - legal references, not blockers (23, up from 22).** Adds
+`PlayerDunk` to the `Level5.Player` entries listed above.
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blocker (1, down from 2).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+
+`PlayerController` remains in `Assembly-CSharp`, now blocked on only `MatchRuntime`. Not moved this
+slice: `PlayerController`, `PlayerIdentifier`, `GameLevelManager`, or `MatchRuntime` itself.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
