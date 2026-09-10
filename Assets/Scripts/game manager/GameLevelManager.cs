@@ -130,6 +130,7 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
 
         _spawnCoordinator.BindHumanLegacyTouchMovement(ReadLegacyTouchMovement);
         _spawnCoordinator.BindHumanDamageReactionCamera(ReadPlayerDamageReactionCamera);
+        _spawnCoordinator.BindHumanIdleSniperRuntime(ReadPlayerIdleSniperRuntime);
 
         _spawnCoordinator.SpawnCheerleader(MatchRuntime.Cheerleader.ObjectName, terrainHeight);
 
@@ -178,6 +179,32 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
         }
 
         return CameraManager.instance.Cameras[0].GetComponent<Camera>();
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 33: the idle-sniper runtime, as a live lookup rather than
+    /// <c>PlayerController</c> reading <c>SniperManager.instance</c> itself.
+    /// <c>PlayerController.checkIdleTimeForSniper</c> used to read that static directly; it now
+    /// receives this method (via <see cref="SpawnCoordinator.BindHumanIdleSniperRuntime"/> -&gt;
+    /// <c>PlayerController.BindIdleSniperRuntimeReader</c>) so <c>Level5.Player</c> never names
+    /// <c>SniperManager</c>. Deliberately resolves <c>SniperManager.instance</c> fresh on every call
+    /// rather than capturing it here - no sniper runtime needs to exist yet when this is bound, and
+    /// the static may be assigned (or reassigned, or cleared on destroy) well after this scene's
+    /// spawn pass.
+    ///
+    /// The null check is explicit and against the concrete <c>SniperManager</c> type, mirroring
+    /// <see cref="ReadPlayerDamageReactionCamera"/> just above - not the bare
+    /// <c>return SniperManager.instance;</c> an implicit interface conversion would allow. A destroyed
+    /// Unity object compares equal to <c>null</c> only through <c>UnityEngine.Object</c>'s overloaded
+    /// <c>==</c>, which is not selected once the value's static type is the
+    /// <see cref="IPlayerIdleSniperRuntime"/> interface - so the check has to happen here, against the
+    /// concrete type, before the conversion, rather than relying on <c>PlayerController</c>'s later
+    /// <c>sniper == null</c> to catch it.
+    /// </summary>
+    private IPlayerIdleSniperRuntime ReadPlayerIdleSniperRuntime()
+    {
+        SniperManager instance = SniperManager.instance;
+        return instance != null ? instance : null;
     }
 
     /// <summary>

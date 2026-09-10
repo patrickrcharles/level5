@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Level5.Core.Match;
 
-public class SniperManager : MonoBehaviour
+public class SniperManager : MonoBehaviour, IPlayerIdleSniperRuntime
 {
     private const float InitializationTimeoutSeconds = 10f;
     [SerializeField]
@@ -271,4 +271,21 @@ public class SniperManager : MonoBehaviour
         }
     }
     public Vector3 PlayerPosAtShoot { get => playerPosAtShoot; set => playerPosAtShoot = value; }
+
+    // ==================== IPlayerIdleSniperRuntime (AUD-012 Phase 2b Slice 33) ====================
+    // Explicit implementation: PlayerController's idle-sniper check reaches this runtime only through
+    // the interface, but locked/StartSniperBulletInstantKill stay on SniperManager's ordinary public
+    // surface unchanged for every other existing caller (startSniper, InstantiateConfiguredProjectile,
+    // etc.).
+
+    bool IPlayerIdleSniperRuntime.Locked
+    {
+        get => locked;
+        set => locked = value;
+    }
+
+    IEnumerator IPlayerIdleSniperRuntime.GetInstantKillRoutine(float shootDelay)
+    {
+        return StartSniperBulletInstantKill(shootDelay);
+    }
 }
