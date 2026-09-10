@@ -70,6 +70,19 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     /// </summary>
     private Func<IPlayerIdleSniperRuntime> idleSniperRuntimeReader;
 
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 37: the live match-runtime boundary this controller now composes for its
+    /// remaining <c>Assembly-CSharp</c> dependency, from <c>SpawnCoordinator.BindHumanMatchRuntime</c>
+    /// during <c>GameLevelManager.Awake</c>'s spawn pass - human participants only, before this
+    /// controller's own <see cref="Start"/> can run. Replaces this controller's former direct
+    /// <c>MatchRuntime.Rules</c>/<c>CustomCamera</c>/<c>LocalInputSlotFor</c> reads. Read at the point of
+    /// use everywhere it is dereferenced below, never cached into a snapshot: <c>GameLevelManager</c>'s
+    /// explicit <see cref="IPlayerMatchRuntime"/> implementation forwards live to <c>MatchRuntime</c> on
+    /// every call, and this controller must keep observing whatever that currently answers - see
+    /// <see cref="InitializeInput"/>'s guard for what happens when a human never receives one.
+    /// </summary>
+    private IPlayerMatchRuntime matchRuntime;
+
     public PlayerController()
     {
         damageReactions = new PlayerDamageReactions(this);
@@ -96,6 +109,17 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     public void BindDamageReactionCameraReader(Func<Camera> reader)
     {
         damageReactionCameraReader = reader;
+    }
+
+    /// <summary>
+    /// Explicit binding of the live match-runtime boundary, from
+    /// <see cref="SpawnCoordinator.BindHumanMatchRuntime"/> during <c>GameLevelManager.Awake</c>'s spawn
+    /// pass - human participants only. Required before <see cref="InitializeInput"/> can resolve a local
+    /// input slot; see that method's guard.
+    /// </summary>
+    public void BindMatchRuntime(IPlayerMatchRuntime runtime)
+    {
+        matchRuntime = runtime;
     }
 
 
@@ -216,6 +240,24 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     private float terrainYHeight;
     private int inputPlayerId = -1;
     private bool hasStarted;
+
+    /// <summary>
+    /// AUD-012 Phase 2b Slice 37: set only by <see cref="InitializeInput"/>'s new match-runtime guard,
+    /// and checked once by <see cref="Start"/> immediately after calling it - narrowly so, since
+    /// disabling this <c>MonoBehaviour</c> inside <see cref="InitializeInput"/> does not itself abort the
+    /// rest of <see cref="Start"/>, which would otherwise dereference the still-null
+    /// <see cref="matchRuntime"/>. Left <c>false</c> for every other <see cref="InitializeInput"/> exit
+    /// (the pre-existing CPU-misuse and invalid-input-slot guards), which keep their existing behaviour
+    /// of leaving <see cref="Start"/> to continue past them unchanged.
+    ///
+    /// That is a deliberate, spec-directed asymmetry, not an oversight: unlike those two pre-existing
+    /// guards - which still fully populate <c>anim</c>/<c>playerHealth</c>/<c>Shotmeter</c>/
+    /// <c>basketball</c>/<c>characterProfile</c>/etc. before leaving the disabled component behind - this
+    /// guard leaves every one of them unset. Do not assume a <c>PlayerController</c> found in the scene is
+    /// fully initialized just because it exists; check <see cref="enabled"/> (or, for this specific
+    /// failure, that <see cref="matchRuntime"/> is bound) first.
+    /// </summary>
+    private bool matchRuntimeRequiredButMissing;
     [SerializeField] private float idleTime;
     [SerializeField] private float idleStartTime;
     private bool isLocked;
@@ -245,17 +287,38 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
 
     private void InitializeInput()
     {
+        matchRuntimeRequiredButMissing = false;
+
         IPlayerControllerParticipantState participant = GetComponent<IPlayerControllerParticipantState>();
         int playerId = participant != null ? participant.PlayerId : 0;
 
         if (participant != null && participant.IsCpu)
         {
+            // This guard intentionally does not set matchRuntimeRequiredButMissing, so Start() still
+            // runs to completion for this pre-existing composition defect - unchanged from before this
+            // slice. A CPU never receives BindMatchRuntime (SpawnCoordinator skips CPUs), so matchRuntime
+            // stays null here, and Start()'s later matchRuntime reads are therefore only safe because
+            // Start() already dereferences GetComponent<IPlayerControllerParticipantState>().
+            // BasketballObject first (null for a CPU - RegisterCpu never sets the human `basketball`
+            // field) and throws there before ever reaching a matchRuntime read. That masking is
+            // incidental, not structural: a future change to that earlier lookup should re-verify this
+            // path still fails before Start() reaches matchRuntime.
             Debug.LogError("PlayerController cannot own input for a CPU player. Use AutoPlayerController.", this);
             enabled = false;
             return;
         }
 
-        inputPlayerId = MatchRuntime.LocalInputSlotFor(playerId);
+        if (matchRuntime == null)
+        {
+            Debug.LogError(
+                "PlayerController has no bound IPlayerMatchRuntime - SpawnCoordinator.BindHumanMatchRuntime "
+                + "must run before this controller's Start().", this);
+            enabled = false;
+            matchRuntimeRequiredButMissing = true;
+            return;
+        }
+
+        inputPlayerId = matchRuntime.LocalInputSlotFor(playerId);
         if (inputPlayerId < 0)
         {
             Debug.LogError("PlayerController could not resolve a human input slot.", this);
@@ -301,6 +364,11 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     {
         hasStarted = true;
         InitializeInput();
+        if (matchRuntimeRequiredButMissing)
+        {
+            return;
+        }
+
         getAnimatorStateHashes();
         playerDunk = GetComponent<PlayerDunk>();
         callBallToPlayer = GetComponent<CallBallToPlayer>();
@@ -344,7 +412,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         screenXRange = Screen.width / 10;
         screenYRange = Screen.height / 10;
 
-        if (MatchRuntime.CustomCamera)
+        if (matchRuntime.CustomCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             if (damageDisplayObject != null)
@@ -353,7 +421,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             }
         }
         //GameOptions.sniperEnabled = true; // test flag;
-        if (MatchRuntime.Rules.EnemiesEnabled || MatchRuntime.Rules.EnemiesOnly || MatchRuntime.Rules.SniperEnabled)
+        if (matchRuntime.Rules.EnemiesEnabled || matchRuntime.Rules.EnemiesOnly || matchRuntime.Rules.SniperEnabled)
         {
             if (GetComponent<PlayerSwapAttack>() != null)
             {
@@ -370,7 +438,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         }
 
         // custom knockdown time for sniper mode
-        if (MatchRuntime.Rules.SniperEnabled)
+        if (matchRuntime.Rules.SniperEnabled)
         {
             _knockDownTime = 0.75f;
         }
@@ -619,7 +687,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         }
 
         Vector2 touchJumpOrShootPosition;
-        if (reader.ConsumeTouchJumpOrShoot(out touchJumpOrShootPosition) && !MatchRuntime.Rules.EnemiesOnly)
+        if (reader.ConsumeTouchJumpOrShoot(out touchJumpOrShootPosition) && !matchRuntime.Rules.EnemiesOnly)
         {
             TouchControlJumpOrShoot(touchJumpOrShootPosition);
         }
@@ -630,7 +698,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             && hasBasketball
             && Grounded
             && !KnockedDown
-            && !MatchRuntime.Rules.EnemiesOnly
+            && !matchRuntime.Rules.EnemiesOnly
             && !InAir)
         {
             if (PlayerDunk != null
@@ -649,7 +717,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         if (InAir
             && hasBasketball
             && reader.ShootPressed
-            && !MatchRuntime.Rules.EnemiesOnly
+            && !matchRuntime.Rules.EnemiesOnly
             && currentState != inAirDunkState)
         {
             //Debug.Log("shoot");
@@ -680,7 +748,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             //&& controls.Player.jump.ReadValue<float>() == 1
             && !hasBasketball
             && canAttack
-            && MatchRuntime.Rules.EnemiesEnabled
+            && matchRuntime.Rules.EnemiesEnabled
             && currentState != attackState
             && currentState != specialState)
         {
@@ -695,7 +763,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             //&& controls.Player.run.ReadValue<float>() == 1
             //&& !hasBasketball
             && canBlock
-            && (MatchRuntime.Rules.EnemiesOnly || MatchRuntime.Rules.EnemiesEnabled || MatchRuntime.Rules.IsBattleRoyal)
+            && (matchRuntime.Rules.EnemiesOnly || matchRuntime.Rules.EnemiesEnabled || matchRuntime.Rules.IsBattleRoyal)
             && PlayerHealth.Block > 0)
         {
             if (playerCanBlock)
@@ -721,7 +789,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             && !InAir
             && Grounded
             && !KnockedDown
-            && MatchRuntime.Rules.EnemiesEnabled
+            && matchRuntime.Rules.EnemiesEnabled
             && PlayerHealth.Special == PlayerHealth.MaxSpecial)
         {
             PlayerSpecial();
@@ -778,7 +846,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
             ? idleSniperRuntimeReader.Invoke()
             : null;
 
-        if (!MatchRuntime.Rules.SniperEnabled || sniper == null)
+        if (!matchRuntime.Rules.SniperEnabled || sniper == null)
         {
             idleStartTime = Time.time;
             idleTime = 0;
@@ -994,7 +1062,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         // AUD-048: this was `!battleRoyal || !enemiesOnly`, which is only false when BOTH are on -
         // so the shot meter still started in a plain battle royal and in a plain enemies-only run,
         // the two modes it exists to exclude. The other shooting gates in Update use `&&`.
-        if (!MatchRuntime.Rules.IsBattleRoyal && !MatchRuntime.Rules.EnemiesOnly)
+        if (!matchRuntime.Rules.IsBattleRoyal && !matchRuntime.Rules.EnemiesOnly)
         {
             Shotmeter.MeterStarted = true;
             Shotmeter.MeterStartTime = Time.time;
@@ -1055,7 +1123,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
         transform.localScale = thisScale;
 
         if (damageDisplayObject != null
-            && (MatchRuntime.Rules.EnemiesEnabled || MatchRuntime.Rules.EnemiesOnly || MatchRuntime.Rules.SniperEnabled))
+            && (matchRuntime.Rules.EnemiesEnabled || matchRuntime.Rules.EnemiesOnly || matchRuntime.Rules.SniperEnabled))
         {
             Vector3 damageScale = damageDisplayObject.transform.localScale;
             damageScale.x *= -1;

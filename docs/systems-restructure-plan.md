@@ -2780,6 +2780,125 @@ PlayerController blockers: 2 -> 1
 `PlayerController` remains in `Assembly-CSharp`, now blocked on only `MatchRuntime`. Not moved this
 slice: `PlayerController`, `PlayerIdentifier`, `GameLevelManager`, or `MatchRuntime` itself.
 
+**Slice 37 - `PlayerController`'s `MatchRuntime` dependency removed; dependency-preparation only, no
+move** (2026-09-10): `PlayerController` stays in `Assembly-CSharp` this slice - only its last
+`Assembly-CSharp` edge, `MatchRuntime`, is cut, mirroring Slice 35's `PlayerDunk` shape
+(dependency-cut now, pure ownership move later, held open deliberately since `PlayerController`'s
+48-prefab serialized surface needs its own migration audit).
+
+- A new narrow contract, `IPlayerMatchRuntime` (`Assets/Scripts/player/Level5Player/IPlayerMatchRuntime.cs`),
+  names only what `PlayerController` reads: `Rules`, `CustomCamera`, and `LocalInputSlotFor(int)`.
+  `GameLevelManager` implements it explicitly, forwarding every member straight to the static
+  `MatchRuntime` on each call (`ResolvedMatchRules IPlayerMatchRuntime.Rules => MatchRuntime.Rules;`
+  and so on) - it does not answer from its own `_rules`/`_roster` snapshot fields, which serve a
+  different point-of-use (this class's own facade) than `PlayerController`'s former direct reads
+  needed (a directly entered/unconfigured scene's legacy-global fallback, re-evaluated live on every
+  call). `MatchRuntime` stays the only owner of that compatibility translation; the interface is only a
+  boundary, not a second match-state owner.
+- `SpawnCoordinator.BindHumanMatchRuntime(IPlayerMatchRuntime)` forwards the scene's provider to every
+  registered human's `PlayerController.BindMatchRuntime`, reusing the existing `BindEveryHumanController`
+  human-only iteration every other `BindHuman*` pass already shares - no new iteration, no CPU exposure.
+  Called from `GameLevelManager.Awake`'s spawn pass, adjacent to `BindHumanLegacyTouchMovement`/
+  `BindHumanDamageReactionCamera`/`BindHumanIdleSniperRuntime`.
+- `PlayerController` stores the bound provider in one field (`matchRuntime`), read live at every former
+  `MatchRuntime.Rules`/`CustomCamera`/`LocalInputSlotFor` call site - `Start()`'s custom-camera/
+  combat-setup/sniper-knockdown reads, `Update()`'s touch-jump/jump/shoot/attack/block/special gating,
+  `checkIdleTimeForSniper()`, `PlayerJump()`, and `Flip()` - unconditionally rewritten expression-for-
+  expression, no predicate/ordering changes. No `ResolvedMatchRules` snapshot field was introduced; the
+  forbidden `private ResolvedMatchRules matchRules;` shape the plan called out explicitly does not exist
+  anywhere in this file.
+- `InitializeInput()` gained one guard, after the pre-existing CPU-misuse check and before resolving a
+  local input slot: a human participant with no bound `matchRuntime` logs an actionable composition
+  error, disables the controller, and returns - without falling back to the static `MatchRuntime`. The
+  CPU guard still runs first and still fires on its own, unaffected by the new requirement (a CPU never
+  receives this binding, but never needs to reach it either). `Start()` gained one narrow check
+  immediately after calling `InitializeInput()` (`if (matchRuntimeRequiredButMissing) return;`),
+  reading a field only the new guard sets - since disabling a `MonoBehaviour` inside `InitializeInput()`
+  does not itself abort the rest of `Start()`, which would otherwise dereference the still-null
+  `matchRuntime` a few lines later. Every other `InitializeInput()` exit (CPU misuse, invalid input
+  slot) leaves that field `false` and `Start()`'s existing continuation behaviour for those paths is
+  unchanged.
+
+**Preflight re-verification.** Baseline SHA (`7b26db52d`) matched current `dev` exactly. `MatchRuntime`
+was still `PlayerController`'s only live `Assembly-CSharp` dependency, and its three uses were still
+exactly `Rules`, `CustomCamera`, and `LocalInputSlotFor(playerId)`. `MatchRuntime.Rules` still resolved
+a validated configuration when present and reconstructed rules from the legacy globals otherwise;
+`MatchRuntime.LocalInputSlotFor` still owned the roster/legacy fallback. `GameLevelManager.Awake` still
+spawned human participants and could bind them before their `PlayerController.Start()`;
+`SpawnCoordinator.BindEveryHumanController` was still the established human-only binding path.
+`PlayerController` still had no direct `.unity` scene serialization. No existing contract
+(`IShooterActor`, `IPlayerDamageReactionHost`, `IPlayerDunkHost`, `IPlayerControllerParticipantState`,
+`IPlayerIdleSniperRuntime`) already exposed these three capabilities.
+
+**No serialized field changed.** `PlayerController`'s `[SerializeField]` list, GUID, and public API are
+unchanged except for the one new public `BindMatchRuntime(IPlayerMatchRuntime)` method, the same
+binding-method shape every prior Phase 2b `PlayerController` composition seam (`BindArenaContext`,
+`BindLegacyTouchMovementReader`, `BindDamageReactionCameraReader`, `BindIdleSniperRuntimeReader`) already
+added without a prefab/scene edit. No prefab or scene asset was opened or resaved.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile: clean, zero `error CS` lines. EditMode batch
+run filtered to `Level5PlayerControllerDependencyGuardTests` (5, including the new
+`PlayerControllerHasNoMatchRuntimeReference` guard), `Level5ProductionAssemblyBoundaryTests` (27,
+including the new `PlayerMatchRuntimeCompilesIntoLevel5Player` identity check), the new
+`Level5PlayerMatchRuntimeCompositionTests` (12: `GameLevelManager` implements `IPlayerMatchRuntime`;
+`Rules`/`CustomCamera`/`LocalInputSlotFor` forward live rather than from a snapshot;
+`BindHumanMatchRuntime` reaches every human with the exact provider instance and skips CPUs; an
+unbound human fails closed without a NullReferenceException; the CPU guard still fires before the
+match-runtime requirement), `Level5PlayerControllerIdleSniperTests` (7, updated to bind a live-forwarding
+`IPlayerMatchRuntime` adapter since `checkIdleTimeForSniper` no longer reads the static),
+`Level5PlayerInputReaderCompositionTests` (16, same update to its human-registration helper), and
+`Level5PlayerControllerParticipantStateTests` (7, confirming the pre-existing CPU-guard test is
+unaffected): 74/74 passed. Real-gameplay PlayMode path
+`PlayerMovementPhysicsTests.JumpingDoesNotCompoundHorizontalVelocity` (menu -> gameplay level ->
+`GameLevelManager.Awake` -> `SpawnCoordinator.BindHumanMatchRuntime` -> spawned `PlayerController`
+receiving the provider before its own `Start()` -> real jump/rules path) also passed, confirming the
+composition order holds in a real scene load, not only in isolated EditMode fixtures. Per the
+risk-based validation policy, full EditMode/PlayMode were not re-run; PR CI owns that broader regression
+coverage.
+
+Not moved in this slice: `PlayerController`, `PlayerIdentifier`, `GameLevelManager`, or `MatchRuntime`
+itself.
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-10).** Same scan
+as prior slices; `MatchRuntime` moves out of group B entirely (it is not a project-owned type, so it
+does not join group A either - it simply stops being named by `PlayerController.cs`):
+
+```text
+PlayerController blockers: 1 -> 0
+```
+
+**A. Already owned by custom assemblies - legal references, not blockers (24, up from 23).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, `PlayerAttackQueue`, `PlayerDamageReactions`,
+  `IPlayerDamageReactionHost`, `IPlayerIdleSniperRuntime`, `IPlayerControllerParticipantState`,
+  `PlayerDunk`, **`IPlayerMatchRuntime`** (this slice)
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blocker (0, down from 1).**
+
+- none
+
+`PlayerController` remains in `Assembly-CSharp` but is now fully dependency-closed - every project type
+it names resolves to a custom assembly, and it names no `MatchRuntime`/`GameLevelManager`/
+`CameraManager`/`SniperManager`/`PlayerIdentifier` reference (all five now permanently guarded by
+`Level5PlayerControllerDependencyGuardTests`). It is therefore the next candidate for a pure ownership
+move into `Level5.Player`, the same shape Slice 31 was for `PlayerAttackQueue` after Slice 30 and
+Slice 36 was for `PlayerDunk` after Slice 35. Not implemented this slice:
+
+```text
+PlayerController
+        ↓
+Level5.Player
+```
+
+Its 48-prefab serialized surface needs its own GUID/assembly/prefab/cross-assembly migration audit
+before that move - a materially larger verification burden than the single-consumer moves Slices 31 and
+36 already completed, and explicitly out of scope for this slice.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is

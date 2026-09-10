@@ -19,7 +19,7 @@ using UnityEngine.SceneManagement;
 /// on" ran here, at scene start, after the menu had already settled the question. That resolution
 /// belongs to the configuration builder now, and this reads the answer.
 /// </summary>
-public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
+public class GameLevelManager : MonoBehaviour, IGroundHeightProvider, IPlayerMatchRuntime
 {
     public bool isMultiplePlayersTotalPoints;
     public int currentHighScoreTotalPoints;
@@ -131,6 +131,7 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
         _spawnCoordinator.BindHumanLegacyTouchMovement(ReadLegacyTouchMovement);
         _spawnCoordinator.BindHumanDamageReactionCamera(ReadPlayerDamageReactionCamera);
         _spawnCoordinator.BindHumanIdleSniperRuntime(ReadPlayerIdleSniperRuntime);
+        _spawnCoordinator.BindHumanMatchRuntime(this);
 
         _spawnCoordinator.SpawnCheerleader(MatchRuntime.Cheerleader.ObjectName, terrainHeight);
 
@@ -381,4 +382,22 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider
     /// primary participant's actual Y after spawning.
     /// </summary>
     float IGroundHeightProvider.GroundHeight => terrainHeight;
+
+    // ======================= IPlayerMatchRuntime (AUD-012 Phase 2b Slice 37) =======================
+
+    /// <summary>
+    /// Explicit, live forwarding boundary over <c>MatchRuntime</c> for <see cref="PlayerController"/>
+    /// (bound through <see cref="SpawnCoordinator.BindHumanMatchRuntime"/>), so that controller no
+    /// longer names <c>MatchRuntime</c> directly. Deliberately forwards to the static on every call
+    /// rather than answering from <see cref="_rules"/>/<see cref="_roster"/>: this class's own snapshot
+    /// fields serve its own facade responsibilities, but <c>PlayerController</c>'s former direct reads
+    /// had different point-of-use semantics (a directly entered/unconfigured scene's legacy-global
+    /// fallback, re-evaluated live) that this boundary must preserve exactly. <c>MatchRuntime</c> stays
+    /// the only owner of that compatibility translation.
+    /// </summary>
+    ResolvedMatchRules IPlayerMatchRuntime.Rules => MatchRuntime.Rules;
+
+    bool IPlayerMatchRuntime.CustomCamera => MatchRuntime.CustomCamera;
+
+    int IPlayerMatchRuntime.LocalInputSlotFor(int playerId) => MatchRuntime.LocalInputSlotFor(playerId);
 }

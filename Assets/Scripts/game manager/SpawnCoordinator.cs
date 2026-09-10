@@ -359,6 +359,26 @@ public sealed class SpawnCoordinator
     }
 
     /// <summary>
+    /// AUD-012 Phase 2b Slice 37: forwards the scene's live <see cref="IPlayerMatchRuntime"/> boundary -
+    /// <c>GameLevelManager</c>'s explicit forwarding implementation over <c>MatchRuntime</c> - to every
+    /// registered human participant's <see cref="PlayerController"/>, replacing that controller's former
+    /// direct <c>MatchRuntime.Rules</c>/<c>CustomCamera</c>/<c>LocalInputSlotFor</c> reads - its last
+    /// direct <c>Assembly-CSharp</c> dependency. Called from <c>GameLevelManager.Awake</c>'s spawn pass,
+    /// adjacent to the other <c>BindHuman*</c> calls: ordering is not load-bearing regardless, since
+    /// <c>PlayerController</c> only dereferences the bound provider from its own <c>Start()</c>, which
+    /// cannot run before <c>Awake</c> finishes.
+    ///
+    /// CPU participants are deliberately skipped: <c>AutoPlayerController</c> still reads
+    /// <c>MatchRuntime</c> directly.
+    /// </summary>
+    public void BindHumanMatchRuntime(IPlayerMatchRuntime runtime)
+    {
+        BindEveryHumanController(
+            "match runtime",
+            controller => controller.BindMatchRuntime(runtime));
+    }
+
+    /// <summary>
     /// The one human-participant iteration every <c>BindHuman*</c> pass shares: registered, non-CPU,
     /// with a <see cref="PlayerController"/> to bind to. A human whose prefab has no controller fails
     /// closed on that participant with a named error and the pass continues, rather than throwing and
