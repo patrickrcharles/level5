@@ -269,8 +269,10 @@ public class Level5ProductionAssemblyBoundaryTests
     /// <c>Level5.Player</c>, once its <c>MatchRuntime.Rules</c> read was inverted into an explicitly
     /// bound <c>ResolvedMatchRules</c> - actually compiles into that asmdef, the same identity check
     /// <see cref="PlayerSwapAttackCompilesIntoLevel5Player"/> does for the assembly's first type. Its
-    /// callers - <c>PlayerController</c>, <c>AutoPlayerController</c>, <c>groundcheck</c> and
-    /// <c>PlayerDunk</c> - stay in <c>Assembly-CSharp</c> and reach it through <c>autoReferenced</c>.
+    /// callers - <c>PlayerController</c>, <c>AutoPlayerController</c> and <c>groundcheck</c> - stay in
+    /// <c>Assembly-CSharp</c> and reach it through <c>autoReferenced</c>; <c>PlayerDunk</c> itself
+    /// later moved into <c>Level5.Player</c> (Slice 36) - see
+    /// <see cref="PlayerDunkCompilesIntoLevel5Player"/>.
     /// </summary>
     [Test]
     public void CallBallToPlayerCompilesIntoLevel5Player()

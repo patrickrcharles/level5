@@ -2762,8 +2762,16 @@ as prior slices; `PlayerDunk` moves from group B to group A:
 PlayerController blockers: 2 -> 1
 ```
 
-**A. Already owned by custom assemblies - legal references, not blockers (23, up from 22).** Adds
-`PlayerDunk` to the `Level5.Player` entries listed above.
+**A. Already owned by custom assemblies - legal references, not blockers (23, up from 22).**
+
+- **`Level5.Input`**: `PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`
+- **`Level5.Core`**: `IShooterActor`, `ShooterAttributes`, `IGroundHeightProvider`
+- **`Level5.Basketball`**: `BasketBall`, `ShotMeter`, `BasketBallState`
+- **`Level5.Utility`**: `SceneObjects`, `UtilityFunctions`, `RigidbodyFreezeHelper`
+- **`Level5.Player`**: `PlayerSwapAttack`, `CallBallToPlayer`, `PlayerHealth`, `CharacterProfile`,
+  `ShooterAttributesMapper`, `PlayerAttackQueue`, `PlayerDamageReactions`,
+  `IPlayerDamageReactionHost`, `IPlayerIdleSniperRuntime`, `IPlayerControllerParticipantState`,
+  **`PlayerDunk`** (this slice)
 
 **B. Still compiled into `Assembly-CSharp` - the actual remaining blocker (1, down from 2).**
 
