@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerDunk : MonoBehaviour
 {
-    PlayerController playerController;
+    IPlayerDunkHost playerHost;
     BasketBallState basketBallState;
     BasketBall basketBall;
     [SerializeField]
@@ -39,10 +39,11 @@ public class PlayerDunk : MonoBehaviour
             dunkPositionRight = dunkPositionRightObject.transform.position;
         }
 
-        PlayerIdentifier pi = GetComponent<PlayerIdentifier>();
-        playerController = pi.playerController;
-        basketBall = pi.basketBallController;
-        basketBallState = pi.basketBallState;
+        playerHost = GetComponent<IPlayerDunkHost>();
+        IPlayerControllerParticipantState participant = GetComponent<IPlayerControllerParticipantState>();
+        GameObject basketballObject = participant.BasketballObject;
+        basketBall = basketballObject.GetComponent<BasketBall>();
+        basketBallState = basketballObject.GetComponent<BasketBallState>();
         // default dunk values
         jumpAngle = 45;
         dunkRangeFeet = 15;
@@ -52,11 +53,11 @@ public class PlayerDunk : MonoBehaviour
     // note - dunk range * 6 will give dunk range in "feet". ex. distance = 2 units is equal to ~ distance = 6 feet (onscreen)
     public void playerDunk()
     {
-        playerController.CallBallToPlayer.Locked = true;
+        playerHost.SetCallBallLocked(true);
         basketBallState.Locked = true;
-        playerController.CheckIsPlayerFacingGoal(); // turns player facing rim
+        playerHost.FaceBasketballGoal(); // turns player facing rim
 
-        float bballRelativePositioning = GameLevelManager.instance.BasketballRimVector.x - transform.position.x;
+        float bballRelativePositioning = playerHost.BasketballRimVector.x - transform.position.x;
         // shot type for stats
         basketBall.updateBasketBallStateShotTypeOnShoot(basketBallState.TwoPoints,
             basketBallState.ThreePoints,
@@ -69,11 +70,11 @@ public class PlayerDunk : MonoBehaviour
         basketBall.LastShotDistance = tempDist;
 
         // determine which side to dunk on
-        if (bballRelativePositioning > 0 && !playerController.Locked)
+        if (bballRelativePositioning > 0 && !playerHost.Locked)
         {
             Launch(dunkPositionLeft);
         }
-        if (bballRelativePositioning < 0 && !playerController.Locked)
+        if (bballRelativePositioning < 0 && !playerHost.Locked)
         {
             Launch(dunkPositionRight);
         }
@@ -82,30 +83,30 @@ public class PlayerDunk : MonoBehaviour
 
     public IEnumerator TriggerDunkSequence()
     {
-        playerController.FreezePlayerPosition();
-        playerController.PlayAnim("dunk");
+        playerHost.FreezePosition();
+        playerHost.PlayAnimation("dunk");
 
         // wait for anim to start + finish
-        yield return new WaitUntil(() => playerController.CurrentState == playerController.dunkState);
-        yield return new WaitUntil(() => playerController.currentState != playerController.dunkState);
+        yield return new WaitUntil(() => playerHost.CurrentState == playerHost.DunkStateHash);
+        yield return new WaitUntil(() => playerHost.CurrentState != playerHost.DunkStateHash);
 
         basketBallState.Thrown = true;
-        playerController.UnFreezePlayerPosition();
+        playerHost.UnfreezePosition();
 
         // move ball above rim
         Vector3 temp = basketBallState.BasketBallTarget.transform.position;
         basketBall.Rigidbody.linearVelocity = Vector3.zero;
         basketBall.transform.position = new Vector3(temp.x, temp.y, temp.z);
         //reset
-        playerController.hasBasketball = false;
-        playerController.SetPlayerAnim("hasBasketball", false);
+        playerHost.HasBasketball = false;
+        playerHost.SetAnimationBool("hasBasketball", false);
     }
 
     // =================================== Launch ball function =======================================
     void Launch(Vector3 Target)
     {
-        playerController.Locked = true;
-        playerController.RigidBody.linearVelocity = Vector3.zero;
+        playerHost.Locked = true;
+        playerHost.RigidBody.linearVelocity = Vector3.zero;
 
         Vector3 projectileXZPos = transform.position;
         Vector3 targetXZPos = Target;
@@ -133,12 +134,12 @@ public class PlayerDunk : MonoBehaviour
         // launch the object by setting its initial velocity and flipping its state
         if (Math.Abs(globalVelocity.y) < 7 && Math.Abs(globalVelocity.z) < 7)
         {
-            playerController.RigidBody.linearVelocity = globalVelocity;
-            playerController.PlayAnim("inair_dunk");
+            playerHost.RigidBody.linearVelocity = globalVelocity;
+            playerHost.PlayAnimation("inair_dunk");
         }
 
         gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-        playerController.Locked = false;
+        playerHost.Locked = false;
 
     }
 

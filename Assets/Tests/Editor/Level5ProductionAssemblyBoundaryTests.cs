@@ -437,6 +437,22 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 35: proves <c>IPlayerDunkHost</c> - the narrow contract <c>PlayerDunk</c>
+    /// resolves instead of the concrete <c>PlayerController</c> (still <c>Assembly-CSharp</c>) - actually
+    /// compiles into <c>Level5.Player</c>, the same identity check
+    /// <see cref="PlayerControllerParticipantStateCompilesIntoLevel5Player"/> does for
+    /// <c>IPlayerControllerParticipantState</c>. <c>PlayerDunk</c> itself is not moved this slice - see
+    /// <see cref="Level5PlayerDunkDependencyGuardTests"/> for the dependency-cut it now satisfies.
+    /// </summary>
+    [Test]
+    public void PlayerDunkHostCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(IPlayerDunkHost).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

@@ -2564,6 +2564,140 @@ enclosing `.asmdef`. Group A is **22, up from 21** - `IPlayerControllerParticipa
 dependency appeared. `PlayerController` remains in `Assembly-CSharp` and stays blocked on the two
 remaining group B entries, `MatchRuntime` and `PlayerDunk`.
 
+**Slice 35 - `PlayerDunk`'s `PlayerController`, `PlayerIdentifier` and `GameLevelManager` dependencies
+removed; dependency-preparation only, no move** (2026-09-10): `PlayerDunk` stays in `Assembly-CSharp`
+this slice - only its three remaining `Assembly-CSharp` edges are cut, mirroring Slice 30's
+`PlayerAttackQueue` shape (dependency-cut now, pure ownership move later).
+
+- A new narrow contract, `IPlayerDunkHost` (`Assets/Scripts/player/Level5Player/IPlayerDunkHost.cs`),
+  names only what `PlayerDunk` reads and writes on the controller: `RigidBody`, `BasketballRimVector`,
+  `CurrentState`, `DunkStateHash`, `Locked`, `HasBasketball`, and six action forwards
+  (`SetCallBallLocked`, `FaceBasketballGoal`, `PlayAnimation`, `SetAnimationBool`, `FreezePosition`,
+  `UnfreezePosition`). `PlayerController` implements it - `RigidBody`/`CurrentState`/`Locked` are
+  satisfied implicitly by the existing public properties of the same shape; the rest are explicit
+  implementations forwarding to `bballRimVector`/`dunkState`/`hasBasketball` and the existing
+  `CheckIsPlayerFacingGoal()`/`PlayAnim()`/`SetPlayerAnim()`/`FreezePlayerPosition()`/
+  `UnFreezePlayerPosition()`/`callBallToPlayer.Locked` - the same explicit-implementation shape Slice 32
+  established for `IPlayerDamageReactionHost`.
+- `PlayerDunk` no longer resolves `GetComponent<PlayerController>()` (via the former cached
+  `PlayerIdentifier.playerController`), `GetComponent<PlayerIdentifier>()`, or
+  `GameLevelManager.instance.BasketballRimVector`. `Start()` now resolves
+  `GetComponent<IPlayerDunkHost>()` and `GetComponent<IPlayerControllerParticipantState>()` (the same
+  contract Slice 34 added) on the same participant GameObject, and reaches the human basketball through
+  `participant.BasketballObject.GetComponent<BasketBall>()`/`<BasketBallState>()` - the identical
+  resolution `PlayerController.Start()` itself already uses. `playerDunk()`'s rim-relative left/right
+  decision reads `playerHost.BasketballRimVector` in place of the direct `GameLevelManager` read;
+  `Launch()` and `TriggerDunkSequence()` read/write the same host members in place of the former
+  `playerController.*` calls.
+- `PlayerController.PlayerDunk` and `PlayerCollisions`' `TriggerDunkSequence()` call are untouched -
+  `PlayerDunk` keeps its class name, namespace, file path, GUID (`f30bfacdf55aac546906c63b39b58411`),
+  serialized fields, and public API (`playerDunk()`, `TriggerDunkSequence()`, `DunkRangeFeet`,
+  `PlayerCanDunk`) exactly as before.
+
+**Rim-source equivalence.** `PlayerController.bballRimVector` is set once, from `BindArenaContext`,
+called only from `SpawnCoordinator.BindHumanArenaContext` -> `GameLevelManager.Start()` after arena
+bootstrap resolves the final rim (Slice 21). `GameLevelManager._basketballRimVector` itself is written
+once, at `ArenaBootstrap.FindRimVector()`, before that same `BindHumanArenaContext` call - no other
+production write site exists. The two values are therefore the same finalized snapshot for the whole
+match, not a live-vs-cached divergence; reading `playerHost.BasketballRimVector` instead of
+`GameLevelManager.instance.BasketballRimVector` changes nothing observable.
+
+**Ownership unchanged.** `PlayerController` remains the sole owner of `bballRimVector`, `dunkState`,
+`hasBasketball`, `currentState`/`CurrentState`, and `Locked`; `IPlayerDunkHost` is a live view over that
+state, not a second owner. `PlayerIdentifier` remains the sole owner of the human basketball association,
+reached the same way Slice 34 already established. `PlayerDunk` still owns every dunk-decision algorithm
+(marker lookup and the missing-marker `PlayerCanDunk` gate, jump angle/dunk range defaults, the left/right
+decision, the ballistic velocity equation and its launch gate, `TriggerDunkSequence`'s freeze/animation/
+wait/ball-reset ordering) - none of that changed, only how it reaches controller/identifier state.
+
+**Preflight re-verification.** Baseline SHA (`c9517eaf9`) matched current `dev` exactly. `PlayerDunk`
+still had exactly the three documented `Assembly-CSharp` edges (`PlayerController` via
+`PlayerIdentifier.playerController`, `PlayerIdentifier` itself, `GameLevelManager`); its other project
+dependencies (`BasketBall`/`BasketBallState` -> `Level5.Basketball`, `SceneObjects` -> `Level5.Utility`)
+were already legal; `IPlayerControllerParticipantState.BasketballObject` still exposed the human
+`basketball` field; `PlayerController` still received the finalized arena rim through `BindArenaContext`
+with no later production write to a different `GameLevelManager.BasketballRimVector`;
+`PlayerController.PlayerDunk` and `PlayerCollisions`' `TriggerDunkSequence()` call were unchanged; the
+`PlayerDunk` GUID matched; and no existing interface (`IShooterActor`, `IPlayerDamageReactionHost`,
+`IPlayerControllerParticipantState`, `IPlayerIdleSniperRuntime`) already expressed the exact controller
+capabilities `PlayerDunk` needed.
+
+**No serialized field changed.** `PlayerDunk`'s `[SerializeField]` list, GUID, public API, and every
+dunk algorithm/animation name/ordering are unchanged; only the `playerController`/(implicit
+`PlayerIdentifier`) field became `playerHost` (`IPlayerDunkHost`), and the `Start()` basketball
+resolution now goes through `IPlayerControllerParticipantState` instead of `PlayerIdentifier` directly.
+No prefab or scene asset was opened or resaved.
+
+**Validation.** Headless Unity `6000.5.7f1` batch compile was not available in this environment (no
+valid Editor license) - not run; final diff/`.meta` inspection is the load-bearing evidence for this
+change, per the risk-based validation policy's environment-failure guidance. Focused EditMode coverage
+added, not yet executed against a licensed Editor for the same reason: `Level5ProductionAssemblyBoundaryTests`
+(`PlayerDunkHostCompilesIntoLevel5Player`, new, alongside the still-green
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp`); the new
+`Level5PlayerDunkDependencyGuardTests` (source-guard: zero live `PlayerController`/`PlayerIdentifier`/
+`GameLevelManager` references after comments/literals are stripped, the same shape as
+`Level5PlayerAttackQueueDependencyGuardTests`); the new `Level5PlayerDunkHostTests` (`PlayerController`
+implements `IPlayerDunkHost`; `RigidBody`/`BasketballRimVector`/`CurrentState`/`DunkStateHash`/`Locked`/
+`HasBasketball` round-trip the same public state every other caller uses; `SetCallBallLocked` forwards to
+the existing `CallBallToPlayer` component; `FreezePosition`/`UnfreezePosition` forward to the existing
+`RigidbodyFreezeHelper` calls as the one representative action-forwarding path); and the new
+`Level5PlayerDunkSeamTests` (`Start()` resolves `IPlayerDunkHost`/`IPlayerControllerParticipantState`
+rather than the concrete types, against a single fake host component; the same `BasketBall`/
+`BasketBallState` the participant exposes are the ones `PlayerDunk` resolves; the rim-relative left/right
+decision reads the host's `BasketballRimVector` - proven by driving `playerDunk()` with the rim on each
+side and asserting the resulting launch velocity's sign; `Launch()`'s host locking/`RigidBody`/
+`inair_dunk` animation calls; and `TriggerDunkSequence()`'s freeze/`dunk`-animation/state-wait/ball-reset/
+`hasBasketball`-reset sequence, drained step-by-step the same way `Level5PlayerDamageReactionsTests`
+already does). Per the risk-based validation policy, full EditMode/PlayMode were not re-run; PR CI owns
+that broader regression coverage. `validate-repository.ps1` **was** run and passed - it caught three new
+test files initially missing their `.meta` before they were added, exactly the class of defect that
+invariant guards.
+
+Not moved in this slice: `PlayerDunk` itself, `PlayerController`, `PlayerIdentifier`, `GameLevelManager`,
+or `MatchRuntime`.
+
+**`PlayerDunk`'s own dependency closure, freshly measured (2026-09-10).** `PlayerDunk.cs` stripped of
+comments and string/char literals, its remaining project-type identifiers resolved to their nearest
+enclosing `.asmdef`: `IPlayerDunkHost` and `IPlayerControllerParticipantState` resolve to
+`Level5.Player` (both for the first time on this file, this slice); `BasketBall`/`BasketBallState`
+resolve to `Level5.Basketball`; `SceneObjects` resolves to `Level5.Utility` - all three already legal,
+unchanged by this slice. That leaves zero remaining `Assembly-CSharp` dependencies:
+
+```text
+PlayerDunk Assembly-CSharp dependencies: 3 -> 0
+```
+
+`PlayerDunk` is therefore dependency-closed - the next candidate for a pure ownership move into
+`Level5.Player`, the same shape Slice 31 was for `PlayerAttackQueue` after Slice 30. Not implemented
+this slice:
+
+```text
+PlayerDunk
+        ↓
+Level5.Player
+```
+
+**`PlayerController` dependency closure, freshly remeasured after this slice (2026-09-10).**
+`PlayerController.cs` was not edited beyond adding the `IPlayerDunkHost` implementation, and
+`IPlayerDunkHost` compiles into `Level5.Player` - already a legal reference class, and not a new type
+`PlayerController` itself names (it satisfies the interface, it does not reference the interface type
+by name anywhere in its own body). Group A and Group B are therefore unchanged by construction;
+re-verified anyway by the same scan as prior slices:
+
+```text
+PlayerController blockers: 2 -> 2
+```
+
+**B. Still compiled into `Assembly-CSharp` - the actual remaining blockers (2, unchanged).**
+
+- **match/session runtime:** `MatchRuntime` (`Assets/Scripts/game manager/`)
+- **player-local components:** `PlayerDunk` (`Assets/Scripts/player/`)
+
+`PlayerDunk` stays in group B because it stays in `Assembly-CSharp` itself this slice, exactly as
+expected - becoming dependency-closed does not change which assembly it currently compiles into.
+`PlayerController` remains in `Assembly-CSharp` and stays blocked on the same two group B entries,
+`MatchRuntime` and `PlayerDunk`.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
