@@ -3297,6 +3297,21 @@ menu-manager types instead. 2c's exit condition is otherwise unchanged from the 
 `menu_start`/`game manager`/`menu_options`/`menu_credits`/`menu_stats`/`menu_login`/`analytics` types
 above still need to migrate before any of these eight can normalize.
 
+**Slice 40 (2026-09-11) hardened `Level5GameplayPlayModeTests` against PlayMode assembly execution
+order.** Slice 39 normalized the fixture as the first dependency-clean gameplay PlayMode fixture, but
+review found its singleton regression (`ASceneScopedSingletonReleasesItsStaticWhenDestroyed`)
+implicitly inherited a clean `MatchController.instance` from `GameplayLevelUnpauseTests`'s
+`UnityTearDown`, in the asmdef-free `PlayModeGameplay` workaround. The passing full-suite result
+therefore depended on Unity's PlayMode runner happening to execute `Assembly-CSharp`'s tests before
+`Level5.PlayModeTests`'s, not on anything that enforced that order. Slice 40 adds a
+`[UnitySetUp]` (`EnsureMatchControllerIsolation`) to `Level5GameplayPlayModeTests` that destroys any
+inherited `MatchController` component and yields a frame for its normal `OnDestroy` to clear the
+static, before asserting the static is clear — no direct `MatchController.instance = null` reset. No
+production source or asmdef changed, no test moved; the eight-file `PlayModeGameplay` workaround is
+unchanged. Neither fixture now documents or requires a specific execution order between test
+assemblies. Phase 2c remains in progress: this slice removed a suite-order dependency, not a
+dependency-closure blocker, so the remaining-eight table above is unchanged.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;

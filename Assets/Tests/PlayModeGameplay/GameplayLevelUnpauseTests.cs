@@ -24,9 +24,10 @@ public class GameplayLevelUnpauseTests
         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
 
     /// <summary>
-    /// This test loads real scenes, so it has to hand the runner a clean slate back. Without this it
-    /// leaves level_01_scrapyard resident, and its <c>game_rules</c> MatchController holds the
-    /// singleton static that <c>Level5GameplayPlayModeTests</c> asserts on next.
+    /// This test loads real scenes, so it has to hand the runner a clean slate back: unload the
+    /// gameplay scene it loaded and give the destroyed scene managers - level_01_scrapyard's
+    /// <c>game_rules</c> MatchController included - their OnDestroy frame, so this fixture never
+    /// leaks scene or runtime state into whichever PlayMode fixture runs next.
     /// </summary>
     [UnityTearDown]
     public IEnumerator TearDown()

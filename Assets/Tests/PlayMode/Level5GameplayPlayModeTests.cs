@@ -22,6 +22,34 @@ public class Level5GameplayPlayModeTests
 {
     private InMemoryVersusSeriesRepository repository;
 
+    /// <summary>
+    /// Clears any <c>MatchController</c> this fixture inherited from another PlayMode fixture, so the
+    /// singleton regression below never depends on which fixture ran first.
+    ///
+    /// The destroy/recover branch below is not exercised while the PlayMode runner happens to run
+    /// <c>GameplayLevelUnpauseTests</c> first (it already clears the static, so <c>existing</c> is
+    /// null here); its correctness rests on the identical destroy-and-yield-a-frame pattern proven by
+    /// <see cref="ASceneScopedSingletonReleasesItsStaticWhenDestroyed"/> below, not on this method
+    /// having been observed to take that branch.
+    /// </summary>
+    [UnitySetUp]
+    public IEnumerator EnsureMatchControllerIsolation()
+    {
+        MatchController existing = MatchController.instance;
+        if (existing == null)
+        {
+            yield break;
+        }
+
+        Object.Destroy(existing);
+        yield return null;
+
+        Assert.That(
+            MatchController.instance,
+            Is.Null,
+            "Level5GameplayPlayModeTests inherited a live MatchController from another fixture.");
+    }
+
     [SetUp]
     public void SetUp()
     {
@@ -77,12 +105,9 @@ public class Level5GameplayPlayModeTests
     ///
     /// An edit-mode test cannot do this - it needs a real destroy, which needs a frame.
     ///
-    /// Assumes no other live <c>MatchController</c> is already holding the static when this runs -
-    /// see <c>GameplayLevelUnpauseTests</c>'s teardown comment, which exists to guarantee that. That
-    /// fixture compiles into <c>Assembly-CSharp</c> while this one compiles into
-    /// <c>Level5.PlayModeTests</c>, so the ordering this test depends on holds only because Unity's
-    /// PlayMode runner happens to run <c>Assembly-CSharp.dll</c>'s tests before this assembly's, not
-    /// because anything enforces it.
+    /// <see cref="EnsureMatchControllerIsolation"/> clears any inherited <c>MatchController</c> before
+    /// this runs, so the assertion below depends only on this fixture's own setup, not on which other
+    /// PlayMode fixture happened to run first.
     /// </summary>
     [UnityTest]
     public IEnumerator ASceneScopedSingletonReleasesItsStaticWhenDestroyed()
