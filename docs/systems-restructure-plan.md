@@ -3487,6 +3487,70 @@ blockers:
 unchanged from the Slice 39/42 audits. Slice 43 did not migrate `GameLevelManager`, `MatchRuntime`,
 `GameRules`, or the menu managers.
 
+**Slice 44 (2026-09-11) moved `Level5BasketBallShotMadeCompositionPlayModeTests.cs`/`.cs.meta`**
+(audited against `dev` SHA `2be7f2d1fc5a35b00def7b42160aca2522e0331f`, GUID
+`3636e7d4e765497482ccc22320a67221` preserved) from `Assets/Tests/PlayModeGameplay` into
+`Assets/Tests/PlayMode`, reusing the Slice 41-43 `GameplayScenePlayModeHarness`/
+`RealScenePlayModeTestSupport` helpers unchanged. `StartManager`/`Pause` bootstrap was replaced with
+`GameplayScenePlayModeHarness.EnterPlayableGameplayScene`; the fixture's own bounded 10-frame settle
+after the harness returns was kept, for the same reason as the Slice 42/43 fixtures — a live
+`PlayerController` proves the player spawned but not that `GameLevelManager.Awake()`'s own
+`BindMatchContext` composition step has finished, and current source offered no stronger deterministic
+signal specific to that to assert on instead.
+
+`GameLevelManager` and `MatchRuntime` were this fixture's blockers alongside `StartManager`/`Pause` (the
+Slice 43 audit had already flagged `MatchRuntime` for this file). Re-verified from current source before
+migrating: `GameLevelManager.Awake()` reads `_rules = MatchRuntime.Rules` and `_modeId =
+MatchRuntime.ModeId` (`Assets/Scripts/game manager/GameLevelManager.cs:85-87`), then calls
+`shotMade.BindMatchContext(_rules, _modeId)` (line 232); `MatchRuntime.Rules`/`MatchRuntime.ModeId`
+answer with `ActiveMatch.Configuration.Rules`/`.ModeId` directly (not rebuilt) whenever
+`ActiveMatch.IsActive` (`Assets/Scripts/game manager/MatchRuntime.cs:24-34,46-48`). `ActiveMatch` itself
+lives in `Assets/Scripts/game manager/Level5Match/`, which is inside the `Level5.Match.asmdef` boundary
+(unlike `GameLevelManager.cs`/`MatchRuntime.cs`, which sit directly under `Assets/Scripts/game manager/`
+with no covering asmdef and stay in `Assembly-CSharp`) and already reachable through
+`Level5.PlayModeTests`'s existing `Level5.Match` reference. This let the migrated fixture assert against
+the typed `ActiveMatch.Configuration.Rules`/`.ModeId` directly instead of `GameLevelManager.instance
+.Rules`/`MatchRuntime.ModeId`, dropping both `Assembly-CSharp` blockers with no reflection-by-name
+workaround needed for the expected-value side of either assertion. `BasketBallShotMade` itself compiles
+into `Level5.Basketball`, already reachable, so it is found and read exactly as before — its private
+`hasBoundMatchContext`/`matchRules`/`gameModeId` fields still via
+`RealScenePlayModeTestSupport.GetField`/`GetField<T>`, and the rules comparison stays `ReferenceEquals`
+rather than value equality. The compiler-backed exact-type `BasketBallShotMade.BindMatchContext`
+bind/rebind/fail-closed proof remains unchanged in EditMode's `Level5BasketBallShotMadeTests`, and the
+permanent no-`MatchRuntime`-reference guard remains unchanged in
+`Level5BasketBallShotMadeDependencyGuardTests` (that guard targets `BasketBallShotMade.cs` itself, which
+this slice did not touch).
+
+One `<see cref>` reference in the moved fixture's header (`Level5BasketBallShotMadeTests`) named a type
+no longer visible across the `Level5.PlayModeTests` assembly boundary and was changed to a `<c>` tag;
+`<see cref="Level5MoneyBallStateCompositionPlayModeTests"/>`, `<see
+cref="Level5ShotMarkerSessionCompositionPlayModeTests"/>`, and `<see
+cref="GameplayScenePlayModeHarness"/>` stayed `<see cref>` since all three are already in
+`Level5.PlayModeTests`.
+
+`Level5.PlayModeTests`'s `references` were unchanged by this slice — `ActiveMatch`/`MatchConfiguration`/
+`ResolvedMatchRules`/`GameModeId` (`Level5.Match`/`Level5.Core.Match`, both already referenced) and
+`BasketBallShotMade` (`Level5.Basketball`, already referenced) were all already reachable; no new
+dependency was required. No production `.cs`, runtime `.asmdef`, scene, or prefab changed.
+
+Validation (pinned `6000.5.7f1` editor): the migrated fixture alone (1/1 passed), `Level5BasketBallShotMadeTests`
++ `Level5BasketBallShotMadeDependencyGuardTests` EditMode (16/16 passed), the full `Level5.PlayModeTests`
+assembly (11/11 passed, up from the prior 10), the complete unfiltered PlayMode suite (17/17 passed,
+unchanged), the complete EditMode suite (1206/1206 passed, unchanged), and
+`scripts/validate-repository.ps1` (passed).
+
+The asmdef-free `PlayModeGameplay` workaround shrinks from four files to three. Re-audited line by line
+against current source for this slice rather than carried forward:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+| `Level5MoneyBallStateCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules`, `GameLevelManager` |
+
+All three were re-verified unchanged from the Slice 39/42/43 audits. Slice 44 did not migrate
+`GameLevelManager`, `MatchRuntime`, `GameRules`, `StartManager`, `Pause`, or the menu managers.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
