@@ -3373,6 +3373,60 @@ this slice — none of these six files changed in Slice 41, and Slice 41 did not
 not a generalization these six can reuse as-is, since several of them assert `StartManager`/`Pause`
 composition behaviour directly rather than treating either as incidental.
 
+**Slice 42 (2026-09-11) moved `Level5BasketBallShotTelemetryCompositionPlayModeTests.cs`/`.cs.meta`**
+(audited against `dev` SHA `3c1c72dfc9f14dbaa28f800cb8cd354c8e74d6fe`, GUID
+`99005b7269011ba40ad1d60b1b332171` preserved) from `Assets/Tests/PlayModeGameplay` into
+`Assets/Tests/PlayMode`, reusing both Slice 41 helpers unchanged. `StartManager`/`Pause` bootstrap was
+replaced with `GameplayScenePlayModeHarness.EnterPlayableGameplayScene`, the same as
+`BasketballVisibilityTests`/`PlayerMovementPhysicsTests`; the fixture's own bounded 10-frame settle
+after the harness returns was kept, since a live `PlayerController` proves the player spawned but not
+that every ball's own `SpawnCoordinator.GiveBall` composition step (the telemetry bind included) has
+finished, and current source offered no stronger deterministic signal for that specific to assert on
+instead. Scene log-noise suppression, scene teardown, and `Time.timeScale` restoration now go through
+`RealScenePlayModeTestSupport` (`IgnoreSceneLogNoise`/`UnloadAllLoadedScenes`) rather than the fixture's
+own hand-rolled copies of both.
+
+`AnaylticsManager` was this fixture's third blocker and needed different handling than
+`StartManager`/`Pause`: the callback's declaring-type/method identity is still part of what this test
+asserts, so it could not simply be dropped like the incidental bootstrap plumbing. It also does not
+need a compile-time reference to assert that identity — the migrated fixture now inspects the already
+scene-bound delegate through runtime reflection instead: `callback.Method.DeclaringType?.Name ==
+"AnaylticsManager"` and `callback.Method.Name == "PlayerShoot"`, in place of
+`typeof(AnaylticsManager)`/`nameof(AnaylticsManager.PlayerShoot)`. This is deliberately a weaker,
+test-only string check than the EditMode assertion it complements: `Level5BasketBallShotTelemetryTests
+.PrimaryHumanBallReceivesAnaylticsManagerPlayerShootAsItsTelemetryCallback` (`Assets/Tests/Editor`)
+keeps the compiler-backed `typeof`/`nameof` assertion against a hand-built `PlayerRegistry`, so the
+two suites together still prove both halves of the original contract — the exact callback production
+composition chooses, and that callback actually reaching real scene-spawned human basketballs. Two
+`<see cref>` references in the moved fixture's header (`Level5MoneyBallStateCompositionPlayModeTests`,
+`Level5BasketBallShotTelemetryTests`) name types that are no longer visible across the
+`Level5.PlayModeTests` assembly boundary (both remain asmdef-free/EditMode-only); both were changed to
+`<c>` tags rather than adding a reference for documentation visibility alone.
+
+`Level5.PlayModeTests`'s `references` were unchanged by this slice — `BasketBall`/`BasketBallAuto` were
+already reachable through the existing `Level5.Basketball` reference, and no new dependency was
+required. No production `.cs`, runtime `.asmdef`, scene, or prefab changed.
+
+Validation: the migrated fixture alone (1/1 passed), `Level5BasketBallShotTelemetryTests` EditMode
+(10/10 passed), the full `Level5.PlayModeTests` assembly (9/9 passed, up from the prior 8), the complete
+unfiltered PlayMode suite (17/17 passed, unchanged from the prior baseline since this only moved a test
+between assemblies), the complete EditMode suite (1206/1206 passed), and `scripts/validate-repository.ps1`
+(passed) — all run against the pinned `6000.5.7f1` editor.
+
+The asmdef-free `PlayModeGameplay` workaround shrinks from six files to five. Re-audited against current
+source for this slice rather than carried forward:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5BasketBallShotMadeCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameLevelManager` |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+| `Level5MoneyBallStateCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules`, `GameLevelManager` |
+| `Level5ShotMarkerSessionCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules` |
+
+None of these five changed in Slice 42, and Slice 42 did not migrate `GameRules`, `GameLevelManager`,
+analytics, or the menu managers, so their blockers are unchanged from the Slice 39/41 audits.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
