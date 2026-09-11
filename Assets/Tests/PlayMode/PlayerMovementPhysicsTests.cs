@@ -1,9 +1,7 @@
 #if UNITY_INCLUDE_TESTS
 using System.Collections;
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 /// <summary>
@@ -19,35 +17,16 @@ using UnityEngine.TestTools;
 /// </summary>
 public class PlayerMovementPhysicsTests
 {
-    private const BindingFlags Flags =
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
-
     [SetUp]
     public void IgnoreSceneLogNoise()
     {
-        // These drive real scenes end to end, and those scenes log errors of their own that have
-        // nothing to do with what is under test. Without this the runner turns any stray Debug.LogError
-        // into a failure for whichever test happened to be running.
-        LogAssert.ignoreFailingMessages = true;
+        RealScenePlayModeTestSupport.IgnoreSceneLogNoise();
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Time.timeScale = 1f;
-
-        Scene blank = SceneManager.CreateScene("player-movement-test-cleanup");
-        SceneManager.SetActiveScene(blank);
-        for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-        {
-            Scene scene = SceneManager.GetSceneAt(i);
-            if (scene != blank && scene.isLoaded)
-            {
-                yield return SceneManager.UnloadSceneAsync(scene);
-            }
-        }
-
-        yield return null;
+        yield return RealScenePlayModeTestSupport.UnloadAllLoadedScenes("player-movement-test-cleanup");
     }
 
     /// <summary>
@@ -100,9 +79,9 @@ public class PlayerMovementPhysicsTests
         PlayerController controller = player.GetComponent<PlayerController>();
         Assert.That(controller, Is.Not.Null, "No PlayerController on the player.");
 
-        float jumpForce = Field<CharacterProfile>(controller, "characterProfile") != null
-            ? Field<CharacterProfile>(controller, "characterProfile").JumpForce
-            : 0f;
+        CharacterProfile characterProfile =
+            RealScenePlayModeTestSupport.GetField<CharacterProfile>(controller, "characterProfile");
+        float jumpForce = characterProfile != null ? characterProfile.JumpForce : 0f;
 
         Vector3 start = player.position;
         controller.PlayerJump();
@@ -166,12 +145,6 @@ public class PlayerMovementPhysicsTests
         PlayerController controller = null;
         yield return GameplayScenePlayModeHarness.EnterPlayableGameplayScene(result => controller = result);
         onReady(controller == null ? null : controller.GetComponent<Rigidbody>());
-    }
-
-    private static T Field<T>(object target, string name) where T : class
-    {
-        FieldInfo f = target.GetType().GetField(name, Flags);
-        return f == null ? null : f.GetValue(target) as T;
     }
 }
 #endif

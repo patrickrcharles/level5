@@ -22,13 +22,20 @@ public static class GameplayScenePlayModeHarness
     private const string StartButtonName = "press_start";
 
     /// <summary>
-    /// Combined budget for the whole launch: waiting for the start menu's UI to exist, submitting
+    /// Budget for reaching gameplay at all: waiting for the start menu's UI to exist and submitting
     /// "press_start" (possibly more than once, if production bounces back to the start scene because
-    /// game setup was not ready yet), and waiting for gameplay to produce a player once the active
-    /// scene actually leaves the start scene. Generous because it stands in for what used to be two
-    /// independent 30s budgets (menu readiness, then scene transition) plus an unbounded player search.
+    /// game setup was not ready yet). Generous because it stands in for what used to be two
+    /// independent 30s budgets (menu readiness, then scene transition).
     /// </summary>
-    private const float LaunchAndReadyTimeoutSeconds = 90f;
+    private const float LaunchTimeoutSeconds = 90f;
+
+    /// <summary>
+    /// Minimum budget guaranteed for waiting for gameplay to produce a player once the active scene
+    /// actually leaves the start scene, applied on top of whatever remains of
+    /// <see cref="LaunchTimeoutSeconds"/> so a launch phase that used most of its budget on retries
+    /// cannot starve this final step, which used to be unbounded.
+    /// </summary>
+    private const float MinimumGameplayReadySeconds = 30f;
 
     /// <summary>
     /// Frames to wait after a submit before resubmitting, so a launch that is already progressing does
@@ -55,7 +62,7 @@ public static class GameplayScenePlayModeHarness
         yield return null;
         yield return null;
 
-        float deadline = Time.realtimeSinceStartup + LaunchAndReadyTimeoutSeconds;
+        float deadline = Time.realtimeSinceStartup + LaunchTimeoutSeconds;
 
         // True once this launch attempt has settled (settle-waited, suppressed Pause, restored
         // timeScale) after leaving the start scene. Reset whenever the active scene is the start scene
@@ -63,6 +70,11 @@ public static class GameplayScenePlayModeHarness
         // instead of skipping straight to the player search with a stale Pause/timeScale state.
         bool settled = false;
         PlayerController player = null;
+
+        // True once at least one "press_start" submission was actually issued, so the failure
+        // message below can tell "submitted but the scene never moved" apart from "never even found
+        // an EventSystem/press_start to submit to".
+        bool everSubmitted = false;
 
         while (Time.realtimeSinceStartup < deadline)
         {
@@ -79,6 +91,7 @@ public static class GameplayScenePlayModeHarness
                             pressStart,
                             new BaseEventData(EventSystem.current),
                             ExecuteEvents.submitHandler);
+                        everSubmitted = true;
                     }
                 }
 
@@ -121,6 +134,15 @@ public static class GameplayScenePlayModeHarness
                 Time.timeScale = 1f;
                 yield return null;
                 settled = true;
+
+                // Guarantee the player-spawn wait gets its own minimum budget, independent of how
+                // much of the launch budget earlier retries/bounces already consumed. Only ever
+                // extends the deadline, never shortens it.
+                float minimumGameplayReadyDeadline = Time.realtimeSinceStartup + MinimumGameplayReadySeconds;
+                if (minimumGameplayReadyDeadline > deadline)
+                {
+                    deadline = minimumGameplayReadyDeadline;
+                }
             }
 
             player = UnityEngine.Object.FindAnyObjectByType<PlayerController>();
@@ -136,11 +158,12 @@ public static class GameplayScenePlayModeHarness
         // there at the deadline reports the accurate "never left" failure instead of a stale "left"
         // from an earlier, transient departure.
         bool leftStartScene = SceneManager.GetActiveScene().name != Constants.SCENE_NAME_level_00_start;
-        Assert.That(
-            leftStartScene,
-            Is.True,
-            "the start menu never launched gameplay - 'press_start' submissions never moved the "
-                + "active scene away from " + Constants.SCENE_NAME_level_00_start);
+        string launchFailureMessage = everSubmitted
+            ? "the start menu never launched gameplay - 'press_start' submissions never moved the "
+                + "active scene away from " + Constants.SCENE_NAME_level_00_start
+            : "the start menu never launched gameplay - never found an EventSystem and a '"
+                + StartButtonName + "' object to submit to";
+        Assert.That(leftStartScene, Is.True, launchFailureMessage);
         Assert.That(
             player,
             Is.Not.Null,
