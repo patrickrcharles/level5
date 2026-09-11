@@ -1,7 +1,5 @@
 #if UNITY_INCLUDE_TESTS
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using Level5.Core.Match;
 using NUnit.Framework;
 using UnityEngine;
@@ -31,9 +29,13 @@ using UnityEngine.TestTools;
 /// instead of this fixture's own <c>StartManager</c>/<c>Pause</c> handling, so it compiles into
 /// <c>Level5.PlayModeTests</c> with no <c>Assembly-CSharp</c> reference. The canonical runtime
 /// <c>GameRules</c> instance is resolved independently of any marker's own binding (see
-/// <see cref="ResolveRuntimeGameRulesInstance"/>), so the session-identity assertion below stays
-/// non-circular; the compiler-backed exact-type <c>GameRules</c> composition proof stays in EditMode's
-/// <c>Level5BasketballShotMarkerSessionTests</c>.
+/// <c>RealScenePlayModeTestSupport.ResolveRuntimeGameRulesInstance</c>), so the session-identity
+/// assertion below stays non-circular; the compiler-backed exact-type <c>GameRules</c> composition
+/// proof stays in EditMode's <c>Level5BasketballShotMarkerSessionTests</c>.
+///
+/// AUD-012 Phase 2c Slice 45: the resolver itself moved into
+/// <see cref="RealScenePlayModeTestSupport"/> once <c>Level5MoneyBallStateCompositionPlayModeTests</c>
+/// became a second real consumer of the identical operation.
 /// </summary>
 public class Level5ShotMarkerSessionCompositionPlayModeTests
 {
@@ -63,7 +65,7 @@ public class Level5ShotMarkerSessionCompositionPlayModeTests
             yield return null;
         }
 
-        object gameRulesInstance = ResolveRuntimeGameRulesInstance();
+        object gameRulesInstance = RealScenePlayModeTestSupport.ResolveRuntimeGameRulesInstance();
 
         BasketBallShotMarker[] markers = Object.FindObjectsByType<BasketBallShotMarker>(
             FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -93,48 +95,6 @@ public class Level5ShotMarkerSessionCompositionPlayModeTests
                 Is.True,
                 $"BasketBallShotMarker '{marker.gameObject.name}' is bound to match rules that are not GameRules' own resolved rules reference");
         }
-    }
-
-    /// <summary>
-    /// Resolves the surviving runtime <c>GameRules</c> instance independently of any marker's own
-    /// <c>markerSession</c> binding, so the session-identity assertion above is not partially circular
-    /// (deriving the expected value from the same field being verified). Finds every live
-    /// <see cref="MonoBehaviour"/> whose runtime type name is exactly <c>"GameRules"</c> - including
-    /// inactive ones, the same fail-closed <see cref="FindObjectsInactive.Include"/> rule the marker
-    /// scan above uses, since <c>GameRules</c> itself is never deactivated but this keeps the two scans
-    /// consistent - then reads that type's own <c>public static GameRules instance</c> field through
-    /// reflection as the authoritative surviving instance. Fails explicitly rather than guessing if zero
-    /// components are found, or if the resolved static instance does not correspond to any discovered
-    /// live component.
-    /// </summary>
-    private static object ResolveRuntimeGameRulesInstance()
-    {
-        MonoBehaviour[] all = Object.FindObjectsByType<MonoBehaviour>(
-            FindObjectsInactive.Include, FindObjectsSortMode.None);
-
-        System.Type gameRulesType = null;
-        List<MonoBehaviour> candidates = new List<MonoBehaviour>();
-        foreach (MonoBehaviour behaviour in all)
-        {
-            if (behaviour != null && behaviour.GetType().Name == "GameRules")
-            {
-                gameRulesType = behaviour.GetType();
-                candidates.Add(behaviour);
-            }
-        }
-
-        Assert.That(candidates.Count, Is.GreaterThan(0), "no live GameRules component was found in the real gameplay scene");
-
-        FieldInfo instanceField = gameRulesType.GetField("instance", BindingFlags.Public | BindingFlags.Static);
-        Assert.That(instanceField, Is.Not.Null, "GameRules must declare a public static 'instance' field");
-
-        object instance = instanceField.GetValue(null);
-        Assert.That(instance, Is.Not.Null, "the real gameplay scene must have produced a live GameRules instance");
-        Assert.That(instance.GetType().Name, Is.EqualTo("GameRules"));
-        Assert.That(candidates.Contains(instance as MonoBehaviour), Is.True,
-            "GameRules.instance must be one of the live GameRules components found in the scene");
-
-        return instance;
     }
 }
 #endif
