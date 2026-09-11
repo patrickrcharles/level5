@@ -3256,6 +3256,47 @@ remaining `Assembly-CSharp` dependency set is now 4 types, down from 5 (group B 
 remeasured closure scan above). This is a diagnostic finding only, `PlayerController` is not moved in
 this PR.
 
+**Current checkpoint — after Slices 38/39 (2026-09-10), superseding the "`PlayerController` is the
+only remaining blocker" framing threaded through Slices 12-32 above.** Slice 38 (Phase 2b, not a 2c
+slice itself) moved `PlayerController` into `Level5.Player`. A fresh file-by-file audit of the
+workaround folder done for Slice 39 found that framing was no longer a sufficient description of
+current dependencies: several files were already blocked on other `Assembly-CSharp` types
+independently of `PlayerController`, and `Level5GameplayPlayModeTests.cs` — the file whose own header
+comment had tracked its remaining blockers since Slice 19 — turned out to be fully dependency-clean
+once re-audited against current source, with no live reference to `PlayerController` left in it at
+all. Its production dependencies now resolve as: `MatchController`/`MatchCatalogs`/`ActiveMatch`
+(`Level5.Match`); `VersusRuntime`/`VersusCatalogs`/`ActiveVersusAttempt`/`VersusMatchReporter`
+(`Level5.Versus`); `GameStats` (`Level5.Basketball`); and the `Level5.Core.Match`/`Level5.Core.Versus`/
+`Level5.Core.Versus.Persistence` model and repository types (`Level5.Core`).
+
+**Slice 39 (2026-09-10) moved `Level5GameplayPlayModeTests.cs`/`.cs.meta`** (GUID
+`b9fe884d9d919e143bf50dc3fec652c1` preserved) from `Assets/Tests/PlayModeGameplay` into
+`Assets/Tests/PlayMode`, onto the normal `Level5.PlayModeTests` asmdef, whose `references` grew from
+just `Level5.Core` to `["Level5.Core", "Level5.Match", "Level5.Versus", "Level5.Basketball"]` — the
+four assemblies the fixture's production types directly resolve through per the paragraph above. No
+production source or runtime asmdef changed. The asmdef-free workaround folder shrinks from nine files
+to eight. This is the first fixture normalized under 2c; 2c is **in progress / partially unblocked**,
+not complete — the remaining eight files still have direct, live dependencies on `Assembly-CSharp`
+types, freshly re-verified against current source rather than carried forward from earlier slices:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `BasketballVisibilityTests.cs` | `StartManager`, `Pause` (`PlayerController` reference itself now resolves through `Level5.Player`, but is no longer this file's blocker) |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5BasketBallShotMadeCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameLevelManager` (`BasketBallShotMade` itself already lives in `Level5.Basketball`, not a blocker) |
+| `Level5BasketBallShotTelemetryCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `AnaylticsManager` |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+| `Level5MoneyBallStateCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules`, `GameLevelManager` |
+| `Level5ShotMarkerSessionCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules` |
+| `PlayerMovementPhysicsTests.cs` | `StartManager`, `Pause` (`PlayerController` reference itself now resolves through `Level5.Player`, but is no longer this file's blocker) |
+
+None of the remaining eight are currently dependency-clean, so this checkpoint reveals no immediate
+Slice 40 candidate: `StartManager`/`Pause` (the start-menu bootstrap and pause overlay) are the shared
+blocker for seven of the eight, and `Level5MenuScreenPlayModeTests.cs` is blocked on four separate
+menu-manager types instead. 2c's exit condition is otherwise unchanged from the framing above: the
+`menu_start`/`game manager`/`menu_options`/`menu_credits`/`menu_stats`/`menu_login`/`analytics` types
+above still need to migrate before any of these eight can normalize.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;

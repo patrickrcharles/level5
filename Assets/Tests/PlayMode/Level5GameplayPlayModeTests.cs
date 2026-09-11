@@ -10,22 +10,13 @@ using UnityEngine.TestTools;
 /// <summary>
 /// Play-mode coverage for runtime gameplay code.
 ///
-/// This file exists to prove something that was not true before AUD-059: that gameplay code can be
-/// tested at all. Everything in <c>Assets/Scripts</c> not yet migrated to a Phase 2b assembly
-/// compiles into the predefined <c>Assembly-CSharp</c>, and a Unity assembly definition cannot
-/// reference a predefined assembly - so <c>Level5.PlayModeTests</c> structurally could not see
-/// whatever of that remained. As of AUD-012 Phase 2b Slice 19, that is down to <c>MatchCatalogs</c>
-/// (<c>menu_start</c>) and <c>PlayerController</c> (<c>player</c>), both still needed directly below;
-/// everything else this file touches (<c>GameStats</c>, <c>MatchController</c>, <c>ActiveMatch</c>,
-/// <c>ActiveVersusAttempt</c>, <c>VersusMatchReporter</c>) has since migrated and would compile
-/// through a normal asmdef reference today.
-///
-/// It lives in a folder with **no** asmdef, which is what lets it compile alongside the code it
-/// tests, and the whole file is behind <c>UNITY_INCLUDE_TESTS</c> so none of it can reach a
-/// shipping player build.
-///
-/// The structural fix - splitting <c>Assets/Scripts</c> into real assemblies - is still open. This
-/// unblocks testing without waiting for it.
+/// This file used to live in the asmdef-free <c>Assets/Tests/PlayModeGameplay</c> workaround because
+/// one of the production types below - <c>MatchCatalogs</c> - still compiled into the predefined
+/// <c>Assembly-CSharp</c>, which no Unity assembly definition can reference (the workaround folder as
+/// a whole also blocked on <c>PlayerController</c>, but no test in this specific file ever referenced
+/// it). All production types directly used by this fixture now belong to explicit runtime assemblies,
+/// so the fixture can compile under Level5.PlayModeTests and no longer needs the asmdef-free
+/// gameplay-test workaround.
 /// </summary>
 public class Level5GameplayPlayModeTests
 {
@@ -85,6 +76,13 @@ public class Level5GameplayPlayModeTests
     /// The AUD-060 fix, checked the only way it can be: destroy the object and look at the static.
     ///
     /// An edit-mode test cannot do this - it needs a real destroy, which needs a frame.
+    ///
+    /// Assumes no other live <c>MatchController</c> is already holding the static when this runs -
+    /// see <c>GameplayLevelUnpauseTests</c>'s teardown comment, which exists to guarantee that. That
+    /// fixture compiles into <c>Assembly-CSharp</c> while this one compiles into
+    /// <c>Level5.PlayModeTests</c>, so the ordering this test depends on holds only because Unity's
+    /// PlayMode runner happens to run <c>Assembly-CSharp.dll</c>'s tests before this assembly's, not
+    /// because anything enforces it.
     /// </summary>
     [UnityTest]
     public IEnumerator ASceneScopedSingletonReleasesItsStaticWhenDestroyed()

@@ -380,7 +380,7 @@ For step-by-step use, see [Versus Dev Console Guide](versus-dev-console-guide.md
 ## 13. Tests
 
 The versus suite lives in `Assets/Tests/Editor`, with runtime smoke coverage in
-`Assets/Tests/PlayModeGameplay`:
+`Assets/Tests/PlayMode/Level5GameplayPlayModeTests.cs`:
 
 | File | Covers |
 | --- | --- |
