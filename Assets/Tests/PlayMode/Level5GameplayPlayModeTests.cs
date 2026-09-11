@@ -10,22 +10,12 @@ using UnityEngine.TestTools;
 /// <summary>
 /// Play-mode coverage for runtime gameplay code.
 ///
-/// This file exists to prove something that was not true before AUD-059: that gameplay code can be
-/// tested at all. Everything in <c>Assets/Scripts</c> not yet migrated to a Phase 2b assembly
-/// compiles into the predefined <c>Assembly-CSharp</c>, and a Unity assembly definition cannot
-/// reference a predefined assembly - so <c>Level5.PlayModeTests</c> structurally could not see
-/// whatever of that remained. As of AUD-012 Phase 2b Slice 19, that is down to <c>MatchCatalogs</c>
-/// (<c>menu_start</c>) and <c>PlayerController</c> (<c>player</c>), both still needed directly below;
-/// everything else this file touches (<c>GameStats</c>, <c>MatchController</c>, <c>ActiveMatch</c>,
-/// <c>ActiveVersusAttempt</c>, <c>VersusMatchReporter</c>) has since migrated and would compile
-/// through a normal asmdef reference today.
-///
-/// It lives in a folder with **no** asmdef, which is what lets it compile alongside the code it
-/// tests, and the whole file is behind <c>UNITY_INCLUDE_TESTS</c> so none of it can reach a
-/// shipping player build.
-///
-/// The structural fix - splitting <c>Assets/Scripts</c> into real assemblies - is still open. This
-/// unblocks testing without waiting for it.
+/// This file used to live in the asmdef-free <c>Assets/Tests/PlayModeGameplay</c> workaround because
+/// some of the production types below - originally <c>MatchCatalogs</c> and <c>PlayerController</c> -
+/// still compiled into the predefined <c>Assembly-CSharp</c>, which no Unity assembly definition can
+/// reference. All production types directly used by this fixture now belong to explicit runtime
+/// assemblies, so the fixture can compile under Level5.PlayModeTests and no longer needs the
+/// asmdef-free gameplay-test workaround.
 /// </summary>
 public class Level5GameplayPlayModeTests
 {
