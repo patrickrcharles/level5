@@ -3,7 +3,6 @@ using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -164,52 +163,8 @@ public class PlayerMovementPhysicsTests
     /// <summary>Start menu -> gameplay level, resumed, physics running.</summary>
     private IEnumerator EnterGameplayLevel(System.Action<Rigidbody> onReady)
     {
-        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
-        yield return null;
-        yield return null;
-
-        StartManager manager = null;
-        float deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline)
-        {
-            manager = Object.FindAnyObjectByType<StartManager>();
-            if (manager != null && Invoke<bool>(manager, "HasLoadedGameSetup"))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Assert.That(manager, Is.Not.Null, "start menu never became ready");
-
-        GameObject pressStart = GameObject.Find("press_start");
-        ExecuteEvents.Execute(pressStart, new BaseEventData(EventSystem.current), ExecuteEvents.submitHandler);
-
-        deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline
-            && SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_00_start)
-        {
-            yield return null;
-        }
-
-        yield return null;
-        yield return null;
-
-        // Gameplay levels open on the start-on-pause screen with timeScale 0. Pause.Update also
-        // re-pauses on the next frame if `paused` is still set, so simply writing timeScale is not
-        // enough - with timeScale 0 there are no fixed updates and every WaitForFixedUpdate below
-        // would wait forever. Take Pause out of the loop entirely for the duration of the test.
-        Pause pause = Object.FindAnyObjectByType<Pause>(FindObjectsInactive.Include);
-        if (pause != null)
-        {
-            pause.enabled = false;
-        }
-
-        Time.timeScale = 1f;
-        yield return null;
-
-        PlayerController controller = Object.FindAnyObjectByType<PlayerController>();
+        PlayerController controller = null;
+        yield return GameplayScenePlayModeHarness.EnterPlayableGameplayScene(result => controller = result);
         onReady(controller == null ? null : controller.GetComponent<Rigidbody>());
     }
 
@@ -217,13 +172,6 @@ public class PlayerMovementPhysicsTests
     {
         FieldInfo f = target.GetType().GetField(name, Flags);
         return f == null ? null : f.GetValue(target) as T;
-    }
-
-    private static T Invoke<T>(object target, string name)
-    {
-        MethodInfo mi = target.GetType().GetMethod(name, Flags);
-        object v = mi == null ? null : mi.Invoke(target, null);
-        return v is T typed ? typed : default;
     }
 }
 #endif

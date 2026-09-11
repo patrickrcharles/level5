@@ -3,7 +3,6 @@ using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -57,44 +56,11 @@ public class BasketballVisibilityTests
     [UnityTest]
     public IEnumerator TheHeldBallIsNotDrawnAbovethePlayersHead()
     {
-        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
-        yield return null;
-        yield return null;
+        // The harness only needs a PlayerController as its own readiness signal; this re-resolves a
+        // fresh one below after settling, rather than reusing that reference, in case the gameplay
+        // scene still swaps the player object out during the settle wait.
+        yield return GameplayScenePlayModeHarness.EnterPlayableGameplayScene(_ => { });
 
-        StartManager manager = null;
-        float deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline)
-        {
-            manager = Object.FindAnyObjectByType<StartManager>();
-            if (manager != null && Invoke<bool>(manager, "HasLoadedGameSetup"))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Assert.That(manager, Is.Not.Null, "start menu never became ready");
-
-        ExecuteEvents.Execute(
-            GameObject.Find("press_start"),
-            new BaseEventData(EventSystem.current),
-            ExecuteEvents.submitHandler);
-
-        deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline
-            && SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_00_start)
-        {
-            yield return null;
-        }
-
-        Pause pause = Object.FindAnyObjectByType<Pause>(FindObjectsInactive.Include);
-        if (pause != null)
-        {
-            pause.enabled = false;
-        }
-
-        Time.timeScale = 1f;
         for (int i = 0; i < 10; i++)
         {
             yield return null;
@@ -204,13 +170,6 @@ public class BasketballVisibilityTests
     {
         FieldInfo f = target.GetType().GetField(name, Flags);
         return f == null ? null : f.GetValue(target);
-    }
-
-    private static T Invoke<T>(object target, string name)
-    {
-        MethodInfo mi = target.GetType().GetMethod(name, Flags);
-        object v = mi == null ? null : mi.Invoke(target, null);
-        return v is T typed ? typed : default;
     }
 }
 #endif
