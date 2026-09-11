@@ -5,9 +5,9 @@
   <Project Path="Level5.Player.csproj" />
   <Project Path="Level5.Versus.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="Level5.PlayModeTests.csproj" />
   <Project Path="Level5.Misc.csproj" />
   <Project Path="Level5.Combat.csproj" />
-  <Project Path="Level5.PlayModeTests.csproj" />
   <Project Path="Level5.MenuStart.csproj" />
   <Project Path="Level5.Match.csproj" />
   <Project Path="Level5.Enemy.csproj" />
