@@ -60,11 +60,15 @@ using NUnit.Framework;
 /// <c>MatchRuntime</c> itself is untouched and stays in <c>Assembly-CSharp</c>; this guard only proves
 /// <c>PlayerController</c> no longer names it directly. With this guard passing, a fresh dependency
 /// closure scan finds zero live <c>Assembly-CSharp</c> types on <c>PlayerController</c>.
+///
+/// AUD-012 Phase 2b Slice 38 moved <c>PlayerController</c> itself into <c>Level5.Player</c> (a pure
+/// ownership move, once Slice 37 made it dependency-closed) - this source-level guard remains the
+/// permanent invariant check, the same shape as <see cref="Level5PlayerDunkDependencyGuardTests"/>.
 /// </summary>
 public class Level5PlayerControllerDependencyGuardTests
 {
     private static readonly string PlayerControllerPath = Path.Combine(
-        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "PlayerController.cs");
+        Directory.GetCurrentDirectory(), "Assets", "Scripts", "player", "Level5Player", "PlayerController.cs");
 
     [Test]
     public void PlayerControllerHasNoGameLevelManagerReference()

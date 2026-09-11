@@ -19,11 +19,15 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     [SerializeField] public bool isShrunk;
     // components
     // AUD-002: internal rather than private for other same-assembly helpers extracted alongside this
-    // controller. Nothing outside Assets/Scripts can see these either way.
+    // controller.
     //
     // AUD-012 Phase 2b Slice 32: PlayerDamageReactions no longer needs this internal access - it moved
     // into Level5.Player and now reaches controller state through IPlayerDamageReactionHost's public
     // members instead.
+    //
+    // AUD-012 Phase 2b Slice 38: this controller moved into Level5.Player too. These fields stay
+    // internal, now visible within that assembly and to Assembly-CSharp only through the existing
+    // InternalsVisibleTo("Assembly-CSharp") bridge in AssemblyInfo.cs.
     internal Animator anim;
     private AnimatorStateInfo currentStateInfo;
     private GameObject dropShadow;
@@ -45,6 +49,10 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     // AUD-012 Phase 2b Slice 32: PlayerDamageReactions now lives in Level5.Player and reaches this
     // controller only through the IPlayerDamageReactionHost contract this class implements below -
     // it is no longer a same-assembly helper.
+    //
+    // AUD-012 Phase 2b Slice 38: this controller moved into Level5.Player too, so it and
+    // PlayerDamageReactions are same-assembly again - but the host-contract boundary above is
+    // retained unchanged; this was a pure ownership move, not a reason to re-wire it.
     private readonly PlayerDamageReactions damageReactions;
 
     /// <summary>
@@ -113,7 +121,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
 
     /// <summary>
     /// Explicit binding of the live match-runtime boundary, from
-    /// <see cref="SpawnCoordinator.BindHumanMatchRuntime"/> during <c>GameLevelManager.Awake</c>'s spawn
+    /// <c>SpawnCoordinator.BindHumanMatchRuntime</c> during <c>GameLevelManager.Awake</c>'s spawn
     /// pass - human participants only. Required before <see cref="InitializeInput"/> can resolve a local
     /// input slot; see that method's guard.
     /// </summary>
@@ -447,7 +455,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
     // ==================== Arena context composition (AUD-012 Phase 2b Slice 21) ====================
 
     /// <summary>
-    /// Explicit arena-context binding from <see cref="SpawnCoordinator.BindHumanArenaContext"/>,
+    /// Explicit arena-context binding from <c>SpawnCoordinator.BindHumanArenaContext</c>,
     /// called once from <c>GameLevelManager.Start()</c> after arena bootstrap has resolved the final
     /// basketball rim and updated the live ground-height state - never during spawn/registration
     /// (<c>SpawnCoordinator.RegisterHuman</c>), when the rim is not yet ready. Replaces this
@@ -470,7 +478,7 @@ public class PlayerController : MonoBehaviour, IShooterActor, IPlayerDamageReact
 
     /// <summary>
     /// Explicit binding of the scene's legacy mobile joystick axes, from
-    /// <see cref="SpawnCoordinator.BindHumanLegacyTouchMovement"/> during
+    /// <c>SpawnCoordinator.BindHumanLegacyTouchMovement</c> during
     /// <c>GameLevelManager.Awake</c>'s spawn pass - human participants only; CPUs never read player
     /// input. Replaces <c>PlayerInputReader</c>'s former direct
     /// <c>GameLevelManager.instance.Joystick</c> read, which was that class's last edge into
