@@ -485,6 +485,19 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 38: proves <c>PlayerController</c> - dependency-closed by Slice 37, then
+    /// moved source-identically - actually compiles into <c>Level5.Player</c>, the same identity check
+    /// <see cref="PlayerDunkCompilesIntoLevel5Player"/> does for <c>PlayerDunk</c>.
+    /// </summary>
+    [Test]
+    public void PlayerControllerCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerController).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

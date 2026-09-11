@@ -2899,6 +2899,82 @@ Its 48-prefab serialized surface needs its own GUID/assembly/prefab/cross-assemb
 before that move - a materially larger verification burden than the single-consumer moves Slices 31 and
 36 already completed, and explicitly out of scope for this slice.
 
+**Slice 38 - `PlayerController` moved into `Level5.Player`; pure ownership move, no behavior change**
+(2026-09-10): Slice 37 already cut `PlayerController`'s last `Assembly-CSharp` edge (`MatchRuntime`)
+and left it fully dependency-closed; this slice is the ownership move that follows, the same shape
+Slice 36 was for `PlayerDunk` after Slice 35 - held open deliberately in Slice 37 because this
+controller's 48-prefab serialized surface needed its own migration audit before the move, unlike the
+single-consumer moves Slices 31 and 36 completed directly.
+
+**Preflight re-verification.** Baseline SHA (`d2e94f8b1`, Slice 37, PR #130) matched current `dev`
+exactly. `PlayerController` still had zero live `Assembly-CSharp` type dependencies; its input
+dependencies (`PlayerControls`, `PlayerControlsProvider`, `PlayerInputReader`) were still owned by
+`Level5.Input`, which still had no dependency, direct or transitive, on `Level5.Player`. The `.meta`
+still carried GUID `94042c583f6a9b04d9bd1dbd2ef81d4f` and `executionOrder: -2000`. Serialized usage was
+reconfirmed by GUID (not name-substring, which also matches `AutoPlayerController`/
+`...ParticipantState` and over-counts): 48 prefab carriers (47 under
+`Assets/Resources/Prefabs/characters/players/`, one `Assets/Resources/Prefabs/player_christy.prefab`),
+zero `.unity` scene carriers. No `PlayerController, Assembly-CSharp` assembly-qualified string existed
+anywhere in the project. `Level5.Player/AssemblyInfo.cs` still granted
+`InternalsVisibleTo("Assembly-CSharp")`.
+
+- `Assets/Scripts/player/PlayerController.cs`/`.cs.meta` moved to
+  `Assets/Scripts/player/Level5Player/PlayerController.cs`/`.cs.meta` via `git mv` - git recognized both
+  as pure renames; GUID preserved unchanged. Executable source is otherwise unchanged: no field,
+  method, lifecycle, or behavior edit.
+- `Level5.Player.asmdef` gained exactly one direct reference, `Level5.Input` - the project assembly
+  owning `PlayerControls`/`PlayerControlsProvider`/`PlayerInputReader`, this controller's only
+  dependency not already covered by the asmdef's existing references. Final reference list:
+  `Level5.Core`, `Level5.Combat`, `Level5.Constants`, `Level5.Basketball`, `Level5.Utility`,
+  `Level5.Input`. Freshly checked: `Level5.Input.asmdef` references only `Unity.InputSystem`, no
+  dependency back on `Level5.Player` - acyclic.
+- Three real `<see cref>` links into the moved file's XML docs named `SpawnCoordinator` members
+  (`BindHumanMatchRuntime`, `BindHumanArenaContext`, `BindHumanLegacyTouchMovement`) - all
+  `Assembly-CSharp` types. Converted to `<c>` text tags so they no longer imply a compile-time reverse
+  dependency into `Assembly-CSharp`; every other `cref` in the file already pointed at a
+  same-assembly-reachable member or type and was left untouched.
+- Two comment blocks describing assembly-history reasoning were corrected: the `AUD-002` note on
+  `anim`/`rigidBody`/`playerHealth` claimed "nothing outside Assets/Scripts can see these either
+  way," no longer true now that these `internal` fields are visible only within `Level5.Player` and to
+  `Assembly-CSharp` through the existing `InternalsVisibleTo` bridge; and the `damageReactions` note
+  claiming `PlayerDamageReactions` "is no longer a same-assembly helper," which is now backwards since
+  the controller joined it in `Level5.Player`. Both were corrected in place without touching executable
+  code.
+- `Level5PlayerControllerDependencyGuardTests`'s source path updated to the new location; its five
+  permanent invariants (zero live `GameLevelManager`/`CameraManager`/`SniperManager`/
+  `PlayerIdentifier`/`MatchRuntime` references) are unchanged and still enforced against the moved
+  file. Class doc gained a Slice 38 note recording the move, the same shape
+  `Level5PlayerDunkDependencyGuardTests` carries for Slice 36.
+- `Level5ProductionAssemblyBoundaryTests` gained `PlayerControllerCompilesIntoLevel5Player`, the same
+  identity-check shape as `PlayerDunkCompilesIntoLevel5Player`, proving the moved type actually compiles
+  into `Level5.Player` rather than falling back to `Assembly-CSharp`.
+- No production caller (`GameLevelManager`, `SpawnCoordinator`, `PlayerIdentifier`,
+  `PlayerCollisions`, `PlayerAnimationEvents`, `SniperManager`, or any other) needed a source change -
+  all reach the moved type through the auto-referenced `Level5.Player` assembly exactly as before.
+
+**Serialized identity.** No prefab or scene asset was opened or resaved. All 48 GUID-carrying prefabs
+are unaffected by the file's new path: Unity resolves `m_Script` by GUID, not path. Representative spot
+check confirmed the `m_Script` GUID line unchanged, byte-for-byte, in both `player_ian.prefab` (ordinary
+`Assets/Resources/Prefabs/characters/players/` carrier) and `player_christy.prefab` (the one root-level
+legacy carrier) before and after the move.
+
+**Validation.** Headless Unity `6000.5.7f1` EditMode batch run, post-move, filtered to
+`Level5PlayerControllerDependencyGuardTests` (5), `Level5ProductionAssemblyBoundaryTests` (28,
+including the new `PlayerControllerCompilesIntoLevel5Player` identity check),
+`Level5PlayerMatchRuntimeCompositionTests` (12), `Level5PlayerInputReaderCompositionTests` (16), and
+`Level5PlayerControllerParticipantStateTests` (7): 68/68 passed, compilation succeeded with the new
+asmdef reference in place - this doubles as the acyclicity proof, since a reference cycle would have
+failed compilation outright. Real-gameplay PlayMode path
+`PlayerMovementPhysicsTests.JumpingDoesNotCompoundHorizontalVelocity` (menu -> gameplay level ->
+`GameLevelManager`/`SpawnCoordinator` composition -> spawned Resources player prefab -> preserved GUID
+resolving to the moved `PlayerController` in `Level5.Player` -> real jump/movement path) also passed,
+confirming a Resources-loaded player prefab still resolves and initializes correctly post-move.
+`scripts/validate-repository.ps1` passed (asmdef and `.meta` ownership changed). Per the risk-based
+validation policy, full EditMode/PlayMode were not re-run; PR CI owns that broader regression coverage.
+
+Not moved in this slice: `PlayerIdentifier`, `GameLevelManager`, `MatchRuntime`, or any other remaining
+`Assembly-CSharp` player/game-manager type.
+
 #### 2c — Normalize gameplay PlayMode tests
 
 The asmdef-free `Assets/Tests/PlayModeGameplay` workaround remains until the runtime code it tests is
