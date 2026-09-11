@@ -3643,6 +3643,85 @@ Neither fix changes test behavior or assertions. Re-validated after the fixes: f
 `error CS`), the migrated fixture alone, and `Level5ShotMarkerSessionCompositionPlayModeTests` all
 passed.
 
+**Slice 46 (2026-09-11) moved `Level5MenuScreenPlayModeTests.cs`/`.cs.meta`** (audited against `dev` SHA
+`2768510b185934057015fe70ee4ac048b9b20365`, GUID `6082a513e79e4f4eb97ee6e2bf7665bb` preserved) from
+`Assets/Tests/PlayModeGameplay` into `Assets/Tests/PlayMode`.
+
+Unlike Slice 41-45, this fixture's remaining blocker was not a single runtime singleton but four
+concrete menu manager types (`OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager`), each
+declared in an `Assets/Scripts/menu_*` folder with no local `.asmdef` and so compiled into
+`Assembly-CSharp`. The four `Object.FindFirstObjectByType<T>()` calls were replaced with one private
+`FindManagerInScene(Scene scene, string typeName)` helper that walks `scene.GetRootGameObjects()` and
+each root's `GetComponentsInChildren<MonoBehaviour>(includeInactive: false)`, checks
+`behaviour.gameObject.scene == scene`, and matches `GetType().Name` exactly. This is stricter than the
+original lookup it replaces (which searched every loaded scene, not just the one under test) while
+preserving its active/inactive semantics: `includeInactive: false` excludes any component on an inactive
+GameObject exactly as default `FindFirstObjectByType` did, but a *disabled* `MonoBehaviour` on an
+otherwise active GameObject is still returned, so the existing `manager.enabled == true` assertion (which
+exists specifically to catch `ValidateMenuUi` disabling a manager over a missing serialized reference)
+can still fail correctly instead of the lookup masking it as "not found". Per this slice's own
+instructions the helper stays private to this fixture rather than folding into
+`RealScenePlayModeTestSupport` - it has exactly one consumer, unlike the Slice 43/45
+`ResolveRuntimeGameRulesInstance` extraction, which had two.
+
+The class doc's stale claim that this fixture "lives in a folder with no asmdef, the same reason
+`Level5GameplayPlayModeTests` does" was corrected - that reasoning no longer applies once the fixture
+resolves managers by runtime name instead of a compile-time reference. Two `<see cref>` references in the
+header (`MenuFooterUiObjects`, `Level5GameplayPlayModeTests`) named types not reachable from
+`Level5.PlayModeTests` and were changed to `<c>` tags; a new paragraph documents the runtime-name
+resolution strategy and points at `Level5SceneContractTests.
+EveryMenuManagerHasItsRequiredUiObjectReferencesWired` as the complementary compiler-backed coverage.
+
+Scene load/teardown (`LoadMenuScene`, the `[UnityTearDown]` unloading only the one scene this fixture
+loaded, by name) was kept unchanged rather than switched to
+`RealScenePlayModeTestSupport.UnloadAllLoadedScenes` - this slice's instructions were explicit that
+consistency with the other fixtures is not by itself a reason to broaden a fixture that only ever loads
+one scene at a time.
+
+Re-verified before migrating, per this slice's own instructions, that the compiler-backed side of the
+contract is still intact: `Level5ProjectValidator.CollectMenuUiObjectContractErrors`
+(`Assets/Level5/Editor/Level5ProjectValidator.cs:883-907`) still declares direct calls against
+`OptionsManager`, `CreditsManager`, `StatsManager`, and `AccountManager` and invokes each one's real
+`ValidateMenuUi`, and `Level5SceneContractTests.EveryMenuManagerHasItsRequiredUiObjectReferencesWired`
+still drives it. Nothing in this slice touched that split - EditMode keeps proving each concrete manager
+type's serialized-reference contract; PlayMode keeps proving the real scene load, manager presence,
+enabled state, and EventSystem selection.
+
+`Level5.PlayModeTests`'s `references` were unchanged - `Constants` (`Level5.Constants`, already
+referenced) was the fixture's only external production symbol, and it was already reachable. No new
+dependency was required, and no production `.cs`, runtime `.asmdef`, scene, or prefab changed.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation via the same batchmode launch that ran
+the suites below (0 `error CS` lines); the full `Level5.PlayModeTests` assembly (16/16 passed, up from
+the prior 12 - the four migrated tests, `OptionsScreenLoadsAndKeepsItsManagerEnabled`,
+`CreditsScreenLoadsAndKeepsItsManagerEnabled`, `StatsScreenLoadsAndKeepsItsManagerEnabled`,
+`AccountHubScreenLoadsAndKeepsItsManagerEnabled`, all present and passing); the complete unfiltered
+PlayMode suite (17/17 passed, unchanged - `Assembly-CSharp` now contributes only
+`GameplayLevelUnpauseTests`); the complete EditMode suite (1206/1206 passed, unchanged, including
+`Level5SceneContractTests.EveryMenuManagerHasItsRequiredUiObjectReferencesWired` and all eight
+`Level5MenuUiObjectsTests`); and `scripts/validate-repository.ps1` (passed).
+
+**Code review (2026-09-11) found one Low-severity polish gap, fixed:** each of the four test methods
+re-resolved the loaded `Scene` with its own `SceneManager.GetSceneByName(loadedSceneName)` call right
+after `LoadMenuScene` returned, duplicating the same two-line idiom four times even though
+`LoadMenuScene` already knows the scene name it just loaded. `LoadMenuScene` now resolves the `Scene`
+once into a `loadedScene` field (right after its `LoadSceneAsync` yield completes, before the settle
+frames - the handle itself doesn't change across those frames) and the four tests read `loadedScene`
+directly; `TearDown` resets both `loadedSceneName` and `loadedScene` together. No behavior or assertion
+changed. Re-validated after the fix: forced compilation (0 `error CS`) and the complete unfiltered
+PlayMode suite (17/17 passed, all four migrated tests green).
+
+The asmdef-free `PlayModeGameplay` workaround shrinks from two files to one. Re-audited line by line
+against current source for this slice rather than carried forward:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+
+Re-verified unchanged from the Slice 39 audit. Slice 46 did not migrate `StartManager` or `Pause`, and
+did not touch `OptionsManager`, `CreditsManager`, `StatsManager`, or `AccountManager` themselves - only
+this fixture's lookup of them.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
