@@ -3427,6 +3427,66 @@ source for this slice rather than carried forward:
 None of these five changed in Slice 42, and Slice 42 did not migrate `GameRules`, `GameLevelManager`,
 analytics, or the menu managers, so their blockers are unchanged from the Slice 39/41 audits.
 
+**Slice 43 (2026-09-11) moved `Level5ShotMarkerSessionCompositionPlayModeTests.cs`/`.cs.meta`**
+(audited against `dev` SHA `b2832fab58f4c43284fdd6b93c448952e83a647f`, GUID
+`e4a5a2456b9becf10dee5f17b84b0f25` preserved) from `Assets/Tests/PlayModeGameplay` into
+`Assets/Tests/PlayMode`, reusing the Slice 41/42 `GameplayScenePlayModeHarness`/
+`RealScenePlayModeTestSupport` helpers unchanged. `StartManager`/`Pause` bootstrap was replaced with
+`GameplayScenePlayModeHarness.EnterPlayableGameplayScene`; the fixture's own bounded 10-frame settle
+after the harness returns was kept, for the same reason as Slice 42's telemetry fixture — a live
+`PlayerController` proves the player spawned but not that `GameRules.Awake()`'s own marker-binding
+composition step has finished, and current source offered no stronger deterministic signal specific to
+that to assert on instead.
+
+`GameRules` was this fixture's third blocker (alongside `StartManager`/`Pause`) and, like Slice 42's
+`AnaylticsManager`, needed different handling: the assertion's whole point is that every scene marker is
+bound to the *real* live `GameRules` singleton, so that identity could not simply be dropped. The
+migrated fixture resolves the canonical runtime `GameRules` instance independently of any marker's own
+`markerSession` field, so the identity check stays non-circular (`ResolveRuntimeGameRulesInstance`):
+it scans every live `MonoBehaviour` (`FindObjectsInactive.Include`, matching the marker scan) for a
+runtime type name of exactly `"GameRules"`, fails explicitly if none are found, reads that type's own
+`public static GameRules instance` field through reflection, asserts it is non-null and itself reports
+runtime type name `"GameRules"`, and asserts it is one of the discovered live components rather than
+assuming a single match. Unlike Slice 42's `AnaylticsManager` check (a `string`-vs-`string` method
+identity comparison), the marker/session/rules assertions themselves stay strongly typed against the
+existing custom-assembly contracts — `IShotMarkerSession` and `ResolvedMatchRules` (both `Level5.Core`,
+already reachable) — read via `RealScenePlayModeTestSupport.GetField<T>` instead of untyped `object`,
+and compared with `ReferenceEquals` exactly as before. The compiler-backed exact-type `GameRules`
+composition proof (bind-once semantics, multi-marker sharing, the resolved-rules reference, the
+malformed-tag and duplicate-instance guards) remains unchanged in EditMode's
+`Level5BasketballShotMarkerSessionTests`. Two `<see cref>` references in the moved fixture's header
+(`Level5MoneyBallStateCompositionPlayModeTests`, `Level5BasketballShotMarkerSessionTests`) name types
+no longer visible across the `Level5.PlayModeTests` assembly boundary and were changed to `<c>` tags.
+
+`Level5.PlayModeTests`'s `references` were unchanged by this slice — `BasketBallShotMarker`
+(`Level5.Basketball`), `IShotMarkerSession`, and `ResolvedMatchRules` (both `Level5.Core.Match`, under
+the existing `Level5.Core` reference) were all already reachable; no new dependency was required. No
+production `.cs`, runtime `.asmdef`, scene, or prefab changed.
+
+Validation: the migrated fixture alone (1/1 passed), `Level5BasketballShotMarkerSessionTests` EditMode
+(8/8 passed), the full `Level5.PlayModeTests` assembly (10/10 passed, up from the prior 9), the complete
+unfiltered PlayMode suite (17/17 passed, unchanged), the complete EditMode suite (1206/1206 passed), and
+`scripts/validate-repository.ps1` (passed) — all run against the pinned `6000.5.7f1` editor.
+
+The asmdef-free `PlayModeGameplay` workaround shrinks from five files to four. Re-audited line by line
+against current source for this slice rather than carried forward — one stale entry was found and
+corrected: `Level5BasketBallShotMadeCompositionPlayModeTests.cs`'s current source asserts the scene's
+bound `BasketBallShotMade.gameModeId` against `MatchRuntime.ModeId` directly, an `Assembly-CSharp` type
+(`Assets/Scripts/game manager/MatchRuntime.cs`, no covering asmdef) not previously listed as one of its
+blockers:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5BasketBallShotMadeCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameLevelManager`, `MatchRuntime` (corrected — previously listed without `MatchRuntime`) |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+| `Level5MoneyBallStateCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules`, `GameLevelManager` |
+
+`GameplayLevelUnpauseTests.cs`, `Level5MenuScreenPlayModeTests.cs`, and
+`Level5MoneyBallStateCompositionPlayModeTests.cs` did not change in Slice 43 and were re-verified
+unchanged from the Slice 39/42 audits. Slice 43 did not migrate `GameLevelManager`, `MatchRuntime`,
+`GameRules`, or the menu managers.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
