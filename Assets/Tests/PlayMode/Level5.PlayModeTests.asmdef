@@ -6,7 +6,8 @@
     "Level5.Versus",
     "Level5.Basketball",
     "Level5.Player",
-    "Level5.Constants"
+    "Level5.Constants",
+    "Level5.Input"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

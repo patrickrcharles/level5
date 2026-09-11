@@ -58,6 +58,28 @@ public static class GameplayScenePlayModeHarness
     /// </summary>
     public static IEnumerator EnterPlayableGameplayScene(Action<PlayerController> onReady)
     {
+        yield return EnterGameplayScene(suppressInitialPause: true, onReady);
+    }
+
+    /// <summary>
+    /// Same real launch path as <see cref="EnterPlayableGameplayScene"/>, but for fixtures that need to
+    /// observe production's actual initial pause state instead of having it suppressed: it never
+    /// disables the live <c>Pause</c> component and never touches <see cref="Time.timeScale"/>, so
+    /// gameplay is handed back exactly as production left it - paused or not.
+    /// </summary>
+    public static IEnumerator EnterGameplayScenePreservingInitialPause(Action<PlayerController> onReady)
+    {
+        yield return EnterGameplayScene(suppressInitialPause: false, onReady);
+    }
+
+    /// <summary>
+    /// Shared launch/retry state machine behind both public entry points. <paramref name="suppressInitialPause"/>
+    /// is the only behavioural difference between them: whether the incidental start-on-pause screen is
+    /// dismissed and <see cref="Time.timeScale"/> restored once gameplay is reached, or left exactly as
+    /// production produced it.
+    /// </summary>
+    private static IEnumerator EnterGameplayScene(bool suppressInitialPause, Action<PlayerController> onReady)
+    {
         SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
         yield return null;
         yield return null;
@@ -130,8 +152,12 @@ public static class GameplayScenePlayModeHarness
                     continue;
                 }
 
-                SuppressPauseComponent();
-                Time.timeScale = 1f;
+                if (suppressInitialPause)
+                {
+                    SuppressPauseComponent();
+                    Time.timeScale = 1f;
+                }
+
                 yield return null;
                 settled = true;
 

@@ -3722,6 +3722,101 @@ Re-verified unchanged from the Slice 39 audit. Slice 46 did not migrate `StartMa
 did not touch `OptionsManager`, `CreditsManager`, `StatsManager`, or `AccountManager` themselves - only
 this fixture's lookup of them.
 
+**Slice 47 (audited against `dev` at `d6d4ab7e45d7d3c94e7626cb42683649e3d764a4`, Unity `6000.5.7f1`):**
+migrated `GameplayLevelUnpauseTests.cs` (GUID `395c18ff6a76e7145893d6cabddae0d1`, preserved via `git mv`)
+from `Assets/Tests/PlayModeGameplay` into `Assets/Tests/PlayMode`, the folder's last remaining file.
+Neither `StartManager` nor `Pause` was migrated or otherwise changed - both stay exactly where they
+were, in `Assembly-CSharp`:
+
+- `StartManager` is no longer referenced at all. The fixture already reached gameplay through
+  `GameplayScenePlayModeHarness`'s real `press_start` UI path rather than `StartManager`'s private
+  readiness check.
+- `Pause` is resolved by exact runtime type name through a new shared helper,
+  `RealScenePlayModeTestSupport.FindActiveBehaviourInScene(Scene, string)`, extracted from Slice 46's
+  fixture-local `FindManagerInScene` now that this fixture is a second genuine consumer with identical
+  semantics (scene-scoped, inactive GameObjects excluded, disabled `MonoBehaviour`s on active
+  GameObjects still found). `Level5MenuScreenPlayModeTests`'s four smoke tests were switched to the same
+  helper with no change to their own contracts.
+- `startOnPause` is read via `FieldInfo` with an explicit "field exists" assertion (not a helper that
+  silently returns `default(bool)`), and `StartGame()` is resolved as an exact parameterless public
+  method and asserted non-null before `Invoke` - both fail loudly rather than silently if `Pause`'s
+  shape ever changes, exactly as the original reflection-based assertions did before the move.
+
+The harness could not be reused as-is: `EnterPlayableGameplayScene` deliberately disables `Pause` and
+restores `Time.timeScale`, which would destroy the exact regression this fixture proves. Both public
+entry points now share one private `EnterGameplayScene(bool suppressInitialPause, Action<PlayerController>)`
+launch/retry state machine - identical scene load, `press_start` submission/retry/bounce handling, and
+bounded realtime deadlines in both cases - with `suppressInitialPause` as the one behavioural fork: true
+(`EnterPlayableGameplayScene`) suppresses `Pause` and restores `timeScale` after settling; false
+(the new `EnterGameplayScenePreservingInitialPause`) does neither, handing gameplay back exactly as
+production left it, paused or not. Every wait in the shared state machine was already realtime/frame-
+based (`Time.realtimeSinceStartup`, `yield return null`), not scaled-time, so it needed no change to stay
+correct while `Time.timeScale` may be `0`.
+
+Compiler-backed concrete `Pause` coverage is unchanged and still in place:
+`Level5ProjectValidator.CollectMenuUiObjectContractErrors` (invoked from EditMode via
+`Level5SceneContractTests.EveryMenuManagerHasItsRequiredUiObjectReferencesWired`) references concrete
+`Pause` directly and calls its real `ValidateMenuUi`.
+
+`Level5.PlayModeTests.asmdef` gained one reference, `Level5.Input`, for the fixture's direct use of
+`PlayerControlsProvider.Controls.Player.enabled` - the only production symbol the migrated source names
+outside what the asmdef already referenced. No `Assembly-CSharp` reference was added or needed.
+
+With this fixture gone, `Assets/Tests/PlayModeGameplay` held no more `.cs` files, so the folder and its
+`.meta` were removed. A permanent guard,
+`Level5ProductionAssemblyBoundaryTests.NoSourceFileReturnsToTheAsmdefFreePlayModeGameplayWorkaround`,
+now fails if any `.cs` file exists anywhere under that path - reading the directory directly each run
+(not a cached "did it exist at discovery time" flag) so it stays effective even if the folder is
+recreated later.
+
+No production `.cs`, runtime `.asmdef`, scene, or prefab changed.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation (0 `error CS` lines); the full
+`Level5.PlayModeTests` assembly (17/17 passed, up from 16 - `GameplayLevelUnpauseTests.GameplayLevelCanBeUnpaused`
+now included, plus the four Slice 46 menu tests unchanged after the helper extraction); the complete
+unfiltered PlayMode suite (17/17 passed, unchanged in total - `Assembly-CSharp` now contributes zero
+PlayMode tests, `Level5.PlayModeTests` absorbed the one that moved); the complete EditMode suite
+(1207/1207 passed, up from 1206 - the one new architecture guard - with zero failures); and
+`scripts/validate-repository.ps1` (passed).
+
+**Code review found one gap, fixed:** unlike every other fixture that drives a real scene through
+`GameplayScenePlayModeHarness`/`RealScenePlayModeTestSupport`, the migrated fixture had no `[SetUp]`
+calling `RealScenePlayModeTestSupport.IgnoreSceneLogNoise()`, so an incidental `Debug.LogError` from
+production code during the real start-menu-to-gameplay load (unrelated to the pause/unpause behaviour
+under test) could fail it - the same protection its six siblings already carry. This gap predated the
+migration (the original pre-migration file never called it either), so it was not a regression, but
+migrating the file next to its now-shared siblings was the natural point to bring it in line. Fixed by
+adding the same `[SetUp]` every sibling fixture uses. Re-validated after the fix: forced compilation
+(0 `error CS`), the isolated fixture (1/1 passed - `Time.timeScale=0`/`startOnPause=True` observed
+before `StartGame()`, `timeScale=1` after, confirming the pause-preserving harness path end to end),
+and the complete unfiltered PlayMode suite (17/17 passed).
+
+**A second review pass found one Low-severity nit, fixed:** the new
+`NoSourceFileReturnsToTheAsmdefFreePlayModeGameplayWorkaround` guard re-implemented the same "recurse
+for `.cs`, exclude `~`-suffixed paths" filter that `EnumerateFilesUnder` (already in this file) exists
+to provide. Switched the guard to call `EnumerateFilesUnder(new[] { workaroundFolder })` instead of
+duplicating the filter inline - no behavior change, same directory-exists guard, one filter definition
+instead of two. Re-validated: forced compilation (0 `error CS`); `Level5ProductionAssemblyBoundaryTests`
+in isolation (29/29 passed); the complete EditMode suite (1207/1207 passed); the complete unfiltered
+PlayMode suite (17/17 passed); `scripts/validate-repository.ps1` (passed).
+
+**Phase 2c exit condition met:** the asmdef-free `Assets/Tests/PlayModeGameplay` workaround no longer
+exists - zero files, folder and `.meta` removed.
+
+**Phase 2d no-workaround invariant met:** the permanent guard above is green and active.
+
+**Full Phase 2 exit is still not reached.** Removing the last workaround file closes the one 2d exit
+item that depended on it, but the rest of Phase 2's stated exit bar was explicitly out of scope for
+this slice and remains open: `player`/`basketball`/`game manager` themselves (the blocked triangle) are
+still not migrated into proper assemblies - `StartManager` and `Pause` still compile into
+`Assembly-CSharp`, reached here only by runtime-name reflection, not by an asmdef move - and this slice
+performed no manual Play Mode verification of a representative gameplay mode or menu flow (the acceptance
+criteria this task set required `Assert.That(Time.timeScale, Is.EqualTo(1f))` after the real
+`StartGame()` call as its runtime evidence for the unpause path, which the passing PlayMode run
+establishes; it did not require and did not add a separate manual pass). Finishing Phase 2 remains the
+Phase-1-scale slice described in the original 2d exit note: inverting or cutting the
+player/basketball/game-manager cycle before those three can move.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
@@ -3796,25 +3891,40 @@ back into `Assembly-CSharp` - guarded, green. No forbidden cycle among productio
 trivially true today (none of the 10 new leaves reference each other, only `Level5.Core`/packages).
 Runtime assemblies don't reference a known Editor-only assembly - guarded, green. New assemblies
 declare required references explicitly - true by construction (`Level5.Utility` → `Level5.Core`,
-`Level5.Input` → `Unity.InputSystem`, the rest need none). **Not reachable this phase:** the asmdef-
-free gameplay PlayMode workaround is still present (2c, above) - this is the one 2d exit item that
-depends on cutting the player/basketball/game-manager cycle, which 2b0 correctly keeps out of scope
-here.
+`Level5.Input` → `Unity.InputSystem`, the rest need none). At the time this section was originally
+written, the one remaining item was: the asmdef-free gameplay PlayMode workaround is still present
+(2c, above) - this is the one 2d exit item that depends on cutting the player/basketball/game-manager
+cycle, which 2b0 correctly keeps out of scope here.
 
-**Full Phase 2 exit is therefore not reached in this pass**, and that is the expected outcome given
-2b0's gate, not a shortfall: 14 production runtime assemblies now exist (10 new + 4 pre-existing),
-the migrated portion of the graph is acyclic and guarded against regrowth, and everything not moved
-is either inside the blocked triangle or reaches into it. Finishing Phase 2 - removing the
+**Full Phase 2 exit was therefore not reached in that pass**, and that was the expected outcome given
+2b0's gate, not a shortfall: 14 production runtime assemblies existed (10 new + 4 pre-existing),
+the migrated portion of the graph was acyclic and guarded against regrowth, and everything not moved
+was either inside the blocked triangle or reached into it. Finishing Phase 2 - removing the
 `Level5GameplayPlayModeTests` workaround and migrating `player`/`basketball`/`game manager` themselves
 - requires first inverting or cutting that remaining cycle, which is a Phase-1-scale slice of its own
 (see Phase 1's own slicing for the shape that work took), not a continuation of leaf-picking.
+
+**Update (Slice 47):** the asmdef-free `Assets/Tests/PlayModeGameplay` workaround folder itself is now
+gone (0 files, folder and `.meta` removed), and the permanent
+`NoSourceFileReturnsToTheAsmdefFreePlayModeGameplayWorkaround` guard prevents its return - this closes
+the specific 2d item called out above. It was closed without migrating `StartManager`/`Pause` or
+cutting the player/basketball/game-manager cycle: the fixture that needed them now resolves both by
+runtime-name reflection through shared PlayMode test helpers instead of a compile-time reference, the
+same pattern already used for the four menu managers. **Full Phase 2 exit is still not reached**:
+`StartManager`, `Pause`, and the rest of the player/basketball/game-manager triangle still compile into
+`Assembly-CSharp`, not into proper referenced assemblies; and no manual Play Mode verification of a
+representative gameplay mode or menu flow has been performed as part of this documentation update -
+only the automated EditMode/PlayMode evidence recorded under Slice 47, above. Migrating that triangle
+remains the Phase-1-scale slice described in the paragraph above.
 
 **Exit:** production gameplay code targeted by this phase lives in proper referenced assemblies; the
 runtime assembly graph is acyclic; no migrated assembly depends on `Assembly-CSharp`; package
 references are explicit where Unity requires them; full repository validation, Unity batch
 compilation, and the full EditMode/PlayMode suites pass; the asmdef-free gameplay PlayMode workaround
 is gone; one representative gameplay mode and one representative menu flow pass manual Play Mode
-verification; gameplay and visuals are observably unchanged.
+verification; gameplay and visuals are observably unchanged. **Not yet met:** `player`/`basketball`/
+`game manager` still compile into `Assembly-CSharp`, and the manual Play Mode verification bullet
+above has not been performed.
 
 ### Phase 3 — Converge the human/CPU pairs
 

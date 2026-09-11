@@ -516,6 +516,34 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(offenders, Is.Empty, string.Join("\n", offenders));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2d: PlayMode gameplay tests must declare proper test assembly dependencies rather
+    /// than silently returning to the asmdef-free <c>Assets/Tests/PlayModeGameplay</c> workaround Phase
+    /// 2c removed (Slice 47, the folder's last file, <c>GameplayLevelUnpauseTests</c>, migrated into
+    /// <c>Level5.PlayModeTests</c>). Reads the directory directly rather than caching whether it existed
+    /// at discovery time, so the guard stays effective even if the folder is recreated later.
+    /// </summary>
+    [Test]
+    public void NoSourceFileReturnsToTheAsmdefFreePlayModeGameplayWorkaround()
+    {
+        string workaroundFolder = Path.Combine(AssetsRoot, "Tests", "PlayModeGameplay");
+        if (!Directory.Exists(workaroundFolder))
+        {
+            return;
+        }
+
+        List<string> offenders = EnumerateFilesUnder(new[] { workaroundFolder })
+            .Select(Level5TestSourceText.Relative)
+            .ToList();
+
+        Assert.That(
+            offenders,
+            Is.Empty,
+            "PlayMode gameplay tests must declare proper test assembly dependencies rather than "
+                + "silently returning to the asmdef-free Assets/Tests/PlayModeGameplay workaround:\n"
+                + string.Join("\n", offenders));
+    }
+
     /// <summary>One discovered production (non-test) asmdef: its name, declared references, and folder.</summary>
     private sealed class AsmdefInfo
     {

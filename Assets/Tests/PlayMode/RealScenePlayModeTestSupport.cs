@@ -53,6 +53,37 @@ internal static class RealScenePlayModeTestSupport
         yield return null;
     }
 
+    /// <summary>
+    /// Resolves a live component by exact runtime type name, scoped to <paramref name="scene"/>, so the
+    /// lookup cannot accidentally match a same-named component left over in another loaded scene.
+    /// Walking each root's <see cref="GameObject.GetComponentsInChildren{T}(bool)"/> with
+    /// <c>includeInactive: false</c> inspects only GameObjects active in the hierarchy while still
+    /// returning a disabled <see cref="MonoBehaviour"/> on an otherwise active GameObject, so a caller's
+    /// own <c>enabled</c> assertion can fail correctly instead of this helper silently reporting "not
+    /// found". Extracted from <c>Level5MenuScreenPlayModeTests</c> (AUD-012 Phase 2c Slice 46) once
+    /// <c>GameplayLevelUnpauseTests</c> (Slice 47) became a second, genuine consumer.
+    /// </summary>
+    internal static MonoBehaviour FindActiveBehaviourInScene(Scene scene, string runtimeTypeName)
+    {
+        Assert.That(
+            scene.IsValid() && scene.isLoaded,
+            Is.True,
+            $"scene must be loaded before resolving '{runtimeTypeName}'.");
+
+        foreach (GameObject root in scene.GetRootGameObjects())
+        {
+            foreach (MonoBehaviour behaviour in root.GetComponentsInChildren<MonoBehaviour>(false))
+            {
+                if (behaviour != null && behaviour.gameObject.scene == scene && behaviour.GetType().Name == runtimeTypeName)
+                {
+                    return behaviour;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>Looks up a private/internal instance or static field by name via reflection.</summary>
     internal static FieldInfo GetFieldInfo(object target, string name)
     {
