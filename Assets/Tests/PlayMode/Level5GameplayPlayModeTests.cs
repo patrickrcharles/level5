@@ -11,11 +11,12 @@ using UnityEngine.TestTools;
 /// Play-mode coverage for runtime gameplay code.
 ///
 /// This file used to live in the asmdef-free <c>Assets/Tests/PlayModeGameplay</c> workaround because
-/// some of the production types below - originally <c>MatchCatalogs</c> and <c>PlayerController</c> -
-/// still compiled into the predefined <c>Assembly-CSharp</c>, which no Unity assembly definition can
-/// reference. All production types directly used by this fixture now belong to explicit runtime
-/// assemblies, so the fixture can compile under Level5.PlayModeTests and no longer needs the
-/// asmdef-free gameplay-test workaround.
+/// one of the production types below - <c>MatchCatalogs</c> - still compiled into the predefined
+/// <c>Assembly-CSharp</c>, which no Unity assembly definition can reference (the workaround folder as
+/// a whole also blocked on <c>PlayerController</c>, but no test in this specific file ever referenced
+/// it). All production types directly used by this fixture now belong to explicit runtime assemblies,
+/// so the fixture can compile under Level5.PlayModeTests and no longer needs the asmdef-free
+/// gameplay-test workaround.
 /// </summary>
 public class Level5GameplayPlayModeTests
 {
@@ -75,6 +76,13 @@ public class Level5GameplayPlayModeTests
     /// The AUD-060 fix, checked the only way it can be: destroy the object and look at the static.
     ///
     /// An edit-mode test cannot do this - it needs a real destroy, which needs a frame.
+    ///
+    /// Assumes no other live <c>MatchController</c> is already holding the static when this runs -
+    /// see <c>GameplayLevelUnpauseTests</c>'s teardown comment, which exists to guarantee that. That
+    /// fixture compiles into <c>Assembly-CSharp</c> while this one compiles into
+    /// <c>Level5.PlayModeTests</c>, so the ordering this test depends on holds only because Unity's
+    /// PlayMode runner happens to run <c>Assembly-CSharp.dll</c>'s tests before this assembly's, not
+    /// because anything enforces it.
     /// </summary>
     [UnityTest]
     public IEnumerator ASceneScopedSingletonReleasesItsStaticWhenDestroyed()
