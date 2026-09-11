@@ -3551,6 +3551,98 @@ against current source for this slice rather than carried forward:
 All three were re-verified unchanged from the Slice 39/42/43 audits. Slice 44 did not migrate
 `GameLevelManager`, `MatchRuntime`, `GameRules`, `StartManager`, `Pause`, or the menu managers.
 
+**Slice 45 (2026-09-11) moved `Level5MoneyBallStateCompositionPlayModeTests.cs`/`.cs.meta`** (audited
+against `dev` SHA `1cff89a9bd7566df19d541d24a66a74e5d0e01a9`, GUID `d496b7cee9454663935975236fa0f2fc`
+preserved) from `Assets/Tests/PlayModeGameplay` into `Assets/Tests/PlayMode`, reusing the Slice 41-44
+`GameplayScenePlayModeHarness`/`RealScenePlayModeTestSupport` helpers. `StartManager`/`Pause` bootstrap
+was replaced with `GameplayScenePlayModeHarness.EnterPlayableGameplayScene`; the fixture's own bounded
+10-frame settle after the harness returns was kept, for the same reason as the Slice 42-44 fixtures — a
+live `PlayerController` proves the player spawned but not that `GameRules.Awake()`'s own money-ball-state
+composition step has finished, and current source offered no stronger deterministic signal specific to
+that to assert on instead.
+
+`GameRules` and `GameLevelManager` were this fixture's remaining blockers alongside `StartManager`/
+`Pause` (the Slice 43/44 audits had already flagged `GameRules` for the sibling shot-marker fixture).
+Re-verified from current source before migrating: `GameLevelManager` runs at script execution order
+`-8000` (`Assets/Scripts/game manager/GameLevelManager.cs.meta`) and its `Awake()` populates the
+participant registry before any other object's `Awake()` can run; `GameRules.Awake()` (default order 0)
+then calls `BindMoneyBallStateToBasketballs(GameLevelManager.instance != null ?
+GameLevelManager.instance.Registry : null)` (`Assets/Scripts/game manager/GameRules.cs:133`), and
+`BindMoneyBallStateToBasketballs` returns immediately, logging an error and binding nothing, when handed
+a null registry (`GameRules.cs:184-190`). So a missing/unpopulated `GameLevelManager` would already
+surface as a null `moneyBallState` on every ball — the per-ball provider assertions the fixture already
+made prove the relevant `GameLevelManager` → `GameRules` ordering/composition chain held, making the
+fixture's separate explicit `GameLevelManager.instance != null` assertion redundant. It was removed along
+with the fixture's last compile-time `GameLevelManager` dependency; no reflection-by-name replacement was
+needed since nothing else in the fixture named the type.
+
+`GameRules` itself has no covering asmdef (`Assets/Scripts/game manager/GameRules.cs` sits directly under
+`Assets/Scripts/game manager/` with no local `.asmdef`, same as `GameLevelManager.cs`/`MatchRuntime.cs`)
+and stays in `Assembly-CSharp`, so the fixture cannot name it at compile time. Slice 43's shot-marker
+fixture had already solved exactly this with a private `ResolveRuntimeGameRulesInstance()` helper that
+scans live `MonoBehaviour`s for runtime type name `"GameRules"` and reads its `public static instance`
+field by reflection. Slice 45 makes this fixture a second real consumer of the identical operation, so
+per this slice's own instructions the resolver was moved into `RealScenePlayModeTestSupport` (as
+`internal static object ResolveRuntimeGameRulesInstance()`, same fail-closed behavior: explicit failure
+if zero `GameRules` components are found or if the resolved static instance is not one of them) and both
+fixtures now call the one shared implementation. `Level5ShotMarkerSessionCompositionPlayModeTests.cs`'s
+own copy was deleted rather than kept as a second implementation.
+
+`BasketBall`/`BasketBallAuto` (both already in `Level5.Basketball`, already referenced) are found and
+read exactly as before — their private `moneyBallState`/`matchRules` fields still via
+`RealScenePlayModeTestSupport.GetField<T>`, and the provider-identity comparison stays `ReferenceEquals`
+against the shared resolver's result rather than value equality. Both balls' `activeSelf` and bound
+`ResolvedMatchRules` assertions were preserved unchanged. The compiler-backed exact-type
+`GameRules.BindMoneyBallStateToBasketballs` composition proof — human/CPU/secondary-human composition,
+participant-with-no-ball behavior, and the two balls' own `BindMoneyBallState` bind/rebind/null-guard
+semantics — remains unchanged in EditMode's `Level5BasketballMoneyBallStateTests`.
+
+Two `<see cref>` references in the moved fixture's header (`Level5BasketballMoneyBallStateTests`,
+`BasketballVisibilityTests`) named types no longer visible across the `Level5.PlayModeTests` assembly
+boundary and were changed to `<c>` tags; the new header instead links directly to
+`Level5ShotMarkerSessionCompositionPlayModeTests` (`<c>`, since that fixture's method-level detail isn't
+being cited) and `<see cref="RealScenePlayModeTestSupport"/>`/`<see cref="GameplayScenePlayModeHarness"/>`
+(kept as `<see cref>`, both already in `Level5.PlayModeTests`).
+
+`Level5.PlayModeTests`'s `references` were unchanged by this slice — `IMoneyBallState`/`ResolvedMatchRules`
+(`Level5.Core.Match`, already referenced) and `BasketBall`/`BasketBallAuto` (`Level5.Basketball`, already
+referenced) were all already reachable; no new dependency was required. No production `.cs`, runtime
+`.asmdef`, scene, or prefab changed.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation (0 `error CS` lines); the migrated
+fixture together with `Level5ShotMarkerSessionCompositionPlayModeTests` after the resolver extraction
+(2/2 passed); `Level5BasketballMoneyBallStateTests` EditMode (all passed); the full `Level5.PlayModeTests`
+assembly (12/12 passed, up from the prior 11); the complete unfiltered PlayMode suite (17/17 passed,
+unchanged); the complete EditMode suite (1206/1206 passed, unchanged); and
+`scripts/validate-repository.ps1` (passed).
+
+The asmdef-free `PlayModeGameplay` workaround shrinks from three files to two. Re-audited line by line
+against current source for this slice rather than carried forward:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+
+Both were re-verified unchanged from the Slice 39/42/43/44 audits. Slice 45 did not migrate
+`GameLevelManager`, `GameRules`, `StartManager`, `Pause`, or the menu managers.
+
+**Code review (2026-09-11) found two Low-severity polish gaps, both fixed:**
+1. `RealScenePlayModeTestSupport`'s class summary still described only its original three
+   responsibilities (log-noise suppression, scene teardown, private-field reflection) and the
+   "extracted because ... all three" framing was now stale once this slice added a fourth
+   (`ResolveRuntimeGameRulesInstance`). Fixed by extending the summary to name the resolver and its two
+   real consumers, so a future fixture author skimming the class doc doesn't miss it and hand-roll a
+   third copy.
+2. The migrated fixture dropped the original's `DIAG` scene-name/ball-count log with nothing
+   substituted, unlike the still-current Slice 42 telemetry fixture's equivalent log. Restored a single
+   summary `Debug.Log` (active scene name, human/CPU ball counts) before the assertions, matching that
+   precedent, so a future CI failure's log carries the same triage context the original fixture had.
+
+Neither fix changes test behavior or assertions. Re-validated after the fixes: forced compilation (0
+`error CS`), the migrated fixture alone, and `Level5ShotMarkerSessionCompositionPlayModeTests` all
+passed.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;
