@@ -1,10 +1,7 @@
 #if UNITY_INCLUDE_TESTS
 using System.Collections;
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 /// <summary>
@@ -20,35 +17,16 @@ using UnityEngine.TestTools;
 /// </summary>
 public class PlayerMovementPhysicsTests
 {
-    private const BindingFlags Flags =
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
-
     [SetUp]
     public void IgnoreSceneLogNoise()
     {
-        // These drive real scenes end to end, and those scenes log errors of their own that have
-        // nothing to do with what is under test. Without this the runner turns any stray Debug.LogError
-        // into a failure for whichever test happened to be running.
-        LogAssert.ignoreFailingMessages = true;
+        RealScenePlayModeTestSupport.IgnoreSceneLogNoise();
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Time.timeScale = 1f;
-
-        Scene blank = SceneManager.CreateScene("player-movement-test-cleanup");
-        SceneManager.SetActiveScene(blank);
-        for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-        {
-            Scene scene = SceneManager.GetSceneAt(i);
-            if (scene != blank && scene.isLoaded)
-            {
-                yield return SceneManager.UnloadSceneAsync(scene);
-            }
-        }
-
-        yield return null;
+        yield return RealScenePlayModeTestSupport.UnloadAllLoadedScenes("player-movement-test-cleanup");
     }
 
     /// <summary>
@@ -101,9 +79,9 @@ public class PlayerMovementPhysicsTests
         PlayerController controller = player.GetComponent<PlayerController>();
         Assert.That(controller, Is.Not.Null, "No PlayerController on the player.");
 
-        float jumpForce = Field<CharacterProfile>(controller, "characterProfile") != null
-            ? Field<CharacterProfile>(controller, "characterProfile").JumpForce
-            : 0f;
+        CharacterProfile characterProfile =
+            RealScenePlayModeTestSupport.GetField<CharacterProfile>(controller, "characterProfile");
+        float jumpForce = characterProfile != null ? characterProfile.JumpForce : 0f;
 
         Vector3 start = player.position;
         controller.PlayerJump();
@@ -164,66 +142,9 @@ public class PlayerMovementPhysicsTests
     /// <summary>Start menu -> gameplay level, resumed, physics running.</summary>
     private IEnumerator EnterGameplayLevel(System.Action<Rigidbody> onReady)
     {
-        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
-        yield return null;
-        yield return null;
-
-        StartManager manager = null;
-        float deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline)
-        {
-            manager = Object.FindAnyObjectByType<StartManager>();
-            if (manager != null && Invoke<bool>(manager, "HasLoadedGameSetup"))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Assert.That(manager, Is.Not.Null, "start menu never became ready");
-
-        GameObject pressStart = GameObject.Find("press_start");
-        ExecuteEvents.Execute(pressStart, new BaseEventData(EventSystem.current), ExecuteEvents.submitHandler);
-
-        deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline
-            && SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_00_start)
-        {
-            yield return null;
-        }
-
-        yield return null;
-        yield return null;
-
-        // Gameplay levels open on the start-on-pause screen with timeScale 0. Pause.Update also
-        // re-pauses on the next frame if `paused` is still set, so simply writing timeScale is not
-        // enough - with timeScale 0 there are no fixed updates and every WaitForFixedUpdate below
-        // would wait forever. Take Pause out of the loop entirely for the duration of the test.
-        Pause pause = Object.FindAnyObjectByType<Pause>(FindObjectsInactive.Include);
-        if (pause != null)
-        {
-            pause.enabled = false;
-        }
-
-        Time.timeScale = 1f;
-        yield return null;
-
-        PlayerController controller = Object.FindAnyObjectByType<PlayerController>();
+        PlayerController controller = null;
+        yield return GameplayScenePlayModeHarness.EnterPlayableGameplayScene(result => controller = result);
         onReady(controller == null ? null : controller.GetComponent<Rigidbody>());
-    }
-
-    private static T Field<T>(object target, string name) where T : class
-    {
-        FieldInfo f = target.GetType().GetField(name, Flags);
-        return f == null ? null : f.GetValue(target) as T;
-    }
-
-    private static T Invoke<T>(object target, string name)
-    {
-        MethodInfo mi = target.GetType().GetMethod(name, Flags);
-        object v = mi == null ? null : mi.Invoke(target, null);
-        return v is T typed ? typed : default;
     }
 }
 #endif

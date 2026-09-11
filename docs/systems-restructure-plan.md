@@ -3312,6 +3312,67 @@ unchanged. Neither fixture now documents or requires a specific execution order 
 assemblies. Phase 2c remains in progress: this slice removed a suite-order dependency, not a
 dependency-closure blocker, so the remaining-eight table above is unchanged.
 
+**Slice 41 (2026-09-11) moved `BasketballVisibilityTests.cs`/`.cs.meta`** (GUID
+`47ba6b7d839b57245899300b333306a2` preserved) **and `PlayerMovementPhysicsTests.cs`/`.cs.meta`** (GUID
+`9d0dc6afd01f70d49b16eb3b845fb208` preserved) from `Assets/Tests/PlayModeGameplay` into
+`Assets/Tests/PlayMode`. Both were blocked only on `StartManager`/`Pause` per the Slice 39 table above;
+re-audited for this slice, that held: in both fixtures `StartManager`/`Pause` were reached solely to
+drive the start menu into gameplay and to stop the start-on-pause screen from leaving `Time.timeScale`
+at zero, never to assert either type's own behaviour. Direct migration of `StartManager`/`Pause`
+themselves was rejected — both still have the broad dependency closures the Slice 39/40 checkpoints
+describe (`menu_start`/`game manager`/`menu_options`/`menu_credits`/`menu_stats`/`menu_login`/
+`analytics`), so moving either was out of scope for a two-fixture normalization.
+
+Instead, both fixtures' duplicated bootstrap now goes through one new test-only helper,
+`Assets/Tests/PlayMode/GameplayScenePlayModeHarness.cs` (`EnterPlayableGameplayScene`), added to
+`Level5.PlayModeTests`. It loads `Constants.SCENE_NAME_level_00_start`, then drives the same public
+`press_start` UI event a player would (via `ExecuteEvents`/`EventSystem`) instead of reflecting into
+`StartManager.HasLoadedGameSetup`. Because that means the first submission can land before game setup
+has actually loaded — production's real response is `StartManager.StartGame` bouncing back to the
+loading scene and, once `LoadedData` is ready, back to the start scene — the harness retries: it keeps
+submitting `press_start` (at most once every five frames, never every frame) for as long as the active
+scene is still the start scene, and stops submitting the moment it is not, which also covers a bounce
+back to the start scene starting a fresh retry rather than being mistaken for arrival. Once the active
+scene has left the start scene, it waits for a live `PlayerController` (both fixtures need a spawned
+human player) as evidence gameplay actually initialized, rather than treating leaving the start scene
+alone as success. The whole sequence — UI wait, retries, and the post-transition gameplay wait — shares
+one 60-second budget and fails with an actionable `Assert` if either half of it runs out. Pause
+suppression stays a narrow compatibility seam: the harness looks for a live `MonoBehaviour` whose
+runtime `Type.Name` is exactly `"Pause"` and disables it if found, rather than naming the type or
+calling into it, then restores `Time.timeScale`. `PlayerMovementPhysicsTests.EnterGameplayLevel` is kept
+as a thin wrapper that calls the harness and extracts the `Rigidbody`, so its three physics assertions'
+call sites are unchanged. `BasketballVisibilityTests` calls the harness directly for the
+`PlayerController` it forces `hasBasketball` on. Every basketball/player/physics assertion, reflection
+lookup, teardown, and log-noise policy in both fixtures is otherwise unchanged — only their bootstrap
+moved.
+
+`Level5.PlayModeTests`'s `references` grew from `["Level5.Core", "Level5.Match", "Level5.Versus",
+"Level5.Basketball"]` to add `Level5.Player` (`PlayerController`/`CharacterProfile`, the harness's own
+dependency and `PlayerMovementPhysicsTests`' `Field<CharacterProfile>` lookup) and `Level5.Constants`
+(`Constants.SCENE_NAME_level_00_start`, used by the harness and, already, by
+`Level5GameplayPlayModeTests`' transitive types) — both already dependency-clean per the Slice 12-38
+history above. `BasketBall`/`BasketBallAuto` were already reachable through the existing
+`Level5.Basketball` reference. No production source or runtime asmdef changed.
+
+No production/runtime-asmdef change either fixture. The asmdef-free `PlayModeGameplay` workaround
+shrinks from eight files to six. Phase 2c remains in progress; StartManager/Pause block four of the six
+remaining files and menu-manager types block the fifth:
+
+| Remaining file | Direct `Assembly-CSharp` blocker(s) |
+| --- | --- |
+| `GameplayLevelUnpauseTests.cs` | `StartManager`, `Pause` |
+| `Level5BasketBallShotMadeCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameLevelManager` |
+| `Level5BasketBallShotTelemetryCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `AnaylticsManager` |
+| `Level5MenuScreenPlayModeTests.cs` | `OptionsManager`, `CreditsManager`, `StatsManager`, `AccountManager` |
+| `Level5MoneyBallStateCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules`, `GameLevelManager` |
+| `Level5ShotMarkerSessionCompositionPlayModeTests.cs` | `StartManager`, `Pause`, `GameRules` |
+
+This table is carried forward from the Slice 39 audit rather than freshly re-verified line by line for
+this slice — none of these six files changed in Slice 41, and Slice 41 did not migrate `GameRules`,
+`GameLevelManager`, analytics, or the menu managers. Diagnostic only: the new harness is deliberately
+not a generalization these six can reuse as-is, since several of them assert `StartManager`/`Pause`
+composition behaviour directly rather than treating either as incidental.
+
 #### 2d — Architecture guards and exit verification
 
 Add or extend tests asserting: intended runtime source no longer falls back into `Assembly-CSharp`;

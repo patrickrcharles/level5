@@ -3,7 +3,6 @@ using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -24,77 +23,26 @@ using UnityEngine.TestTools;
 /// </summary>
 public class BasketballVisibilityTests
 {
-    private const BindingFlags Flags =
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
-
     [SetUp]
     public void IgnoreSceneLogNoise()
     {
-        // These drive real scenes end to end, and those scenes log errors of their own that have
-        // nothing to do with what is under test. Without this the runner turns any stray Debug.LogError
-        // into a failure for whichever test happened to be running.
-        LogAssert.ignoreFailingMessages = true;
+        RealScenePlayModeTestSupport.IgnoreSceneLogNoise();
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Time.timeScale = 1f;
-        Scene blank = SceneManager.CreateScene("basketball-diag-cleanup");
-        SceneManager.SetActiveScene(blank);
-        for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-        {
-            Scene scene = SceneManager.GetSceneAt(i);
-            if (scene != blank && scene.isLoaded)
-            {
-                yield return SceneManager.UnloadSceneAsync(scene);
-            }
-        }
-
-        yield return null;
+        yield return RealScenePlayModeTestSupport.UnloadAllLoadedScenes("basketball-diag-cleanup");
     }
 
     [UnityTest]
     public IEnumerator TheHeldBallIsNotDrawnAbovethePlayersHead()
     {
-        SceneManager.LoadScene(Constants.SCENE_NAME_level_00_start);
-        yield return null;
-        yield return null;
+        // The harness only needs a PlayerController as its own readiness signal; this re-resolves a
+        // fresh one below after settling, rather than reusing that reference, in case the gameplay
+        // scene still swaps the player object out during the settle wait.
+        yield return GameplayScenePlayModeHarness.EnterPlayableGameplayScene(_ => { });
 
-        StartManager manager = null;
-        float deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline)
-        {
-            manager = Object.FindAnyObjectByType<StartManager>();
-            if (manager != null && Invoke<bool>(manager, "HasLoadedGameSetup"))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Assert.That(manager, Is.Not.Null, "start menu never became ready");
-
-        ExecuteEvents.Execute(
-            GameObject.Find("press_start"),
-            new BaseEventData(EventSystem.current),
-            ExecuteEvents.submitHandler);
-
-        deadline = Time.realtimeSinceStartup + 30f;
-        while (Time.realtimeSinceStartup < deadline
-            && SceneManager.GetActiveScene().name == Constants.SCENE_NAME_level_00_start)
-        {
-            yield return null;
-        }
-
-        Pause pause = Object.FindAnyObjectByType<Pause>(FindObjectsInactive.Include);
-        if (pause != null)
-        {
-            pause.enabled = false;
-        }
-
-        Time.timeScale = 1f;
         for (int i = 0; i < 10; i++)
         {
             yield return null;
@@ -108,7 +56,7 @@ public class BasketballVisibilityTests
         PlayerController human = Object.FindAnyObjectByType<PlayerController>();
         if (human != null)
         {
-            FieldInfo hasBall = human.GetType().GetField("hasBasketball", Flags);
+            FieldInfo hasBall = RealScenePlayModeTestSupport.GetFieldInfo(human, "hasBasketball");
             if (hasBall != null)
             {
                 hasBall.SetValue(human, true);
@@ -148,9 +96,9 @@ public class BasketballVisibilityTests
         BasketBall held = null;
         for (int i = 0; i < balls.Length; i++)
         {
-            object controller = FieldObject(balls[i], "actor");
-            FieldInfo hb = controller?.GetType().GetField("hasBasketball", Flags);
-            if (hb != null && hb.GetValue(controller) is bool b && b)
+            object controller = RealScenePlayModeTestSupport.GetField(balls[i], "actor");
+            object hasBallValue = RealScenePlayModeTestSupport.GetField(controller, "hasBasketball");
+            if (hasBallValue is bool b && b)
             {
                 held = balls[i];
                 break;
@@ -159,7 +107,7 @@ public class BasketballVisibilityTests
 
         Assert.That(held, Is.Not.Null, "no ball reported its owner as holding it");
 
-        SpriteRenderer renderer = FieldObject(held, "spriteRenderer") as SpriteRenderer;
+        SpriteRenderer renderer = RealScenePlayModeTestSupport.GetField<SpriteRenderer>(held, "spriteRenderer");
         Assert.That(renderer, Is.Not.Null, "the held ball has no sprite renderer");
         Assert.That(
             renderer.enabled,
@@ -170,21 +118,16 @@ public class BasketballVisibilityTests
 
     private static void Report(string label, object ballComponent, GameObject ballObject)
     {
-        object controller = FieldObject(ballComponent, "actor");
-        object owner = FieldObject(ballComponent, "player");
+        object controller = RealScenePlayModeTestSupport.GetField(ballComponent, "actor");
+        object owner = RealScenePlayModeTestSupport.GetField(ballComponent, "player");
         GameObject ownerObject = owner as GameObject;
-        object hold = FieldObject(ballComponent, "basketBallPosition");
+        object hold = RealScenePlayModeTestSupport.GetField(ballComponent, "basketBallPosition");
         GameObject holdObject = hold as GameObject;
 
-        bool hasBall = false;
-        if (controller != null)
-        {
-            FieldInfo hb = controller.GetType().GetField("hasBasketball", Flags);
-            object v = hb?.GetValue(controller);
-            hasBall = v is bool b && b;
-        }
+        object hasBallValue = RealScenePlayModeTestSupport.GetField(controller, "hasBasketball");
+        bool hasBall = hasBallValue is bool b && b;
 
-        SpriteRenderer sr = FieldObject(ballComponent, "spriteRenderer") as SpriteRenderer;
+        SpriteRenderer sr = RealScenePlayModeTestSupport.GetField<SpriteRenderer>(ballComponent, "spriteRenderer");
 
         Debug.Log(
             "DIAG " + label
@@ -198,19 +141,6 @@ public class BasketballVisibilityTests
             + " enabled=" + (sr == null ? "-" : sr.enabled.ToString())
             + " alpha=" + (sr == null ? "-" : sr.color.a.ToString("F2"))
             + " isVisible=" + (sr == null ? "-" : sr.isVisible.ToString()));
-    }
-
-    private static object FieldObject(object target, string name)
-    {
-        FieldInfo f = target.GetType().GetField(name, Flags);
-        return f == null ? null : f.GetValue(target);
-    }
-
-    private static T Invoke<T>(object target, string name)
-    {
-        MethodInfo mi = target.GetType().GetMethod(name, Flags);
-        object v = mi == null ? null : mi.Invoke(target, null);
-        return v is T typed ? typed : default;
     }
 }
 #endif
