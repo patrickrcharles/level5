@@ -1,8 +1,41 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
+    // AUD-012 Phase 2b: the projectile spawn action and a live "does this scene have an auto player"
+    // reader, composed by SpawnCoordinator.BindPlayerAnimationEventsContext instead of this component
+    // reading ProjectilePool (Assembly-CSharp, not Level5.Pooling) / GameLevelManager.instance directly.
+    private Func<GameObject, Vector3, Quaternion, GameObject> projectileSpawner;
+    private Func<bool> hasAutoPlayerReader;
+
+    /// <summary>
+    /// Explicit binding of the projectile-spawn action, from
+    /// <c>SpawnCoordinator.BindPlayerAnimationEventsContext</c> - replaces this component's former
+    /// direct <c>ProjectilePool.Spawn</c> call. <c>ProjectilePool</c> lives in loose
+    /// <c>Assets/Scripts/projectile/</c> (<c>Assembly-CSharp</c>), not <c>Level5.Pooling</c>, so it is
+    /// not a legal leaf dependency the way <c>SFXBB</c> is; this is the "single outward action"
+    /// delegate the architecture rules call for instead.
+    /// </summary>
+    public void BindProjectileSpawner(Func<GameObject, Vector3, Quaternion, GameObject> spawner)
+    {
+        projectileSpawner = spawner;
+    }
+
+    /// <summary>
+    /// Explicit binding of a live "does this scene currently have an auto (CPU) player" reader, from
+    /// <c>SpawnCoordinator.BindPlayerAnimationEventsContext</c> - replaces this component's former
+    /// direct <c>GameLevelManager.instance.AutoPlayer</c> read in <see cref="Start"/>. A
+    /// <see cref="Func{Boolean}"/>, not a captured bool: <c>GameLevelManager.AutoPlayer</c> is not
+    /// necessarily populated yet at the point this binding happens, so the answer must be resolved
+    /// live, at the same point <see cref="Start"/> originally read it.
+    /// </summary>
+    public void BindHasAutoPlayerReader(Func<bool> reader)
+    {
+        hasAutoPlayerReader = reader;
+    }
+
     [SerializeField]
     private AudioSource audioSource;
     const string attackBoxText = "attackBox";
@@ -132,7 +165,7 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
 
         // check if attack box is active and should not be
-        if (GameLevelManager.instance != null && !GameLevelManager.instance.AutoPlayer)
+        if (hasAutoPlayerReader != null && !hasAutoPlayerReader())
         {
             InvokeRepeating("checkCollidersDisabledProperly", 0, 1);
         }
@@ -172,12 +205,12 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     private void SpawnProjectile(GameObject projectilePrefab)
     {
-        if (projectilePrefab == null || projectileSpawn == null)
+        if (projectilePrefab == null || projectileSpawn == null || projectileSpawner == null)
         {
             return;
         }
 
-        ProjectilePool.Spawn(projectilePrefab, projectileSpawn.transform.position, Quaternion.identity);
+        projectileSpawner(projectilePrefab, projectileSpawn.transform.position, Quaternion.identity);
     }
 
     public void instantiateProjectileLazer()
@@ -407,12 +440,22 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void enableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = true;
+        if (!CanApplyForce())
+        {
+            return;
+        }
+
+        playerController.RigidBody.isKinematic = true;
     }
 
     public void disableRigidBodyIsKinematic()
     {
-        GameLevelManager.instance.Player1.GetComponent<Rigidbody>().isKinematic = false;
+        if (!CanApplyForce())
+        {
+            return;
+        }
+
+        playerController.RigidBody.isKinematic = false;
     }
 
     public void playSfxBasketballHitRim()
@@ -569,7 +612,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     void CheckAttackBoxActiveStatus()
     {
         if (attackBox != null
-            && !GameLevelManager.instance.PlayerController1.IsSpecialState()
+            && playerController != null
+            && !playerController.IsSpecialState()
             && attackBox.activeSelf)
         {
             attackBox.SetActive(false);

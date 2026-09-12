@@ -5,6 +5,7 @@ using Level5.Core;
 using Level5.Core.Match;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// The gameplay scene's manager, now mostly a facade.
@@ -132,10 +133,22 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider, IPlayerMat
         _spawnCoordinator.BindHumanDamageReactionCamera(ReadPlayerDamageReactionCamera);
         _spawnCoordinator.BindHumanIdleSniperRuntime(ReadPlayerIdleSniperRuntime);
         _spawnCoordinator.BindHumanMatchRuntime(this);
+        _spawnCoordinator.BindCpuMatchRuntime(this);
 
         _spawnCoordinator.SpawnCheerleader(MatchRuntime.Cheerleader.ObjectName, terrainHeight);
 
         ArenaBootstrap.HideDuplicateCharacterActors(MatchRuntime.PrimaryCharacterObjectName, _rules.TrafficEnabled);
+
+        // Code review, 2026-09-12: this used to be called from Start(), which raced PlayerHealthBar's
+        // own Start() - Unity does not order Start() across independent components, and this project
+        // defines no explicit Script Execution Order. If PlayerHealthBar.Start() happened to run first,
+        // it saw contextBound == false, deactivated its own GameObject, and this Find (active-only)
+        // would then find nothing - leaving the HUD silently, permanently disabled for the match. Called
+        // from Awake() instead, which every Start() in the scene is guaranteed to follow. Everything it
+        // reads is already final by the end of Awake(): PlayerHealth.Awake() sets Health/Block/Special,
+        // and a human's CharacterProfile.playerDisplayName is either the prefab's serialized default or
+        // set synchronously above by SpawnCoordinator.RegisterHuman - never by CharacterProfile.Start().
+        BindPlayerHealthBarContext(registry.GetBySlot(0));
     }
 
     /// <summary>
@@ -291,6 +304,55 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider, IPlayerMat
         // coordinator is always assigned in Awake before spawning, so this can only skip where no level
         // was built at all.
         _spawnCoordinator?.BindHumanArenaContext(_basketballRimVector, this);
+        _spawnCoordinator?.BindCpuArenaContext(_basketballRimVector, this);
+    }
+
+    /// <summary>
+    /// Forwards the primary human's tracked <see cref="PlayerHealth"/>, character display name,
+    /// resolved match rules and a live damage-display-text reader to the scene's
+    /// <see cref="PlayerHealthBar"/> HUD (a scene-authored UI singleton, not a per-participant
+    /// component, so it is not spawned or bound through <see cref="SpawnCoordinator"/>), replacing
+    /// that HUD's former direct <c>GameLevelManager.instance</c>/<c>MatchRuntime</c> reads. A scene
+    /// with no HUD instance, or no primary human, is left alone exactly as before (the HUD simply
+    /// never activates).
+    ///
+    /// Code review, 2026-09-12: called from <see cref="Awake"/>, not <see cref="Start"/> - this HUD
+    /// reads the bound context synchronously inside its own <c>Start()</c> to decide whether to
+    /// activate itself, and Unity does not order <c>Start()</c> across independent components. Calling
+    /// this from <c>Start()</c> raced <see cref="PlayerHealthBar.Start"/>: if the HUD's own
+    /// <c>Start()</c> happened to run first, it saw an unbound context, deactivated its own
+    /// GameObject, and this method's <c>FindAnyObjectByType</c> (active-only) then found nothing -
+    /// leaving the HUD silently and permanently disabled for the match. <c>Awake()</c> is guaranteed
+    /// to precede every <c>Start()</c> in the scene, closing that race. <paramref name="player1"/> is
+    /// resolved from <see cref="registry"/> directly (equivalent to <see cref="Player1"/>) rather than
+    /// the <c>Start()</c>-scoped local of the same name.
+    ///
+    /// The damage-display Text is bound as a live <see cref="Func{Text}"/>, not a captured reference:
+    /// <c>PlayerController.DamageDisplayValueText</c> is only populated inside that controller's own
+    /// <c>Start()</c> - resolving it fresh, at the point <see cref="PlayerHealthBar"/> actually
+    /// displays a message (well after every <c>Start()</c> has run), matches the timing the original
+    /// direct read had.
+    /// </summary>
+    private void BindPlayerHealthBarContext(PlayerIdentifier player1)
+    {
+        PlayerHealthBar healthBar = FindAnyObjectByType<PlayerHealthBar>();
+        if (healthBar == null || player1 == null)
+        {
+            return;
+        }
+
+        PlayerHealth health = player1.GetComponentInChildren<PlayerHealth>();
+        CharacterProfile profile = player1.GetComponent<CharacterProfile>();
+        healthBar.BindPrimaryHumanContext(
+            _rules,
+            health,
+            profile != null ? profile.PlayerDisplayName : null,
+            ReadPrimaryHumanDamageDisplayText);
+    }
+
+    private Text ReadPrimaryHumanDamageDisplayText()
+    {
+        return _playerController1 != null ? _playerController1.DamageDisplayValueText : null;
     }
 
     private void Update()
@@ -398,6 +460,8 @@ public class GameLevelManager : MonoBehaviour, IGroundHeightProvider, IPlayerMat
     ResolvedMatchRules IPlayerMatchRuntime.Rules => MatchRuntime.Rules;
 
     bool IPlayerMatchRuntime.CustomCamera => MatchRuntime.CustomCamera;
+
+    bool IPlayerMatchRuntime.LevelHasSevenPointers => MatchRuntime.LevelHasSevenPointers;
 
     int IPlayerMatchRuntime.LocalInputSlotFor(int playerId) => MatchRuntime.LocalInputSlotFor(playerId);
 }

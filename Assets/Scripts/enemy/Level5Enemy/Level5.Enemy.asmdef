@@ -1,7 +1,9 @@
 {
     "name": "Level5.Enemy",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "Level5.Combat"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

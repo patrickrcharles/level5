@@ -61,8 +61,13 @@ public class CheerleaderSwapAnimation : MonoBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         // CHR-2: `swapped` was reset to false inside both setters below, so it could never gate
         // anything - it is the GetKeyDown edge that makes this fire once per press.
-        if (GameLevelManager.instance != null
-            && GameLevelManager.instance.Controls.Other.change.enabled
+        //
+        // AUD-012 Phase 2b: GameLevelManager.Controls was only ever a forward of
+        // PlayerControlsProvider.Controls (set from that same source in GameLevelManager.OnEnable/
+        // Awake) - reading the authoritative Level5.Input owner directly is the identical control
+        // object, not a new input abstraction. DevChangeControlEnabled (not the raw InputAction) so
+        // this file needs no reference to the Unity.InputSystem package assembly.
+        if (PlayerControlsProvider.DevChangeControlEnabled
             && Input.GetKeyDown(KeyCode.Alpha9))
         {
             if (originalAnimations)

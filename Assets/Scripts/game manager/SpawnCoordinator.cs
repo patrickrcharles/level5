@@ -379,6 +379,66 @@ public sealed class SpawnCoordinator
     }
 
     /// <summary>
+    /// AUD-012 Phase 2b: the CPU twin of <see cref="BindHumanMatchRuntime"/>, forwarding the same live
+    /// <see cref="IPlayerMatchRuntime"/> boundary to every registered CPU participant's
+    /// <see cref="AutoPlayerController"/>, replacing that controller's former direct
+    /// <c>MatchRuntime.Rules</c>/<c>CustomCamera</c>/<c>LevelHasSevenPointers</c> reads. Called from
+    /// <c>GameLevelManager.Awake</c>'s spawn pass, adjacent to <see cref="BindHumanMatchRuntime"/>.
+    /// </summary>
+    public void BindCpuMatchRuntime(IPlayerMatchRuntime runtime)
+    {
+        foreach (PlayerIdentifier participant in registry.Participants)
+        {
+            if (participant == null || !participant.isCpu)
+            {
+                continue;
+            }
+
+            AutoPlayerController controller = participant.autoPlayerController;
+            if (controller == null)
+            {
+                continue;
+            }
+
+            controller.BindMatchRuntime(runtime);
+        }
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b: the CPU twin of <see cref="BindHumanArenaContext"/>, forwarding the same
+    /// finalized rim vector and live ground-height provider to every registered CPU participant's
+    /// <see cref="AutoPlayerController"/> and <see cref="AutoPlayerDefense"/>, replacing their former
+    /// direct <c>GameLevelManager.instance.BasketballRimVector</c>/<c>TerrainHeight</c> reads. Called
+    /// once from <c>GameLevelManager.Start()</c>, after <c>ArenaBootstrap.Apply</c> has resolved the
+    /// final rim - the same point <see cref="BindHumanArenaContext"/> is called from. A CPU shooter
+    /// carries an <see cref="AutoPlayerController"/>, the Lockdown defender carries an
+    /// <see cref="AutoPlayerDefense"/>; both are bound here independently since neither component is
+    /// guaranteed present on a given CPU participant.
+    /// </summary>
+    public void BindCpuArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
+    {
+        foreach (PlayerIdentifier participant in registry.Participants)
+        {
+            if (participant == null || !participant.isCpu)
+            {
+                continue;
+            }
+
+            AutoPlayerController controller = participant.autoPlayerController;
+            if (controller != null)
+            {
+                controller.BindArenaContext(basketballRimVector, groundHeightProvider);
+            }
+
+            AutoPlayerDefense defense = participant.GetComponent<AutoPlayerDefense>();
+            if (defense != null)
+            {
+                defense.BindArenaContext(basketballRimVector, groundHeightProvider);
+            }
+        }
+    }
+
+    /// <summary>
     /// The one human-participant iteration every <c>BindHuman*</c> pass shares: registered, non-CPU,
     /// with a <see cref="PlayerController"/> to bind to. A human whose prefab has no controller fails
     /// closed on that participant with a named error and the pass continues, rather than throwing and
@@ -445,7 +505,8 @@ public sealed class SpawnCoordinator
 
         Vector3 position = locations.Cheerleader.transform.position;
         locations.Cheerleader.transform.position = new Vector3(position.x, terrainHeight, position.z);
-        UnityEngine.Object.Instantiate(prefab, locations.Cheerleader.transform.position, Quaternion.identity);
+        GameObject cheerleader = UnityEngine.Object.Instantiate(prefab, locations.Cheerleader.transform.position, Quaternion.identity);
+        BindPlayerAnimationEventsContext(cheerleader);
     }
 
     private GameObject ResolveParticipantPrefab(PlayerSlot slot, int slotId)
@@ -497,6 +558,8 @@ public sealed class SpawnCoordinator
         BindCallBallMatchRules(spawned);
         BindPlayerHealthMatchRules(spawned);
         BindPlayerAttackQueueContext(spawned);
+        BindPlayerCollisionsContext(spawned);
+        BindPlayerAnimationEventsContext(spawned);
         registry.Add(identifier);
     }
 
@@ -591,7 +654,34 @@ public sealed class SpawnCoordinator
         BindCallBallMatchRules(spawned);
         BindPlayerHealthMatchRules(spawned);
         BindPlayerAttackQueueContext(spawned);
+        BindCpuParticipantRegistry(spawned);
+        BindAutoPlayerCollisionsContext(spawned);
+        BindPlayerAnimationEventsContext(spawned);
         registry.Add(identifier);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b: binds this coordinator's own <see cref="registry"/> to the spawned CPU's
+    /// <see cref="AutoPlayerController"/> (score-deficit shot selection) and/or
+    /// <see cref="AutoPlayerDefense"/> (the lockdown defender's primary-human fallback), replacing
+    /// their former direct <c>GameLevelManager.instance.players</c>/<c>.Player1</c> reads. Bound
+    /// immediately - unlike the arena-context pass, which must wait for <c>GameLevelManager.Start()</c>
+    /// to finalize the rim - since the registry reference itself never changes for the life of this
+    /// coordinator, only its contents grow as more participants register.
+    /// </summary>
+    private void BindCpuParticipantRegistry(GameObject participant)
+    {
+        AutoPlayerController controller = participant.GetComponent<AutoPlayerController>();
+        if (controller != null)
+        {
+            controller.BindParticipantRegistry(registry);
+        }
+
+        AutoPlayerDefense defense = participant.GetComponent<AutoPlayerDefense>();
+        if (defense != null)
+        {
+            defense.BindParticipantRegistry(registry);
+        }
     }
 
     /// <summary>
@@ -673,6 +763,86 @@ public sealed class SpawnCoordinator
         }
 
         queue.BindMatchContext(rules, participant.transform);
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b: binds this coordinator's already-resolved <see cref="rules"/>, the human
+    /// spawn point's transform (the fall-respawn destination), and the <c>GameRules.killedOnIdle</c>
+    /// forwarding callback to the participant's own <see cref="PlayerCollisions"/>, from
+    /// <see cref="RegisterHuman"/> only - <see cref="PlayerCollisions"/> is the human-only collision
+    /// handler; <see cref="AutoPlayerCollisions"/> is its CPU twin, bound separately below. Replaces
+    /// that component's former direct <c>MatchRuntime.Rules</c> read and its
+    /// <c>GameLevelManager.instance.Player1</c>/<c>PlayerSpawnLocation</c>/<c>GameRules.instance</c>
+    /// reach-throughs. <c>GetComponentsInChildren</c>, not <c>GetComponent</c>: this component is
+    /// authored on the hitbox child, not the participant root, mirroring how it resolves its own
+    /// <c>PlayerIdentifier</c> via <c>GetComponentInParent</c>.
+    /// </summary>
+    private void BindPlayerCollisionsContext(GameObject participant)
+    {
+        foreach (PlayerCollisions collisions in participant.GetComponentsInChildren<PlayerCollisions>(true))
+        {
+            collisions.BindMatchRules(rules);
+            collisions.BindFallRespawnDestination(locations.Player1 != null ? locations.Player1.transform : null);
+            collisions.BindKilledOnIdleCallback(MarkKilledOnIdle);
+        }
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b: the CPU twin of <see cref="BindPlayerCollisionsContext"/>, for
+    /// <see cref="AutoPlayerCollisions"/> from <see cref="RegisterCpu"/> only. No
+    /// <c>GameRules.killedOnIdle</c> callback: unlike its human twin, <see cref="AutoPlayerCollisions"/>
+    /// never read that field.
+    /// </summary>
+    private void BindAutoPlayerCollisionsContext(GameObject participant)
+    {
+        foreach (AutoPlayerCollisions collisions in participant.GetComponentsInChildren<AutoPlayerCollisions>(true))
+        {
+            collisions.BindMatchRules(rules);
+            collisions.BindFallRespawnDestination(locations.Player1 != null ? locations.Player1.transform : null);
+        }
+    }
+
+    /// <summary>
+    /// Marks the match as killed-on-idle, forwarding to the same <c>GameRules.instance.killedOnIdle</c>
+    /// field <see cref="PlayerCollisions"/> used to write directly. A named method rather than a
+    /// captured lambda so the exact behaviour (including the lack of a null guard - <c>GameRules</c>
+    /// is expected to exist for the life of a gameplay scene, matching the original direct write) is
+    /// visible at a glance rather than inlined at every call site.
+    /// </summary>
+    private static void MarkKilledOnIdle()
+    {
+        GameRules.instance.killedOnIdle = true;
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b: binds the spawned participant's <see cref="PlayerAnimationEvents"/> (present
+    /// on human, CPU and cheerleader actors alike - see <see cref="SpawnCheerleader"/>) to a projectile
+    /// spawn delegate and a live "does this scene have an auto player" reader, replacing that
+    /// component's former direct <c>ProjectilePool.Spawn</c> call and
+    /// <c>GameLevelManager.instance.AutoPlayer</c> read. <c>ProjectilePool</c> lives in loose
+    /// <c>Assets/Scripts/projectile/</c> (<c>Assembly-CSharp</c>, not <c>Level5.Pooling</c>), so a
+    /// direct reference is not a legal leaf dependency for <c>Level5.Player</c> the way <c>SFXBB</c> is -
+    /// this is the "single outward action" delegate the architecture rules call for instead.
+    /// <c>GetComponentsInChildren</c>, not <c>GetComponent</c>: this component sits under the actor's
+    /// animator hierarchy, not the participant root.
+    /// </summary>
+    private void BindPlayerAnimationEventsContext(GameObject participant)
+    {
+        foreach (PlayerAnimationEvents animationEvents in participant.GetComponentsInChildren<PlayerAnimationEvents>(true))
+        {
+            animationEvents.BindProjectileSpawner(SpawnProjectile);
+            animationEvents.BindHasAutoPlayerReader(HasAutoPlayer);
+        }
+    }
+
+    private static GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        return ProjectilePool.Spawn(prefab, position, rotation);
+    }
+
+    private static bool HasAutoPlayer()
+    {
+        return GameLevelManager.instance != null && GameLevelManager.instance.AutoPlayer != null;
     }
 
     /// <summary>

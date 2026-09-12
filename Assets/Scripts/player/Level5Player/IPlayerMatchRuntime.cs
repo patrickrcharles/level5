@@ -18,5 +18,13 @@ public interface IPlayerMatchRuntime
 
     bool CustomCamera { get; }
 
+    /// <summary>
+    /// AUD-012 Phase 2b: added for <c>AutoPlayerController</c>'s former direct
+    /// <c>MatchRuntime.LevelHasSevenPointers</c> read (<c>cpuShootSevenpointers</c>). Human-only
+    /// consumers of this interface simply never read it - the human path resolves seven-point
+    /// eligibility through <see cref="Level5.Core.CpuSevenPointEligibility"/> from CPU-only code.
+    /// </summary>
+    bool LevelHasSevenPointers { get; }
+
     int LocalInputSlotFor(int playerId);
 }

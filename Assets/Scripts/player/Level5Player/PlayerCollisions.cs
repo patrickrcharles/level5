@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using UnityEngine;
 using Level5.Core.Match;
@@ -16,6 +17,53 @@ public class PlayerCollisions : MonoBehaviour
     [SerializeField]
     bool playerCanBeKnockedDown;
     bool locked = false;
+
+    // AUD-012 Phase 2b: match rules, the fall-respawn destination and the GameRules.killedOnIdle
+    // forwarding callback, composed by SpawnCoordinator.BindPlayerCollisionsContext instead of this
+    // component reading MatchRuntime.Rules / GameLevelManager.instance / GameRules.instance directly.
+    private ResolvedMatchRules matchRules;
+    private Transform fallRespawnDestination;
+    private Action markKilledOnIdle;
+
+    /// <summary>
+    /// Binds the rules this match is being played under. Bind-once, the same shape
+    /// <c>CallBallToPlayer</c>/<c>PlayerHealth</c> already use.
+    /// </summary>
+    public void BindMatchRules(ResolvedMatchRules rules)
+    {
+        if (matchRules != null)
+        {
+            Debug.LogError($"PlayerCollisions on '{gameObject.name}' already has bound match rules; ignoring a second BindMatchRules call.", this);
+            return;
+        }
+
+        if (rules == null)
+        {
+            Debug.LogError($"PlayerCollisions on '{gameObject.name}' was bound with null match rules; remaining unbound.", this);
+            return;
+        }
+
+        matchRules = rules;
+    }
+
+    /// <summary>
+    /// Explicit binding of the human spawn point, from <c>SpawnCoordinator.BindPlayerCollisionsContext</c> -
+    /// replaces this component's former direct <c>GameLevelManager.instance.PlayerSpawnLocation</c> read.
+    /// </summary>
+    public void BindFallRespawnDestination(Transform destination)
+    {
+        fallRespawnDestination = destination;
+    }
+
+    /// <summary>
+    /// Explicit binding of the <c>GameRules.killedOnIdle</c> forwarding callback, from
+    /// <c>SpawnCoordinator.BindPlayerCollisionsContext</c> - replaces this component's former direct
+    /// <c>GameRules.instance.killedOnIdle = true</c> write.
+    /// </summary>
+    public void BindKilledOnIdleCallback(Action callback)
+    {
+        markKilledOnIdle = callback;
+    }
 
     private void Start()
     {
@@ -44,19 +92,22 @@ public class PlayerCollisions : MonoBehaviour
         // check for fall respawner
         if (gameObject.CompareTag("playerHitbox") && other.CompareTag("fallRespawner"))
         {
-            GameLevelManager.instance.Player1.transform.position 
-                = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
+            if (fallRespawnDestination != null)
+            {
+                playerIdentifier.transform.position = fallRespawnDestination.position;
+            }
         }
 
-        if (gameObject.CompareTag("playerHitbox")
-            && !MatchRuntime.Rules.IsBattleRoyal
-            && !MatchRuntime.Rules.IsCageMatch
-            && !MatchRuntime.Rules.EnemiesOnly
+        if (matchRules != null
+            && gameObject.CompareTag("playerHitbox")
+            && !matchRules.IsBattleRoyal
+            && !matchRules.IsCageMatch
+            && !matchRules.EnemiesOnly
             && playerController.InAir
             && playerController.currentState != playerController.dunkState
             && (other.name.Equals("dunk_position_left") || other.name.Equals("dunk_position_right")))
         {
-            StartCoroutine(GameLevelManager.instance.PlayerController1.PlayerDunk.TriggerDunkSequence());
+            StartCoroutine(playerController.PlayerDunk.TriggerDunkSequence());
         }
         // player sometimes gets stuck in inair dunk state
         if (gameObject.CompareTag("playerHitbox")
@@ -67,25 +118,26 @@ public class PlayerCollisions : MonoBehaviour
         }
 
         // if collsion between hitbox, vehicle, knocked down
-        if (gameObject.CompareTag("playerHitbox")
+        if (matchRules != null
+        && gameObject.CompareTag("playerHitbox")
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox") || other.CompareTag("playerAttackBox"))
         && !playerController.KnockedDown
         && !playerController.TakeDamage
-        && (MatchRuntime.Rules.EnemiesEnabled
-        || MatchRuntime.Rules.TrafficEnabled
-        || MatchRuntime.Rules.ObstaclesEnabled
+        && (matchRules.EnemiesEnabled
+        || matchRules.TrafficEnabled
+        || matchRules.ObstaclesEnabled
         || other.transform.root.name.Contains("snake")
-        || MatchRuntime.Rules.SniperEnabled
-        || MatchRuntime.Rules.Sniper == SniperMode.Bullet
-        || MatchRuntime.Rules.Sniper == SniperMode.Laser
+        || matchRules.SniperEnabled
+        || matchRules.Sniper == SniperMode.Bullet
+        || matchRules.Sniper == SniperMode.Laser
         || other.transform.root.name.Contains("projectile_bullet_instantkill_enemy"))
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(playerController.CharacterProfile.Luck)
         && !locked)
         {
             locked = true;
-            EnemyAttackBox enemyAttackBox = null;
-            PlayerAttackBox playerAttackBox = null;
+            IAttackBoxHitInfo enemyAttackBoxHit = null;
+            IAttackBoxHitInfo playerAttackBoxHit = null;
             int damage = 0;
             bool isKnockdown = false;
             bool isRake = false;
@@ -93,22 +145,22 @@ public class PlayerCollisions : MonoBehaviour
             // get attack box player/enemy
             if (other.CompareTag("playerAttackBox"))
             {
-                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                playerAttackBoxHit = other.GetComponent<IAttackBoxHitInfo>();
             }
             if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             {
-                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+                enemyAttackBoxHit = other.GetComponent<IAttackBoxHitInfo>();
             }
             // check if player attack
-            if (enemyAttackBox != null)
+            if (enemyAttackBoxHit != null)
             {
-                isRake = enemyAttackBox.isRake;
-                damage = enemyAttackBox.attackDamage;
-                isKnockdown = enemyAttackBox.knockDownAttack;
-                isDisintegrate = enemyAttackBox.disintegrateAttack;
-                if (enemyAttackBox.isKilledOnIdle)
+                isRake = enemyAttackBoxHit.IsRake;
+                damage = enemyAttackBoxHit.AttackDamage;
+                isKnockdown = enemyAttackBoxHit.KnockDownAttack;
+                isDisintegrate = enemyAttackBoxHit.DisintegrateAttack;
+                if (enemyAttackBoxHit.IsKilledOnIdle)
                 {
-                    GameRules.instance.killedOnIdle = true;
+                    markKilledOnIdle?.Invoke();
                 }
                 if (isDisintegrate)
                 {
@@ -118,11 +170,11 @@ public class PlayerCollisions : MonoBehaviour
 
             }
             //check if enemy attack
-            if (playerAttackBox != null)
+            if (playerAttackBoxHit != null)
             {
-                damage = playerAttackBox.attackDamage;
-                isKnockdown = playerAttackBox.knockDownAttack;
-                isDisintegrate = playerAttackBox.disintegrateAttack;
+                damage = playerAttackBoxHit.AttackDamage;
+                isKnockdown = playerAttackBoxHit.KnockDownAttack;
+                isDisintegrate = playerAttackBoxHit.DisintegrateAttack;
                 if (isDisintegrate)
                 {
                     locked = true;
@@ -168,9 +220,9 @@ public class PlayerCollisions : MonoBehaviour
                 // blocking play sound
                 // block meter goes down
                 SFXBB.instance.playSFX(SFXBB.instance.blocked);
-                if (enemyAttackBox != null)
+                if (enemyAttackBoxHit != null)
                 {
-                    playerHealth.SpendBlock(enemyAttackBox.attackDamage);
+                    playerHealth.SpendBlock(enemyAttackBoxHit.AttackDamage);
                 }
                 locked = false;
             }

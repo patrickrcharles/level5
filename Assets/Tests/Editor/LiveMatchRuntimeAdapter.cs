@@ -17,5 +17,7 @@ public sealed class LiveMatchRuntimeAdapter : IPlayerMatchRuntime
 
     public bool CustomCamera => MatchRuntime.CustomCamera;
 
+    public bool LevelHasSevenPointers => MatchRuntime.LevelHasSevenPointers;
+
     public int LocalInputSlotFor(int playerId) => MatchRuntime.LocalInputSlotFor(playerId);
 }

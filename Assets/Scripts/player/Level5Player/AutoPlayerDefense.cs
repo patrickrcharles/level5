@@ -1,4 +1,5 @@
 using Assets.Scripts.Utility;
+using Level5.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -37,6 +38,42 @@ public class AutoPlayerDefense : MonoBehaviour
     public int blockedShots;
 
     private AnimatorStateInfo currentStateInfo;
+
+    // AUD-012 Phase 2b: rim vector, ground-height fallback and the primary-human fallback registry,
+    // composed by SpawnCoordinator (BindArenaContext / BindParticipantRegistry) instead of this
+    // component reading GameLevelManager.instance directly - the same seams AutoPlayerController uses.
+    private Vector3 bballRimVector;
+    private IGroundHeightProvider groundHeightProvider;
+    private bool groundHeightProviderMissingLogged;
+    private PlayerRegistry participantRegistry;
+
+    // Code review, 2026-09-12: the last value ResolveDropShadowHeight actually resolved, returned as
+    // its ultimate fallback instead of a hardcoded 0f - mirrors AutoPlayerController/PlayerController's
+    // own terrainYHeight field, so an unbound provider (only reachable via a composition defect) leaves
+    // the shadow where it last legitimately was rather than snapping to world-space Y=0.
+    private float lastResolvedDropShadowHeight;
+
+    /// <summary>
+    /// Explicit arena-context binding from <c>SpawnCoordinator.BindCpuArenaContext</c>, called once
+    /// from <c>GameLevelManager.Start()</c> after arena bootstrap has resolved the final basketball rim -
+    /// mirrors <c>AutoPlayerController.BindArenaContext</c>/<c>PlayerController.BindArenaContext</c>.
+    /// </summary>
+    public void BindArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
+    {
+        bballRimVector = basketballRimVector;
+        this.groundHeightProvider = groundHeightProvider;
+    }
+
+    /// <summary>
+    /// Explicit binding of this coordinator's participant registry, from
+    /// <c>SpawnCoordinator.BindCpuParticipantRegistry</c>, called immediately at CPU registration time -
+    /// replaces <see cref="ResolveGuardedPlayerIfMissing"/>'s former direct
+    /// <c>GameLevelManager.instance.Player1</c> read.
+    /// </summary>
+    public void BindParticipantRegistry(PlayerRegistry registry)
+    {
+        participantRegistry = registry;
+    }
 
     public int currentState;
     public int idleState;
@@ -132,15 +169,13 @@ public class AutoPlayerDefense : MonoBehaviour
 
         // drop shadow lock to bball transform on the ground
         // AUD-052: guarded like PlayerController - no active Terrain otherwise NREs every frame
-        float shadowHeight = Terrain.activeTerrain != null
-            ? Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f
-            : GameLevelManager.instance.TerrainHeight + 0.02f;
+        float shadowHeight = ResolveDropShadowHeight();
         if (dropShadow != null)
         {
             dropShadow.transform.position = new Vector3(transform.root.position.x, shadowHeight, transform.root.position.z);
         }
         distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-        playerDistanceToGoal = Vector3.Distance(playerPosition, GameLevelManager.instance.BasketballRimVector);
+        playerDistanceToGoal = Vector3.Distance(playerPosition, bballRimVector);
 
         if(distanceToTarget < 0.05)
         {
@@ -235,8 +270,8 @@ public class AutoPlayerDefense : MonoBehaviour
             return;
         }
 
-        playerIdentifier = GameLevelManager.instance != null
-            ? GameLevelManager.instance.Player1
+        playerIdentifier = participantRegistry != null
+            ? participantRegistry.GetBySlot(0)
             : null;
 
         if (playerIdentifier == null)
@@ -248,20 +283,39 @@ public class AutoPlayerDefense : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The drop shadow's Y position while airborne: an active Terrain's own sampled height where one
+    /// exists, else the bound <see cref="groundHeightProvider"/>'s current value. Mirrors
+    /// <c>PlayerController.ResolveDropShadowHeight</c>/<c>AutoPlayerController.ResolveDropShadowHeight</c>.
+    /// </summary>
+    private float ResolveDropShadowHeight()
+    {
+        if (Terrain.activeTerrain != null)
+        {
+            lastResolvedDropShadowHeight = Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
+            return lastResolvedDropShadowHeight;
+        }
+
+        if (groundHeightProvider != null)
+        {
+            lastResolvedDropShadowHeight = groundHeightProvider.GroundHeight + 0.02f;
+            return lastResolvedDropShadowHeight;
+        }
+
+        if (!groundHeightProviderMissingLogged)
+        {
+            groundHeightProviderMissingLogged = true;
+            Debug.LogError($"AutoPlayerDefense on {name} has no bound ground-height provider for its no-Terrain drop-shadow fallback.", this);
+        }
+
+        return lastResolvedDropShadowHeight;
+    }
+
     Vector3 moveCpuPlayer()
     {
-        Vector3 directionOfTravel = (new Vector3(playerPosition.x, 0, playerPosition.z + playerGuardingDistance) - new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z).normalized);
-        //if (playerIdentifier.playerController.InAir)
-        //{
-        //    //targetPosition = playerIdentifier.basketBallController.BasketBallPosition.transform.position;
-        //    targetPosition = playerIdentifier.basketball.transform.position;
-        //}
-        //else
-        //{
-        //    targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
-        //}
-        //targetPosition = LerpByDistance(new Vector3(playerPosition.x, 0, playerPosition.z), new Vector3(GameLevelManager.instance.BasketballRimVector.x, 0, GameLevelManager.instance.BasketballRimVector.z), playerGuardingDistance);
-        targetPosition = LerpByDistance(playerPosition,GameLevelManager.instance.BasketballRimVector, playerGuardingDistance);
+        // AUD-012 Phase 2b: LerpByDistance below is the only line here that ever wrote targetPosition -
+        // the directionOfTravel local this replaced was computed and never read.
+        targetPosition = LerpByDistance(playerPosition, bballRimVector, playerGuardingDistance);
         return targetPosition;
     }
     IEnumerator AddDelayToMove(float delay)

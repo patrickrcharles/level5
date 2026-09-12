@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,17 +25,52 @@ public class PlayerHealthBar : MonoBehaviour
     const string healthSliderValueName = "health_slider_value_text";
     public static PlayerHealthBar instance;
 
+    // AUD-012 Phase 2b: the primary human's tracked PlayerHealth, display name and resolved match
+    // rules, plus a live damage-display-text reader, composed by
+    // GameLevelManager.BindPlayerHealthBarContext instead of this component reading
+    // GameLevelManager.instance/MatchRuntime.Rules directly.
+    private ResolvedMatchRules matchRules;
+    private string boundCharacterDisplayName;
+    private Func<Text> damageDisplayTextReader;
+    private bool contextBound;
+
+    /// <summary>
+    /// Explicit composition of everything this HUD needs, from
+    /// <c>GameLevelManager.BindPlayerHealthBarContext</c>, called once from
+    /// <c>GameLevelManager.Start()</c> after the primary human has been spawned. Replaces this HUD's
+    /// former direct <c>MatchRuntime.Rules</c> read and its
+    /// <c>GameLevelManager.instance.Player1</c>/<c>PlayerController1</c> reach-throughs. <paramref
+    /// name="damageDisplayTextReader"/> is a live <see cref="Func{Text}"/> rather than a captured
+    /// <c>Text</c>: <c>PlayerController.DamageDisplayValueText</c> is only populated inside that
+    /// controller's own <c>Start()</c>, whose ordering relative to this call is not guaranteed, so it
+    /// must be resolved fresh at the point a message is actually displayed - matching the original
+    /// direct read's timing.
+    /// </summary>
+    public void BindPrimaryHumanContext(
+        ResolvedMatchRules rules,
+        PlayerHealth trackedHealth,
+        string characterDisplayName,
+        Func<Text> damageDisplayTextReader)
+    {
+        matchRules = rules;
+        playerHealth = trackedHealth;
+        boundCharacterDisplayName = characterDisplayName;
+        this.damageDisplayTextReader = damageDisplayTextReader;
+        contextBound = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //GameOptions.sniperEnabled = true; // test flag
-        if (MatchRuntime.Rules.EnemiesEnabled
-            || MatchRuntime.Rules.SniperEnabled
-            || MatchRuntime.Rules.EnemiesOnly
-            || MatchRuntime.Rules.ObstaclesEnabled
-            || MatchRuntime.Rules.IsBattleRoyal)
+        if (contextBound
+            && matchRules != null
+            && (matchRules.EnemiesEnabled
+            || matchRules.SniperEnabled
+            || matchRules.EnemiesOnly
+            || matchRules.ObstaclesEnabled
+            || matchRules.IsBattleRoyal))
         {
-            playerHealth = GameLevelManager.instance.Player1.GetComponentInChildren<PlayerHealth>();
             Transform healthBarTransform = transform.Find("health_bar");
             Transform blockBarTransform = transform.Find("block_bar");
             Transform specialBarTransform = transform.Find("special_bar");
@@ -64,7 +100,7 @@ public class PlayerHealthBar : MonoBehaviour
             blockSlider.maxValue = playerHealth.MaxBlock;
             specialSlider.maxValue = playerHealth.MaxSpecial;
 
-            characterNameText.text = GameLevelManager.instance.Player1.GetComponent<CharacterProfile>().PlayerDisplayName;
+            characterNameText.text = boundCharacterDisplayName;
             playerHealth.OnHealthChanged += setHealthSliderValue;
             playerHealth.OnBlockChanged += setBlockSliderValue;
             playerHealth.OnSpecialChanged += setSpecialSliderValue;
@@ -121,15 +157,26 @@ public class PlayerHealthBar : MonoBehaviour
     public IEnumerator DisplayDamageTakenValue(int damage)
     {
         //transform.localScale = temp;
-        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "-" + damage.ToString();
+        Text damageDisplayValueText = damageDisplayTextReader != null ? damageDisplayTextReader() : null;
+        if (damageDisplayValueText == null)
+        {
+            yield break;
+        }
+
+        damageDisplayValueText.text = "-" + damage.ToString();
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "";
+        damageDisplayValueText.text = "";
     }
     public IEnumerator DisplayCustomMessageOnDamageDisplay(string message)
     {
+        Text damageDisplayValueText = damageDisplayTextReader != null ? damageDisplayTextReader() : null;
+        if (damageDisplayValueText == null)
+        {
+            yield break;
+        }
 
-        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = message;
+        damageDisplayValueText.text = message;
         yield return new WaitForSeconds(0.7f);
-        GameLevelManager.instance.PlayerController1.DamageDisplayValueText.text = "";
+        damageDisplayValueText.text = "";
     }
 }
