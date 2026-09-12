@@ -3967,6 +3967,57 @@ verification; gameplay and visuals are observably unchanged. **Not yet met:** `p
 `game manager` still compile into `Assembly-CSharp`, and the manual Play Mode verification bullet
 above has not been performed.
 
+**Slice 49** (2026-09-12, audited against `dev` SHA `f2ff853d822c80b20c23a5b73c8fbc92c914e607`, Unity
+`6000.5.7f1`): moved `PlayerAttackBox.cs` (GUID `74541ade30e1941489c89cbff972346f`) from
+`Assets/Scripts/player/` into `Assets/Scripts/player/Level5Player/` via `git mv` (source + `.meta`
+together) - pure `rename ... (100%)`, zero insertions/deletions, GUID and all four public fields
+(`attackDamage`, `knockDownAttack`, `disintegrateAttack`, `isProjectile`) unchanged.
+
+Already dependency-closed: its only production dependency is `UnityEngine`. Its three live
+consumers - `PlayerCollisions`, `AutoPlayerCollisions`, and `EnemyCollisions` - are all loose,
+non-asmdef-owned files that stay in `Assembly-CSharp` and reach it through `autoReferenced`, the
+same pattern as every prior 2b leaf; `EnemyCollisions` in particular sits outside the
+`Level5.Enemy` asmdef's folder (`Assets/Scripts/enemy/Level5Enemy/`), so no custom-assembly
+consumer exists and no cycle risk was introduced. `Level5.Player.asmdef` needed no change.
+
+`PlayerAttackBox`'s script GUID is referenced by 84 prefabs, 2 scenes, and 77 animation clips
+(dunk/attack triggers across the player roster) - none were opened, resaved, or otherwise touched;
+`git status` shows only the two renamed files plus the added test below, so every GUID-based
+binding resolves exactly as before the move by construction. Spot-checked one binding
+(`ashley_dunk.anim`) directly: it keys on `script: {fileID: 11500000, guid:
+74541ade30e1941489c89cbff972346f, type: 3}` plus `path`/`attribute`, i.e. purely GUID-keyed, not
+path-keyed - confirming the move cannot disturb it.
+
+Added one assembly-boundary test, `PlayerAttackBoxCompilesIntoLevel5Player`
+(`Level5ProductionAssemblyBoundaryTests.cs`), asserting `typeof(PlayerAttackBox).Assembly.GetName().Name
+== "Level5.Player"`, the same identity-check pattern as Slice 48's
+`CharacterPresetProgressionTypesCompileIntoLevel5Player`. The existing generic
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` guard covers the moved file automatically.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation via the EditMode run below (0
+`error CS` lines in the batch log); the complete EditMode suite (1209/1209 passed, up from 1208 -
+the one new architecture guard, zero failures); the complete PlayMode suite (17/17 passed,
+unchanged); `scripts/validate-repository.ps1` (passed). No production `.cs` content, runtime
+`.asmdef`, scene, or prefab changed other than the file relocation and the one added test.
+
+Review pass 1 (correctness/serialization) found nothing to fix: the diff is a pure rename with 0
+insertions/0 deletions on both moved files, the GUID is unchanged, no field was renamed or
+retyped, and no consumer or asmdef file was touched. Review pass 2 (architecture/scope) likewise
+found nothing to fix: the type landed in `Level5.Player` (not a new assembly), no dependency or
+reference was added, no consumer was migrated, and no adjacent type was bundled into the move.
+
+Freshly re-audited remaining loose files directly under `Assets/Scripts/player/` (excluding the
+`Level5Player/` subfolder): `GroundCheckDefense.cs`, `CharacterProgressAccountId.cs`,
+`CharacterRuntimeProvider.cs`, `SelectedLoadout.cs`, `PlayerCollisions.cs`, `PlayerStats.cs`,
+`AutoPlayerCollisions.cs`, `AutoPlayerDamageReactions.cs`, `CheerleaderSwapAnimation.cs`,
+`PlayerAnimationEvents.cs`, `PlayerHealthBar.cs`, `AutoPlayerDefense.cs`,
+`CollisionCheckDefense.cs`, `AutoPlayerController.cs`, `CpuScoreDeficit.cs`, `groundcheck.cs`,
+`PlayerIdentifier.cs` - none preselected as the next slice; each needs its own dependency audit
+before being moved.
+
+**Production behavior impact: none.** This slice changes compile-time assembly ownership only; no
+runtime logic, serialized data, or public contract changed.
+
 ### Phase 3 — Converge the human/CPU pairs
 
 Not "one type". The pairs carry real, intended differences: the human path has an analytics call and

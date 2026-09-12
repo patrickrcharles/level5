@@ -523,6 +523,22 @@ public class Level5ProductionAssemblyBoundaryTests
         Assert.That(typeof(CharacterProgressStore).Assembly.GetName().Name, Is.EqualTo(expected));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 49: proves <c>PlayerAttackBox</c> - a pure assembly-ownership move,
+    /// already dependency-closed on <c>UnityEngine</c> only - actually compiles into
+    /// <c>Level5.Player</c>, the same identity check <see cref="CharacterPresetProgressionTypesCompileIntoLevel5Player"/>
+    /// does for the character preset/progression cluster. Its consumers - <c>PlayerCollisions</c>,
+    /// <c>AutoPlayerCollisions</c> and <c>EnemyCollisions</c> - stay in <c>Assembly-CSharp</c> and reach
+    /// it through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerAttackBoxCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerAttackBox).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
