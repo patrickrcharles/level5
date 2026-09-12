@@ -498,6 +498,31 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 48: proves the character preset/progression cluster -
+    /// <c>CharacterPreset</c>, <c>CharacterPresetCatalog</c>, <c>CharacterUpgradeLevels</c>,
+    /// <c>PlayerCharacterProgress</c>, <c>CharacterProgressSave</c>, <c>CharacterProgressResolver</c>
+    /// and <c>CharacterProgressStore</c> - actually compile into <c>Level5.Player</c>, the same
+    /// identity check <see cref="CharacterProfileOwnershipTypesCompileIntoLevel5Player"/> does for
+    /// <c>CharacterProfile</c>. Moved together as one dependency-closed cluster (catalog/save/progress
+    /// models all reference each other); <c>CharacterRuntimeProvider</c> and
+    /// <c>CharacterProgressAccountId</c> stay in <c>Assembly-CSharp</c> and reach it through
+    /// <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void CharacterPresetProgressionTypesCompileIntoLevel5Player()
+    {
+        const string expected = "Level5.Player";
+
+        Assert.That(typeof(CharacterPreset).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterPresetCatalog).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterUpgradeLevels).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerCharacterProgress).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterProgressSave).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterProgressResolver).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterProgressStore).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {
