@@ -3917,6 +3917,47 @@ representative gameplay mode or menu flow has been performed as part of this doc
 only the automated EditMode/PlayMode evidence recorded under Slice 47, above. Migrating that triangle
 remains the Phase-1-scale slice described in the paragraph above.
 
+**Slice 48** (2026-09-11, audited against `dev` SHA `9dd00656a90d423bf6af5117384c46763ec3f81e`, Unity
+`6000.5.7f1`): moved the character preset/progression cluster - `CharacterPreset.cs` (GUID
+`72fa827508c54a4bbd0c231df454eda0`), `CharacterPresetCatalog.cs` (GUID `4aea7e1d05f5481da1f30f4acadb7699`),
+`CharacterUpgradeLevels.cs` (GUID `b39c0091eac646ff9ff11f27d1361fb2`), `PlayerCharacterProgress.cs` (GUID
+`5d0b133f61b64954917bc976c485bb26`), `CharacterProgressSave.cs` (GUID `83be264430424e7b8a06f004f363755e`),
+`CharacterProgressResolver.cs` (GUID `efac78fcb54e43f3bf99eda8b7a11d8f`), and `CharacterProgressStore.cs`
+(GUID `2d85358806364d19b97516f781e7cafa`) - from `Assets/Scripts/player/` into
+`Assets/Scripts/player/Level5Player/` via `git mv` (source + `.meta` together), all seven GUIDs
+preserved and production source byte-identical (pure `rename ... (100%)`, zero insertions/deletions
+outside the added test below).
+
+All seven were already dependency-closed: their only project-type dependencies are `CharacterStats`/
+`RuntimeCharacterStats` (`Level5.Player` since Slice 28) and `AtomicFile` (`Level5.Utility`), both
+already legal references. `Level5.Player.asmdef` needed no change - `Level5.Utility` was already
+referenced. `CharacterRuntimeProvider` and `CharacterProgressAccountId` stay in `Assembly-CSharp`; the
+`CharacterRuntimeProvider -> CharacterProgressAccountId -> GameOptions` edge is unchanged and remains
+the next boundary. Both reach the moved cluster through `autoReferenced`, the same pattern as every
+prior 2b leaf.
+
+No `[SerializeReference]`, `Type.GetType`, `AssemblyQualifiedName`, `Assembly.Load`, or
+`TypeNameHandling` usage touches any of the seven types - `CharacterProgressSave`/
+`PlayerCharacterProgress`/`CharacterUpgradeLevels` round-trip through plain `JsonUtility` field
+serialization, which carries no assembly-qualified type name. `CharacterPreset`/`CharacterPresetCatalog`
+are authored `ScriptableObject`s; their script GUIDs are unchanged, so existing asset references
+resolve without modification - no prefab, scene, or `ScriptableObject` asset was opened or resaved.
+
+Added one cohesive assembly-boundary test, `CharacterPresetProgressionTypesCompileIntoLevel5Player`
+(`Level5ProductionAssemblyBoundaryTests.cs`), asserting all seven types report assembly
+`Level5.Player`, the same identity-check pattern as Slice 28's
+`CharacterProfileOwnershipTypesCompileIntoLevel5Player`. The existing generic
+`NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` guard covers the new files automatically - it
+discovers asmdef-owned folders at run time rather than by an allowlist.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation (0 `error CS` lines, ~10s compile,
+clean domain reload); the complete EditMode suite (1208/1208 passed, up from 1207 - the one new
+architecture guard, zero failures); the complete PlayMode suite (17/17 passed, unchanged);
+`Level5UnlockSnapshotTests` (10/10 passed - the existing `CharacterProgressStore`/JSON-fallback
+precedence regression coverage, unaffected by the pure relocation); and
+`scripts/validate-repository.ps1` (passed). No production `.cs` content, runtime `.asmdef`, scene, or
+prefab changed other than the file relocation itself.
+
 **Exit:** production gameplay code targeted by this phase lives in proper referenced assemblies; the
 runtime assembly graph is acyclic; no migrated assembly depends on `Assembly-CSharp`; package
 references are explicit where Unity requires them; full repository validation, Unity batch
