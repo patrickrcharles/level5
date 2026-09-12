@@ -32,6 +32,21 @@ public static class PlayerControlsProvider
         }
     }
 
+    /// <summary>
+    /// Whether the "Other" action map's dev/editor change-toggle binding is currently enabled.
+    /// AUD-012 Phase 2b: exposes this one <c>InputAction</c> detail as a bool, the same shape as
+    /// <see cref="MenuSubmitTriggered"/>, so a consumer with no reference to the
+    /// <c>Unity.InputSystem</c> package assembly (<c>Level5.Player</c>'s
+    /// <c>CheerleaderSwapAnimation</c>) can read it without needing one.
+    /// </summary>
+    public static bool DevChangeControlEnabled
+    {
+        get
+        {
+            return Controls.Other.change.enabled;
+        }
+    }
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetState()
     {

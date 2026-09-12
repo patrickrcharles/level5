@@ -320,6 +320,8 @@ public class Level5PlayerMatchRuntimeCompositionTests
 
         public bool CustomCamera { get; set; }
 
+        public bool LevelHasSevenPointers { get; set; }
+
         public int LocalInputSlotAnswer { get; set; } = -1;
 
         public int LastRequestedPlayerId { get; private set; } = int.MinValue;

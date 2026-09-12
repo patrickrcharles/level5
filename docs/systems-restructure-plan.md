@@ -4006,17 +4006,200 @@ retyped, and no consumer or asmdef file was touched. Review pass 2 (architecture
 found nothing to fix: the type landed in `Level5.Player` (not a new assembly), no dependency or
 reference was added, no consumer was migrated, and no adjacent type was bundled into the move.
 
-Freshly re-audited remaining loose files directly under `Assets/Scripts/player/` (excluding the
-`Level5Player/` subfolder): `GroundCheckDefense.cs`, `CharacterProgressAccountId.cs`,
-`CharacterRuntimeProvider.cs`, `SelectedLoadout.cs`, `PlayerCollisions.cs`, `PlayerStats.cs`,
-`AutoPlayerCollisions.cs`, `AutoPlayerDamageReactions.cs`, `CheerleaderSwapAnimation.cs`,
-`PlayerAnimationEvents.cs`, `PlayerHealthBar.cs`, `AutoPlayerDefense.cs`,
-`CollisionCheckDefense.cs`, `AutoPlayerController.cs`, `CpuScoreDeficit.cs`, `groundcheck.cs`,
-`PlayerIdentifier.cs` - none preselected as the next slice; each needs its own dependency audit
-before being moved.
+**Slice 50** (2026-09-12, audited against `dev` SHA `72e4b0ea8896a00877e522d4beba2f46b3f39cc4`, Unity
+`6000.5.7f1`): a single coordinated migration of the remaining 15 named player-domain targets - the
+account/character-runtime pair, the CPU actor/defense cluster, the participant/ground/collision
+cluster and the presentation/animation cluster - plus one supporting move (`PlayerRegistry`), into
+`Level5.Player`. Moved via `git mv` (source + `.meta` together), all GUIDs unchanged:
 
-**Production behavior impact: none.** This slice changes compile-time assembly ownership only; no
-runtime logic, serialized data, or public contract changed.
+| Target | GUID |
+| --- | --- |
+| `CharacterProgressAccountId.cs` | `e5b827b24d2641c19ac1024cc764bfbc` |
+| `CharacterRuntimeProvider.cs` | `9dd1fe5ec4484b4f9480093d2c6b3cb4` |
+| `AutoPlayerController.cs` | `564c1d9e7ac5c74469072e5500514ac1` |
+| `AutoPlayerDamageReactions.cs` | `7fdf0255acb5323448a622abe0669c6a` |
+| `AutoPlayerDefense.cs` | `306ca6386a7ffbe4db12499141da79e2` |
+| `CollisionCheckDefense.cs` | `114d4a7d46a7d04419a8bbcdf4efaaca` |
+| `GroundCheckDefense.cs` | `f564370075e576241a8c48eccf9a0abf` |
+| `CpuScoreDeficit.cs` | `2c58b541827f4b358f7ed49ea5405468` |
+| `PlayerIdentifier.cs` | `3f595a79238fe4f439aeac86720f9e96` |
+| `groundcheck.cs` (`GroundCheck`) | `48af77e4d1c73a94da342786c291ce99` |
+| `PlayerCollisions.cs` | `3bd0b015c94f2d249b3d34709a0072f3` |
+| `AutoPlayerCollisions.cs` | `6afe4709f3993a5458ba631dde388782` |
+| `PlayerAnimationEvents.cs` | `589c6078b9c899444b9a02b93b19a872` |
+| `CheerleaderSwapAnimation.cs` | `e77b77da16f56d04899af7a0b8d79368` |
+| `PlayerHealthBar.cs` | `ccf286a28b6543140a29fa889eb5382d` |
+| `PlayerRegistry.cs` (supporting; from `Assets/Scripts/game manager/`) | `a0603ce0d56569d4eb9f38e4347211f5` |
+
+`CharacterRuntimeProvider.cs`, `CollisionCheckDefense.cs`, `GroundCheckDefense.cs`,
+`CpuScoreDeficit.cs`, `PlayerIdentifier.cs`, `groundcheck.cs`, `AutoPlayerDamageReactions.cs` and
+`PlayerRegistry.cs` were already dependency-closed (confirmed by re-reading each fully before
+moving) and moved source-identically. The other 7 required a dependency cut first:
+
+- **`CharacterProgressAccountId`** read `GameOptions.userid`/`userName` directly. Extracted the
+  backing state into `Level5.Core.LocalAccountIdentity` (`UserId`/`UserName`, a plain local-account
+  identity holder distinct from authentication - see `APIHelper.HasSession` for that test);
+  `GameOptions.userid`/`userName` are now properties forwarding to it, so every existing caller
+  (login, account switching, high-score upload) is unaffected. Removed from
+  `Level5MatchArchitectureTests`'s `LegacyGameOptionsConsumers` allowlist - one fewer file on that
+  ratchet.
+- **`AutoPlayerController`** (the central dependency) took: `IPlayerMatchRuntime` via
+  `BindMatchRuntime` (the same contract `PlayerController` already uses; extended with one new
+  member, `LevelHasSevenPointers`, for `cpuShootSevenpointers`'s former `MatchRuntime` read -
+  `LiveMatchRuntimeAdapter` and the `FakeMatchRuntime` test double were updated to implement it);
+  arena context (finalized rim vector, `IGroundHeightProvider`) via `BindArenaContext`, mirroring
+  `PlayerController.BindArenaContext` exactly, including the drop-shadow "log once if unbound"
+  fallback; and the moved `PlayerRegistry` via `BindParticipantRegistry`, replacing
+  `GameLevelManager.instance.players` in `SelectShotKind`'s score-deficit read.
+- **`AutoPlayerDefense`** took the same arena context and `PlayerRegistry` bindings -
+  `ResolveGuardedPlayerIfMissing`'s fallback now reads `participantRegistry.GetBySlot(0)` (the exact
+  `Player1` it replaces) instead of `GameLevelManager.instance.Player1`. One dead local
+  (`directionOfTravel` in `moveCpuPlayer`, computed and never read) was deleted rather than rebound,
+  since it had zero behavioral effect.
+- **`PlayerCollisions`/`AutoPlayerCollisions`** took `ResolvedMatchRules` via `BindMatchRules`
+  (the same bind-once shape `CallBallToPlayer`/`PlayerHealth` already use); the human spawn point via
+  `BindFallRespawnDestination` (from `SpawnCoordinator`'s own `locations.Player1`); and, human-only,
+  the `GameRules.killedOnIdle` write via a one-purpose `Action` delegate
+  (`BindKilledOnIdleCallback`) rather than an `IGameRules` interface. The fall-respawn teleport and
+  `PlayerCollisions`'s dunk-sequence trigger both used to hard-select `GameLevelManager.instance.Player1`
+  regardless of which actor's hitbox fired; both now use the component's own resolved
+  `playerIdentifier`/`playerController`, per the architecture rules' explicit instruction for this
+  exact shape ("already-owned local reference instead of globally selecting player 1"). Attack-box
+  metadata (`attackDamage`, `knockDownAttack`, `disintegrateAttack`, `isRake`, `isKilledOnIdle`) is
+  now read through a new neutral contract, `IAttackBoxHitInfo` (`Level5.Combat`), implemented
+  explicitly by both `PlayerAttackBox` (`Level5.Player`) and `EnemyAttackBox` (`Level5.Enemy`,
+  which gained a reference to the `Level5.Combat` leaf to do so) - avoiding a Player↔Enemy assembly
+  cycle without an enemy-specific abstraction on the player side.
+- **`PlayerHealthBar`** took the primary human's `PlayerHealth`, character display name and
+  `ResolvedMatchRules`, plus a live `Func<Text>` damage-display-text reader, via one
+  `BindPrimaryHumanContext` call from a new `GameLevelManager.BindPlayerHealthBarContext`
+  (`GameLevelManager.Start()`, alongside the existing arena-context binds - this HUD is a
+  scene-authored UI singleton, not a per-participant component, so it is not spawned or bound
+  through `SpawnCoordinator`). The reader stays a live `Func`, not a captured `Text`, because
+  `PlayerController.DamageDisplayValueText` is only populated inside that controller's own
+  `Start()`, whose ordering relative to this bind is not guaranteed.
+- **`PlayerAnimationEvents`** took a projectile-spawn delegate (`BindProjectileSpawner`,
+  `Func<GameObject, Vector3, Quaternion, GameObject>`) and a live "does this scene have an auto
+  player" reader (`BindHasAutoPlayerReader`, `Func<bool>`), both bound from a new
+  `SpawnCoordinator.BindPlayerAnimationEventsContext`, called from `RegisterHuman`, `RegisterCpu`
+  *and* `SpawnCheerleader` - every actor this component is authored on. `ProjectilePool` lives in
+  loose `Assets/Scripts/projectile/` (`Assembly-CSharp`, not `Level5.Pooling`), so unlike `SFXBB`
+  (a genuine `Level5.Audio` leaf reference, kept direct) it is not a legal dependency and needed the
+  delegate instead. `enableRigidBodyIsKinematic`/`disableRigidBodyIsKinematic` and the dead
+  `CheckAttackBoxActiveStatus` used to hard-select `GameLevelManager.instance.Player1` regardless of
+  which actor's animation fired; both now use this component's own resolved `playerController`,
+  guarded by the existing `CanApplyForce()` null-safety this file already used for force application.
+- **`CheerleaderSwapAnimation`** read `GameLevelManager.instance.Controls.Other.change.enabled` for
+  its dev/editor animation-swap toggle - `GameLevelManager.Controls` was only ever a forward of
+  `PlayerControlsProvider.Controls` (`Level5.Input`, already an authorized `Level5.Player`
+  reference). Added `PlayerControlsProvider.DevChangeControlEnabled`, the same narrow
+  bool-over-`InputAction` shape as the existing `MenuSubmitTriggered`, so this file needs no direct
+  reference to the `Unity.InputSystem` package assembly.
+
+**Reused contracts:** `IPlayerMatchRuntime`, `IGroundHeightProvider` (both extended, not replaced -
+see above), `PlayerRegistry` (moved, not duplicated), `ResolvedMatchRules` bind-once. **New narrow
+seams:** `Level5.Core.LocalAccountIdentity`; `IAttackBoxHitInfo` (`Level5.Combat`);
+`GameLevelManager.BindPlayerHealthBarContext`; `PlayerControlsProvider.DevChangeControlEnabled`;
+five new `SpawnCoordinator` bind passes (`BindCpuMatchRuntime`, `BindCpuArenaContext`,
+`BindCpuParticipantRegistry`, `BindPlayerCollisionsContext`/`BindAutoPlayerCollisionsContext`,
+`BindPlayerAnimationEventsContext`). No manager mirror, service locator, or reflection was
+introduced; `GameLevelManager`/`GameRules`/`GameOptions` were not moved.
+
+`Level5.Player.asmdef` gained one new reference, `Level5.Audio` (a leaf with no references of its
+own, for `PlayerAnimationEvents`'s/`PlayerCollisions`'s/`AutoPlayerCollisions`'s existing `SFXBB`
+calls - a genuine direct leaf dependency, not a new audio service). `Level5.Enemy.asmdef` gained one
+new reference, `Level5.Combat` (also a leaf), for `EnemyAttackBox`'s `IAttackBoxHitInfo`
+implementation. No other asmdef changed.
+
+Every target GUID was diffed before/after (table above) and confirmed unchanged; `git status` shows
+only the expected renames plus in-place edits, no unrelated scene/prefab/animation touched.
+
+Added `RemainingPlayerDomainTargetsCompileIntoLevel5Player`, `PlayerRegistryCompilesIntoLevel5Player`
+and `AttackBoxHitInfoCompilesIntoLevel5Combat` (`Level5ProductionAssemblyBoundaryTests.cs`), the same
+identity-check pattern as Slice 49. Added a new fixture,
+`Level5PlayerDomainDependencyGuardTests.cs`, with one regression guard per file for the specific
+type(s) each cut removed (`GameLevelManager`/`GameRules`/`MatchRuntime`/`ProjectilePool`/
+`EnemyAttackBox`), mirroring `Level5PlayerControllerDependencyGuardTests`'s shape. The existing
+generic `NoMigratedProductionAssemblyReachesIntoAssemblyCSharp` guard covers all 16 moved files
+automatically. `LiveMatchRuntimeAdapter` and `Level5PlayerMatchRuntimeCompositionTests`'s
+`FakeMatchRuntime` were updated for the new `IPlayerMatchRuntime.LevelHasSevenPointers` member.
+
+Validation (pinned `6000.5.7f1` editor): forced script compilation via Unity batchmode (0 `error CS`
+lines after two small follow-up fixes - a missing `using Level5.Core;` in `AutoPlayerDefense.cs`, a
+leftover pre-rename `enemyAttackBox`/`playerAttackBox` local in each collision file's blocking
+branch, and the `InputAction` compile error that led to `DevChangeControlEnabled`); the complete
+EditMode suite (1219/1219 passed, up from 1208 - the new architecture/dependency guards, after fixing
+one pre-existing stale-allowlist failure this slice's own `GameOptions` cut earned
+- `CharacterProgressAccountId.cs` removed from `Level5MatchArchitectureTests`'s
+`LegacyGameOptionsConsumers`); the complete PlayMode suite (see below).
+
+Review pass 1 (correctness/serialization): confirmed no live behavior changed except the two
+deliberate, dependency-cut-required fixes called out above (fall-respawn/dunk-sequence/rigidbody-
+kinematic/attack-box-status now resolve through the acting participant's own reference instead of a
+hard-coded `Player1`/global lookup) - both are what the architecture rules explicitly prescribe for
+this exact "manager reach-through selecting player 1" shape, not incidental scope creep; every other
+binding is a byte-for-byte forward of the value the direct read used to return, at an equivalent or
+identical point in the composition/frame timeline. No GUID drifted, no serialized field was renamed
+or retyped, and no prefab/scene/animation was touched. Review pass 2 (architecture/scope): no manager
+mirror or service locator was introduced; `IPlayerMatchRuntime`/`IGroundHeightProvider` were extended
+rather than duplicated; `PlayerRegistry`'s move eliminated what would otherwise have been two
+separate ad hoc "reach the primary human" seams (`AutoPlayerController` and `AutoPlayerDefense`);
+`IAttackBoxHitInfo` exposes only the five fields collision processing actually reads, not a general
+attack-box interface; and `Level5.Core.LocalAccountIdentity` holds only the two fields
+`CharacterProgressAccountId` needs, not a broader account/session model - `GameOptions.userid`/
+`userName` were converted to forwarding properties, not moved wholesale, and `APIHelper`'s session
+token was untouched.
+
+**Independent review follow-up (2026-09-12):** a subsequent senior-level code review of this slice
+found two defects the self-review above missed, both fixed before merge:
+
+- **`PlayerHealthBar` activation raced `Start()` ordering.** `GameLevelManager.BindPlayerHealthBarContext`
+  was originally called from `Start()`, but `PlayerHealthBar.Start()` consumes the bound context
+  *synchronously* to decide whether to activate itself - and Unity does not order `Start()` across
+  independent components (this project defines no `ScriptExecutionOrder.asset`). If
+  `PlayerHealthBar.Start()` happened to run before `GameLevelManager`'s, it saw an unbound context,
+  deactivated its own GameObject, and the subsequent `FindAnyObjectByType<PlayerHealthBar>()`
+  (active-only) found nothing - silently and permanently disabling the HUD for the match, with no
+  error logged. Fixed by moving the bind into `GameLevelManager.Awake()` (guaranteed to precede every
+  `Start()` in the scene), reading `registry.GetBySlot(0)` directly instead of the `Start()`-scoped
+  `player1` local. Verified safe: `PlayerHealth.Awake()` already sets `Health`/`Block`/`Special`, and
+  a human's `CharacterProfile.playerDisplayName` is either the prefab's serialized default or set
+  synchronously by `SpawnCoordinator.RegisterHuman` during the same `Awake()` - never by
+  `CharacterProfile.Start()` - so nothing this bind reads is Start()-timed.
+- **`PlayerCollisions`/`AutoPlayerCollisions.OnTriggerEnter` dereferenced bound `matchRules` with no
+  null guard**, unlike the established `PlayerHealth`/`CallBallToPlayer` convention this slice cites
+  as its template. The direct `MatchRuntime.Rules` read this replaced could never be null; an unbound
+  `matchRules` (a skipped composition step, or a test constructing the component directly) now throws
+  in a physics trigger callback instead. Fixed by adding `matchRules != null` to both gated conditions
+  in both files, matching the fail-closed shape `PlayerHealth.Update()` already uses.
+
+A third, lower-severity finding - `AutoPlayerDefense.ResolveDropShadowHeight`'s unbound fallback
+returning a hardcoded `0f` instead of the last resolved height, unlike its `AutoPlayerController`/
+`PlayerController` siblings - was also fixed, caching the last resolved value in
+`lastResolvedDropShadowHeight`. All three fixes were re-validated against the full EditMode
+(1219/1219) and PlayMode (17/17) suites plus `scripts/validate-repository.ps1`, all passing.
+
+Final source-state certification: all 15 named targets, plus `PlayerRegistry`, are gone from the
+loose `Assets/Scripts/player/` folder and report assembly `Level5.Player`; exactly one source
+definition exists per target; the final `Level5.Player.asmdef` references
+`Level5.Core`/`Level5.Combat`/`Level5.Constants`/`Level5.Basketball`/`Level5.Utility`/
+`Level5.Input`/`Level5.Audio` - all leaves or already-legal siblings, no cycle. Remaining loose files
+directly under `Assets/Scripts/player/`: `PlayerStats.cs` and `SelectedLoadout.cs` only - the two
+non-target trivial leaves this migration was explicitly not required to fold in.
+
+**Production behavior impact:** limited to the two call sites named above (fall-respawn/dunk-sequence
+in `PlayerCollisions`/`AutoPlayerCollisions`, and rigidbody-kinematic/attack-box-status in
+`PlayerAnimationEvents`), which now act on the participant whose own hitbox/animation actually fired
+rather than always `GameLevelManager.instance.Player1` - a fix required by, and inseparable from,
+removing the illegal `GameLevelManager` reach-through, and explicitly the shape the architecture
+rules prescribe for it. Every other change is compile-time assembly ownership and composition-timing
+only; no other runtime logic, serialized data, or public contract changed.
+
+**Remaining AUD-012 blockers:** `player`/`basketball`/`game manager` folders still compile into
+`Assembly-CSharp` outside `Level5Player`/`Level5Match`/`Level5Basketball` subfolders (e.g.
+`GameLevelManager`, `GameRules`, `MatchRuntime`, `SpawnCoordinator`, `BasketBall`'s non-`Level5.Basketball`
+siblings if any remain); the manual Play Mode verification bullet from Slice 2's exit criteria has
+still not been performed for this slice.
 
 ### Phase 3 — Converge the human/CPU pairs
 

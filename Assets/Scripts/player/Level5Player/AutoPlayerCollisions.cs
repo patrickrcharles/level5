@@ -17,6 +17,43 @@ public class AutoPlayerCollisions : MonoBehaviour
     bool playerCanBeKnockedDown;
     bool locked = false;
 
+    // AUD-012 Phase 2b: match rules and the fall-respawn destination, composed by
+    // SpawnCoordinator.BindAutoPlayerCollisionsContext instead of this component reading
+    // MatchRuntime.Rules / GameLevelManager.instance directly.
+    private ResolvedMatchRules matchRules;
+    private Transform fallRespawnDestination;
+
+    /// <summary>
+    /// Binds the rules this match is being played under. Bind-once, the same shape
+    /// <c>PlayerCollisions.BindMatchRules</c> uses.
+    /// </summary>
+    public void BindMatchRules(ResolvedMatchRules rules)
+    {
+        if (matchRules != null)
+        {
+            Debug.LogError($"AutoPlayerCollisions on '{gameObject.name}' already has bound match rules; ignoring a second BindMatchRules call.", this);
+            return;
+        }
+
+        if (rules == null)
+        {
+            Debug.LogError($"AutoPlayerCollisions on '{gameObject.name}' was bound with null match rules; remaining unbound.", this);
+            return;
+        }
+
+        matchRules = rules;
+    }
+
+    /// <summary>
+    /// Explicit binding of the human spawn point, from
+    /// <c>SpawnCoordinator.BindAutoPlayerCollisionsContext</c> - replaces this component's former
+    /// direct <c>GameLevelManager.instance.PlayerSpawnLocation</c> read.
+    /// </summary>
+    public void BindFallRespawnDestination(Transform destination)
+    {
+        fallRespawnDestination = destination;
+    }
+
     private void Start()
     {
         GetPlayerObjects();
@@ -44,8 +81,10 @@ public class AutoPlayerCollisions : MonoBehaviour
         // check for fall respawner
         if (gameObject.CompareTag("playerHitbox") && other.CompareTag("fallRespawner"))
         {
-            GameLevelManager.instance.Player1.transform.position 
-                = GameLevelManager.instance.PlayerSpawnLocation.transform.position;
+            if (fallRespawnDestination != null)
+            {
+                playerIdentifier.transform.position = fallRespawnDestination.position;
+            }
         }
 
         //if (gameObject.CompareTag("playerHitbox")
@@ -66,22 +105,23 @@ public class AutoPlayerCollisions : MonoBehaviour
         //}
 
         // if collsion between hitbox, vehicle, knocked down
-        if (gameObject.CompareTag("autoPlayerHitbox")
+        if (matchRules != null
+        && gameObject.CompareTag("autoPlayerHitbox")
         && (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox") || other.CompareTag("playerAttackBox"))
         && !autoPlayerController.KnockedDown
         && !autoPlayerController.TakeDamage
-        && (MatchRuntime.Rules.EnemiesEnabled
-        || MatchRuntime.Rules.TrafficEnabled
-        || MatchRuntime.Rules.ObstaclesEnabled
+        && (matchRules.EnemiesEnabled
+        || matchRules.TrafficEnabled
+        || matchRules.ObstaclesEnabled
         || other.transform.root.name.Contains("snake")
-        || MatchRuntime.Rules.SniperEnabled)
+        || matchRules.SniperEnabled)
         // roll for evade attack chance
         && !rollForPlayerEvadeAttackChance(autoPlayerController.CharacterProfile.Luck)
         && !locked)
         {
             locked = true;
-            EnemyAttackBox enemyAttackBox = null;
-            PlayerAttackBox playerAttackBox = null;
+            IAttackBoxHitInfo enemyAttackBoxHit = null;
+            IAttackBoxHitInfo playerAttackBoxHit = null;
             int damage = 0;
             bool isKnockdown = false;
             bool isRake = false;
@@ -89,19 +129,19 @@ public class AutoPlayerCollisions : MonoBehaviour
             // get attack box player/enemy
             if (other.CompareTag("playerAttackBox"))
             {
-                playerAttackBox = other.GetComponent<PlayerAttackBox>();
+                playerAttackBoxHit = other.GetComponent<IAttackBoxHitInfo>();
             }
             if (other.CompareTag("enemyAttackBox") || other.CompareTag("obstacleAttackBox"))
             {
-                enemyAttackBox = other.GetComponent<EnemyAttackBox>();
+                enemyAttackBoxHit = other.GetComponent<IAttackBoxHitInfo>();
             }
             // check if player attack
-            if (enemyAttackBox != null)
+            if (enemyAttackBoxHit != null)
             {
-                isRake = enemyAttackBox.isRake;
-                damage = enemyAttackBox.attackDamage;
-                isKnockdown = enemyAttackBox.knockDownAttack;
-                isDisintegrate = enemyAttackBox.disintegrateAttack;
+                isRake = enemyAttackBoxHit.IsRake;
+                damage = enemyAttackBoxHit.AttackDamage;
+                isKnockdown = enemyAttackBoxHit.KnockDownAttack;
+                isDisintegrate = enemyAttackBoxHit.DisintegrateAttack;
                 if (isDisintegrate)
                 {
                     locked = true;
@@ -109,11 +149,11 @@ public class AutoPlayerCollisions : MonoBehaviour
                 }
             }
             //check if enemy attack
-            if (playerAttackBox != null)
+            if (playerAttackBoxHit != null)
             {
-                damage = playerAttackBox.attackDamage;
-                isKnockdown = playerAttackBox.knockDownAttack;
-                isDisintegrate = playerAttackBox.disintegrateAttack;
+                damage = playerAttackBoxHit.AttackDamage;
+                isKnockdown = playerAttackBoxHit.KnockDownAttack;
+                isDisintegrate = playerAttackBoxHit.DisintegrateAttack;
                 if (isDisintegrate)
                 {
                     locked = true;
@@ -159,9 +199,9 @@ public class AutoPlayerCollisions : MonoBehaviour
                 // blocking play sound
                 // block meter goes down
                 SFXBB.instance.playSFX(SFXBB.instance.blocked);
-                if (enemyAttackBox != null)
+                if (enemyAttackBoxHit != null)
                 {
-                    playerHealth.SpendBlock(enemyAttackBox.attackDamage);
+                    playerHealth.SpendBlock(enemyAttackBoxHit.AttackDamage);
                 }
                 locked = false;
             }

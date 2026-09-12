@@ -539,6 +539,83 @@ public class Level5ProductionAssemblyBoundaryTests
             Is.EqualTo("Level5.Player"));
     }
 
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 50: proves the remaining 15 named player-domain targets - the CPU
+    /// actor/defense cluster, the account/character-runtime pair, the participant/ground/collision
+    /// cluster and the presentation/animation cluster - actually compile into <c>Level5.Player</c>,
+    /// the same identity check <see cref="PlayerAttackBoxCompilesIntoLevel5Player"/> does for
+    /// <c>PlayerAttackBox</c>. Dependency cuts: <c>CharacterProgressAccountId</c> now reads
+    /// <c>Level5.Core.LocalAccountIdentity</c> instead of <c>GameOptions.userid</c>/<c>userName</c>;
+    /// <c>AutoPlayerController</c>/<c>AutoPlayerDefense</c> take arena context, match runtime and the
+    /// moved <c>PlayerRegistry</c> through explicit composition instead of
+    /// <c>GameLevelManager.instance</c>/<c>MatchRuntime</c>; <c>PlayerCollisions</c>/
+    /// <c>AutoPlayerCollisions</c> read attack-box metadata through the new
+    /// <c>IAttackBoxHitInfo</c> (<c>Level5.Combat</c>) instead of naming <c>EnemyAttackBox</c>
+    /// (<c>Level5.Enemy</c>) directly; <c>PlayerHealthBar</c> takes its tracked participant through
+    /// <c>GameLevelManager.BindPlayerHealthBarContext</c>; <c>PlayerAnimationEvents</c> takes a
+    /// projectile-spawn delegate (<c>ProjectilePool</c> is <c>Assembly-CSharp</c>, not
+    /// <c>Level5.Pooling</c>) and a live auto-player reader instead of
+    /// <c>ProjectilePool.Spawn</c>/<c>GameLevelManager.instance.AutoPlayer</c>;
+    /// <c>CheerleaderSwapAnimation</c> reads <c>PlayerControlsProvider.Controls</c> (the same
+    /// authoritative <c>Level5.Input</c> object <c>GameLevelManager.Controls</c> already forwarded)
+    /// instead of <c>GameLevelManager.instance.Controls</c>.
+    /// </summary>
+    [Test]
+    public void RemainingPlayerDomainTargetsCompileIntoLevel5Player()
+    {
+        const string expected = "Level5.Player";
+
+        Assert.That(typeof(CharacterProgressAccountId).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CharacterRuntimeProvider).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(AutoPlayerController).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(AutoPlayerDamageReactions).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(AutoPlayerDefense).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CollisionCheckDefense).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(GroundCheckDefense).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CpuScoreDeficit).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerIdentifier).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(GroundCheck).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerCollisions).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(AutoPlayerCollisions).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerAnimationEvents).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(CheerleaderSwapAnimation).Assembly.GetName().Name, Is.EqualTo(expected));
+        Assert.That(typeof(PlayerHealthBar).Assembly.GetName().Name, Is.EqualTo(expected));
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 50: proves <c>PlayerRegistry</c> - supporting work moved alongside the
+    /// 15 named targets because it became dependency-closed the moment <c>PlayerIdentifier</c> moved,
+    /// and doing so let <c>AutoPlayerController</c>/<c>AutoPlayerDefense</c> compose one participant
+    /// seam instead of two - actually compiles into <c>Level5.Player</c>, the same identity check
+    /// <see cref="RemainingPlayerDomainTargetsCompileIntoLevel5Player"/> does for its 15 siblings. Its
+    /// callers - <c>GameLevelManager</c> and <c>SpawnCoordinator</c> - stay in <c>Assembly-CSharp</c>
+    /// and reach it through <c>autoReferenced</c>.
+    /// </summary>
+    [Test]
+    public void PlayerRegistryCompilesIntoLevel5Player()
+    {
+        Assert.That(
+            typeof(PlayerRegistry).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Player"));
+    }
+
+    /// <summary>
+    /// AUD-012 Phase 2b, Slice 50: proves the new neutral <c>IAttackBoxHitInfo</c> contract - added so
+    /// <c>PlayerCollisions</c>/<c>AutoPlayerCollisions</c> (<c>Level5.Player</c>) can read either
+    /// <c>PlayerAttackBox</c> or <c>EnemyAttackBox</c> (<c>Level5.Enemy</c>) without a Player&lt;-&gt;Enemy
+    /// assembly cycle - actually compiles into the existing <c>Level5.Combat</c> asmdef, the same
+    /// identity check <see cref="PlayerRegistryCompilesIntoLevel5Player"/> does for
+    /// <c>PlayerRegistry</c>. Implemented by both attack-box types; <c>Level5.Enemy</c> gained a new
+    /// reference to <c>Level5.Combat</c> (a leaf with no references of its own) to implement it.
+    /// </summary>
+    [Test]
+    public void AttackBoxHitInfoCompilesIntoLevel5Combat()
+    {
+        Assert.That(
+            typeof(IAttackBoxHitInfo).Assembly.GetName().Name,
+            Is.EqualTo("Level5.Combat"));
+    }
+
     [Test]
     public void NoProductionAssemblyReferencesAKnownEditorOnlyPackageAssembly()
     {

@@ -52,7 +52,6 @@ public class Level5MatchArchitectureTests
         "UserAccountManager.cs",
         "LocalAccount.cs",
         "ProgressionService.cs",
-        "CharacterProgressAccountId.cs",
 
         // gameplay consumers not yet migrated
         "GameLevelManager.cs",

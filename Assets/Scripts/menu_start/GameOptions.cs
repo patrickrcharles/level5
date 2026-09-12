@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Level5.Core;
 using UnityEngine;
 
 public static class GameOptions
@@ -120,8 +121,11 @@ public static class GameOptions
     static public bool levelRequiresWeather = false;
     static public bool levelHasSevenPointers = false;
 
-    static public string userName;
-    static public int userid;
+    // AUD-012 Phase 2b: the backing state moved to Level5.Core.LocalAccountIdentity, so
+    // CharacterProgressAccountId (Level5.Player) can read it without depending on Assembly-CSharp.
+    // These forward to the same single owner - every existing caller keeps working unchanged.
+    static public string userName { get => LocalAccountIdentity.UserName; set => LocalAccountIdentity.UserName = value; }
+    static public int userid { get => LocalAccountIdentity.UserId; set => LocalAccountIdentity.UserId = value; }
     // The session bearer token deliberately does not live here. It is a credential; it belongs to
     // APIHelper for the life of the session. Ask APIHelper.HasSession instead.
     static public int numOfLocalUsers;

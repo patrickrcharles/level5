@@ -42,6 +42,51 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
     private PlayerIdentifier playerIdentifier;
     CallBallToPlayer callBallToPlayer;
 
+    // AUD-012 Phase 2b: this CPU's live match-runtime boundary, arena context and participant registry,
+    // composed by SpawnCoordinator (BindCpuMatchRuntime / BindCpuArenaContext / BindCpuParticipantRegistry)
+    // instead of this controller reading MatchRuntime/GameLevelManager.instance directly - the same
+    // seams PlayerController already uses for its own copies of these reads. See BindMatchRuntime,
+    // BindArenaContext and BindParticipantRegistry below.
+    private IPlayerMatchRuntime matchRuntime;
+    private IGroundHeightProvider groundHeightProvider;
+    private bool groundHeightProviderMissingLogged;
+    private PlayerRegistry participantRegistry;
+
+    /// <summary>
+    /// Explicit binding of the live match-runtime boundary, from <c>SpawnCoordinator.BindCpuMatchRuntime</c>
+    /// during <c>GameLevelManager.Awake</c>'s spawn pass. Required before <see cref="Start"/> can run -
+    /// see that method's guard. Read at the point of use everywhere it is dereferenced below, never
+    /// cached into a snapshot, mirroring <c>PlayerController.matchRuntime</c>.
+    /// </summary>
+    public void BindMatchRuntime(IPlayerMatchRuntime runtime)
+    {
+        matchRuntime = runtime;
+    }
+
+    /// <summary>
+    /// Explicit arena-context binding from <c>SpawnCoordinator.BindCpuArenaContext</c>, called once from
+    /// <c>GameLevelManager.Start()</c> after arena bootstrap has resolved the final basketball rim and
+    /// updated the live ground-height state - mirrors <c>PlayerController.BindArenaContext</c> exactly,
+    /// including the "value bound once, provider stays live" split.
+    /// </summary>
+    public void BindArenaContext(Vector3 basketballRimVector, IGroundHeightProvider groundHeightProvider)
+    {
+        bballRimVector = basketballRimVector;
+        this.groundHeightProvider = groundHeightProvider;
+    }
+
+    /// <summary>
+    /// Explicit binding of this coordinator's participant registry, from
+    /// <c>SpawnCoordinator.BindCpuParticipantRegistry</c>, called immediately at CPU registration time -
+    /// replaces this controller's former direct <c>GameLevelManager.instance.players</c> read in
+    /// <see cref="SelectShotKind"/>. The registry reference itself never changes for the life of the
+    /// match, so binding it once, well before <see cref="Start"/>, is equivalent to reading it live.
+    /// </summary>
+    public void BindParticipantRegistry(PlayerRegistry registry)
+    {
+        participantRegistry = registry;
+    }
+
     // CPU-6: `isCPU` and `isDefensivePlayer` used to be duplicated here alongside the sibling
     // PlayerIdentifier that owns them (AUD-013 flagged the drift risk). Removed: `isDefensivePlayer`
     // had no readers at all, and `isCPU` had exactly one writer and no readers, so both were
@@ -177,6 +222,15 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
 
     void Start()
     {
+        if (matchRuntime == null)
+        {
+            Debug.LogError(
+                "AutoPlayerController has no bound IPlayerMatchRuntime - SpawnCoordinator.BindCpuMatchRuntime "
+                + "must run before this controller's Start().", this);
+            enabled = false;
+            return;
+        }
+
         getAnimatorStateHashes();
         playerIdentifier = GetComponent<PlayerIdentifier>();
         basketball = playerIdentifier.isDefensivePlayer ? null : playerIdentifier.autoBasketball.GetComponent<BasketBallAuto>();
@@ -190,8 +244,8 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
         Shotmeter = GetComponentInChildren<ShotMeter>();
         PlayerHealth = GetComponentInChildren<PlayerHealth>();
         spriteObject = transform.GetComponentInChildren<SpriteRenderer>().gameObject;
-        // bball rim vector, used for relative positioning
-        bballRimVector = GameLevelManager.instance.BasketballRimVector;
+        // bball rim vector, used for relative positioning: bound by SpawnCoordinator.BindCpuArenaContext
+        // from GameLevelManager.Start(), once the final rim is resolved - see BindArenaContext above.
 
         // AUD-081: same unguarded-lookup shape AUD-079 fixed in RacingVehicleController and this
         // class's human-controller twin, PlayerController - this used to dereference Find's
@@ -228,7 +282,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
             : null;
 
         //GameOptions.sniperEnabled = true; // test flag;
-        if (MatchRuntime.Rules.EnemiesEnabled || MatchRuntime.Rules.EnemiesOnly || MatchRuntime.Rules.SniperEnabled)
+        if (matchRuntime.Rules.EnemiesEnabled || matchRuntime.Rules.EnemiesOnly || matchRuntime.Rules.SniperEnabled)
         {
             playerSwapAttack = GetComponent<PlayerSwapAttack>();
             if (damageDisplayObject != null && damageDisplayObject.GetComponent<Canvas>() != null)
@@ -240,7 +294,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
         {
             damageDisplayObject.SetActive(false);
         }
-        if (MatchRuntime.CustomCamera)
+        if (matchRuntime.CustomCamera)
         {
             spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             if (damageDisplayObject != null)
@@ -249,7 +303,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
             }
         }
         // custom knockdown time for sniper mode
-        if (MatchRuntime.Rules.SniperEnabled)
+        if (matchRuntime.Rules.SniperEnabled)
         {
             _knockDownTime = 0.75f;
         }
@@ -378,9 +432,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
         {
             // AUD-052: same guard PlayerController already carries. A scene with no active Terrain
             // otherwise NREs here every frame the CPU is airborne.
-            terrainYHeight = Terrain.activeTerrain != null
-                ? Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f
-                : GameLevelManager.instance.TerrainHeight + 0.02f;
+            terrainYHeight = ResolveDropShadowHeight();
             dropShadow.transform.position = new Vector3(transform.root.position.x, terrainYHeight,
             transform.root.position.z);
         }
@@ -482,7 +534,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
         // note -- At top of the jump
         if (InAir
             && hasBasketball
-            && !MatchRuntime.Rules.EnemiesOnly
+            && !matchRuntime.Rules.EnemiesOnly
             && rigidBody.linearVelocity.y <= 0
             && (currentState == inAirHasBasketballFrontState || currentState == inAirHasBasketballSideState)
             && !shootTrigger)
@@ -494,6 +546,34 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
             Shotmeter.MeterEnded = true; // this determines ball launch. find top of the jump
             PlayerShoot();
         }
+    }
+
+    /// <summary>
+    /// The drop shadow's Y position while airborne: an active Terrain's own sampled height where one
+    /// exists, else the bound <see cref="groundHeightProvider"/>'s current value. Mirrors
+    /// <c>PlayerController.ResolveDropShadowHeight</c> exactly - see that method's remarks on why the
+    /// provider must be read live, never cached, and why an unbound provider is reported once rather
+    /// than dereferenced.
+    /// </summary>
+    private float ResolveDropShadowHeight()
+    {
+        if (Terrain.activeTerrain != null)
+        {
+            return Terrain.activeTerrain.SampleHeight(transform.position) + 0.02f;
+        }
+
+        if (groundHeightProvider != null)
+        {
+            return groundHeightProvider.GroundHeight + 0.02f;
+        }
+
+        if (!groundHeightProviderMissingLogged)
+        {
+            groundHeightProviderMissingLogged = true;
+            Debug.LogError($"AutoPlayerController on {name} has no bound ground-height provider for its no-Terrain drop-shadow fallback.", this);
+        }
+
+        return terrainYHeight;
     }
 
     /// <summary>
@@ -519,7 +599,10 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
     private ShotKind SelectShotKind()
     {
         bool canShootSeven = cpuShootSevenpointers();
-        int scoreDeficit = CpuScoreDeficit.Calculate(GameLevelManager.instance.players, playerIdentifier, gameStats.Stats.TotalPoints);
+        int scoreDeficit = CpuScoreDeficit.Calculate(
+            participantRegistry != null ? participantRegistry.MutableParticipants : null,
+            playerIdentifier,
+            gameStats.Stats.TotalPoints);
 
         CpuShotSelectionContext context = new CpuShotSelectionContext(
             preferredKind: PreferredShotKind(characterProfile.CpuType),
@@ -561,7 +644,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
     /// </summary>
     private Vector3 BuildShotTarget(ShotKind shotKind)
     {
-        Vector3 rimVector = GameLevelManager.instance.BasketballRimVector;
+        Vector3 rimVector = bballRimVector;
         Vector3 finalDirection;
 
         if (shotKind == ShotKind.Three)
@@ -612,7 +695,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
     private bool cpuShootSevenpointers()
     {
         return CpuSevenPointEligibility.IsEligible(
-            MatchRuntime.LevelHasSevenPointers, characterProfile.Range, characterProfile.Accuracy7Pt);
+            matchRuntime.LevelHasSevenPointers, characterProfile.Range, characterProfile.Accuracy7Pt);
     }
 
     private void getAnimatorStateHashes()
@@ -794,7 +877,7 @@ public class AutoPlayerController : MonoBehaviour, IShooterActor
         transform.localScale = thisScale;
 
         if (damageDisplayObject != null
-            && (MatchRuntime.Rules.EnemiesEnabled || MatchRuntime.Rules.EnemiesOnly || MatchRuntime.Rules.SniperEnabled))
+            && (matchRuntime.Rules.EnemiesEnabled || matchRuntime.Rules.EnemiesOnly || matchRuntime.Rules.SniperEnabled))
         {
             Vector3 damageScale = damageDisplayObject.transform.localScale;
             damageScale.x *= -1;
